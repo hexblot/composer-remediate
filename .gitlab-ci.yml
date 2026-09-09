@@ -11,9 +11,9 @@ stages: [test, deploy]
     - composer phpstan
     - composer test
 
-test:php8.1: { extends: .php-test, variables: { PHP_VERSION: "8.1" } }
 test:php8.3: { extends: .php-test, variables: { PHP_VERSION: "8.3" } }
 test:php8.4: { extends: .php-test, variables: { PHP_VERSION: "8.4" } }
+test:php8.5: { extends: .php-test, variables: { PHP_VERSION: "8.5" } }
 
 docs:build:
   stage: test

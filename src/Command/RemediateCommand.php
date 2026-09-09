@@ -14,7 +14,7 @@ use Remediate\Engine\Planner;
 use Remediate\Engine\Project\ProjectContext;
 use Remediate\Engine\Solver\InProcessSolver;
 use Remediate\Engine\Solver\ScratchWorkspace;
-use Remediate\Output\TextRenderer;
+use Remediate\Output\ReportFormat;
 use Symfony\Component\Console\Input\InputInterface;
 use Symfony\Component\Console\Input\InputOption;
 use Symfony\Component\Console\Output\OutputInterface;
@@ -27,6 +27,8 @@ final class RemediateCommand extends BaseCommand
             ->setName('remediate')
             ->setDescription('Find the smallest Composer-verified upgrade that removes each known vulnerability from composer.lock')
             ->setDefinition([
+                new InputOption('format', 'f', InputOption::VALUE_REQUIRED, 'Format printed to standard output: text, html, json or none', 'text'),
+                new InputOption('output', 'o', InputOption::VALUE_REQUIRED | InputOption::VALUE_IS_ARRAY, 'Also write a report file; format inferred from the extension (.html, .json, .txt) or given as html:path. Repeatable.'),
                 new InputOption('no-dev', null, InputOption::VALUE_NONE, 'Ignore vulnerabilities in require-dev packages'),
                 new InputOption('allow-direct-require', null, InputOption::VALUE_NONE, 'Also consider adding a transitive package as a direct requirement to force a fixed version'),
                 new InputOption('advisories-file', null, InputOption::VALUE_REQUIRED, 'Read advisories from a JSON file in the Packagist API shape instead of the configured repositories'),
@@ -49,6 +51,25 @@ HELP);
     protected function execute(InputInterface $input, OutputInterface $output): int
     {
         $io = $this->getIO();
+        $format = ReportFormat::tryFrom(strtolower((string) $input->getOption('format')));
+        if ($format === null) {
+            $io->writeError(sprintf('<error>Unknown format "%s"; use text, html, json or none.</error>', (string) $input->getOption('format')));
+
+            return Plan::EXIT_ERROR;
+        }
+        $outputs = [];
+        foreach ((array) $input->getOption('output') as $spec) {
+            if (!is_string($spec) || $spec === '') {
+                continue;
+            }
+            try {
+                $outputs[] = ReportFormat::parseOutputSpec($spec);
+            } catch (\InvalidArgumentException $e) {
+                $io->writeError('<error>' . $e->getMessage() . '</error>');
+
+                return Plan::EXIT_ERROR;
+            }
+        }
         $composer = $this->requireComposer();
         $context = ProjectContext::fromComposer($composer);
 
@@ -84,7 +105,21 @@ HELP);
             return Plan::EXIT_ADVISORIES_UNAVAILABLE;
         }
 
-        $output->write((new TextRenderer($solver->supportsMinimalChanges()))->render($plan));
+        $minimal = $solver->supportsMinimalChanges();
+        foreach ($outputs as [$fileFormat, $path]) {
+            if ($path === null || $fileFormat === ReportFormat::None) {
+                continue;
+            }
+            if (@file_put_contents($path, $fileFormat->render($plan, $minimal)) === false) {
+                $io->writeError(sprintf('<error>Could not write %s report to %s</error>', $fileFormat->value, $path));
+
+                return Plan::EXIT_ERROR;
+            }
+            $io->writeError(sprintf('%s report written to %s', ucfirst($fileFormat->value), $path));
+        }
+        if ($format !== ReportFormat::None) {
+            $output->write($format->render($plan, $minimal));
+        }
 
         return $plan->exitCode();
     }

@@ -7,6 +7,8 @@ namespace Remediate\Tests\Integration;
 use PHPUnit\Framework\Attributes\DataProvider;
 use PHPUnit\Framework\TestCase;
 use Remediate\Engine\Plan\FindingPlan;
+use Remediate\Output\HtmlRenderer;
+use Remediate\Output\JsonRenderer;
 use Remediate\Output\TextRenderer;
 use Remediate\Tests\Support\FixtureRunner;
 
@@ -58,6 +60,14 @@ final class FixtureTest extends TestCase
         $expected = FixtureRunner::expected($fixtureDir);
         $plan = $this->runner->run($fixtureDir, (bool) ($expected['allow_direct_require'] ?? false));
         $rendered = (new TextRenderer())->render($plan);
+        $html = (new HtmlRenderer())->render($plan);
+        self::assertStringStartsWith('<!DOCTYPE html>', $html);
+        self::assertStringContainsString('</html>', $html);
+        self::assertStringNotContainsString('<script', $html);
+        $json = json_decode((new JsonRenderer())->render($plan), true, 512, JSON_THROW_ON_ERROR);
+        self::assertIsArray($json);
+        self::assertSame($plan->exitCode(), $json['exit_code']);
+        self::assertCount(count($plan->findings), $json['findings']);
 
         $expectedFindings = $expected['findings'] ?? [];
         self::assertIsArray($expectedFindings);
@@ -82,6 +92,7 @@ final class FixtureTest extends TestCase
             self::assertNotNull($recommended);
             if (isset($exp['command'])) {
                 self::assertSame($exp['command'], $recommended->candidate->commandLine(true), "Recommended command differs.\n$rendered");
+                self::assertStringContainsString(htmlspecialchars((string) $exp['command'], ENT_QUOTES | ENT_HTML5), $html, 'HTML report lacks the recommended command');
             }
             if (isset($exp['max_changes'])) {
                 self::assertLessThanOrEqual($exp['max_changes'], $recommended->diff?->count(), "Too many changes.\n$rendered");

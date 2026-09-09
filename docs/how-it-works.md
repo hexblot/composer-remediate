@@ -128,6 +128,53 @@ the report so the reasoning stays visible.
 
 ## 8. Output
 
-Text output follows the format on the [home page](index.md). JSON output exposes the same structure
-plus reproducibility metadata: engine version, advisory source and fetch time, Composer and PHP
-versions, and hashes of `composer.json` and `composer.lock`.
+Text output is the default:
+
+```text
+CVE-2026-XXXXX
+────────────────────────────────────────────────────────────
+Affected
+  symfony/http-foundation 6.4.21
+  CVE-2026-XXXXX: <advisory title>
+    affected versions: >=6.4.0,<6.4.24
+Introduced by
+  root
+  └── drupal/core-recommended 11.4.2
+      └── symfony/http-foundation 6.4.21  (requires 6.4.21)
+Current state
+  Transitive dependency.
+Recommended remediation
+  drupal/core-recommended 11.4.2 -> 11.4.3
+  symfony/http-foundation 6.4.21 -> 6.4.24
+Composer validation
+  PASS  3 packages changed, 0 added, 0 removed, 0 root constraints changed
+Expected changes
+  drupal/core 11.4.2 -> 11.4.3
+  drupal/core-recommended 11.4.2 -> 11.4.3
+  symfony/http-foundation 6.4.21 -> 6.4.24
+Recommended command
+  composer update drupal/core-recommended -W -m --with 'symfony/http-foundation:>=6.4.24'
+Other candidates
+  rejected: composer update symfony/http-foundation
+      resolves, but symfony/http-foundation ends at 6.4.21 which is still affected by CVE-2026-XXXXX
+```
+
+Three report formats exist and can be produced in one run. `--format` (default `text`, or `none`)
+chooses what goes to standard output; `--output` writes a file whose format is inferred from its
+extension and may be repeated:
+
+```bash
+composer remediate --output=report.html --output=report.json          # text on stdout, two files
+composer remediate --format=none --output=report.json                 # file only, quiet stdout
+composer remediate --format=json | jq '.findings[].remediation.command'
+```
+
+- **text**: the human-readable plan above.
+- **html**: a self-contained page (inline CSS, no scripts, no external resources) with a summary
+  table, one section per finding, the dependency paths, the expected changes and every candidate
+  that was tried or skipped. Suitable as a CI artifact.
+- **json**: the same content for machines. Top-level keys: `schema_version`, `analysis_metadata`
+  (Composer and PHP versions, advisory source, hashes of `composer.json` and `composer.lock`,
+  timestamp), `exit_code`, `warnings`, `findings[]` (package, advisories, paths, `remediation`
+  with `status`, `command`, `summary` and `changes`, and all `candidates` with their outcome) and
+  `unsolved_findings[]`.

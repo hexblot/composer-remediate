@@ -8,7 +8,7 @@
 
 | Requirement | Minimum | Notes |
 |---|---|---|
-| PHP | 8.1 | |
+| PHP | 8.2 | PHP 8.1 reached end of life in December 2025 and is not supported |
 | Composer | 2.4 | `composer audit` and transitive `--with` constraints appeared in 2.4 |
 | Composer, full feature set | 2.9 | `--minimal-changes` (`-m`) appeared in 2.9; on older versions the planner omits it and warns that diffs may be larger |
 
@@ -31,9 +31,11 @@ composer require --dev hexblot/composer-remediate
 ## Usage
 
 ```bash
-composer remediate            # analyse composer.lock, print a plan, change nothing
-composer remediate --format=json
-composer remediate --offline  # fail instead of touching the network (needs a warm Composer cache)
+composer remediate                         # analyse composer.lock, print a plan, change nothing
+composer remediate --output=report.html --output=report.json   # also write HTML and JSON reports (CI artifacts)
+composer remediate --format=json                                # machine-readable output on stdout
+composer remediate --no-dev                # ignore findings in require-dev packages
+composer remediate -v                      # show every candidate command as it is tried
 ```
 
 The plugin never writes to `composer.json`, `composer.lock` or `vendor/`. Every recommendation is a
