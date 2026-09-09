@@ -1,0 +1,116 @@
+# Reference shared advisory database.
+#
+# Builds the SQLite advisory database from Packagist, OSV and FriendsOfPHP on a schedule and publishes
+# it as a GitHub release ONLY when the logical dataset changed (the dataset hash differs from the one
+# in the current `latest.json`). Releases are tagged db-YYYY-MM-DD.HH (a .N suffix disambiguates
+# several publications in one hour). Each release carries the database, its sha256, latest.json, and
+# a build-provenance attestation. Users point at the stable URL of `latest.json` or the database:
+#
+#   https://github.com/hexblot/composer-remediate/releases/download/advisory-db-latest/advisories.sqlite
+#
+# The `advisory-db-latest` release is a moving pointer updated alongside each dated release.
+name: advisory-db
+
+on:
+  schedule:
+    - cron: '17 * * * *'
+  workflow_dispatch:
+    inputs:
+      force:
+        description: Publish even when the dataset hash is unchanged
+        type: boolean
+        default: false
+
+permissions:
+  contents: write
+  id-token: write
+  attestations: write
+
+concurrency:
+  group: advisory-db
+  cancel-in-progress: false
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v7
+      - uses: shivammathur/setup-php@v2
+        with:
+          php-version: '8.4'
+          extensions: pdo_sqlite, zip
+          tools: composer:v2
+      - name: Install the plugin from this checkout
+        run: |
+          composer global config --no-plugins repositories.remediate path "$GITHUB_WORKSPACE"
+          composer global config --no-plugins allow-plugins.hexblot/composer-remediate true
+          composer global require hexblot/composer-remediate:@dev --no-progress
+      - name: Build
+        run: |
+          mkdir -p out
+          composer remediate:db-build --output=out/advisories.sqlite
+          php -r '$m = (new PDO("sqlite:out/advisories.sqlite"))->query("SELECT key, value FROM meta")->fetchAll(PDO::FETCH_KEY_PAIR); file_put_contents("out/meta.json", json_encode($m, JSON_PRETTY_PRINT));'
+          jq -r .dataset_hash out/meta.json > out/hash
+          sha256sum out/advisories.sqlite | cut -d" " -f1 > out/advisories.sqlite.sha256
+          echo "hash=$(cat out/hash)" >> "$GITHUB_OUTPUT"
+        id: build
+      - name: Compare with the published dataset
+        id: compare
+        env:
+          GH_TOKEN: ${{ github.token }}
+        run: |
+          set +e
+          gh release download advisory-db-latest --pattern latest.json --dir prev 2>/dev/null
+          set -e
+          previous=$(jq -r '.dataset_hash // empty' prev/latest.json 2>/dev/null || true)
+          echo "previous=$previous" >> "$GITHUB_OUTPUT"
+          if [ "$previous" = "${{ steps.build.outputs.hash }}" ] && [ "${{ inputs.force }}" != "true" ]; then
+            echo "changed=false" >> "$GITHUB_OUTPUT"; echo "Dataset unchanged ($previous); nothing to publish."
+          else
+            echo "changed=true" >> "$GITHUB_OUTPUT"
+          fi
+      - name: Choose the release version
+        if: steps.compare.outputs.changed == 'true'
+        id: version
+        env:
+          GH_TOKEN: ${{ github.token }}
+        run: |
+          base="db-$(date -u +%Y-%m-%d.%H)"
+          version="$base"; n=1
+          while gh release view "$version" >/dev/null 2>&1; do version="$base.$n"; n=$((n+1)); done
+          echo "version=$version" >> "$GITHUB_OUTPUT"
+      - name: Write latest.json
+        if: steps.compare.outputs.changed == 'true'
+        run: |
+          jq -n --arg v "${{ steps.version.outputs.version }}" --arg h "${{ steps.build.outputs.hash }}" \
+                --arg s "$(cat out/advisories.sqlite.sha256)" --arg p "${{ steps.compare.outputs.previous }}" \
+                --argjson m "$(cat out/meta.json)" \
+                '{version: $v, database: "advisories.sqlite", sha256: $s, dataset_hash: $h, published_at: $m.built_at,
+                  advisory_count: ($m.advisory_count|tonumber), conflict_count: ($m.conflict_count|tonumber),
+                  sources: ($m.sources|fromjson), previous: (if $p == "" then null else $p end),
+                  url: ("https://github.com/${{ github.repository }}/releases/download/" + $v + "/advisories.sqlite")}' > out/latest.json
+          cat out/latest.json
+      - name: Attest provenance
+        if: steps.compare.outputs.changed == 'true'
+        uses: actions/attest-build-provenance@v3
+        with:
+          subject-path: out/advisories.sqlite
+      - name: Publish dated release and move the latest pointer
+        if: steps.compare.outputs.changed == 'true'
+        env:
+          GH_TOKEN: ${{ github.token }}
+        run: |
+          v="${{ steps.version.outputs.version }}"
+          gh release create "$v" out/advisories.sqlite out/advisories.sqlite.sha256 out/latest.json \
+            --title "Advisory database $v" \
+            --notes "Advisory database built from Packagist, OSV and FriendsOfPHP. Dataset hash ${{ steps.build.outputs.hash }}. Use with \`composer remediate --database-location=https://github.com/${{ github.repository }}/releases/download/$v/advisories.sqlite\`. Aggregated advisory data; see docs/advisory-database.md for source licences."
+          if gh release view advisory-db-latest >/dev/null 2>&1; then
+            gh release upload advisory-db-latest out/advisories.sqlite out/advisories.sqlite.sha256 out/latest.json --clobber
+            gh release edit advisory-db-latest --notes "Moving pointer to the newest advisory database ($v). Prefer the dated release URL in pinned CI configurations."
+          else
+            gh release create advisory-db-latest out/advisories.sqlite out/advisories.sqlite.sha256 out/latest.json \
+              --title "Advisory database (latest)" --prerelease \
+              --notes "Moving pointer to the newest advisory database ($v). Prefer the dated release URL in pinned CI configurations."
+          fi
+      - name: Record health
+        run: echo "last_successful_poll=$(date -u +%FT%TZ) changed=${{ steps.compare.outputs.changed }} hash=${{ steps.build.outputs.hash }}"

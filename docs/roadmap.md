@@ -33,12 +33,14 @@ stands.
 - [x] `provide` handled like `replace` in matching; development-only findings listed after production ones
 - [x] 0.1.0 tagged; Packagist submission is a manual step for the maintainer
 
-## Phase 2 — advisory database: build locally, share centrally
+## Phase 2 — advisory database: build locally, share centrally *(complete)*
 
-- source adapters: OSV, FriendsOfPHP, Packagist API, local or organisational overrides
-- normalised advisory model with alias-based deduplication and explicit conflict flags
-- `remediate db:build` producing a SQLite file; `--database-location` to use a shared one
-- a reference shared instance published by this project, signed, released only when the data changes
+- [x] source adapters: Packagist full dump, OSV Packagist archive, FriendsOfPHP (zip or local checkout)
+- [x] normalised advisory model with alias-based deduplication, every source's range kept, conflicts flagged
+- [x] `composer remediate:db-build` producing a SQLite file with a dataset hash; `remediate:db-status`
+- [x] `--database-location` (path or URL), `REMEDIATE_DATABASE`, `extra.remediate.database`
+- [x] private or organisational advisories as an additional source (`--include=<json>`)
+- [x] a reference shared instance published by this project (`.github/workflows/advisory-db.yml`): hourly build, release only when the dataset hash changes, sha256 and build-provenance attestation, `advisory-db-latest` moving pointer
 
 ## Phase 3 — ecosystem corpus, CI, version matrix
 

@@ -8,7 +8,11 @@ use Composer\Command\BaseCommand;
 use Composer\Config;
 use Composer\Util\Platform;
 use Remediate\Engine\Advisory\AdvisoryLookupFailed;
+use Composer\Factory;
 use Remediate\Engine\Advisory\ComposerRepositoryAdvisoryProvider;
+use Remediate\Engine\Advisory\Db\Database;
+use Remediate\Engine\Advisory\Db\DatabaseLocator;
+use Remediate\Engine\Advisory\Db\SqliteAdvisoryProvider;
 use Remediate\Engine\Advisory\JsonFileAdvisoryProvider;
 use Remediate\Engine\Candidate\CandidateGenerator;
 use Remediate\Engine\Plan\Plan;
@@ -36,6 +40,7 @@ final class RemediateCommand extends BaseCommand
                 new InputOption('ignore', 'i', InputOption::VALUE_REQUIRED | InputOption::VALUE_IS_ARRAY, 'Advisory id or CVE to ignore (repeatable); config.audit.ignore and config.policy.advisories.ignore are honoured as well'),
                 new InputOption('allow-direct-require', null, InputOption::VALUE_NONE, 'Also consider adding a transitive package as a direct requirement to force a fixed version'),
                 new InputOption('advisories-file', null, InputOption::VALUE_REQUIRED, 'Read advisories from a JSON file in the Packagist API shape instead of the configured repositories'),
+                new InputOption('database-location', null, InputOption::VALUE_REQUIRED, 'Read advisories from a local advisory database (path or URL) built with remediate:db-build; also REMEDIATE_DATABASE or extra.remediate.database'),
                 new InputOption('max-candidates', null, InputOption::VALUE_REQUIRED, 'Maximum number of candidate commands to try per finding', '10'),
                 new InputOption('ignore-platform-req', null, InputOption::VALUE_REQUIRED | InputOption::VALUE_IS_ARRAY, 'Ignore a specific platform requirement (php & ext- packages) when validating candidates'),
                 new InputOption('ignore-platform-reqs', null, InputOption::VALUE_NONE, 'Ignore all platform requirements when validating candidates'),
@@ -127,9 +132,22 @@ HELP);
         }
 
         $advisoriesFile = $input->getOption('advisories-file');
-        $advisories = is_string($advisoriesFile) && $advisoriesFile !== ''
-            ? new JsonFileAdvisoryProvider($advisoriesFile)
-            : ComposerRepositoryAdvisoryProvider::fromRepositoryManager($composer->getRepositoryManager());
+        $dbOption = $input->getOption('database-location');
+        $locator = new DatabaseLocator($composer, Factory::createHttpDownloader($io, $composer->getConfig()), (bool) $input->getOption('offline'));
+        $dbLocation = $locator->configured(is_string($dbOption) ? $dbOption : null);
+        if (is_string($advisoriesFile) && $advisoriesFile !== '') {
+            $advisories = new JsonFileAdvisoryProvider($advisoriesFile);
+        } elseif ($dbLocation !== null) {
+            try {
+                $advisories = new SqliteAdvisoryProvider(Database::open($locator->resolve($dbLocation)));
+            } catch (AdvisoryLookupFailed $e) {
+                $io->writeError('<error>Advisory database unavailable: ' . $e->getMessage() . '</error>');
+
+                return Plan::EXIT_ADVISORIES_UNAVAILABLE;
+            }
+        } else {
+            $advisories = ComposerRepositoryAdvisoryProvider::fromRepositoryManager($composer->getRepositoryManager());
+        }
 
         $solver = new InProcessSolver($this->getPlatformRequirementFilter($input));
         $maxCandidates = max(1, (int) $input->getOption('max-candidates'));
@@ -152,7 +170,7 @@ HELP);
         } catch (AdvisoryLookupFailed $e) {
             $io->writeError('<error>Advisory data unavailable: ' . $e->getMessage() . '</error>');
             if ((bool) $input->getOption('offline')) {
-                $io->writeError('<comment>Offline mode: pass --advisories-file=<json> with a snapshot in the Packagist API shape.</comment>');
+                $io->writeError('<comment>Offline mode: pass --advisories-file=<json> or --database-location=<sqlite> (see remediate:db-build).</comment>');
             }
 
             return Plan::EXIT_ADVISORIES_UNAVAILABLE;

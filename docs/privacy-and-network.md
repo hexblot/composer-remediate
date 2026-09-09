@@ -29,5 +29,6 @@ Composer then answers cached metadata as "not modified" and fails any request th
 cache. If a solve needs metadata that is missing, the planner stops with a clear error instead of
 falling back to the network.
 
-The advisory database work in Phase 2 removes the first row of the table above: advisories are
-read from a local SQLite file that you build yourself or download once.
+With an [advisory database](advisory-database.md) (`--database-location`) the first row of the
+table disappears: advisories are read from a local SQLite file you built yourself or downloaded
+once, and no package names are sent anywhere for the advisory lookup.

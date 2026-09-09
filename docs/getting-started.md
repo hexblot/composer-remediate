@@ -36,7 +36,8 @@ composer remediate --output=report.html --output=report.json   # also write HTML
 composer remediate --format=json                                # machine-readable output on stdout
 composer remediate --no-dev                # ignore findings in require-dev packages
 composer remediate --ignore CVE-2024-50345 # leave an advisory out (also honours config.audit.ignore / config.policy)
-composer remediate --offline --advisories-file=advisories.json   # no network at all; needs a warm Composer cache
+composer remediate --database-location=advisories.sqlite         # advisories from a local database (see Advisory database)
+composer remediate --offline --database-location=advisories.sqlite   # no network at all; needs a warm Composer cache
 composer remediate -v                      # show every candidate command as it is tried
 ```
 

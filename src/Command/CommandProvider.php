@@ -13,6 +13,6 @@ final class CommandProvider implements CommandProviderCapability
      */
     public function getCommands(): array
     {
-        return [new RemediateCommand()];
+        return [new RemediateCommand(), new DbBuildCommand(), new DbStatusCommand()];
     }
 }

@@ -58,4 +58,5 @@ verification of every recommendation.
 - [Getting started](getting-started.md)
 - [How it works](how-it-works.md)
 - [CI integration](ci-integration.md)
+- [Advisory database](advisory-database.md)
 - [Design decisions](design-decisions.md)

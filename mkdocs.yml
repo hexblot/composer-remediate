@@ -27,6 +27,7 @@ nav:
   - How it works: how-it-works.md
   - Privacy and network behaviour: privacy-and-network.md
   - CI integration: ci-integration.md
+  - Advisory database: advisory-database.md
   - Test fixtures: fixtures.md
   - Roadmap: roadmap.md
   - Contributing: contributing.md

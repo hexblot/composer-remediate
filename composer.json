@@ -26,12 +26,17 @@
     },
     "require": {
         "php": "^8.1",
-        "composer-plugin-api": "^2.0"
+        "composer-plugin-api": "^2.0",
+        "symfony/yaml": "^5.4 || ^6.4 || ^7.0 || ^8.0"
     },
     "require-dev": {
         "composer/composer": "^2.9",
         "phpstan/phpstan": "^2.1",
         "phpunit/phpunit": "^10.5"
+    },
+    "suggest": {
+        "ext-pdo_sqlite": "Required to build or read a local advisory database (remediate db:build, --database-location)",
+        "ext-zip": "Required by remediate db:build to read the OSV and FriendsOfPHP archives"
     },
     "autoload": {
         "psr-4": {

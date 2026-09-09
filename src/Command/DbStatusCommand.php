@@ -1,0 +1,70 @@
+<?php
+
+declare(strict_types=1);
+
+namespace Remediate\Command;
+
+use Composer\Command\BaseCommand;
+use Composer\Factory;
+use Remediate\Engine\Advisory\AdvisoryLookupFailed;
+use Remediate\Engine\Advisory\Db\Database;
+use Remediate\Engine\Advisory\Db\DatabaseLocator;
+use Remediate\Engine\Plan\Plan;
+use Symfony\Component\Console\Input\InputInterface;
+use Symfony\Component\Console\Input\InputOption;
+use Symfony\Component\Console\Output\OutputInterface;
+
+final class DbStatusCommand extends BaseCommand
+{
+    protected function configure(): void
+    {
+        $this
+            ->setName('remediate:db-status')
+            ->setAliases(['remediate-db-status'])
+            ->setDescription('Show where the advisory database comes from and what it contains')
+            ->setDefinition([
+                new InputOption('database-location', null, InputOption::VALUE_REQUIRED, 'Path or URL of the database (default: REMEDIATE_DATABASE, then extra.remediate.database, then the default build path)'),
+            ]);
+    }
+
+    protected function execute(InputInterface $input, OutputInterface $output): int
+    {
+        $io = $this->getIO();
+        $composer = $this->tryComposer() ?? Factory::createGlobal($io, true, true);
+        if ($composer === null) {
+            $io->writeError('<error>Could not initialise Composer.</error>');
+
+            return Plan::EXIT_ERROR;
+        }
+        $locator = new DatabaseLocator($composer, Factory::createHttpDownloader($io, $composer->getConfig()));
+        $option = $input->getOption('database-location');
+        $location = $locator->configured(is_string($option) ? $option : null) ?? $locator->defaultBuildPath();
+        $output->writeln(sprintf('Location: %s', $location));
+        try {
+            $path = $locator->resolve($location);
+            $db = Database::open($path);
+        } catch (AdvisoryLookupFailed $e) {
+            $output->writeln('<error>' . $e->getMessage() . '</error>');
+            $output->writeln('Build one with <comment>composer remediate:db-build</comment>.');
+
+            return Plan::EXIT_ADVISORIES_UNAVAILABLE;
+        }
+        $output->writeln(sprintf('File: %s (%.1f MB)', $path, (int) filesize($path) / 1048576));
+        foreach ($db->meta() as $key => $value) {
+            if ($key === 'sources') {
+                $decoded = json_decode($value, true);
+                if (is_array($decoded)) {
+                    foreach ($decoded as $source) {
+                        if (is_array($source)) {
+                            $output->writeln(sprintf('  source: %s, %s records, fetched %s', $source['name'] ?? '?', $source['records'] ?? '?', $source['fetched_at'] ?? '?'));
+                        }
+                    }
+                }
+                continue;
+            }
+            $output->writeln(sprintf('  %s: %s', $key, $value));
+        }
+
+        return 0;
+    }
+}
