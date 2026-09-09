@@ -1,8 +1,13 @@
 # Composer Remediation Planner — Initial Technical Design
 
+> **Revision note (2026-09-09).** This design was revised after verifying Composer's internals and
+> building the Phase 0 prototype. The decisions and their reasons are recorded as architecture
+> decision records in `docs/adr/`; the sections below were updated to match. Where the original
+> text said "should be evaluated", the choice is now stated.
+
 ## 1. Purpose
 
-This document defines the initial technical scope and architecture for a free, open-source Composer vulnerability remediation planner.
+This document defines the initial technical scope and architecture for a free, open-source Composer vulnerability remediation planner, delivered as a Composer plugin.
 
 The project is intended to solve one specific problem:
 
@@ -66,13 +71,15 @@ The project may aggregate and normalize advisory feeds, but identifying novel vu
 
 ### 3.2 Local analysis by default
 
-All project-sensitive analysis must run locally.
+All project-sensitive analysis runs locally, inside the user's Composer. No third-party service is
+involved and nothing is sent anywhere Composer itself would not send it.
 
-The tool must not require dependency metadata, package names, lockfiles, or dependency graphs to be sent to a remote service.
+Two network interactions are inherent to solver-backed remediation and are documented rather than
+denied: Composer's solver fetches package metadata from the project's configured repositories
+(exactly as `composer update` does), and the default advisory lookup POSTs package names to
+Packagist's advisory API (exactly as `composer audit` does; versions are not sent).
 
-Network access should be limited to obtaining public metadata or prebuilt advisory artifacts.
-
-A fully offline workflow must be supported.
+`--offline` refuses all network access and fails loudly on a cache miss instead of falling back.
 
 ### 3.3 Advisory-source neutrality
 
@@ -160,11 +167,20 @@ These components should be independently testable and loosely coupled.
 
 ## 5. Advisory database subsystem
 
+## 5.0 Position in the roadmap
+
+Phases 0 and 1 do not need a database: the engine's `AdvisoryProvider` interface is implemented by
+an adapter over Composer's own repository advisory API (Packagist by default) and by a JSON snapshot
+reader used for fixtures and offline runs. The database is Phase 2. It is **built locally** by
+`remediate db:build` from live sources; the same file can be published centrally and consumed with
+`--database-location <path|URL>`, and the project's own signed release pipeline (§6) is the reference
+instance of that sharing model rather than a separate product.
+
 ## 5.1 Purpose
 
 The advisory database exists to provide the remediation engine with a normalized, deduplicated, local view of known package vulnerabilities.
 
-It should be usable without internet connectivity once downloaded.
+It should be usable without internet connectivity once built or downloaded.
 
 ## 5.2 SQLite as the distribution format
 
@@ -641,6 +657,28 @@ Questions:
 - if no, what is the smallest parent upgrade that permits one?
 - if multiple parents require the vulnerable package, which combination of upgrades is necessary?
 
+### 11.0 Candidates are Composer commands (decided)
+
+Every candidate *is* one concrete `composer update` invocation: an allow list, a transitive mode
+(`-w` / `-W`), temporary constraints (`--with`, valid for transitive packages since Composer 2.4),
+`--minimal-changes` (Composer 2.9+), and optionally a root constraint change applied to a scratch
+copy of `composer.json`. Validation runs exactly that invocation; the recommendation prints exactly
+that invocation. Candidates are generated least invasive first:
+
+1. `composer update V` (lock merely stale);
+2. `composer update V -w -m --with 'V:<fixed range>'`;
+3. `composer update A -W -m --with 'V:<fixed range>'` for the nearest root-required ancestor `A` on
+   each path, then further ancestors, then the union of all nearest parents when several block;
+4. widen `A`'s root constraint to the next caret range, then update it with all dependencies;
+5. (opt-in) require `V` directly with the fixed range.
+
+The fixed range is derived from the advisory's affected range as its complement above the locked
+version; downgrades are never proposed.
+
+Because `-m` still moves the *named* package to its newest allowed version, a validated parent
+update is refined by a bounded downward search (`--with 'A:>current,<newest'`) for the lowest
+parent version that still admits the fix, which is then pinned as `composer update A:x.y.z -W -m`.
+
 ### 11.3 Deep transitive dependency
 
 Example:
@@ -698,9 +736,17 @@ Risks:
 - subprocess complexity;
 - temporary filesystem management.
 
-A hybrid approach may ultimately be appropriate.
+**Decision:** in-process first, subprocess as fallback. Each candidate runs `Composer\Installer`
+in dry-run mode against a fresh `Composer` instance created from a scratch copy of the project with
+plugins and scripts disabled. `Installer::getLockTransaction()` and the virtual lock cached by
+`Locker::setLockData(..., $write = false)` expose the resulting package set in memory, so nothing is
+written. The subprocess route (`composer update … --no-install` in the scratch copy, reading the
+written lock) exists for environments where the API is unavailable. Composer 2.10's advisory pool
+blocking is disabled inside solves so results are identical across Composer versions; the planner
+performs its own advisory check on every result.
 
-The prototype should deliberately test both rather than deciding this prematurely.
+Composer's advisory classes are `@internal` and changed in every release from 2.7 to 2.10; they are
+touched only inside one adapter, with `composer audit --locked --format=json` as a second adapter.
 
 ---
 
@@ -741,7 +787,8 @@ invoke Composer solver
 
 A successful solve alone is insufficient.
 
-The resulting graph must also be checked to ensure the vulnerability has actually disappeared.
+The resulting graph must also be checked to ensure the vulnerability has actually disappeared, that
+no advisory absent from the original lock was introduced, and that something actually changed.
 
 ---
 
@@ -867,7 +914,9 @@ This will support CI integration, IDE tooling, bots, and downstream systems.
 
 ## 17. Reproducibility
 
-Every report should identify enough state to reproduce the result.
+Every report should identify enough state to reproduce the result. Note that solver results also
+depend on the package metadata served by the repositories at analysis time, which no hash of the
+project can pin; test fixtures therefore freeze that metadata (§22.2).
 
 Suggested metadata:
 
@@ -902,9 +951,14 @@ This makes security findings auditable and repeatable.
 
 A core product promise should be:
 
-> **Your dependency graph never leaves your machine.**
+> **No third party sees your dependency graph. Network use is exactly what `composer update` itself
+> would do against the repositories you already use.**
 
-A default analysis should not perform network access.
+The earlier phrasing "your dependency graph never leaves your machine" was not achievable for a
+solver-backed tool: Composer must fetch metadata for candidate versions from the configured
+repositories, and the default advisory lookup sends package names to Packagist as `composer audit`
+does. Both are documented in the privacy page of the docs site. A default analysis therefore
+performs the same requests an update would, and no others.
 
 Suggested command model:
 
@@ -923,7 +977,10 @@ An explicit strict mode may enforce this:
 composer-remediate plan --offline
 ```
 
-If any component attempts remote access under strict offline mode, execution should fail rather than silently fall back to network behaviour.
+If any component attempts remote access under strict offline mode, execution should fail rather than silently fall back to network behaviour. Offline mode is implemented with Composer's `COMPOSER_DISABLE_NETWORK`, which serves cached metadata and fails on anything uncached; a warm Composer cache or a local advisory database is required.
+
+The tool runs inside the user's Composer, so private repositories and `auth.json` credentials are
+used exactly as Composer uses them; no separate configuration is needed.
 
 ---
 
@@ -1013,6 +1070,13 @@ Unit-test:
 
 The most important tests should be real historical Composer dependency graphs.
 
+Each fixture freezes **both** the advisory snapshot and the package metadata: it carries a static
+Composer repository (`repo/packages.json`, served via a `file://` URL with packagist.org disabled)
+holding every version the solver may consider, an `advisories.json` in the Packagist API shape, the
+platform (`config.platform`) to resolve against, and an `expected.json` with the command a competent
+human would run. Without frozen metadata the "smallest upgrade" changes whenever upstream publishes
+a release. `bin/build-fixture.php` produces fixtures from a real project.
+
 For example:
 
 - Drupal projects;
@@ -1061,34 +1125,29 @@ If the prototype handles these convincingly, the project has a meaningful techni
 
 ### Phase 0 — research prototype
 
-- parse Composer files;
-- load one advisory source locally;
-- detect affected packages;
-- construct dependency paths;
-- manually generate a few candidate upgrades;
-- validate candidates through Composer;
-- print basic remediation output.
+- ddev environment, CI, documentation site with decision records;
+- fixture harness with frozen package metadata and advisory snapshots;
+- dependency paths, advisory matching (including `replace`), candidate generation as commands,
+  in-process solver validation, lowest-parent-version descent, deterministic ranking, text output;
+- `composer remediate` plugin command;
+- five real historical fixtures; go/no-go gate: the planner reproduces the human choice for at
+  least four.
 
-### Phase 1 — deterministic single-finding remediation
+### Phase 1 — deterministic single-finding remediation (release 0.1)
 
-- normalized advisory abstraction;
-- SQLite reader;
-- direct/transitive handling;
-- solver-backed candidate generation;
-- deterministic ranking;
-- text + JSON output;
-- read-only project analysis.
+- hardening, classified solver failures;
+- JSON output with reproducibility metadata;
+- merge per-finding commands into one combined command and re-verify;
+- `--offline`, `--ignore`, `config.audit.ignore` / `config.policy` support;
+- Composer 2.4 as the runtime floor (2.9 for `-m`), PHP 8.1+;
+- first Packagist release.
 
-### Phase 2 — advisory compiler
+### Phase 2 — advisory database: build locally, share centrally
 
-- multiple upstream adapters;
-- normalization;
-- aliases;
-- deduplication;
-- conflict detection;
-- signed SQLite artifacts;
-- latest manifest;
-- publish-on-change pipeline.
+- source adapters (OSV, FriendsOfPHP, Packagist API, private overrides);
+- normalization, aliases, deduplication, conflict flags;
+- `remediate db:build` producing a local SQLite file; `--database-location` to use a shared one;
+- reference shared instance: signed artifacts, latest manifest, publish-on-change pipeline.
 
 ### Phase 3 — practical ecosystem support
 

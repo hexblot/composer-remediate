@@ -12,7 +12,9 @@ Existing Composer security tooling is strong at **detection**. The missing layer
 
 ## The idea
 
-Build a free, open-source, local-first remediation engine for Composer projects.
+Build a free, open-source, local-first remediation engine for Composer projects, delivered as a
+Composer plugin (`composer remediate`) so it runs inside the user's own Composer with their
+repositories, authentication and platform configuration.
 
 The tool will:
 
@@ -94,11 +96,14 @@ This makes the project technically meaningful without requiring another vulnerab
 
 ### 1. Local-first
 
-All analysis runs locally.
+All analysis runs locally. No third party sees the dependency graph; there is no service, account
+or telemetry.
 
-Dependency graphs, project metadata, and remediation decisions never need to leave the machine.
-
-Network access is used only to retrieve public advisory data or database artifacts.
+Network use is exactly what `composer update` itself would perform against the repositories the
+project already uses: Composer's solver needs package metadata for the versions it considers, and
+the default advisory lookup sends package names (not versions) to Packagist, as `composer audit`
+does. A strict `--offline` mode refuses any network access and works when Composer's cache is warm
+or a local advisory database is used.
 
 ### 2. FOSS
 
@@ -156,11 +161,16 @@ composer-remediate plan
 
 Automatic mutation can come later, once the planner has proven reliable.
 
-## Offline advisory database
+## Advisory database: build it yourself, or share one
 
-Advisory data should be precompiled into a signed SQLite database and distributed as a project artifact.
+Advisory data is pulled from live sources (Packagist, OSV, FriendsOfPHP, private feeds) and compiled
+locally into a SQLite database. Because the result is a single portable file, a team or the project
+itself can publish it and users point at a shared copy with `--database-location` instead of
+rebuilding on every run.
 
-The database build pipeline can poll upstream sources frequently, normalize and deduplicate records, and publish a new artifact only when the canonical dataset changes.
+The project's own published database is the reference instance of that sharing model: a build
+pipeline polls upstream sources frequently, normalizes and deduplicates records, signs the file, and
+publishes a new artifact only when the canonical dataset changes.
 
 Example versions:
 
