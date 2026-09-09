@@ -3,6 +3,31 @@
 All notable changes to this project are documented here. The format follows
 [Keep a Changelog](https://keepachangelog.com/en/1.1.0/); versions follow [Semantic Versioning](https://semver.org/).
 
+## [0.3.0] - 2026-09-09
+
+### Added
+
+- SARIF 2.1.0 output (`--output=results.sarif`, `--format=sarif`) for GitHub Code Scanning: one rule
+  per advisory with a numeric `security-severity`, one result per vulnerable package located at its
+  `composer.lock` line, the verified command in the message.
+- `--fail-on <severity>`: only findings at or above the threshold affect the exit code; findings of
+  unknown severity always count. Shown in the summary and in the JSON report.
+- Published JSON Schema for the report (`docs/schema/report.schema.json`), validated against every
+  stored fixture report.
+- Seven more historical fixtures (BookStack 2023 and 2024, Pixelfed, USAGov Drupal, Invoice Ninja,
+  Kimai 1.x, Shopware 6.4.20.2), each with stored console, JSON, HTML and SARIF reports.
+- Composer version matrix in CI: 2.4, 2.7, 2.8, 2.9 and latest on matching PHP versions.
+- Generated CLI reference page, CI integration guide with gate policies.
+
+### Changed
+
+- Composer releases before 2.10 have no `Installer::getLockTransaction()`; the in-process solver
+  now performs a lock-only update inside the scratch copy there and reads the lock back.
+- Solver results are copied into detached package objects and cycles are collected after each
+  solve; peak memory for 136 solves dropped from 1.5 GB to 87 MB.
+
+[0.3.0]: https://github.com/hexblot/composer-remediate/releases/tag/v0.3.0
+
 ## [0.2.0] - 2026-09-09
 
 ### Added
