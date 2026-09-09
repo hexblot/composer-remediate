@@ -7,6 +7,7 @@ namespace Remediate\Tests\Integration;
 use PHPUnit\Framework\Attributes\DataProvider;
 use PHPUnit\Framework\TestCase;
 use Remediate\Engine\Plan\FindingPlan;
+use Remediate\Engine\Solver\InProcessSolver;
 use Remediate\Output\HtmlRenderer;
 use Remediate\Output\JsonRenderer;
 use Remediate\Output\TextRenderer;
@@ -71,9 +72,15 @@ final class FixtureTest extends TestCase
         self::assertSame($plan->exitCode(), $json['exit_code']);
         self::assertCount(count($plan->findings), $json['findings']);
 
+        // Expected command strings are recorded on a Composer with --minimal-changes (2.9+). Older
+        // releases cannot apply -m, so the simplification step legitimately drops it (and often the
+        // --with guard); there only the outcome, target version and change count are asserted.
+        $exactCommands = (new InProcessSolver())->supportsMinimalChanges();
         if (isset($expected['combined_command'])) {
             self::assertNotNull($plan->combined, "Expected a combined command.\n$rendered");
-            self::assertSame($expected['combined_command'], $plan->combined->candidate->commandLine(true), "Combined command differs.\n$rendered");
+            if ($exactCommands) {
+                self::assertSame($expected['combined_command'], $plan->combined->candidate->commandLine(true), "Combined command differs.\n$rendered");
+            }
         }
         $expectedFindings = $expected['findings'] ?? [];
         self::assertIsArray($expectedFindings);
@@ -98,7 +105,7 @@ final class FixtureTest extends TestCase
             }
             $recommended = $findingPlan->recommended();
             self::assertNotNull($recommended);
-            if (isset($exp['command'])) {
+            if (isset($exp['command']) && $exactCommands) {
                 self::assertSame($exp['command'], $recommended->candidate->commandLine(true), "Recommended command differs.\n$rendered");
                 self::assertStringContainsString(htmlspecialchars((string) $exp['command'], ENT_QUOTES | ENT_HTML5), $html, 'HTML report lacks the recommended command');
             }

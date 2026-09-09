@@ -55,7 +55,10 @@ package name in the repository from Packagist, records the build environment's P
 versions as `platform`, and writes an `expected.json` skeleton listing the findings it detected.
 
 Finish the fixture by hand: describe the case, record provenance in `README.md`, and fill in the
-command a competent human would run. The harness compares the planner's recommendation against it.
+command a competent human would run. The harness compares the planner's recommendation against it. Exact command strings are asserted
+only on Composer releases with `--minimal-changes` (2.9+); on older releases the planner legitimately
+drops `-m` (and often the `--with` guard) because they produce the same lock there, so only the
+outcome, target version and change count are checked.
 
 A synthetic fixture (`synthetic-transitive-parent`) exists purely to exercise the harness; every
 other fixture must be a real historical project state.
