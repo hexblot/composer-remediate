@@ -59,4 +59,5 @@ verification of every recommendation.
 - [How it works](how-it-works.md)
 - [CI integration](ci-integration.md)
 - [Advisory database](advisory-database.md)
+- [CLI reference](cli-reference.md)
 - [Design decisions](design-decisions.md)

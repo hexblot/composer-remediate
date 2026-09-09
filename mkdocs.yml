@@ -28,6 +28,7 @@ nav:
   - Privacy and network behaviour: privacy-and-network.md
   - CI integration: ci-integration.md
   - Advisory database: advisory-database.md
+  - CLI reference: cli-reference.md
   - Test fixtures: fixtures.md
   - Roadmap: roadmap.md
   - Contributing: contributing.md

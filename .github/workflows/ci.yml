@@ -22,6 +22,9 @@ jobs:
       - run: composer install --no-interaction --no-progress
       - run: composer phpstan
       - run: composer test
+      - name: CLI reference is up to date
+        if: matrix.php == '8.4'
+        run: php bin/cli-reference.php | diff -u docs/cli-reference.md - || (echo "::error::docs/cli-reference.md is stale; run php bin/cli-reference.php > docs/cli-reference.md" && exit 1)
   docs-build:
     runs-on: ubuntu-latest
     steps:

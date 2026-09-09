@@ -36,7 +36,7 @@ final class RemediateCommand extends BaseCommand
                 new InputOption('format', 'f', InputOption::VALUE_REQUIRED, 'Format printed to standard output: text, html, json or none', 'text'),
                 new InputOption('output', 'o', InputOption::VALUE_REQUIRED | InputOption::VALUE_IS_ARRAY, 'Also write a report file; format inferred from the extension (.html, .json, .txt) or given as html:path. Repeatable.'),
                 new InputOption('no-dev', null, InputOption::VALUE_NONE, 'Ignore vulnerabilities in require-dev packages'),
-                new InputOption('offline', null, InputOption::VALUE_NONE, 'Refuse all network access; requires a warm Composer cache and --advisories-file (sets COMPOSER_DISABLE_NETWORK=1)'),
+                new InputOption('offline', null, InputOption::VALUE_NONE, 'Refuse all network access; needs a warm Composer cache plus --advisories-file or --database-location (sets COMPOSER_DISABLE_NETWORK=1)'),
                 new InputOption('ignore', 'i', InputOption::VALUE_REQUIRED | InputOption::VALUE_IS_ARRAY, 'Advisory id or CVE to ignore (repeatable); config.audit.ignore and config.policy.advisories.ignore are honoured as well'),
                 new InputOption('allow-direct-require', null, InputOption::VALUE_NONE, 'Also consider adding a transitive package as a direct requirement to force a fixed version'),
                 new InputOption('advisories-file', null, InputOption::VALUE_REQUIRED, 'Read advisories from a JSON file in the Packagist API shape instead of the configured repositories'),
@@ -53,7 +53,7 @@ vulnerability are recommended. Nothing in the project is modified.
 
 Exit codes: 0 no vulnerabilities, 1 vulnerabilities with a verified remediation,
 2 at least one vulnerability without a verified remediation, 3 error,
-4 advisory data unavailable.
+4 advisory data unavailable, 5 package metadata could not be fetched while solving.
 HELP);
     }
 

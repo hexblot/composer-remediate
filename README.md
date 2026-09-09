@@ -41,7 +41,8 @@ composer remediate --no-dev --output=remediation-report.html --output=remediatio
 ```
 
 Ready-made GitHub Actions and GitLab CI jobs, and `jq` recipes for severity-based gates, are in
-[docs/ci-integration.md](docs/ci-integration.md).
+[docs/ci-integration.md](docs/ci-integration.md). Every command and option is listed in
+[docs/cli-reference.md](docs/cli-reference.md).
 
 ## Development
 

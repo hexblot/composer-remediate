@@ -86,7 +86,8 @@ is downloaded into Composer's cache directory and refreshed when the copy is old
 with `--offline` the cached copy is used as is.
 
 `composer remediate:db-status` shows where the database comes from, when it was built, which
-sources contributed how many records, and the dataset hash.
+sources contributed how many records, and the dataset hash. Every option of both commands is listed
+in the [CLI reference](cli-reference.md).
 
 ## Sharing a database
 

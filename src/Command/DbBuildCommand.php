@@ -30,7 +30,7 @@ final class DbBuildCommand extends BaseCommand
             ->setAliases(['remediate-db-build'])
             ->setDescription('Build a local advisory database (SQLite) from live sources: Packagist, OSV and FriendsOfPHP')
             ->setDefinition([
-                new InputOption('output', 'o', InputOption::VALUE_REQUIRED, 'Where to write the database (default: <composer cache dir>/remediate/advisories.sqlite)'),
+                new InputOption('output', 'o', InputOption::VALUE_REQUIRED, 'Where to write the database (default: COMPOSER_CACHE_DIR/remediate/advisories.sqlite)'),
                 new InputOption('source', 's', InputOption::VALUE_REQUIRED | InputOption::VALUE_IS_ARRAY, 'Source to include: packagist, osv, friendsofphp (repeatable; default all)'),
                 new InputOption('friendsofphp-path', null, InputOption::VALUE_REQUIRED, 'Local checkout of FriendsOfPHP/security-advisories to read instead of downloading'),
                 new InputOption('include', null, InputOption::VALUE_REQUIRED | InputOption::VALUE_IS_ARRAY, 'Additional JSON file in the Packagist API shape with private or organisational advisories (repeatable)'),
@@ -41,7 +41,7 @@ with private advisories), normalises the version
 ranges to Composer constraints, merges records that share an identifier (CVE, GHSA, PKSA, FriendsOfPHP
 file), keeps every source's range and flags disagreements, and writes a single SQLite file.
 
-Use the file with <info>composer remediate --database-location=<path></info>, the REMEDIATE_DATABASE
+Use the file with <info>composer remediate --database-location=PATH</info>, the REMEDIATE_DATABASE
 environment variable, or <info>extra.remediate.database</info> in composer.json. The file is portable:
 publish it on a web server or as a release asset and point other machines at the URL.
 HELP);
