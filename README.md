@@ -1,5 +1,13 @@
 # Composer Remediate
 
+[![CI](https://github.com/hexblot/composer-remediate/actions/workflows/ci.yml/badge.svg?branch=main)](https://github.com/hexblot/composer-remediate/actions/workflows/ci.yml)
+[![Docs](https://github.com/hexblot/composer-remediate/actions/workflows/docs.yml/badge.svg?branch=main)](https://hexblot.github.io/composer-remediate/)
+[![Advisory database](https://github.com/hexblot/composer-remediate/actions/workflows/advisory-db.yml/badge.svg)](https://github.com/hexblot/composer-remediate/releases/tag/advisory-db-latest)
+[![Latest release](https://img.shields.io/github/v/release/hexblot/composer-remediate?filter=v*&display_name=tag&label=release)](https://github.com/hexblot/composer-remediate/releases)
+[![Packagist](https://img.shields.io/packagist/v/hexblot/composer-remediate)](https://packagist.org/packages/hexblot/composer-remediate)
+[![PHP](https://img.shields.io/packagist/dependency-v/hexblot/composer-remediate/php)](composer.json)
+[![License: MIT](https://img.shields.io/github/license/hexblot/composer-remediate)](LICENSE)
+
 **From vulnerable dependency to verified Composer fix.**
 
 `composer audit` tells you which packages are vulnerable. `composer remediate` searches for the
@@ -23,10 +31,17 @@ CVE-2026-XXXXX  symfony/http-foundation 6.4.21
     composer update drupal/core-recommended -W -m
 ```
 
-Status: **pre-alpha**. Phase 0 is complete: the planner reproduces the remediation a competent human
-would choose on five real historical projects (BookStack, koel, Shopware, a Drupal site, and a
-platform-bound "no fix" case). See the [documentation](docs/index.md) and the
-[roadmap](docs/roadmap.md).
+Status: released as **0.x** on [Packagist](https://packagist.org/packages/hexblot/composer-remediate);
+the current version is in the [changelog](CHANGELOG.md). Phases 0 to 2 of the
+[roadmap](https://hexblot.github.io/composer-remediate/roadmap/) are complete: the planner reproduces
+the remediation a competent human would choose on every one of twelve real historical projects
+(BookStack, koel, Pixelfed, Invoice Ninja, Kimai, Shopware, two Drupal sites, and platform- and
+constraint-bound "no fix" cases), and the advisory database can be built locally or shared. Phase 3
+(a larger Drupal and Symfony corpus) is in progress; most Phase 6 integrations (SARIF, GitLab and
+CycloneDX reports, severity gate, baselines, release cooldown) have landed. Two rounds of external
+architecture review are answered in the changelog, each finding with a test. Global planning
+(Phase 4) and `--apply` (Phase 5) are still ahead, so every release recommends and never modifies
+your project. Full documentation: [hexblot.github.io/composer-remediate](https://hexblot.github.io/composer-remediate/).
 
 ## Using it as a CI gate
 
@@ -46,11 +61,12 @@ Scanning annotations, or `--output=sbom.cdx.json` for a CycloneDX SBOM with the 
 
 For a project you do not trust, run the shipped `composer-remediate` binary instead of
 `composer remediate`: it boots Composer with plugins and scripts disabled from the first
-instruction, so nothing from the analysed project executes during planning.
+instruction and never includes a project's autoloader, so nothing from the analysed project executes
+during planning.
 
-Ready-made GitHub Actions and GitLab CI jobs, and `jq` recipes for severity-based gates, are in
-[docs/ci-integration.md](docs/ci-integration.md). Every command and option is listed in
-[docs/cli-reference.md](docs/cli-reference.md).
+Ready-made GitHub Actions and GitLab CI jobs, and `jq` recipes for severity-based gates, are in the
+[CI integration guide](https://hexblot.github.io/composer-remediate/ci-integration/). Every command
+and option is listed in the [CLI reference](https://hexblot.github.io/composer-remediate/cli-reference/).
 
 ## Development
 
@@ -62,7 +78,8 @@ ddev composer install
 ddev composer check      # phpstan + phpunit
 ```
 
-Documentation is built with MkDocs (`pipx run mkdocs serve`).
+Documentation is built with MkDocs (`pipx run mkdocs serve`) and published from `main` to GitHub
+Pages. The CLI reference page is generated (`ddev composer cli-reference`) and checked in CI.
 
 ## Acknowledgement
 
