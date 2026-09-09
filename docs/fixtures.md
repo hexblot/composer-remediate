@@ -22,6 +22,7 @@ tests/Fixture/<name>/
   reports/report.md    what `composer remediate` prints for this fixture (console output)
   reports/report.json  the same plan as JSON
   reports/report.html  the same plan as a self-contained HTML page
+  reports/report.sarif the same plan as SARIF 2.1.0 (GitHub Code Scanning)
 ```
 
 The `reports/` files are committed examples, regenerated with

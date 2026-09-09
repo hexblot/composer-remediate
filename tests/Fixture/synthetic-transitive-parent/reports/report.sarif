@@ -1,0 +1,89 @@
+{
+    "$schema": "https://json.schemastore.org/sarif-2.1.0.json",
+    "version": "2.1.0",
+    "runs": [
+        {
+            "tool": {
+                "driver": {
+                    "name": "composer-remediate",
+                    "version": "dev-main",
+                    "informationUri": "https://hexblot.github.io/composer-remediate/",
+                    "rules": [
+                        {
+                            "id": "PKSA-synthetic-0001",
+                            "name": "CVE202600001",
+                            "shortDescription": {
+                                "text": "Synthetic: request smuggling in acme/vuln-lib"
+                            },
+                            "fullDescription": {
+                                "text": "Synthetic: request smuggling in acme/vuln-lib. Affected versions of acme/vuln-lib: <1.1.0."
+                            },
+                            "helpUri": "https://example.invalid/advisories/SYNTHETIC-0001",
+                            "help": {
+                                "text": "Advisory PKSA-synthetic-0001 (CVE-2026-00001) affects acme/vuln-lib <1.1.0. Run composer remediate for the smallest verified upgrade."
+                            },
+                            "defaultConfiguration": {
+                                "level": "error"
+                            },
+                            "properties": {
+                                "security-severity": "7.5",
+                                "tags": [
+                                    "security",
+                                    "vulnerability",
+                                    "high"
+                                ]
+                            }
+                        }
+                    ]
+                }
+            },
+            "invocations": [
+                {
+                    "executionSuccessful": true,
+                    "exitCode": 1,
+                    "properties": {
+                        "composer_version": "(fixture)",
+                        "advisory_source": "advisory snapshot advisories.json",
+                        "combined_command": "composer update acme/app-framework:1.1.0 -W -m"
+                    }
+                }
+            ],
+            "results": [
+                {
+                    "ruleId": "PKSA-synthetic-0001",
+                    "ruleIndex": 0,
+                    "level": "error",
+                    "message": {
+                        "text": "acme/vuln-lib 1.0.1 is affected by CVE-2026-00001: Synthetic: request smuggling in acme/vuln-lib. Verified fix: composer update acme/app-framework:1.1.0 -W -m"
+                    },
+                    "locations": [
+                        {
+                            "physicalLocation": {
+                                "artifactLocation": {
+                                    "uri": "composer.lock",
+                                    "uriBaseId": "%SRCROOT%"
+                                },
+                                "region": {
+                                    "startLine": 34
+                                }
+                            }
+                        }
+                    ],
+                    "partialFingerprints": {
+                        "advisoryPackage/v1": "PKSA-synthetic-0001@acme/vuln-lib"
+                    },
+                    "properties": {
+                        "package": "acme/vuln-lib",
+                        "version": "1.0.1",
+                        "direct": false,
+                        "dev": false,
+                        "cve": "CVE-2026-00001",
+                        "severity": "high",
+                        "remediation_status": "verified",
+                        "command": "composer update acme/app-framework:1.1.0 -W -m"
+                    }
+                }
+            ]
+        }
+    ]
+}

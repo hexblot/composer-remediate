@@ -91,6 +91,10 @@ final class TextRenderer
         if ($unsolved !== []) {
             $out[] = '  ' . $this->tag('No verified fix:', 'fg=red') . ' ' . implode('; ', array_map(static fn (FindingPlan $p): string => implode(', ', array_map(static fn ($f): string => $f->advisory->displayId(), $p->allFindings())) . ' on ' . $p->finding->packageName, $unsolved));
         }
+        if ($plan->failOn !== null) {
+            $gated = count($plan->gated());
+            $out[] = sprintf('  Gate: --fail-on %s, %d of %d package%s count towards the exit code (%d).', $plan->failOn, $gated, $packages, $packages === 1 ? '' : 's', $plan->exitCode());
+        }
 
         return $out;
     }

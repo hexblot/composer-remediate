@@ -89,12 +89,31 @@ jobs:
           esac
 ```
 
-Switch the `2)` branch to `exit 1` for the strict policy. To surface the recommended command in the
-job summary:
+Switch the `2)` branch to `exit 1` for the strict policy. Add `--fail-on high` to the
+`composer remediate` call to let low and medium findings pass without affecting the exit code
+(unknown severities always count). To surface the recommended command in the job summary:
 
 ```bash
 jq -r '.summary.combined_command // "no verified fix"' remediation-report.json >> "$GITHUB_STEP_SUMMARY"
 ```
+
+### GitHub Code Scanning
+
+`--output=results.sarif` writes a SARIF 2.1.0 file: one rule per advisory with a
+`security-severity` score, one result per vulnerable package pointing at its line in `composer.lock`,
+and the verified command in the message. Upload it and findings appear in the repository's Security
+tab and as pull request annotations:
+
+```yaml
+      - run: composer remediate --no-dev --output=results.sarif --output=remediation-report.html || true
+      - uses: github/codeql-action/upload-sarif@v3
+        with:
+          sarif_file: results.sarif
+          category: composer-remediate
+```
+
+The `|| true` keeps the upload step reachable; gate on the exit code in a separate step as shown
+above (or capture it with `set +e` as in the full example).
 
 ## GitLab CI
 

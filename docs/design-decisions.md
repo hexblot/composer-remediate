@@ -84,6 +84,10 @@ virtual lock. Fallback route: run `composer update … --no-install --no-scripts
 - The solver's own failure explanation is captured through a buffered IO for the report.
 - Isolation between successive in-process runs must be verified (static caches such as
   `Intervals` are cleared between runs).
+- Solver results are copied into detached `Package` objects. The packages a solve returns point back
+  at their repository and, through it, at that solve's whole Composer instance; keeping them alive in
+  the plan retained every solve's object graph (1.5 GB after 136 solves on one fixture). Detaching
+  them and collecting cycles after each solve brought the same run to 87 MB.
 - `Installer::getLockTransaction()` only exists from Composer 2.10. On 2.4 to 2.9 the solver runs
   a real lock-only update inside the scratch copy (`setWriteLock(true)`, install disabled) and reads
   the written lock back; Composer writes the lock only while `executeOperations` stays enabled,

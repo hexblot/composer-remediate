@@ -17,12 +17,14 @@
     "warnings": {"type": "array", "items": {"type": "string"}},
     "summary": {
       "type": "object",
-      "required": ["advisories", "packages", "packages_with_fix", "combined_command", "combined_fixes", "combined_total", "combined_fixes_all", "combined_changes"],
+      "required": ["advisories", "packages", "packages_with_fix", "fail_on", "packages_gated", "combined_command", "combined_fixes", "combined_total", "combined_fixes_all", "combined_changes"],
       "additionalProperties": false,
       "properties": {
         "advisories": {"type": "integer", "minimum": 0},
         "packages": {"type": "integer", "minimum": 0},
         "packages_with_fix": {"type": "integer", "minimum": 0},
+        "fail_on": {"type": ["string", "null"], "enum": ["low", "medium", "moderate", "high", "critical", null], "description": "Severity threshold given with --fail-on, if any"},
+        "packages_gated": {"type": "integer", "minimum": 0, "description": "Packages whose findings count towards the exit code under the threshold"},
         "combined_command": {"type": ["string", "null"]},
         "combined_fixes": {"type": ["integer", "null"]},
         "combined_total": {"type": ["integer", "null"]},

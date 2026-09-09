@@ -1,0 +1,263 @@
+{
+    "$schema": "https://json.schemastore.org/sarif-2.1.0.json",
+    "version": "2.1.0",
+    "runs": [
+        {
+            "tool": {
+                "driver": {
+                    "name": "composer-remediate",
+                    "version": "dev-main",
+                    "informationUri": "https://hexblot.github.io/composer-remediate/",
+                    "rules": [
+                        {
+                            "id": "PKSA-872h-8556-2chm",
+                            "name": "CVE20220085",
+                            "shortDescription": {
+                                "text": "Server-Side Request Forgery in dompdf/dompdf"
+                            },
+                            "fullDescription": {
+                                "text": "Server-Side Request Forgery in dompdf/dompdf. Affected versions of dompdf/dompdf: <2.0.0."
+                            },
+                            "helpUri": "https://github.com/advisories/GHSA-pf6p-25r2-fx45",
+                            "help": {
+                                "text": "Advisory PKSA-872h-8556-2chm (CVE-2022-0085) affects dompdf/dompdf <2.0.0. Run composer remediate for the smallest verified upgrade."
+                            },
+                            "defaultConfiguration": {
+                                "level": "warning"
+                            },
+                            "properties": {
+                                "security-severity": "5.0",
+                                "tags": [
+                                    "security",
+                                    "vulnerability",
+                                    "medium"
+                                ]
+                            }
+                        },
+                        {
+                            "id": "PKSA-hbk6-2vfz-8f8n",
+                            "name": "CVE202241343",
+                            "shortDescription": {
+                                "text": "Remote file inclusion"
+                            },
+                            "fullDescription": {
+                                "text": "Remote file inclusion. Affected versions of dompdf/dompdf: <2.0.1."
+                            },
+                            "helpUri": "https://github.com/advisories/GHSA-6x28-7h8c-chx4",
+                            "help": {
+                                "text": "Advisory PKSA-hbk6-2vfz-8f8n (CVE-2022-41343) affects dompdf/dompdf <2.0.1. Run composer remediate for the smallest verified upgrade."
+                            },
+                            "defaultConfiguration": {
+                                "level": "error"
+                            },
+                            "properties": {
+                                "security-severity": "7.5",
+                                "tags": [
+                                    "security",
+                                    "vulnerability",
+                                    "high"
+                                ]
+                            }
+                        },
+                        {
+                            "id": "PKSA-kj9c-tr41-t8mj",
+                            "name": "CVE20222400",
+                            "shortDescription": {
+                                "text": "Dompdf before v2.0.0 vulnerable to chroot check bypass"
+                            },
+                            "fullDescription": {
+                                "text": "Dompdf before v2.0.0 vulnerable to chroot check bypass. Affected versions of dompdf/dompdf: <2.0.0."
+                            },
+                            "helpUri": "https://github.com/advisories/GHSA-5qj8-6xxj-hp9h",
+                            "help": {
+                                "text": "Advisory PKSA-kj9c-tr41-t8mj (CVE-2022-2400) affects dompdf/dompdf <2.0.0. Run composer remediate for the smallest verified upgrade."
+                            },
+                            "defaultConfiguration": {
+                                "level": "warning"
+                            },
+                            "properties": {
+                                "security-severity": "5.0",
+                                "tags": [
+                                    "security",
+                                    "vulnerability",
+                                    "medium"
+                                ]
+                            }
+                        },
+                        {
+                            "id": "PKSA-n7sg-8f52-pqtf",
+                            "name": "CVE202239261",
+                            "shortDescription": {
+                                "text": "Possibility to load a template outside a configured directory when using the filesystem loader"
+                            },
+                            "fullDescription": {
+                                "text": "Possibility to load a template outside a configured directory when using the filesystem loader. Affected versions of twig/twig: >=1.0.0,<1.44.7|>=2.0.0,<2.15.3|>=3.0.0,<3.4.3."
+                            },
+                            "helpUri": "https://symfony.com/blog/twig-security-release-possibility-to-load-a-template-outside-a-configured-directory-when-using-the-filesystem-loader",
+                            "help": {
+                                "text": "Advisory PKSA-n7sg-8f52-pqtf (CVE-2022-39261) affects twig/twig >=1.0.0,<1.44.7|>=2.0.0,<2.15.3|>=3.0.0,<3.4.3. Run composer remediate for the smallest verified upgrade."
+                            },
+                            "defaultConfiguration": {
+                                "level": "error"
+                            },
+                            "properties": {
+                                "security-severity": "7.5",
+                                "tags": [
+                                    "security",
+                                    "vulnerability",
+                                    "high"
+                                ]
+                            }
+                        }
+                    ]
+                }
+            },
+            "invocations": [
+                {
+                    "executionSuccessful": true,
+                    "exitCode": 2,
+                    "properties": {
+                        "composer_version": "(fixture)",
+                        "advisory_source": "advisory snapshot advisories.json",
+                        "combined_command": "composer update shopware/storefront:6.4.15.2 shopware/recovery shopware/elasticsearch shopware/administration -W -m"
+                    }
+                }
+            ],
+            "results": [
+                {
+                    "ruleId": "PKSA-872h-8556-2chm",
+                    "ruleIndex": 0,
+                    "level": "warning",
+                    "message": {
+                        "text": "shopwarelabs/dompdf v1.0.3 is affected by CVE-2022-0085: Server-Side Request Forgery in dompdf/dompdf. No verified remediation found."
+                    },
+                    "locations": [
+                        {
+                            "physicalLocation": {
+                                "artifactLocation": {
+                                    "uri": "composer.lock",
+                                    "uriBaseId": "%SRCROOT%"
+                                },
+                                "region": {
+                                    "startLine": 6282
+                                }
+                            }
+                        }
+                    ],
+                    "partialFingerprints": {
+                        "advisoryPackage/v1": "PKSA-872h-8556-2chm@shopwarelabs/dompdf"
+                    },
+                    "properties": {
+                        "package": "shopwarelabs/dompdf",
+                        "version": "v1.0.3",
+                        "direct": false,
+                        "dev": false,
+                        "cve": "CVE-2022-0085",
+                        "severity": "medium",
+                        "remediation_status": "none"
+                    }
+                },
+                {
+                    "ruleId": "PKSA-hbk6-2vfz-8f8n",
+                    "ruleIndex": 1,
+                    "level": "error",
+                    "message": {
+                        "text": "shopwarelabs/dompdf v1.0.3 is affected by CVE-2022-41343: Remote file inclusion. No verified remediation found."
+                    },
+                    "locations": [
+                        {
+                            "physicalLocation": {
+                                "artifactLocation": {
+                                    "uri": "composer.lock",
+                                    "uriBaseId": "%SRCROOT%"
+                                },
+                                "region": {
+                                    "startLine": 6282
+                                }
+                            }
+                        }
+                    ],
+                    "partialFingerprints": {
+                        "advisoryPackage/v1": "PKSA-hbk6-2vfz-8f8n@shopwarelabs/dompdf"
+                    },
+                    "properties": {
+                        "package": "shopwarelabs/dompdf",
+                        "version": "v1.0.3",
+                        "direct": false,
+                        "dev": false,
+                        "cve": "CVE-2022-41343",
+                        "severity": "high",
+                        "remediation_status": "none"
+                    }
+                },
+                {
+                    "ruleId": "PKSA-kj9c-tr41-t8mj",
+                    "ruleIndex": 2,
+                    "level": "warning",
+                    "message": {
+                        "text": "shopwarelabs/dompdf v1.0.3 is affected by CVE-2022-2400: Dompdf before v2.0.0 vulnerable to chroot check bypass. No verified remediation found."
+                    },
+                    "locations": [
+                        {
+                            "physicalLocation": {
+                                "artifactLocation": {
+                                    "uri": "composer.lock",
+                                    "uriBaseId": "%SRCROOT%"
+                                },
+                                "region": {
+                                    "startLine": 6282
+                                }
+                            }
+                        }
+                    ],
+                    "partialFingerprints": {
+                        "advisoryPackage/v1": "PKSA-kj9c-tr41-t8mj@shopwarelabs/dompdf"
+                    },
+                    "properties": {
+                        "package": "shopwarelabs/dompdf",
+                        "version": "v1.0.3",
+                        "direct": false,
+                        "dev": false,
+                        "cve": "CVE-2022-2400",
+                        "severity": "medium",
+                        "remediation_status": "none"
+                    }
+                },
+                {
+                    "ruleId": "PKSA-n7sg-8f52-pqtf",
+                    "ruleIndex": 3,
+                    "level": "error",
+                    "message": {
+                        "text": "twig/twig v3.3.10 is affected by CVE-2022-39261: Possibility to load a template outside a configured directory when using the filesystem loader. Verified fix: composer update shopware/storefront:6.4.15.2 shopware/recovery shopware/elasticsearch shopware/administration -W -m"
+                    },
+                    "locations": [
+                        {
+                            "physicalLocation": {
+                                "artifactLocation": {
+                                    "uri": "composer.lock",
+                                    "uriBaseId": "%SRCROOT%"
+                                },
+                                "region": {
+                                    "startLine": 11746
+                                }
+                            }
+                        }
+                    ],
+                    "partialFingerprints": {
+                        "advisoryPackage/v1": "PKSA-n7sg-8f52-pqtf@twig/twig"
+                    },
+                    "properties": {
+                        "package": "twig/twig",
+                        "version": "v3.3.10",
+                        "direct": false,
+                        "dev": false,
+                        "cve": "CVE-2022-39261",
+                        "severity": "high",
+                        "remediation_status": "verified",
+                        "command": "composer update shopware/storefront:6.4.15.2 shopware/recovery shopware/elasticsearch shopware/administration -W -m"
+                    }
+                }
+            ]
+        }
+    ]
+}

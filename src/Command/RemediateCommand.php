@@ -20,6 +20,7 @@ use Remediate\Engine\Planner;
 use Remediate\Engine\Project\ProjectContext;
 use Remediate\Engine\Solver\InProcessSolver;
 use Remediate\Engine\Solver\ScratchWorkspace;
+use Remediate\Output\LockLineIndex;
 use Remediate\Output\ReportFormat;
 use Symfony\Component\Console\Input\InputInterface;
 use Symfony\Component\Console\Input\InputOption;
@@ -33,8 +34,9 @@ final class RemediateCommand extends BaseCommand
             ->setName('remediate')
             ->setDescription('Find the smallest Composer-verified upgrade that removes each known vulnerability from composer.lock')
             ->setDefinition([
-                new InputOption('format', 'f', InputOption::VALUE_REQUIRED, 'Format printed to standard output: text, html, json or none', 'text'),
-                new InputOption('output', 'o', InputOption::VALUE_REQUIRED | InputOption::VALUE_IS_ARRAY, 'Also write a report file; format inferred from the extension (.html, .json, .txt) or given as html:path. Repeatable.'),
+                new InputOption('format', 'f', InputOption::VALUE_REQUIRED, 'Format printed to standard output: text, html, json, sarif or none', 'text'),
+                new InputOption('output', 'o', InputOption::VALUE_REQUIRED | InputOption::VALUE_IS_ARRAY, 'Also write a report file; format inferred from the extension (.html, .json, .sarif, .txt) or given as sarif:path. Repeatable.'),
+                new InputOption('fail-on', null, InputOption::VALUE_REQUIRED, 'Only findings at or above this severity (low, medium, high, critical) affect the exit code; findings of unknown severity always count'),
                 new InputOption('no-dev', null, InputOption::VALUE_NONE, 'Ignore vulnerabilities in require-dev packages'),
                 new InputOption('offline', null, InputOption::VALUE_NONE, 'Refuse all network access; needs a warm Composer cache plus --advisories-file or --database-location (sets COMPOSER_DISABLE_NETWORK=1)'),
                 new InputOption('ignore', 'i', InputOption::VALUE_REQUIRED | InputOption::VALUE_IS_ARRAY, 'Advisory id or CVE to ignore (repeatable); config.audit.ignore and config.policy.advisories.ignore are honoured as well'),
@@ -96,7 +98,7 @@ HELP);
         $io = $this->getIO();
         $format = ReportFormat::tryFrom(strtolower((string) $input->getOption('format')));
         if ($format === null) {
-            $io->writeError(sprintf('<error>Unknown format "%s"; use text, html, json or none.</error>', (string) $input->getOption('format')));
+            $io->writeError(sprintf('<error>Unknown format "%s"; use text, html, json, sarif or none.</error>', (string) $input->getOption('format')));
 
             return Plan::EXIT_ERROR;
         }
@@ -176,12 +178,24 @@ HELP);
             return Plan::EXIT_ADVISORIES_UNAVAILABLE;
         }
 
+        $failOn = $input->getOption('fail-on');
+        if (is_string($failOn) && $failOn !== '') {
+            try {
+                $plan = $plan->withFailOn($failOn);
+            } catch (\InvalidArgumentException $e) {
+                $io->writeError('<error>' . $e->getMessage() . '</error>');
+
+                return Plan::EXIT_ERROR;
+            }
+        }
+
         $minimal = $solver->supportsMinimalChanges();
+        $lockLines = LockLineIndex::fromFile($context->lockPath());
         foreach ($outputs as [$fileFormat, $path]) {
             if ($path === null || $fileFormat === ReportFormat::None) {
                 continue;
             }
-            if (@file_put_contents($path, $fileFormat->render($plan, $minimal)) === false) {
+            if (@file_put_contents($path, $fileFormat->render($plan, $minimal, false, $lockLines)) === false) {
                 $io->writeError(sprintf('<error>Could not write %s report to %s</error>', $fileFormat->value, $path));
 
                 return Plan::EXIT_ERROR;
@@ -190,7 +204,7 @@ HELP);
         }
         if ($format !== ReportFormat::None) {
             $decorated = $format === ReportFormat::Text && $output->isDecorated();
-            $output->write($format->render($plan, $minimal, $decorated), false, $decorated ? OutputInterface::OUTPUT_NORMAL : OutputInterface::OUTPUT_RAW);
+            $output->write($format->render($plan, $minimal, $decorated, $lockLines), false, $decorated ? OutputInterface::OUTPUT_NORMAL : OutputInterface::OUTPUT_RAW);
         }
 
         return $plan->exitCode();

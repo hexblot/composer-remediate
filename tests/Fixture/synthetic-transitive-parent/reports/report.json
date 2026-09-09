@@ -18,6 +18,8 @@
         "advisories": 1,
         "packages": 1,
         "packages_with_fix": 1,
+        "fail_on": null,
+        "packages_gated": 1,
         "combined_command": "composer update acme/app-framework:1.1.0 -W -m",
         "combined_fixes": 1,
         "combined_total": 1,

@@ -192,6 +192,9 @@ composer remediate --format=json | jq '.findings[].remediation.command'
 - **html**: a self-contained page (inline CSS, no scripts, no external resources) with a summary
   table, one section per finding, the dependency paths, the expected changes and every candidate
   that was tried or skipped. Suitable as a CI artifact.
+- **sarif**: SARIF 2.1.0 for GitHub Code Scanning and other SARIF consumers. One rule per advisory
+  (with a numeric `security-severity`), one result per vulnerable package located at its line in
+  `composer.lock`, the verified command in the result message. See [CI integration](ci-integration.md).
 - **json**: the same content for machines. Top-level keys: `schema_version`, `analysis_metadata`
   (Composer and PHP versions, advisory source, hashes of `composer.json` and `composer.lock`,
   timestamp), `exit_code`, `warnings`, `findings[]` (package, advisories, the first ten dependency

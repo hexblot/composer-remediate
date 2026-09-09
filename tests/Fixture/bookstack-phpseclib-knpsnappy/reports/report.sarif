@@ -1,0 +1,148 @@
+{
+    "$schema": "https://json.schemastore.org/sarif-2.1.0.json",
+    "version": "2.1.0",
+    "runs": [
+        {
+            "tool": {
+                "driver": {
+                    "name": "composer-remediate",
+                    "version": "dev-main",
+                    "informationUri": "https://hexblot.github.io/composer-remediate/",
+                    "rules": [
+                        {
+                            "id": "PKSA-sdn5-dtyj-96rq",
+                            "name": "CVE202328115",
+                            "shortDescription": {
+                                "text": "PHAR deserialization allowing remote code execution"
+                            },
+                            "fullDescription": {
+                                "text": "PHAR deserialization allowing remote code execution. Affected versions of knplabs/knp-snappy: <1.4.2."
+                            },
+                            "helpUri": "https://github.com/advisories/GHSA-gq6w-q6wh-jggc",
+                            "help": {
+                                "text": "Advisory PKSA-sdn5-dtyj-96rq (CVE-2023-28115) affects knplabs/knp-snappy <1.4.2. Run composer remediate for the smallest verified upgrade."
+                            },
+                            "defaultConfiguration": {
+                                "level": "error"
+                            },
+                            "properties": {
+                                "security-severity": "9.5",
+                                "tags": [
+                                    "security",
+                                    "vulnerability",
+                                    "critical"
+                                ]
+                            }
+                        },
+                        {
+                            "id": "PKSA-qrgb-4pgm-cz41",
+                            "name": "CVE202327560",
+                            "shortDescription": {
+                                "text": "Infinite Loop vulnerability"
+                            },
+                            "fullDescription": {
+                                "text": "Infinite Loop vulnerability. Affected versions of phpseclib/phpseclib: >=3.0.0,<3.0.19."
+                            },
+                            "helpUri": "https://github.com/advisories/GHSA-hm7p-r324-hhf3",
+                            "help": {
+                                "text": "Advisory PKSA-qrgb-4pgm-cz41 (CVE-2023-27560) affects phpseclib/phpseclib >=3.0.0,<3.0.19. Run composer remediate for the smallest verified upgrade."
+                            },
+                            "defaultConfiguration": {
+                                "level": "error"
+                            },
+                            "properties": {
+                                "security-severity": "7.5",
+                                "tags": [
+                                    "security",
+                                    "vulnerability",
+                                    "high"
+                                ]
+                            }
+                        }
+                    ]
+                }
+            },
+            "invocations": [
+                {
+                    "executionSuccessful": true,
+                    "exitCode": 1,
+                    "properties": {
+                        "composer_version": "(fixture)",
+                        "advisory_source": "advisory snapshot advisories.json",
+                        "combined_command": "composer update knplabs/knp-snappy phpseclib/phpseclib"
+                    }
+                }
+            ],
+            "results": [
+                {
+                    "ruleId": "PKSA-sdn5-dtyj-96rq",
+                    "ruleIndex": 0,
+                    "level": "error",
+                    "message": {
+                        "text": "knplabs/knp-snappy v1.4.1 is affected by CVE-2023-28115: PHAR deserialization allowing remote code execution. Verified fix: composer update knplabs/knp-snappy"
+                    },
+                    "locations": [
+                        {
+                            "physicalLocation": {
+                                "artifactLocation": {
+                                    "uri": "composer.lock",
+                                    "uriBaseId": "%SRCROOT%"
+                                },
+                                "region": {
+                                    "startLine": 1872
+                                }
+                            }
+                        }
+                    ],
+                    "partialFingerprints": {
+                        "advisoryPackage/v1": "PKSA-sdn5-dtyj-96rq@knplabs/knp-snappy"
+                    },
+                    "properties": {
+                        "package": "knplabs/knp-snappy",
+                        "version": "v1.4.1",
+                        "direct": false,
+                        "dev": false,
+                        "cve": "CVE-2023-28115",
+                        "severity": "critical",
+                        "remediation_status": "verified",
+                        "command": "composer update knplabs/knp-snappy"
+                    }
+                },
+                {
+                    "ruleId": "PKSA-qrgb-4pgm-cz41",
+                    "ruleIndex": 1,
+                    "level": "error",
+                    "message": {
+                        "text": "phpseclib/phpseclib 3.0.18 is affected by CVE-2023-27560: Infinite Loop vulnerability. Verified fix: composer update phpseclib/phpseclib"
+                    },
+                    "locations": [
+                        {
+                            "physicalLocation": {
+                                "artifactLocation": {
+                                    "uri": "composer.lock",
+                                    "uriBaseId": "%SRCROOT%"
+                                },
+                                "region": {
+                                    "startLine": 3944
+                                }
+                            }
+                        }
+                    ],
+                    "partialFingerprints": {
+                        "advisoryPackage/v1": "PKSA-qrgb-4pgm-cz41@phpseclib/phpseclib"
+                    },
+                    "properties": {
+                        "package": "phpseclib/phpseclib",
+                        "version": "3.0.18",
+                        "direct": true,
+                        "dev": false,
+                        "cve": "CVE-2023-27560",
+                        "severity": "high",
+                        "remediation_status": "verified",
+                        "command": "composer update phpseclib/phpseclib"
+                    }
+                }
+            ]
+        }
+    ]
+}

@@ -7,7 +7,7 @@
         "php_version": "(fixture)",
         "advisory_source": "advisory snapshot advisories.json",
         "solver": "in-process Composer dry-run",
-        "composer_json_sha256": "786b344d6ef64c7330a546e889d43c86f70f820ac792ec6de80e9f9dd4e0b47d",
+        "composer_json_sha256": "caf7b56aba190f8464b8fd13badc9f40c44115a2067f22b4e8587b463c1fa116",
         "composer_lock_sha256": "45cb39a5300625dd42fa86f3fdce23fc30203b96a16ccc3ec0c4afbc2bec7455",
         "analysis_timestamp": "(fixture)",
         "locked_packages": "201"
@@ -18,6 +18,8 @@
         "advisories": 26,
         "packages": 10,
         "packages_with_fix": 4,
+        "fail_on": null,
+        "packages_gated": 10,
         "combined_command": "composer update aws/aws-sdk-php composer/composer symfony/twig-bridge shopware/core -W -m --with 'symfony/validator:>=5.4.43,<6.0.0 || >=6.4.11,<7.0.0 || >=7.1.4'",
         "combined_fixes": 7,
         "combined_total": 26,

@@ -132,7 +132,13 @@ final class InProcessSolver implements SolverInterface
                 }
             }
 
-            return new SolveResult(SolveStatus::Resolved, $after, $io->getOutput());
+            $output = $io->getOutput();
+            // Composer's object graph is full of cycles (Composer <-> EventDispatcher <-> plugins/repositories);
+            // release this solve's instance before the next one is built.
+            unset($installer, $composer, $io);
+            gc_collect_cycles();
+
+            return new SolveResult(SolveStatus::Resolved, $after, $output);
         } finally {
             $project->destroy();
         }

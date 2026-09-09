@@ -7,12 +7,13 @@
  *
  *   php bin/run-fixture.php <fixture-name> [--format=text|html|json] [--write-reports] [--allow-direct-require] [-v]
  *
- * --write-reports stores report.md (console output), report.json and report.html under the fixture's reports/ directory
+ * --write-reports stores report.md (console output), report.json, report.html and report.sarif under the fixture's reports/ directory
  * with deterministic metadata (fixture name, fixed timestamp) so they can be committed as examples.
  */
 
 declare(strict_types=1);
 
+use Remediate\Output\LockLineIndex;
 use Remediate\Output\ReportFormat;
 use Symfony\Component\Console\Output\ConsoleOutput;
 use Symfony\Component\Console\Output\OutputInterface;
@@ -66,6 +67,7 @@ if ($writeReports) {
     file_put_contents("$dir/reports/report.md", $markdown);
     file_put_contents("$dir/reports/report.json", ReportFormat::Json->render($stable, true));
     file_put_contents("$dir/reports/report.html", ReportFormat::Html->render($stable, true));
+    file_put_contents("$dir/reports/report.sarif", ReportFormat::Sarif->render($stable, true, false, LockLineIndex::fromFile("$dir/composer.lock")));
     fwrite(STDERR, "reports written to $dir/reports\n");
 }
 $decorated = $format === ReportFormat::Text && stream_isatty(STDOUT);

@@ -1,0 +1,384 @@
+{
+    "$schema": "https://json.schemastore.org/sarif-2.1.0.json",
+    "version": "2.1.0",
+    "runs": [
+        {
+            "tool": {
+                "driver": {
+                    "name": "composer-remediate",
+                    "version": "dev-main",
+                    "informationUri": "https://hexblot.github.io/composer-remediate/",
+                    "rules": [
+                        {
+                            "id": "PKSA-872h-8556-2chm",
+                            "name": "CVE20220085",
+                            "shortDescription": {
+                                "text": "Server-Side Request Forgery in dompdf/dompdf"
+                            },
+                            "fullDescription": {
+                                "text": "Server-Side Request Forgery in dompdf/dompdf. Affected versions of dompdf/dompdf: <2.0.0."
+                            },
+                            "helpUri": "https://github.com/advisories/GHSA-pf6p-25r2-fx45",
+                            "help": {
+                                "text": "Advisory PKSA-872h-8556-2chm (CVE-2022-0085) affects dompdf/dompdf <2.0.0. Run composer remediate for the smallest verified upgrade."
+                            },
+                            "defaultConfiguration": {
+                                "level": "warning"
+                            },
+                            "properties": {
+                                "security-severity": "5.0",
+                                "tags": [
+                                    "security",
+                                    "vulnerability",
+                                    "medium"
+                                ]
+                            }
+                        },
+                        {
+                            "id": "PKSA-2z36-j4q9-rsfy",
+                            "name": "CVE202231043",
+                            "shortDescription": {
+                                "text": "Fix failure to strip Authorization header on HTTP downgrade"
+                            },
+                            "fullDescription": {
+                                "text": "Fix failure to strip Authorization header on HTTP downgrade. Affected versions of guzzlehttp/guzzle: >=7,<7.4.4|>=4,<6.5.7."
+                            },
+                            "helpUri": "https://github.com/guzzle/guzzle/security/advisories/GHSA-w248-ffj2-4v5q",
+                            "help": {
+                                "text": "Advisory PKSA-2z36-j4q9-rsfy (CVE-2022-31043) affects guzzlehttp/guzzle >=7,<7.4.4|>=4,<6.5.7. Run composer remediate for the smallest verified upgrade."
+                            },
+                            "defaultConfiguration": {
+                                "level": "error"
+                            },
+                            "properties": {
+                                "security-severity": "7.5",
+                                "tags": [
+                                    "security",
+                                    "vulnerability",
+                                    "high"
+                                ]
+                            }
+                        },
+                        {
+                            "id": "PKSA-6d8m-6kgw-18zr",
+                            "name": "CVE202229248",
+                            "shortDescription": {
+                                "text": "Cross-domain cookie leakage"
+                            },
+                            "fullDescription": {
+                                "text": "Cross-domain cookie leakage. Affected versions of guzzlehttp/guzzle: >=7,<7.4.3|>=4,<6.5.6."
+                            },
+                            "helpUri": "https://github.com/guzzle/guzzle/security/advisories/GHSA-cwmx-hcrq-mhc3",
+                            "help": {
+                                "text": "Advisory PKSA-6d8m-6kgw-18zr (CVE-2022-29248) affects guzzlehttp/guzzle >=7,<7.4.3|>=4,<6.5.6. Run composer remediate for the smallest verified upgrade."
+                            },
+                            "defaultConfiguration": {
+                                "level": "error"
+                            },
+                            "properties": {
+                                "security-severity": "7.5",
+                                "tags": [
+                                    "security",
+                                    "vulnerability",
+                                    "high"
+                                ]
+                            }
+                        },
+                        {
+                            "id": "PKSA-fvw5-9t6n-nwvr",
+                            "name": "CVE202231042",
+                            "shortDescription": {
+                                "text": "Failure to strip the Cookie header on change in host or HTTP downgrade"
+                            },
+                            "fullDescription": {
+                                "text": "Failure to strip the Cookie header on change in host or HTTP downgrade. Affected versions of guzzlehttp/guzzle: >=7,<7.4.4|>=4,<6.5.7."
+                            },
+                            "helpUri": "https://github.com/guzzle/guzzle/security/advisories/GHSA-f2wf-25xc-69c9",
+                            "help": {
+                                "text": "Advisory PKSA-fvw5-9t6n-nwvr (CVE-2022-31042) affects guzzlehttp/guzzle >=7,<7.4.4|>=4,<6.5.7. Run composer remediate for the smallest verified upgrade."
+                            },
+                            "defaultConfiguration": {
+                                "level": "error"
+                            },
+                            "properties": {
+                                "security-severity": "7.5",
+                                "tags": [
+                                    "security",
+                                    "vulnerability",
+                                    "high"
+                                ]
+                            }
+                        },
+                        {
+                            "id": "PKSA-k1b4-kshy-xgbh",
+                            "name": "CVE202231090",
+                            "shortDescription": {
+                                "text": "CURLOPT_HTTPAUTH option not cleared on change of origin"
+                            },
+                            "fullDescription": {
+                                "text": "CURLOPT_HTTPAUTH option not cleared on change of origin. Affected versions of guzzlehttp/guzzle: >=7,<7.4.5|>=4,<6.5.8."
+                            },
+                            "helpUri": "https://github.com/guzzle/guzzle/security/advisories/GHSA-25mq-v84q-4j7r",
+                            "help": {
+                                "text": "Advisory PKSA-k1b4-kshy-xgbh (CVE-2022-31090) affects guzzlehttp/guzzle >=7,<7.4.5|>=4,<6.5.8. Run composer remediate for the smallest verified upgrade."
+                            },
+                            "defaultConfiguration": {
+                                "level": "error"
+                            },
+                            "properties": {
+                                "security-severity": "7.5",
+                                "tags": [
+                                    "security",
+                                    "vulnerability",
+                                    "high"
+                                ]
+                            }
+                        },
+                        {
+                            "id": "PKSA-yfw5-9gnj-n2c7",
+                            "name": "CVE202231091",
+                            "shortDescription": {
+                                "text": "Change in port should be considered a change in origin"
+                            },
+                            "fullDescription": {
+                                "text": "Change in port should be considered a change in origin. Affected versions of guzzlehttp/guzzle: >=7,<7.4.5|>=4,<6.5.8."
+                            },
+                            "helpUri": "https://github.com/guzzle/guzzle/security/advisories/GHSA-q559-8m2m-g699",
+                            "help": {
+                                "text": "Advisory PKSA-yfw5-9gnj-n2c7 (CVE-2022-31091) affects guzzlehttp/guzzle >=7,<7.4.5|>=4,<6.5.8. Run composer remediate for the smallest verified upgrade."
+                            },
+                            "defaultConfiguration": {
+                                "level": "error"
+                            },
+                            "properties": {
+                                "security-severity": "7.5",
+                                "tags": [
+                                    "security",
+                                    "vulnerability",
+                                    "high"
+                                ]
+                            }
+                        }
+                    ]
+                }
+            },
+            "invocations": [
+                {
+                    "executionSuccessful": true,
+                    "exitCode": 1,
+                    "properties": {
+                        "composer_version": "(fixture)",
+                        "advisory_source": "advisory snapshot advisories.json",
+                        "combined_command": "composer require --no-update barryvdh/laravel-dompdf:^2.0 && composer update barryvdh/laravel-dompdf guzzlehttp/guzzle -W -m"
+                    }
+                }
+            ],
+            "results": [
+                {
+                    "ruleId": "PKSA-872h-8556-2chm",
+                    "ruleIndex": 0,
+                    "level": "warning",
+                    "message": {
+                        "text": "dompdf/dompdf v1.2.2 is affected by CVE-2022-0085: Server-Side Request Forgery in dompdf/dompdf. Verified fix: composer require --no-update barryvdh/laravel-dompdf:^2.0 && composer update barryvdh/laravel-dompdf -W -m"
+                    },
+                    "locations": [
+                        {
+                            "physicalLocation": {
+                                "artifactLocation": {
+                                    "uri": "composer.lock",
+                                    "uriBaseId": "%SRCROOT%"
+                                },
+                                "region": {
+                                    "startLine": 980
+                                }
+                            }
+                        }
+                    ],
+                    "partialFingerprints": {
+                        "advisoryPackage/v1": "PKSA-872h-8556-2chm@dompdf/dompdf"
+                    },
+                    "properties": {
+                        "package": "dompdf/dompdf",
+                        "version": "v1.2.2",
+                        "direct": false,
+                        "dev": false,
+                        "cve": "CVE-2022-0085",
+                        "severity": "medium",
+                        "remediation_status": "verified",
+                        "command": "composer require --no-update barryvdh/laravel-dompdf:^2.0 && composer update barryvdh/laravel-dompdf -W -m"
+                    }
+                },
+                {
+                    "ruleId": "PKSA-2z36-j4q9-rsfy",
+                    "ruleIndex": 1,
+                    "level": "error",
+                    "message": {
+                        "text": "guzzlehttp/guzzle 7.4.2 is affected by CVE-2022-31043: Fix failure to strip Authorization header on HTTP downgrade. Verified fix: composer update guzzlehttp/guzzle -w -m"
+                    },
+                    "locations": [
+                        {
+                            "physicalLocation": {
+                                "artifactLocation": {
+                                    "uri": "composer.lock",
+                                    "uriBaseId": "%SRCROOT%"
+                                },
+                                "region": {
+                                    "startLine": 1311
+                                }
+                            }
+                        }
+                    ],
+                    "partialFingerprints": {
+                        "advisoryPackage/v1": "PKSA-2z36-j4q9-rsfy@guzzlehttp/guzzle"
+                    },
+                    "properties": {
+                        "package": "guzzlehttp/guzzle",
+                        "version": "7.4.2",
+                        "direct": true,
+                        "dev": false,
+                        "cve": "CVE-2022-31043",
+                        "severity": "high",
+                        "remediation_status": "verified",
+                        "command": "composer update guzzlehttp/guzzle -w -m"
+                    }
+                },
+                {
+                    "ruleId": "PKSA-6d8m-6kgw-18zr",
+                    "ruleIndex": 2,
+                    "level": "error",
+                    "message": {
+                        "text": "guzzlehttp/guzzle 7.4.2 is affected by CVE-2022-29248: Cross-domain cookie leakage. Verified fix: composer update guzzlehttp/guzzle -w -m"
+                    },
+                    "locations": [
+                        {
+                            "physicalLocation": {
+                                "artifactLocation": {
+                                    "uri": "composer.lock",
+                                    "uriBaseId": "%SRCROOT%"
+                                },
+                                "region": {
+                                    "startLine": 1311
+                                }
+                            }
+                        }
+                    ],
+                    "partialFingerprints": {
+                        "advisoryPackage/v1": "PKSA-6d8m-6kgw-18zr@guzzlehttp/guzzle"
+                    },
+                    "properties": {
+                        "package": "guzzlehttp/guzzle",
+                        "version": "7.4.2",
+                        "direct": true,
+                        "dev": false,
+                        "cve": "CVE-2022-29248",
+                        "severity": "high",
+                        "remediation_status": "verified",
+                        "command": "composer update guzzlehttp/guzzle -w -m"
+                    }
+                },
+                {
+                    "ruleId": "PKSA-fvw5-9t6n-nwvr",
+                    "ruleIndex": 3,
+                    "level": "error",
+                    "message": {
+                        "text": "guzzlehttp/guzzle 7.4.2 is affected by CVE-2022-31042: Failure to strip the Cookie header on change in host or HTTP downgrade. Verified fix: composer update guzzlehttp/guzzle -w -m"
+                    },
+                    "locations": [
+                        {
+                            "physicalLocation": {
+                                "artifactLocation": {
+                                    "uri": "composer.lock",
+                                    "uriBaseId": "%SRCROOT%"
+                                },
+                                "region": {
+                                    "startLine": 1311
+                                }
+                            }
+                        }
+                    ],
+                    "partialFingerprints": {
+                        "advisoryPackage/v1": "PKSA-fvw5-9t6n-nwvr@guzzlehttp/guzzle"
+                    },
+                    "properties": {
+                        "package": "guzzlehttp/guzzle",
+                        "version": "7.4.2",
+                        "direct": true,
+                        "dev": false,
+                        "cve": "CVE-2022-31042",
+                        "severity": "high",
+                        "remediation_status": "verified",
+                        "command": "composer update guzzlehttp/guzzle -w -m"
+                    }
+                },
+                {
+                    "ruleId": "PKSA-k1b4-kshy-xgbh",
+                    "ruleIndex": 4,
+                    "level": "error",
+                    "message": {
+                        "text": "guzzlehttp/guzzle 7.4.2 is affected by CVE-2022-31090: CURLOPT_HTTPAUTH option not cleared on change of origin. Verified fix: composer update guzzlehttp/guzzle -w -m"
+                    },
+                    "locations": [
+                        {
+                            "physicalLocation": {
+                                "artifactLocation": {
+                                    "uri": "composer.lock",
+                                    "uriBaseId": "%SRCROOT%"
+                                },
+                                "region": {
+                                    "startLine": 1311
+                                }
+                            }
+                        }
+                    ],
+                    "partialFingerprints": {
+                        "advisoryPackage/v1": "PKSA-k1b4-kshy-xgbh@guzzlehttp/guzzle"
+                    },
+                    "properties": {
+                        "package": "guzzlehttp/guzzle",
+                        "version": "7.4.2",
+                        "direct": true,
+                        "dev": false,
+                        "cve": "CVE-2022-31090",
+                        "severity": "high",
+                        "remediation_status": "verified",
+                        "command": "composer update guzzlehttp/guzzle -w -m"
+                    }
+                },
+                {
+                    "ruleId": "PKSA-yfw5-9gnj-n2c7",
+                    "ruleIndex": 5,
+                    "level": "error",
+                    "message": {
+                        "text": "guzzlehttp/guzzle 7.4.2 is affected by CVE-2022-31091: Change in port should be considered a change in origin. Verified fix: composer update guzzlehttp/guzzle -w -m"
+                    },
+                    "locations": [
+                        {
+                            "physicalLocation": {
+                                "artifactLocation": {
+                                    "uri": "composer.lock",
+                                    "uriBaseId": "%SRCROOT%"
+                                },
+                                "region": {
+                                    "startLine": 1311
+                                }
+                            }
+                        }
+                    ],
+                    "partialFingerprints": {
+                        "advisoryPackage/v1": "PKSA-yfw5-9gnj-n2c7@guzzlehttp/guzzle"
+                    },
+                    "properties": {
+                        "package": "guzzlehttp/guzzle",
+                        "version": "7.4.2",
+                        "direct": true,
+                        "dev": false,
+                        "cve": "CVE-2022-31091",
+                        "severity": "high",
+                        "remediation_status": "verified",
+                        "command": "composer update guzzlehttp/guzzle -w -m"
+                    }
+                }
+            ]
+        }
+    ]
+}

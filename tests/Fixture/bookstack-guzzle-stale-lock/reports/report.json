@@ -7,7 +7,7 @@
         "php_version": "(fixture)",
         "advisory_source": "advisory snapshot advisories.json",
         "solver": "in-process Composer dry-run",
-        "composer_json_sha256": "518c198d6a25ffac5b89a039d42d24474c44ddf0e510348c05915d03a6e290b7",
+        "composer_json_sha256": "d842d3c02ef318324815749802f4553622f1b46d4065779e28613ba8127d4955",
         "composer_lock_sha256": "344de0dd32e1d22719c6e0c717527e601702e8ed4d57664dd0770e606102f7af",
         "analysis_timestamp": "(fixture)",
         "locked_packages": "155"
@@ -18,6 +18,8 @@
         "advisories": 6,
         "packages": 2,
         "packages_with_fix": 2,
+        "fail_on": null,
+        "packages_gated": 2,
         "combined_command": "composer require --no-update barryvdh/laravel-dompdf:^2.0 && composer update barryvdh/laravel-dompdf guzzlehttp/guzzle -W -m",
         "combined_fixes": 6,
         "combined_total": 6,

@@ -54,6 +54,8 @@ final class JsonRenderer
                 'advisories' => $plan->advisoryCount(),
                 'packages' => count($plan->findings),
                 'packages_with_fix' => count($plan->findings) - count($plan->unsolved()),
+                'fail_on' => $plan->failOn,
+                'packages_gated' => count($plan->gated()),
                 'combined_command' => $combined?->candidate->commandLine($this->minimalChangesSupported),
                 'combined_fixes' => $combined?->fixedCount(),
                 'combined_total' => $combined?->totalCount(),

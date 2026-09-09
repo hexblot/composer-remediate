@@ -6,6 +6,7 @@ namespace Remediate\Engine\Lock;
 
 use Composer\Package\AliasPackage;
 use Composer\Package\Locker;
+use Composer\Package\Package;
 use Composer\Package\PackageInterface;
 
 /**
@@ -54,18 +55,36 @@ final class LockSnapshot
             if ($package instanceof AliasPackage) {
                 continue;
             }
-            $packages[$package->getName()] = $package;
+            $packages[$package->getName()] = self::detach($package);
         }
         foreach ($dev as $package) {
             if ($package instanceof AliasPackage) {
                 continue;
             }
-            $packages[$package->getName()] = $package;
+            $packages[$package->getName()] = self::detach($package);
             $devMap[$package->getName()] = true;
         }
         ksort($packages);
 
         return new self($packages, $devMap);
+    }
+
+    /**
+     * Copies only what the engine reads. Solver packages point back at their repository and, through
+     * it, at the whole Composer instance of that solve; keeping them would retain every solve's object
+     * graph for the lifetime of the plan.
+     */
+    private static function detach(PackageInterface $package): PackageInterface
+    {
+        $copy = new Package($package->getName(), $package->getVersion(), $package->getPrettyVersion());
+        $copy->setReplaces($package->getReplaces());
+        $copy->setProvides($package->getProvides());
+        $copy->setRequires($package->getRequires());
+        $copy->setSourceReference($package->getSourceReference());
+        $copy->setDistReference($package->getDistReference());
+        $copy->setType($package->getType());
+
+        return $copy;
     }
 
     public function get(string $name): ?PackageInterface

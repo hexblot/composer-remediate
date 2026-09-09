@@ -1,0 +1,148 @@
+{
+    "$schema": "https://json.schemastore.org/sarif-2.1.0.json",
+    "version": "2.1.0",
+    "runs": [
+        {
+            "tool": {
+                "driver": {
+                    "name": "composer-remediate",
+                    "version": "dev-main",
+                    "informationUri": "https://hexblot.github.io/composer-remediate/",
+                    "rules": [
+                        {
+                            "id": "PKSA-b35n-565h-rs4q",
+                            "name": "CVE202450345",
+                            "shortDescription": {
+                                "text": "CVE-2024-50345: Open redirect via browser-sanitized URLs"
+                            },
+                            "fullDescription": {
+                                "text": "CVE-2024-50345: Open redirect via browser-sanitized URLs. Affected versions of symfony/http-foundation: >=2.0.0,<3.0.0|>=3.0.0,<4.0.0|>=4.0.0,<5.0.0|>=5.0.0,<5.1.0|>=5.1.0,<5.2.0|>=5.2.0,<5.3.0|>=5.3.0,<5.4.0|>=5.4.0,<5.4.46|>=6.0.0,<6.1.0|>=6.1.0,<6.2.0|>=6.2.0,<6.3.0|>=6.3.0,<6.4.0|>=6.4.0,<6.4.14|>=7.0.0,<7.1.0|>=7.1.0,<7.1.7."
+                            },
+                            "helpUri": "https://symfony.com/cve-2024-50345",
+                            "help": {
+                                "text": "Advisory PKSA-b35n-565h-rs4q (CVE-2024-50345) affects symfony/http-foundation >=2.0.0,<3.0.0|>=3.0.0,<4.0.0|>=4.0.0,<5.0.0|>=5.0.0,<5.1.0|>=5.1.0,<5.2.0|>=5.2.0,<5.3.0|>=5.3.0,<5.4.0|>=5.4.0,<5.4.46|>=6.0.0,<6.1.0|>=6.1.0,<6.2.0|>=6.2.0,<6.3.0|>=6.3.0,<6.4.0|>=6.4.0,<6.4.14|>=7.0.0,<7.1.0|>=7.1.0,<7.1.7. Run composer remediate for the smallest verified upgrade."
+                            },
+                            "defaultConfiguration": {
+                                "level": "note"
+                            },
+                            "properties": {
+                                "security-severity": "2.5",
+                                "tags": [
+                                    "security",
+                                    "vulnerability",
+                                    "low"
+                                ]
+                            }
+                        },
+                        {
+                            "id": "PKSA-wws7-mr54-jsny",
+                            "name": "CVE202451736",
+                            "shortDescription": {
+                                "text": "CVE-2024-51736: Command execution hijack on Windows with Process class"
+                            },
+                            "fullDescription": {
+                                "text": "CVE-2024-51736: Command execution hijack on Windows with Process class. Affected versions of symfony/process: >=2.0.0,<3.0.0|>=3.0.0,<4.0.0|>=4.0.0,<5.0.0|>=5.0.0,<5.1.0|>=5.1.0,<5.2.0|>=5.2.0,<5.3.0|>=5.3.0,<5.4.0|>=5.4.0,<5.4.46|>=6.0.0,<6.1.0|>=6.1.0,<6.2.0|>=6.2.0,<6.3.0|>=6.3.0,<6.4.0|>=6.4.0,<6.4.14|>=7.0.0,<7.1.0|>=7.1.0,<7.1.7."
+                            },
+                            "helpUri": "https://symfony.com/cve-2024-51736",
+                            "help": {
+                                "text": "Advisory PKSA-wws7-mr54-jsny (CVE-2024-51736) affects symfony/process >=2.0.0,<3.0.0|>=3.0.0,<4.0.0|>=4.0.0,<5.0.0|>=5.0.0,<5.1.0|>=5.1.0,<5.2.0|>=5.2.0,<5.3.0|>=5.3.0,<5.4.0|>=5.4.0,<5.4.46|>=6.0.0,<6.1.0|>=6.1.0,<6.2.0|>=6.2.0,<6.3.0|>=6.3.0,<6.4.0|>=6.4.0,<6.4.14|>=7.0.0,<7.1.0|>=7.1.0,<7.1.7. Run composer remediate for the smallest verified upgrade."
+                            },
+                            "defaultConfiguration": {
+                                "level": "error"
+                            },
+                            "properties": {
+                                "security-severity": "7.5",
+                                "tags": [
+                                    "security",
+                                    "vulnerability",
+                                    "high"
+                                ]
+                            }
+                        }
+                    ]
+                }
+            },
+            "invocations": [
+                {
+                    "executionSuccessful": true,
+                    "exitCode": 1,
+                    "properties": {
+                        "composer_version": "(fixture)",
+                        "advisory_source": "advisory snapshot advisories.json",
+                        "combined_command": "composer update symfony/http-foundation symfony/process"
+                    }
+                }
+            ],
+            "results": [
+                {
+                    "ruleId": "PKSA-b35n-565h-rs4q",
+                    "ruleIndex": 0,
+                    "level": "note",
+                    "message": {
+                        "text": "symfony/http-foundation v7.1.5 is affected by CVE-2024-50345: CVE-2024-50345: Open redirect via browser-sanitized URLs. Verified fix: composer update symfony/http-foundation"
+                    },
+                    "locations": [
+                        {
+                            "physicalLocation": {
+                                "artifactLocation": {
+                                    "uri": "composer.lock",
+                                    "uriBaseId": "%SRCROOT%"
+                                },
+                                "region": {
+                                    "startLine": 7932
+                                }
+                            }
+                        }
+                    ],
+                    "partialFingerprints": {
+                        "advisoryPackage/v1": "PKSA-b35n-565h-rs4q@symfony/http-foundation"
+                    },
+                    "properties": {
+                        "package": "symfony/http-foundation",
+                        "version": "v7.1.5",
+                        "direct": false,
+                        "dev": false,
+                        "cve": "CVE-2024-50345",
+                        "severity": "low",
+                        "remediation_status": "verified",
+                        "command": "composer update symfony/http-foundation"
+                    }
+                },
+                {
+                    "ruleId": "PKSA-wws7-mr54-jsny",
+                    "ruleIndex": 1,
+                    "level": "error",
+                    "message": {
+                        "text": "symfony/process v7.1.5 is affected by CVE-2024-51736: CVE-2024-51736: Command execution hijack on Windows with Process class. Verified fix: composer update symfony/process"
+                    },
+                    "locations": [
+                        {
+                            "physicalLocation": {
+                                "artifactLocation": {
+                                    "uri": "composer.lock",
+                                    "uriBaseId": "%SRCROOT%"
+                                },
+                                "region": {
+                                    "startLine": 8992
+                                }
+                            }
+                        }
+                    ],
+                    "partialFingerprints": {
+                        "advisoryPackage/v1": "PKSA-wws7-mr54-jsny@symfony/process"
+                    },
+                    "properties": {
+                        "package": "symfony/process",
+                        "version": "v7.1.5",
+                        "direct": false,
+                        "dev": false,
+                        "cve": "CVE-2024-51736",
+                        "severity": "high",
+                        "remediation_status": "verified",
+                        "command": "composer update symfony/process"
+                    }
+                }
+            ]
+        }
+    ]
+}

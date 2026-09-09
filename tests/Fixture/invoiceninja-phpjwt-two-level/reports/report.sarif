@@ -1,0 +1,205 @@
+{
+    "$schema": "https://json.schemastore.org/sarif-2.1.0.json",
+    "version": "2.1.0",
+    "runs": [
+        {
+            "tool": {
+                "driver": {
+                    "name": "composer-remediate",
+                    "version": "dev-main",
+                    "informationUri": "https://hexblot.github.io/composer-remediate/",
+                    "rules": [
+                        {
+                            "id": "PKSA-2kqm-ps5x-s4f5",
+                            "name": "CVE202146743",
+                            "shortDescription": {
+                                "text": "Key/algorithm type confusion"
+                            },
+                            "fullDescription": {
+                                "text": "Key/algorithm type confusion. Affected versions of firebase/php-jwt: <6.0.0."
+                            },
+                            "helpUri": "https://github.com/advisories/GHSA-8xf4-w7qw-pjjw",
+                            "help": {
+                                "text": "Advisory PKSA-2kqm-ps5x-s4f5 (CVE-2021-46743) affects firebase/php-jwt <6.0.0. Run composer remediate for the smallest verified upgrade."
+                            },
+                            "defaultConfiguration": {
+                                "level": "error"
+                            },
+                            "properties": {
+                                "security-severity": "9.5",
+                                "tags": [
+                                    "security",
+                                    "vulnerability",
+                                    "critical"
+                                ]
+                            }
+                        },
+                        {
+                            "id": "PKSA-dyrx-jq7h-gtxg",
+                            "name": "CVE202011022",
+                            "shortDescription": {
+                                "text": "Potential XSS vulnerability in jQuery"
+                            },
+                            "fullDescription": {
+                                "text": "Potential XSS vulnerability in jQuery. Affected versions of maximebf/debugbar: <1.19.0."
+                            },
+                            "helpUri": "https://github.com/advisories/GHSA-gxr4-xjj5-5px2",
+                            "help": {
+                                "text": "Advisory PKSA-dyrx-jq7h-gtxg (CVE-2020-11022) affects maximebf/debugbar <1.19.0. Run composer remediate for the smallest verified upgrade."
+                            },
+                            "defaultConfiguration": {
+                                "level": "warning"
+                            },
+                            "properties": {
+                                "security-severity": "5.0",
+                                "tags": [
+                                    "security",
+                                    "vulnerability",
+                                    "medium"
+                                ]
+                            }
+                        },
+                        {
+                            "id": "PKSA-vf2x-zfw2-cnsj",
+                            "name": "CVE201911358",
+                            "shortDescription": {
+                                "text": "XSS in jQuery as used in Drupal, Backdrop CMS, and other products"
+                            },
+                            "fullDescription": {
+                                "text": "XSS in jQuery as used in Drupal, Backdrop CMS, and other products. Affected versions of maximebf/debugbar: <1.19.0."
+                            },
+                            "helpUri": "https://github.com/advisories/GHSA-6c3j-c64m-qhgq",
+                            "help": {
+                                "text": "Advisory PKSA-vf2x-zfw2-cnsj (CVE-2019-11358) affects maximebf/debugbar <1.19.0. Run composer remediate for the smallest verified upgrade."
+                            },
+                            "defaultConfiguration": {
+                                "level": "warning"
+                            },
+                            "properties": {
+                                "security-severity": "5.0",
+                                "tags": [
+                                    "security",
+                                    "vulnerability",
+                                    "medium"
+                                ]
+                            }
+                        }
+                    ]
+                }
+            },
+            "invocations": [
+                {
+                    "executionSuccessful": true,
+                    "exitCode": 2,
+                    "properties": {
+                        "composer_version": "(fixture)",
+                        "advisory_source": "advisory snapshot advisories.json",
+                        "combined_command": "composer update google/apiclient:v2.12.2 -W -m --with 'firebase/php-jwt:>=6.0.0'"
+                    }
+                }
+            ],
+            "results": [
+                {
+                    "ruleId": "PKSA-2kqm-ps5x-s4f5",
+                    "ruleIndex": 0,
+                    "level": "error",
+                    "message": {
+                        "text": "firebase/php-jwt v5.5.1 is affected by CVE-2021-46743: Key/algorithm type confusion. Verified fix: composer update google/apiclient:v2.12.2 -W -m --with 'firebase/php-jwt:>=6.0.0'"
+                    },
+                    "locations": [
+                        {
+                            "physicalLocation": {
+                                "artifactLocation": {
+                                    "uri": "composer.lock",
+                                    "uriBaseId": "%SRCROOT%"
+                                },
+                                "region": {
+                                    "startLine": 2027
+                                }
+                            }
+                        }
+                    ],
+                    "partialFingerprints": {
+                        "advisoryPackage/v1": "PKSA-2kqm-ps5x-s4f5@firebase/php-jwt"
+                    },
+                    "properties": {
+                        "package": "firebase/php-jwt",
+                        "version": "v5.5.1",
+                        "direct": false,
+                        "dev": false,
+                        "cve": "CVE-2021-46743",
+                        "severity": "critical",
+                        "remediation_status": "verified",
+                        "command": "composer update google/apiclient:v2.12.2 -W -m --with 'firebase/php-jwt:>=6.0.0'"
+                    }
+                },
+                {
+                    "ruleId": "PKSA-dyrx-jq7h-gtxg",
+                    "ruleIndex": 1,
+                    "level": "warning",
+                    "message": {
+                        "text": "maximebf/debugbar v1.18.0 is affected by CVE-2020-11022: Potential XSS vulnerability in jQuery. No verified remediation found."
+                    },
+                    "locations": [
+                        {
+                            "physicalLocation": {
+                                "artifactLocation": {
+                                    "uri": "composer.lock",
+                                    "uriBaseId": "%SRCROOT%"
+                                },
+                                "region": {
+                                    "startLine": 12493
+                                }
+                            }
+                        }
+                    ],
+                    "partialFingerprints": {
+                        "advisoryPackage/v1": "PKSA-dyrx-jq7h-gtxg@maximebf/debugbar"
+                    },
+                    "properties": {
+                        "package": "maximebf/debugbar",
+                        "version": "v1.18.0",
+                        "direct": false,
+                        "dev": true,
+                        "cve": "CVE-2020-11022",
+                        "severity": "medium",
+                        "remediation_status": "none"
+                    }
+                },
+                {
+                    "ruleId": "PKSA-vf2x-zfw2-cnsj",
+                    "ruleIndex": 2,
+                    "level": "warning",
+                    "message": {
+                        "text": "maximebf/debugbar v1.18.0 is affected by CVE-2019-11358: XSS in jQuery as used in Drupal, Backdrop CMS, and other products. No verified remediation found."
+                    },
+                    "locations": [
+                        {
+                            "physicalLocation": {
+                                "artifactLocation": {
+                                    "uri": "composer.lock",
+                                    "uriBaseId": "%SRCROOT%"
+                                },
+                                "region": {
+                                    "startLine": 12493
+                                }
+                            }
+                        }
+                    ],
+                    "partialFingerprints": {
+                        "advisoryPackage/v1": "PKSA-vf2x-zfw2-cnsj@maximebf/debugbar"
+                    },
+                    "properties": {
+                        "package": "maximebf/debugbar",
+                        "version": "v1.18.0",
+                        "direct": false,
+                        "dev": true,
+                        "cve": "CVE-2019-11358",
+                        "severity": "medium",
+                        "remediation_status": "none"
+                    }
+                }
+            ]
+        }
+    ]
+}

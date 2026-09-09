@@ -7,7 +7,7 @@
         "php_version": "(fixture)",
         "advisory_source": "advisory snapshot advisories.json",
         "solver": "in-process Composer dry-run",
-        "composer_json_sha256": "8aaff198aa526a5dad4abc99ec655b5b312d15f56104f39a62045d7801722a4e",
+        "composer_json_sha256": "fe951fe68be8e14b6b910e54a435c561a2ce555d7a9dfe0b736b770c2e376974",
         "composer_lock_sha256": "22fd0acc2517587b38c52afc1c3a03768d5ea1fae006f954fcc185f8abe5b05e",
         "analysis_timestamp": "(fixture)",
         "locked_packages": "192"
@@ -18,6 +18,8 @@
         "advisories": 14,
         "packages": 6,
         "packages_with_fix": 4,
+        "fail_on": null,
+        "packages_gated": 6,
         "combined_command": "composer update symfony/http-foundation symfony/twig-bridge twig/twig symfony/process -w -m --with 'twig/twig:>=3.11.2,<3.12.0 || >=3.14.1'",
         "combined_fixes": 6,
         "combined_total": 14,

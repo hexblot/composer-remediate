@@ -1,0 +1,1544 @@
+{
+    "$schema": "https://json.schemastore.org/sarif-2.1.0.json",
+    "version": "2.1.0",
+    "runs": [
+        {
+            "tool": {
+                "driver": {
+                    "name": "composer-remediate",
+                    "version": "dev-main",
+                    "informationUri": "https://hexblot.github.io/composer-remediate/",
+                    "rules": [
+                        {
+                            "id": "PKSA-n3s6-289w-qtqb",
+                            "name": "CVE202351651",
+                            "shortDescription": {
+                                "text": "Potential URI resolution path traversal in the AWS SDK for PHP"
+                            },
+                            "fullDescription": {
+                                "text": "Potential URI resolution path traversal in the AWS SDK for PHP. Affected versions of aws/aws-sdk-php: >=3.0.0,<3.288.1."
+                            },
+                            "helpUri": "https://nvd.nist.gov/vuln/detail/CVE-2023-51651",
+                            "help": {
+                                "text": "Advisory PKSA-n3s6-289w-qtqb (CVE-2023-51651) affects aws/aws-sdk-php >=3.0.0,<3.288.1. Run composer remediate for the smallest verified upgrade."
+                            },
+                            "defaultConfiguration": {
+                                "level": "warning"
+                            },
+                            "properties": {
+                                "security-severity": "5.0",
+                                "tags": [
+                                    "security",
+                                    "vulnerability",
+                                    "medium"
+                                ]
+                            }
+                        },
+                        {
+                            "id": "PKSA-b8f7-zn44-r4gz",
+                            "name": "CVE202435242",
+                            "shortDescription": {
+                                "text": "Composer has multiple command injections via malicious git/hg branch names"
+                            },
+                            "fullDescription": {
+                                "text": "Composer has multiple command injections via malicious git/hg branch names. Affected versions of composer/composer: >=2.3,<2.7.7|>=2.0,<2.2.24."
+                            },
+                            "helpUri": "https://github.com/advisories/GHSA-v9qv-c7wm-wgmf",
+                            "help": {
+                                "text": "Advisory PKSA-b8f7-zn44-r4gz (CVE-2024-35242) affects composer/composer >=2.3,<2.7.7|>=2.0,<2.2.24. Run composer remediate for the smallest verified upgrade."
+                            },
+                            "defaultConfiguration": {
+                                "level": "error"
+                            },
+                            "properties": {
+                                "security-severity": "7.5",
+                                "tags": [
+                                    "security",
+                                    "vulnerability",
+                                    "high"
+                                ]
+                            }
+                        },
+                        {
+                            "id": "PKSA-jn72-4kr8-gj3h",
+                            "name": "CVE202424821",
+                            "shortDescription": {
+                                "text": "Composer code execution and possible privilege escalation via compromised InstalledVersions.php or installed.php"
+                            },
+                            "fullDescription": {
+                                "text": "Composer code execution and possible privilege escalation via compromised InstalledVersions.php or installed.php. Affected versions of composer/composer: >=2.3.0-rc1,<2.7.0|>=2.0.0-alpha1,<2.2.23."
+                            },
+                            "helpUri": "https://github.com/advisories/GHSA-7c6p-848j-wh5h",
+                            "help": {
+                                "text": "Advisory PKSA-jn72-4kr8-gj3h (CVE-2024-24821) affects composer/composer >=2.3.0-rc1,<2.7.0|>=2.0.0-alpha1,<2.2.23. Run composer remediate for the smallest verified upgrade."
+                            },
+                            "defaultConfiguration": {
+                                "level": "error"
+                            },
+                            "properties": {
+                                "security-severity": "7.5",
+                                "tags": [
+                                    "security",
+                                    "vulnerability",
+                                    "high"
+                                ]
+                            }
+                        },
+                        {
+                            "id": "PKSA-m1ph-vmbx-2xd3",
+                            "name": "CVE202343655",
+                            "shortDescription": {
+                                "text": "Composer Remote Code Execution vulnerability via web-accessible composer.phar"
+                            },
+                            "fullDescription": {
+                                "text": "Composer Remote Code Execution vulnerability via web-accessible composer.phar. Affected versions of composer/composer: >=2.3.0,<2.6.4|>=2.0.0,<2.2.22|<1.10.27."
+                            },
+                            "helpUri": "https://github.com/advisories/GHSA-jm6m-4632-36hf",
+                            "help": {
+                                "text": "Advisory PKSA-m1ph-vmbx-2xd3 (CVE-2023-43655) affects composer/composer >=2.3.0,<2.6.4|>=2.0.0,<2.2.22|<1.10.27. Run composer remediate for the smallest verified upgrade."
+                            },
+                            "defaultConfiguration": {
+                                "level": "error"
+                            },
+                            "properties": {
+                                "security-severity": "7.5",
+                                "tags": [
+                                    "security",
+                                    "vulnerability",
+                                    "high"
+                                ]
+                            }
+                        },
+                        {
+                            "id": "PKSA-s25b-vbmp-jvhh",
+                            "name": "CVE202435241",
+                            "shortDescription": {
+                                "text": "Composer has a command injection via malicious git branch name"
+                            },
+                            "fullDescription": {
+                                "text": "Composer has a command injection via malicious git branch name. Affected versions of composer/composer: >=2.3,<2.7.7|>=2.0,<2.2.24."
+                            },
+                            "helpUri": "https://github.com/advisories/GHSA-47f6-5gq3-vx9c",
+                            "help": {
+                                "text": "Advisory PKSA-s25b-vbmp-jvhh (CVE-2024-35241) affects composer/composer >=2.3,<2.7.7|>=2.0,<2.2.24. Run composer remediate for the smallest verified upgrade."
+                            },
+                            "defaultConfiguration": {
+                                "level": "error"
+                            },
+                            "properties": {
+                                "security-severity": "7.5",
+                                "tags": [
+                                    "security",
+                                    "vulnerability",
+                                    "high"
+                                ]
+                            }
+                        },
+                        {
+                            "id": "PKSA-pc52-dbxt-c1w6",
+                            "name": "CVE202337260",
+                            "shortDescription": {
+                                "text": "league/oauth2-server key exposed in exception message when passing as a string and providing an invalid pass phrase"
+                            },
+                            "fullDescription": {
+                                "text": "league/oauth2-server key exposed in exception message when passing as a string and providing an invalid pass phrase. Affected versions of league/oauth2-server: >=8.5.0,<8.5.3|>=8.3.2,<8.4.2."
+                            },
+                            "helpUri": "https://github.com/advisories/GHSA-wj7q-gjg8-3cpm",
+                            "help": {
+                                "text": "Advisory PKSA-pc52-dbxt-c1w6 (CVE-2023-37260) affects league/oauth2-server >=8.5.0,<8.5.3|>=8.3.2,<8.4.2. Run composer remediate for the smallest verified upgrade."
+                            },
+                            "defaultConfiguration": {
+                                "level": "error"
+                            },
+                            "properties": {
+                                "security-severity": "7.5",
+                                "tags": [
+                                    "security",
+                                    "vulnerability",
+                                    "high"
+                                ]
+                            }
+                        },
+                        {
+                            "id": "PKSA-3dsp-r6t7-8xmz",
+                            "name": "CVE202425117",
+                            "shortDescription": {
+                                "text": "php-svg-lib lacks path validation on font through SVG inline styles "
+                            },
+                            "fullDescription": {
+                                "text": "php-svg-lib lacks path validation on font through SVG inline styles . Affected versions of phenx/php-svg-lib: <0.5.2."
+                            },
+                            "helpUri": "https://github.com/advisories/GHSA-f3qr-qr4x-j273",
+                            "help": {
+                                "text": "Advisory PKSA-3dsp-r6t7-8xmz (CVE-2024-25117) affects phenx/php-svg-lib <0.5.2. Run composer remediate for the smallest verified upgrade."
+                            },
+                            "defaultConfiguration": {
+                                "level": "warning"
+                            },
+                            "properties": {
+                                "security-severity": "5.0",
+                                "tags": [
+                                    "security",
+                                    "vulnerability",
+                                    "medium"
+                                ]
+                            }
+                        },
+                        {
+                            "id": "PKSA-cwpj-dtf9-6fg1",
+                            "name": "CVE202350251",
+                            "shortDescription": {
+                                "text": "Denial of service caused by infinite recursion when parsing SVG document"
+                            },
+                            "fullDescription": {
+                                "text": "Denial of service caused by infinite recursion when parsing SVG document. Affected versions of phenx/php-svg-lib: <0.5.1."
+                            },
+                            "helpUri": "https://github.com/advisories/GHSA-ff5x-7qg5-vwf2",
+                            "help": {
+                                "text": "Advisory PKSA-cwpj-dtf9-6fg1 (CVE-2023-50251) affects phenx/php-svg-lib <0.5.1. Run composer remediate for the smallest verified upgrade."
+                            },
+                            "defaultConfiguration": {
+                                "level": "warning"
+                            },
+                            "properties": {
+                                "security-severity": "5.0",
+                                "tags": [
+                                    "security",
+                                    "vulnerability",
+                                    "medium"
+                                ]
+                            }
+                        },
+                        {
+                            "id": "PKSA-qsyb-3psh-f1t3",
+                            "name": "PKSAqsyb3pshf1t3",
+                            "shortDescription": {
+                                "text": "Dompdf's usage of vulnerable version of phenx/php-svg-lib leads to restriction bypass and potential RCE"
+                            },
+                            "fullDescription": {
+                                "text": "Dompdf's usage of vulnerable version of phenx/php-svg-lib leads to restriction bypass and potential RCE. Affected versions of phenx/php-svg-lib: <0.5.2."
+                            },
+                            "helpUri": "https://github.com/advisories/GHSA-97m3-52wr-xvv2",
+                            "help": {
+                                "text": "Advisory PKSA-qsyb-3psh-f1t3 affects phenx/php-svg-lib <0.5.2. Run composer remediate for the smallest verified upgrade."
+                            },
+                            "defaultConfiguration": {
+                                "level": "error"
+                            },
+                            "properties": {
+                                "security-severity": "9.5",
+                                "tags": [
+                                    "security",
+                                    "vulnerability",
+                                    "critical"
+                                ]
+                            }
+                        },
+                        {
+                            "id": "PKSA-4spx-rq41-wk8h",
+                            "name": "CVE202442354",
+                            "shortDescription": {
+                                "text": "Shopware vulnerable to Improper Access Control with ManyToMany associations in store-api"
+                            },
+                            "fullDescription": {
+                                "text": "Shopware vulnerable to Improper Access Control with ManyToMany associations in store-api. Affected versions of shopware/core: >=6.6.0.0,<=6.6.5.0|<=6.5.8.12."
+                            },
+                            "helpUri": "https://github.com/advisories/GHSA-hhcq-ph6w-494g",
+                            "help": {
+                                "text": "Advisory PKSA-4spx-rq41-wk8h (CVE-2024-42354) affects shopware/core >=6.6.0.0,<=6.6.5.0|<=6.5.8.12. Run composer remediate for the smallest verified upgrade."
+                            },
+                            "defaultConfiguration": {
+                                "level": "warning"
+                            },
+                            "properties": {
+                                "security-severity": "5.0",
+                                "tags": [
+                                    "security",
+                                    "vulnerability",
+                                    "medium"
+                                ]
+                            }
+                        },
+                        {
+                            "id": "PKSA-6stq-czfs-1nvv",
+                            "name": "CVE202442355",
+                            "shortDescription": {
+                                "text": "Shopware vulnerable to Server Side Template Injection in Twig using deprecation silence tag"
+                            },
+                            "fullDescription": {
+                                "text": "Shopware vulnerable to Server Side Template Injection in Twig using deprecation silence tag. Affected versions of shopware/core: >=6.6.0.0,<=6.6.5.0|<=6.5.8.12."
+                            },
+                            "helpUri": "https://github.com/advisories/GHSA-27wp-jvhw-v4xp",
+                            "help": {
+                                "text": "Advisory PKSA-6stq-czfs-1nvv (CVE-2024-42355) affects shopware/core >=6.6.0.0,<=6.6.5.0|<=6.5.8.12. Run composer remediate for the smallest verified upgrade."
+                            },
+                            "defaultConfiguration": {
+                                "level": "error"
+                            },
+                            "properties": {
+                                "security-severity": "7.5",
+                                "tags": [
+                                    "security",
+                                    "vulnerability",
+                                    "high"
+                                ]
+                            }
+                        },
+                        {
+                            "id": "PKSA-kt1g-n1g2-hzb4",
+                            "name": "CVE202442356",
+                            "shortDescription": {
+                                "text": "Shopware vulnerable to Server Side Template Injection in Twig using Context functions"
+                            },
+                            "fullDescription": {
+                                "text": "Shopware vulnerable to Server Side Template Injection in Twig using Context functions. Affected versions of shopware/core: >=6.6.0.0,<=6.6.5.0|<=6.5.8.12."
+                            },
+                            "helpUri": "https://github.com/advisories/GHSA-35jp-8cgg-p4wj",
+                            "help": {
+                                "text": "Advisory PKSA-kt1g-n1g2-hzb4 (CVE-2024-42356) affects shopware/core >=6.6.0.0,<=6.6.5.0|<=6.5.8.12. Run composer remediate for the smallest verified upgrade."
+                            },
+                            "defaultConfiguration": {
+                                "level": "error"
+                            },
+                            "properties": {
+                                "security-severity": "7.5",
+                                "tags": [
+                                    "security",
+                                    "vulnerability",
+                                    "high"
+                                ]
+                            }
+                        },
+                        {
+                            "id": "PKSA-ktmn-6519-qrdp",
+                            "name": "CVE202422406",
+                            "shortDescription": {
+                                "text": "Blind SQL injection in shopware"
+                            },
+                            "fullDescription": {
+                                "text": "Blind SQL injection in shopware. Affected versions of shopware/core: <=6.5.7.3."
+                            },
+                            "helpUri": "https://github.com/advisories/GHSA-qmp9-2xwj-m6m9",
+                            "help": {
+                                "text": "Advisory PKSA-ktmn-6519-qrdp (CVE-2024-22406) affects shopware/core <=6.5.7.3. Run composer remediate for the smallest verified upgrade."
+                            },
+                            "defaultConfiguration": {
+                                "level": "error"
+                            },
+                            "properties": {
+                                "security-severity": "9.5",
+                                "tags": [
+                                    "security",
+                                    "vulnerability",
+                                    "critical"
+                                ]
+                            }
+                        },
+                        {
+                            "id": "PKSA-mm7q-gnjj-tttn",
+                            "name": "CVE202422407",
+                            "shortDescription": {
+                                "text": "Broken Access Control order API in Shopware"
+                            },
+                            "fullDescription": {
+                                "text": "Broken Access Control order API in Shopware. Affected versions of shopware/core: <=6.5.7.3."
+                            },
+                            "helpUri": "https://github.com/advisories/GHSA-3867-jc5c-66qf",
+                            "help": {
+                                "text": "Advisory PKSA-mm7q-gnjj-tttn (CVE-2024-22407) affects shopware/core <=6.5.7.3. Run composer remediate for the smallest verified upgrade."
+                            },
+                            "defaultConfiguration": {
+                                "level": "warning"
+                            },
+                            "properties": {
+                                "security-severity": "5.0",
+                                "tags": [
+                                    "security",
+                                    "vulnerability",
+                                    "medium"
+                                ]
+                            }
+                        },
+                        {
+                            "id": "PKSA-s8vz-878v-gv1c",
+                            "name": "CVE202431447",
+                            "shortDescription": {
+                                "text": "Shopware Improper Session Handling in store-api account logout"
+                            },
+                            "fullDescription": {
+                                "text": "Shopware Improper Session Handling in store-api account logout. Affected versions of shopware/core: >=6.6.0.0-rc1,<6.6.1.0|>=6.3.5.0,<6.5.8.8."
+                            },
+                            "helpUri": "https://github.com/advisories/GHSA-5297-wrrp-rcj7",
+                            "help": {
+                                "text": "Advisory PKSA-s8vz-878v-gv1c (CVE-2024-31447) affects shopware/core >=6.6.0.0-rc1,<6.6.1.0|>=6.3.5.0,<6.5.8.8. Run composer remediate for the smallest verified upgrade."
+                            },
+                            "defaultConfiguration": {
+                                "level": "warning"
+                            },
+                            "properties": {
+                                "security-severity": "5.0",
+                                "tags": [
+                                    "security",
+                                    "vulnerability",
+                                    "medium"
+                                ]
+                            }
+                        },
+                        {
+                            "id": "PKSA-wp2c-7yp8-5fvs",
+                            "name": "CVE202442357",
+                            "shortDescription": {
+                                "text": "Shopware vulnerable to blind SQL-injection in DAL aggregations"
+                            },
+                            "fullDescription": {
+                                "text": "Shopware vulnerable to blind SQL-injection in DAL aggregations. Affected versions of shopware/core: >=6.6.0.0,<=6.6.5.0|<=6.5.8.12."
+                            },
+                            "helpUri": "https://github.com/advisories/GHSA-p6w9-r443-r752",
+                            "help": {
+                                "text": "Advisory PKSA-wp2c-7yp8-5fvs (CVE-2024-42357) affects shopware/core >=6.6.0.0,<=6.6.5.0|<=6.5.8.12. Run composer remediate for the smallest verified upgrade."
+                            },
+                            "defaultConfiguration": {
+                                "level": "warning"
+                            },
+                            "properties": {
+                                "security-severity": "5.0",
+                                "tags": [
+                                    "security",
+                                    "vulnerability",
+                                    "medium"
+                                ]
+                            }
+                        },
+                        {
+                            "id": "PKSA-4jrs-y99s-q8j6",
+                            "name": "CVE202323924",
+                            "shortDescription": {
+                                "text": "Dompdf vulnerable to URI validation failure on SVG parsing"
+                            },
+                            "fullDescription": {
+                                "text": "Dompdf vulnerable to URI validation failure on SVG parsing. Affected versions of dompdf/dompdf: <2.0.2."
+                            },
+                            "helpUri": "https://github.com/advisories/GHSA-3cw5-7cxw-v5qg",
+                            "help": {
+                                "text": "Advisory PKSA-4jrs-y99s-q8j6 (CVE-2023-23924) affects dompdf/dompdf <2.0.2. Run composer remediate for the smallest verified upgrade."
+                            },
+                            "defaultConfiguration": {
+                                "level": "error"
+                            },
+                            "properties": {
+                                "security-severity": "9.5",
+                                "tags": [
+                                    "security",
+                                    "vulnerability",
+                                    "critical"
+                                ]
+                            }
+                        },
+                        {
+                            "id": "PKSA-7ztm-rpt3-qqzk",
+                            "name": "CVE202350262",
+                            "shortDescription": {
+                                "text": "Denial of service caused by infinite recursion when parsing SVG images"
+                            },
+                            "fullDescription": {
+                                "text": "Denial of service caused by infinite recursion when parsing SVG images. Affected versions of dompdf/dompdf: <2.0.4."
+                            },
+                            "helpUri": "https://nvd.nist.gov/vuln/detail/CVE-2023-50262",
+                            "help": {
+                                "text": "Advisory PKSA-7ztm-rpt3-qqzk (CVE-2023-50262) affects dompdf/dompdf <2.0.4. Run composer remediate for the smallest verified upgrade."
+                            },
+                            "defaultConfiguration": {
+                                "level": "warning"
+                            },
+                            "properties": {
+                                "security-severity": "5.0",
+                                "tags": [
+                                    "security",
+                                    "vulnerability",
+                                    "medium"
+                                ]
+                            }
+                        },
+                        {
+                            "id": "PKSA-872h-8556-2chm",
+                            "name": "CVE20220085",
+                            "shortDescription": {
+                                "text": "Server-Side Request Forgery in dompdf/dompdf"
+                            },
+                            "fullDescription": {
+                                "text": "Server-Side Request Forgery in dompdf/dompdf. Affected versions of dompdf/dompdf: <2.0.0."
+                            },
+                            "helpUri": "https://github.com/advisories/GHSA-pf6p-25r2-fx45",
+                            "help": {
+                                "text": "Advisory PKSA-872h-8556-2chm (CVE-2022-0085) affects dompdf/dompdf <2.0.0. Run composer remediate for the smallest verified upgrade."
+                            },
+                            "defaultConfiguration": {
+                                "level": "warning"
+                            },
+                            "properties": {
+                                "security-severity": "5.0",
+                                "tags": [
+                                    "security",
+                                    "vulnerability",
+                                    "medium"
+                                ]
+                            }
+                        },
+                        {
+                            "id": "PKSA-hbk6-2vfz-8f8n",
+                            "name": "CVE202241343",
+                            "shortDescription": {
+                                "text": "Remote file inclusion"
+                            },
+                            "fullDescription": {
+                                "text": "Remote file inclusion. Affected versions of dompdf/dompdf: <2.0.1."
+                            },
+                            "helpUri": "https://github.com/advisories/GHSA-6x28-7h8c-chx4",
+                            "help": {
+                                "text": "Advisory PKSA-hbk6-2vfz-8f8n (CVE-2022-41343) affects dompdf/dompdf <2.0.1. Run composer remediate for the smallest verified upgrade."
+                            },
+                            "defaultConfiguration": {
+                                "level": "error"
+                            },
+                            "properties": {
+                                "security-severity": "7.5",
+                                "tags": [
+                                    "security",
+                                    "vulnerability",
+                                    "high"
+                                ]
+                            }
+                        },
+                        {
+                            "id": "PKSA-kj9c-tr41-t8mj",
+                            "name": "CVE20222400",
+                            "shortDescription": {
+                                "text": "Dompdf before v2.0.0 vulnerable to chroot check bypass"
+                            },
+                            "fullDescription": {
+                                "text": "Dompdf before v2.0.0 vulnerable to chroot check bypass. Affected versions of dompdf/dompdf: <2.0.0."
+                            },
+                            "helpUri": "https://github.com/advisories/GHSA-5qj8-6xxj-hp9h",
+                            "help": {
+                                "text": "Advisory PKSA-kj9c-tr41-t8mj (CVE-2022-2400) affects dompdf/dompdf <2.0.0. Run composer remediate for the smallest verified upgrade."
+                            },
+                            "defaultConfiguration": {
+                                "level": "warning"
+                            },
+                            "properties": {
+                                "security-severity": "5.0",
+                                "tags": [
+                                    "security",
+                                    "vulnerability",
+                                    "medium"
+                                ]
+                            }
+                        },
+                        {
+                            "id": "PKSA-ztgh-x9c8-k66g",
+                            "name": "CVE202346734",
+                            "shortDescription": {
+                                "text": "CVE-2023-46734: Potential XSS vulnerabilities in CodeExtension filters"
+                            },
+                            "fullDescription": {
+                                "text": "CVE-2023-46734: Potential XSS vulnerabilities in CodeExtension filters. Affected versions of symfony/twig-bridge: >=2.0.0,<2.1.0|>=2.1.0,<2.2.0|>=2.2.0,<2.3.0|>=2.3.0,<2.4.0|>=2.4.0,<2.5.0|>=2.5.0,<2.6.0|>=2.6.0,<2.7.0|>=2.7.0,<2.8.0|>=2.8.0,<3.0.0|>=3.0.0,<3.1.0|>=3.1.0,<3.2.0|>=3.2.0,<3.3.0|>=3.3.0,<3.4.0|>=3.4.0,<4.0.0|>=4.0.0,<4.1.0|>=4.1.0,<4.2.0|>=4.2.0,<4.3.0|>=4.3.0,<4.4.0|>=4.4.0,<4.4.51|>=5.0.0,<5.1.0|>=5.1.0,<5.2.0|>=5.2.0,<5.3.0|>=5.3.0,<5.4.0|>=5.4.0,<5.4.31|>=6.0.0,<6.1.0|>=6.1.0,<6.2.0|>=6.2.0,<6.3.0|>=6.3.0,<6.3.8."
+                            },
+                            "helpUri": "https://symfony.com/cve-2023-46734",
+                            "help": {
+                                "text": "Advisory PKSA-ztgh-x9c8-k66g (CVE-2023-46734) affects symfony/twig-bridge >=2.0.0,<2.1.0|>=2.1.0,<2.2.0|>=2.2.0,<2.3.0|>=2.3.0,<2.4.0|>=2.4.0,<2.5.0|>=2.5.0,<2.6.0|>=2.6.0,<2.7.0|>=2.7.0,<2.8.0|>=2.8.0,<3.0.0|>=3.0.0,<3.1.0|>=3.1.0,<3.2.0|>=3.2.0,<3.3.0|>=3.3.0,<3.4.0|>=3.4.0,<4.0.0|>=4.0.0,<4.1.0|>=4.1.0,<4.2.0|>=4.2.0,<4.3.0|>=4.3.0,<4.4.0|>=4.4.0,<4.4.51|>=5.0.0,<5.1.0|>=5.1.0,<5.2.0|>=5.2.0,<5.3.0|>=5.3.0,<5.4.0|>=5.4.0,<5.4.31|>=6.0.0,<6.1.0|>=6.1.0,<6.2.0|>=6.2.0,<6.3.0|>=6.3.0,<6.3.8. Run composer remediate for the smallest verified upgrade."
+                            },
+                            "defaultConfiguration": {
+                                "level": "warning"
+                            },
+                            "properties": {
+                                "security-severity": "5.0",
+                                "tags": [
+                                    "security",
+                                    "vulnerability",
+                                    "medium"
+                                ]
+                            }
+                        },
+                        {
+                            "id": "PKSA-w2tw-kmfg-rt9s",
+                            "name": "CVE202450343",
+                            "shortDescription": {
+                                "text": "CVE-2024-50343: Incorrect response from Validator when input ends with `\n`"
+                            },
+                            "fullDescription": {
+                                "text": "CVE-2024-50343: Incorrect response from Validator when input ends with `\n`. Affected versions of symfony/validator: >=2.0.0,<3.0.0|>=3.0.0,<4.0.0|>=4.0.0,<5.0.0|>=5.0.0,<5.1.0|>=5.1.0,<5.2.0|>=5.2.0,<5.3.0|>=5.3.0,<5.4.0|>=5.4.0,<5.4.43|>=6.0.0,<6.1.0|>=6.1.0,<6.2.0|>=6.2.0,<6.3.0|>=6.3.0,<6.4.0|>=6.4.0,<6.4.11|>=7.0.0,<7.1.0|>=7.1.0,<7.1.4."
+                            },
+                            "helpUri": "https://symfony.com/cve-2024-50343",
+                            "help": {
+                                "text": "Advisory PKSA-w2tw-kmfg-rt9s (CVE-2024-50343) affects symfony/validator >=2.0.0,<3.0.0|>=3.0.0,<4.0.0|>=4.0.0,<5.0.0|>=5.0.0,<5.1.0|>=5.1.0,<5.2.0|>=5.2.0,<5.3.0|>=5.3.0,<5.4.0|>=5.4.0,<5.4.43|>=6.0.0,<6.1.0|>=6.1.0,<6.2.0|>=6.2.0,<6.3.0|>=6.3.0,<6.4.0|>=6.4.0,<6.4.11|>=7.0.0,<7.1.0|>=7.1.0,<7.1.4. Run composer remediate for the smallest verified upgrade."
+                            },
+                            "defaultConfiguration": {
+                                "level": "note"
+                            },
+                            "properties": {
+                                "security-severity": "2.5",
+                                "tags": [
+                                    "security",
+                                    "vulnerability",
+                                    "low"
+                                ]
+                            }
+                        },
+                        {
+                            "id": "PKSA-d3g2-dzgm-n74r",
+                            "name": "CVE202432489",
+                            "shortDescription": {
+                                "text": "TCPDF Cross-site Scripting vulnerability"
+                            },
+                            "fullDescription": {
+                                "text": "TCPDF Cross-site Scripting vulnerability. Affected versions of tecnickcom/tcpdf: <6.7.4."
+                            },
+                            "helpUri": "https://github.com/advisories/GHSA-g9wg-98c2-qv3v",
+                            "help": {
+                                "text": "Advisory PKSA-d3g2-dzgm-n74r (CVE-2024-32489) affects tecnickcom/tcpdf <6.7.4. Run composer remediate for the smallest verified upgrade."
+                            },
+                            "defaultConfiguration": {
+                                "level": "warning"
+                            },
+                            "properties": {
+                                "security-severity": "5.0",
+                                "tags": [
+                                    "security",
+                                    "vulnerability",
+                                    "medium"
+                                ]
+                            }
+                        },
+                        {
+                            "id": "PKSA-jwjn-w3mx-tq38",
+                            "name": "CVE202422640",
+                            "shortDescription": {
+                                "text": "TCPDF vulnerable to Regular Expression Denial of Service"
+                            },
+                            "fullDescription": {
+                                "text": "TCPDF vulnerable to Regular Expression Denial of Service. Affected versions of tecnickcom/tcpdf: <=6.7.4."
+                            },
+                            "helpUri": "https://github.com/advisories/GHSA-mx3p-fhpw-x6rv",
+                            "help": {
+                                "text": "Advisory PKSA-jwjn-w3mx-tq38 (CVE-2024-22640) affects tecnickcom/tcpdf <=6.7.4. Run composer remediate for the smallest verified upgrade."
+                            },
+                            "defaultConfiguration": {
+                                "level": "warning"
+                            },
+                            "properties": {
+                                "security-severity": "5.0",
+                                "tags": [
+                                    "security",
+                                    "vulnerability",
+                                    "medium"
+                                ]
+                            }
+                        },
+                        {
+                            "id": "PKSA-6319-ffpf-gx66",
+                            "name": "CVE202445411",
+                            "shortDescription": {
+                                "text": "Possible sandbox bypass"
+                            },
+                            "fullDescription": {
+                                "text": "Possible sandbox bypass. Affected versions of twig/twig: >=1.0.0,<1.44.7|>=2.0.0,<2.16.0|>=3.0.0,<3.11.0|>=3.12.0,<3.14.0."
+                            },
+                            "helpUri": "https://symfony.com/blog/twig-security-release-possible-sandbox-bypass",
+                            "help": {
+                                "text": "Advisory PKSA-6319-ffpf-gx66 (CVE-2024-45411) affects twig/twig >=1.0.0,<1.44.7|>=2.0.0,<2.16.0|>=3.0.0,<3.11.0|>=3.12.0,<3.14.0. Run composer remediate for the smallest verified upgrade."
+                            },
+                            "defaultConfiguration": {
+                                "level": "warning"
+                            },
+                            "properties": {
+                                "security-severity": "5.0",
+                                "tags": [
+                                    "security",
+                                    "vulnerability",
+                                    "medium"
+                                ]
+                            }
+                        }
+                    ]
+                }
+            },
+            "invocations": [
+                {
+                    "executionSuccessful": true,
+                    "exitCode": 2,
+                    "properties": {
+                        "composer_version": "(fixture)",
+                        "advisory_source": "advisory snapshot advisories.json",
+                        "combined_command": "composer update aws/aws-sdk-php composer/composer symfony/twig-bridge shopware/core -W -m --with 'symfony/validator:>=5.4.43,<6.0.0 || >=6.4.11,<7.0.0 || >=7.1.4'"
+                    }
+                }
+            ],
+            "results": [
+                {
+                    "ruleId": "PKSA-n3s6-289w-qtqb",
+                    "ruleIndex": 0,
+                    "level": "warning",
+                    "message": {
+                        "text": "aws/aws-sdk-php 3.269.6 is affected by CVE-2023-51651: Potential URI resolution path traversal in the AWS SDK for PHP. Verified fix: composer update aws/aws-sdk-php -w -m"
+                    },
+                    "locations": [
+                        {
+                            "physicalLocation": {
+                                "artifactLocation": {
+                                    "uri": "composer.lock",
+                                    "uriBaseId": "%SRCROOT%"
+                                },
+                                "region": {
+                                    "startLine": 64
+                                }
+                            }
+                        }
+                    ],
+                    "partialFingerprints": {
+                        "advisoryPackage/v1": "PKSA-n3s6-289w-qtqb@aws/aws-sdk-php"
+                    },
+                    "properties": {
+                        "package": "aws/aws-sdk-php",
+                        "version": "3.269.6",
+                        "direct": false,
+                        "dev": false,
+                        "cve": "CVE-2023-51651",
+                        "severity": "medium",
+                        "remediation_status": "verified",
+                        "command": "composer update aws/aws-sdk-php -w -m"
+                    }
+                },
+                {
+                    "ruleId": "PKSA-b8f7-zn44-r4gz",
+                    "ruleIndex": 1,
+                    "level": "error",
+                    "message": {
+                        "text": "composer/composer 2.2.21 is affected by CVE-2024-35242: Composer has multiple command injections via malicious git/hg branch names. Verified fix: composer update composer/composer"
+                    },
+                    "locations": [
+                        {
+                            "physicalLocation": {
+                                "artifactLocation": {
+                                    "uri": "composer.lock",
+                                    "uriBaseId": "%SRCROOT%"
+                                },
+                                "region": {
+                                    "startLine": 369
+                                }
+                            }
+                        }
+                    ],
+                    "partialFingerprints": {
+                        "advisoryPackage/v1": "PKSA-b8f7-zn44-r4gz@composer/composer"
+                    },
+                    "properties": {
+                        "package": "composer/composer",
+                        "version": "2.2.21",
+                        "direct": false,
+                        "dev": false,
+                        "cve": "CVE-2024-35242",
+                        "severity": "high",
+                        "remediation_status": "verified",
+                        "command": "composer update composer/composer"
+                    }
+                },
+                {
+                    "ruleId": "PKSA-jn72-4kr8-gj3h",
+                    "ruleIndex": 2,
+                    "level": "error",
+                    "message": {
+                        "text": "composer/composer 2.2.21 is affected by CVE-2024-24821: Composer code execution and possible privilege escalation via compromised InstalledVersions.php or installed.php. Verified fix: composer update composer/composer"
+                    },
+                    "locations": [
+                        {
+                            "physicalLocation": {
+                                "artifactLocation": {
+                                    "uri": "composer.lock",
+                                    "uriBaseId": "%SRCROOT%"
+                                },
+                                "region": {
+                                    "startLine": 369
+                                }
+                            }
+                        }
+                    ],
+                    "partialFingerprints": {
+                        "advisoryPackage/v1": "PKSA-jn72-4kr8-gj3h@composer/composer"
+                    },
+                    "properties": {
+                        "package": "composer/composer",
+                        "version": "2.2.21",
+                        "direct": false,
+                        "dev": false,
+                        "cve": "CVE-2024-24821",
+                        "severity": "high",
+                        "remediation_status": "verified",
+                        "command": "composer update composer/composer"
+                    }
+                },
+                {
+                    "ruleId": "PKSA-m1ph-vmbx-2xd3",
+                    "ruleIndex": 3,
+                    "level": "error",
+                    "message": {
+                        "text": "composer/composer 2.2.21 is affected by CVE-2023-43655: Composer Remote Code Execution vulnerability via web-accessible composer.phar. Verified fix: composer update composer/composer"
+                    },
+                    "locations": [
+                        {
+                            "physicalLocation": {
+                                "artifactLocation": {
+                                    "uri": "composer.lock",
+                                    "uriBaseId": "%SRCROOT%"
+                                },
+                                "region": {
+                                    "startLine": 369
+                                }
+                            }
+                        }
+                    ],
+                    "partialFingerprints": {
+                        "advisoryPackage/v1": "PKSA-m1ph-vmbx-2xd3@composer/composer"
+                    },
+                    "properties": {
+                        "package": "composer/composer",
+                        "version": "2.2.21",
+                        "direct": false,
+                        "dev": false,
+                        "cve": "CVE-2023-43655",
+                        "severity": "high",
+                        "remediation_status": "verified",
+                        "command": "composer update composer/composer"
+                    }
+                },
+                {
+                    "ruleId": "PKSA-s25b-vbmp-jvhh",
+                    "ruleIndex": 4,
+                    "level": "error",
+                    "message": {
+                        "text": "composer/composer 2.2.21 is affected by CVE-2024-35241: Composer has a command injection via malicious git branch name. Verified fix: composer update composer/composer"
+                    },
+                    "locations": [
+                        {
+                            "physicalLocation": {
+                                "artifactLocation": {
+                                    "uri": "composer.lock",
+                                    "uriBaseId": "%SRCROOT%"
+                                },
+                                "region": {
+                                    "startLine": 369
+                                }
+                            }
+                        }
+                    ],
+                    "partialFingerprints": {
+                        "advisoryPackage/v1": "PKSA-s25b-vbmp-jvhh@composer/composer"
+                    },
+                    "properties": {
+                        "package": "composer/composer",
+                        "version": "2.2.21",
+                        "direct": false,
+                        "dev": false,
+                        "cve": "CVE-2024-35241",
+                        "severity": "high",
+                        "remediation_status": "verified",
+                        "command": "composer update composer/composer"
+                    }
+                },
+                {
+                    "ruleId": "PKSA-pc52-dbxt-c1w6",
+                    "ruleIndex": 5,
+                    "level": "error",
+                    "message": {
+                        "text": "league/oauth2-server 8.3.6 is affected by CVE-2023-37260: league/oauth2-server key exposed in exception message when passing as a string and providing an invalid pass phrase. No verified remediation found."
+                    },
+                    "locations": [
+                        {
+                            "physicalLocation": {
+                                "artifactLocation": {
+                                    "uri": "composer.lock",
+                                    "uriBaseId": "%SRCROOT%"
+                                },
+                                "region": {
+                                    "startLine": 3758
+                                }
+                            }
+                        }
+                    ],
+                    "partialFingerprints": {
+                        "advisoryPackage/v1": "PKSA-pc52-dbxt-c1w6@league/oauth2-server"
+                    },
+                    "properties": {
+                        "package": "league/oauth2-server",
+                        "version": "8.3.6",
+                        "direct": false,
+                        "dev": false,
+                        "cve": "CVE-2023-37260",
+                        "severity": "high",
+                        "remediation_status": "none"
+                    }
+                },
+                {
+                    "ruleId": "PKSA-3dsp-r6t7-8xmz",
+                    "ruleIndex": 6,
+                    "level": "warning",
+                    "message": {
+                        "text": "phenx/php-svg-lib 0.3.4 is affected by CVE-2024-25117: php-svg-lib lacks path validation on font through SVG inline styles . No verified remediation found."
+                    },
+                    "locations": [
+                        {
+                            "physicalLocation": {
+                                "artifactLocation": {
+                                    "uri": "composer.lock",
+                                    "uriBaseId": "%SRCROOT%"
+                                },
+                                "region": {
+                                    "startLine": 4556
+                                }
+                            }
+                        }
+                    ],
+                    "partialFingerprints": {
+                        "advisoryPackage/v1": "PKSA-3dsp-r6t7-8xmz@phenx/php-svg-lib"
+                    },
+                    "properties": {
+                        "package": "phenx/php-svg-lib",
+                        "version": "0.3.4",
+                        "direct": false,
+                        "dev": false,
+                        "cve": "CVE-2024-25117",
+                        "severity": "medium",
+                        "remediation_status": "none"
+                    }
+                },
+                {
+                    "ruleId": "PKSA-cwpj-dtf9-6fg1",
+                    "ruleIndex": 7,
+                    "level": "warning",
+                    "message": {
+                        "text": "phenx/php-svg-lib 0.3.4 is affected by CVE-2023-50251: Denial of service caused by infinite recursion when parsing SVG document. No verified remediation found."
+                    },
+                    "locations": [
+                        {
+                            "physicalLocation": {
+                                "artifactLocation": {
+                                    "uri": "composer.lock",
+                                    "uriBaseId": "%SRCROOT%"
+                                },
+                                "region": {
+                                    "startLine": 4556
+                                }
+                            }
+                        }
+                    ],
+                    "partialFingerprints": {
+                        "advisoryPackage/v1": "PKSA-cwpj-dtf9-6fg1@phenx/php-svg-lib"
+                    },
+                    "properties": {
+                        "package": "phenx/php-svg-lib",
+                        "version": "0.3.4",
+                        "direct": false,
+                        "dev": false,
+                        "cve": "CVE-2023-50251",
+                        "severity": "medium",
+                        "remediation_status": "none"
+                    }
+                },
+                {
+                    "ruleId": "PKSA-qsyb-3psh-f1t3",
+                    "ruleIndex": 8,
+                    "level": "error",
+                    "message": {
+                        "text": "phenx/php-svg-lib 0.3.4 is affected by PKSA-qsyb-3psh-f1t3: Dompdf's usage of vulnerable version of phenx/php-svg-lib leads to restriction bypass and potential RCE. No verified remediation found."
+                    },
+                    "locations": [
+                        {
+                            "physicalLocation": {
+                                "artifactLocation": {
+                                    "uri": "composer.lock",
+                                    "uriBaseId": "%SRCROOT%"
+                                },
+                                "region": {
+                                    "startLine": 4556
+                                }
+                            }
+                        }
+                    ],
+                    "partialFingerprints": {
+                        "advisoryPackage/v1": "PKSA-qsyb-3psh-f1t3@phenx/php-svg-lib"
+                    },
+                    "properties": {
+                        "package": "phenx/php-svg-lib",
+                        "version": "0.3.4",
+                        "direct": false,
+                        "dev": false,
+                        "severity": "critical",
+                        "remediation_status": "none"
+                    }
+                },
+                {
+                    "ruleId": "PKSA-4spx-rq41-wk8h",
+                    "ruleIndex": 9,
+                    "level": "warning",
+                    "message": {
+                        "text": "shopware/core 6.4.20.2 is affected by CVE-2024-42354: Shopware vulnerable to Improper Access Control with ManyToMany associations in store-api. No verified remediation found."
+                    },
+                    "locations": [
+                        {
+                            "physicalLocation": {
+                                "artifactLocation": {
+                                    "uri": "composer.lock",
+                                    "uriBaseId": "%SRCROOT%"
+                                },
+                                "region": {
+                                    "startLine": 5893
+                                }
+                            }
+                        }
+                    ],
+                    "partialFingerprints": {
+                        "advisoryPackage/v1": "PKSA-4spx-rq41-wk8h@shopware/core"
+                    },
+                    "properties": {
+                        "package": "shopware/core",
+                        "version": "6.4.20.2",
+                        "direct": true,
+                        "dev": false,
+                        "cve": "CVE-2024-42354",
+                        "severity": "medium",
+                        "remediation_status": "none"
+                    }
+                },
+                {
+                    "ruleId": "PKSA-6stq-czfs-1nvv",
+                    "ruleIndex": 10,
+                    "level": "error",
+                    "message": {
+                        "text": "shopware/core 6.4.20.2 is affected by CVE-2024-42355: Shopware vulnerable to Server Side Template Injection in Twig using deprecation silence tag. No verified remediation found."
+                    },
+                    "locations": [
+                        {
+                            "physicalLocation": {
+                                "artifactLocation": {
+                                    "uri": "composer.lock",
+                                    "uriBaseId": "%SRCROOT%"
+                                },
+                                "region": {
+                                    "startLine": 5893
+                                }
+                            }
+                        }
+                    ],
+                    "partialFingerprints": {
+                        "advisoryPackage/v1": "PKSA-6stq-czfs-1nvv@shopware/core"
+                    },
+                    "properties": {
+                        "package": "shopware/core",
+                        "version": "6.4.20.2",
+                        "direct": true,
+                        "dev": false,
+                        "cve": "CVE-2024-42355",
+                        "severity": "high",
+                        "remediation_status": "none"
+                    }
+                },
+                {
+                    "ruleId": "PKSA-kt1g-n1g2-hzb4",
+                    "ruleIndex": 11,
+                    "level": "error",
+                    "message": {
+                        "text": "shopware/core 6.4.20.2 is affected by CVE-2024-42356: Shopware vulnerable to Server Side Template Injection in Twig using Context functions. No verified remediation found."
+                    },
+                    "locations": [
+                        {
+                            "physicalLocation": {
+                                "artifactLocation": {
+                                    "uri": "composer.lock",
+                                    "uriBaseId": "%SRCROOT%"
+                                },
+                                "region": {
+                                    "startLine": 5893
+                                }
+                            }
+                        }
+                    ],
+                    "partialFingerprints": {
+                        "advisoryPackage/v1": "PKSA-kt1g-n1g2-hzb4@shopware/core"
+                    },
+                    "properties": {
+                        "package": "shopware/core",
+                        "version": "6.4.20.2",
+                        "direct": true,
+                        "dev": false,
+                        "cve": "CVE-2024-42356",
+                        "severity": "high",
+                        "remediation_status": "none"
+                    }
+                },
+                {
+                    "ruleId": "PKSA-ktmn-6519-qrdp",
+                    "ruleIndex": 12,
+                    "level": "error",
+                    "message": {
+                        "text": "shopware/core 6.4.20.2 is affected by CVE-2024-22406: Blind SQL injection in shopware. No verified remediation found."
+                    },
+                    "locations": [
+                        {
+                            "physicalLocation": {
+                                "artifactLocation": {
+                                    "uri": "composer.lock",
+                                    "uriBaseId": "%SRCROOT%"
+                                },
+                                "region": {
+                                    "startLine": 5893
+                                }
+                            }
+                        }
+                    ],
+                    "partialFingerprints": {
+                        "advisoryPackage/v1": "PKSA-ktmn-6519-qrdp@shopware/core"
+                    },
+                    "properties": {
+                        "package": "shopware/core",
+                        "version": "6.4.20.2",
+                        "direct": true,
+                        "dev": false,
+                        "cve": "CVE-2024-22406",
+                        "severity": "critical",
+                        "remediation_status": "none"
+                    }
+                },
+                {
+                    "ruleId": "PKSA-mm7q-gnjj-tttn",
+                    "ruleIndex": 13,
+                    "level": "warning",
+                    "message": {
+                        "text": "shopware/core 6.4.20.2 is affected by CVE-2024-22407: Broken Access Control order API in Shopware. No verified remediation found."
+                    },
+                    "locations": [
+                        {
+                            "physicalLocation": {
+                                "artifactLocation": {
+                                    "uri": "composer.lock",
+                                    "uriBaseId": "%SRCROOT%"
+                                },
+                                "region": {
+                                    "startLine": 5893
+                                }
+                            }
+                        }
+                    ],
+                    "partialFingerprints": {
+                        "advisoryPackage/v1": "PKSA-mm7q-gnjj-tttn@shopware/core"
+                    },
+                    "properties": {
+                        "package": "shopware/core",
+                        "version": "6.4.20.2",
+                        "direct": true,
+                        "dev": false,
+                        "cve": "CVE-2024-22407",
+                        "severity": "medium",
+                        "remediation_status": "none"
+                    }
+                },
+                {
+                    "ruleId": "PKSA-s8vz-878v-gv1c",
+                    "ruleIndex": 14,
+                    "level": "warning",
+                    "message": {
+                        "text": "shopware/core 6.4.20.2 is affected by CVE-2024-31447: Shopware Improper Session Handling in store-api account logout. No verified remediation found."
+                    },
+                    "locations": [
+                        {
+                            "physicalLocation": {
+                                "artifactLocation": {
+                                    "uri": "composer.lock",
+                                    "uriBaseId": "%SRCROOT%"
+                                },
+                                "region": {
+                                    "startLine": 5893
+                                }
+                            }
+                        }
+                    ],
+                    "partialFingerprints": {
+                        "advisoryPackage/v1": "PKSA-s8vz-878v-gv1c@shopware/core"
+                    },
+                    "properties": {
+                        "package": "shopware/core",
+                        "version": "6.4.20.2",
+                        "direct": true,
+                        "dev": false,
+                        "cve": "CVE-2024-31447",
+                        "severity": "medium",
+                        "remediation_status": "none"
+                    }
+                },
+                {
+                    "ruleId": "PKSA-wp2c-7yp8-5fvs",
+                    "ruleIndex": 15,
+                    "level": "warning",
+                    "message": {
+                        "text": "shopware/core 6.4.20.2 is affected by CVE-2024-42357: Shopware vulnerable to blind SQL-injection in DAL aggregations. No verified remediation found."
+                    },
+                    "locations": [
+                        {
+                            "physicalLocation": {
+                                "artifactLocation": {
+                                    "uri": "composer.lock",
+                                    "uriBaseId": "%SRCROOT%"
+                                },
+                                "region": {
+                                    "startLine": 5893
+                                }
+                            }
+                        }
+                    ],
+                    "partialFingerprints": {
+                        "advisoryPackage/v1": "PKSA-wp2c-7yp8-5fvs@shopware/core"
+                    },
+                    "properties": {
+                        "package": "shopware/core",
+                        "version": "6.4.20.2",
+                        "direct": true,
+                        "dev": false,
+                        "cve": "CVE-2024-42357",
+                        "severity": "medium",
+                        "remediation_status": "none"
+                    }
+                },
+                {
+                    "ruleId": "PKSA-4jrs-y99s-q8j6",
+                    "ruleIndex": 16,
+                    "level": "error",
+                    "message": {
+                        "text": "shopwarelabs/dompdf v1.0.3 is affected by CVE-2023-23924: Dompdf vulnerable to URI validation failure on SVG parsing. No verified remediation found."
+                    },
+                    "locations": [
+                        {
+                            "physicalLocation": {
+                                "artifactLocation": {
+                                    "uri": "composer.lock",
+                                    "uriBaseId": "%SRCROOT%"
+                                },
+                                "region": {
+                                    "startLine": 6250
+                                }
+                            }
+                        }
+                    ],
+                    "partialFingerprints": {
+                        "advisoryPackage/v1": "PKSA-4jrs-y99s-q8j6@shopwarelabs/dompdf"
+                    },
+                    "properties": {
+                        "package": "shopwarelabs/dompdf",
+                        "version": "v1.0.3",
+                        "direct": false,
+                        "dev": false,
+                        "cve": "CVE-2023-23924",
+                        "severity": "critical",
+                        "remediation_status": "none"
+                    }
+                },
+                {
+                    "ruleId": "PKSA-7ztm-rpt3-qqzk",
+                    "ruleIndex": 17,
+                    "level": "warning",
+                    "message": {
+                        "text": "shopwarelabs/dompdf v1.0.3 is affected by CVE-2023-50262: Denial of service caused by infinite recursion when parsing SVG images. No verified remediation found."
+                    },
+                    "locations": [
+                        {
+                            "physicalLocation": {
+                                "artifactLocation": {
+                                    "uri": "composer.lock",
+                                    "uriBaseId": "%SRCROOT%"
+                                },
+                                "region": {
+                                    "startLine": 6250
+                                }
+                            }
+                        }
+                    ],
+                    "partialFingerprints": {
+                        "advisoryPackage/v1": "PKSA-7ztm-rpt3-qqzk@shopwarelabs/dompdf"
+                    },
+                    "properties": {
+                        "package": "shopwarelabs/dompdf",
+                        "version": "v1.0.3",
+                        "direct": false,
+                        "dev": false,
+                        "cve": "CVE-2023-50262",
+                        "severity": "medium",
+                        "remediation_status": "none"
+                    }
+                },
+                {
+                    "ruleId": "PKSA-872h-8556-2chm",
+                    "ruleIndex": 18,
+                    "level": "warning",
+                    "message": {
+                        "text": "shopwarelabs/dompdf v1.0.3 is affected by CVE-2022-0085: Server-Side Request Forgery in dompdf/dompdf. No verified remediation found."
+                    },
+                    "locations": [
+                        {
+                            "physicalLocation": {
+                                "artifactLocation": {
+                                    "uri": "composer.lock",
+                                    "uriBaseId": "%SRCROOT%"
+                                },
+                                "region": {
+                                    "startLine": 6250
+                                }
+                            }
+                        }
+                    ],
+                    "partialFingerprints": {
+                        "advisoryPackage/v1": "PKSA-872h-8556-2chm@shopwarelabs/dompdf"
+                    },
+                    "properties": {
+                        "package": "shopwarelabs/dompdf",
+                        "version": "v1.0.3",
+                        "direct": false,
+                        "dev": false,
+                        "cve": "CVE-2022-0085",
+                        "severity": "medium",
+                        "remediation_status": "none"
+                    }
+                },
+                {
+                    "ruleId": "PKSA-hbk6-2vfz-8f8n",
+                    "ruleIndex": 19,
+                    "level": "error",
+                    "message": {
+                        "text": "shopwarelabs/dompdf v1.0.3 is affected by CVE-2022-41343: Remote file inclusion. No verified remediation found."
+                    },
+                    "locations": [
+                        {
+                            "physicalLocation": {
+                                "artifactLocation": {
+                                    "uri": "composer.lock",
+                                    "uriBaseId": "%SRCROOT%"
+                                },
+                                "region": {
+                                    "startLine": 6250
+                                }
+                            }
+                        }
+                    ],
+                    "partialFingerprints": {
+                        "advisoryPackage/v1": "PKSA-hbk6-2vfz-8f8n@shopwarelabs/dompdf"
+                    },
+                    "properties": {
+                        "package": "shopwarelabs/dompdf",
+                        "version": "v1.0.3",
+                        "direct": false,
+                        "dev": false,
+                        "cve": "CVE-2022-41343",
+                        "severity": "high",
+                        "remediation_status": "none"
+                    }
+                },
+                {
+                    "ruleId": "PKSA-kj9c-tr41-t8mj",
+                    "ruleIndex": 20,
+                    "level": "warning",
+                    "message": {
+                        "text": "shopwarelabs/dompdf v1.0.3 is affected by CVE-2022-2400: Dompdf before v2.0.0 vulnerable to chroot check bypass. No verified remediation found."
+                    },
+                    "locations": [
+                        {
+                            "physicalLocation": {
+                                "artifactLocation": {
+                                    "uri": "composer.lock",
+                                    "uriBaseId": "%SRCROOT%"
+                                },
+                                "region": {
+                                    "startLine": 6250
+                                }
+                            }
+                        }
+                    ],
+                    "partialFingerprints": {
+                        "advisoryPackage/v1": "PKSA-kj9c-tr41-t8mj@shopwarelabs/dompdf"
+                    },
+                    "properties": {
+                        "package": "shopwarelabs/dompdf",
+                        "version": "v1.0.3",
+                        "direct": false,
+                        "dev": false,
+                        "cve": "CVE-2022-2400",
+                        "severity": "medium",
+                        "remediation_status": "none"
+                    }
+                },
+                {
+                    "ruleId": "PKSA-ztgh-x9c8-k66g",
+                    "ruleIndex": 21,
+                    "level": "warning",
+                    "message": {
+                        "text": "symfony/twig-bridge v5.4.22 is affected by CVE-2023-46734: CVE-2023-46734: Potential XSS vulnerabilities in CodeExtension filters. Verified fix: composer update symfony/twig-bridge"
+                    },
+                    "locations": [
+                        {
+                            "physicalLocation": {
+                                "artifactLocation": {
+                                    "uri": "composer.lock",
+                                    "uriBaseId": "%SRCROOT%"
+                                },
+                                "region": {
+                                    "startLine": 10891
+                                }
+                            }
+                        }
+                    ],
+                    "partialFingerprints": {
+                        "advisoryPackage/v1": "PKSA-ztgh-x9c8-k66g@symfony/twig-bridge"
+                    },
+                    "properties": {
+                        "package": "symfony/twig-bridge",
+                        "version": "v5.4.22",
+                        "direct": false,
+                        "dev": false,
+                        "cve": "CVE-2023-46734",
+                        "severity": "medium",
+                        "remediation_status": "verified",
+                        "command": "composer update symfony/twig-bridge"
+                    }
+                },
+                {
+                    "ruleId": "PKSA-w2tw-kmfg-rt9s",
+                    "ruleIndex": 22,
+                    "level": "note",
+                    "message": {
+                        "text": "symfony/validator v5.4.23 is affected by CVE-2024-50343: CVE-2024-50343: Incorrect response from Validator when input ends with `\n`. Verified fix: composer update shopware/core -W -m --with 'symfony/validator:>=5.4.43,<6.0.0 || >=6.4.11,<7.0.0 || >=7.1.4'"
+                    },
+                    "locations": [
+                        {
+                            "physicalLocation": {
+                                "artifactLocation": {
+                                    "uri": "composer.lock",
+                                    "uriBaseId": "%SRCROOT%"
+                                },
+                                "region": {
+                                    "startLine": 11101
+                                }
+                            }
+                        }
+                    ],
+                    "partialFingerprints": {
+                        "advisoryPackage/v1": "PKSA-w2tw-kmfg-rt9s@symfony/validator"
+                    },
+                    "properties": {
+                        "package": "symfony/validator",
+                        "version": "v5.4.23",
+                        "direct": false,
+                        "dev": false,
+                        "cve": "CVE-2024-50343",
+                        "severity": "low",
+                        "remediation_status": "verified",
+                        "command": "composer update shopware/core -W -m --with 'symfony/validator:>=5.4.43,<6.0.0 || >=6.4.11,<7.0.0 || >=7.1.4'"
+                    }
+                },
+                {
+                    "ruleId": "PKSA-d3g2-dzgm-n74r",
+                    "ruleIndex": 23,
+                    "level": "warning",
+                    "message": {
+                        "text": "tecnickcom/tcpdf 6.4.4 is affected by CVE-2024-32489: TCPDF Cross-site Scripting vulnerability. No verified remediation found."
+                    },
+                    "locations": [
+                        {
+                            "physicalLocation": {
+                                "artifactLocation": {
+                                    "uri": "composer.lock",
+                                    "uriBaseId": "%SRCROOT%"
+                                },
+                                "region": {
+                                    "startLine": 11451
+                                }
+                            }
+                        }
+                    ],
+                    "partialFingerprints": {
+                        "advisoryPackage/v1": "PKSA-d3g2-dzgm-n74r@tecnickcom/tcpdf"
+                    },
+                    "properties": {
+                        "package": "tecnickcom/tcpdf",
+                        "version": "6.4.4",
+                        "direct": false,
+                        "dev": false,
+                        "cve": "CVE-2024-32489",
+                        "severity": "medium",
+                        "remediation_status": "none"
+                    }
+                },
+                {
+                    "ruleId": "PKSA-jwjn-w3mx-tq38",
+                    "ruleIndex": 24,
+                    "level": "warning",
+                    "message": {
+                        "text": "tecnickcom/tcpdf 6.4.4 is affected by CVE-2024-22640: TCPDF vulnerable to Regular Expression Denial of Service. No verified remediation found."
+                    },
+                    "locations": [
+                        {
+                            "physicalLocation": {
+                                "artifactLocation": {
+                                    "uri": "composer.lock",
+                                    "uriBaseId": "%SRCROOT%"
+                                },
+                                "region": {
+                                    "startLine": 11451
+                                }
+                            }
+                        }
+                    ],
+                    "partialFingerprints": {
+                        "advisoryPackage/v1": "PKSA-jwjn-w3mx-tq38@tecnickcom/tcpdf"
+                    },
+                    "properties": {
+                        "package": "tecnickcom/tcpdf",
+                        "version": "6.4.4",
+                        "direct": false,
+                        "dev": false,
+                        "cve": "CVE-2024-22640",
+                        "severity": "medium",
+                        "remediation_status": "none"
+                    }
+                },
+                {
+                    "ruleId": "PKSA-6319-ffpf-gx66",
+                    "ruleIndex": 25,
+                    "level": "warning",
+                    "message": {
+                        "text": "twig/twig v3.4.3 is affected by CVE-2024-45411: Possible sandbox bypass. No verified remediation found."
+                    },
+                    "locations": [
+                        {
+                            "physicalLocation": {
+                                "artifactLocation": {
+                                    "uri": "composer.lock",
+                                    "uriBaseId": "%SRCROOT%"
+                                },
+                                "region": {
+                                    "startLine": 11715
+                                }
+                            }
+                        }
+                    ],
+                    "partialFingerprints": {
+                        "advisoryPackage/v1": "PKSA-6319-ffpf-gx66@twig/twig"
+                    },
+                    "properties": {
+                        "package": "twig/twig",
+                        "version": "v3.4.3",
+                        "direct": false,
+                        "dev": false,
+                        "cve": "CVE-2024-45411",
+                        "severity": "medium",
+                        "remediation_status": "none"
+                    }
+                }
+            ]
+        }
+    ]
+}
