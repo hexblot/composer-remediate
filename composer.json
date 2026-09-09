@@ -65,7 +65,8 @@
         "check": [
             "@phpstan",
             "@test"
-        ]
+        ],
+        "cli-reference": "php bin/cli-reference.php > docs/cli-reference.md"
     },
     "minimum-stability": "stable",
     "prefer-stable": true
