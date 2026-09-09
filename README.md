@@ -27,6 +27,22 @@ would choose on five real historical projects (BookStack, koel, Shopware, a Drup
 platform-bound "no fix" case). See the [documentation](docs/index.md) and the
 [roadmap](docs/roadmap.md).
 
+## Using it as a CI gate
+
+The command exits `0` when the lock is clean, `1` when vulnerabilities have a verified fix, `2` when
+at least one has no verified fix yet, and `3` to `5` for tool, advisory-data or network errors. A
+typical gate fails on `1` (apply the recommended command), warns on `2`, and keeps the HTML or JSON
+report as an artifact:
+
+```bash
+composer global config --no-plugins allow-plugins.hexblot/composer-remediate true
+composer global require hexblot/composer-remediate
+composer remediate --no-dev --output=remediation-report.html --output=remediation-report.json
+```
+
+Ready-made GitHub Actions and GitLab CI jobs, and `jq` recipes for severity-based gates, are in
+[docs/ci-integration.md](docs/ci-integration.md).
+
 ## Development
 
 PHP and Composer run inside [ddev](https://ddev.com):

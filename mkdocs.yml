@@ -26,6 +26,7 @@ nav:
   - Getting started: getting-started.md
   - How it works: how-it-works.md
   - Privacy and network behaviour: privacy-and-network.md
+  - CI integration: ci-integration.md
   - Test fixtures: fixtures.md
   - Roadmap: roadmap.md
   - Contributing: contributing.md

@@ -44,6 +44,8 @@ The plugin never writes to `composer.json`, `composer.lock` or `vendor/`. Every 
 plain `composer update` command you run yourself. The report ends with a summary: how many
 advisories were found, and the single command that fixes all of them, or how many of them it fixes.
 
+See [CI integration](ci-integration.md) for gating pipelines on these results.
+
 Exit codes: `0` no vulnerabilities, `1` vulnerabilities with a verified remediation, `2` at least
 one vulnerability without a verified remediation, `3` error, `4` advisory data unavailable,
 `5` package metadata could not be fetched (network).
