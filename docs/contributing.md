@@ -11,7 +11,8 @@
 ## Commit messages
 
 Conventional-commit style subjects (`feat:`, `fix:`, `docs:`, `test:`, `chore:`), imperative mood,
-no trailer lines.
+no trailer lines. Commits on `main` are signed (SSH signing keys work fine: `git config gpg.format ssh`
+and register the public key on GitHub as a *signing* key).
 
 ## Adding a fixture
 
