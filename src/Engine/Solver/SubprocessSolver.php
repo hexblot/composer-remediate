@@ -19,21 +19,46 @@ final class SubprocessSolver implements SolverInterface
 {
     private ?bool $minimalChanges = null;
 
+    /** @var list<string> */
+    private readonly array $composerCommand;
+
+    /**
+     * @param list<string>|string $composer       the Composer executable, or the command prefix that runs it (e.g. [php, composer.phar])
+     * @param list<string>        $extraArguments extra arguments such as --ignore-platform-req=php
+     */
     public function __construct(
-        private readonly string $composerBinary = 'composer',
+        array|string $composer = 'composer',
         private readonly float $timeout = 600.0,
-        /** @var list<string> extra arguments such as --ignore-platform-req=php */
         private readonly array $extraArguments = [],
     ) {
+        $this->composerCommand = is_string($composer) ? [$composer] : $composer;
+    }
+
+    /**
+     * The Composer executable that is running this process (the phar or source checkout behind the
+     * `composer` command), so the subprocess uses the same Composer version as the in-process solver.
+     */
+    public static function forRunningComposer(?string $composerBinary = null): self
+    {
+        $env = getenv('REMEDIATE_COMPOSER_BINARY');
+        $script = $composerBinary ?? (is_string($env) && $env !== '' ? $env : (is_string($_SERVER['argv'][0] ?? null) ? $_SERVER['argv'][0] : 'composer'));
+        if (str_contains($script, '/') || is_file($script)) {
+            $script = realpath($script) ?: $script;
+
+            return new self(is_executable($script) ? [$script] : [PHP_BINARY, $script]);
+        }
+
+        return new self([$script]);
     }
 
     public function supportsMinimalChanges(): bool
     {
         if ($this->minimalChanges === null) {
-            $process = new Process([$this->composerBinary, '--version', '--no-ansi']);
+            $process = new Process([...$this->composerCommand, '--version', '--no-ansi']);
             $process->run();
+            // --minimal-changes exists since Composer 2.7.0 (2.9 extended it to full updates).
             $this->minimalChanges = preg_match('{Composer(?: version)? (\d+)\.(\d+)}', $process->getOutput(), $m) === 1
-                && ((int) $m[1] > 2 || ((int) $m[1] === 2 && (int) $m[2] >= 9));
+                && ((int) $m[1] > 2 || ((int) $m[1] === 2 && (int) $m[2] >= 7));
         }
 
         return $this->minimalChanges;
@@ -41,7 +66,7 @@ final class SubprocessSolver implements SolverInterface
 
     public function describe(): string
     {
-        return sprintf('`%s update --no-install` in a scratch directory', $this->composerBinary);
+        return sprintf('`%s update --no-install` in a scratch directory', implode(' ', array_map('basename', $this->composerCommand)));
     }
 
     public function solve(Candidate $candidate, ScratchWorkspace $workspace): SolveResult
@@ -52,7 +77,7 @@ final class SubprocessSolver implements SolverInterface
                 $project->changeRootRequirement($change->packageName, $change->toConstraint, $change->isDev);
             }
 
-            $args = [$this->composerBinary, 'update', ...$candidate->allowList, '--no-install', '--no-scripts', '--no-plugins', '--no-audit', '--no-progress', '--no-interaction', '--no-ansi'];
+            $args = [...$this->composerCommand, 'update', ...$candidate->allowList, '--no-install', '--no-scripts', '--no-plugins', '--no-audit', '--no-progress', '--no-interaction', '--no-ansi'];
             if ($candidate->transitiveMode === Request::UPDATE_LISTED_WITH_TRANSITIVE_DEPS) {
                 $args[] = '--with-all-dependencies';
             } elseif ($candidate->transitiveMode === Request::UPDATE_LISTED_WITH_TRANSITIVE_DEPS_NO_ROOT_REQUIRE) {
@@ -65,7 +90,7 @@ final class SubprocessSolver implements SolverInterface
                 $args[] = '--with';
                 $args[] = $name . ':' . $constraint;
             }
-            array_push($args, ...$this->extraArguments);
+            array_push($args, ...$candidate->extraArguments, ...$this->extraArguments);
 
             $process = new Process($args, $project->directory(), [
                 'COMPOSER_NO_INTERACTION' => '1',

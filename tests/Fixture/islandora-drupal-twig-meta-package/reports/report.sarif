@@ -129,7 +129,7 @@
                     "ruleIndex": 0,
                     "level": "warning",
                     "message": {
-                        "text": "drupal/core 10.3.1 is affected by CVE-2024-45440: Drupal Full Path Disclosure. No verified remediation found."
+                        "text": "drupal/core 10.3.1 is affected by CVE-2024-45440: Drupal Full Path Disclosure. No verified remediation found (No verified fix within the search budget (14 candidates tried, 14 solver runs); a fix outside the bounded search may still exist.)."
                     },
                     "locations": [
                         {

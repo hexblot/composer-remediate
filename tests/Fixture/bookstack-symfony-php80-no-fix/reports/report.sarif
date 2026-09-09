@@ -314,7 +314,7 @@
                     "ruleIndex": 4,
                     "level": "note",
                     "message": {
-                        "text": "symfony/http-foundation v6.0.20 is affected by CVE-2024-50345: CVE-2024-50345: Open redirect via browser-sanitized URLs. No verified remediation found."
+                        "text": "symfony/http-foundation v6.0.20 is affected by CVE-2024-50345: CVE-2024-50345: Open redirect via browser-sanitized URLs. No verified remediation found (No verified fix within the search budget (11 candidates tried, 11 solver runs); a fix outside the bounded search may still exist.)."
                     },
                     "locations": [
                         {
@@ -347,7 +347,7 @@
                     "ruleIndex": 5,
                     "level": "error",
                     "message": {
-                        "text": "symfony/process v6.0.19 is affected by CVE-2024-51736: CVE-2024-51736: Command execution hijack on Windows with Process class. No verified remediation found."
+                        "text": "symfony/process v6.0.19 is affected by CVE-2024-51736: CVE-2024-51736: Command execution hijack on Windows with Process class. No verified remediation found (No verified fix within the search budget (10 candidates tried, 10 solver runs); a fix outside the bounded search may still exist.)."
                     },
                     "locations": [
                         {

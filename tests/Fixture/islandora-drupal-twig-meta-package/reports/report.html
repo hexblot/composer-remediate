@@ -23,12 +23,13 @@ details summary{cursor:pointer;color:var(--accent);margin:.5rem 0}
 .meta dl{display:grid;grid-template-columns:max-content 1fr;gap:.2rem 1rem;font-size:.85rem;color:var(--muted)}.meta dt{font-weight:600}.meta dd{margin:0;word-break:break-all}</style></head><body>
 <header><h1>Composer Remediate</h1><p class="sub">Composer Remediate — 4 findings in <code>islandora-drupal-twig-meta-package</code></p></header>
 <main>
+<p class="warning">twig/twig: the recommended command moves drupal/core, drupal/core-recommended to a version that still carries another advisory; Composer 2.10+ advisory blocking may refuse it until that advisory is ignored in config.policy or blocking is disabled.</p>
 <section><h2>Summary</h2><p>4 advisories on 4 packages.</p><p class="command"><span class="badge ok">fixes 2 of 4</span> <code>composer update symfony/validator drupal/core-recommended:10.3.4 -W -m</code></p><table class="summary"><thead><tr><th>Package</th><th>Advisories</th><th>Status</th><th>Recommended command</th></tr></thead><tbody><tr><td><a href="#finding-1">drupal/core 10.3.1</a></td><td>CVE-2024-45440</td><td><span class="badge none">no verified fix</span></td><td>—</td></tr><tr><td><a href="#finding-2">drupal/core-recommended 10.3.1</a></td><td>CVE-2024-45440</td><td><span class="badge none">no verified fix</span></td><td>—</td></tr><tr><td><a href="#finding-3">symfony/validator v6.4.9</a></td><td>CVE-2024-50343</td><td><span class="badge ok">verified</span></td><td><code>composer update symfony/validator</code></td></tr><tr><td><a href="#finding-4">twig/twig v3.10.3</a></td><td>CVE-2024-45411</td><td><span class="badge ok">verified</span></td><td><code>composer update drupal/core-recommended:10.3.4 -W -m</code></td></tr></tbody></table></section>
 <section class="finding" id="finding-1">
 <h2>drupal/core <span class="version">10.3.1</span></h2>
 <p class="state">Transitive dependency.</p>
 <h3>Advisories</h3><ul class="advisories">
-<li><strong><a href="https://github.com/advisories/GHSA-mg8j-w93w-xjgc" rel="noopener">CVE-2024-45440 <small>(PKSA-styk-3knc-d1bt)</small></a></strong> <span class="badge sev-medium">medium</span><br>Drupal Full Path Disclosure<br><small>affected versions: <code>&gt;=8.0.0,&lt;10.2.9|&gt;=10.3.0,&lt;10.3.6|&gt;=11.0.0,&lt;11.0.5</code></small></li>
+<li><strong><a href="https://github.com/advisories/GHSA-mg8j-w93w-xjgc" rel="noopener noreferrer">CVE-2024-45440 <small>(PKSA-styk-3knc-d1bt)</small></a></strong> <span class="badge sev-medium">medium</span><br>Drupal Full Path Disclosure<br><small>affected versions: <code>&gt;=8.0.0,&lt;10.2.9|&gt;=10.3.0,&lt;10.3.6|&gt;=11.0.0,&lt;11.0.5</code></small></li>
 </ul>
 <h3>Introduced by</h3>
 <pre class="tree">root
@@ -56,7 +57,7 @@ root
 └── drupal/admin_toolbar 3.4.2
     └── drupal/core 10.3.1  (requires ^9.2 || ^10)</pre>
 <p><small>… and 115 more paths</small></p>
-<h3>Recommended remediation</h3><p class="none-box">No verified remediation found.</p>
+<h3>Recommended remediation</h3><p class="none-box">No verified remediation found (none found within the search budget). No verified fix within the search budget (14 candidates tried, 14 solver runs); a fix outside the bounded search may still exist.</p>
 <details><summary>Other candidates (14)</summary><table class="candidates"><thead><tr><th>Outcome</th><th>Command</th><th>Detail</th></tr></thead><tbody>
 <tr><td><span class="badge rejected">rejected</span></td><td><code>composer update drupal/core</code></td><td><pre class="reason">resolves, but drupal/core ends at 10.3.1 which is still affected by PKSA-styk-3knc-d1bt</pre></td></tr>
 <tr><td><span class="badge rejected">rejected</span></td><td><code>composer update drupal/core -w -m --with &apos;drupal/core:&gt;=10.3.6,&lt;11.0.0 || &gt;=11.0.5&apos;</code></td><td><pre class="reason">Composer could not resolve the dependencies: Your requirements could not be resolved to an installable set of packages.
@@ -347,12 +348,12 @@ root
 <h2>drupal/core-recommended <span class="version">10.3.1</span></h2>
 <p class="state">Direct dependency.</p>
 <h3>Advisories</h3><ul class="advisories">
-<li><strong><a href="https://github.com/advisories/GHSA-mg8j-w93w-xjgc" rel="noopener">CVE-2024-45440 <small>(PKSA-35hc-pd1y-zwpc)</small></a></strong> <span class="badge sev-medium">medium</span><br>Drupal Full Path Disclosure<br><small>affected versions: <code>&gt;=8.0.0,&lt;10.2.9|&gt;=10.3.0,&lt;10.3.6|&gt;=11.0.0,&lt;11.0.5</code></small></li>
+<li><strong><a href="https://github.com/advisories/GHSA-mg8j-w93w-xjgc" rel="noopener noreferrer">CVE-2024-45440 <small>(PKSA-35hc-pd1y-zwpc)</small></a></strong> <span class="badge sev-medium">medium</span><br>Drupal Full Path Disclosure<br><small>affected versions: <code>&gt;=8.0.0,&lt;10.2.9|&gt;=10.3.0,&lt;10.3.6|&gt;=11.0.0,&lt;11.0.5</code></small></li>
 </ul>
 <h3>Introduced by</h3>
 <pre class="tree">root
 └── drupal/core-recommended 10.3.1  (requires ^10.1)</pre>
-<h3>Recommended remediation</h3><p class="none-box">No verified remediation found.</p>
+<h3>Recommended remediation</h3><p class="none-box">No verified remediation found (none).</p>
 <details><summary>Other candidates (4)</summary><table class="candidates"><thead><tr><th>Outcome</th><th>Command</th><th>Detail</th></tr></thead><tbody>
 <tr><td><span class="badge rejected">rejected</span></td><td><code>composer update drupal/core-recommended</code></td><td><pre class="reason">resolves, but drupal/core-recommended ends at 10.3.1 which is still affected by PKSA-35hc-pd1y-zwpc</pre></td></tr>
 <tr><td><span class="badge rejected">rejected</span></td><td><code>composer update drupal/core-recommended -w -m --with &apos;drupal/core-recommended:&gt;=10.3.6,&lt;11.0.0 || &gt;=11.0.5&apos;</code></td><td><pre class="reason">Composer could not resolve the dependencies: Your requirements could not be resolved to an installable set of packages.
@@ -370,7 +371,7 @@ root
 <h2>symfony/validator <span class="version">v6.4.9</span></h2>
 <p class="state">Transitive dependency.</p>
 <h3>Advisories</h3><ul class="advisories">
-<li><strong><a href="https://symfony.com/cve-2024-50343" rel="noopener">CVE-2024-50343 <small>(PKSA-w2tw-kmfg-rt9s)</small></a></strong> <span class="badge sev-low">low</span><br>CVE-2024-50343: Incorrect response from Validator when input ends with `
+<li><strong><a href="https://symfony.com/cve-2024-50343" rel="noopener noreferrer">CVE-2024-50343 <small>(PKSA-w2tw-kmfg-rt9s)</small></a></strong> <span class="badge sev-low">low</span><br>CVE-2024-50343: Incorrect response from Validator when input ends with `
 `<br><small>affected versions: <code>&gt;=2.0.0,&lt;3.0.0|&gt;=3.0.0,&lt;4.0.0|&gt;=4.0.0,&lt;5.0.0|&gt;=5.0.0,&lt;5.1.0|&gt;=5.1.0,&lt;5.2.0|&gt;=5.2.0,&lt;5.3.0|&gt;=5.3.0,&lt;5.4.0|&gt;=5.4.0,&lt;5.4.43|&gt;=6.0.0,&lt;6.1.0|&gt;=6.1.0,&lt;6.2.0|&gt;=6.2.0,&lt;6.3.0|&gt;=6.3.0,&lt;6.4.0|&gt;=6.4.0,&lt;6.4.11|&gt;=7.0.0,&lt;7.1.0|&gt;=7.1.0,&lt;7.1.4</code></small></li>
 </ul>
 <h3>Introduced by</h3>
@@ -426,7 +427,7 @@ root
 <h2>twig/twig <span class="version">v3.10.3</span></h2>
 <p class="state">Transitive dependency.</p>
 <h3>Advisories</h3><ul class="advisories">
-<li><strong><a href="https://symfony.com/blog/twig-security-release-possible-sandbox-bypass" rel="noopener">CVE-2024-45411 <small>(PKSA-6319-ffpf-gx66)</small></a></strong> <span class="badge sev-medium">medium</span><br>Possible sandbox bypass<br><small>affected versions: <code>&gt;=1.0.0,&lt;1.44.7|&gt;=2.0.0,&lt;2.16.0|&gt;=3.0.0,&lt;3.11.0|&gt;=3.12.0,&lt;3.14.0</code></small></li>
+<li><strong><a href="https://symfony.com/blog/twig-security-release-possible-sandbox-bypass" rel="noopener noreferrer">CVE-2024-45411 <small>(PKSA-6319-ffpf-gx66)</small></a></strong> <span class="badge sev-medium">medium</span><br>Possible sandbox bypass<br><small>affected versions: <code>&gt;=1.0.0,&lt;1.44.7|&gt;=2.0.0,&lt;2.16.0|&gt;=3.0.0,&lt;3.11.0|&gt;=3.12.0,&lt;3.14.0</code></small></li>
 </ul>
 <h3>Introduced by</h3>
 <pre class="tree">root
@@ -556,7 +557,8 @@ Use the option --with-all-dependencies (-W) to allow upgrades, downgrades and re
 <dt>php version</dt><dd>(fixture)</dd>
 <dt>advisory source</dt><dd>advisory snapshot advisories.json</dd>
 <dt>solver</dt><dd>in-process Composer dry-run</dd>
-<dt>composer json sha256</dt><dd>de45b1d494ad91837f2772e30304f9dd98d4e8b8e59792705686ee19887c9483</dd>
+<dt>solver runs</dt><dd>84</dd>
+<dt>composer json sha256</dt><dd>b0ff74a9750cab39d1843c57f8b10467e96e0f396931b373e8555b451621dd1b</dd>
 <dt>composer lock sha256</dt><dd>f0ddb6b55ce493414f04b4107b13651fca4f9c51feb3f57710197a41d2a00f93</dd>
 <dt>analysis timestamp</dt><dd>(fixture)</dd>
 <dt>locked packages</dt><dd>182</dd>

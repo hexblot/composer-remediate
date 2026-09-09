@@ -22,16 +22,24 @@ final class ProjectContext
     private function __construct(
         public readonly Composer $composer,
         public readonly string $directory,
+        private readonly string $composerJsonPath,
+        private readonly string $lockPath,
     ) {
     }
 
+    /**
+     * Uses the same manifest and lock file Composer itself loaded, including a custom name set through
+     * the COMPOSER environment variable (COMPOSER=alternate.json pairs with alternate.lock).
+     */
     public static function fromComposer(Composer $composer): self
     {
         $file = Factory::getComposerFile();
         $real = realpath($file);
-        $directory = $real !== false ? dirname($real) : (string) getcwd();
+        if ($real === false) {
+            $real = rtrim((string) getcwd(), '/') . '/' . ltrim($file, './');
+        }
 
-        return new self($composer, $directory);
+        return new self($composer, dirname($real), $real, Factory::getLockFile($real));
     }
 
     public static function fromDirectory(string $directory, IOInterface $io): self
@@ -42,7 +50,7 @@ final class ProjectContext
         }
         $composer = Factory::create($io, $real . '/composer.json', true, true);
 
-        return new self($composer, $real);
+        return new self($composer, $real, $real . '/composer.json', $real . '/composer.lock');
     }
 
     public function rootPackage(): RootPackageInterface
@@ -91,12 +99,12 @@ final class ProjectContext
 
     public function composerJsonPath(): string
     {
-        return $this->directory . '/composer.json';
+        return $this->composerJsonPath;
     }
 
     public function lockPath(): string
     {
-        return $this->directory . '/composer.lock';
+        return $this->lockPath;
     }
 
     public function authJsonPath(): ?string

@@ -103,7 +103,8 @@ final class HtmlRenderer
         foreach ($plan->allFindings() as $finding) {
             $a = $finding->advisory;
             $label = self::e($a->displayId()) . ($a->cve !== null && $a->cve !== $a->id ? ' <small>(' . self::e($a->id) . ')</small>' : '');
-            $h[] = '<li><strong>' . ($a->link !== null ? '<a href="' . self::e($a->link) . '" rel="noopener">' . $label . '</a>' : $label) . '</strong>'
+            $safeLink = self::safeUrl($a->link);
+            $h[] = '<li><strong>' . ($safeLink !== null ? '<a href="' . self::e($safeLink) . '" rel="noopener noreferrer">' . $label . '</a>' : $label) . '</strong>'
                 . ($a->severity !== null ? ' <span class="badge sev-' . self::e(strtolower($a->severity)) . '">' . self::e($a->severity) . '</span>' : '')
                 . ($a->title !== null ? '<br>' . self::e($a->title) : '')
                 . '<br><small>affected versions: <code>' . self::e($a->affectedVersions->getPrettyString()) . '</code></small></li>';
@@ -122,7 +123,7 @@ final class HtmlRenderer
 
         $rec = $plan->recommended();
         if ($rec === null || $rec->diff === null) {
-            $h[] = '<h3>Recommended remediation</h3><p class="none-box">No verified remediation found.' . ($plan->blocker !== null ? ' ' . self::e($plan->blocker) : '') . '</p>';
+            $h[] = '<h3>Recommended remediation</h3><p class="none-box">No verified remediation found (' . self::e($plan->outcome()) . ').' . ($plan->blocker !== null ? ' ' . self::e($plan->blocker) : '') . '</p>';
         } else {
             $diff = $rec->diff;
             $h[] = '<h3>Recommended remediation</h3>';
@@ -204,6 +205,23 @@ final class HtmlRenderer
     private static function e(string $value): string
     {
         return htmlspecialchars($value, ENT_QUOTES | ENT_SUBSTITUTE | ENT_HTML5, 'UTF-8');
+    }
+
+    /**
+     * Advisory links are untrusted data. Only http(s) URLs become anchors; anything else (javascript:,
+     * data:, vbscript:, relative paths) is dropped and the id is shown as plain text.
+     */
+    public static function safeUrl(?string $url): ?string
+    {
+        if ($url === null) {
+            return null;
+        }
+        $url = trim($url);
+        if (preg_match('{^https?://[^\s<>"\']+$}i', $url) !== 1) {
+            return null;
+        }
+
+        return $url;
     }
 
     private static function css(): string

@@ -43,7 +43,7 @@ Introduced by
 Current state
   Transitive dependency.
 Recommended remediation
-  No verified remediation found.
+  No verified remediation found (none).
 Other candidates
   rejected: composer update shopwarelabs/dompdf
       resolves, but shopwarelabs/dompdf ends at v1.0.3 which is still affected by PKSA-872h-8556-2chm, PKSA-hbk6-2vfz-8f8n, PKSA-kj9c-tr41-t8mj

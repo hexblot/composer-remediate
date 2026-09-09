@@ -30,17 +30,24 @@ final class PackagistAdvisoryJsonParser
     public function parseDocument(array $document): array
     {
         $result = [];
-        $advisories = $document['advisories'] ?? [];
+        if (!array_key_exists('advisories', $document)) {
+            // An error payload or an unrelated document must not read as "no advisories".
+            throw new AdvisoryLookupFailed('Advisory document has no "advisories" map' . (isset($document['error']) && is_scalar($document['error']) ? ' (error: ' . $document['error'] . ')' : '') . '.');
+        }
+        $advisories = $document['advisories'];
         if (!is_array($advisories)) {
-            throw new AdvisoryLookupFailed('Advisory document has no "advisories" map.');
+            throw new AdvisoryLookupFailed('Advisory document field "advisories" is not a map.');
         }
         foreach ($advisories as $packageName => $records) {
-            if (!is_string($packageName) || !is_array($records)) {
-                continue;
+            if (!is_string($packageName)) {
+                throw new AdvisoryLookupFailed('Advisory document keys must be package names.');
+            }
+            if (!is_array($records)) {
+                throw new AdvisoryLookupFailed(sprintf('Advisory entries for %s are not a list.', $packageName));
             }
             foreach ($records as $record) {
                 if (!is_array($record)) {
-                    continue;
+                    throw new AdvisoryLookupFailed(sprintf('An advisory entry for %s is not an object.', $packageName));
                 }
                 /** @var array<string, mixed> $record */
                 $result[strtolower($packageName)][] = $this->parseRecord($packageName, $record);
@@ -87,7 +94,7 @@ final class PackagistAdvisoryJsonParser
         return new Advisory(
             $id,
             strtolower($pkg),
-            $this->parseAffectedVersions($affected),
+            $this->parseAffectedVersionsStrict($affected, $id),
             self::optionalString($data, 'title'),
             self::optionalString($data, 'cve'),
             self::optionalString($data, 'link'),
@@ -98,8 +105,22 @@ final class PackagistAdvisoryJsonParser
     }
 
     /**
+     * A range that cannot be parsed must fail loudly: silently turning it into an impossible constraint
+     * would make the advisory match nothing and read as a clean result.
+     */
+    public function parseAffectedVersionsStrict(string $expression, string $advisoryId): ConstraintInterface
+    {
+        try {
+            return $this->versionParser->parseConstraints($expression);
+        } catch (\UnexpectedValueException $e) {
+            throw new AdvisoryLookupFailed(sprintf('Advisory %s has an unparsable affectedVersions "%s": %s', $advisoryId, $expression, $e->getMessage()), 0, $e);
+        }
+    }
+
+    /**
      * Mirrors Composer's own leniency: fall back to the leading constraint fragment when the full
-     * expression is unparsable, and to an impossible constraint when even that fails.
+     * expression is unparsable, and to an impossible constraint when even that fails. Used only for
+     * ranges that came out of a database build, where unparsable input was already rejected.
      */
     public function parseAffectedVersions(string $expression): ConstraintInterface
     {

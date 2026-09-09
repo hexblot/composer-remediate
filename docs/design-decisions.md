@@ -69,7 +69,9 @@ Primary route: for each candidate create a fresh `Composer` instance with plugin
 disabled, configure `Installer` for a dry-run update, run it, and read the lock transaction and
 virtual lock. Fallback route: run `composer update … --no-install --no-scripts --no-plugins
 --no-audit` in a scratch copy of the project and read the written lock file. Both produce the same
-`LockDiff`.
+`LockDiff`. The two are composed by a `FallbackSolver`: a candidate whose in-process solve ends in
+an error (not a conflict, not a network failure) is retried through the subprocess, and the report's
+solver line says how many solves took that route. `--solver` pins either route.
 
 ### Alternatives
 
@@ -159,23 +161,26 @@ for `type: composer` repositories, so no web server is involved.
 - `COMPOSER_DISABLE_NETWORK` is not used in fixture runs because its check precedes Composer's
   local-file transport.
 
-## Composer 2.4 minimum, 2.9 for the full feature set
+## Composer 2.4 minimum, 2.7 for the full feature set
 ### Context
 
 The pitch's example command uses `-m` (`--minimal-changes`). Composer's changelog places that flag
-in 2.9.0 (November 2025), `composer audit` and temporary constraints on transitive packages in 2.4.0,
-and `--no-install` in 2.0.
+in 2.7.0 (February 2024) for partial updates, extended to full updates in 2.9.0; `composer audit`
+and temporary constraints on transitive packages arrived in 2.4.0, `--no-install` in 2.0. An earlier
+revision of this page attributed the flag to 2.9; an external review caught the error.
 
 ### Decision
 
-Refuse to run on Composer older than 2.4. On 2.4 through 2.8 omit `-m` and warn that resulting diffs
-may be larger than necessary. Develop and test against `composer/composer ^2.9` with 2.4, 2.8, 2.9
-and the latest release in the CI matrix. PHP 8.1 or newer for reach (Composer itself runs on 7.2.5+); since 8.1 reached end of life in December 2025 the command prints a warning on PHP older than 8.2 rather than refusing to run, so teams on an unsupported runtime still get a remediation plan.
+Refuse to run on Composer older than 2.4 (detected by the presence of the 2.4 `Auditor` class, since
+`composer-plugin-api ^2.0` cannot express the runtime floor). On 2.4 through 2.6 omit `-m`; diffs
+may be larger than necessary. Develop and test against `composer/composer ^2.9` with 2.4, 2.7, 2.8,
+2.9 and the latest release in the CI matrix. PHP 8.1 or newer for reach (Composer itself runs on 7.2.5+); since 8.1 reached end of life in December 2025 the command prints a warning on PHP older than 8.2 rather than refusing to run, so teams on an unsupported runtime still get a remediation plan.
 
 ### Consequences
 
 - Users on current Composer get the intended behaviour; users on older 2.x still get valid plans.
-- Runtime detection through `Composer::getVersion()` decides which flags are emitted.
+- Capability detection (`Installer::setMinimalUpdate()` exists) decides which flags are emitted;
+  the subprocess solver parses `composer --version` with the 2.7 threshold.
 
 ## Touch Composer's `@internal` classes only inside adapters
 ### Context
@@ -196,6 +201,33 @@ The same rule applies to any other `@internal` API the engine needs.
 
 - A Composer release that changes an internal signature breaks one adapter, not the engine.
 - Fixtures feed the engine through a JSON provider that never touches Composer's classes.
+- The adapter reads `SecurityAdvisory::$severity` only when the property exists (it does not in 2.4)
+  and fails with "advisory data unavailable" when no configured repository provides advisories at
+  all, rather than reporting a clean lock.
+
+## The plugin boundary: `composer remediate` versus `composer-remediate`
+### Context
+
+Composer activates every plugin the project allows while it discovers plugin commands, before the
+`remediate` command runs. Disabling plugins on the scratch instances protects the candidate solves,
+but nothing inside a plugin command can undo what Composer did at startup. The promise "planning
+never executes the analysed project's plugins" was therefore only true inside the engine, not at the
+command line users actually type.
+
+### Decision
+
+Ship both entry points and say what each guarantees. `composer remediate` is the convenient form for
+projects you maintain yourself: it inherits Composer's exact configuration, and the project's other
+allowed plugins have already run, as they do for every Composer command. `bin/composer-remediate` is
+the boundary: it boots Composer's `Application` from the installed Composer (the phar on PATH or
+`REMEDIATE_COMPOSER_BINARY`) with `--no-plugins --no-scripts` forced from the first instruction and
+applies `--offline` before any HTTP client exists. Use it for projects you do not trust.
+
+### Consequences
+
+- The security policy states the boundary precisely instead of over-promising.
+- The binary has no copy of `composer/composer`; it reuses the user's installation, so both entry
+  points solve with the same Composer release.
 
 ## Search downwards for the lowest parent version that admits the fix
 ### Context

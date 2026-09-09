@@ -7,7 +7,8 @@
         "php_version": "(fixture)",
         "advisory_source": "advisory snapshot advisories.json",
         "solver": "in-process Composer dry-run",
-        "composer_json_sha256": "0b9ad06501e252e0c8af3c7191f3c2ee237ad0cc6e855e53d67693d0e94cb8e8",
+        "solver_runs": "16",
+        "composer_json_sha256": "95ab7b56835198de3afa0a333e5ac45550e56adb4b0ef55225fbe5833a282d5f",
         "composer_lock_sha256": "2dbaa7b34c4c01d7ef5715f78a6c4dfe11a0a4533a4b8855f22eb8d218f54b2f",
         "analysis_timestamp": "(fixture)",
         "locked_packages": "217"
@@ -166,12 +167,15 @@
                     }
                 }
             ],
+            "solver_runs": 12,
+            "search_exhausted": false,
             "remediation": {
                 "status": "verified",
                 "command": "composer update google/apiclient:v2.12.2 -W -m --with 'firebase/php-jwt:>=6.0.0'",
                 "strategy": "parent-update",
                 "root_constraint_changes": [],
                 "constraint_drag": null,
+                "blocking_risk": [],
                 "summary": {
                     "changed": 3,
                     "added": 0,
@@ -354,8 +358,11 @@
                     }
                 }
             ],
+            "solver_runs": 4,
+            "search_exhausted": false,
             "remediation": {
                 "status": "none",
+                "outcome": "none",
                 "blocker": null
             },
             "candidates": [

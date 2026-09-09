@@ -76,7 +76,7 @@ Introduced by
 Current state
   Transitive dependency. Development requirement only.
 Recommended remediation
-  No verified remediation found.
+  No verified remediation found (none).
 Other candidates
   rejected: composer update maximebf/debugbar
       resolves, but maximebf/debugbar ends at v1.18.1 which is still affected by PKSA-dyrx-jq7h-gtxg, PKSA-vf2x-zfw2-cnsj

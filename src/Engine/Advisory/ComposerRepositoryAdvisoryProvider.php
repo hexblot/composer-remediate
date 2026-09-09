@@ -81,10 +81,12 @@ final class ComposerRepositoryAdvisoryProvider implements AdvisoryProvider
      */
     private function fetch(array $constraintMap): void
     {
+        $providers = 0;
         foreach ($this->repositories as $repository) {
             if (!$repository instanceof AdvisoryProviderInterface || !$repository->hasSecurityAdvisories()) {
                 continue;
             }
+            ++$providers;
             try {
                 $result = $repository->getSecurityAdvisories($constraintMap, false);
             } catch (TransportException $e) {
@@ -103,6 +105,10 @@ final class ComposerRepositoryAdvisoryProvider implements AdvisoryProvider
                 }
             }
         }
+        if ($providers === 0) {
+            // A repository set without any advisory source cannot produce a clean result, only an unknown one.
+            throw new AdvisoryLookupFailed('None of the configured repositories provides security advisories (packagist.org is disabled or replaced). Use --database-location or --advisories-file to supply advisory data.');
+        }
         foreach (array_keys($constraintMap) as $name) {
             $this->fetched[$name] = true;
         }
@@ -111,6 +117,9 @@ final class ComposerRepositoryAdvisoryProvider implements AdvisoryProvider
     private static function convert(PartialSecurityAdvisory $advisory): Advisory
     {
         if ($advisory instanceof SecurityAdvisory) {
+            // `severity` was added to Composer's SecurityAdvisory after 2.4; read it defensively.
+            $severity = property_exists($advisory, 'severity') && is_string($advisory->severity) ? $advisory->severity : null; // @phpstan-ignore function.alreadyNarrowedType
+
             return new Advisory(
                 $advisory->advisoryId,
                 strtolower($advisory->packageName),
@@ -118,7 +127,7 @@ final class ComposerRepositoryAdvisoryProvider implements AdvisoryProvider
                 $advisory->title,
                 $advisory->cve,
                 $advisory->link,
-                $advisory->severity,
+                $severity,
                 $advisory->reportedAt,
                 array_values($advisory->sources),
             );

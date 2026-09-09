@@ -2,9 +2,10 @@
 
 **From vulnerable dependency to verified Composer fix.**
 
-`composer audit` tells you which packages are vulnerable. `composer remediate` tells you the
-smallest `composer update` command that removes the vulnerability, and proves it with
-Composer's own dependency solver before recommending it.
+`composer audit` tells you which packages are vulnerable. `composer remediate` searches for the
+least invasive `composer update` command that removes the vulnerability, proves each candidate with
+Composer's own dependency solver, and recommends the best verified one. The search is bounded and
+ranked, not exhaustive: the report says when a limit was hit.
 
 ```text
 $ composer remediate
@@ -42,6 +43,10 @@ composer remediate --no-dev --output=remediation-report.html --output=remediatio
 
 Add `--fail-on high` to let low and medium findings pass, `--output=results.sarif` for GitHub Code
 Scanning annotations, or `--output=sbom.cdx.json` for a CycloneDX SBOM with the fixes attached.
+
+For a project you do not trust, run the shipped `composer-remediate` binary instead of
+`composer remediate`: it boots Composer with plugins and scripts disabled from the first
+instruction, so nothing from the analysed project executes during planning.
 
 Ready-made GitHub Actions and GitLab CI jobs, and `jq` recipes for severity-based gates, are in
 [docs/ci-integration.md](docs/ci-integration.md). Every command and option is listed in

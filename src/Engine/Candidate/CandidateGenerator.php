@@ -20,9 +20,13 @@ final class CandidateGenerator
 {
     public const MAX_PARENT_CANDIDATES = 6;
 
+    /**
+     * @param list<string> $extraArguments arguments every candidate must carry (e.g. --ignore-platform-req=php)
+     */
     public function __construct(
         private readonly FixedRangeResolver $ranges = new FixedRangeResolver(),
         private readonly bool $allowDirectRequire = false,
+        private readonly array $extraArguments = [],
     ) {
     }
 
@@ -128,6 +132,10 @@ final class CandidateGenerator
                 [$v => new RootConstraintChange($v, null, $fixed->getPrettyString(), $finding->isDev)],
                 sprintf('require %s %s directly to force the fixed version', $v, $fixed->getPrettyString()),
             );
+        }
+
+        if ($this->extraArguments !== []) {
+            $candidates = array_map(fn (Candidate $c): Candidate => $c->withExtraArguments($this->extraArguments), $candidates);
         }
 
         return $candidates;

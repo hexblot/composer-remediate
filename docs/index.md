@@ -49,8 +49,11 @@ Of the [roadmap](roadmap.md), Phases 0 to 2 are complete: the planner reproduces
 competent human would choose on every one of twelve real historical projects, and the advisory
 database can be built locally or shared. Phase 3 (a larger Drupal and Symfony corpus) is in
 progress, and most Phase 6 integrations (SARIF, GitLab and CycloneDX reports, severity gate,
-baselines, release cooldown) have landed. Global planning (Phase 4) and `--apply` (Phase 5) are
-still ahead, so every release so far recommends and never modifies your project.
+baselines, release cooldown) have landed. An external architecture review of 0.3.0 found twenty
+defects, nine of them able to turn a tool failure or a policy exception into a clean result; all are
+addressed in the changelog's unreleased section with tests for each guarantee. Global planning
+(Phase 4) and `--apply` (Phase 5) are still ahead, so every release so far recommends and never
+modifies your project.
 
 ## Inspiration
 

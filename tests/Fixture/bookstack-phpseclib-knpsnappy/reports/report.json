@@ -7,7 +7,8 @@
         "php_version": "(fixture)",
         "advisory_source": "advisory snapshot advisories.json",
         "solver": "in-process Composer dry-run",
-        "composer_json_sha256": "015d32707e26a172b31e833e9f82b5db6a9212ff15c4bb92ae463f2e971699d8",
+        "solver_runs": "7",
+        "composer_json_sha256": "c4b29ac7e9ad098d2d33f919e201dc2098ae74909af8b678066a68ae3de6faa3",
         "composer_lock_sha256": "b83ee5639d273303f1750c177fe3725eb939c5ef5780f423934677d0ee152feb",
         "analysis_timestamp": "(fixture)",
         "locked_packages": "147"
@@ -89,12 +90,15 @@
                     }
                 }
             ],
+            "solver_runs": 3,
+            "search_exhausted": false,
             "remediation": {
                 "status": "verified",
                 "command": "composer update knplabs/knp-snappy",
                 "strategy": "lock-refresh",
                 "root_constraint_changes": [],
                 "constraint_drag": null,
+                "blocking_risk": [],
                 "summary": {
                     "changed": 1,
                     "added": 0,
@@ -218,12 +222,15 @@
                     }
                 }
             ],
+            "solver_runs": 3,
+            "search_exhausted": false,
             "remediation": {
                 "status": "verified",
                 "command": "composer update phpseclib/phpseclib",
                 "strategy": "lock-refresh",
                 "root_constraint_changes": [],
                 "constraint_drag": null,
+                "blocking_risk": [],
                 "summary": {
                     "changed": 1,
                     "added": 0,

@@ -150,7 +150,7 @@ Introduced by
 Current state
   Transitive dependency.
 Recommended remediation
-  No verified remediation found.
+  No verified remediation found (none).
 Other candidates
   rejected: composer update league/oauth2-server
       resolves, but league/oauth2-server ends at 8.3.6 which is still affected by PKSA-pc52-dbxt-c1w6
@@ -301,7 +301,7 @@ Introduced by
 Current state
   Transitive dependency.
 Recommended remediation
-  No verified remediation found.
+  No verified remediation found (none).
 Other candidates
   rejected: composer update phenx/php-svg-lib
       resolves, but phenx/php-svg-lib ends at 0.3.4 which is still affected by PKSA-3dsp-r6t7-8xmz, PKSA-cwpj-dtf9-6fg1, PKSA-qsyb-3psh-f1t3
@@ -413,7 +413,8 @@ Introduced by
 Current state
   Direct dependency.
 Recommended remediation
-  No verified remediation found.
+  No verified remediation found (none found within the search budget).
+  No verified fix within the search budget (13 candidates tried, 13 solver runs); a fix outside the bounded search may still exist.
 Other candidates
   rejected: composer update shopware/core
       resolves, but shopware/core ends at 6.4.20.2 which is still affected by PKSA-4spx-rq41-wk8h, PKSA-6stq-czfs-1nvv, PKSA-kt1g-n1g2-hzb4, PKSA-ktmn-6519-qrdp, PKSA-mm7q-gnjj-tttn, PKSA-s8vz-878v-gv1c, PKSA-wp2c-7yp8-5fvs
@@ -544,7 +545,7 @@ Introduced by
 Current state
   Transitive dependency.
 Recommended remediation
-  No verified remediation found.
+  No verified remediation found (none).
 Other candidates
   rejected: composer update shopwarelabs/dompdf
       resolves, but shopwarelabs/dompdf ends at v1.0.3 which is still affected by PKSA-4jrs-y99s-q8j6, PKSA-7ztm-rpt3-qqzk, PKSA-872h-8556-2chm, PKSA-hbk6-2vfz-8f8n, PKSA-kj9c-tr41-t8mj
@@ -795,7 +796,8 @@ Introduced by
 Current state
   Transitive dependency.
 Recommended remediation
-  No verified remediation found.
+  No verified remediation found (none found within the search budget).
+  No verified fix within the search budget (16 candidates tried, 16 solver runs); a fix outside the bounded search may still exist.
 Other candidates
   rejected: composer update tecnickcom/tcpdf
       resolves, but tecnickcom/tcpdf ends at 6.4.4 which is still affected by PKSA-d3g2-dzgm-n74r, PKSA-jwjn-w3mx-tq38
@@ -936,7 +938,8 @@ Introduced by
 Current state
   Transitive dependency.
 Recommended remediation
-  No verified remediation found.
+  No verified remediation found (none found within the search budget).
+  No verified fix within the search budget (16 candidates tried, 16 solver runs); a fix outside the bounded search may still exist.
 Other candidates
   rejected: composer update twig/twig
       resolves, but twig/twig ends at v3.4.3 which is still affected by PKSA-6319-ffpf-gx66

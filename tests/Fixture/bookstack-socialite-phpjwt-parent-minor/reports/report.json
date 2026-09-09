@@ -7,7 +7,8 @@
         "php_version": "(fixture)",
         "advisory_source": "advisory snapshot advisories.json",
         "solver": "in-process Composer dry-run",
-        "composer_json_sha256": "595c2e843f348c4dc84af40264ffc3754b76f2bbee5e0a913b7059517541f02a",
+        "solver_runs": "79",
+        "composer_json_sha256": "db50ee47067a0cafb0a3c9b6b57f1b520add00ce89cf71e5f2f462a59f8474cd",
         "composer_lock_sha256": "a08d622ce079c4260dc4c0e941d5d0bde0544f15efc984d8da29abd2e07e5152",
         "analysis_timestamp": "(fixture)",
         "locked_packages": "147"
@@ -89,12 +90,15 @@
                     }
                 }
             ],
+            "solver_runs": 6,
+            "search_exhausted": false,
             "remediation": {
                 "status": "verified",
                 "command": "composer update aws/aws-sdk-php",
                 "strategy": "lock-refresh",
                 "root_constraint_changes": [],
                 "constraint_drag": null,
+                "blocking_risk": [],
                 "summary": {
                     "changed": 1,
                     "added": 1,
@@ -387,12 +391,15 @@
                     }
                 }
             ],
+            "solver_runs": 19,
+            "search_exhausted": true,
             "remediation": {
                 "status": "verified",
                 "command": "composer update laravel/socialite:v5.24.1 -W -m --with 'firebase/php-jwt:>=7.0.0'",
                 "strategy": "parent-update",
                 "root_constraint_changes": [],
                 "constraint_drag": null,
+                "blocking_risk": [],
                 "summary": {
                     "changed": 3,
                     "added": 0,
@@ -904,12 +911,15 @@
                     }
                 }
             ],
+            "solver_runs": 9,
+            "search_exhausted": true,
             "remediation": {
                 "status": "verified",
                 "command": "composer update laravel/framework",
                 "strategy": "lock-refresh",
                 "root_constraint_changes": [],
                 "constraint_drag": null,
+                "blocking_risk": [],
                 "summary": {
                     "changed": 1,
                     "added": 0,
@@ -1406,12 +1416,15 @@
                     }
                 }
             ],
+            "solver_runs": 9,
+            "search_exhausted": true,
             "remediation": {
                 "status": "verified",
                 "command": "composer update league/commonmark",
                 "strategy": "lock-refresh",
                 "root_constraint_changes": [],
                 "constraint_drag": null,
+                "blocking_risk": [],
                 "summary": {
                     "changed": 1,
                     "added": 0,
@@ -1908,12 +1921,15 @@
                     }
                 }
             ],
+            "solver_runs": 8,
+            "search_exhausted": true,
             "remediation": {
                 "status": "verified",
                 "command": "composer update nesbot/carbon",
                 "strategy": "lock-refresh",
                 "root_constraint_changes": [],
                 "constraint_drag": null,
+                "blocking_risk": [],
                 "summary": {
                     "changed": 1,
                     "added": 0,
@@ -2119,12 +2135,15 @@
                     }
                 }
             ],
+            "solver_runs": 4,
+            "search_exhausted": false,
             "remediation": {
                 "status": "verified",
                 "command": "composer update onelogin/php-saml -w",
                 "strategy": "with-dependencies",
                 "root_constraint_changes": [],
                 "constraint_drag": null,
+                "blocking_risk": [],
                 "summary": {
                     "changed": 2,
                     "added": 0,
@@ -2256,12 +2275,15 @@
                     }
                 }
             ],
+            "solver_runs": 3,
+            "search_exhausted": false,
             "remediation": {
                 "status": "verified",
                 "command": "composer update robrichards/xmlseclibs",
                 "strategy": "lock-refresh",
                 "root_constraint_changes": [],
                 "constraint_drag": null,
+                "blocking_risk": [],
                 "summary": {
                     "changed": 1,
                     "added": 0,
@@ -2735,12 +2757,15 @@
                     }
                 }
             ],
+            "solver_runs": 8,
+            "search_exhausted": true,
             "remediation": {
                 "status": "verified",
                 "command": "composer update symfony/http-foundation",
                 "strategy": "lock-refresh",
                 "root_constraint_changes": [],
                 "constraint_drag": null,
+                "blocking_risk": [],
                 "summary": {
                     "changed": 1,
                     "added": 0,
@@ -3221,12 +3246,15 @@
                     }
                 }
             ],
+            "solver_runs": 9,
+            "search_exhausted": true,
             "remediation": {
                 "status": "verified",
                 "command": "composer update symfony/process",
                 "strategy": "lock-refresh",
                 "root_constraint_changes": [],
                 "constraint_drag": null,
+                "blocking_risk": [],
                 "summary": {
                     "changed": 1,
                     "added": 0,

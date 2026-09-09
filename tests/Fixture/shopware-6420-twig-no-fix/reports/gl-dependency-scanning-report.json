@@ -388,7 +388,7 @@
             "name": "CVE-2024-42354: Shopware vulnerable to Improper Access Control with ManyToMany associations in store-api",
             "description": "shopware/core 6.4.20.2 is affected by CVE-2024-42354 (affected versions >=6.6.0.0,<=6.6.5.0|<=6.5.8.12).",
             "severity": "Medium",
-            "solution": "No verified remediation found.",
+            "solution": "No verified remediation found: No verified fix within the search budget (13 candidates tried, 13 solver runs); a fix outside the bounded search may still exist.",
             "identifiers": [
                 {
                     "type": "cve",
@@ -431,7 +431,7 @@
             "name": "CVE-2024-42355: Shopware vulnerable to Server Side Template Injection in Twig using deprecation silence tag",
             "description": "shopware/core 6.4.20.2 is affected by CVE-2024-42355 (affected versions >=6.6.0.0,<=6.6.5.0|<=6.5.8.12).",
             "severity": "High",
-            "solution": "No verified remediation found.",
+            "solution": "No verified remediation found: No verified fix within the search budget (13 candidates tried, 13 solver runs); a fix outside the bounded search may still exist.",
             "identifiers": [
                 {
                     "type": "cve",
@@ -474,7 +474,7 @@
             "name": "CVE-2024-42356: Shopware vulnerable to Server Side Template Injection in Twig using Context functions",
             "description": "shopware/core 6.4.20.2 is affected by CVE-2024-42356 (affected versions >=6.6.0.0,<=6.6.5.0|<=6.5.8.12).",
             "severity": "High",
-            "solution": "No verified remediation found.",
+            "solution": "No verified remediation found: No verified fix within the search budget (13 candidates tried, 13 solver runs); a fix outside the bounded search may still exist.",
             "identifiers": [
                 {
                     "type": "cve",
@@ -517,7 +517,7 @@
             "name": "CVE-2024-22406: Blind SQL injection in shopware",
             "description": "shopware/core 6.4.20.2 is affected by CVE-2024-22406 (affected versions <=6.5.7.3).",
             "severity": "Critical",
-            "solution": "No verified remediation found.",
+            "solution": "No verified remediation found: No verified fix within the search budget (13 candidates tried, 13 solver runs); a fix outside the bounded search may still exist.",
             "identifiers": [
                 {
                     "type": "cve",
@@ -560,7 +560,7 @@
             "name": "CVE-2024-22407: Broken Access Control order API in Shopware",
             "description": "shopware/core 6.4.20.2 is affected by CVE-2024-22407 (affected versions <=6.5.7.3).",
             "severity": "Medium",
-            "solution": "No verified remediation found.",
+            "solution": "No verified remediation found: No verified fix within the search budget (13 candidates tried, 13 solver runs); a fix outside the bounded search may still exist.",
             "identifiers": [
                 {
                     "type": "cve",
@@ -603,7 +603,7 @@
             "name": "CVE-2024-31447: Shopware Improper Session Handling in store-api account logout",
             "description": "shopware/core 6.4.20.2 is affected by CVE-2024-31447 (affected versions >=6.6.0.0-rc1,<6.6.1.0|>=6.3.5.0,<6.5.8.8).",
             "severity": "Medium",
-            "solution": "No verified remediation found.",
+            "solution": "No verified remediation found: No verified fix within the search budget (13 candidates tried, 13 solver runs); a fix outside the bounded search may still exist.",
             "identifiers": [
                 {
                     "type": "cve",
@@ -646,7 +646,7 @@
             "name": "CVE-2024-42357: Shopware vulnerable to blind SQL-injection in DAL aggregations",
             "description": "shopware/core 6.4.20.2 is affected by CVE-2024-42357 (affected versions >=6.6.0.0,<=6.6.5.0|<=6.5.8.12).",
             "severity": "Medium",
-            "solution": "No verified remediation found.",
+            "solution": "No verified remediation found: No verified fix within the search budget (13 candidates tried, 13 solver runs); a fix outside the bounded search may still exist.",
             "identifiers": [
                 {
                     "type": "cve",
@@ -990,7 +990,7 @@
             "name": "CVE-2024-32489: TCPDF Cross-site Scripting vulnerability",
             "description": "tecnickcom/tcpdf 6.4.4 is affected by CVE-2024-32489 (affected versions <6.7.4).",
             "severity": "Medium",
-            "solution": "No verified remediation found.",
+            "solution": "No verified remediation found: No verified fix within the search budget (16 candidates tried, 16 solver runs); a fix outside the bounded search may still exist.",
             "identifiers": [
                 {
                     "type": "cve",
@@ -1033,7 +1033,7 @@
             "name": "CVE-2024-22640: TCPDF vulnerable to Regular Expression Denial of Service",
             "description": "tecnickcom/tcpdf 6.4.4 is affected by CVE-2024-22640 (affected versions <=6.7.4).",
             "severity": "Medium",
-            "solution": "No verified remediation found.",
+            "solution": "No verified remediation found: No verified fix within the search budget (16 candidates tried, 16 solver runs); a fix outside the bounded search may still exist.",
             "identifiers": [
                 {
                     "type": "cve",
@@ -1076,7 +1076,7 @@
             "name": "CVE-2024-45411: Possible sandbox bypass",
             "description": "twig/twig v3.4.3 is affected by CVE-2024-45411 (affected versions >=1.0.0,<1.44.7|>=2.0.0,<2.16.0|>=3.0.0,<3.11.0|>=3.12.0,<3.14.0).",
             "severity": "Medium",
-            "solution": "No verified remediation found.",
+            "solution": "No verified remediation found: No verified fix within the search budget (16 candidates tried, 16 solver runs); a fix outside the bounded search may still exist.",
             "identifiers": [
                 {
                     "type": "cve",

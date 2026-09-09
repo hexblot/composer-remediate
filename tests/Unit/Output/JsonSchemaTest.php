@@ -9,8 +9,8 @@ use PHPUnit\Framework\Attributes\DataProvider;
 use PHPUnit\Framework\TestCase;
 
 /**
- * Every stored fixture report must validate against the published schema, so the schema and the
- * renderer cannot drift apart.
+ * Every stored fixture report must validate against the published schema. Freshly rendered reports
+ * are validated in FixtureTest; this guards the committed examples.
  */
 final class JsonSchemaTest extends TestCase
 {

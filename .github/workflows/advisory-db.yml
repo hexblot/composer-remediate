@@ -51,7 +51,7 @@ jobs:
           composer remediate:db-build --output=out/advisories.sqlite
           php -r '$m = (new PDO("sqlite:out/advisories.sqlite"))->query("SELECT key, value FROM meta")->fetchAll(PDO::FETCH_KEY_PAIR); file_put_contents("out/meta.json", json_encode($m, JSON_PRETTY_PRINT));'
           jq -r .dataset_hash out/meta.json > out/hash
-          sha256sum out/advisories.sqlite | cut -d" " -f1 > out/advisories.sqlite.sha256
+          (cd out && sha256sum advisories.sqlite > advisories.sqlite.sha256)   # digest + filename, so `sha256sum -c` works
           echo "hash=$(cat out/hash)" >> "$GITHUB_OUTPUT"
         id: build
       - name: Compare with the published dataset
@@ -83,7 +83,7 @@ jobs:
         if: steps.compare.outputs.changed == 'true'
         run: |
           jq -n --arg v "${{ steps.version.outputs.version }}" --arg h "${{ steps.build.outputs.hash }}" \
-                --arg s "$(cat out/advisories.sqlite.sha256)" --arg p "${{ steps.compare.outputs.previous }}" \
+                --arg s "$(cut -d" " -f1 out/advisories.sqlite.sha256)" --arg p "${{ steps.compare.outputs.previous }}" \
                 --argjson m "$(cat out/meta.json)" \
                 '{version: $v, database: "advisories.sqlite", sha256: $s, dataset_hash: $h, published_at: $m.built_at,
                   advisory_count: ($m.advisory_count|tonumber), conflict_count: ($m.conflict_count|tonumber),

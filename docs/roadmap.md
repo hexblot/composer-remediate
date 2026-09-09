@@ -51,7 +51,13 @@ stands.
 - [x] Composer version matrix in CI (2.4, 2.7, 2.8, 2.9 and latest) on matching PHP versions, with the
   lock-file fallback for releases without `Installer::getLockTransaction()`; PHP 8.1 through 8.5
 - [x] CI integration recipes (GitHub Actions, GitLab CI, JSON gates)
-- [x] published JSON Schema for the report (`docs/schema/report.schema.json`), validated against every fixture report in the test suite
+- [x] published JSON Schema for the report (`docs/schema/report.schema.json`), validated against every
+  stored fixture report and every freshly rendered one in the test suite
+- [x] the recommended command is executed by the real Composer binary in the harness (fixtures with
+  `"execute": true`) and the written lock re-matched
+- [x] `composer-remediate` standalone binary for a plugin-free boundary; solver fallback wired;
+  scoped ignore policy; typed infrastructure failures in the exit code (external review, see
+  the changelog)
 
 ## Phase 4 — global planning
 

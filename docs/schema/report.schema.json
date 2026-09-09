@@ -10,7 +10,7 @@
     "schema_version": {"type": "integer", "const": 1},
     "analysis_metadata": {
       "type": "object",
-      "description": "Reproducibility metadata: project path, engine/Composer/PHP versions, advisory source, solver, sha256 of composer.json and composer.lock, timestamp, locked package count.",
+      "description": "Reproducibility metadata: project path, engine/Composer/PHP versions, advisory source, solver, total solver runs, sha256 of composer.json and composer.lock, timestamp, locked package count.",
       "additionalProperties": {"type": "string"}
     },
     "exit_code": {"type": "integer", "minimum": 0, "maximum": 5},
@@ -115,16 +115,17 @@
       "oneOf": [
         {
           "type": "object",
-          "required": ["status", "blocker"],
+          "required": ["status", "outcome", "blocker"],
           "additionalProperties": false,
           "properties": {
             "status": {"const": "none"},
+            "outcome": {"type": "string", "description": "How to read the absence of a fix: \"none\" (no fix exists within the metadata), \"none found within the search budget\", or \"unknown: …\" when a solver or network failure prevented the search from completing"},
             "blocker": {"type": ["string", "null"]}
           }
         },
         {
           "type": "object",
-          "required": ["status", "command", "strategy", "root_constraint_changes", "constraint_drag", "summary", "changes"],
+          "required": ["status", "command", "strategy", "root_constraint_changes", "constraint_drag", "blocking_risk", "summary", "changes"],
           "additionalProperties": false,
           "properties": {
             "status": {"const": "verified"},
@@ -132,6 +133,7 @@
             "strategy": {"$ref": "#/definitions/strategy"},
             "root_constraint_changes": {"type": "array", "items": {"$ref": "#/definitions/rootConstraintChange"}},
             "constraint_drag": {"type": ["string", "null"], "description": "Explanation when the fix requires widening a composer.json constraint"},
+            "blocking_risk": {"type": "array", "items": {"type": "string"}, "description": "Packages this command changes whose new version still carries another advisory; Composer 2.10+ advisory blocking may refuse the update"},
             "summary": {"oneOf": [{"$ref": "#/definitions/changeSummary"}, {"type": "null"}]},
             "changes": {"type": "array", "items": {"$ref": "#/definitions/change"}}
           }
@@ -154,7 +156,7 @@
     },
     "finding": {
       "type": "object",
-      "required": ["package", "version", "version_normalized", "direct", "dev", "baselined", "counts_for_exit", "via_replaced_package", "advisories", "paths_total", "paths", "remediation", "candidates"],
+      "required": ["package", "version", "version_normalized", "direct", "dev", "baselined", "counts_for_exit", "via_replaced_package", "advisories", "paths_total", "paths", "solver_runs", "search_exhausted", "remediation", "candidates"],
       "additionalProperties": false,
       "properties": {
         "package": {"type": "string"},
@@ -168,6 +170,8 @@
         "advisories": {"type": "array", "minItems": 1, "items": {"$ref": "#/definitions/advisory"}},
         "paths_total": {"type": "integer", "minimum": 0},
         "paths": {"type": "array", "maxItems": 10, "items": {"$ref": "#/definitions/path"}},
+        "solver_runs": {"type": "integer", "minimum": 0, "description": "Solver invocations spent on this package, probes and simplification included"},
+        "search_exhausted": {"type": "boolean", "description": "True when the candidate cap or the solve budget cut the search short"},
         "remediation": {"$ref": "#/definitions/remediation"},
         "candidates": {"type": "array", "items": {"$ref": "#/definitions/candidate"}}
       }

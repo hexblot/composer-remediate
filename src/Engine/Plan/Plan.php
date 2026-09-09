@@ -4,6 +4,8 @@ declare(strict_types=1);
 
 namespace Remediate\Engine\Plan;
 
+use Remediate\Engine\Solver\SolveStatus;
+
 final class Plan
 {
     public const EXIT_CLEAN = 0;
@@ -111,12 +113,19 @@ final class Plan
         $threshold = self::SEVERITIES[$this->failOn];
         foreach ($plan->allFindings() as $finding) {
             $severity = $finding->advisory->severity;
-            if ($severity === null || (self::SEVERITIES[strtolower($severity)] ?? 0) >= $threshold) {
+            // Missing or unrecognised severities are unknown, and unknown always counts.
+            if ($severity === null || !isset(self::SEVERITIES[strtolower($severity)]) || self::SEVERITIES[strtolower($severity)] >= $threshold) {
                 return true;
             }
         }
 
         return false;
+    }
+
+    /** @param list<string> $warnings */
+    public function withWarnings(array $warnings): self
+    {
+        return new self($this->findings, $this->metadata, [...$this->warnings, ...$warnings], $this->combined, $this->failOn, $this->inventory, $this->baseline);
     }
 
     /** @return list<FindingPlan> findings that count towards the exit code */
@@ -151,13 +160,20 @@ final class Plan
         }
         $unsolved = array_values(array_filter($gated, static fn (FindingPlan $p): bool => !$p->hasRemediation()));
         if ($unsolved !== []) {
+            // A finding without a fix because the tool or the network failed is not "no fix exists":
+            // report the infrastructure problem so a gate cannot mistake a broken planner for a clean state.
             foreach ($unsolved as $plan) {
-                if ($plan->blocker === null || !str_contains($plan->blocker, 'network')) {
-                    return self::EXIT_NO_REMEDIATION;
+                if ($plan->infrastructureFailure === SolveStatus::Error) {
+                    return self::EXIT_ERROR;
+                }
+            }
+            foreach ($unsolved as $plan) {
+                if ($plan->infrastructureFailure === SolveStatus::Transport) {
+                    return self::EXIT_SOLVER_FAILURE;
                 }
             }
 
-            return self::EXIT_SOLVER_FAILURE;
+            return self::EXIT_NO_REMEDIATION;
         }
 
         return self::EXIT_REMEDIATION_AVAILABLE;

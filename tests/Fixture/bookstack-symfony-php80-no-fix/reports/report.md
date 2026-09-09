@@ -107,7 +107,8 @@ Introduced by
 Current state
   Transitive dependency.
 Recommended remediation
-  No verified remediation found.
+  No verified remediation found (none found within the search budget).
+  No verified fix within the search budget (11 candidates tried, 11 solver runs); a fix outside the bounded search may still exist.
 Other candidates
   rejected: composer update symfony/http-foundation
       resolves, but symfony/http-foundation ends at v6.0.20 which is still affected by PKSA-b35n-565h-rs4q
@@ -209,7 +210,8 @@ Introduced by
 Current state
   Transitive dependency.
 Recommended remediation
-  No verified remediation found.
+  No verified remediation found (none found within the search budget).
+  No verified fix within the search budget (10 candidates tried, 10 solver runs); a fix outside the bounded search may still exist.
 Other candidates
   rejected: composer update symfony/process
       resolves, but symfony/process ends at v6.0.19 which is still affected by PKSA-wws7-mr54-jsny

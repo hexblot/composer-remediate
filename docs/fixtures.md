@@ -59,13 +59,19 @@ versions as `platform`, and writes an `expected.json` skeleton listing the findi
 
 Finish the fixture by hand: describe the case, record provenance in `README.md`, and fill in the
 command a competent human would run. The harness compares the planner's recommendation against it. Exact command strings are asserted
-only on Composer releases with `--minimal-changes` (2.9+); on older releases the planner legitimately
+only on Composer releases with `--minimal-changes` (2.7+); on older releases the planner legitimately
 drops `-m` (and often the `--with` guard) because they produce the same lock there, and the same
 commands move many more packages (58 instead of 3 in one Laravel case), so only the outcome and the
 target version are checked.
 
 A synthetic fixture (`synthetic-transitive-parent`) exists purely to exercise the harness; every
-other fixture must be a real historical project state.
+other fixture must be a real historical project state. For fixtures with `"execute": true` in
+`expected.json` the harness goes one step further than comparing command strings: it runs the
+recommended command with the real Composer binary (the `composer/composer` dev dependency, the same
+release the in-process solver used) in a scratch copy, adds `--no-install`, and re-matches the lock
+file Composer writes against the advisory snapshot. The command the report prints is the command
+that was executed. Every fixture's freshly rendered JSON report is validated against the published
+schema in the same test.
 
 ## Historical snapshots
 

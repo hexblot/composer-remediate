@@ -28,9 +28,9 @@ details summary{cursor:pointer;color:var(--accent);margin:.5rem 0}
 <h2>shopwarelabs/dompdf <span class="version">v1.0.3</span> <small>replaces dompdf/dompdf</small></h2>
 <p class="state">Transitive dependency.</p>
 <h3>Advisories</h3><ul class="advisories">
-<li><strong><a href="https://github.com/advisories/GHSA-pf6p-25r2-fx45" rel="noopener">CVE-2022-0085 <small>(PKSA-872h-8556-2chm)</small></a></strong> <span class="badge sev-medium">medium</span><br>Server-Side Request Forgery in dompdf/dompdf<br><small>affected versions: <code>&lt;2.0.0</code></small></li>
-<li><strong><a href="https://github.com/advisories/GHSA-6x28-7h8c-chx4" rel="noopener">CVE-2022-41343 <small>(PKSA-hbk6-2vfz-8f8n)</small></a></strong> <span class="badge sev-high">high</span><br>Remote file inclusion<br><small>affected versions: <code>&lt;2.0.1</code></small></li>
-<li><strong><a href="https://github.com/advisories/GHSA-5qj8-6xxj-hp9h" rel="noopener">CVE-2022-2400 <small>(PKSA-kj9c-tr41-t8mj)</small></a></strong> <span class="badge sev-medium">medium</span><br>Dompdf before v2.0.0 vulnerable to chroot check bypass<br><small>affected versions: <code>&lt;2.0.0</code></small></li>
+<li><strong><a href="https://github.com/advisories/GHSA-pf6p-25r2-fx45" rel="noopener noreferrer">CVE-2022-0085 <small>(PKSA-872h-8556-2chm)</small></a></strong> <span class="badge sev-medium">medium</span><br>Server-Side Request Forgery in dompdf/dompdf<br><small>affected versions: <code>&lt;2.0.0</code></small></li>
+<li><strong><a href="https://github.com/advisories/GHSA-6x28-7h8c-chx4" rel="noopener noreferrer">CVE-2022-41343 <small>(PKSA-hbk6-2vfz-8f8n)</small></a></strong> <span class="badge sev-high">high</span><br>Remote file inclusion<br><small>affected versions: <code>&lt;2.0.1</code></small></li>
+<li><strong><a href="https://github.com/advisories/GHSA-5qj8-6xxj-hp9h" rel="noopener noreferrer">CVE-2022-2400 <small>(PKSA-kj9c-tr41-t8mj)</small></a></strong> <span class="badge sev-medium">medium</span><br>Dompdf before v2.0.0 vulnerable to chroot check bypass<br><small>affected versions: <code>&lt;2.0.0</code></small></li>
 </ul>
 <h3>Introduced by</h3>
 <pre class="tree">root
@@ -56,7 +56,7 @@ root
 └── shopware/storefront 6.4.15.1
     └── shopware/core 6.4.15.1
         └── shopwarelabs/dompdf v1.0.3  (requires 1.0.3)</pre>
-<h3>Recommended remediation</h3><p class="none-box">No verified remediation found.</p>
+<h3>Recommended remediation</h3><p class="none-box">No verified remediation found (none).</p>
 <details><summary>Other candidates (27)</summary><table class="candidates"><thead><tr><th>Outcome</th><th>Command</th><th>Detail</th></tr></thead><tbody>
 <tr><td><span class="badge rejected">rejected</span></td><td><code>composer update shopwarelabs/dompdf</code></td><td><pre class="reason">resolves, but shopwarelabs/dompdf ends at v1.0.3 which is still affected by PKSA-872h-8556-2chm, PKSA-hbk6-2vfz-8f8n, PKSA-kj9c-tr41-t8mj</pre></td></tr>
 <tr><td><span class="badge rejected">rejected</span></td><td><code>composer update shopwarelabs/dompdf -w -m --with &apos;shopwarelabs/dompdf:&gt;=2.0.1&apos;</code></td><td><pre class="reason">Composer could not resolve the dependencies: Your requirements could not be resolved to an installable set of packages.
@@ -281,7 +281,7 @@ Use the option --with-all-dependencies (-W) to allow upgrades, downgrades and re
 <h2>twig/twig <span class="version">v3.3.10</span></h2>
 <p class="state">Transitive dependency.</p>
 <h3>Advisories</h3><ul class="advisories">
-<li><strong><a href="https://symfony.com/blog/twig-security-release-possibility-to-load-a-template-outside-a-configured-directory-when-using-the-filesystem-loader" rel="noopener">CVE-2022-39261 <small>(PKSA-n7sg-8f52-pqtf)</small></a></strong> <span class="badge sev-high">high</span><br>Possibility to load a template outside a configured directory when using the filesystem loader<br><small>affected versions: <code>&gt;=1.0.0,&lt;1.44.7|&gt;=2.0.0,&lt;2.15.3|&gt;=3.0.0,&lt;3.4.3</code></small></li>
+<li><strong><a href="https://symfony.com/blog/twig-security-release-possibility-to-load-a-template-outside-a-configured-directory-when-using-the-filesystem-loader" rel="noopener noreferrer">CVE-2022-39261 <small>(PKSA-n7sg-8f52-pqtf)</small></a></strong> <span class="badge sev-high">high</span><br>Possibility to load a template outside a configured directory when using the filesystem loader<br><small>affected versions: <code>&gt;=1.0.0,&lt;1.44.7|&gt;=2.0.0,&lt;2.15.3|&gt;=3.0.0,&lt;3.4.3</code></small></li>
 </ul>
 <h3>Introduced by</h3>
 <pre class="tree">root
@@ -485,7 +485,8 @@ Use the option --with-all-dependencies (-W) to allow upgrades, downgrades and re
 <dt>php version</dt><dd>(fixture)</dd>
 <dt>advisory source</dt><dd>advisory snapshot advisories.json</dd>
 <dt>solver</dt><dd>in-process Composer dry-run</dd>
-<dt>composer json sha256</dt><dd>30f9ef023a7d8946a233eba6f731572a4843f3bc911026fb5c49de16511ecd4c</dd>
+<dt>solver runs</dt><dd>56</dd>
+<dt>composer json sha256</dt><dd>5a80431adc7f081587e2bcce81ef6bd69dd7d7d72c13239c531d06a39b460039</dd>
 <dt>composer lock sha256</dt><dd>0166a25c8ee830ae631dad4fee40c7826c06f7cd18e413ab36c454440d37c811</dd>
 <dt>analysis timestamp</dt><dd>(fixture)</dd>
 <dt>locked packages</dt><dd>202</dd>

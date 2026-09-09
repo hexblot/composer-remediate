@@ -2445,7 +2445,7 @@
             ],
             "description": "Shopware vulnerable to Improper Access Control with ManyToMany associations in store-api",
             "detail": "Affected versions: >=6.6.0.0,<=6.6.5.0|<=6.5.8.12",
-            "recommendation": "No verified remediation found.",
+            "recommendation": "No verified remediation found: No verified fix within the search budget (13 candidates tried, 13 solver runs); a fix outside the bounded search may still exist.",
             "affects": [
                 {
                     "ref": "pkg:composer/shopware/core@6.4.20.2"
@@ -2502,7 +2502,7 @@
             ],
             "description": "Shopware vulnerable to Server Side Template Injection in Twig using deprecation silence tag",
             "detail": "Affected versions: >=6.6.0.0,<=6.6.5.0|<=6.5.8.12",
-            "recommendation": "No verified remediation found.",
+            "recommendation": "No verified remediation found: No verified fix within the search budget (13 candidates tried, 13 solver runs); a fix outside the bounded search may still exist.",
             "affects": [
                 {
                     "ref": "pkg:composer/shopware/core@6.4.20.2"
@@ -2559,7 +2559,7 @@
             ],
             "description": "Shopware vulnerable to Server Side Template Injection in Twig using Context functions",
             "detail": "Affected versions: >=6.6.0.0,<=6.6.5.0|<=6.5.8.12",
-            "recommendation": "No verified remediation found.",
+            "recommendation": "No verified remediation found: No verified fix within the search budget (13 candidates tried, 13 solver runs); a fix outside the bounded search may still exist.",
             "affects": [
                 {
                     "ref": "pkg:composer/shopware/core@6.4.20.2"
@@ -2616,7 +2616,7 @@
             ],
             "description": "Blind SQL injection in shopware",
             "detail": "Affected versions: <=6.5.7.3",
-            "recommendation": "No verified remediation found.",
+            "recommendation": "No verified remediation found: No verified fix within the search budget (13 candidates tried, 13 solver runs); a fix outside the bounded search may still exist.",
             "affects": [
                 {
                     "ref": "pkg:composer/shopware/core@6.4.20.2"
@@ -2673,7 +2673,7 @@
             ],
             "description": "Broken Access Control order API in Shopware",
             "detail": "Affected versions: <=6.5.7.3",
-            "recommendation": "No verified remediation found.",
+            "recommendation": "No verified remediation found: No verified fix within the search budget (13 candidates tried, 13 solver runs); a fix outside the bounded search may still exist.",
             "affects": [
                 {
                     "ref": "pkg:composer/shopware/core@6.4.20.2"
@@ -2730,7 +2730,7 @@
             ],
             "description": "Shopware Improper Session Handling in store-api account logout",
             "detail": "Affected versions: >=6.6.0.0-rc1,<6.6.1.0|>=6.3.5.0,<6.5.8.8",
-            "recommendation": "No verified remediation found.",
+            "recommendation": "No verified remediation found: No verified fix within the search budget (13 candidates tried, 13 solver runs); a fix outside the bounded search may still exist.",
             "affects": [
                 {
                     "ref": "pkg:composer/shopware/core@6.4.20.2"
@@ -2787,7 +2787,7 @@
             ],
             "description": "Shopware vulnerable to blind SQL-injection in DAL aggregations",
             "detail": "Affected versions: >=6.6.0.0,<=6.6.5.0|<=6.5.8.12",
-            "recommendation": "No verified remediation found.",
+            "recommendation": "No verified remediation found: No verified fix within the search budget (13 candidates tried, 13 solver runs); a fix outside the bounded search may still exist.",
             "affects": [
                 {
                     "ref": "pkg:composer/shopware/core@6.4.20.2"
@@ -3265,7 +3265,7 @@
             ],
             "description": "TCPDF Cross-site Scripting vulnerability",
             "detail": "Affected versions: <6.7.4",
-            "recommendation": "No verified remediation found.",
+            "recommendation": "No verified remediation found: No verified fix within the search budget (16 candidates tried, 16 solver runs); a fix outside the bounded search may still exist.",
             "affects": [
                 {
                     "ref": "pkg:composer/tecnickcom/tcpdf@6.4.4"
@@ -3322,7 +3322,7 @@
             ],
             "description": "TCPDF vulnerable to Regular Expression Denial of Service",
             "detail": "Affected versions: <=6.7.4",
-            "recommendation": "No verified remediation found.",
+            "recommendation": "No verified remediation found: No verified fix within the search budget (16 candidates tried, 16 solver runs); a fix outside the bounded search may still exist.",
             "affects": [
                 {
                     "ref": "pkg:composer/tecnickcom/tcpdf@6.4.4"
@@ -3379,7 +3379,7 @@
             ],
             "description": "Possible sandbox bypass",
             "detail": "Affected versions: >=1.0.0,<1.44.7|>=2.0.0,<2.16.0|>=3.0.0,<3.11.0|>=3.12.0,<3.14.0",
-            "recommendation": "No verified remediation found.",
+            "recommendation": "No verified remediation found: No verified fix within the search budget (16 candidates tried, 16 solver runs); a fix outside the bounded search may still exist.",
             "affects": [
                 {
                     "ref": "pkg:composer/twig/twig@3.4.3"

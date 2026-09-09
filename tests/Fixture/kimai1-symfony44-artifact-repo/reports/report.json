@@ -7,7 +7,8 @@
         "php_version": "(fixture)",
         "advisory_source": "advisory snapshot advisories.json",
         "solver": "in-process Composer dry-run",
-        "composer_json_sha256": "cf301177062262726f7d5eeba4cd3f46b43ff1eb3fe677a41561ec10c661f4ea",
+        "solver_runs": "78",
+        "composer_json_sha256": "d2d2e6c1c923b36f60853b8d0ecf7b07e45c2884b2a24700128dea8e78f69ba9",
         "composer_lock_sha256": "22fd0acc2517587b38c52afc1c3a03768d5ea1fae006f954fcc185f8abe5b05e",
         "analysis_timestamp": "(fixture)",
         "locked_packages": "192"
@@ -170,8 +171,11 @@
                     }
                 }
             ],
+            "solver_runs": 4,
+            "search_exhausted": false,
             "remediation": {
                 "status": "none",
+                "outcome": "none",
                 "blocker": null
             },
             "candidates": [
@@ -487,12 +491,15 @@
                     }
                 }
             ],
+            "solver_runs": 19,
+            "search_exhausted": true,
             "remediation": {
                 "status": "verified",
                 "command": "composer update symfony/http-foundation",
                 "strategy": "lock-refresh",
                 "root_constraint_changes": [],
                 "constraint_drag": null,
+                "blocking_risk": [],
                 "summary": {
                     "changed": 1,
                     "added": 0,
@@ -819,12 +826,15 @@
                     }
                 }
             ],
+            "solver_runs": 8,
+            "search_exhausted": true,
             "remediation": {
                 "status": "verified",
                 "command": "composer update symfony/twig-bridge",
                 "strategy": "lock-refresh",
                 "root_constraint_changes": [],
                 "constraint_drag": null,
+                "blocking_risk": [],
                 "summary": {
                     "changed": 1,
                     "added": 0,
@@ -1034,8 +1044,11 @@
                     }
                 }
             ],
+            "solver_runs": 5,
+            "search_exhausted": false,
             "remediation": {
                 "status": "none",
+                "outcome": "none",
                 "blocker": null
             },
             "candidates": [
@@ -1391,12 +1404,15 @@
                     }
                 }
             ],
+            "solver_runs": 34,
+            "search_exhausted": true,
             "remediation": {
                 "status": "verified",
                 "command": "composer update twig/twig -w -m --with 'twig/twig:>=3.11.2,<3.12.0 || >=3.14.1'",
                 "strategy": "with-dependencies",
                 "root_constraint_changes": [],
                 "constraint_drag": null,
+                "blocking_risk": [],
                 "summary": {
                     "changed": 2,
                     "added": 0,
@@ -1676,12 +1692,15 @@
                     }
                 }
             ],
+            "solver_runs": 4,
+            "search_exhausted": false,
             "remediation": {
                 "status": "verified",
                 "command": "composer update symfony/process",
                 "strategy": "lock-refresh",
                 "root_constraint_changes": [],
                 "constraint_drag": null,
+                "blocking_risk": [],
                 "summary": {
                     "changed": 1,
                     "added": 0,

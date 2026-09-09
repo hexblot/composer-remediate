@@ -1,6 +1,7 @@
 {
   "description": "Transitive vulnerable package whose parent constraint (~1.0.0) excludes the fixed release line (1.1.x); the parent must move to 1.1.0. Strategy 1 resolves to 1.0.4 (still vulnerable), strategy 2 conflicts with the parent constraint, strategy 3 moves the parent to 1.2.0 (three changes, helper moves too); the parent descent finds 1.1.0 (two changes) and pins it; widening to ^2.0 also works but crosses a major version.",
   "platform": {"php": "8.3.0"},
+  "execute": true,
   "findings": [
     {
       "package": "acme/vuln-lib",

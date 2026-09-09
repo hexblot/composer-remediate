@@ -5,7 +5,7 @@ All commands are Composer plugin commands and accept Composer's global options a
 
 ## `composer remediate`
 
-Find the smallest Composer-verified upgrade that removes each known vulnerability from composer.lock
+Find the least invasive Composer-verified upgrade that removes each known vulnerability from composer.lock
 
 Reads composer.json and composer.lock, matches the locked packages against security advisories,
 and for every finding tries a series of `composer update` commands in a dry-run, from
@@ -13,8 +13,13 @@ least to most invasive. Only commands whose resulting lock file no longer contai
 vulnerability are recommended. Nothing in the project is modified.
 
 Exit codes: 0 no vulnerabilities, 1 vulnerabilities with a verified remediation,
-2 at least one vulnerability without a verified remediation, 3 error,
-4 advisory data unavailable, 5 package metadata could not be fetched while solving.
+2 at least one vulnerability without a verified remediation (and no tool failure), 3 error (also
+when a solver error prevented the search from completing), 4 advisory data unavailable,
+5 package metadata could not be fetched while solving.
+
+Running as `composer remediate` means Composer has already activated the project's
+other allowed plugins before this command starts. The `composer-remediate` binary shipped
+with the package runs the same command with plugins and scripts disabled from the first instruction.
 
 | Option | Value | Description |
 |---|---|---|
@@ -23,16 +28,18 @@ Exit codes: 0 no vulnerabilities, 1 vulnerabilities with a verified remediation,
 | `--fail-on` | required | Only findings at or above this severity (low, medium, high, critical) affect the exit code; findings of unknown severity always count |
 | `--baseline` | required | Baseline file of accepted findings; findings listed there are reported but do not affect the exit code |
 | `--update-baseline` | flag | Write every finding of this run to the --baseline file (accept the current state, then tighten over time) |
-| `--min-release-age` | required | Never recommend a release published fewer than this many days ago (supply-chain cooldown) |
+| `--min-release-age` | required | Never recommend a release published fewer than this many days ago, or without a known release date (supply-chain cooldown) |
 | `--no-dev` | flag | Ignore vulnerabilities in require-dev packages |
 | `--offline` | flag | Refuse all network access; needs a warm Composer cache plus --advisories-file or --database-location (sets COMPOSER_DISABLE_NETWORK=1) |
-| `--ignore`, `-i` | repeatable | Advisory id or CVE to ignore (repeatable); config.audit.ignore and config.policy.advisories.ignore are honoured as well |
+| `--ignore`, `-i` | repeatable | Advisory id or CVE to ignore (repeatable); audit-scoped entries of config.audit.ignore and config.policy.advisories are honoured as well |
 | `--allow-direct-require` | flag | Also consider adding a transitive package as a direct requirement to force a fixed version |
-| `--advisories-file` | required | Read advisories from a JSON file in the Packagist API shape instead of the configured repositories |
+| `--advisories-file` | required | Read advisories from a JSON file in the Packagist API shape (or `composer audit --format=json` output) instead of the configured repositories |
 | `--database-location` | required | Read advisories from a local advisory database (path or URL) built with remediate:db-build; also REMEDIATE_DATABASE or extra.remediate.database |
 | `--max-candidates` | required, default `10` | Maximum number of candidate commands to try per finding |
-| `--ignore-platform-req` | repeatable | Ignore a specific platform requirement (php &amp; ext- packages) when validating candidates |
-| `--ignore-platform-reqs` | flag | Ignore all platform requirements when validating candidates |
+| `--solve-budget` | required, default `60` | Maximum number of solver runs per finding, all search phases included (candidates, conflict expansion, parent descent, simplification) |
+| `--solver` | required, default `auto` | How candidates are verified: auto (in-process, falling back to a `composer update` subprocess when the in-process route errors), in-process, or subprocess |
+| `--ignore-platform-req` | repeatable | Ignore a specific platform requirement (php &amp; ext- packages) when validating candidates; the flag is repeated in the recommended command |
+| `--ignore-platform-reqs` | flag | Ignore all platform requirements when validating candidates; the flag is repeated in the recommended command |
 
 ## `composer remediate:db-build`
 

@@ -4,14 +4,19 @@ declare(strict_types=1);
 
 namespace Remediate\Tests\Integration;
 
+use JsonSchema\Validator;
 use PHPUnit\Framework\Attributes\DataProvider;
 use PHPUnit\Framework\TestCase;
+use Remediate\Engine\Advisory\JsonFileAdvisoryProvider;
+use Remediate\Engine\Lock\LockSnapshot;
+use Remediate\Engine\Matching\Matcher;
 use Remediate\Engine\Plan\FindingPlan;
 use Remediate\Engine\Solver\InProcessSolver;
 use Remediate\Output\HtmlRenderer;
 use Remediate\Output\JsonRenderer;
 use Remediate\Output\TextRenderer;
 use Remediate\Tests\Support\FixtureRunner;
+use Symfony\Component\Process\Process;
 
 /**
  * Every directory under tests/Fixture with an expected.json is a test case. expected.json:
@@ -30,7 +35,9 @@ use Remediate\Tests\Support\FixtureRunner;
  *         "max_changes": 3,                           optional upper bound on changed packages
  *         "target_version": "6.4.24"                  optional expected version of the package after the fix
  *       }
- *     ]
+ *     ],
+ *     "execute": true                               run the recommended commands with the real composer binary in a
+ *                                                   scratch copy and assert the written lock is free of the findings
  *   }
  */
 final class FixtureTest extends TestCase
@@ -67,10 +74,12 @@ final class FixtureTest extends TestCase
         self::assertStringStartsWith('<!DOCTYPE html>', $html);
         self::assertStringContainsString('</html>', $html);
         self::assertStringNotContainsString('<script', $html);
-        $json = json_decode((new JsonRenderer())->render($plan), true, 512, JSON_THROW_ON_ERROR);
+        $jsonText = (new JsonRenderer())->render($plan);
+        $json = json_decode($jsonText, true, 512, JSON_THROW_ON_ERROR);
         self::assertIsArray($json);
         self::assertSame($plan->exitCode(), $json['exit_code']);
         self::assertCount(count($plan->findings), $json['findings']);
+        self::assertJsonMatchesSchema($jsonText);
 
         // Expected command strings are recorded on a Composer with --minimal-changes (2.9+). Older
         // releases cannot apply -m, so the simplification step legitimately drops it (and often the
@@ -115,7 +124,59 @@ final class FixtureTest extends TestCase
             if (isset($exp['target_version'])) {
                 self::assertSame($exp['target_version'], $recommended->result->after?->get($package)?->getPrettyVersion(), "Unexpected version after remediation.\n$rendered");
             }
+            if ((bool) ($expected['execute'] ?? false)) {
+                $this->assertCommandRemoves($fixtureDir, $recommended->candidate->commandLine($exactCommands), $findingPlan);
+            }
         }
+    }
+
+    /**
+     * The printed command is a promise; here it is kept: the string the user would copy is executed by
+     * the real Composer binary (the same release the in-process solver used) in a scratch copy of the
+     * fixture, and the lock file it writes is re-matched against the advisories.
+     */
+    private function assertCommandRemoves(string $fixtureDir, string $commandLine, FindingPlan $findingPlan): void
+    {
+        $composer = dirname(__DIR__, 2) . '/vendor/bin/composer';
+        self::assertFileExists($composer, 'composer/composer must be installed as a dev dependency');
+        $project = $this->runner->workspace($fixtureDir)->materialize();
+        try {
+            // `composer require --no-update x && composer update ...`: run each part in order, replacing
+            // the leading "composer" with the dev-dependency binary and adding --no-install (the fixture's
+            // dist URLs are not fetchable; resolution and the lock are unaffected).
+            foreach (explode(' && ', $commandLine) as $part) {
+                self::assertStringStartsWith('composer ', $part);
+                $args = array_map(static fn (string $a): string => trim($a, "'"), preg_split('{\s+}', trim(substr($part, 9))) ?: []);
+                $process = new Process([PHP_BINARY, $composer, ...$args, '--no-install', '--no-interaction', '--no-progress', '--no-ansi'], $project->directory(), ['COMPOSER_HOME' => (string) getenv('COMPOSER_HOME'), 'COMPOSER_CACHE_DIR' => (string) getenv('COMPOSER_CACHE_DIR'), 'COMPOSER_NO_INTERACTION' => '1'], null, 600);
+                $process->run();
+                self::assertSame(0, $process->getExitCode(), "`$part` failed:\n" . $process->getOutput() . $process->getErrorOutput());
+            }
+            $lock = json_decode((string) file_get_contents($project->directory() . '/composer.lock'), true, 512, JSON_THROW_ON_ERROR);
+            self::assertIsArray($lock);
+            $loader = new \Composer\Package\Loader\ArrayLoader();
+            $prod = array_map($loader->load(...), is_array($lock['packages'] ?? null) ? $lock['packages'] : []);
+            $dev = array_map($loader->load(...), is_array($lock['packages-dev'] ?? null) ? $lock['packages-dev'] : []);
+            $after = LockSnapshot::fromPackages($prod, $dev);
+            $remaining = (new Matcher(new JsonFileAdvisoryProvider($fixtureDir . '/advisories.json')))->findingKeys($after);
+            foreach ($findingPlan->allFindings() as $finding) {
+                self::assertArrayNotHasKey($finding->key(), $remaining, "`$commandLine` was executed but {$finding->key()} is still present in the resulting lock");
+            }
+            $target = $after->get($findingPlan->finding->packageName);
+            self::assertSame($findingPlan->recommended()?->result->after?->get($findingPlan->finding->packageName)?->getPrettyVersion(), $target?->getPrettyVersion(), 'the executed command must land on the version the dry-run predicted');
+        } finally {
+            $project->destroy();
+        }
+    }
+
+    private static function assertJsonMatchesSchema(string $jsonText): void
+    {
+        $schemaPath = realpath(__DIR__ . '/../../docs/schema/report.schema.json');
+        self::assertNotFalse($schemaPath);
+        $validator = new Validator();
+        $data = json_decode($jsonText);
+        $validator->validate($data, (object) ['$ref' => 'file://' . $schemaPath]);
+        $errors = array_map(static fn (array $e): string => sprintf('%s: %s', $e['property'], $e['message']), $validator->getErrors());
+        self::assertTrue($validator->isValid(), "Freshly rendered JSON violates the schema:\n" . implode("\n", $errors));
     }
 
     /**

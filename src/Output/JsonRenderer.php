@@ -118,12 +118,15 @@ final class JsonRenderer
                 'chain' => array_map(static fn ($s): array => ['package' => $s->isRoot ? 'root' : $s->packageName, 'version' => $s->isRoot ? null : $s->prettyVersion, 'requires' => $s->requiresConstraint], array_reverse($p->segments)),
                 'target' => ['package' => $f->packageName, 'version' => $f->prettyVersion],
             ], array_slice($f->paths, 0, self::MAX_PATHS)),
-            'remediation' => $rec === null ? ['status' => 'none', 'blocker' => $fp->blocker] : [
+            'solver_runs' => $fp->solveCount,
+            'search_exhausted' => $fp->exhausted,
+            'remediation' => $rec === null ? ['status' => 'none', 'outcome' => $fp->outcome(), 'blocker' => $fp->blocker] : [
                 'status' => 'verified',
                 'command' => $rec->candidate->commandLine($this->minimalChangesSupported),
                 'strategy' => $rec->candidate->strategy->value,
                 'root_constraint_changes' => array_values(array_map(static fn ($c): array => ['package' => $c->packageName, 'from' => $c->fromConstraint, 'to' => $c->toConstraint, 'dev' => $c->isDev], $rec->candidate->rootConstraintChanges)),
                 'constraint_drag' => $fp->constraintDrag(),
+                'blocking_risk' => $rec->blockingRisk,
                 'summary' => $rec->diff === null ? null : self::summary($rec->diff),
                 'changes' => $rec->diff === null ? [] : self::changes($rec->diff),
             ],

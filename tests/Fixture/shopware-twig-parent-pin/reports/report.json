@@ -7,7 +7,8 @@
         "php_version": "(fixture)",
         "advisory_source": "advisory snapshot advisories.json",
         "solver": "in-process Composer dry-run",
-        "composer_json_sha256": "30f9ef023a7d8946a233eba6f731572a4843f3bc911026fb5c49de16511ecd4c",
+        "solver_runs": "56",
+        "composer_json_sha256": "5a80431adc7f081587e2bcce81ef6bd69dd7d7d72c13239c531d06a39b460039",
         "composer_lock_sha256": "0166a25c8ee830ae631dad4fee40c7826c06f7cd18e413ab36c454440d37c811",
         "analysis_timestamp": "(fixture)",
         "locked_packages": "202"
@@ -219,8 +220,11 @@
                     }
                 }
             ],
+            "solver_runs": 27,
+            "search_exhausted": false,
             "remediation": {
                 "status": "none",
+                "outcome": "none",
                 "blocker": null
             },
             "candidates": [
@@ -702,12 +706,15 @@
                     }
                 }
             ],
+            "solver_runs": 29,
+            "search_exhausted": true,
             "remediation": {
                 "status": "verified",
                 "command": "composer update shopware/storefront:6.4.15.2 shopware/recovery shopware/elasticsearch shopware/administration -W -m",
                 "strategy": "parent-update",
                 "root_constraint_changes": [],
                 "constraint_drag": null,
+                "blocking_risk": [],
                 "summary": {
                     "changed": 6,
                     "added": 0,

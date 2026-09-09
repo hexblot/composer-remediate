@@ -980,7 +980,7 @@
                     "ruleIndex": 9,
                     "level": "warning",
                     "message": {
-                        "text": "shopware/core 6.4.20.2 is affected by CVE-2024-42354: Shopware vulnerable to Improper Access Control with ManyToMany associations in store-api. No verified remediation found."
+                        "text": "shopware/core 6.4.20.2 is affected by CVE-2024-42354: Shopware vulnerable to Improper Access Control with ManyToMany associations in store-api. No verified remediation found (No verified fix within the search budget (13 candidates tried, 13 solver runs); a fix outside the bounded search may still exist.)."
                     },
                     "locations": [
                         {
@@ -1013,7 +1013,7 @@
                     "ruleIndex": 10,
                     "level": "error",
                     "message": {
-                        "text": "shopware/core 6.4.20.2 is affected by CVE-2024-42355: Shopware vulnerable to Server Side Template Injection in Twig using deprecation silence tag. No verified remediation found."
+                        "text": "shopware/core 6.4.20.2 is affected by CVE-2024-42355: Shopware vulnerable to Server Side Template Injection in Twig using deprecation silence tag. No verified remediation found (No verified fix within the search budget (13 candidates tried, 13 solver runs); a fix outside the bounded search may still exist.)."
                     },
                     "locations": [
                         {
@@ -1046,7 +1046,7 @@
                     "ruleIndex": 11,
                     "level": "error",
                     "message": {
-                        "text": "shopware/core 6.4.20.2 is affected by CVE-2024-42356: Shopware vulnerable to Server Side Template Injection in Twig using Context functions. No verified remediation found."
+                        "text": "shopware/core 6.4.20.2 is affected by CVE-2024-42356: Shopware vulnerable to Server Side Template Injection in Twig using Context functions. No verified remediation found (No verified fix within the search budget (13 candidates tried, 13 solver runs); a fix outside the bounded search may still exist.)."
                     },
                     "locations": [
                         {
@@ -1079,7 +1079,7 @@
                     "ruleIndex": 12,
                     "level": "error",
                     "message": {
-                        "text": "shopware/core 6.4.20.2 is affected by CVE-2024-22406: Blind SQL injection in shopware. No verified remediation found."
+                        "text": "shopware/core 6.4.20.2 is affected by CVE-2024-22406: Blind SQL injection in shopware. No verified remediation found (No verified fix within the search budget (13 candidates tried, 13 solver runs); a fix outside the bounded search may still exist.)."
                     },
                     "locations": [
                         {
@@ -1112,7 +1112,7 @@
                     "ruleIndex": 13,
                     "level": "warning",
                     "message": {
-                        "text": "shopware/core 6.4.20.2 is affected by CVE-2024-22407: Broken Access Control order API in Shopware. No verified remediation found."
+                        "text": "shopware/core 6.4.20.2 is affected by CVE-2024-22407: Broken Access Control order API in Shopware. No verified remediation found (No verified fix within the search budget (13 candidates tried, 13 solver runs); a fix outside the bounded search may still exist.)."
                     },
                     "locations": [
                         {
@@ -1145,7 +1145,7 @@
                     "ruleIndex": 14,
                     "level": "warning",
                     "message": {
-                        "text": "shopware/core 6.4.20.2 is affected by CVE-2024-31447: Shopware Improper Session Handling in store-api account logout. No verified remediation found."
+                        "text": "shopware/core 6.4.20.2 is affected by CVE-2024-31447: Shopware Improper Session Handling in store-api account logout. No verified remediation found (No verified fix within the search budget (13 candidates tried, 13 solver runs); a fix outside the bounded search may still exist.)."
                     },
                     "locations": [
                         {
@@ -1178,7 +1178,7 @@
                     "ruleIndex": 15,
                     "level": "warning",
                     "message": {
-                        "text": "shopware/core 6.4.20.2 is affected by CVE-2024-42357: Shopware vulnerable to blind SQL-injection in DAL aggregations. No verified remediation found."
+                        "text": "shopware/core 6.4.20.2 is affected by CVE-2024-42357: Shopware vulnerable to blind SQL-injection in DAL aggregations. No verified remediation found (No verified fix within the search budget (13 candidates tried, 13 solver runs); a fix outside the bounded search may still exist.)."
                     },
                     "locations": [
                         {
@@ -1444,7 +1444,7 @@
                     "ruleIndex": 23,
                     "level": "warning",
                     "message": {
-                        "text": "tecnickcom/tcpdf 6.4.4 is affected by CVE-2024-32489: TCPDF Cross-site Scripting vulnerability. No verified remediation found."
+                        "text": "tecnickcom/tcpdf 6.4.4 is affected by CVE-2024-32489: TCPDF Cross-site Scripting vulnerability. No verified remediation found (No verified fix within the search budget (16 candidates tried, 16 solver runs); a fix outside the bounded search may still exist.)."
                     },
                     "locations": [
                         {
@@ -1477,7 +1477,7 @@
                     "ruleIndex": 24,
                     "level": "warning",
                     "message": {
-                        "text": "tecnickcom/tcpdf 6.4.4 is affected by CVE-2024-22640: TCPDF vulnerable to Regular Expression Denial of Service. No verified remediation found."
+                        "text": "tecnickcom/tcpdf 6.4.4 is affected by CVE-2024-22640: TCPDF vulnerable to Regular Expression Denial of Service. No verified remediation found (No verified fix within the search budget (16 candidates tried, 16 solver runs); a fix outside the bounded search may still exist.)."
                     },
                     "locations": [
                         {
@@ -1510,7 +1510,7 @@
                     "ruleIndex": 25,
                     "level": "warning",
                     "message": {
-                        "text": "twig/twig v3.4.3 is affected by CVE-2024-45411: Possible sandbox bypass. No verified remediation found."
+                        "text": "twig/twig v3.4.3 is affected by CVE-2024-45411: Possible sandbox bypass. No verified remediation found (No verified fix within the search budget (16 candidates tried, 16 solver runs); a fix outside the bounded search may still exist.)."
                     },
                     "locations": [
                         {

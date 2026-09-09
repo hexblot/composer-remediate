@@ -1,0 +1,125 @@
+#!/usr/bin/env php
+<?php
+
+/*
+ * Standalone entry point for Composer Remediate.
+ *
+ * `composer remediate` runs inside Composer's own command dispatch, which has already activated
+ * every plugin the analysed project allows before this command starts. This binary runs the same
+ * commands with `--no-plugins --no-scripts` forced from the first instruction, so nothing from
+ * the analysed project executes during planning. It reuses the Composer installation it can find
+ * (the `composer` on PATH, or REMEDIATE_COMPOSER_BINARY) for both its classes and the fallback
+ * solver, so the plugin needs no copy of composer/composer of its own.
+ */
+
+declare(strict_types=1);
+
+if (PHP_SAPI !== 'cli') {
+    fwrite(STDERR, 'composer-remediate must run from the command line.' . PHP_EOL);
+    exit(3);
+}
+
+/** @return list<string> */
+$candidates = static function (): array {
+    $list = [];
+    $env = getenv('REMEDIATE_COMPOSER_BINARY');
+    if (is_string($env) && $env !== '') {
+        $list[] = $env;
+    }
+    foreach (explode(PATH_SEPARATOR, (string) getenv('PATH')) as $dir) {
+        if ($dir === '') {
+            continue;
+        }
+        foreach (['composer', 'composer.phar'] as $name) {
+            $path = rtrim($dir, '/\\') . DIRECTORY_SEPARATOR . $name;
+            if (is_file($path)) {
+                $list[] = $path;
+            }
+        }
+    }
+
+    return $list;
+};
+
+$ownAutoload = static function (): ?string {
+    // Installed as a dependency (vendor/hexblot/composer-remediate/bin) or run from a checkout.
+    foreach ([__DIR__ . '/../../../autoload.php', __DIR__ . '/../vendor/autoload.php'] as $file) {
+        if (is_file($file)) {
+            return realpath($file) ?: $file;
+        }
+    }
+
+    return null;
+};
+
+$composerBinary = null;
+foreach ($candidates() as $candidate) {
+    $real = realpath($candidate);
+    if ($real === false) {
+        continue;
+    }
+    if (str_contains((string) file_get_contents($real, false, null, 0, 4096), 'phar://') || substr((string) file_get_contents($real, false, null, 0, 2), 0, 2) === '#!') {
+        // A phar (possibly with a shebang) or a source checkout's bin/composer.
+        try {
+            Phar::loadPhar($real, 'composer.phar');
+            if (is_file('phar://composer.phar/src/bootstrap.php')) {
+                require 'phar://composer.phar/src/bootstrap.php';
+                $composerBinary = $real;
+                break;
+            }
+        } catch (Throwable) {
+            $bootstrap = dirname($real) . '/../src/bootstrap.php';
+            if (is_file($bootstrap)) {
+                require $bootstrap;
+                $composerBinary = $real;
+                break;
+            }
+        }
+    }
+}
+
+$autoload = $ownAutoload();
+if ($autoload === null) {
+    fwrite(STDERR, 'composer-remediate: cannot find the plugin autoloader; install hexblot/composer-remediate with Composer.' . PHP_EOL);
+    exit(3);
+}
+$loader = require $autoload;
+if (!class_exists(Composer\Console\Application::class)) {
+    fwrite(STDERR, 'composer-remediate: no Composer installation found. Put `composer` on PATH or set REMEDIATE_COMPOSER_BINARY to the composer phar.' . PHP_EOL);
+    exit(3);
+}
+if ($composerBinary !== null) {
+    putenv('REMEDIATE_COMPOSER_BINARY=' . $composerBinary);
+}
+
+use Composer\Console\Application;
+use Composer\Util\Platform;
+use Remediate\Command\DbBuildCommand;
+use Remediate\Command\DbStatusCommand;
+use Remediate\Command\RemediateCommand;
+use Symfony\Component\Console\Input\ArgvInput;
+
+error_reporting(-1);
+setlocale(LC_ALL, 'C');
+
+$argv = is_array($_SERVER['argv'] ?? null) ? array_values($_SERVER['argv']) : ['composer-remediate'];
+$args = array_slice($argv, 1);
+// --offline must take effect before Composer builds any HttpDownloader.
+if (in_array('--offline', $args, true)) {
+    Platform::putEnv('COMPOSER_DISABLE_NETWORK', '1');
+}
+$commandNames = ['remediate', 'remediate:db-build', 'remediate-db-build', 'remediate:db-status', 'remediate-db-status', 'list', 'help'];
+$first = $args[0] ?? null;
+if ($first === null || str_starts_with($first, '-') || !in_array($first, $commandNames, true)) {
+    array_unshift($args, 'remediate');
+}
+$input = new ArgvInput([$argv[0], '--no-plugins', '--no-scripts', ...$args]);
+
+$application = new Application();
+$application->setName('Composer Remediate');
+$application->add(new RemediateCommand());
+$application->add(new DbBuildCommand());
+$application->add(new DbStatusCommand());
+$application->setAutoExit(false);
+
+exit($application->run($input));

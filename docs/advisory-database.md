@@ -120,8 +120,19 @@ Every published database carries a GitHub build-provenance attestation. Verify a
 
 ```bash
 gh attestation verify advisories.sqlite --repo hexblot/composer-remediate
-sha256sum -c advisories.sqlite.sha256
+sha256sum -c advisories.sqlite.sha256      # the sidecar is `sha256sum` output: digest and filename
 ```
+
+What the client verifies on its own: when `--database-location` is a URL, the plugin also fetches
+`<url>.sha256` and refuses a download whose digest does not match (exit 4). A URL without a sidecar
+is accepted with a warning in the report saying the download was not verified. The attestation is
+**not** checked automatically; it is there for `gh attestation verify` in a pipeline step, and the
+trust the client places in a URL is the trust in TLS plus the publisher's checksum, nothing more.
+
+Cached downloads are refreshed after 24 hours. When the refresh fails (feed down, network error) the
+cached copy is still used, but the report carries a warning with the age of the copy so a stale
+database is never mistaken for current coverage. `--offline` uses the cache unconditionally and warns
+in the same way.
 
 ## Data licences
 

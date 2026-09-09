@@ -173,7 +173,7 @@
             "name": "CVE-2024-50345: CVE-2024-50345: Open redirect via browser-sanitized URLs",
             "description": "symfony/http-foundation v6.0.20 is affected by CVE-2024-50345 (affected versions >=2.0.0,<3.0.0|>=3.0.0,<4.0.0|>=4.0.0,<5.0.0|>=5.0.0,<5.1.0|>=5.1.0,<5.2.0|>=5.2.0,<5.3.0|>=5.3.0,<5.4.0|>=5.4.0,<5.4.46|>=6.0.0,<6.1.0|>=6.1.0,<6.2.0|>=6.2.0,<6.3.0|>=6.3.0,<6.4.0|>=6.4.0,<6.4.14|>=7.0.0,<7.1.0|>=7.1.0,<7.1.7).",
             "severity": "Low",
-            "solution": "No verified remediation found.",
+            "solution": "No verified remediation found: No verified fix within the search budget (11 candidates tried, 11 solver runs); a fix outside the bounded search may still exist.",
             "identifiers": [
                 {
                     "type": "cve",
@@ -216,7 +216,7 @@
             "name": "CVE-2024-51736: CVE-2024-51736: Command execution hijack on Windows with Process class",
             "description": "symfony/process v6.0.19 is affected by CVE-2024-51736 (affected versions >=2.0.0,<3.0.0|>=3.0.0,<4.0.0|>=4.0.0,<5.0.0|>=5.0.0,<5.1.0|>=5.1.0,<5.2.0|>=5.2.0,<5.3.0|>=5.3.0,<5.4.0|>=5.4.0,<5.4.46|>=6.0.0,<6.1.0|>=6.1.0,<6.2.0|>=6.2.0,<6.3.0|>=6.3.0,<6.4.0|>=6.4.0,<6.4.14|>=7.0.0,<7.1.0|>=7.1.0,<7.1.7).",
             "severity": "High",
-            "solution": "No verified remediation found.",
+            "solution": "No verified remediation found: No verified fix within the search budget (10 candidates tried, 10 solver runs); a fix outside the bounded search may still exist.",
             "identifiers": [
                 {
                     "type": "cve",

@@ -9,10 +9,16 @@
 |---|---|---|
 | `0` | No known vulnerabilities in the lock | pass |
 | `1` | Vulnerabilities found **and** a verified fix exists | **fail**: the fix is one command away, apply it |
-| `2` | At least one vulnerability has **no** verified fix | fail or warn, see below |
-| `3` | Tool error (no lock file, bad option) | fail, fix the pipeline |
-| `4` | Advisory data unavailable (network, bad snapshot) | fail or retry, this is infrastructure |
+| `2` | At least one vulnerability has **no** verified fix, and every solve completed | fail or warn, see below |
+| `3` | Tool error (no lock file, bad option, or a solver error left a finding's outcome unknown) | fail, fix the pipeline |
+| `4` | Advisory data unavailable (network, malformed snapshot, no repository provides advisories) | fail or retry, this is infrastructure |
 | `5` | Package metadata could not be fetched during solving | fail or retry, this is infrastructure |
+
+Exit `2` is only returned when the planner actually finished its search. A broken tool or an
+unreachable repository never reads as "no fix exists": those paths end in `3`, `4` or `5`, so the
+actionable policy below cannot pass a job because the planner failed. A finding whose search hit
+`--max-candidates` or `--solve-budget` still exits `2` but is labelled "none found within the search
+budget" in every report.
 
 Two sensible policies:
 
@@ -35,7 +41,9 @@ composer global config --no-plugins allow-plugins.hexblot/composer-remediate tru
 composer global require hexblot/composer-remediate
 ```
 
-Requirements: PHP 8.1+ and Composer 2.4+ (2.9+ for `--minimal-changes`). Solving needs package
+Requirements: PHP 8.1+ and Composer 2.4+ (2.7+ for `--minimal-changes`). In CI the project under
+analysis is usually your own; when it is not (a fork, a third-party dependency review), run
+`composer-remediate` instead of `composer remediate` so none of that project's plugins execute. Solving needs package
 metadata from your configured repositories, so cache Composer's cache directory between runs
 (`composer config --global cache-dir` prints it; usually `~/.composer/cache` or
 `~/.cache/composer`). Private repositories and `auth.json` work as they do for `composer update`.

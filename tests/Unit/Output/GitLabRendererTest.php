@@ -105,9 +105,10 @@ final class GitLabRendererTest extends TestCase
         $diff = LockDiff::between($before, $after);
 
         $tooYoung = (new ReleaseAgeGuard(7, $now))->tooYoung($diff, $after);
-        self::assertCount(1, $tooYoung);
-        self::assertStringContainsString('acme/young 1.1.0 (released 2026-06-08, 2 days ago)', $tooYoung[0]);
-        self::assertSame([], (new ReleaseAgeGuard(1, $now))->tooYoung($diff, $after));
+        self::assertCount(2, $tooYoung, 'the young release and the one whose age cannot be proven');
+        self::assertStringContainsString('acme/unknown 1.1.0 (release date unknown)', $tooYoung[0]);
+        self::assertStringContainsString('acme/young 1.1.0 (released 2026-06-08, 2 days ago)', $tooYoung[1]);
+        self::assertSame(['acme/unknown 1.1.0 (release date unknown)'], (new ReleaseAgeGuard(1, $now))->tooYoung($diff, $after));
         self::assertSame([], (new ReleaseAgeGuard(0, $now))->tooYoung($diff, $after));
     }
 }

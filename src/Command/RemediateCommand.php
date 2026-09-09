@@ -5,23 +5,26 @@ declare(strict_types=1);
 namespace Remediate\Command;
 
 use Composer\Command\BaseCommand;
-use Composer\Config;
+use Composer\Factory;
 use Composer\Util\Platform;
 use Remediate\Engine\Advisory\AdvisoryLookupFailed;
-use Composer\Factory;
 use Remediate\Engine\Advisory\ComposerRepositoryAdvisoryProvider;
 use Remediate\Engine\Advisory\Db\Database;
 use Remediate\Engine\Advisory\Db\DatabaseLocator;
 use Remediate\Engine\Advisory\Db\SqliteAdvisoryProvider;
 use Remediate\Engine\Advisory\JsonFileAdvisoryProvider;
 use Remediate\Engine\Candidate\CandidateGenerator;
+use Remediate\Engine\Matching\IgnorePolicy;
 use Remediate\Engine\Plan\BaselineFile;
 use Remediate\Engine\Plan\Plan;
 use Remediate\Engine\Planner;
-use Remediate\Engine\Solver\ReleaseAgeGuard;
 use Remediate\Engine\Project\ProjectContext;
+use Remediate\Engine\Solver\FallbackSolver;
 use Remediate\Engine\Solver\InProcessSolver;
+use Remediate\Engine\Solver\ReleaseAgeGuard;
 use Remediate\Engine\Solver\ScratchWorkspace;
+use Remediate\Engine\Solver\SolverInterface;
+use Remediate\Engine\Solver\SubprocessSolver;
 use Remediate\Output\LockLineIndex;
 use Remediate\Output\ReportFormat;
 use Symfony\Component\Console\Input\InputInterface;
@@ -30,27 +33,31 @@ use Symfony\Component\Console\Output\OutputInterface;
 
 final class RemediateCommand extends BaseCommand
 {
+    public const SOLVERS = ['auto', 'in-process', 'subprocess'];
+
     protected function configure(): void
     {
         $this
             ->setName('remediate')
-            ->setDescription('Find the smallest Composer-verified upgrade that removes each known vulnerability from composer.lock')
+            ->setDescription('Find the least invasive Composer-verified upgrade that removes each known vulnerability from composer.lock')
             ->setDefinition([
                 new InputOption('format', 'f', InputOption::VALUE_REQUIRED, 'Format printed to standard output: text, html, json, sarif, cyclonedx, gitlab or none', 'text'),
                 new InputOption('output', 'o', InputOption::VALUE_REQUIRED | InputOption::VALUE_IS_ARRAY, 'Also write a report file; format inferred from the name (.html, .json, .sarif, .cdx.json, gl-dependency-scanning-report.json, .txt) or given as sarif:path. Repeatable.'),
                 new InputOption('fail-on', null, InputOption::VALUE_REQUIRED, 'Only findings at or above this severity (low, medium, high, critical) affect the exit code; findings of unknown severity always count'),
                 new InputOption('baseline', null, InputOption::VALUE_REQUIRED, 'Baseline file of accepted findings; findings listed there are reported but do not affect the exit code'),
                 new InputOption('update-baseline', null, InputOption::VALUE_NONE, 'Write every finding of this run to the --baseline file (accept the current state, then tighten over time)'),
-                new InputOption('min-release-age', null, InputOption::VALUE_REQUIRED, 'Never recommend a release published fewer than this many days ago (supply-chain cooldown)'),
+                new InputOption('min-release-age', null, InputOption::VALUE_REQUIRED, 'Never recommend a release published fewer than this many days ago, or without a known release date (supply-chain cooldown)'),
                 new InputOption('no-dev', null, InputOption::VALUE_NONE, 'Ignore vulnerabilities in require-dev packages'),
                 new InputOption('offline', null, InputOption::VALUE_NONE, 'Refuse all network access; needs a warm Composer cache plus --advisories-file or --database-location (sets COMPOSER_DISABLE_NETWORK=1)'),
-                new InputOption('ignore', 'i', InputOption::VALUE_REQUIRED | InputOption::VALUE_IS_ARRAY, 'Advisory id or CVE to ignore (repeatable); config.audit.ignore and config.policy.advisories.ignore are honoured as well'),
+                new InputOption('ignore', 'i', InputOption::VALUE_REQUIRED | InputOption::VALUE_IS_ARRAY, 'Advisory id or CVE to ignore (repeatable); audit-scoped entries of config.audit.ignore and config.policy.advisories are honoured as well'),
                 new InputOption('allow-direct-require', null, InputOption::VALUE_NONE, 'Also consider adding a transitive package as a direct requirement to force a fixed version'),
-                new InputOption('advisories-file', null, InputOption::VALUE_REQUIRED, 'Read advisories from a JSON file in the Packagist API shape instead of the configured repositories'),
+                new InputOption('advisories-file', null, InputOption::VALUE_REQUIRED, 'Read advisories from a JSON file in the Packagist API shape (or `composer audit --format=json` output) instead of the configured repositories'),
                 new InputOption('database-location', null, InputOption::VALUE_REQUIRED, 'Read advisories from a local advisory database (path or URL) built with remediate:db-build; also REMEDIATE_DATABASE or extra.remediate.database'),
                 new InputOption('max-candidates', null, InputOption::VALUE_REQUIRED, 'Maximum number of candidate commands to try per finding', '10'),
-                new InputOption('ignore-platform-req', null, InputOption::VALUE_REQUIRED | InputOption::VALUE_IS_ARRAY, 'Ignore a specific platform requirement (php & ext- packages) when validating candidates'),
-                new InputOption('ignore-platform-reqs', null, InputOption::VALUE_NONE, 'Ignore all platform requirements when validating candidates'),
+                new InputOption('solve-budget', null, InputOption::VALUE_REQUIRED, 'Maximum number of solver runs per finding, all search phases included (candidates, conflict expansion, parent descent, simplification)', (string) Planner::DEFAULT_SOLVE_BUDGET),
+                new InputOption('solver', null, InputOption::VALUE_REQUIRED, 'How candidates are verified: auto (in-process, falling back to a `composer update` subprocess when the in-process route errors), in-process, or subprocess', 'auto'),
+                new InputOption('ignore-platform-req', null, InputOption::VALUE_REQUIRED | InputOption::VALUE_IS_ARRAY, 'Ignore a specific platform requirement (php & ext- packages) when validating candidates; the flag is repeated in the recommended command'),
+                new InputOption('ignore-platform-reqs', null, InputOption::VALUE_NONE, 'Ignore all platform requirements when validating candidates; the flag is repeated in the recommended command'),
             ])
             ->setHelp(<<<'HELP'
 Reads composer.json and composer.lock, matches the locked packages against security advisories,
@@ -59,43 +66,14 @@ least to most invasive. Only commands whose resulting lock file no longer contai
 vulnerability are recommended. Nothing in the project is modified.
 
 Exit codes: 0 no vulnerabilities, 1 vulnerabilities with a verified remediation,
-2 at least one vulnerability without a verified remediation, 3 error,
-4 advisory data unavailable, 5 package metadata could not be fetched while solving.
+2 at least one vulnerability without a verified remediation (and no tool failure), 3 error (also
+when a solver error prevented the search from completing), 4 advisory data unavailable,
+5 package metadata could not be fetched while solving.
+
+Running as <info>composer remediate</info> means Composer has already activated the project's
+other allowed plugins before this command starts. The <info>composer-remediate</info> binary shipped
+with the package runs the same command with plugins and scripts disabled from the first instruction.
 HELP);
-    }
-
-    /**
-     * Advisory ids from config.audit.ignore (Composer <= 2.9) and config.policy.advisories.ignore /
-     * ignore-id (Composer >= 2.10), in either list or map form.
-     *
-     * @return list<string>
-     */
-    private static function configuredIgnores(Config $config): array
-    {
-        $ids = [];
-        $collect = static function (mixed $value) use (&$ids): void {
-            if (!is_array($value)) {
-                return;
-            }
-            foreach ($value as $key => $entry) {
-                if (is_string($key)) {
-                    $ids[] = $key;
-                } elseif (is_string($entry)) {
-                    $ids[] = $entry;
-                }
-            }
-        };
-        $audit = $config->get('audit');
-        if (is_array($audit)) {
-            $collect($audit['ignore'] ?? null);
-        }
-        $policy = $config->has('policy') ? $config->get('policy') : null;
-        if (is_array($policy) && is_array($policy['advisories'] ?? null)) {
-            $collect($policy['advisories']['ignore'] ?? null);
-            $collect($policy['advisories']['ignore-id'] ?? null);
-        }
-
-        return array_values(array_unique($ids));
     }
 
     protected function execute(InputInterface $input, OutputInterface $output): int
@@ -119,6 +97,24 @@ HELP);
 
                 return Plan::EXIT_ERROR;
             }
+        }
+        $solverChoice = strtolower((string) $input->getOption('solver'));
+        if (!in_array($solverChoice, self::SOLVERS, true)) {
+            $io->writeError(sprintf('<error>Unknown solver "%s"; use auto, in-process or subprocess.</error>', $solverChoice));
+
+            return Plan::EXIT_ERROR;
+        }
+        $minAge = $input->getOption('min-release-age');
+        if (is_string($minAge) && $minAge !== '' && !ctype_digit($minAge)) {
+            $io->writeError(sprintf('<error>--min-release-age must be a whole number of days, got "%s".</error>', $minAge));
+
+            return Plan::EXIT_ERROR;
+        }
+        // composer audit, transitive --with and the advisory API all appeared in Composer 2.4.
+        if (!class_exists(\Composer\Advisory\Auditor::class)) {
+            $io->writeError(sprintf('<error>composer remediate needs Composer 2.4 or newer; this is Composer %s.</error>', \Composer\Composer::getVersion()));
+
+            return Plan::EXIT_ERROR;
         }
         if ((bool) $input->getOption('offline')) {
             // The Composer instance (and its HttpDownloader, which reads this variable when constructed)
@@ -156,23 +152,25 @@ HELP);
             $advisories = ComposerRepositoryAdvisoryProvider::fromRepositoryManager($composer->getRepositoryManager());
         }
 
-        $solver = new InProcessSolver($this->getPlatformRequirementFilter($input));
+        $platformArguments = self::platformArguments($input);
+        $solver = $this->buildSolver($solverChoice, $input, $platformArguments);
         $maxCandidates = max(1, (int) $input->getOption('max-candidates'));
-        $ignored = array_values(array_filter(array_map('strval', (array) $input->getOption('ignore')), static fn (string $v): bool => $v !== ''));
-        array_push($ignored, ...self::configuredIgnores($composer->getConfig()));
-        $minAge = $input->getOption('min-release-age');
-        $releaseAge = is_string($minAge) && $minAge !== '' ? new ReleaseAgeGuard(max(0, (int) $minAge)) : null;
+        $solveBudget = max(1, (int) $input->getOption('solve-budget'));
+        $cliIgnores = array_values(array_filter(array_map('strval', (array) $input->getOption('ignore')), static fn (string $v): bool => $v !== ''));
+        $ignore = IgnorePolicy::fromComposerConfig($composer->getConfig())->withIds($cliIgnores);
+        $releaseAge = is_string($minAge) && $minAge !== '' ? new ReleaseAgeGuard((int) $minAge) : null;
         $planner = new Planner(
             $advisories,
             $solver,
-            new CandidateGenerator(allowDirectRequire: (bool) $input->getOption('allow-direct-require')),
+            new CandidateGenerator(allowDirectRequire: (bool) $input->getOption('allow-direct-require'), extraArguments: $platformArguments),
             !(bool) $input->getOption('no-dev'),
             $maxCandidates,
             static function (string $message) use ($io): void {
                 $io->writeError('<comment>' . $message . '</comment>', true, \Composer\IO\IOInterface::VERBOSE);
             },
-            $ignored,
+            $ignore,
             $releaseAge,
+            $solveBudget,
         );
 
         try {
@@ -184,6 +182,9 @@ HELP);
             }
 
             return Plan::EXIT_ADVISORIES_UNAVAILABLE;
+        }
+        if ($locator->warnings() !== []) {
+            $plan = $plan->withWarnings($locator->warnings());
         }
 
         $failOn = $input->getOption('fail-on');
@@ -238,5 +239,41 @@ HELP);
         }
 
         return $plan->exitCode();
+    }
+
+    /**
+     * The platform flags as the user must repeat them: a candidate verified with PHP requirements
+     * ignored is only reproduced by a command that ignores them too.
+     *
+     * @return list<string>
+     */
+    private static function platformArguments(InputInterface $input): array
+    {
+        if ((bool) $input->getOption('ignore-platform-reqs')) {
+            return ['--ignore-platform-reqs'];
+        }
+        $arguments = [];
+        foreach ((array) $input->getOption('ignore-platform-req') as $req) {
+            if (is_string($req) && $req !== '') {
+                $arguments[] = '--ignore-platform-req=' . $req;
+            }
+        }
+
+        return $arguments;
+    }
+
+    /** @param list<string> $platformArguments */
+    private function buildSolver(string $choice, InputInterface $input, array $platformArguments): SolverInterface
+    {
+        $inProcess = new InProcessSolver($this->getPlatformRequirementFilter($input));
+        if ($choice === 'in-process') {
+            return $inProcess;
+        }
+        $subprocess = SubprocessSolver::forRunningComposer();
+        if ($choice === 'subprocess') {
+            return $subprocess;
+        }
+
+        return new FallbackSolver($inProcess, $subprocess);
     }
 }

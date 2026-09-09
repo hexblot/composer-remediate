@@ -7,7 +7,8 @@
         "php_version": "(fixture)",
         "advisory_source": "advisory snapshot advisories.json",
         "solver": "in-process Composer dry-run",
-        "composer_json_sha256": "4f7362e57b0aaf74f43b1f341ce26e5fb018ea7997f3a2f2a5c7aefa4bd1ccfa",
+        "solver_runs": "17",
+        "composer_json_sha256": "284dc9de0bc815143436ed3b2d9bc171a68c7851ed15229500734c0fa22d1974",
         "composer_lock_sha256": "920a682f7d00cc3136de9c274c03cb9980e591ed30164b6328601b79faa6c5a0",
         "analysis_timestamp": "(fixture)",
         "locked_packages": "180"
@@ -360,12 +361,15 @@
                     }
                 }
             ],
+            "solver_runs": 8,
+            "search_exhausted": true,
             "remediation": {
                 "status": "verified",
                 "command": "composer update symfony/http-foundation",
                 "strategy": "lock-refresh",
                 "root_constraint_changes": [],
                 "constraint_drag": null,
+                "blocking_risk": [],
                 "summary": {
                     "changed": 1,
                     "added": 0,
@@ -801,12 +805,15 @@
                     }
                 }
             ],
+            "solver_runs": 8,
+            "search_exhausted": true,
             "remediation": {
                 "status": "verified",
                 "command": "composer update symfony/process",
                 "strategy": "lock-refresh",
                 "root_constraint_changes": [],
                 "constraint_drag": null,
+                "blocking_risk": [],
                 "summary": {
                     "changed": 1,
                     "added": 0,

@@ -6,25 +6,29 @@ namespace Remediate\Engine;
 
 use Composer\DependencyResolver\Request;
 use Composer\Semver\Comparator;
+use Composer\Semver\Constraint\ConstraintInterface;
 use Composer\Semver\Constraint\MultiConstraint;
+use Remediate\Engine\Advisory\Advisory;
 use Remediate\Engine\Advisory\AdvisoryProvider;
 use Remediate\Engine\Candidate\Candidate;
 use Remediate\Engine\Candidate\CandidateGenerator;
 use Remediate\Engine\Candidate\FixedRangeResolver;
 use Remediate\Engine\Candidate\Strategy;
 use Remediate\Engine\Graph\DependencyGraph;
+use Remediate\Engine\Lock\LockSnapshot;
 use Remediate\Engine\Matching\Finding;
+use Remediate\Engine\Matching\IgnorePolicy;
 use Remediate\Engine\Matching\Matcher;
 use Remediate\Engine\Plan\CombinedRemediation;
 use Remediate\Engine\Plan\EvaluatedCandidate;
 use Remediate\Engine\Plan\FindingPlan;
 use Remediate\Engine\Plan\Plan;
-use Remediate\Engine\Lock\LockSnapshot;
 use Remediate\Engine\Project\ProjectContext;
 use Remediate\Engine\Ranking\Ranker;
 use Remediate\Engine\Solver\LockDiff;
 use Remediate\Engine\Solver\ReleaseAgeGuard;
 use Remediate\Engine\Solver\ScratchWorkspace;
+use Remediate\Engine\Solver\SolveResult;
 use Remediate\Engine\Solver\SolveStatus;
 use Remediate\Engine\Solver\SolverInterface;
 
@@ -36,12 +40,25 @@ final class Planner
     /** Maximum number of times a conflicting candidate is widened with the locked packages Composer names as blockers. */
     public const MAX_EXPANSIONS = 8;
 
+    /** Default ceiling on solver invocations per finding, all phases included (candidates, expansion, descent, simplification). */
+    public const DEFAULT_SOLVE_BUDGET = 60;
+
+    /** Solves held back from the search so the winner's simplification (at most three variants) can always run. */
+    public const SIMPLIFY_RESERVE = 3;
+
     /** @var callable(string): void|null */
     private $progress;
 
+    private int $totalSolves = 0;
+
+    private int $findingSolves = 0;
+
+    private bool $budgetExhausted = false;
+
     /**
-     * @param list<string>          $ignoredAdvisories advisory ids or CVEs to leave out entirely
-     * @param ReleaseAgeGuard|null  $releaseAge        reject candidates that install releases younger than a cooldown
+     * @param IgnorePolicy|null    $ignore      advisories to leave out (ids, CVEs, package rules)
+     * @param ReleaseAgeGuard|null $releaseAge  reject candidates that install releases younger than a cooldown
+     * @param int                  $solveBudget hard ceiling on solver runs per finding; every phase of the search counts
      */
     public function __construct(
         private readonly AdvisoryProvider $advisories,
@@ -50,8 +67,9 @@ final class Planner
         private readonly bool $includeDev = true,
         private readonly int $maxCandidatesPerFinding = 10,
         ?callable $progress = null,
-        private readonly array $ignoredAdvisories = [],
+        private readonly ?IgnorePolicy $ignore = null,
         private readonly ?ReleaseAgeGuard $releaseAge = null,
+        private readonly int $solveBudget = self::DEFAULT_SOLVE_BUDGET,
     ) {
         $this->progress = $progress;
     }
@@ -67,9 +85,10 @@ final class Planner
 
     public function plan(ProjectContext $context, ScratchWorkspace $workspace): Plan
     {
+        $this->totalSolves = 0;
         $lock = $context->lockSnapshot();
         $graph = new DependencyGraph($context->rootPackage(), $context->lockedRepository());
-        $matcher = (new Matcher($this->advisories))->withIgnored($this->ignoredAdvisories);
+        $matcher = (new Matcher($this->advisories))->withIgnorePolicy($this->ignore ?? IgnorePolicy::none());
         $isRoot = static fn (string $name): bool => $context->isRootRequirement($name);
         $ranker = new Ranker($isRoot);
         $warnings = [];
@@ -78,7 +97,7 @@ final class Planner
             $warnings[] = sprintf('Advisory source "%s" only knows advisories for the current lock; candidate locks cannot be checked for other advisories.', $this->advisories->describe());
         }
 
-        $findings = $matcher->match($lock, $isRoot);
+        $allFindings = $matcher->match($lock, $isRoot);
         if ($matcher->ignoredCount() > 0) {
             $warnings[] = sprintf('%d advisory match%s ignored per configuration (--ignore, config.audit.ignore or config.policy).', $matcher->ignoredCount(), $matcher->ignoredCount() === 1 ? '' : 'es');
         }
@@ -86,15 +105,15 @@ final class Planner
         if ($unused !== []) {
             $warnings[] = sprintf('Ignore hygiene: %d ignore entr%s match%s nothing in this lock and can be removed: %s.', count($unused), count($unused) === 1 ? 'y' : 'ies', count($unused) === 1 ? 'es' : '', implode(', ', $unused));
         }
-        if (!$this->includeDev) {
-            $findings = array_values(array_filter($findings, static fn (Finding $f): bool => !$f->isDev));
-        }
-        // Production findings first, development-only findings after them.
-        usort($findings, static fn (Finding $a, Finding $b): int => [$a->isDev ? 1 : 0, $a->packageName, $a->advisory->id] <=> [$b->isDev ? 1 : 0, $b->packageName, $b->advisory->id]);
+        // The baseline is every advisory present before remediation, development ones included even
+        // under --no-dev: an untouched dev vulnerability in a candidate lock is not "newly introduced".
         $baseline = [];
-        foreach ($findings as $finding) {
+        foreach ($allFindings as $finding) {
             $baseline[$finding->key()] = true;
         }
+        $findings = $this->includeDev ? $allFindings : array_values(array_filter($allFindings, static fn (Finding $f): bool => !$f->isDev));
+        // Production findings first, development-only findings after them.
+        usort($findings, static fn (Finding $a, Finding $b): int => [$a->isDev ? 1 : 0, $a->packageName, $a->advisory->id] <=> [$b->isDev ? 1 : 0, $b->packageName, $b->advisory->id]);
 
         // Several advisories on one package are remediated together: one command must escape all of them.
         $groups = [];
@@ -104,65 +123,17 @@ final class Planner
 
         $plans = [];
         foreach ($groups as $group) {
-            $finding = $group[0]->withPaths($graph->pathsToRoot($group[0]->packageName));
-            $related = array_slice($group, 1);
-            $groupKeys = [];
-            $affected = [];
-            foreach ($group as $member) {
-                $groupKeys[$member->key()] = true;
-                $affected[] = $member->advisory->affectedVersions;
-            }
-            $combinedAffected = count($affected) === 1 ? $affected[0] : MultiConstraint::create($affected, false);
-            $this->report(sprintf('%s on %s %s', implode(', ', array_map(static fn (Finding $f): string => $f->advisory->displayId(), $group)), $finding->packageName, $finding->prettyVersion));
-
-            $candidates = $this->generator->generate($finding, $graph, $context->rootRequirements(), $combinedAffected);
-            if ($candidates === []) {
-                $plans[] = new FindingPlan($finding, [], [], sprintf('No release of %s newer than %s is outside the affected range %s.', $finding->packageName, $finding->prettyVersion, $combinedAffected->getPrettyString()), [], $related);
-                continue;
-            }
-
-            $evaluated = [];
-            $skipped = [];
-            $transportFailures = 0;
-            $seen = [];
-            foreach (array_slice($candidates, 0, $this->maxCandidatesPerFinding) as $candidate) {
-                // Ranking rule 1: any candidate without root constraint changes beats every candidate with them.
-                if ($candidate->changesRootConstraints() && self::hasValidWithoutRootChanges($evaluated)) {
-                    $skipped[] = $candidate;
-                    continue;
-                }
-                // Conflict expansion can produce the same allow-list set another path already reached.
-                if (isset($seen[$candidate->signature()])) {
-                    continue;
-                }
-                $seen[$candidate->signature()] = true;
-                $evaluation = $this->evaluate($candidate, $finding, $groupKeys, $lock, $baseline, $matcher, $workspace);
-                if ($evaluation->result->status === SolveStatus::Transport) {
-                    ++$transportFailures;
-                }
-                $evaluated[] = $evaluation;
-                if ($evaluation->result->status === SolveStatus::Conflict) {
-                    $expanded = $this->expandOnConflict($evaluation, $finding, $groupKeys, $lock, $baseline, $matcher, $workspace, $seen);
-                    array_push($evaluated, ...$expanded);
-                    $evaluation = $expanded === [] ? $evaluation : $expanded[count($expanded) - 1];
-                }
-                if ($evaluation->valid && !self::descentIsDominated($evaluation, $evaluated, $ranker)) {
-                    array_push($evaluated, ...$this->descendParent($evaluation, $finding, $groupKeys, $lock, $baseline, $matcher, $workspace));
-                }
-            }
-
-            $blocker = null;
-            if ($transportFailures > 0 && $transportFailures === count($evaluated)) {
-                $blocker = 'Every solve failed with a network error; package metadata could not be fetched.';
-            }
-            $ranked = $ranker->rank($evaluated);
-            if ($ranked !== []) {
-                $ranked[0] = $this->simplify($ranked[0], $finding, $groupKeys, $lock, $baseline, $matcher, $workspace);
-            }
-            $plans[] = new FindingPlan($finding, $evaluated, $ranked, $blocker, $skipped, $related);
+            $plans[] = $this->planGroup($group, $graph, $context, $lock, $baseline, $matcher, $ranker, $workspace);
         }
 
         $combined = $this->combine($plans, $lock, $baseline, $matcher, $workspace);
+
+        foreach ($plans as $plan) {
+            $recommended = $plan->recommended();
+            if ($recommended !== null && $recommended->blockingRisk !== []) {
+                $warnings[] = sprintf('%s: the recommended command moves %s to a version that still carries another advisory; Composer 2.10+ advisory blocking may refuse it until that advisory is ignored in config.policy or blocking is disabled.', $plan->finding->packageName, implode(', ', $recommended->blockingRisk));
+            }
+        }
 
         return new Plan($plans, [
             'project' => $context->directory,
@@ -171,11 +142,127 @@ final class Planner
             'php_version' => PHP_VERSION,
             'advisory_source' => $this->advisories->describe(),
             'solver' => $this->solver->describe(),
+            'solver_runs' => (string) $this->totalSolves,
             'composer_json_sha256' => self::fileHash($context->composerJsonPath()),
             'composer_lock_sha256' => self::fileHash($context->lockPath()),
             'analysis_timestamp' => gmdate('c'),
             'locked_packages' => (string) $lock->count(),
         ], $warnings, $combined, null, self::inventory($lock));
+    }
+
+    /**
+     * @param non-empty-list<Finding> $group
+     * @param array<string, true>     $baseline
+     */
+    private function planGroup(array $group, DependencyGraph $graph, ProjectContext $context, LockSnapshot $lock, array $baseline, Matcher $matcher, Ranker $ranker, ScratchWorkspace $workspace): FindingPlan
+    {
+        $this->findingSolves = 0;
+        $this->budgetExhausted = false;
+        $finding = $group[0]->withPaths($graph->pathsToRoot($group[0]->packageName));
+        $related = array_slice($group, 1);
+        $groupKeys = [];
+        foreach ($group as $member) {
+            $groupKeys[$member->key()] = true;
+        }
+        // The fixed range must escape every advisory known for this package, not only the ones hitting
+        // the locked version: a newer release affected by a different advisory is not a fix either.
+        $affected = $this->affectedUnion($finding->packageName, $group, $finding->version);
+        $this->report(sprintf('%s on %s %s', implode(', ', array_map(static fn (Finding $f): string => $f->advisory->displayId(), $group)), $finding->packageName, $finding->prettyVersion));
+
+        $candidates = $this->generator->generate($finding, $graph, $context->rootRequirements(), $affected);
+        if ($candidates === []) {
+            return new FindingPlan($finding, [], [], sprintf('No release of %s newer than %s is outside the affected range %s.', $finding->packageName, $finding->prettyVersion, $affected->getPrettyString()), [], $related);
+        }
+
+        $evaluated = [];
+        $skipped = [];
+        $seen = [];
+        $truncated = count($candidates) > $this->maxCandidatesPerFinding;
+        foreach (array_slice($candidates, 0, $this->maxCandidatesPerFinding) as $candidate) {
+            if ($this->budgetExhausted) {
+                $skipped[] = $candidate;
+                continue;
+            }
+            // Ranking rule 1: any candidate without root constraint changes beats every candidate with them.
+            if ($candidate->changesRootConstraints() && self::hasValidWithoutRootChanges($evaluated)) {
+                $skipped[] = $candidate;
+                continue;
+            }
+            // Conflict expansion can produce the same allow-list set another path already reached.
+            if (isset($seen[$candidate->signature()])) {
+                continue;
+            }
+            $seen[$candidate->signature()] = true;
+            $evaluation = $this->evaluate($candidate, $finding, $groupKeys, $lock, $baseline, $matcher, $workspace);
+            $evaluated[] = $evaluation;
+            if ($evaluation->result->status === SolveStatus::Conflict) {
+                $expanded = $this->expandOnConflict($evaluation, $finding, $groupKeys, $lock, $baseline, $matcher, $workspace, $seen);
+                array_push($evaluated, ...$expanded);
+                $evaluation = $expanded === [] ? $evaluation : $expanded[count($expanded) - 1];
+            }
+            if ($evaluation->valid && !self::descentIsDominated($evaluation, $evaluated, $ranker)) {
+                array_push($evaluated, ...$this->descendParent($evaluation, $finding, $groupKeys, $lock, $baseline, $matcher, $workspace));
+            }
+        }
+
+        $ranked = $ranker->rank($evaluated);
+        if ($ranked !== []) {
+            $ranked[0] = $this->simplify($ranked[0], $finding, $groupKeys, $lock, $baseline, $matcher, $workspace);
+        }
+
+        $infrastructure = null;
+        $blocker = null;
+        if ($ranked === []) {
+            // Without a verified fix, any solve that failed for tool or network reasons makes the
+            // outcome unknown rather than "no fix exists".
+            foreach ($evaluated as $e) {
+                if ($e->result->status === SolveStatus::Error) {
+                    $infrastructure = SolveStatus::Error;
+                    break;
+                }
+                if ($e->result->status === SolveStatus::Transport) {
+                    $infrastructure = SolveStatus::Transport;
+                }
+            }
+            if ($infrastructure === SolveStatus::Transport) {
+                $blocker = 'At least one solve failed with a network error; package metadata could not be fetched, so the absence of a fix is not established.';
+            } elseif ($infrastructure === SolveStatus::Error) {
+                $blocker = 'At least one solve failed inside Composer; the absence of a fix is not established.';
+            } elseif ($truncated || $this->budgetExhausted) {
+                $blocker = sprintf('No verified fix within the search budget (%d candidate%s tried, %d solver run%s); a fix outside the bounded search may still exist.', count($evaluated), count($evaluated) === 1 ? '' : 's', $this->findingSolves, $this->findingSolves === 1 ? '' : 's');
+            }
+        }
+
+        return new FindingPlan($finding, $evaluated, $ranked, $blocker, $skipped, $related, $infrastructure, $truncated || $this->budgetExhausted, $this->findingSolves);
+    }
+
+    /**
+     * Union of the affected ranges of every non-ignored advisory the source knows for the package.
+     *
+     * @param non-empty-list<Finding> $group
+     */
+    private function affectedUnion(string $packageName, array $group, string $normalizedVersion): ConstraintInterface
+    {
+        $ranges = [];
+        $ids = [];
+        foreach ($group as $member) {
+            $ranges[] = $member->advisory->affectedVersions;
+            $ids[$member->advisory->id] = true;
+        }
+        $policy = $this->ignore ?? IgnorePolicy::none();
+        try {
+            $known = $this->advisories->advisoriesFor([$packageName])[$packageName] ?? [];
+        } catch (\Throwable) {
+            $known = []; // the matcher already fetched this package's advisories; a second failure changes nothing
+        }
+        foreach ($known as $advisory) {
+            if (isset($ids[$advisory->id]) || $policy->matchedEntry($advisory->id, $advisory->cve, $packageName, $normalizedVersion) !== null) {
+                continue;
+            }
+            $ranges[] = $advisory->affectedVersions;
+        }
+
+        return count($ranges) === 1 ? $ranges[0] : MultiConstraint::create($ranges, false);
     }
 
     /**
@@ -193,7 +280,9 @@ final class Planner
 
     /**
      * Merge the per-package winners into one command and verify it with a single solve. The result
-     * may fix everything, only some findings (reported as k of n), or not resolve at all.
+     * may fix everything, only some findings (reported as k of n), or not resolve at all. The same
+     * acceptance rules as for individual candidates apply: no new advisories, and no release younger
+     * than the cooldown.
      *
      * @param list<FindingPlan>   $plans
      * @param array<string, true> $baseline
@@ -225,6 +314,7 @@ final class Planner
         $pins = [];
         $temporary = [];
         $roots = [];
+        $extra = [];
         $mode = Request::UPDATE_ONLY_LISTED;
         $minimal = false;
         $strategy = Strategy::LockRefresh;
@@ -236,16 +326,42 @@ final class Planner
             $pins += $c->pins;
             $temporary += $c->temporaryConstraints;
             $roots += $c->rootConstraintChanges;
+            array_push($extra, ...$c->extraArguments);
             $mode = max($mode, $c->transitiveMode);
             $minimal = $minimal || $c->minimalChanges;
             if ($c->strategy->rank() > $strategy->rank()) {
                 $strategy = $c->strategy;
             }
         }
-        $merged = new Candidate($strategy, array_keys($allow), $mode, $temporary, $minimal, $roots, 'all per-package remediations in one command', $pins);
+        $merged = new Candidate($strategy, array_keys($allow), $mode, $temporary, $minimal, $roots, 'all per-package remediations in one command', $pins, array_values(array_unique($extra)));
 
         $this->report('combining: ' . $merged->commandLine($this->solver->supportsMinimalChanges()));
-        $result = $this->solver->solve($merged, $workspace);
+        $accepted = $this->acceptCombined($merged, $lock, $baseline, $allKeys, $matcher, $workspace);
+        if ($accepted === null) {
+            return null;
+        }
+
+        // Prefer the simplest spelling that yields the identical lock; it is re-matched and re-diffed
+        // rather than inheriting the original's bookkeeping.
+        foreach (self::simplerVariants($merged) as $variant) {
+            $simpler = $this->acceptCombined($variant, $lock, $baseline, $allKeys, $matcher, $workspace);
+            if ($simpler !== null && $accepted->result->after !== null && $simpler->result->after !== null && self::sameLock($simpler->result->after, $accepted->result->after)) {
+                return $simpler;
+            }
+        }
+
+        return $accepted;
+    }
+
+    /**
+     * Solves a merged command and applies the acceptance rules; null when it is not acceptable.
+     *
+     * @param array<string, true> $baseline
+     * @param array<string, true> $allKeys
+     */
+    private function acceptCombined(Candidate $candidate, LockSnapshot $lock, array $baseline, array $allKeys, Matcher $matcher, ScratchWorkspace $workspace): ?CombinedRemediation
+    {
+        $result = $this->solve($candidate, $workspace);
         if (!$result->resolved() || $result->after === null) {
             return null;
         }
@@ -253,19 +369,14 @@ final class Planner
         if (array_diff_key($afterKeys, $baseline) !== []) {
             return null; // introduces advisories that were not there before
         }
+        $diff = LockDiff::between($lock, $result->after);
+        if ($this->releaseAge !== null && $this->releaseAge->tooYoung($diff, $result->after) !== []) {
+            return null; // the merged lock pulls in a release the cooldown forbids
+        }
         $fixed = array_keys(array_diff_key($allKeys, $afterKeys));
         $unfixed = array_keys(array_intersect_key($allKeys, $afterKeys));
-        $combined = new CombinedRemediation($merged, $result, LockDiff::between($lock, $result->after), $fixed, $unfixed);
 
-        // Prefer the simplest spelling that yields the identical lock.
-        foreach (self::simplerVariants($merged) as $variant) {
-            $variantResult = $this->solver->solve($variant, $workspace);
-            if ($variantResult->resolved() && $variantResult->after !== null && self::sameVersions($variantResult->after, $result->after)) {
-                return new CombinedRemediation($variant, $variantResult, $combined->diff, $fixed, $unfixed);
-            }
-        }
-
-        return $combined;
+        return new CombinedRemediation($candidate, $result, $diff, $fixed, $unfixed);
     }
 
     /** @return list<Candidate> */
@@ -273,13 +384,13 @@ final class Planner
     {
         $variants = [];
         if ($c->temporaryConstraints !== [] && $c->minimalChanges) {
-            $variants[] = new Candidate($c->strategy, $c->allowList, $c->transitiveMode, [], false, $c->rootConstraintChanges, $c->description, $c->pins);
+            $variants[] = $c->simplified(true, true);
         }
         if ($c->temporaryConstraints !== []) {
-            $variants[] = new Candidate($c->strategy, $c->allowList, $c->transitiveMode, [], $c->minimalChanges, $c->rootConstraintChanges, $c->description, $c->pins);
+            $variants[] = $c->simplified(true, false);
         }
         if ($c->minimalChanges) {
-            $variants[] = new Candidate($c->strategy, $c->allowList, $c->transitiveMode, $c->temporaryConstraints, false, $c->rootConstraintChanges, $c->description, $c->pins);
+            $variants[] = $c->simplified(false, true);
         }
 
         return $variants;
@@ -288,7 +399,7 @@ final class Planner
     /**
      * The temporary constraint and -m exist to steer the solver; a human types neither when the plain
      * command already produces the same lock. Try the simpler spellings and keep the simplest one
-     * that yields exactly the same package versions.
+     * that yields exactly the same lock.
      *
      * @param array<string, true> $groupKeys
      * @param array<string, true> $baseline
@@ -299,19 +410,12 @@ final class Planner
         if ($winner->result->after === null || ($c->temporaryConstraints === [] && !$c->minimalChanges)) {
             return $winner;
         }
-        $variants = [];
-        if ($c->temporaryConstraints !== [] && $c->minimalChanges) {
-            $variants[] = new Candidate($c->strategy, $c->allowList, $c->transitiveMode, [], false, $c->rootConstraintChanges, $c->description, $c->pins);
-        }
-        if ($c->temporaryConstraints !== []) {
-            $variants[] = new Candidate($c->strategy, $c->allowList, $c->transitiveMode, [], $c->minimalChanges, $c->rootConstraintChanges, $c->description, $c->pins);
-        }
-        if ($c->minimalChanges) {
-            $variants[] = new Candidate($c->strategy, $c->allowList, $c->transitiveMode, $c->temporaryConstraints, false, $c->rootConstraintChanges, $c->description, $c->pins);
-        }
-        foreach ($variants as $variant) {
-            $evaluation = $this->evaluate($variant, $finding, $groupKeys, $lock, $baseline, $matcher, $workspace);
-            if ($evaluation->valid && $evaluation->result->after !== null && self::sameVersions($evaluation->result->after, $winner->result->after)) {
+        foreach (self::simplerVariants($c) as $variant) {
+            if ($this->findingSolves >= $this->solveBudget) {
+                break;
+            }
+            $evaluation = $this->evaluate($variant, $finding, $groupKeys, $lock, $baseline, $matcher, $workspace, true);
+            if ($evaluation->valid && $evaluation->result->after !== null && self::sameLock($evaluation->result->after, $winner->result->after)) {
                 return $evaluation;
             }
         }
@@ -319,14 +423,23 @@ final class Planner
         return $winner;
     }
 
-    private static function sameVersions(LockSnapshot $a, LockSnapshot $b): bool
+    /**
+     * Two locks are the same when every package has the same version, the same source and dist
+     * references (two dev-main checkouts at different commits are different locks) and the same
+     * production/development classification.
+     */
+    public static function sameLock(LockSnapshot $a, LockSnapshot $b): bool
     {
         if ($a->names() !== $b->names()) {
             return false;
         }
         foreach ($a->packages as $name => $package) {
             $other = $b->get($name);
-            if ($other === null || $other->getVersion() !== $package->getVersion()) {
+            if ($other === null
+                || $other->getVersion() !== $package->getVersion()
+                || $other->getSourceReference() !== $package->getSourceReference()
+                || $other->getDistReference() !== $package->getDistReference()
+                || $a->isDev($name) !== $b->isDev($name)) {
                 return false;
             }
         }
@@ -370,13 +483,36 @@ final class Planner
     }
 
     /**
+     * Every solver invocation goes through here so the per-finding budget and the totals are exact.
+     * The search phases (candidates, expansion, descent) stop SIMPLIFY_RESERVE solves early so the
+     * winner's simplification is never starved by a long descent on a worse parent.
+     */
+    private function solve(Candidate $candidate, ScratchWorkspace $workspace, bool $simplifying = false): SolveResult
+    {
+        $limit = $simplifying ? $this->solveBudget : max(1, $this->solveBudget - self::SIMPLIFY_RESERVE);
+        if ($this->findingSolves >= $limit) {
+            $this->budgetExhausted = true;
+
+            return new SolveResult(SolveStatus::Conflict, null, '', sprintf('not solved: the budget of %d solver runs for this finding is used up', $this->solveBudget));
+        }
+        ++$this->findingSolves;
+        ++$this->totalSolves;
+        $result = $this->solver->solve($candidate, $workspace);
+        if ($this->findingSolves >= $limit) {
+            $this->budgetExhausted = true;
+        }
+
+        return $result;
+    }
+
+    /**
      * @param array<string, true> $groupKeys finding keys this candidate must remove
      * @param array<string, true> $baseline  finding keys present before remediation
      */
-    private function evaluate(Candidate $candidate, Finding $finding, array $groupKeys, LockSnapshot $lock, array $baseline, Matcher $matcher, ScratchWorkspace $workspace): EvaluatedCandidate
+    private function evaluate(Candidate $candidate, Finding $finding, array $groupKeys, LockSnapshot $lock, array $baseline, Matcher $matcher, ScratchWorkspace $workspace, bool $simplifying = false): EvaluatedCandidate
     {
         $this->report('  trying ' . $candidate->commandLine($this->solver->supportsMinimalChanges()));
-        $result = $this->solver->solve($candidate, $workspace);
+        $result = $this->solve($candidate, $workspace, $simplifying);
 
         if (!$result->resolved() || $result->after === null) {
             return new EvaluatedCandidate($candidate, $result, null, false, self::describeFailure($result->status) . ': ' . $result->explanation());
@@ -404,7 +540,31 @@ final class Planner
             }
         }
 
-        return new EvaluatedCandidate($candidate, $result, $diff, true, null);
+        return new EvaluatedCandidate($candidate, $result, $diff, true, null, self::blockingRisk($diff, $afterKeys));
+    }
+
+    /**
+     * Packages this command changes whose new version still carries an advisory (one that was already
+     * present, so the candidate is not rejected). Composer 2.10+ blocks such updates by default.
+     *
+     * @param array<string, true> $afterKeys
+     *
+     * @return list<string>
+     */
+    private static function blockingRisk(LockDiff $diff, array $afterKeys): array
+    {
+        $stillVulnerable = [];
+        foreach (array_keys($afterKeys) as $key) {
+            $stillVulnerable[explode('@', $key, 2)[1] ?? ''] = true;
+        }
+        $risk = [];
+        foreach ($diff->changes as $change) {
+            if ($change->kind !== \Remediate\Engine\Solver\PackageChange::REMOVED && isset($stillVulnerable[$change->packageName])) {
+                $risk[] = $change->packageName;
+            }
+        }
+
+        return $risk;
     }
 
     /**
@@ -416,7 +576,6 @@ final class Planner
      *
      * @param array<string, true> $groupKeys
      * @param array<string, true> $baseline
-     *
      * @param array<string, true> $seen      solver requests already evaluated for this finding (updated in place)
      *
      * @return list<EvaluatedCandidate> every retried candidate, in order
@@ -429,7 +588,7 @@ final class Planner
         }
         $results = [];
         $current = $failed;
-        for ($step = 0; $step < self::MAX_EXPANSIONS; ++$step) {
+        for ($step = 0; $step < self::MAX_EXPANSIONS && !$this->budgetExhausted; ++$step) {
             $blockers = self::lockedBlockers($current->result->output, $current->candidate->allowList, $finding->packageName);
             if ($blockers === []) {
                 break;
@@ -474,6 +633,7 @@ final class Planner
      * `composer update A -W -m` moves A to its newest allowed version. A human asking for the
      * smallest change wants the *lowest* version of A that still admits the fix. Probe downwards
      * with a temporary upper bound until the solve breaks, then pin the lowest working version.
+     * Probes count towards the solve budget and total; only the pinned result joins the ranking.
      *
      * @param array<string, true> $groupKeys
      * @param array<string, true> $baseline
@@ -500,7 +660,7 @@ final class Planner
         $high = $after->getVersion();
         $lowerBound = '>' . FixedRangeResolver::shortVersion($before->getVersion());
         $best = null;
-        for ($step = 0; $step < self::MAX_DESCENT_STEPS; ++$step) {
+        for ($step = 0; $step < self::MAX_DESCENT_STEPS && !$this->budgetExhausted; ++$step) {
             $probe = $candidate->withTemporaryConstraints(
                 [$parent => $lowerBound . ',<' . FixedRangeResolver::shortVersion($high)],
                 sprintf('probe: is there a lower %s than %s that still admits the fix?', $parent, $after->getPrettyVersion()),
@@ -514,7 +674,7 @@ final class Planner
             $best = $probed->getPrettyVersion();
         }
 
-        if ($best === null) {
+        if ($best === null || $this->budgetExhausted) {
             return [];
         }
         $pinned = $candidate->withPin($parent, $best, sprintf('%s, pinned to %s, the lowest version that admits the fix', $candidate->description, $best));

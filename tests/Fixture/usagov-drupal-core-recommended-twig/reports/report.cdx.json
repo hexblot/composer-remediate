@@ -1587,7 +1587,7 @@
             ],
             "description": "Drupal Full Path Disclosure",
             "detail": "Affected versions: >=8.0.0,<10.2.9|>=10.3.0,<10.3.6|>=11.0.0,<11.0.5",
-            "recommendation": "No verified remediation found.",
+            "recommendation": "No verified remediation found: No verified fix within the search budget (12 candidates tried, 12 solver runs); a fix outside the bounded search may still exist.",
             "affects": [
                 {
                     "ref": "pkg:composer/drupal/core@10.2.7"

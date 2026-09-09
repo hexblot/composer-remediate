@@ -21,8 +21,9 @@ final class RangeNormalizer
     }
 
     /**
-     * OSV `ranges` of type ECOSYSTEM/SEMVER (events introduced/fixed/last_affected), with `versions`
-     * as a fallback when no range is given.
+     * OSV `ranges` of type ECOSYSTEM/SEMVER (events introduced/fixed/last_affected/limit) combined
+     * with the explicit `versions` list: per the OSV evaluation rules a version is affected when it is
+     * in either, so explicit versions outside the ranges are added as exact matches.
      *
      * @param list<array<string, mixed>> $ranges
      * @param list<string>               $versions
@@ -49,6 +50,9 @@ final class RangeNormalizer
                     $bound = '<' . self::clean($event['fixed']);
                 } elseif (isset($event['last_affected']) && is_string($event['last_affected'])) {
                     $bound = '<=' . self::clean($event['last_affected']);
+                } elseif (isset($event['limit']) && is_string($event['limit']) && $event['limit'] !== '*') {
+                    // "limit" caps the range without asserting a fix; versions from it onwards are not affected
+                    $bound = '<' . self::clean($event['limit']);
                 }
                 if ($bound === null) {
                     continue;
@@ -61,8 +65,27 @@ final class RangeNormalizer
                 $parts[] = $introduced === '0' ? '*' : '>=' . self::clean($introduced);
             }
         }
-        if ($parts === [] && $versions !== []) {
-            $parts = array_map(static fn (string $v): string => '==' . self::clean($v), $versions);
+
+        $rangeExpression = implode('|', array_unique($parts));
+        $rangeConstraint = null;
+        if ($rangeExpression !== '') {
+            try {
+                $rangeConstraint = $this->parser->parseConstraints($rangeExpression);
+            } catch (\UnexpectedValueException) {
+                return null;
+            }
+        }
+        foreach ($versions as $version) {
+            $version = self::clean($version);
+            try {
+                $normalized = $this->parser->normalize($version);
+            } catch (\UnexpectedValueException) {
+                continue;
+            }
+            if ($rangeConstraint !== null && $rangeConstraint->matches(new \Composer\Semver\Constraint\Constraint('==', $normalized))) {
+                continue; // already covered by a range
+            }
+            $parts[] = '==' . $version;
         }
 
         return $this->validate(implode('|', array_unique($parts)));

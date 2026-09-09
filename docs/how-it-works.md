@@ -94,7 +94,8 @@ retries, a bounded number of times, so the recommendation becomes
 
 `--with` and `-m` exist to steer the solver during the search. Before a command is recommended,
 the planner re-solves it without them (each separately, then both) and keeps the simplest spelling
-that produces exactly the same lock. A human ends up with `composer update acme/app-framework:1.1.0
+that produces exactly the same lock: the same version, the same source and dist references, and the
+same production/development classification for every package. A human ends up with `composer update acme/app-framework:1.1.0
 -W -m` rather than the same command with a trailing constraint they would never have typed.
 
 ## 4. Validation
@@ -107,9 +108,17 @@ fails, the candidate is rejected and the solver's explanation is kept for the re
 A successful solve is not enough. The planner re-runs advisory matching on the new lock, and a
 candidate that resolves but still contains an affected version is rejected.
 
-When running in-process is impossible, a fallback runs `composer update … --no-install` in a
-scratch copy of the project and reads the written lock file. Both routes produce the same lock
-diff.
+When the in-process route fails for a reason that is neither a dependency conflict nor a network
+error (an exception inside Composer's PHP API, typically a version incompatibility), the same
+candidate is retried through a fallback that runs the real `composer update … --no-install` in a
+scratch copy of the project and reads the written lock file. Both routes produce the same lock diff.
+`--solver=in-process` or `--solver=subprocess` pins one route; the default `auto` is the fallback
+chain. The subprocess uses the Composer binary that is running the plugin (or
+`REMEDIATE_COMPOSER_BINARY`), so both routes solve with the same Composer release.
+
+Whatever the route, a solve that fails for tool or network reasons is recorded as such. A finding
+without a verified fix is reported as "none" only when every solve completed; when a solve errored
+the outcome is "unknown" and the exit code is 3 (solver error) or 5 (network), never 2.
 
 ## 5. Ranking
 
@@ -129,11 +138,14 @@ A weighted score may replace these rules once the fixture corpus provides eviden
 ## 6. Multiple findings
 
 Several advisories on the same package are planned together: the fixed range is the complement of
-the union of their affected ranges, and a candidate is valid only when all of them are gone. One
+the union of *every* advisory the source knows for that package (not only the ones hitting the
+locked version, so a newer release affected by a different advisory is never proposed), and a
+candidate is valid only when all of them are gone. Ignored advisories do not shrink the range. One
 package, one command.
 
 Across packages, the per-package winners are merged into a single command and validated with one
-more solve. The report's summary then says either "you can fix all N findings with …", or "… fixes
+more solve, under the same acceptance rules as any candidate: no new advisories, no release younger
+than the cooldown, and the simplest spelling is re-matched rather than assumed. The report's summary then says either "you can fix all N findings with …", or "… fixes
 k of N findings" when some advisories have no reachable fix, or lists the per-package commands when
 no single command resolves.
 
@@ -150,22 +162,45 @@ options shape which findings count towards it:
   fail on anything new, and delete entries as fixes land.
 
 `--min-release-age <days>` rejects every candidate whose resulting lock contains a release published
-within the last N days. It is a supply-chain cooldown: a version that appeared yesterday may be
-compromised or broken, and nothing forces a security fix to be applied within hours. When every fix
-is too young the finding reports "no verified remediation" with the young releases named.
+within the last N days, or a release whose date is unknown (the guard never promises an age it
+cannot prove). It applies to individual candidates and to the combined command alike. It is a
+supply-chain cooldown: a version that appeared yesterday may be compromised or broken, and nothing
+forces a security fix to be applied within hours. When every fix is too young the finding reports
+"no verified remediation" with the young releases named.
+
+`--ignore-platform-req` and `--ignore-platform-reqs` change what the solver accepts, so a command
+verified under them is only reproduced by a command that carries them: the flags are repeated in
+every recommended command. When a recommended command moves a package to a version that still
+carries another (pre-existing) advisory, the report flags a **blocking risk**: Composer 2.10+
+advisory blocking may refuse that update until the advisory is ignored in `config.policy` or
+blocking is disabled.
 
 A finding whose only fix requires widening a `composer.json` constraint is marked as **constraint
 drag**: the report names the root requirement that blocks every fix within the current constraints.
 Ignore entries (`--ignore`, `config.audit.ignore`, `config.policy`) that match nothing in the lock are
-reported as stale so the configuration stays honest.
+reported as stale so the configuration stays honest. Composer's own scoping is respected: an
+`audit.ignore` entry with `apply: block` or a `policy.advisories` entry with `on-audit: false` is an
+install-time exception, not an audit-time one, and does not suppress a finding here; package rules
+apply only within their constraint.
 
-## 8. Pruning
+## 8. Pruning and budget
 
 Two rules keep the number of solves small. Root-constraint widening is never tried once a valid
 candidate without root changes exists, because ranking rule 1 would discard it anyway. The parent
 descent is skipped when an existing valid candidate is already at least as good as the best result
 the descent could reach (two changed packages, no major change). Skipped candidates are listed in
 the report so the reasoning stays visible.
+
+Two limits bound the work. `--max-candidates` (default 10) caps the generated candidates per
+finding; `--solve-budget` (default 60) caps solver runs per finding across every phase: candidates,
+conflict-driven expansion, parent descent and simplification; the last three solves are reserved
+for simplifying the winner so a long descent on a worse parent cannot starve it. Every solve is counted, probes
+included, and the report carries the count per finding and in total. When either limit cuts the
+search short, a finding without a fix reads "none found within the search budget" rather than
+"none": the search is bounded and does not prove that no fix exists. The dependency-path walk
+itself uses Composer's recursive `InstalledRepository::getDependents()`; its path and depth caps
+apply to the result, not to the cost of computing it, which on a very large lock is the same cost
+`composer why -r -t` pays.
 
 ## 9. Output
 

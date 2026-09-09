@@ -16,13 +16,13 @@ use Remediate\Engine\Lock\LockSnapshot;
  */
 final class Matcher
 {
-    /** @var array<string, true> lower-cased advisory ids and CVEs to ignore */
-    private array $ignored = [];
+    private IgnorePolicy $ignore;
 
     private int $ignoredCount = 0;
 
     public function __construct(private readonly AdvisoryProvider $provider)
     {
+        $this->ignore = IgnorePolicy::none();
     }
 
     /**
@@ -30,10 +30,13 @@ final class Matcher
      */
     public function withIgnored(array $ids): self
     {
+        return $this->withIgnorePolicy($this->ignore->withIds($ids));
+    }
+
+    public function withIgnorePolicy(IgnorePolicy $policy): self
+    {
         $clone = clone $this;
-        foreach ($ids as $id) {
-            $clone->ignored[strtolower($id)] = true;
-        }
+        $clone->ignore = $policy;
 
         return $clone;
     }
@@ -54,21 +57,19 @@ final class Matcher
      */
     public function unusedIgnores(): array
     {
-        return array_values(array_diff(array_keys($this->ignored), array_keys($this->usedIgnores)));
+        return array_values(array_diff($this->ignore->entries(), array_keys($this->usedIgnores)));
     }
 
-    private function isIgnored(Advisory $advisory): bool
+    private function isIgnored(Advisory $advisory, string $packageName, string $normalizedVersion): bool
     {
-        foreach ([$advisory->id, $advisory->cve] as $candidate) {
-            if ($candidate !== null && isset($this->ignored[strtolower($candidate)])) {
-                ++$this->ignoredCount;
-                $this->usedIgnores[strtolower($candidate)] = true;
-
-                return true;
-            }
+        $entry = $this->ignore->matchedEntry($advisory->id, $advisory->cve, $packageName, $normalizedVersion);
+        if ($entry === null) {
+            return false;
         }
+        ++$this->ignoredCount;
+        $this->usedIgnores[$entry] = true;
 
-        return false;
+        return true;
     }
 
     /**
@@ -86,7 +87,7 @@ final class Matcher
         foreach ($lock->packages as $package) {
             $name = $package->getName();
             foreach ($advisories[$name] ?? [] as $advisory) {
-                if ($advisory->affectsVersion($package->getVersion()) && !$this->isIgnored($advisory)) {
+                if ($advisory->affectsVersion($package->getVersion()) && !$this->isIgnored($advisory, $name, $package->getVersion())) {
                     $findings[] = new Finding($advisory, $name, $package->getVersion(), $package->getPrettyVersion(), $lock->isDev($name), $isRootRequirement($name));
                 }
             }
@@ -97,7 +98,7 @@ final class Matcher
                     continue; // the replaced package is also installed on its own; it is matched directly
                 }
                 foreach ($advisories[$target] ?? [] as $advisory) {
-                    if ($advisory->affectsConstraint($link->getConstraint()) && !$this->isIgnored($advisory)) {
+                    if ($advisory->affectsConstraint($link->getConstraint()) && !$this->isIgnored($advisory, $name, $package->getVersion())) {
                         $findings[] = new Finding($advisory, $name, $package->getVersion(), $package->getPrettyVersion(), $lock->isDev($name), $isRootRequirement($name), $target);
                     }
                 }

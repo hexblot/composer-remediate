@@ -28,7 +28,7 @@ details summary{cursor:pointer;color:var(--accent);margin:.5rem 0}
 <h2>firebase/php-jwt <span class="version">v5.5.1</span></h2>
 <p class="state">Transitive dependency.</p>
 <h3>Advisories</h3><ul class="advisories">
-<li><strong><a href="https://github.com/advisories/GHSA-8xf4-w7qw-pjjw" rel="noopener">CVE-2021-46743 <small>(PKSA-2kqm-ps5x-s4f5)</small></a></strong> <span class="badge sev-critical">critical</span><br>Key/algorithm type confusion<br><small>affected versions: <code>&lt;6.0.0</code></small></li>
+<li><strong><a href="https://github.com/advisories/GHSA-8xf4-w7qw-pjjw" rel="noopener noreferrer">CVE-2021-46743 <small>(PKSA-2kqm-ps5x-s4f5)</small></a></strong> <span class="badge sev-critical">critical</span><br>Key/algorithm type confusion<br><small>affected versions: <code>&lt;6.0.0</code></small></li>
 </ul>
 <h3>Introduced by</h3>
 <pre class="tree">root
@@ -79,14 +79,14 @@ Use the option --with-all-dependencies (-W) to allow upgrades, downgrades and re
 <h2>maximebf/debugbar <span class="version">v1.18.0</span></h2>
 <p class="state">Transitive dependency. Development requirement only.</p>
 <h3>Advisories</h3><ul class="advisories">
-<li><strong><a href="https://github.com/advisories/GHSA-gxr4-xjj5-5px2" rel="noopener">CVE-2020-11022 <small>(PKSA-dyrx-jq7h-gtxg)</small></a></strong> <span class="badge sev-medium">medium</span><br>Potential XSS vulnerability in jQuery<br><small>affected versions: <code>&lt;1.19.0</code></small></li>
-<li><strong><a href="https://github.com/advisories/GHSA-6c3j-c64m-qhgq" rel="noopener">CVE-2019-11358 <small>(PKSA-vf2x-zfw2-cnsj)</small></a></strong> <span class="badge sev-medium">medium</span><br>XSS in jQuery as used in Drupal, Backdrop CMS, and other products<br><small>affected versions: <code>&lt;1.19.0</code></small></li>
+<li><strong><a href="https://github.com/advisories/GHSA-gxr4-xjj5-5px2" rel="noopener noreferrer">CVE-2020-11022 <small>(PKSA-dyrx-jq7h-gtxg)</small></a></strong> <span class="badge sev-medium">medium</span><br>Potential XSS vulnerability in jQuery<br><small>affected versions: <code>&lt;1.19.0</code></small></li>
+<li><strong><a href="https://github.com/advisories/GHSA-6c3j-c64m-qhgq" rel="noopener noreferrer">CVE-2019-11358 <small>(PKSA-vf2x-zfw2-cnsj)</small></a></strong> <span class="badge sev-medium">medium</span><br>XSS in jQuery as used in Drupal, Backdrop CMS, and other products<br><small>affected versions: <code>&lt;1.19.0</code></small></li>
 </ul>
 <h3>Introduced by</h3>
 <pre class="tree">root
 └── barryvdh/laravel-debugbar v3.6.7
     └── maximebf/debugbar v1.18.0  (requires ^1.17.2)</pre>
-<h3>Recommended remediation</h3><p class="none-box">No verified remediation found.</p>
+<h3>Recommended remediation</h3><p class="none-box">No verified remediation found (none).</p>
 <details><summary>Other candidates (4)</summary><table class="candidates"><thead><tr><th>Outcome</th><th>Command</th><th>Detail</th></tr></thead><tbody>
 <tr><td><span class="badge rejected">rejected</span></td><td><code>composer update maximebf/debugbar</code></td><td><pre class="reason">resolves, but maximebf/debugbar ends at v1.18.1 which is still affected by PKSA-dyrx-jq7h-gtxg, PKSA-vf2x-zfw2-cnsj</pre></td></tr>
 <tr><td><span class="badge rejected">rejected</span></td><td><code>composer update maximebf/debugbar -w -m --with &apos;maximebf/debugbar:&gt;=1.19.0&apos;</code></td><td><pre class="reason">Composer could not resolve the dependencies: Your requirements could not be resolved to an installable set of packages.
@@ -111,7 +111,8 @@ Use the option --with-all-dependencies (-W) to allow upgrades, downgrades and re
 <dt>php version</dt><dd>(fixture)</dd>
 <dt>advisory source</dt><dd>advisory snapshot advisories.json</dd>
 <dt>solver</dt><dd>in-process Composer dry-run</dd>
-<dt>composer json sha256</dt><dd>0b9ad06501e252e0c8af3c7191f3c2ee237ad0cc6e855e53d67693d0e94cb8e8</dd>
+<dt>solver runs</dt><dd>16</dd>
+<dt>composer json sha256</dt><dd>95ab7b56835198de3afa0a333e5ac45550e56adb4b0ef55225fbe5833a282d5f</dd>
 <dt>composer lock sha256</dt><dd>2dbaa7b34c4c01d7ef5715f78a6c4dfe11a0a4533a4b8855f22eb8d218f54b2f</dd>
 <dt>analysis timestamp</dt><dd>(fixture)</dd>
 <dt>locked packages</dt><dd>217</dd>

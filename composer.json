@@ -39,6 +39,9 @@
         "ext-pdo_sqlite": "Required to build or read a local advisory database (remediate db:build, --database-location)",
         "ext-zip": "Required by remediate db:build to read the OSV and FriendsOfPHP archives"
     },
+    "bin": [
+        "bin/composer-remediate"
+    ],
     "autoload": {
         "psr-4": {
             "Remediate\\": "src/"

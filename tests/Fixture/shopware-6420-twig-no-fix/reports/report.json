@@ -7,7 +7,8 @@
         "php_version": "(fixture)",
         "advisory_source": "advisory snapshot advisories.json",
         "solver": "in-process Composer dry-run",
-        "composer_json_sha256": "de9dc34e09ffec61f1daed2cfe49fdecabbd9e509dacbf100a3e305e6d9f28d6",
+        "solver_runs": "139",
+        "composer_json_sha256": "36dc8b030a51fe5252780bc5d74249b516cee85de9e93a274b0842f25cc27526",
         "composer_lock_sha256": "45cb39a5300625dd42fa86f3fdce23fc30203b96a16ccc3ec0c4afbc2bec7455",
         "analysis_timestamp": "(fixture)",
         "locked_packages": "201"
@@ -325,12 +326,15 @@
                     }
                 }
             ],
+            "solver_runs": 14,
+            "search_exhausted": false,
             "remediation": {
                 "status": "verified",
                 "command": "composer update aws/aws-sdk-php -w -m",
                 "strategy": "with-dependencies",
                 "root_constraint_changes": [],
                 "constraint_drag": null,
+                "blocking_risk": [],
                 "summary": {
                     "changed": 2,
                     "added": 0,
@@ -679,12 +683,15 @@
                     }
                 }
             ],
+            "solver_runs": 7,
+            "search_exhausted": false,
             "remediation": {
                 "status": "verified",
                 "command": "composer update composer/composer",
                 "strategy": "lock-refresh",
                 "root_constraint_changes": [],
                 "constraint_drag": null,
+                "blocking_risk": [],
                 "summary": {
                     "changed": 1,
                     "added": 0,
@@ -981,8 +988,11 @@
                     }
                 }
             ],
+            "solver_runs": 16,
+            "search_exhausted": false,
             "remediation": {
                 "status": "none",
+                "outcome": "none",
                 "blocker": null
             },
             "candidates": [
@@ -1308,8 +1318,11 @@
                     }
                 }
             ],
+            "solver_runs": 11,
+            "search_exhausted": false,
             "remediation": {
                 "status": "none",
+                "outcome": "none",
                 "blocker": null
             },
             "candidates": [
@@ -1610,9 +1623,12 @@
                     }
                 }
             ],
+            "solver_runs": 13,
+            "search_exhausted": true,
             "remediation": {
                 "status": "none",
-                "blocker": null
+                "outcome": "none found within the search budget",
+                "blocker": "No verified fix within the search budget (13 candidates tried, 13 solver runs); a fix outside the bounded search may still exist."
             },
             "candidates": [
                 {
@@ -1937,8 +1953,11 @@
                     }
                 }
             ],
+            "solver_runs": 16,
+            "search_exhausted": false,
             "remediation": {
                 "status": "none",
+                "outcome": "none",
                 "blocker": null
             },
             "candidates": [
@@ -2353,12 +2372,15 @@
                     }
                 }
             ],
+            "solver_runs": 9,
+            "search_exhausted": true,
             "remediation": {
                 "status": "verified",
                 "command": "composer update symfony/twig-bridge",
                 "strategy": "lock-refresh",
                 "root_constraint_changes": [],
                 "constraint_drag": null,
+                "blocking_risk": [],
                 "summary": {
                     "changed": 1,
                     "added": 0,
@@ -2698,12 +2720,15 @@
                     }
                 }
             ],
+            "solver_runs": 17,
+            "search_exhausted": true,
             "remediation": {
                 "status": "verified",
                 "command": "composer update shopware/core -W -m --with 'symfony/validator:>=5.4.43,<6.0.0 || >=6.4.11,<7.0.0 || >=7.1.4'",
                 "strategy": "parent-update",
                 "root_constraint_changes": [],
                 "constraint_drag": null,
+                "blocking_risk": [],
                 "summary": {
                     "changed": 2,
                     "added": 0,
@@ -3042,9 +3067,12 @@
                     }
                 }
             ],
+            "solver_runs": 16,
+            "search_exhausted": true,
             "remediation": {
                 "status": "none",
-                "blocker": null
+                "outcome": "none found within the search budget",
+                "blocker": "No verified fix within the search budget (16 candidates tried, 16 solver runs); a fix outside the bounded search may still exist."
             },
             "candidates": [
                 {
@@ -3448,9 +3476,12 @@
                     }
                 }
             ],
+            "solver_runs": 16,
+            "search_exhausted": true,
             "remediation": {
                 "status": "none",
-                "blocker": null
+                "outcome": "none found within the search budget",
+                "blocker": "No verified fix within the search budget (16 candidates tried, 16 solver runs); a fix outside the bounded search may still exist."
             },
             "candidates": [
                 {

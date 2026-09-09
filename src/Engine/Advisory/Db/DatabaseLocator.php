@@ -13,11 +13,18 @@ use Remediate\Engine\Advisory\AdvisoryLookupFailed;
  * Resolves where the advisory database comes from: the --database-location option, the
  * REMEDIATE_DATABASE environment variable, or extra.remediate.database in composer.json. A URL is
  * downloaded once into Composer's cache directory and refreshed when older than the TTL.
+ *
+ * Downloads are checked against the publisher's `<url>.sha256` sidecar when one exists; a mismatch
+ * is fatal. When a refresh fails and an older cached copy is used instead, that is reported through
+ * warnings() so a report never presents stale coverage as current.
  */
 final class DatabaseLocator
 {
     public const ENV = 'REMEDIATE_DATABASE';
     public const TTL_SECONDS = 24 * 3600;
+
+    /** @var list<string> */
+    private array $warnings = [];
 
     public function __construct(private readonly Composer $composer, private readonly HttpDownloader $downloader, private readonly bool $offline = false)
     {
@@ -76,16 +83,32 @@ final class DatabaseLocator
         return $real;
     }
 
+    /**
+     * Conditions under which the resolved database is weaker than it looks (stale cache after a failed
+     * refresh, download without a checksum), to be shown with the report.
+     *
+     * @return list<string>
+     */
+    public function warnings(): array
+    {
+        return $this->warnings;
+    }
+
     private function download(string $url): string
     {
         $dir = $this->cacheDirectory();
         @mkdir($dir, 0755, true);
         $file = $dir . '/db-' . sha1($url) . '.sqlite';
         $fresh = is_file($file) && (time() - (int) filemtime($file)) < self::TTL_SECONDS;
-        if ($fresh || ($this->offline && is_file($file))) {
+        if ($fresh) {
             return $file;
         }
         if ($this->offline) {
+            if (is_file($file)) {
+                $this->warnings[] = sprintf('Offline: using the advisory database cached %s from %s; advisories published since then are unknown.', self::age($file), $url);
+
+                return $file;
+            }
             throw new AdvisoryLookupFailed(sprintf('Offline mode and no cached copy of %s.', $url));
         }
         $tmp = $file . '.tmp-' . bin2hex(random_bytes(4));
@@ -94,15 +117,63 @@ final class DatabaseLocator
         } catch (TransportException $e) {
             @unlink($tmp);
             if (is_file($file)) {
-                return $file; // stale but usable
+                $this->warnings[] = sprintf('Advisory database refresh failed (%s); using the copy cached %s. Advisories published since then are unknown to this run.', self::shortError($e), self::age($file));
+
+                return $file;
             }
             throw new AdvisoryLookupFailed(sprintf('Could not download advisory database %s: %s', $url, $e->getMessage()), 0, $e);
         }
+        $this->verifyChecksum($url, $tmp);
         if (!@rename($tmp, $file)) {
             @unlink($tmp);
             throw new AdvisoryLookupFailed(sprintf('Could not store downloaded advisory database in %s.', $file));
         }
 
         return $file;
+    }
+
+    /**
+     * Compares the download with the publisher's `<url>.sha256` sidecar (either a bare digest or
+     * `sha256sum` output with a filename). No sidecar means no verification, which is reported.
+     */
+    private function verifyChecksum(string $url, string $file): void
+    {
+        $sidecar = $file . '.sha256';
+        try {
+            $this->downloader->copy($url . '.sha256', $sidecar);
+        } catch (TransportException $e) {
+            @unlink($sidecar);
+            $this->warnings[] = sprintf('No checksum published next to %s (%s); the download was not verified against a sha256.', $url, self::shortError($e));
+
+            return;
+        }
+        $published = trim((string) file_get_contents($sidecar));
+        @unlink($sidecar);
+        if (preg_match('{^([0-9a-f]{64})\b}i', $published, $m) !== 1) {
+            @unlink($file);
+            throw new AdvisoryLookupFailed(sprintf('The checksum file at %s.sha256 is not a sha256 digest.', $url));
+        }
+        $actual = hash_file('sha256', $file);
+        if ($actual === false || !hash_equals(strtolower($m[1]), $actual)) {
+            @unlink($file);
+            throw new AdvisoryLookupFailed(sprintf('Advisory database %s does not match its published sha256 (expected %s, got %s).', $url, $m[1], $actual === false ? '?' : $actual));
+        }
+    }
+
+    private static function age(string $file): string
+    {
+        $seconds = max(0, time() - (int) filemtime($file));
+        if ($seconds < 3600 * 48) {
+            return sprintf('%d hour%s ago', intdiv($seconds, 3600), intdiv($seconds, 3600) === 1 ? '' : 's');
+        }
+
+        return sprintf('%d days ago', intdiv($seconds, 86400));
+    }
+
+    private static function shortError(\Throwable $e): string
+    {
+        $code = $e->getCode();
+
+        return $code !== 0 ? sprintf('HTTP %d', $code) : trim(explode("\n", $e->getMessage())[0]);
     }
 }

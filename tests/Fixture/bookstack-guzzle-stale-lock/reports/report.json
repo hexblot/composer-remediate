@@ -7,7 +7,8 @@
         "php_version": "(fixture)",
         "advisory_source": "advisory snapshot advisories.json",
         "solver": "in-process Composer dry-run",
-        "composer_json_sha256": "3c3f4429d9c1301759c407368a75e415e9d4b9e313416d5ff1f18dd77611917d",
+        "solver_runs": "28",
+        "composer_json_sha256": "c47bcec51846043fff1d4c1bdd7fd2c0044512eeeaf70a5f33666162dbca209e",
         "composer_lock_sha256": "344de0dd32e1d22719c6e0c717527e601702e8ed4d57664dd0770e606102f7af",
         "analysis_timestamp": "(fixture)",
         "locked_packages": "155"
@@ -89,6 +90,8 @@
                     }
                 }
             ],
+            "solver_runs": 9,
+            "search_exhausted": false,
             "remediation": {
                 "status": "verified",
                 "command": "composer require --no-update barryvdh/laravel-dompdf:^2.0 && composer update barryvdh/laravel-dompdf -W -m",
@@ -102,6 +105,7 @@
                     }
                 ],
                 "constraint_drag": "composer.json requires barryvdh/laravel-dompdf ^1.0, which blocks every fix within the current constraints; the recommendation widens it to ^2.0.",
+                "blocking_risk": [],
                 "summary": {
                     "changed": 2,
                     "added": 1,
@@ -564,12 +568,15 @@
                     }
                 }
             ],
+            "solver_runs": 17,
+            "search_exhausted": true,
             "remediation": {
                 "status": "verified",
                 "command": "composer update guzzlehttp/guzzle -w -m",
                 "strategy": "with-dependencies",
                 "root_constraint_changes": [],
                 "constraint_drag": null,
+                "blocking_risk": [],
                 "summary": {
                     "changed": 2,
                     "added": 0,

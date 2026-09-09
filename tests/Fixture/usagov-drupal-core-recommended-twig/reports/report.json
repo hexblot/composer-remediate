@@ -7,13 +7,16 @@
         "php_version": "(fixture)",
         "advisory_source": "advisory snapshot advisories.json",
         "solver": "in-process Composer dry-run",
-        "composer_json_sha256": "942fbcf556849c886cca1e666d130ff1d54b70f7403f5ed314796785cd2439db",
+        "solver_runs": "56",
+        "composer_json_sha256": "b0762c1fc20619619719f9f3fe768a9c027a0855b7df014f13f5cad2a5d11dae",
         "composer_lock_sha256": "b7f5a2dbf068b7d2c712b0b48b4ffebaa46cf09a360f1875741011455cea8c99",
         "analysis_timestamp": "(fixture)",
         "locked_packages": "168"
     },
     "exit_code": 2,
-    "warnings": [],
+    "warnings": [
+        "twig/twig: the recommended command moves drupal/core, drupal/core-recommended to a version that still carries another advisory; Composer 2.10+ advisory blocking may refuse it until that advisory is ignored in config.policy or blocking is disabled."
+    ],
     "summary": {
         "advisories": 4,
         "packages": 4,
@@ -281,9 +284,12 @@
                     }
                 }
             ],
+            "solver_runs": 12,
+            "search_exhausted": true,
             "remediation": {
                 "status": "none",
-                "blocker": null
+                "outcome": "none found within the search budget",
+                "blocker": "No verified fix within the search budget (12 candidates tried, 12 solver runs); a fix outside the bounded search may still exist."
             },
             "candidates": [
                 {
@@ -424,8 +430,11 @@
                     }
                 }
             ],
+            "solver_runs": 4,
+            "search_exhausted": false,
             "remediation": {
                 "status": "none",
+                "outcome": "none",
                 "blocker": null
             },
             "candidates": [
@@ -766,12 +775,15 @@
                     }
                 }
             ],
+            "solver_runs": 9,
+            "search_exhausted": true,
             "remediation": {
                 "status": "verified",
                 "command": "composer update symfony/validator",
                 "strategy": "lock-refresh",
                 "root_constraint_changes": [],
                 "constraint_drag": null,
+                "blocking_risk": [],
                 "summary": {
                     "changed": 1,
                     "added": 0,
@@ -1237,12 +1249,18 @@
                     }
                 }
             ],
+            "solver_runs": 29,
+            "search_exhausted": true,
             "remediation": {
                 "status": "verified",
                 "command": "composer update drupal/core-recommended -W -m",
                 "strategy": "parent-update",
                 "root_constraint_changes": [],
                 "constraint_drag": null,
+                "blocking_risk": [
+                    "drupal/core",
+                    "drupal/core-recommended"
+                ],
                 "summary": {
                     "changed": 3,
                     "added": 0,

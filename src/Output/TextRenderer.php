@@ -145,7 +145,7 @@ final class TextRenderer
         $recommended = $plan->recommended();
         if ($recommended === null || $recommended->diff === null) {
             $out[] = $this->heading('Recommended remediation');
-            $out[] = $this->tag('  No verified remediation found.', 'fg=red');
+            $out[] = $this->tag(sprintf('  No verified remediation found (%s).', $plan->outcome()), 'fg=red');
             if ($plan->blocker !== null) {
                 $out[] = '  ' . $plan->blocker;
             }
@@ -168,6 +168,9 @@ final class TextRenderer
             $drag = $plan->constraintDrag();
             if ($drag !== null) {
                 $out[] = '  ' . $this->tag('Constraint drag:', 'fg=yellow') . ' ' . $drag;
+            }
+            if ($recommended->blockingRisk !== []) {
+                $out[] = '  ' . $this->tag('Blocking risk:', 'fg=yellow') . sprintf(' %s still carr%s another advisory after this update; Composer 2.10+ may refuse the command until that advisory is ignored in config.policy or blocking is disabled.', implode(', ', $recommended->blockingRisk), count($recommended->blockingRisk) === 1 ? 'ies' : 'y');
             }
             if ($diff->prereleaseTargets() !== []) {
                 $out[] = '  Note: installs pre-release versions (' . implode(', ', array_map(static fn ($c): string => $c->packageName . ' ' . $c->toPretty, $diff->prereleaseTargets())) . '); no stable release satisfies the constraints yet.';

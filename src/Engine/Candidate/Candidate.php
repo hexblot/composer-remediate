@@ -18,6 +18,9 @@ final class Candidate
      * @param array<string, string>               $temporaryConstraints package => constraint, rendered as --with
      * @param array<string, RootConstraintChange> $rootConstraintChanges
      * @param array<string, string>               $pins                 package => exact version, rendered as `name:version` in the allow list
+     * @param list<string>                        $extraArguments       further `composer update` arguments the solve was run with and the
+     *                                                                  user must repeat (e.g. --ignore-platform-req=php), so the printed
+     *                                                                  command is the same request that was verified
      */
     public function __construct(
         public readonly Strategy $strategy,
@@ -28,7 +31,14 @@ final class Candidate
         public readonly array $rootConstraintChanges,
         public readonly string $description,
         public readonly array $pins = [],
+        public readonly array $extraArguments = [],
     ) {
+    }
+
+    /** @param list<string> $arguments */
+    public function withExtraArguments(array $arguments): self
+    {
+        return new self($this->strategy, $this->allowList, $this->transitiveMode, $this->temporaryConstraints, $this->minimalChanges, $this->rootConstraintChanges, $this->description, $this->pins, array_values(array_unique([...$this->extraArguments, ...$arguments])));
     }
 
     /**
@@ -44,13 +54,13 @@ final class Candidate
     /** @param array<string, string> $constraints */
     public function withTemporaryConstraints(array $constraints, string $description): self
     {
-        return new self($this->strategy, $this->allowList, $this->transitiveMode, $constraints + $this->temporaryConstraints, $this->minimalChanges, $this->rootConstraintChanges, $description, $this->pins);
+        return new self($this->strategy, $this->allowList, $this->transitiveMode, $constraints + $this->temporaryConstraints, $this->minimalChanges, $this->rootConstraintChanges, $description, $this->pins, $this->extraArguments);
     }
 
     /** @param list<string> $allowList */
     public function withAllowList(array $allowList, string $description): self
     {
-        return new self($this->strategy, $allowList, $this->transitiveMode, $this->temporaryConstraints, $this->minimalChanges, $this->rootConstraintChanges, $description, $this->pins);
+        return new self($this->strategy, $allowList, $this->transitiveMode, $this->temporaryConstraints, $this->minimalChanges, $this->rootConstraintChanges, $description, $this->pins, $this->extraArguments);
     }
 
     public function withPin(string $packageName, string $version, string $description): self
@@ -58,7 +68,13 @@ final class Candidate
         $temporary = $this->temporaryConstraints;
         unset($temporary[$packageName]);
 
-        return new self($this->strategy, $this->allowList, $this->transitiveMode, $temporary, $this->minimalChanges, $this->rootConstraintChanges, $description, $this->pins + [$packageName => $version]);
+        return new self($this->strategy, $this->allowList, $this->transitiveMode, $temporary, $this->minimalChanges, $this->rootConstraintChanges, $description, $this->pins + [$packageName => $version], $this->extraArguments);
+    }
+
+    /** The same request with --with and/or -m removed; used when probing for a simpler spelling. */
+    public function simplified(bool $dropTemporaryConstraints, bool $dropMinimalChanges): self
+    {
+        return new self($this->strategy, $this->allowList, $this->transitiveMode, $dropTemporaryConstraints ? [] : $this->temporaryConstraints, $dropMinimalChanges ? false : $this->minimalChanges, $this->rootConstraintChanges, $this->description, $this->pins, $this->extraArguments);
     }
 
     /** Identity of the solver request: allow-list order does not matter. */
@@ -73,7 +89,7 @@ final class Candidate
         $roots = array_map(static fn (RootConstraintChange $c): string => $c->packageName . '=' . $c->toConstraint . ($c->isDev ? '@dev' : ''), $this->rootConstraintChanges);
         sort($roots);
 
-        return json_encode([$allow, $this->transitiveMode, $temp, $this->minimalChanges, $roots, $pins], JSON_THROW_ON_ERROR);
+        return json_encode([$allow, $this->transitiveMode, $temp, $this->minimalChanges, $roots, $pins, $this->extraArguments], JSON_THROW_ON_ERROR);
     }
 
     public function changesRootConstraints(): bool
@@ -125,6 +141,9 @@ final class Candidate
         }
         foreach ($this->temporaryConstraints as $package => $constraint) {
             $update[] = '--with ' . self::quote($package . ':' . $constraint);
+        }
+        foreach ($this->extraArguments as $argument) {
+            $update[] = self::quote($argument);
         }
         $parts[] = implode(' ', $update);
 

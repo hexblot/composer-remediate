@@ -13,9 +13,16 @@ final class JsonFileAdvisoryProvider implements AdvisoryProvider
     /** @var array<string, list<Advisory>>|null */
     private ?array $advisories = null;
 
+    /**
+     * @param bool|null $complete whether the file holds every advisory for its packages (a Packagist API
+     *                            dump) rather than only those matching the current lock (a `composer audit`
+     *                            output); incomplete snapshots cannot vouch for candidate locks. Null
+     *                            detects `composer audit --format=json` output by its extra top-level keys.
+     */
     public function __construct(
         private readonly string $path,
         private readonly PackagistAdvisoryJsonParser $parser = new PackagistAdvisoryJsonParser(),
+        private ?bool $complete = null,
     ) {
     }
 
@@ -32,12 +39,16 @@ final class JsonFileAdvisoryProvider implements AdvisoryProvider
 
     public function describe(): string
     {
-        return 'advisory snapshot ' . $this->path;
+        return 'advisory snapshot ' . $this->path . ($this->isComplete() ? '' : ' (current-lock advisories only)');
     }
 
     public function isComplete(): bool
     {
-        return true;
+        if ($this->complete === null) {
+            $this->load();
+        }
+
+        return $this->complete ?? true;
     }
 
     /** @return array<string, list<Advisory>> */
@@ -59,6 +70,12 @@ final class JsonFileAdvisoryProvider implements AdvisoryProvider
             throw new AdvisoryLookupFailed(sprintf('Advisory file %s must contain a JSON object.', $this->path));
         }
         /** @var array<string, mixed> $decoded */
+        if ($this->complete === null) {
+            // `composer audit --format=json` carries "abandoned" (and "filter" from 2.10) next to
+            // "advisories" and lists only the advisories matching the audited lock.
+            $this->complete = !array_key_exists('abandoned', $decoded) && !array_key_exists('filter', $decoded);
+        }
+
         return $this->advisories = $this->parser->parseDocument($decoded);
     }
 }

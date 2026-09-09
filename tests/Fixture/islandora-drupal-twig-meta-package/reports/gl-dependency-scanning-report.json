@@ -7,7 +7,7 @@
             "name": "CVE-2024-45440: Drupal Full Path Disclosure",
             "description": "drupal/core 10.3.1 is affected by CVE-2024-45440 (affected versions >=8.0.0,<10.2.9|>=10.3.0,<10.3.6|>=11.0.0,<11.0.5).",
             "severity": "Medium",
-            "solution": "No verified remediation found.",
+            "solution": "No verified remediation found: No verified fix within the search budget (14 candidates tried, 14 solver runs); a fix outside the bounded search may still exist.",
             "identifiers": [
                 {
                     "type": "cve",

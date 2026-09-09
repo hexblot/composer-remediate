@@ -45,8 +45,9 @@ of `composer.json` with "composer-remediate security" in the subject line.
 
 In scope:
 
-- code execution or file modification triggered by analysing a project (the planner must never run
-  project scripts or plugins, and must never write to the analysed project);
+- code execution or file modification triggered by analysing a project through the
+  `composer-remediate` binary (nothing from the analysed project may run), and any write to the
+  analysed project through either entry point;
 - incorrect remediation results caused by crafted advisory or package metadata, including
   recommending a version that is still vulnerable;
 - tampering with or spoofing of published advisory database artifacts or their manifests;
@@ -62,9 +63,19 @@ Out of scope:
 
 ## Security design notes
 
-- Planning never executes the analysed project's scripts or plugins and never writes to its files.
-  Candidate solves run in a temporary copy that is deleted afterwards.
+- Two entry points with different guarantees. `composer remediate` is a Composer plugin command:
+  Composer has already activated the analysed project's other allowed plugins before it runs, as for
+  any Composer command; the planner itself then solves every candidate in fresh Composer instances
+  with plugins and scripts disabled. `composer-remediate` (the shipped binary) forces
+  `--no-plugins --no-scripts` from the first instruction, so nothing from the analysed project
+  executes. Neither entry point writes to the analysed project; candidate solves run in a temporary
+  copy that is deleted afterwards.
+- Absence of data is never a clean result: no advisory-capable repository, a malformed advisory
+  document or an unparsable range stop the run with exit 4 instead of reporting zero findings, and a
+  solver or network failure during the search yields exit 3 or 5 rather than "no fix exists".
 - Advisory data is treated as untrusted input: it influences which versions are considered fixed,
   and every recommendation is still validated by re-checking the resulting lock against the same
   data. It is never executed or interpolated into commands without quoting.
-- Published database artifacts will ship with checksums and signatures; see the roadmap.
+- Published database artifacts ship with a sha256 sidecar and a GitHub build-provenance attestation.
+  The client verifies the sha256 of a downloaded database when the sidecar exists and warns when it
+  does not; the attestation is verified with `gh attestation verify`, not by the plugin.

@@ -38,7 +38,7 @@ Introduced by
 Current state
   Direct dependency.
 Recommended remediation
-  No verified remediation found.
+  No verified remediation found (none).
 Other candidates
   rejected: composer update phpoffice/phpspreadsheet
       resolves, but phpoffice/phpspreadsheet ends at 1.25.2 which is still affected by PKSA-7f9v-sb8k-krfb, PKSA-dvbq-8ft2-ngrw, PKSA-m4hk-rk8p-4t5p, PKSA-mkg2-1wyw-57y7, PKSA-p1pj-q951-6f1x, PKSA-xk3k-rd1m-pxmg, PKSA-xp7t-fbrb-qjv4
@@ -168,7 +168,7 @@ Introduced by
 Current state
   Direct dependency.
 Recommended remediation
-  No verified remediation found.
+  No verified remediation found (none).
 Other candidates
   rejected: composer update symfony/validator
       resolves, but symfony/validator ends at v4.4.48 which is still affected by PKSA-w2tw-kmfg-rt9s
