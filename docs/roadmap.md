@@ -57,3 +57,33 @@ stands.
 ## Phase 5 — optional automation
 
 - `--apply`, only after the planner has earned trust
+- a GitHub Action wrapper that runs `--apply` on a schedule and opens **one batched pull request**
+  with advisory ids, before/after finding counts and the verified commands (the shape CVE Lite CLI
+  uses, rather than one PR per package)
+
+## Phase 6 — integrations and prioritisation
+
+Features that [CVE Lite CLI](https://github.com/OWASP/cve-lite-cli) has proven useful for the
+JavaScript ecosystem and that transfer to Composer, in priority order.
+
+1. **SARIF output** (`--output=report.sarif`) for GitHub Code Scanning, and GitLab's
+   dependency-scanning report format for the GitLab Security Dashboard: findings become annotations
+   and security-tab entries instead of log lines.
+2. **CycloneDX 1.6 SBOM with vulnerabilities attached**, using the per-vulnerability `recommendation`
+   field for the verified command, so SBOM and VEX tooling can consume the plan.
+3. **`--fail-on <severity>`** gate threshold, combined with the existing exit codes.
+4. **EPSS and CISA KEV enrichment** in the advisory database build: exploit likelihood and
+   "exploited in the wild" flags, used to order findings by urgency rather than severity label alone.
+5. **Constraint drag and abandoned parents as explicit findings**: name the root constraint that
+   blocks a fix (already discovered through the widening candidates) and flag abandoned packages on the
+   path, using Packagist's abandoned marker.
+6. **Baseline / ratcheting mode**: a committed baseline of accepted findings; the gate fails only on
+   findings that are not in it, so existing projects can adopt the gate without a big-bang cleanup.
+7. **`--min-release-age <days>`**: never recommend a release published within the last N days, a
+   supply-chain guard analogous to npm's release cooldown.
+8. **Ignore hygiene**: report `config.audit.ignore` / `config.policy` entries whose advisory no longer
+   matches anything or whose package left the lock.
+
+Deliberately not adopted: license compliance and usage-based reachability (outside the remediation
+scope), npm-style override hygiene (no Composer equivalent), multi-lockfile monorepo scanning (rare
+for Composer projects).
