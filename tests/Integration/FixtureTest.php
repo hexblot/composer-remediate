@@ -109,7 +109,7 @@ final class FixtureTest extends TestCase
                 self::assertSame($exp['command'], $recommended->candidate->commandLine(true), "Recommended command differs.\n$rendered");
                 self::assertStringContainsString(htmlspecialchars((string) $exp['command'], ENT_QUOTES | ENT_HTML5), $html, 'HTML report lacks the recommended command');
             }
-            if (isset($exp['max_changes'])) {
+            if (isset($exp['max_changes']) && $exactCommands) { // change counts depend on -m as well
                 self::assertLessThanOrEqual($exp['max_changes'], $recommended->diff?->count(), "Too many changes.\n$rendered");
             }
             if (isset($exp['target_version'])) {

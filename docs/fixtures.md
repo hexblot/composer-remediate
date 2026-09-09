@@ -57,8 +57,9 @@ versions as `platform`, and writes an `expected.json` skeleton listing the findi
 Finish the fixture by hand: describe the case, record provenance in `README.md`, and fill in the
 command a competent human would run. The harness compares the planner's recommendation against it. Exact command strings are asserted
 only on Composer releases with `--minimal-changes` (2.9+); on older releases the planner legitimately
-drops `-m` (and often the `--with` guard) because they produce the same lock there, so only the
-outcome, target version and change count are checked.
+drops `-m` (and often the `--with` guard) because they produce the same lock there, and the same
+commands move many more packages (58 instead of 3 in one Laravel case), so only the outcome and the
+target version are checked.
 
 A synthetic fixture (`synthetic-transitive-parent`) exists purely to exercise the harness; every
 other fixture must be a real historical project state.
