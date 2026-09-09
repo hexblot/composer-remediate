@@ -8,7 +8,8 @@ fixtures are added.
 - Advisory CVE-2026-00001 affects `acme/vuln-lib <1.1.0`.
 - Available: app-framework 1.0.0, 1.0.1, 1.1.0 (requires vuln-lib ^1.1), 1.2.0 (^1.1, helper ^1.2), 2.0.0 (^2.0 everywhere).
 
-Expected human choice: `composer update acme/app-framework:1.1.0 -W -m`, landing on app-framework 1.1.0 and
+Expected human choice: `composer update acme/app-framework:1.1.0 -W -m` (the `--with` guard used during
+the search is dropped because the plain command yields the same lock), landing on app-framework 1.1.0 and
 vuln-lib 1.1.1 with `acme/helper` untouched (2 changes). A plain `composer update acme/app-framework -W -m`
 jumps to app-framework 1.2.0, which also drags `acme/helper` to 1.2.0 (3 changes); the planner's parent
 descent finds the lower version. Updating vuln-lib alone yields 1.0.4, still

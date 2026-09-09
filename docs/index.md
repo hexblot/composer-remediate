@@ -46,6 +46,13 @@ CVE-2026-XXXXX  symfony/http-foundation 6.4.21
 Pre-alpha. Phase 0 of the [roadmap](roadmap.md) is in progress: the goal is to reproduce the
 remediation a competent human would choose for at least four of five real historical cases.
 
+## Inspiration
+
+[CVE Lite CLI](https://github.com/OWASP/cve-lite-cli), an OWASP project, does this for JavaScript and
+TypeScript: local-first scanning of lockfiles with copy-and-run fix commands and parent-aware
+guidance for transitive dependencies. Composer Remediate applies the same idea to PHP and adds solver
+verification of every recommendation.
+
 ## Where to go next
 
 - [Getting started](getting-started.md)

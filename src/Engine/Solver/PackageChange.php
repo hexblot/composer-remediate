@@ -5,6 +5,7 @@ declare(strict_types=1);
 namespace Remediate\Engine\Solver;
 
 use Composer\Semver\Comparator;
+use Composer\Semver\VersionParser;
 
 final class PackageChange
 {
@@ -48,6 +49,30 @@ final class PackageChange
         }
 
         return new self($name, $kind, $fromPretty, $toPretty, $fromNormalized, $toNormalized, $step);
+    }
+
+    /**
+     * Size of the move: |Δmajor|·10000 + |Δminor|·100 + min(|Δpatch|, 99); additions, removals and
+     * non-numeric versions count as a large fixed step. Lower parent versions therefore rank first.
+     */
+    public function distance(): int
+    {
+        if ($this->fromNormalized === null || $this->toNormalized === null) {
+            return 500;
+        }
+        $a = self::numericParts($this->fromNormalized);
+        $b = self::numericParts($this->toNormalized);
+        if ($a === null || $b === null) {
+            return 500;
+        }
+
+        return abs($a[0] - $b[0]) * 10000 + abs($a[1] - $b[1]) * 100 + min(abs($a[2] - $b[2]), 99);
+    }
+
+    /** True when the target version is not a stable release (alpha, beta, RC or dev). */
+    public function targetsPrerelease(): bool
+    {
+        return $this->toNormalized !== null && VersionParser::parseStability($this->toNormalized) !== 'stable';
     }
 
     public function isVersionChange(): bool

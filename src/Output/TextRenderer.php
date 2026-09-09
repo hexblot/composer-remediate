@@ -95,6 +95,9 @@ final class TextRenderer
             foreach ($recommended->candidate->rootConstraintChanges as $change) {
                 $out[] = sprintf('  composer.json: %s %s -> %s', $change->packageName, $change->fromConstraint ?? '(new)', $change->toConstraint);
             }
+            if ($diff->prereleaseTargets() !== []) {
+                $out[] = '  Note: installs pre-release versions (' . implode(', ', array_map(static fn ($c): string => $c->packageName . ' ' . $c->toPretty, $diff->prereleaseTargets())) . '); no stable release satisfies the constraints yet.';
+            }
             $out[] = 'Composer validation';
             $out[] = sprintf(
                 '  PASS  %d package%s changed, %d added, %d removed, %d root constraint%s changed%s',

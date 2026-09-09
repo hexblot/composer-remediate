@@ -15,13 +15,14 @@ carries its own static Composer repository, and packagist.org is disabled during
 tests/Fixture/<name>/
   composer.json        real project manifest
   composer.lock        real lock file
-  repo/packages.json   static Composer repository: every package version the solver may consider
+  repo/packages.json.gz  static Composer repository (gzipped): every package version the solver may consider
   advisories.json      advisory snapshot, in the Packagist security-advisories API shape
   expected.json        the remediation a human would choose, plus lock diff bounds
   README.md            provenance: source project, date, CVE, why this case matters
 ```
 
-The test harness copies the fixture to a temporary directory and injects
+The static repository is stored gzip-compressed to keep the checkout small; the harness inflates it
+into a temporary directory. The harness also copies the fixture to a temporary directory and injects
 
 ```json
 "repositories": [
@@ -52,14 +53,22 @@ command a competent human would run. The harness compares the planner's recommen
 A synthetic fixture (`synthetic-transitive-parent`) exists purely to exercise the harness; every
 other fixture must be a real historical project state.
 
+## Historical snapshots
+
+Real projects are captured with `--as-of=<date>`: package versions released and advisories reported
+after that date are dropped, so the fixture reproduces the situation a developer faced at the time
+rather than today's. Without it, later advisories would turn a clean "upgrade the parent" case into
+"no fix" (Shopware 6.4's Twig pin is one example).
+
 ## The Phase 0 set
 
-| # | Case | Expected human choice |
-|---|---|---|
-| 1 | Direct dependency, fixed version already permitted | `composer update <pkg>` |
-| 2 | Transitive, fixed version permitted by parent constraint | `composer update <pkg> -w` |
-| 3 | Transitive, parent must move | `composer update <parent> -W -m` |
-| 4 | Deep transitive, framework or root package upgrade required | `composer update <framework> -W -m` |
-| 5 | No valid remediation under current platform constraints | "No verified remediation found", with the blocker explained |
+| # | Fixture | Case | Planner's recommendation |
+|---|---|---|---|
+| 1 | `bookstack-guzzle-stale-lock` (BookStack, 2022-05) | Direct `guzzlehttp/guzzle 7.4.2`, root `^7.4` permits 7.4.5 | `composer update guzzlehttp/guzzle -w -m` (the plain update stops at 7.4.4 because 7.4.5 needs a newer psr7) |
+| 2 | `koel-symfony-parent-permits` (koel, 2024-10) | Transitive `symfony/http-foundation` and `symfony/process 6.4.4` via `laravel/framework ^6.4` | `composer update symfony/http-foundation`, `composer update symfony/process` |
+| 3 | `shopware-twig-parent-pin` (Shopware 6.4.15.1, 2022-09) | `twig/twig 3.3.10` pinned `~3.3.8` by shopware/core; 6.4.15.2 lifts the pin; siblings pin core exactly | `composer update shopware/storefront:6.4.15.2 shopware/recovery shopware/elasticsearch shopware/administration -W -m` |
+| 4 | `islandora-drupal-twig-meta-package` (Islandora starter site, 2024-08) | `twig/twig 3.10.3` pinned `~v3.10.2` by `drupal/core-recommended 10.3.1`; 10.3.4 is the first to allow the fix | `composer update drupal/core-recommended:10.3.4 -W -m` |
+| 5 | `bookstack-symfony-php80-no-fix` (BookStack, 2023-12) | `symfony/http-foundation 6.0.20` under `config.platform.php` 8.0.2; every fix needs PHP 8.1 | No verified remediation, with the PHP requirement shown as the blocker |
 
-Phase 3 grows this into a corpus of Drupal, Symfony and Laravel cases.
+Each fixture directory has a `README.md` with provenance and the reasoning behind the expected
+command. Phase 3 grows this into a corpus of Drupal, Symfony and Laravel cases.

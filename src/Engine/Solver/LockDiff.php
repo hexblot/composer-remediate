@@ -81,6 +81,12 @@ final class LockDiff
         return false;
     }
 
+    /** @return list<PackageChange> changes whose target is an alpha, beta, RC or dev version */
+    public function prereleaseTargets(): array
+    {
+        return array_values(array_filter($this->changes, static fn (PackageChange $c): bool => $c->targetsPrerelease()));
+    }
+
     public function hasDowngrade(): bool
     {
         foreach ($this->changes as $change) {
@@ -102,7 +108,7 @@ final class LockDiff
     {
         $total = 0;
         foreach ($this->changes as $change) {
-            $total += $change->step?->weight() ?? VersionStep::Other->weight();
+            $total += $change->distance();
         }
 
         return $total;

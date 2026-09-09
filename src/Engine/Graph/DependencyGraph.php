@@ -97,6 +97,13 @@ final class DependencyGraph
             $package = $entry[0];
             $link = $entry[1];
             $children = $entry[2] ?? [];
+            // getDependents() lists a package as its own dependent when it replaces something it also
+            // requires (laravel/framework replacing illuminate/*); never repeat a package on a path.
+            foreach ($trail as $seen) {
+                if ($seen->packageName === $package->getName()) {
+                    continue 2;
+                }
+            }
             $segment = new PathSegment(
                 $package->getName(),
                 $package->getPrettyVersion(),

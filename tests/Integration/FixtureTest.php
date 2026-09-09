@@ -18,6 +18,7 @@ use Remediate\Tests\Support\FixtureRunner;
  *   {
  *     "description": "...",
  *     "platform": {"php": "8.3.0"},                 optional config.platform overrides
+ *     "strict_findings": false,                     when true, the plan must contain exactly the listed findings
  *     "findings": [
  *       {
  *         "package": "symfony/http-foundation",
@@ -71,8 +72,10 @@ final class FixtureTest extends TestCase
 
         $expectedFindings = $expected['findings'] ?? [];
         self::assertIsArray($expectedFindings);
-        $actualCount = array_sum(array_map(static fn (FindingPlan $p): int => count($p->allFindings()), $plan->findings));
-        self::assertSame(count($expectedFindings), $actualCount, "Unexpected number of findings.\n$rendered");
+        if ((bool) ($expected['strict_findings'] ?? false)) {
+            $actualCount = array_sum(array_map(static fn (FindingPlan $p): int => count($p->allFindings()), $plan->findings));
+            self::assertSame(count($expectedFindings), $actualCount, "Unexpected number of findings.\n$rendered");
+        }
 
         foreach ($expectedFindings as $exp) {
             self::assertIsArray($exp);

@@ -4,7 +4,7 @@ This page is the current plan; the [design decisions](design-decisions.md) page 
 behind it. The original pitch documents that started the project are in the repository history
 (first commits on `main`).
 
-## Phase 0 — prove the algorithm *(in progress)*
+## Phase 0 — prove the algorithm *(complete)*
 
 Exit criterion: five real historical fixtures, and the planner reproduces the human-chosen
 remediation for at least four.
@@ -14,12 +14,15 @@ remediation for at least four.
 - [x] dependency graph, advisory matching (including `replace`), candidate generation, in-process
   solver validation, lowest-parent-version descent, deterministic ranking, text output
 - [x] `composer remediate` command wired as a plugin, text/HTML/JSON reports, multiple `--output` files
-- [ ] five real historical fixtures with the human-chosen remediation recorded
-- [ ] planner reproduces the human choice for at least four of them
+- [x] five real historical fixtures with the human-chosen remediation recorded
+- [x] planner reproduces the human choice for five of five (see [Test fixtures](fixtures.md))
 
-This phase is a go/no-go gate. If the simplest strategy trivially wins every fixture, the
-documentation will say so and the project narrows to multi-finding planning, explanation and CI
-output.
+This phase was a go/no-go gate: if the simplest strategy trivially won every fixture, the project
+would have been a thin wrapper. It did not. Three of the five real cases needed machinery that no
+single `composer update` invocation provides: the lowest-parent-version search (Drupal, Shopware),
+conflict-driven discovery of sibling packages that pin the parent (Shopware), and the platform-bound
+"no fix" verdict with the PHP requirement as the explanation (BookStack on PHP 8.0). The go decision
+stands.
 
 ## Phase 1 — deterministic single-finding remediation (release 0.1)
 

@@ -8,8 +8,9 @@ use Remediate\Engine\Plan\EvaluatedCandidate;
 
 /**
  * Deterministic priority rules, in order: no root constraint changes, no major-version changes,
- * fewest changed packages, fewest direct dependency changes, fewest removals/additions, smallest
- * version movement, then the strategy's own rank. Weights come later, once fixtures justify them.
+ * no pre-release targets, fewest changed packages, fewest direct dependency changes, fewest
+ * removals/additions, smallest version movement, then the strategy's own rank. Weights come later,
+ * once fixtures justify them.
  */
 final class Ranker
 {
@@ -56,6 +57,7 @@ final class Ranker
         return [
             $candidate->candidate->changesRootConstraints() ? 1 : 0,
             $diff->hasMajorChange() ? 1 : 0,
+            $diff->prereleaseTargets() !== [] ? 1 : 0,
             $diff->count(),
             $direct,
             count($diff->added()) + count($diff->removed()),

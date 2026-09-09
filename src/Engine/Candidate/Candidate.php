@@ -47,12 +47,33 @@ final class Candidate
         return new self($this->strategy, $this->allowList, $this->transitiveMode, $constraints + $this->temporaryConstraints, $this->minimalChanges, $this->rootConstraintChanges, $description, $this->pins);
     }
 
+    /** @param list<string> $allowList */
+    public function withAllowList(array $allowList, string $description): self
+    {
+        return new self($this->strategy, $allowList, $this->transitiveMode, $this->temporaryConstraints, $this->minimalChanges, $this->rootConstraintChanges, $description, $this->pins);
+    }
+
     public function withPin(string $packageName, string $version, string $description): self
     {
         $temporary = $this->temporaryConstraints;
         unset($temporary[$packageName]);
 
         return new self($this->strategy, $this->allowList, $this->transitiveMode, $temporary, $this->minimalChanges, $this->rootConstraintChanges, $description, $this->pins + [$packageName => $version]);
+    }
+
+    /** Identity of the solver request: allow-list order does not matter. */
+    public function signature(): string
+    {
+        $allow = $this->allowList;
+        sort($allow);
+        $temp = $this->temporaryConstraints;
+        ksort($temp);
+        $pins = $this->pins;
+        ksort($pins);
+        $roots = array_map(static fn (RootConstraintChange $c): string => $c->packageName . '=' . $c->toConstraint . ($c->isDev ? '@dev' : ''), $this->rootConstraintChanges);
+        sort($roots);
+
+        return json_encode([$allow, $this->transitiveMode, $temp, $this->minimalChanges, $roots, $pins], JSON_THROW_ON_ERROR);
     }
 
     public function changesRootConstraints(): bool

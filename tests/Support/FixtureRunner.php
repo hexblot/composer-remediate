@@ -25,6 +25,9 @@ final class FixtureRunner
     /** @var list<ScratchProject> */
     private array $materialized = [];
 
+    /** @var list<string> temporary repository directories to remove */
+    private array $repoDirs = [];
+
     /**
      * @return array<string, mixed>
      */
@@ -57,10 +60,7 @@ final class FixtureRunner
     {
         $expected = self::expected($fixtureDir);
         $workspace = ScratchWorkspace::fromFiles($fixtureDir . '/composer.json', $fixtureDir . '/composer.lock');
-        $repoDir = realpath($fixtureDir . '/repo');
-        if ($repoDir === false) {
-            throw new \RuntimeException("Fixture $fixtureDir has no repo/ directory");
-        }
+        $repoDir = $this->repositoryDirectory($fixtureDir);
         $workspace->overrideRepositories([
             ['type' => 'composer', 'url' => 'file://' . $repoDir],
             ['packagist.org' => false],
@@ -74,7 +74,10 @@ final class FixtureRunner
         return $workspace;
     }
 
-    public function run(string $fixtureDir, bool $allowDirectRequire = false): Plan
+    /**
+     * @param callable(string): void|null $progress
+     */
+    public function run(string $fixtureDir, bool $allowDirectRequire = false, ?callable $progress = null): Plan
     {
         $workspace = $this->workspace($fixtureDir);
         $project = $workspace->materialize();
@@ -85,6 +88,9 @@ final class FixtureRunner
             new JsonFileAdvisoryProvider($fixtureDir . '/advisories.json'),
             new InProcessSolver(),
             new CandidateGenerator(allowDirectRequire: $allowDirectRequire),
+            true,
+            10,
+            $progress,
         );
 
         return $planner->plan($context, $workspace);
@@ -96,5 +102,39 @@ final class FixtureRunner
             $project->destroy();
         }
         $this->materialized = [];
+        foreach ($this->repoDirs as $dir) {
+            @unlink($dir . '/packages.json');
+            @rmdir($dir);
+        }
+        $this->repoDirs = [];
+    }
+
+    /**
+     * Fixtures store the static repository gzip-compressed (repo/packages.json.gz) to keep the git
+     * checkout small; Composer needs the plain file, so it is inflated into a temporary directory.
+     * A plain repo/packages.json is used as-is when present.
+     */
+    private function repositoryDirectory(string $fixtureDir): string
+    {
+        $plain = realpath($fixtureDir . '/repo');
+        if ($plain !== false && is_file($plain . '/packages.json')) {
+            return $plain;
+        }
+        $gz = $fixtureDir . '/repo/packages.json.gz';
+        if (!is_file($gz)) {
+            throw new \RuntimeException("Fixture $fixtureDir has neither repo/packages.json nor repo/packages.json.gz");
+        }
+        $dir = sys_get_temp_dir() . '/composer-remediate-fixture-repo-' . bin2hex(random_bytes(6));
+        if (!@mkdir($dir, 0700, true)) {
+            throw new \RuntimeException("Cannot create $dir");
+        }
+        $data = gzdecode((string) file_get_contents($gz));
+        if ($data === false) {
+            throw new \RuntimeException("Cannot decompress $gz");
+        }
+        file_put_contents($dir . '/packages.json', $data);
+        $this->repoDirs[] = $dir;
+
+        return $dir;
     }
 }

@@ -81,6 +81,22 @@ composer update A:1.1.0 -W -m --with 'V:>=1.1.0'
 The descent is bounded to a handful of solves per finding. Both the pinned command and the plain
 one are kept as candidates; ranking decides.
 
+### Sibling packages that pin the parent
+
+Meta-package families pin each other exactly: `shopware/administration` requires `shopware/core
+6.4.15.1`, `drupal/core-dev` requires `drupal/core 10.3.1`. Updating the parent alone then fails
+with Composer's message "X is locked to version … and an update of this package was not
+requested". The planner reads those names out of the solver output, adds them to the command and
+retries, a bounded number of times, so the recommendation becomes
+`composer update shopware/core shopware/storefront shopware/administration … -W -m`.
+
+### Simplifying the winning command
+
+`--with` and `-m` exist to steer the solver during the search. Before a command is recommended,
+the planner re-solves it without them (each separately, then both) and keeps the simplest spelling
+that produces exactly the same lock. A human ends up with `composer update acme/app-framework:1.1.0
+-W -m` rather than the same command with a trailing constraint they would never have typed.
+
 ## 4. Validation
 
 Each candidate is executed as a **dry-run** of Composer's `Installer` against a fresh in-memory
@@ -101,10 +117,12 @@ Valid candidates are ordered by deterministic rules, in this order of precedence
 
 1. no root constraint changes;
 2. no major-version changes;
-3. fewest changed packages;
-4. fewest direct dependency changes;
-5. fewest removals and additions;
-6. smallest total version movement.
+3. no pre-release versions (alpha, beta, RC, dev) among the targets;
+4. fewest changed packages;
+5. fewest direct dependency changes;
+6. fewest removals and additions;
+7. smallest total version movement, measured on the actual version numbers so a lower parent
+   version wins a tie.
 
 A weighted score may replace these rules once the fixture corpus provides evidence for the weights.
 

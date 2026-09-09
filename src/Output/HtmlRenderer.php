@@ -127,6 +127,9 @@ final class HtmlRenderer
             foreach ($rec->candidate->rootConstraintChanges as $change) {
                 $h[] = '<p>composer.json: <code>' . self::e($change->packageName) . '</code> ' . self::e($change->fromConstraint ?? '(new)') . ' → <code>' . self::e($change->toConstraint) . '</code></p>';
             }
+            if ($diff->prereleaseTargets() !== []) {
+                $h[] = '<p class="warning">Installs pre-release versions: ' . self::e(implode(', ', array_map(static fn ($c): string => $c->packageName . ' ' . $c->toPretty, $diff->prereleaseTargets()))) . '. No stable release satisfies the constraints yet.</p>';
+            }
             $h[] = '<details open><summary>Expected changes (' . $diff->count() . ')</summary><table class="changes"><thead><tr><th>Package</th><th>From</th><th>To</th><th>Kind</th></tr></thead><tbody>';
             foreach ($diff->changes as $change) {
                 $h[] = '<tr><td>' . self::e($change->packageName) . '</td><td>' . self::e($change->fromPretty ?? '—') . '</td><td>' . self::e($change->toPretty ?? '—') . '</td><td>' . self::e($change->kind . ($change->step !== null ? ', ' . $change->step->value : '')) . '</td></tr>';

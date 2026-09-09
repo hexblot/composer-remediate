@@ -4,6 +4,7 @@ declare(strict_types=1);
 
 namespace Remediate\Engine;
 
+use Composer\DependencyResolver\Request;
 use Composer\Semver\Comparator;
 use Composer\Semver\Constraint\MultiConstraint;
 use Remediate\Engine\Advisory\AdvisoryProvider;
@@ -29,6 +30,9 @@ final class Planner
 {
     /** Maximum number of downward probes when searching for the lowest working parent version. */
     public const MAX_DESCENT_STEPS = 6;
+
+    /** Maximum number of times a conflicting candidate is widened with the locked packages Composer names as blockers. */
+    public const MAX_EXPANSIONS = 8;
 
     /** @var callable(string): void|null */
     private $progress;
@@ -94,17 +98,28 @@ final class Planner
             $evaluated = [];
             $skipped = [];
             $transportFailures = 0;
+            $seen = [];
             foreach (array_slice($candidates, 0, $this->maxCandidatesPerFinding) as $candidate) {
                 // Ranking rule 1: any candidate without root constraint changes beats every candidate with them.
                 if ($candidate->changesRootConstraints() && self::hasValidWithoutRootChanges($evaluated)) {
                     $skipped[] = $candidate;
                     continue;
                 }
+                // Conflict expansion can produce the same allow-list set another path already reached.
+                if (isset($seen[$candidate->signature()])) {
+                    continue;
+                }
+                $seen[$candidate->signature()] = true;
                 $evaluation = $this->evaluate($candidate, $finding, $groupKeys, $lock, $baseline, $matcher, $workspace);
                 if ($evaluation->result->status === SolveStatus::Transport) {
                     ++$transportFailures;
                 }
                 $evaluated[] = $evaluation;
+                if ($evaluation->result->status === SolveStatus::Conflict) {
+                    $expanded = $this->expandOnConflict($evaluation, $finding, $groupKeys, $lock, $baseline, $matcher, $workspace, $seen);
+                    array_push($evaluated, ...$expanded);
+                    $evaluation = $expanded === [] ? $evaluation : $expanded[count($expanded) - 1];
+                }
                 if ($evaluation->valid && !self::descentIsDominated($evaluation, $evaluated, $ranker)) {
                     array_push($evaluated, ...$this->descendParent($evaluation, $finding, $groupKeys, $lock, $baseline, $matcher, $workspace));
                 }
@@ -114,7 +129,11 @@ final class Planner
             if ($transportFailures > 0 && $transportFailures === count($evaluated)) {
                 $blocker = 'Every solve failed with a network error; package metadata could not be fetched.';
             }
-            $plans[] = new FindingPlan($finding, $evaluated, $ranker->rank($evaluated), $blocker, $skipped, $related);
+            $ranked = $ranker->rank($evaluated);
+            if ($ranked !== []) {
+                $ranked[0] = $this->simplify($ranked[0], $finding, $groupKeys, $lock, $baseline, $matcher, $workspace);
+            }
+            $plans[] = new FindingPlan($finding, $evaluated, $ranked, $blocker, $skipped, $related);
         }
 
         return new Plan($plans, [
@@ -128,6 +147,55 @@ final class Planner
             'analysis_timestamp' => gmdate('c'),
             'locked_packages' => (string) $lock->count(),
         ], $warnings);
+    }
+
+    /**
+     * The temporary constraint and -m exist to steer the solver; a human types neither when the plain
+     * command already produces the same lock. Try the simpler spellings and keep the simplest one
+     * that yields exactly the same package versions.
+     *
+     * @param array<string, true> $groupKeys
+     * @param array<string, true> $baseline
+     */
+    private function simplify(EvaluatedCandidate $winner, Finding $finding, array $groupKeys, LockSnapshot $lock, array $baseline, Matcher $matcher, ScratchWorkspace $workspace): EvaluatedCandidate
+    {
+        $c = $winner->candidate;
+        if ($winner->result->after === null || ($c->temporaryConstraints === [] && !$c->minimalChanges)) {
+            return $winner;
+        }
+        $variants = [];
+        if ($c->temporaryConstraints !== [] && $c->minimalChanges) {
+            $variants[] = new Candidate($c->strategy, $c->allowList, $c->transitiveMode, [], false, $c->rootConstraintChanges, $c->description, $c->pins);
+        }
+        if ($c->temporaryConstraints !== []) {
+            $variants[] = new Candidate($c->strategy, $c->allowList, $c->transitiveMode, [], $c->minimalChanges, $c->rootConstraintChanges, $c->description, $c->pins);
+        }
+        if ($c->minimalChanges) {
+            $variants[] = new Candidate($c->strategy, $c->allowList, $c->transitiveMode, $c->temporaryConstraints, false, $c->rootConstraintChanges, $c->description, $c->pins);
+        }
+        foreach ($variants as $variant) {
+            $evaluation = $this->evaluate($variant, $finding, $groupKeys, $lock, $baseline, $matcher, $workspace);
+            if ($evaluation->valid && $evaluation->result->after !== null && self::sameVersions($evaluation->result->after, $winner->result->after)) {
+                return $evaluation;
+            }
+        }
+
+        return $winner;
+    }
+
+    private static function sameVersions(LockSnapshot $a, LockSnapshot $b): bool
+    {
+        if ($a->names() !== $b->names()) {
+            return false;
+        }
+        foreach ($a->packages as $name => $package) {
+            $other = $b->get($name);
+            if ($other === null || $other->getVersion() !== $package->getVersion()) {
+                return false;
+            }
+        }
+
+        return true;
     }
 
     /**
@@ -152,7 +220,7 @@ final class Planner
      */
     private static function descentIsDominated(EvaluatedCandidate $start, array $evaluated, Ranker $ranker): bool
     {
-        $optimistic = [$start->candidate->changesRootConstraints() ? 1 : 0, 0, 2, 0, 0, 0, 0, 0];
+        $optimistic = [$start->candidate->changesRootConstraints() ? 1 : 0, 0, 0, 2, 0, 0, 0, 0, 0];
         foreach ($evaluated as $candidate) {
             if ($candidate === $start || !$candidate->valid) {
                 continue;
@@ -198,6 +266,69 @@ final class Planner
     }
 
     /**
+     * When Composer reports "X is locked to version … and an update of this package was not requested",
+     * X is a sibling that pins something the candidate needs to move (shopware/administration pinning
+     * shopware/core, drupal/core-dev pinning drupal/core). Add the named packages to the allow list and
+     * retry, a bounded number of times. Only parent-level strategies are widened; the vulnerable
+     * package itself is never added as a way around a failing single-package update.
+     *
+     * @param array<string, true> $groupKeys
+     * @param array<string, true> $baseline
+     *
+     * @param array<string, true> $seen      solver requests already evaluated for this finding (updated in place)
+     *
+     * @return list<EvaluatedCandidate> every retried candidate, in order
+     */
+    private function expandOnConflict(EvaluatedCandidate $failed, Finding $finding, array $groupKeys, LockSnapshot $lock, array $baseline, Matcher $matcher, ScratchWorkspace $workspace, array &$seen): array
+    {
+        $candidate = $failed->candidate;
+        if (!in_array($candidate->strategy, [Strategy::ParentUpdate, Strategy::RootConstraintWiden], true) || $candidate->transitiveMode !== Request::UPDATE_LISTED_WITH_TRANSITIVE_DEPS) {
+            return [];
+        }
+        $results = [];
+        $current = $failed;
+        for ($step = 0; $step < self::MAX_EXPANSIONS; ++$step) {
+            $blockers = self::lockedBlockers($current->result->output, $current->candidate->allowList, $finding->packageName);
+            if ($blockers === []) {
+                break;
+            }
+            $allowList = array_values(array_unique([...$current->candidate->allowList, ...$blockers]));
+            $widened = $current->candidate->withAllowList($allowList, sprintf('%s; also updating %s, which Composer reported as locked blockers', $current->candidate->description, implode(', ', $blockers)));
+            if (isset($seen[$widened->signature()])) {
+                break;
+            }
+            $seen[$widened->signature()] = true;
+            $current = $this->evaluate($widened, $finding, $groupKeys, $lock, $baseline, $matcher, $workspace);
+            $results[] = $current;
+            if ($current->result->status !== SolveStatus::Conflict) {
+                break;
+            }
+        }
+
+        return $results;
+    }
+
+    /**
+     * @param list<string> $alreadyListed
+     *
+     * @return list<string>
+     */
+    private static function lockedBlockers(string $solverOutput, array $alreadyListed, string $vulnerablePackage): array
+    {
+        if (preg_match_all('{- ([a-z0-9_.-]+/[a-z0-9_.-]+) is locked to version \S+ and an update of this package was not requested}i', $solverOutput, $m) === 0) {
+            return [];
+        }
+        $blockers = [];
+        foreach (array_unique(array_map('strtolower', $m[1])) as $name) {
+            if ($name !== $vulnerablePackage && !in_array($name, $alreadyListed, true)) {
+                $blockers[] = $name;
+            }
+        }
+
+        return $blockers;
+    }
+
+    /**
      * `composer update A -W -m` moves A to its newest allowed version. A human asking for the
      * smallest change wants the *lowest* version of A that still admits the fix. Probe downwards
      * with a temporary upper bound until the solve breaks, then pin the lowest working version.
@@ -210,9 +341,10 @@ final class Planner
     private function descendParent(EvaluatedCandidate $start, Finding $finding, array $groupKeys, LockSnapshot $lock, array $baseline, Matcher $matcher, ScratchWorkspace $workspace): array
     {
         $candidate = $start->candidate;
-        if (!in_array($candidate->strategy, [Strategy::ParentUpdate, Strategy::RootConstraintWiden], true) || count($candidate->allowList) !== 1 || $candidate->pins !== [] || $start->result->after === null) {
+        if (!in_array($candidate->strategy, [Strategy::ParentUpdate, Strategy::RootConstraintWiden], true) || $candidate->allowList === [] || $candidate->pins !== [] || $start->result->after === null) {
             return [];
         }
+        // Descend on the parent the candidate started from; siblings added by conflict expansion follow it.
         $parent = $candidate->allowList[0];
         if ($parent === $finding->packageName) {
             return [];

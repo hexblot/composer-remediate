@@ -139,6 +139,7 @@ final class JsonRenderer
             'total' => $diff->count(),
             'major_change' => $diff->hasMajorChange(),
             'downgrade' => $diff->hasDowngrade(),
+            'prerelease' => $diff->prereleaseTargets() !== [],
         ];
     }
 
