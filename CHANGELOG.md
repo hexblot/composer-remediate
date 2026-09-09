@@ -3,6 +3,32 @@
 All notable changes to this project are documented here. The format follows
 [Keep a Changelog](https://keepachangelog.com/en/1.1.0/); versions follow [Semantic Versioning](https://semver.org/).
 
+## [0.2.0] - 2026-09-09
+
+### Added
+
+- `composer remediate:db-build`: builds a local SQLite advisory database from Packagist's full
+  dump, OSV's Packagist archive and the FriendsOfPHP repository; records sharing an identifier are
+  merged, every source's range is kept, semantic disagreements are flagged, and a dataset hash
+  identifies the logical content. `--include` merges private advisories from a JSON file.
+- `composer remediate --database-location=<path|URL>`, `REMEDIATE_DATABASE` and
+  `extra.remediate.database` read advisories from such a database, also offline; URLs are cached.
+- `composer remediate:db-status` shows provenance, source record counts and the dataset hash.
+- A reference database published by this project as GitHub releases `db-YYYY-MM-DD.HH` (and the
+  `advisory-db-latest` pointer), refreshed hourly and released only when the dataset changes, with
+  sha256 and build-provenance attestation.
+- Report summary at the end of every format: findings count and one verified command that fixes all
+  findings, or how many of them it fixes.
+- Generated CLI reference page (`docs/cli-reference.md`), CI integration guide, coloured console
+  output, stored example reports per fixture.
+
+### Changed
+
+- `--offline` now also covers the advisory lookup; without a snapshot or database it exits 4 with a hint.
+- Development-only findings are listed after production ones.
+
+[0.2.0]: https://github.com/hexblot/composer-remediate/releases/tag/v0.2.0
+
 ## [0.1.0] - 2026-09-09
 
 First release. A Composer plugin (`composer remediate`) that finds the smallest Composer-verified
