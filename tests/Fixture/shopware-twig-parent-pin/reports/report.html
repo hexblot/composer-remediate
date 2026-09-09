@@ -1,0 +1,492 @@
+<!DOCTYPE html><html lang="en"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Composer Remediate — 2 findings</title>
+<style>:root{color-scheme:light dark;--bg:#fff;--fg:#1c1e21;--muted:#5f6b7a;--border:#d9dee5;--panel:#f6f8fa;--ok:#1a7f37;--bad:#b42318;--warn:#9a6700;--accent:#0f6b8a}
+@media(prefers-color-scheme:dark){:root{--bg:#0f1418;--fg:#e6edf3;--muted:#9aa7b4;--border:#2b3640;--panel:#161c22;--ok:#3fb950;--bad:#f0665b;--warn:#d4a72c;--accent:#58b8d8}}
+body{margin:0;background:var(--bg);color:var(--fg);font:15px/1.5 system-ui,-apple-system,Segoe UI,Roboto,sans-serif}
+header{padding:1.5rem 2rem;border-bottom:1px solid var(--border)}header h1{margin:0;font-size:1.4rem}.sub{margin:.25rem 0 0;color:var(--muted)}
+main{max-width:70rem;margin:0 auto;padding:1rem 2rem 3rem}
+section{margin:1.5rem 0}.finding{border:1px solid var(--border);border-radius:8px;padding:1rem 1.25rem;background:var(--panel)}
+h2{font-size:1.15rem;margin:.25rem 0 .5rem}h3{font-size:.95rem;margin:1rem 0 .35rem;color:var(--muted);text-transform:uppercase;letter-spacing:.04em}
+.version{font-weight:400;color:var(--muted)}.state{margin:0;color:var(--muted)}
+code{font:.9em ui-monospace,SFMono-Regular,Menlo,monospace;background:rgba(127,127,127,.12);padding:.1em .35em;border-radius:4px;word-break:break-all}
+pre{font:.85rem ui-monospace,SFMono-Regular,Menlo,monospace;background:rgba(127,127,127,.1);padding:.75rem 1rem;border-radius:6px;overflow-x:auto;margin:.25rem 0}
+pre.reason{white-space:pre-wrap;margin:0;background:none;padding:0}
+.command code{display:block;padding:.6rem .8rem;font-size:.95rem;border-left:4px solid var(--accent)}
+table{border-collapse:collapse;width:100%;font-size:.92rem}th,td{text-align:left;padding:.4rem .6rem;border-bottom:1px solid var(--border);vertical-align:top}th{color:var(--muted);font-weight:600}
+.badge{display:inline-block;font-size:.75rem;font-weight:600;padding:.1rem .5rem;border-radius:999px;border:1px solid currentColor;white-space:nowrap}
+.badge.ok{color:var(--ok)}.badge.none,.badge.rejected{color:var(--bad)}.badge.skipped,.badge.dev{color:var(--muted)}
+.badge.sev-critical,.badge.sev-high{color:var(--bad)}.badge.sev-medium{color:var(--warn)}.badge.sev-low{color:var(--muted)}
+.warning{border-left:4px solid var(--warn);padding:.5rem .8rem;background:rgba(212,167,44,.1)}.clean{color:var(--ok);font-weight:600}
+.none-box{border-left:4px solid var(--bad);padding:.5rem .8rem;background:rgba(180,35,24,.08)}
+.advisories{padding-left:1.2rem}.advisories li{margin:.4rem 0}
+details summary{cursor:pointer;color:var(--accent);margin:.5rem 0}
+.meta dl{display:grid;grid-template-columns:max-content 1fr;gap:.2rem 1rem;font-size:.85rem;color:var(--muted)}.meta dt{font-weight:600}.meta dd{margin:0;word-break:break-all}</style></head><body>
+<header><h1>Composer Remediate</h1><p class="sub">Composer Remediate — 2 findings in <code>shopware-twig-parent-pin</code></p></header>
+<main>
+<section><h2>Summary</h2><table class="summary"><thead><tr><th>Package</th><th>Advisories</th><th>Status</th><th>Recommended command</th></tr></thead><tbody><tr><td><a href="#finding-1">shopwarelabs/dompdf v1.0.3</a></td><td>CVE-2022-0085, CVE-2022-41343, CVE-2022-2400</td><td><span class="badge none">no verified fix</span></td><td>—</td></tr><tr><td><a href="#finding-2">twig/twig v3.3.10</a></td><td>CVE-2022-39261</td><td><span class="badge ok">verified</span></td><td><code>composer update shopware/storefront:6.4.15.2 shopware/recovery shopware/elasticsearch shopware/administration -W -m</code></td></tr></tbody></table></section>
+<section class="finding" id="finding-1">
+<h2>shopwarelabs/dompdf <span class="version">v1.0.3</span> <small>replaces dompdf/dompdf</small></h2>
+<p class="state">Transitive dependency.</p>
+<h3>Advisories</h3><ul class="advisories">
+<li><strong><a href="https://github.com/advisories/GHSA-pf6p-25r2-fx45" rel="noopener">CVE-2022-0085 <small>(PKSA-872h-8556-2chm)</small></a></strong> <span class="badge sev-medium">medium</span><br>Server-Side Request Forgery in dompdf/dompdf<br><small>affected versions: <code>&lt;2.0.0</code></small></li>
+<li><strong><a href="https://github.com/advisories/GHSA-6x28-7h8c-chx4" rel="noopener">CVE-2022-41343 <small>(PKSA-hbk6-2vfz-8f8n)</small></a></strong> <span class="badge sev-high">high</span><br>Remote file inclusion<br><small>affected versions: <code>&lt;2.0.1</code></small></li>
+<li><strong><a href="https://github.com/advisories/GHSA-5qj8-6xxj-hp9h" rel="noopener">CVE-2022-2400 <small>(PKSA-kj9c-tr41-t8mj)</small></a></strong> <span class="badge sev-medium">medium</span><br>Dompdf before v2.0.0 vulnerable to chroot check bypass<br><small>affected versions: <code>&lt;2.0.0</code></small></li>
+</ul>
+<h3>Introduced by</h3>
+<pre class="tree">root
+└── shopware/core 6.4.15.1
+    └── shopwarelabs/dompdf v1.0.3  (requires 1.0.3)
+
+root
+└── shopware/administration 6.4.15.1
+    └── shopware/core 6.4.15.1
+        └── shopwarelabs/dompdf v1.0.3  (requires 1.0.3)
+
+root
+└── shopware/elasticsearch 6.4.15.1
+    └── shopware/core 6.4.15.1
+        └── shopwarelabs/dompdf v1.0.3  (requires 1.0.3)
+
+root
+└── shopware/recovery 6.4.15.1
+    └── shopware/core 6.4.15.1
+        └── shopwarelabs/dompdf v1.0.3  (requires 1.0.3)
+
+root
+└── shopware/storefront 6.4.15.1
+    └── shopware/core 6.4.15.1
+        └── shopwarelabs/dompdf v1.0.3  (requires 1.0.3)</pre>
+<h3>Recommended remediation</h3><p class="none-box">No verified remediation found.</p>
+<details><summary>Other candidates (27)</summary><table class="candidates"><thead><tr><th>Outcome</th><th>Command</th><th>Detail</th></tr></thead><tbody>
+<tr><td><span class="badge rejected">rejected</span></td><td><code>composer update shopwarelabs/dompdf</code></td><td><pre class="reason">resolves, but shopwarelabs/dompdf ends at v1.0.3 which is still affected by PKSA-872h-8556-2chm, PKSA-hbk6-2vfz-8f8n, PKSA-kj9c-tr41-t8mj</pre></td></tr>
+<tr><td><span class="badge rejected">rejected</span></td><td><code>composer update shopwarelabs/dompdf -w -m --with &apos;shopwarelabs/dompdf:&gt;=2.0.1&apos;</code></td><td><pre class="reason">Composer could not resolve the dependencies: Your requirements could not be resolved to an installable set of packages.
+  Problem 1
+    - shopware/core is locked to version 6.4.15.1 and an update of this package was not requested.
+    - shopware/core 6.4.15.1 requires shopwarelabs/dompdf 1.0.3 -&gt; found shopwarelabs/dompdf[v1.0.3] but it conflicts with your temporary update constraint (shopwarelabs/dompdf:&gt;=2.0.1).
+  Problem 2
+    - shopware/storefront is locked to version 6.4.15.1 and an update of this package was not requested.
+    - shopware/core 6.4.15.1 requires shopwarelabs/dompdf 1.0.3 -&gt; found shopwarelabs/dompdf[v1.0.3] but it conflicts with your temporary update constraint (shopwarelabs/dompdf:&gt;=2.0.1).
+    - shopware/storefront 6.4.15.1 requires shopware/core v6.4.15.1 -&gt; satisfiable by shopware/core[6.4.15.1].
+Use the option --with-all-dependencies (-W) to allow upgrades, downgrades and removals for packages currently locked to specific versions.</pre></td></tr>
+<tr><td><span class="badge rejected">rejected</span></td><td><code>composer update shopware/core -W -m --with &apos;shopwarelabs/dompdf:&gt;=2.0.1&apos;</code></td><td><pre class="reason">Composer could not resolve the dependencies: Your requirements could not be resolved to an installable set of packages.
+  Problem 1
+    - Root composer.json requires shopware/core ~v6.4.0 -&gt; satisfiable by shopware/core[6.4.15.1, 6.4.15.2, 6.4.16.0].
+    - shopware/core 6.4.15.1 requires shopwarelabs/dompdf 1.0.3 -&gt; found shopwarelabs/dompdf[v1.0.3] but it conflicts with your temporary update constraint (shopwarelabs/dompdf:&gt;=2.0.1).
+  Problem 2
+    - shopware/storefront is locked to version 6.4.15.1 and an update of this package was not requested.
+    - shopware/core 6.4.15.1 requires shopwarelabs/dompdf 1.0.3 -&gt; found shopwarelabs/dompdf[v1.0.3] but it conflicts with your temporary update constraint (shopwarelabs/dompdf:&gt;=2.0.1).
+    - shopware/storefront 6.4.15.1 requires shopware/core v6.4.15.1 -&gt; satisfiable by shopware/core[6.4.15.1].</pre></td></tr>
+<tr><td><span class="badge rejected">rejected</span></td><td><code>composer update shopware/core shopware/storefront -W -m --with &apos;shopwarelabs/dompdf:&gt;=2.0.1&apos;</code></td><td><pre class="reason">Composer could not resolve the dependencies: Your requirements could not be resolved to an installable set of packages.
+  Problem 1
+    - Root composer.json requires shopware/core ~v6.4.0 -&gt; satisfiable by shopware/core[6.4.15.1, 6.4.15.2, 6.4.16.0].
+    - shopware/core 6.4.15.1 requires shopwarelabs/dompdf 1.0.3 -&gt; found shopwarelabs/dompdf[v1.0.3] but it conflicts with your temporary update constraint (shopwarelabs/dompdf:&gt;=2.0.1).
+  Problem 2
+    - shopware/recovery is locked to version 6.4.15.1 and an update of this package was not requested.
+    - shopware/core 6.4.15.1 requires shopwarelabs/dompdf 1.0.3 -&gt; found shopwarelabs/dompdf[v1.0.3] but it conflicts with your temporary update constraint (shopwarelabs/dompdf:&gt;=2.0.1).
+    - shopware/recovery 6.4.15.1 requires shopware/core v6.4.15.1 -&gt; satisfiable by shopware/core[6.4.15.1].</pre></td></tr>
+<tr><td><span class="badge rejected">rejected</span></td><td><code>composer update shopware/core shopware/storefront shopware/recovery -W -m --with &apos;shopwarelabs/dompdf:&gt;=2.0.1&apos;</code></td><td><pre class="reason">Composer could not resolve the dependencies: Your requirements could not be resolved to an installable set of packages.
+  Problem 1
+    - Root composer.json requires shopware/core ~v6.4.0 -&gt; satisfiable by shopware/core[6.4.15.1, 6.4.15.2, 6.4.16.0].
+    - shopware/core 6.4.15.1 requires shopwarelabs/dompdf 1.0.3 -&gt; found shopwarelabs/dompdf[v1.0.3] but it conflicts with your temporary update constraint (shopwarelabs/dompdf:&gt;=2.0.1).
+  Problem 2
+    - shopware/elasticsearch is locked to version 6.4.15.1 and an update of this package was not requested.
+    - shopware/core 6.4.15.1 requires shopwarelabs/dompdf 1.0.3 -&gt; found shopwarelabs/dompdf[v1.0.3] but it conflicts with your temporary update constraint (shopwarelabs/dompdf:&gt;=2.0.1).
+    - shopware/elasticsearch 6.4.15.1 requires shopware/core v6.4.15.1 -&gt; satisfiable by shopware/core[6.4.15.1].</pre></td></tr>
+<tr><td><span class="badge rejected">rejected</span></td><td><code>composer update shopware/core shopware/storefront shopware/recovery shopware/elasticsearch -W -m --with &apos;shopwarelabs/dompdf:&gt;=2.0.1&apos;</code></td><td><pre class="reason">Composer could not resolve the dependencies: Your requirements could not be resolved to an installable set of packages.
+  Problem 1
+    - Root composer.json requires shopware/core ~v6.4.0 -&gt; satisfiable by shopware/core[6.4.15.1, 6.4.15.2, 6.4.16.0].
+    - shopware/core 6.4.15.1 requires shopwarelabs/dompdf 1.0.3 -&gt; found shopwarelabs/dompdf[v1.0.3] but it conflicts with your temporary update constraint (shopwarelabs/dompdf:&gt;=2.0.1).
+  Problem 2
+    - shopware/administration is locked to version 6.4.15.1 and an update of this package was not requested.
+    - shopware/administration 6.4.15.1 requires shopware/core v6.4.15.1 -&gt; satisfiable by shopware/core[6.4.15.1].
+    - shopware/core 6.4.15.1 requires shopwarelabs/dompdf 1.0.3 -&gt; found shopwarelabs/dompdf[v1.0.3] but it conflicts with your temporary update constraint (shopwarelabs/dompdf:&gt;=2.0.1).</pre></td></tr>
+<tr><td><span class="badge rejected">rejected</span></td><td><code>composer update shopware/core shopware/storefront shopware/recovery shopware/elasticsearch shopware/administration -W -m --with &apos;shopwarelabs/dompdf:&gt;=2.0.1&apos;</code></td><td><pre class="reason">Composer could not resolve the dependencies: Your requirements could not be resolved to an installable set of packages.
+  Problem 1
+    - Root composer.json requires shopware/core ~v6.4.0 -&gt; satisfiable by shopware/core[6.4.15.1, 6.4.15.2, 6.4.16.0].
+    - shopware/core[6.4.15.1, ..., 6.4.16.0] require shopwarelabs/dompdf 1.0.3 -&gt; found shopwarelabs/dompdf[v1.0.3] but it conflicts with your temporary update constraint (shopwarelabs/dompdf:&gt;=2.0.1).</pre></td></tr>
+<tr><td><span class="badge rejected">rejected</span></td><td><code>composer update shopware/administration -W -m --with &apos;shopwarelabs/dompdf:&gt;=2.0.1&apos;</code></td><td><pre class="reason">Composer could not resolve the dependencies: Your requirements could not be resolved to an installable set of packages.
+  Problem 1
+    - Root composer.json requires shopware/core ~v6.4.0 -&gt; satisfiable by shopware/core[6.4.15.1, 6.4.15.2, 6.4.16.0].
+    - shopware/core 6.4.15.1 requires shopwarelabs/dompdf 1.0.3 -&gt; found shopwarelabs/dompdf[v1.0.3] but it conflicts with your temporary update constraint (shopwarelabs/dompdf:&gt;=2.0.1).
+  Problem 2
+    - shopware/storefront is locked to version 6.4.15.1 and an update of this package was not requested.
+    - shopware/core 6.4.15.1 requires shopwarelabs/dompdf 1.0.3 -&gt; found shopwarelabs/dompdf[v1.0.3] but it conflicts with your temporary update constraint (shopwarelabs/dompdf:&gt;=2.0.1).
+    - shopware/storefront 6.4.15.1 requires shopware/core v6.4.15.1 -&gt; satisfiable by shopware/core[6.4.15.1].</pre></td></tr>
+<tr><td><span class="badge rejected">rejected</span></td><td><code>composer update shopware/administration shopware/storefront -W -m --with &apos;shopwarelabs/dompdf:&gt;=2.0.1&apos;</code></td><td><pre class="reason">Composer could not resolve the dependencies: Your requirements could not be resolved to an installable set of packages.
+  Problem 1
+    - Root composer.json requires shopware/core ~v6.4.0 -&gt; satisfiable by shopware/core[6.4.15.1, 6.4.15.2, 6.4.16.0].
+    - shopware/core 6.4.15.1 requires shopwarelabs/dompdf 1.0.3 -&gt; found shopwarelabs/dompdf[v1.0.3] but it conflicts with your temporary update constraint (shopwarelabs/dompdf:&gt;=2.0.1).
+  Problem 2
+    - shopware/recovery is locked to version 6.4.15.1 and an update of this package was not requested.
+    - shopware/core 6.4.15.1 requires shopwarelabs/dompdf 1.0.3 -&gt; found shopwarelabs/dompdf[v1.0.3] but it conflicts with your temporary update constraint (shopwarelabs/dompdf:&gt;=2.0.1).
+    - shopware/recovery 6.4.15.1 requires shopware/core v6.4.15.1 -&gt; satisfiable by shopware/core[6.4.15.1].</pre></td></tr>
+<tr><td><span class="badge rejected">rejected</span></td><td><code>composer update shopware/administration shopware/storefront shopware/recovery -W -m --with &apos;shopwarelabs/dompdf:&gt;=2.0.1&apos;</code></td><td><pre class="reason">Composer could not resolve the dependencies: Your requirements could not be resolved to an installable set of packages.
+  Problem 1
+    - Root composer.json requires shopware/core ~v6.4.0 -&gt; satisfiable by shopware/core[6.4.15.1, 6.4.15.2, 6.4.16.0].
+    - shopware/core 6.4.15.1 requires shopwarelabs/dompdf 1.0.3 -&gt; found shopwarelabs/dompdf[v1.0.3] but it conflicts with your temporary update constraint (shopwarelabs/dompdf:&gt;=2.0.1).
+  Problem 2
+    - shopware/elasticsearch is locked to version 6.4.15.1 and an update of this package was not requested.
+    - shopware/core 6.4.15.1 requires shopwarelabs/dompdf 1.0.3 -&gt; found shopwarelabs/dompdf[v1.0.3] but it conflicts with your temporary update constraint (shopwarelabs/dompdf:&gt;=2.0.1).
+    - shopware/elasticsearch 6.4.15.1 requires shopware/core v6.4.15.1 -&gt; satisfiable by shopware/core[6.4.15.1].</pre></td></tr>
+<tr><td><span class="badge rejected">rejected</span></td><td><code>composer update shopware/administration shopware/storefront shopware/recovery shopware/elasticsearch -W -m --with &apos;shopwarelabs/dompdf:&gt;=2.0.1&apos;</code></td><td><pre class="reason">Composer could not resolve the dependencies: Your requirements could not be resolved to an installable set of packages.
+  Problem 1
+    - Root composer.json requires shopware/core ~v6.4.0 -&gt; satisfiable by shopware/core[6.4.15.1, 6.4.15.2, 6.4.16.0].
+    - shopware/core[6.4.15.1, ..., 6.4.16.0] require shopwarelabs/dompdf 1.0.3 -&gt; found shopwarelabs/dompdf[v1.0.3] but it conflicts with your temporary update constraint (shopwarelabs/dompdf:&gt;=2.0.1).</pre></td></tr>
+<tr><td><span class="badge rejected">rejected</span></td><td><code>composer update shopware/elasticsearch -W -m --with &apos;shopwarelabs/dompdf:&gt;=2.0.1&apos;</code></td><td><pre class="reason">Composer could not resolve the dependencies: Your requirements could not be resolved to an installable set of packages.
+  Problem 1
+    - Root composer.json requires shopware/core ~v6.4.0 -&gt; satisfiable by shopware/core[6.4.15.1, 6.4.15.2, 6.4.16.0].
+    - shopware/core 6.4.15.1 requires shopwarelabs/dompdf 1.0.3 -&gt; found shopwarelabs/dompdf[v1.0.3] but it conflicts with your temporary update constraint (shopwarelabs/dompdf:&gt;=2.0.1).
+  Problem 2
+    - shopware/storefront is locked to version 6.4.15.1 and an update of this package was not requested.
+    - shopware/core 6.4.15.1 requires shopwarelabs/dompdf 1.0.3 -&gt; found shopwarelabs/dompdf[v1.0.3] but it conflicts with your temporary update constraint (shopwarelabs/dompdf:&gt;=2.0.1).
+    - shopware/storefront 6.4.15.1 requires shopware/core v6.4.15.1 -&gt; satisfiable by shopware/core[6.4.15.1].</pre></td></tr>
+<tr><td><span class="badge rejected">rejected</span></td><td><code>composer update shopware/elasticsearch shopware/storefront -W -m --with &apos;shopwarelabs/dompdf:&gt;=2.0.1&apos;</code></td><td><pre class="reason">Composer could not resolve the dependencies: Your requirements could not be resolved to an installable set of packages.
+  Problem 1
+    - Root composer.json requires shopware/core ~v6.4.0 -&gt; satisfiable by shopware/core[6.4.15.1, 6.4.15.2, 6.4.16.0].
+    - shopware/core 6.4.15.1 requires shopwarelabs/dompdf 1.0.3 -&gt; found shopwarelabs/dompdf[v1.0.3] but it conflicts with your temporary update constraint (shopwarelabs/dompdf:&gt;=2.0.1).
+  Problem 2
+    - shopware/recovery is locked to version 6.4.15.1 and an update of this package was not requested.
+    - shopware/core 6.4.15.1 requires shopwarelabs/dompdf 1.0.3 -&gt; found shopwarelabs/dompdf[v1.0.3] but it conflicts with your temporary update constraint (shopwarelabs/dompdf:&gt;=2.0.1).
+    - shopware/recovery 6.4.15.1 requires shopware/core v6.4.15.1 -&gt; satisfiable by shopware/core[6.4.15.1].</pre></td></tr>
+<tr><td><span class="badge rejected">rejected</span></td><td><code>composer update shopware/elasticsearch shopware/storefront shopware/recovery -W -m --with &apos;shopwarelabs/dompdf:&gt;=2.0.1&apos;</code></td><td><pre class="reason">Composer could not resolve the dependencies: Your requirements could not be resolved to an installable set of packages.
+  Problem 1
+    - Root composer.json requires shopware/core ~v6.4.0 -&gt; satisfiable by shopware/core[6.4.15.1, 6.4.15.2, 6.4.16.0].
+    - shopware/core 6.4.15.1 requires shopwarelabs/dompdf 1.0.3 -&gt; found shopwarelabs/dompdf[v1.0.3] but it conflicts with your temporary update constraint (shopwarelabs/dompdf:&gt;=2.0.1).
+  Problem 2
+    - shopware/administration is locked to version 6.4.15.1 and an update of this package was not requested.
+    - shopware/administration 6.4.15.1 requires shopware/core v6.4.15.1 -&gt; satisfiable by shopware/core[6.4.15.1].
+    - shopware/core 6.4.15.1 requires shopwarelabs/dompdf 1.0.3 -&gt; found shopwarelabs/dompdf[v1.0.3] but it conflicts with your temporary update constraint (shopwarelabs/dompdf:&gt;=2.0.1).</pre></td></tr>
+<tr><td><span class="badge rejected">rejected</span></td><td><code>composer update shopware/recovery -W -m --with &apos;shopwarelabs/dompdf:&gt;=2.0.1&apos;</code></td><td><pre class="reason">Composer could not resolve the dependencies: Your requirements could not be resolved to an installable set of packages.
+  Problem 1
+    - Root composer.json requires shopware/core ~v6.4.0 -&gt; satisfiable by shopware/core[6.4.15.1, 6.4.15.2, 6.4.16.0].
+    - shopware/core 6.4.15.1 requires shopwarelabs/dompdf 1.0.3 -&gt; found shopwarelabs/dompdf[v1.0.3] but it conflicts with your temporary update constraint (shopwarelabs/dompdf:&gt;=2.0.1).
+  Problem 2
+    - shopware/storefront is locked to version 6.4.15.1 and an update of this package was not requested.
+    - shopware/core 6.4.15.1 requires shopwarelabs/dompdf 1.0.3 -&gt; found shopwarelabs/dompdf[v1.0.3] but it conflicts with your temporary update constraint (shopwarelabs/dompdf:&gt;=2.0.1).
+    - shopware/storefront 6.4.15.1 requires shopware/core v6.4.15.1 -&gt; satisfiable by shopware/core[6.4.15.1].</pre></td></tr>
+<tr><td><span class="badge rejected">rejected</span></td><td><code>composer update shopware/recovery shopware/storefront -W -m --with &apos;shopwarelabs/dompdf:&gt;=2.0.1&apos;</code></td><td><pre class="reason">Composer could not resolve the dependencies: Your requirements could not be resolved to an installable set of packages.
+  Problem 1
+    - Root composer.json requires shopware/core ~v6.4.0 -&gt; satisfiable by shopware/core[6.4.15.1, 6.4.15.2, 6.4.16.0].
+    - shopware/core 6.4.15.1 requires shopwarelabs/dompdf 1.0.3 -&gt; found shopwarelabs/dompdf[v1.0.3] but it conflicts with your temporary update constraint (shopwarelabs/dompdf:&gt;=2.0.1).
+  Problem 2
+    - shopware/elasticsearch is locked to version 6.4.15.1 and an update of this package was not requested.
+    - shopware/core 6.4.15.1 requires shopwarelabs/dompdf 1.0.3 -&gt; found shopwarelabs/dompdf[v1.0.3] but it conflicts with your temporary update constraint (shopwarelabs/dompdf:&gt;=2.0.1).
+    - shopware/elasticsearch 6.4.15.1 requires shopware/core v6.4.15.1 -&gt; satisfiable by shopware/core[6.4.15.1].</pre></td></tr>
+<tr><td><span class="badge rejected">rejected</span></td><td><code>composer update shopware/storefront -W -m --with &apos;shopwarelabs/dompdf:&gt;=2.0.1&apos;</code></td><td><pre class="reason">Composer could not resolve the dependencies: Your requirements could not be resolved to an installable set of packages.
+  Problem 1
+    - Root composer.json requires shopware/core ~v6.4.0 -&gt; satisfiable by shopware/core[6.4.15.1, 6.4.15.2, 6.4.16.0].
+    - shopware/core 6.4.15.1 requires shopwarelabs/dompdf 1.0.3 -&gt; found shopwarelabs/dompdf[v1.0.3] but it conflicts with your temporary update constraint (shopwarelabs/dompdf:&gt;=2.0.1).
+  Problem 2
+    - shopware/recovery is locked to version 6.4.15.1 and an update of this package was not requested.
+    - shopware/core 6.4.15.1 requires shopwarelabs/dompdf 1.0.3 -&gt; found shopwarelabs/dompdf[v1.0.3] but it conflicts with your temporary update constraint (shopwarelabs/dompdf:&gt;=2.0.1).
+    - shopware/recovery 6.4.15.1 requires shopware/core v6.4.15.1 -&gt; satisfiable by shopware/core[6.4.15.1].</pre></td></tr>
+<tr><td><span class="badge rejected">rejected</span></td><td><code>composer require --no-update shopware/core:^6.5 &amp;&amp; composer update shopware/core -W -m --with &apos;shopwarelabs/dompdf:&gt;=2.0.1&apos;</code></td><td><pre class="reason">Composer could not resolve the dependencies: Your requirements could not be resolved to an installable set of packages.
+  Problem 1
+    - Root composer.json requires shopware/core ^6.5, found shopware/core[6.4.15.1, 6.4.15.2, 6.4.16.0] but it does not match the constraint.
+  Problem 2
+    - shopware/administration is locked to version 6.4.15.1 and an update of this package was not requested.
+    - shopware/administration 6.4.15.1 requires shopware/core v6.4.15.1 -&gt; found shopware/core[6.4.15.1] but it conflicts with your root composer.json require (^6.5).
+  Problem 3
+    - shopware/elasticsearch is locked to version 6.4.15.1 and an update of this package was not requested.
+    - shopware/elasticsearch 6.4.15.1 requires shopware/core v6.4.15.1 -&gt; found shopware/core[6.4.15.1] but it conflicts with your root composer.json require (^6.5).
+  Problem 4
+    - shopware/recovery is locked to version 6.4.15.1 and an update of this package was not requested.
+    - shopware/recovery 6.4.15.1 requires shopware/core v6.4.15.1 -&gt; found shopware/core[6.4.15.1] but it conflicts with your root composer.json require (^6.5).
+  Problem 5
+    - shopware/storefront is locked to version 6.4.15.1 and an update of this package was not requested.
+    - shopware/storefront 6.4.15.1 requires shopware/core v6.4.15.1 -&gt; found shopware/core[6.4.15.1] but it conflicts with your root composer.json require (^6.5).</pre></td></tr>
+<tr><td><span class="badge rejected">rejected</span></td><td><code>composer require --no-update shopware/core:^6.5 &amp;&amp; composer update shopware/core shopware/administration shopware/elasticsearch shopware/recovery shopware/storefront -W -m --with &apos;shopwarelabs/dompdf:&gt;=2.0.1&apos;</code></td><td><pre class="reason">Composer could not resolve the dependencies: Your requirements could not be resolved to an installable set of packages.
+  Problem 1
+    - Root composer.json requires shopware/core ^6.5, found shopware/core[6.4.15.1, 6.4.15.2, 6.4.16.0] but it does not match the constraint.
+  Problem 2
+    - Root composer.json requires shopware/administration ~v6.4.0 -&gt; satisfiable by shopware/administration[6.4.15.1, 6.4.15.2, 6.4.16.0].
+    - shopware/administration 6.4.15.1 requires shopware/core v6.4.15.1 -&gt; found shopware/core[6.4.15.1] but it conflicts with your root composer.json require (^6.5).
+    - shopware/administration 6.4.15.2 requires shopware/core v6.4.15.2 -&gt; found shopware/core[6.4.15.2] but it conflicts with your root composer.json require (^6.5).
+    - shopware/administration 6.4.16.0 requires shopware/core v6.4.16.0 -&gt; found shopware/core[6.4.16.0] but it conflicts with your root composer.json require (^6.5).</pre></td></tr>
+<tr><td><span class="badge rejected">rejected</span></td><td><code>composer require --no-update shopware/administration:^6.5 &amp;&amp; composer update shopware/administration -W -m --with &apos;shopwarelabs/dompdf:&gt;=2.0.1&apos;</code></td><td><pre class="reason">Composer could not resolve the dependencies: Your requirements could not be resolved to an installable set of packages.
+  Problem 1
+    - Root composer.json requires shopware/administration ^6.5, found shopware/administration[6.4.15.1, 6.4.15.2, 6.4.16.0] but it does not match the constraint.
+  Problem 2
+    - shopware/core is locked to version 6.4.15.1 and an update of this package was not requested.
+    - shopware/core 6.4.15.1 requires shopwarelabs/dompdf 1.0.3 -&gt; found shopwarelabs/dompdf[v1.0.3] but it conflicts with your temporary update constraint (shopwarelabs/dompdf:&gt;=2.0.1).
+  Problem 3
+    - shopware/storefront is locked to version 6.4.15.1 and an update of this package was not requested.
+    - shopware/core 6.4.15.1 requires shopwarelabs/dompdf 1.0.3 -&gt; found shopwarelabs/dompdf[v1.0.3] but it conflicts with your temporary update constraint (shopwarelabs/dompdf:&gt;=2.0.1).
+    - shopware/storefront 6.4.15.1 requires shopware/core v6.4.15.1 -&gt; satisfiable by shopware/core[6.4.15.1].</pre></td></tr>
+<tr><td><span class="badge rejected">rejected</span></td><td><code>composer require --no-update shopware/administration:^6.5 &amp;&amp; composer update shopware/administration shopware/core shopware/storefront -W -m --with &apos;shopwarelabs/dompdf:&gt;=2.0.1&apos;</code></td><td><pre class="reason">Composer could not resolve the dependencies: Your requirements could not be resolved to an installable set of packages.
+  Problem 1
+    - Root composer.json requires shopware/administration ^6.5, found shopware/administration[6.4.15.1, 6.4.15.2, 6.4.16.0] but it does not match the constraint.
+  Problem 2
+    - Root composer.json requires shopware/core ~v6.4.0 -&gt; satisfiable by shopware/core[6.4.15.1, 6.4.15.2, 6.4.16.0].
+    - shopware/core 6.4.15.1 requires shopwarelabs/dompdf 1.0.3 -&gt; found shopwarelabs/dompdf[v1.0.3] but it conflicts with your temporary update constraint (shopwarelabs/dompdf:&gt;=2.0.1).
+  Problem 3
+    - shopware/recovery is locked to version 6.4.15.1 and an update of this package was not requested.
+    - shopware/core 6.4.15.1 requires shopwarelabs/dompdf 1.0.3 -&gt; found shopwarelabs/dompdf[v1.0.3] but it conflicts with your temporary update constraint (shopwarelabs/dompdf:&gt;=2.0.1).
+    - shopware/recovery 6.4.15.1 requires shopware/core v6.4.15.1 -&gt; satisfiable by shopware/core[6.4.15.1].</pre></td></tr>
+<tr><td><span class="badge rejected">rejected</span></td><td><code>composer require --no-update shopware/administration:^6.5 &amp;&amp; composer update shopware/administration shopware/core shopware/storefront shopware/recovery -W -m --with &apos;shopwarelabs/dompdf:&gt;=2.0.1&apos;</code></td><td><pre class="reason">Composer could not resolve the dependencies: Your requirements could not be resolved to an installable set of packages.
+  Problem 1
+    - Root composer.json requires shopware/administration ^6.5, found shopware/administration[6.4.15.1, 6.4.15.2, 6.4.16.0] but it does not match the constraint.
+  Problem 2
+    - Root composer.json requires shopware/core ~v6.4.0 -&gt; satisfiable by shopware/core[6.4.15.1, 6.4.15.2, 6.4.16.0].
+    - shopware/core 6.4.15.1 requires shopwarelabs/dompdf 1.0.3 -&gt; found shopwarelabs/dompdf[v1.0.3] but it conflicts with your temporary update constraint (shopwarelabs/dompdf:&gt;=2.0.1).
+  Problem 3
+    - shopware/elasticsearch is locked to version 6.4.15.1 and an update of this package was not requested.
+    - shopware/core 6.4.15.1 requires shopwarelabs/dompdf 1.0.3 -&gt; found shopwarelabs/dompdf[v1.0.3] but it conflicts with your temporary update constraint (shopwarelabs/dompdf:&gt;=2.0.1).
+    - shopware/elasticsearch 6.4.15.1 requires shopware/core v6.4.15.1 -&gt; satisfiable by shopware/core[6.4.15.1].</pre></td></tr>
+<tr><td><span class="badge rejected">rejected</span></td><td><code>composer require --no-update shopware/administration:^6.5 &amp;&amp; composer update shopware/administration shopware/core shopware/storefront shopware/recovery shopware/elasticsearch -W -m --with &apos;shopwarelabs/dompdf:&gt;=2.0.1&apos;</code></td><td><pre class="reason">Composer could not resolve the dependencies: Your requirements could not be resolved to an installable set of packages.
+  Problem 1
+    - Root composer.json requires shopware/administration ^6.5, found shopware/administration[6.4.15.1, 6.4.15.2, 6.4.16.0] but it does not match the constraint.
+  Problem 2
+    - Root composer.json requires shopware/core ~v6.4.0 -&gt; satisfiable by shopware/core[6.4.15.1, 6.4.15.2, 6.4.16.0].
+    - shopware/core[6.4.15.1, ..., 6.4.16.0] require shopwarelabs/dompdf 1.0.3 -&gt; found shopwarelabs/dompdf[v1.0.3] but it conflicts with your temporary update constraint (shopwarelabs/dompdf:&gt;=2.0.1).</pre></td></tr>
+<tr><td><span class="badge rejected">rejected</span></td><td><code>composer require --no-update shopware/elasticsearch:^6.5 &amp;&amp; composer update shopware/elasticsearch -W -m --with &apos;shopwarelabs/dompdf:&gt;=2.0.1&apos;</code></td><td><pre class="reason">Composer could not resolve the dependencies: Your requirements could not be resolved to an installable set of packages.
+  Problem 1
+    - Root composer.json requires shopware/elasticsearch ^6.5, found shopware/elasticsearch[6.4.15.1, 6.4.15.2, 6.4.16.0] but it does not match the constraint.
+  Problem 2
+    - shopware/core is locked to version 6.4.15.1 and an update of this package was not requested.
+    - shopware/core 6.4.15.1 requires shopwarelabs/dompdf 1.0.3 -&gt; found shopwarelabs/dompdf[v1.0.3] but it conflicts with your temporary update constraint (shopwarelabs/dompdf:&gt;=2.0.1).
+  Problem 3
+    - shopware/storefront is locked to version 6.4.15.1 and an update of this package was not requested.
+    - shopware/core 6.4.15.1 requires shopwarelabs/dompdf 1.0.3 -&gt; found shopwarelabs/dompdf[v1.0.3] but it conflicts with your temporary update constraint (shopwarelabs/dompdf:&gt;=2.0.1).
+    - shopware/storefront 6.4.15.1 requires shopware/core v6.4.15.1 -&gt; satisfiable by shopware/core[6.4.15.1].</pre></td></tr>
+<tr><td><span class="badge rejected">rejected</span></td><td><code>composer require --no-update shopware/elasticsearch:^6.5 &amp;&amp; composer update shopware/elasticsearch shopware/core shopware/storefront -W -m --with &apos;shopwarelabs/dompdf:&gt;=2.0.1&apos;</code></td><td><pre class="reason">Composer could not resolve the dependencies: Your requirements could not be resolved to an installable set of packages.
+  Problem 1
+    - Root composer.json requires shopware/elasticsearch ^6.5, found shopware/elasticsearch[6.4.15.1, 6.4.15.2, 6.4.16.0] but it does not match the constraint.
+  Problem 2
+    - Root composer.json requires shopware/core ~v6.4.0 -&gt; satisfiable by shopware/core[6.4.15.1, 6.4.15.2, 6.4.16.0].
+    - shopware/core 6.4.15.1 requires shopwarelabs/dompdf 1.0.3 -&gt; found shopwarelabs/dompdf[v1.0.3] but it conflicts with your temporary update constraint (shopwarelabs/dompdf:&gt;=2.0.1).
+  Problem 3
+    - shopware/recovery is locked to version 6.4.15.1 and an update of this package was not requested.
+    - shopware/core 6.4.15.1 requires shopwarelabs/dompdf 1.0.3 -&gt; found shopwarelabs/dompdf[v1.0.3] but it conflicts with your temporary update constraint (shopwarelabs/dompdf:&gt;=2.0.1).
+    - shopware/recovery 6.4.15.1 requires shopware/core v6.4.15.1 -&gt; satisfiable by shopware/core[6.4.15.1].</pre></td></tr>
+<tr><td><span class="badge rejected">rejected</span></td><td><code>composer require --no-update shopware/elasticsearch:^6.5 &amp;&amp; composer update shopware/elasticsearch shopware/core shopware/storefront shopware/recovery -W -m --with &apos;shopwarelabs/dompdf:&gt;=2.0.1&apos;</code></td><td><pre class="reason">Composer could not resolve the dependencies: Your requirements could not be resolved to an installable set of packages.
+  Problem 1
+    - Root composer.json requires shopware/elasticsearch ^6.5, found shopware/elasticsearch[6.4.15.1, 6.4.15.2, 6.4.16.0] but it does not match the constraint.
+  Problem 2
+    - Root composer.json requires shopware/core ~v6.4.0 -&gt; satisfiable by shopware/core[6.4.15.1, 6.4.15.2, 6.4.16.0].
+    - shopware/core 6.4.15.1 requires shopwarelabs/dompdf 1.0.3 -&gt; found shopwarelabs/dompdf[v1.0.3] but it conflicts with your temporary update constraint (shopwarelabs/dompdf:&gt;=2.0.1).
+  Problem 3
+    - shopware/administration is locked to version 6.4.15.1 and an update of this package was not requested.
+    - shopware/administration 6.4.15.1 requires shopware/core v6.4.15.1 -&gt; satisfiable by shopware/core[6.4.15.1].
+    - shopware/core 6.4.15.1 requires shopwarelabs/dompdf 1.0.3 -&gt; found shopwarelabs/dompdf[v1.0.3] but it conflicts with your temporary update constraint (shopwarelabs/dompdf:&gt;=2.0.1).</pre></td></tr>
+<tr><td><span class="badge rejected">rejected</span></td><td><code>composer require --no-update shopware/elasticsearch:^6.5 &amp;&amp; composer update shopware/elasticsearch shopware/core shopware/storefront shopware/recovery shopware/administration -W -m --with &apos;shopwarelabs/dompdf:&gt;=2.0.1&apos;</code></td><td><pre class="reason">Composer could not resolve the dependencies: Your requirements could not be resolved to an installable set of packages.
+  Problem 1
+    - Root composer.json requires shopware/elasticsearch ^6.5, found shopware/elasticsearch[6.4.15.1, 6.4.15.2, 6.4.16.0] but it does not match the constraint.
+  Problem 2
+    - Root composer.json requires shopware/core ~v6.4.0 -&gt; satisfiable by shopware/core[6.4.15.1, 6.4.15.2, 6.4.16.0].
+    - shopware/core[6.4.15.1, ..., 6.4.16.0] require shopwarelabs/dompdf 1.0.3 -&gt; found shopwarelabs/dompdf[v1.0.3] but it conflicts with your temporary update constraint (shopwarelabs/dompdf:&gt;=2.0.1).</pre></td></tr>
+</tbody></table></details>
+</section>
+<section class="finding" id="finding-2">
+<h2>twig/twig <span class="version">v3.3.10</span></h2>
+<p class="state">Transitive dependency.</p>
+<h3>Advisories</h3><ul class="advisories">
+<li><strong><a href="https://symfony.com/blog/twig-security-release-possibility-to-load-a-template-outside-a-configured-directory-when-using-the-filesystem-loader" rel="noopener">CVE-2022-39261 <small>(PKSA-n7sg-8f52-pqtf)</small></a></strong> <span class="badge sev-high">high</span><br>Possibility to load a template outside a configured directory when using the filesystem loader<br><small>affected versions: <code>&gt;=1.0.0,&lt;1.44.7|&gt;=2.0.0,&lt;2.15.3|&gt;=3.0.0,&lt;3.4.3</code></small></li>
+</ul>
+<h3>Introduced by</h3>
+<pre class="tree">root
+└── shopware/core 6.4.15.1
+    └── twig/twig v3.3.10  (requires ~3.3.8)
+
+root
+└── shopware/administration 6.4.15.1
+    └── shopware/core 6.4.15.1
+        └── twig/twig v3.3.10  (requires ~3.3.8)
+
+root
+└── shopware/elasticsearch 6.4.15.1
+    └── shopware/core 6.4.15.1
+        └── twig/twig v3.3.10  (requires ~3.3.8)
+
+root
+└── shopware/recovery 6.4.15.1
+    └── shopware/core 6.4.15.1
+        └── twig/twig v3.3.10  (requires ~3.3.8)
+
+root
+└── shopware/storefront 6.4.15.1
+    └── shopware/core 6.4.15.1
+        └── twig/twig v3.3.10  (requires ~3.3.8)</pre>
+<p><small>… and 41 more paths</small></p>
+<h3>Recommended remediation</h3>
+<p class="command"><code>composer update shopware/storefront:6.4.15.2 shopware/recovery shopware/elasticsearch shopware/administration -W -m</code></p>
+<p class="validation"><span class="badge ok">Composer validation: PASS</span> 6 packages changed, 0 added, 0 removed, 0 root constraints changed.</p>
+<details open><summary>Expected changes (6)</summary><table class="changes"><thead><tr><th>Package</th><th>From</th><th>To</th><th>Kind</th></tr></thead><tbody>
+<tr><td>shopware/administration</td><td>6.4.15.1</td><td>6.4.15.2</td><td>upgraded, patch</td></tr>
+<tr><td>shopware/core</td><td>6.4.15.1</td><td>6.4.15.2</td><td>upgraded, patch</td></tr>
+<tr><td>shopware/elasticsearch</td><td>6.4.15.1</td><td>6.4.15.2</td><td>upgraded, patch</td></tr>
+<tr><td>shopware/recovery</td><td>6.4.15.1</td><td>6.4.15.2</td><td>upgraded, patch</td></tr>
+<tr><td>shopware/storefront</td><td>6.4.15.1</td><td>6.4.15.2</td><td>upgraded, patch</td></tr>
+<tr><td>twig/twig</td><td>v3.3.10</td><td>v3.4.3</td><td>upgraded, minor</td></tr>
+</tbody></table></details>
+<details><summary>Other candidates (22)</summary><table class="candidates"><thead><tr><th>Outcome</th><th>Command</th><th>Detail</th></tr></thead><tbody>
+<tr><td><span class="badge ok">valid, rank 2</span></td><td><code>composer update shopware/storefront shopware/recovery shopware/elasticsearch shopware/administration -W -m --with &apos;twig/twig:&gt;=3.4.3&apos;</code></td><td>6 changes</td></tr>
+<tr><td><span class="badge ok">valid, rank 3</span></td><td><code>composer update shopware/core:6.4.15.2 shopware/storefront symfony/web-profiler-bundle shopware/recovery shopware/elasticsearch shopware/administration -W -m --with &apos;twig/twig:&gt;=3.4.3&apos;</code></td><td>7 changes</td></tr>
+<tr><td><span class="badge ok">valid, rank 4</span></td><td><code>composer update shopware/administration:6.4.15.2 shopware/storefront symfony/web-profiler-bundle shopware/recovery shopware/elasticsearch -W -m --with &apos;twig/twig:&gt;=3.4.3&apos;</code></td><td>7 changes</td></tr>
+<tr><td><span class="badge ok">valid, rank 5</span></td><td><code>composer update shopware/core shopware/storefront symfony/web-profiler-bundle shopware/recovery shopware/elasticsearch shopware/administration -W -m --with &apos;twig/twig:&gt;=3.4.3&apos;</code></td><td>7 changes</td></tr>
+<tr><td><span class="badge ok">valid, rank 6</span></td><td><code>composer update shopware/administration shopware/storefront symfony/web-profiler-bundle shopware/recovery shopware/elasticsearch -W -m --with &apos;twig/twig:&gt;=3.4.3&apos;</code></td><td>7 changes</td></tr>
+<tr><td><span class="badge rejected">rejected</span></td><td><code>composer update twig/twig</code></td><td><pre class="reason">resolves, but twig/twig ends at v3.3.10 which is still affected by PKSA-n7sg-8f52-pqtf</pre></td></tr>
+<tr><td><span class="badge rejected">rejected</span></td><td><code>composer update twig/twig -w -m --with &apos;twig/twig:&gt;=3.4.3&apos;</code></td><td><pre class="reason">Composer could not resolve the dependencies: Your requirements could not be resolved to an installable set of packages.
+  Problem 1
+    - shopware/core is locked to version 6.4.15.1 and an update of this package was not requested.
+    - shopware/core 6.4.15.1 requires twig/twig ~3.3.8 -&gt; found twig/twig[v3.3.10] but it conflicts with your temporary update constraint (twig/twig:&gt;=3.4.3).
+  Problem 2
+    - shopware/storefront is locked to version 6.4.15.1 and an update of this package was not requested.
+    - shopware/storefront 6.4.15.1 requires twig/twig ~3.3.8 -&gt; found twig/twig[v3.3.10] but it conflicts with your temporary update constraint (twig/twig:&gt;=3.4.3).
+  Problem 3
+    - symfony/web-profiler-bundle is locked to version v5.4.10 and an update of this package was not requested.
+    - symfony/web-profiler-bundle v5.4.10 requires twig/twig ^2.13|^3.0.4 -&gt; found twig/twig[v3.3.10, ..., v3.4.3] but these were not loaded, likely because it conflicts with another require.
+  Problem 4
+    - shopware/recovery is locked to version 6.4.15.1 and an update of this package was not requested.
+    - shopware/core 6.4.15.1 requires twig/twig ~3.3.8 -&gt; found twig/twig[v3.3.10] but it conflicts with your temporary update constraint (twig/twig:&gt;=3.4.3).
+    - shopware/recovery 6.4.15.1 requires shopware/core v6.4.15.1 -&gt; satisfiable by shopware/core[6.4.15.1].
+Use the option --with-all-dependencies (-W) to allow upgrades, downgrades and removals for packages currently locked to specific versions.</pre></td></tr>
+<tr><td><span class="badge rejected">rejected</span></td><td><code>composer update shopware/core -W -m --with &apos;twig/twig:&gt;=3.4.3&apos;</code></td><td><pre class="reason">Composer could not resolve the dependencies: Your requirements could not be resolved to an installable set of packages.
+  Problem 1
+    - Root composer.json requires shopware/core ~v6.4.0 -&gt; satisfiable by shopware/core[6.4.15.1, 6.4.15.2, 6.4.16.0].
+    - shopware/core 6.4.15.1 requires twig/twig ~3.3.8 -&gt; found twig/twig[v3.3.10] but it conflicts with your temporary update constraint (twig/twig:&gt;=3.4.3).
+  Problem 2
+    - shopware/storefront is locked to version 6.4.15.1 and an update of this package was not requested.
+    - shopware/storefront 6.4.15.1 requires twig/twig ~3.3.8 -&gt; found twig/twig[v3.3.10] but it conflicts with your temporary update constraint (twig/twig:&gt;=3.4.3).
+  Problem 3
+    - symfony/web-profiler-bundle is locked to version v5.4.10 and an update of this package was not requested.
+    - symfony/web-profiler-bundle v5.4.10 requires twig/twig ^2.13|^3.0.4 -&gt; found twig/twig[v3.3.10, ..., v3.4.3] but these were not loaded, likely because it conflicts with another require.
+  Problem 4
+    - shopware/recovery is locked to version 6.4.15.1 and an update of this package was not requested.
+    - shopware/core 6.4.15.1 requires twig/twig ~3.3.8 -&gt; found twig/twig[v3.3.10] but it conflicts with your temporary update constraint (twig/twig:&gt;=3.4.3).
+    - shopware/recovery 6.4.15.1 requires shopware/core v6.4.15.1 -&gt; satisfiable by shopware/core[6.4.15.1].</pre></td></tr>
+<tr><td><span class="badge rejected">rejected</span></td><td><code>composer update shopware/core shopware/storefront symfony/web-profiler-bundle shopware/recovery -W -m --with &apos;twig/twig:&gt;=3.4.3&apos;</code></td><td><pre class="reason">Composer could not resolve the dependencies: Your requirements could not be resolved to an installable set of packages.
+  Problem 1
+    - Root composer.json requires shopware/core ~v6.4.0 -&gt; satisfiable by shopware/core[6.4.15.1, 6.4.15.2, 6.4.16.0].
+    - shopware/core 6.4.15.1 requires twig/twig ~3.3.8 -&gt; found twig/twig[v3.3.10] but it conflicts with your temporary update constraint (twig/twig:&gt;=3.4.3).
+  Problem 2
+    - shopware/elasticsearch is locked to version 6.4.15.1 and an update of this package was not requested.
+    - shopware/core 6.4.15.1 requires twig/twig ~3.3.8 -&gt; found twig/twig[v3.3.10] but it conflicts with your temporary update constraint (twig/twig:&gt;=3.4.3).
+    - shopware/elasticsearch 6.4.15.1 requires shopware/core v6.4.15.1 -&gt; satisfiable by shopware/core[6.4.15.1].</pre></td></tr>
+<tr><td><span class="badge rejected">rejected</span></td><td><code>composer update shopware/core shopware/storefront symfony/web-profiler-bundle shopware/recovery shopware/elasticsearch -W -m --with &apos;twig/twig:&gt;=3.4.3&apos;</code></td><td><pre class="reason">Composer could not resolve the dependencies: Your requirements could not be resolved to an installable set of packages.
+  Problem 1
+    - Root composer.json requires shopware/core ~v6.4.0 -&gt; satisfiable by shopware/core[6.4.15.1, 6.4.15.2, 6.4.16.0].
+    - shopware/core 6.4.15.1 requires twig/twig ~3.3.8 -&gt; found twig/twig[v3.3.10] but it conflicts with your temporary update constraint (twig/twig:&gt;=3.4.3).
+  Problem 2
+    - shopware/administration is locked to version 6.4.15.1 and an update of this package was not requested.
+    - shopware/administration 6.4.15.1 requires shopware/core v6.4.15.1 -&gt; satisfiable by shopware/core[6.4.15.1].
+    - shopware/core 6.4.15.1 requires twig/twig ~3.3.8 -&gt; found twig/twig[v3.3.10] but it conflicts with your temporary update constraint (twig/twig:&gt;=3.4.3).</pre></td></tr>
+<tr><td><span class="badge rejected">rejected</span></td><td><code>composer update shopware/storefront -W -m --with &apos;twig/twig:&gt;=3.4.3&apos;</code></td><td><pre class="reason">Composer could not resolve the dependencies: Your requirements could not be resolved to an installable set of packages.
+  Problem 1
+    - Root composer.json requires shopware/core ~v6.4.0 -&gt; satisfiable by shopware/core[6.4.15.1, 6.4.15.2, 6.4.16.0].
+    - shopware/core 6.4.15.1 requires twig/twig ~3.3.8 -&gt; found twig/twig[v3.3.10] but it conflicts with your temporary update constraint (twig/twig:&gt;=3.4.3).
+  Problem 2
+    - shopware/recovery is locked to version 6.4.15.1 and an update of this package was not requested.
+    - shopware/core 6.4.15.1 requires twig/twig ~3.3.8 -&gt; found twig/twig[v3.3.10] but it conflicts with your temporary update constraint (twig/twig:&gt;=3.4.3).
+    - shopware/recovery 6.4.15.1 requires shopware/core v6.4.15.1 -&gt; satisfiable by shopware/core[6.4.15.1].</pre></td></tr>
+<tr><td><span class="badge rejected">rejected</span></td><td><code>composer update shopware/storefront shopware/recovery -W -m --with &apos;twig/twig:&gt;=3.4.3&apos;</code></td><td><pre class="reason">Composer could not resolve the dependencies: Your requirements could not be resolved to an installable set of packages.
+  Problem 1
+    - Root composer.json requires shopware/core ~v6.4.0 -&gt; satisfiable by shopware/core[6.4.15.1, 6.4.15.2, 6.4.16.0].
+    - shopware/core 6.4.15.1 requires twig/twig ~3.3.8 -&gt; found twig/twig[v3.3.10] but it conflicts with your temporary update constraint (twig/twig:&gt;=3.4.3).
+  Problem 2
+    - shopware/elasticsearch is locked to version 6.4.15.1 and an update of this package was not requested.
+    - shopware/core 6.4.15.1 requires twig/twig ~3.3.8 -&gt; found twig/twig[v3.3.10] but it conflicts with your temporary update constraint (twig/twig:&gt;=3.4.3).
+    - shopware/elasticsearch 6.4.15.1 requires shopware/core v6.4.15.1 -&gt; satisfiable by shopware/core[6.4.15.1].</pre></td></tr>
+<tr><td><span class="badge rejected">rejected</span></td><td><code>composer update shopware/storefront shopware/recovery shopware/elasticsearch -W -m --with &apos;twig/twig:&gt;=3.4.3&apos;</code></td><td><pre class="reason">Composer could not resolve the dependencies: Your requirements could not be resolved to an installable set of packages.
+  Problem 1
+    - Root composer.json requires shopware/core ~v6.4.0 -&gt; satisfiable by shopware/core[6.4.15.1, 6.4.15.2, 6.4.16.0].
+    - shopware/core 6.4.15.1 requires twig/twig ~3.3.8 -&gt; found twig/twig[v3.3.10] but it conflicts with your temporary update constraint (twig/twig:&gt;=3.4.3).
+  Problem 2
+    - shopware/administration is locked to version 6.4.15.1 and an update of this package was not requested.
+    - shopware/administration 6.4.15.1 requires shopware/core v6.4.15.1 -&gt; satisfiable by shopware/core[6.4.15.1].
+    - shopware/core 6.4.15.1 requires twig/twig ~3.3.8 -&gt; found twig/twig[v3.3.10] but it conflicts with your temporary update constraint (twig/twig:&gt;=3.4.3).</pre></td></tr>
+<tr><td><span class="badge rejected">rejected</span></td><td><code>composer update symfony/web-profiler-bundle -W -m --with &apos;twig/twig:&gt;=3.4.3&apos;</code></td><td><pre class="reason">Composer could not resolve the dependencies: Your requirements could not be resolved to an installable set of packages.
+  Problem 1
+    - shopware/core is locked to version 6.4.15.1 and an update of this package was not requested.
+    - shopware/core 6.4.15.1 requires twig/twig ~3.3.8 -&gt; found twig/twig[v3.3.10] but it conflicts with your temporary update constraint (twig/twig:&gt;=3.4.3).
+  Problem 2
+    - shopware/storefront is locked to version 6.4.15.1 and an update of this package was not requested.
+    - shopware/storefront 6.4.15.1 requires twig/twig ~3.3.8 -&gt; found twig/twig[v3.3.10] but it conflicts with your temporary update constraint (twig/twig:&gt;=3.4.3).
+  Problem 3
+    - Root composer.json requires symfony/web-profiler-bundle ~4.4 || ~5.2.3 || ~5.3.0 || ~5.4.0 -&gt; satisfiable by symfony/web-profiler-bundle[v5.4.10, v5.4.13, v5.4.14].
+    - symfony/web-profiler-bundle[v5.4.10, ..., v5.4.14] require twig/twig ^2.13|^3.0.4 -&gt; found twig/twig[v3.3.10, ..., v3.4.3] but these were not loaded, likely because it conflicts with another require.
+  Problem 4
+    - shopware/recovery is locked to version 6.4.15.1 and an update of this package was not requested.
+    - shopware/core 6.4.15.1 requires twig/twig ~3.3.8 -&gt; found twig/twig[v3.3.10] but it conflicts with your temporary update constraint (twig/twig:&gt;=3.4.3).
+    - shopware/recovery 6.4.15.1 requires shopware/core v6.4.15.1 -&gt; satisfiable by shopware/core[6.4.15.1].</pre></td></tr>
+<tr><td><span class="badge rejected">rejected</span></td><td><code>composer update shopware/administration -W -m --with &apos;twig/twig:&gt;=3.4.3&apos;</code></td><td><pre class="reason">Composer could not resolve the dependencies: Your requirements could not be resolved to an installable set of packages.
+  Problem 1
+    - Root composer.json requires shopware/core ~v6.4.0 -&gt; satisfiable by shopware/core[6.4.15.1, 6.4.15.2, 6.4.16.0].
+    - shopware/core 6.4.15.1 requires twig/twig ~3.3.8 -&gt; found twig/twig[v3.3.10] but it conflicts with your temporary update constraint (twig/twig:&gt;=3.4.3).
+  Problem 2
+    - shopware/storefront is locked to version 6.4.15.1 and an update of this package was not requested.
+    - shopware/storefront 6.4.15.1 requires twig/twig ~3.3.8 -&gt; found twig/twig[v3.3.10] but it conflicts with your temporary update constraint (twig/twig:&gt;=3.4.3).
+  Problem 3
+    - symfony/web-profiler-bundle is locked to version v5.4.10 and an update of this package was not requested.
+    - symfony/web-profiler-bundle v5.4.10 requires twig/twig ^2.13|^3.0.4 -&gt; found twig/twig[v3.3.10, ..., v3.4.3] but these were not loaded, likely because it conflicts with another require.
+  Problem 4
+    - shopware/recovery is locked to version 6.4.15.1 and an update of this package was not requested.
+    - shopware/core 6.4.15.1 requires twig/twig ~3.3.8 -&gt; found twig/twig[v3.3.10] but it conflicts with your temporary update constraint (twig/twig:&gt;=3.4.3).
+    - shopware/recovery 6.4.15.1 requires shopware/core v6.4.15.1 -&gt; satisfiable by shopware/core[6.4.15.1].</pre></td></tr>
+<tr><td><span class="badge rejected">rejected</span></td><td><code>composer update shopware/administration shopware/storefront symfony/web-profiler-bundle shopware/recovery -W -m --with &apos;twig/twig:&gt;=3.4.3&apos;</code></td><td><pre class="reason">Composer could not resolve the dependencies: Your requirements could not be resolved to an installable set of packages.
+  Problem 1
+    - Root composer.json requires shopware/core ~v6.4.0 -&gt; satisfiable by shopware/core[6.4.15.1, 6.4.15.2, 6.4.16.0].
+    - shopware/core 6.4.15.1 requires twig/twig ~3.3.8 -&gt; found twig/twig[v3.3.10] but it conflicts with your temporary update constraint (twig/twig:&gt;=3.4.3).
+  Problem 2
+    - shopware/elasticsearch is locked to version 6.4.15.1 and an update of this package was not requested.
+    - shopware/core 6.4.15.1 requires twig/twig ~3.3.8 -&gt; found twig/twig[v3.3.10] but it conflicts with your temporary update constraint (twig/twig:&gt;=3.4.3).
+    - shopware/elasticsearch 6.4.15.1 requires shopware/core v6.4.15.1 -&gt; satisfiable by shopware/core[6.4.15.1].</pre></td></tr>
+<tr><td><span class="badge rejected">rejected</span></td><td><code>composer update shopware/elasticsearch -W -m --with &apos;twig/twig:&gt;=3.4.3&apos;</code></td><td><pre class="reason">Composer could not resolve the dependencies: Your requirements could not be resolved to an installable set of packages.
+  Problem 1
+    - Root composer.json requires shopware/core ~v6.4.0 -&gt; satisfiable by shopware/core[6.4.15.1, 6.4.15.2, 6.4.16.0].
+    - shopware/core 6.4.15.1 requires twig/twig ~3.3.8 -&gt; found twig/twig[v3.3.10] but it conflicts with your temporary update constraint (twig/twig:&gt;=3.4.3).
+  Problem 2
+    - shopware/storefront is locked to version 6.4.15.1 and an update of this package was not requested.
+    - shopware/storefront 6.4.15.1 requires twig/twig ~3.3.8 -&gt; found twig/twig[v3.3.10] but it conflicts with your temporary update constraint (twig/twig:&gt;=3.4.3).
+  Problem 3
+    - symfony/web-profiler-bundle is locked to version v5.4.10 and an update of this package was not requested.
+    - symfony/web-profiler-bundle v5.4.10 requires twig/twig ^2.13|^3.0.4 -&gt; found twig/twig[v3.3.10, ..., v3.4.3] but these were not loaded, likely because it conflicts with another require.
+  Problem 4
+    - shopware/recovery is locked to version 6.4.15.1 and an update of this package was not requested.
+    - shopware/core 6.4.15.1 requires twig/twig ~3.3.8 -&gt; found twig/twig[v3.3.10] but it conflicts with your temporary update constraint (twig/twig:&gt;=3.4.3).
+    - shopware/recovery 6.4.15.1 requires shopware/core v6.4.15.1 -&gt; satisfiable by shopware/core[6.4.15.1].</pre></td></tr>
+<tr><td><span class="badge rejected">rejected</span></td><td><code>composer update shopware/elasticsearch shopware/storefront symfony/web-profiler-bundle shopware/recovery -W -m --with &apos;twig/twig:&gt;=3.4.3&apos;</code></td><td><pre class="reason">Composer could not resolve the dependencies: Your requirements could not be resolved to an installable set of packages.
+  Problem 1
+    - Root composer.json requires shopware/core ~v6.4.0 -&gt; satisfiable by shopware/core[6.4.15.1, 6.4.15.2, 6.4.16.0].
+    - shopware/core 6.4.15.1 requires twig/twig ~3.3.8 -&gt; found twig/twig[v3.3.10] but it conflicts with your temporary update constraint (twig/twig:&gt;=3.4.3).
+  Problem 2
+    - shopware/administration is locked to version 6.4.15.1 and an update of this package was not requested.
+    - shopware/administration 6.4.15.1 requires shopware/core v6.4.15.1 -&gt; satisfiable by shopware/core[6.4.15.1].
+    - shopware/core 6.4.15.1 requires twig/twig ~3.3.8 -&gt; found twig/twig[v3.3.10] but it conflicts with your temporary update constraint (twig/twig:&gt;=3.4.3).</pre></td></tr>
+<tr><td><span class="badge rejected">rejected</span></td><td><code>composer update shopware/recovery -W -m --with &apos;twig/twig:&gt;=3.4.3&apos;</code></td><td><pre class="reason">Composer could not resolve the dependencies: Your requirements could not be resolved to an installable set of packages.
+  Problem 1
+    - Root composer.json requires shopware/core ~v6.4.0 -&gt; satisfiable by shopware/core[6.4.15.1, 6.4.15.2, 6.4.16.0].
+    - shopware/core 6.4.15.1 requires twig/twig ~3.3.8 -&gt; found twig/twig[v3.3.10] but it conflicts with your temporary update constraint (twig/twig:&gt;=3.4.3).
+  Problem 2
+    - shopware/storefront is locked to version 6.4.15.1 and an update of this package was not requested.
+    - shopware/storefront 6.4.15.1 requires twig/twig ~3.3.8 -&gt; found twig/twig[v3.3.10] but it conflicts with your temporary update constraint (twig/twig:&gt;=3.4.3).
+  Problem 3
+    - symfony/web-profiler-bundle is locked to version v5.4.10 and an update of this package was not requested.
+    - symfony/web-profiler-bundle v5.4.10 requires twig/twig ^2.13|^3.0.4 -&gt; found twig/twig[v3.3.10, ..., v3.4.3] but these were not loaded, likely because it conflicts with another require.
+  Problem 4
+    - shopware/elasticsearch is locked to version 6.4.15.1 and an update of this package was not requested.
+    - shopware/core 6.4.15.1 requires twig/twig ~3.3.8 -&gt; found twig/twig[v3.3.10] but it conflicts with your temporary update constraint (twig/twig:&gt;=3.4.3).
+    - shopware/elasticsearch 6.4.15.1 requires shopware/core v6.4.15.1 -&gt; satisfiable by shopware/core[6.4.15.1].</pre></td></tr>
+<tr><td><span class="badge rejected">rejected</span></td><td><code>composer update shopware/core shopware/storefront symfony/web-profiler-bundle -W -m --with &apos;twig/twig:&gt;=3.4.3&apos;</code></td><td><pre class="reason">Composer could not resolve the dependencies: Your requirements could not be resolved to an installable set of packages.
+  Problem 1
+    - Root composer.json requires shopware/core ~v6.4.0 -&gt; satisfiable by shopware/core[6.4.15.1, 6.4.15.2, 6.4.16.0].
+    - shopware/core 6.4.15.1 requires twig/twig ~3.3.8 -&gt; found twig/twig[v3.3.10] but it conflicts with your temporary update constraint (twig/twig:&gt;=3.4.3).
+  Problem 2
+    - shopware/recovery is locked to version 6.4.15.1 and an update of this package was not requested.
+    - shopware/core 6.4.15.1 requires twig/twig ~3.3.8 -&gt; found twig/twig[v3.3.10] but it conflicts with your temporary update constraint (twig/twig:&gt;=3.4.3).
+    - shopware/recovery 6.4.15.1 requires shopware/core v6.4.15.1 -&gt; satisfiable by shopware/core[6.4.15.1].</pre></td></tr>
+<tr><td><span class="badge skipped">not tried</span></td><td><code>composer require --no-update shopware/core:^6.5 &amp;&amp; composer update shopware/core -W -m --with &apos;twig/twig:&gt;=3.4.3&apos;</code></td><td>a better candidate already exists</td></tr>
+</tbody></table></details>
+</section>
+<section class="meta"><h2>Analysis metadata</h2><dl>
+<dt>project</dt><dd>shopware-twig-parent-pin</dd>
+<dt>composer version</dt><dd>(fixture)</dd>
+<dt>php version</dt><dd>(fixture)</dd>
+<dt>advisory source</dt><dd>advisory snapshot advisories.json</dd>
+<dt>solver</dt><dd>in-process Composer dry-run</dd>
+<dt>composer json sha256</dt><dd>b1e52f70623aa144343b7bc6fc20d3e6b7dea9a57580fceb1324d30bafdc0510</dd>
+<dt>composer lock sha256</dt><dd>0166a25c8ee830ae631dad4fee40c7826c06f7cd18e413ab36c454440d37c811</dd>
+<dt>analysis timestamp</dt><dd>(fixture)</dd>
+<dt>locked packages</dt><dd>202</dd>
+</dl></section>
+</main></body></html>

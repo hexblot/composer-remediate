@@ -193,6 +193,7 @@ composer remediate --format=json | jq '.findings[].remediation.command'
   that was tried or skipped. Suitable as a CI artifact.
 - **json**: the same content for machines. Top-level keys: `schema_version`, `analysis_metadata`
   (Composer and PHP versions, advisory source, hashes of `composer.json` and `composer.lock`,
-  timestamp), `exit_code`, `warnings`, `findings[]` (package, advisories, paths, `remediation`
-  with `status`, `command`, `summary` and `changes`, and all `candidates` with their outcome) and
-  `unsolved_findings[]`.
+  timestamp), `exit_code`, `warnings`, `findings[]` (package, advisories, the first ten dependency
+  paths plus `paths_total`, `remediation` with `status`, `command`, `summary` and `changes`, and all
+  `candidates` with their outcome) and `unsolved_findings[]`. Stored examples for every fixture live
+  under `tests/Fixture/<name>/reports/`.

@@ -25,6 +25,12 @@ final class Plan
     ) {
     }
 
+    /** @param array<string, string> $overrides */
+    public function withMetadata(array $overrides): self
+    {
+        return new self($this->findings, array_replace($this->metadata, $overrides), $this->warnings);
+    }
+
     public function exitCode(): int
     {
         if ($this->findings === []) {

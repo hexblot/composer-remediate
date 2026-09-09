@@ -19,7 +19,14 @@ tests/Fixture/<name>/
   advisories.json      advisory snapshot, in the Packagist security-advisories API shape
   expected.json        the remediation a human would choose, plus lock diff bounds
   README.md            provenance: source project, date, CVE, why this case matters
+  reports/report.md    what `composer remediate` prints for this fixture (console output)
+  reports/report.json  the same plan as JSON
+  reports/report.html  the same plan as a self-contained HTML page
 ```
+
+The `reports/` files are committed examples, regenerated with
+`php bin/run-fixture.php <name> --write-reports`; they carry fixed metadata so the output is
+reproducible.
 
 The static repository is stored gzip-compressed to keep the checkout small; the harness inflates it
 into a temporary directory. The harness also copies the fixture to a temporary directory and injects

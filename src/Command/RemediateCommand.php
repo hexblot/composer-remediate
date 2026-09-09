@@ -121,7 +121,8 @@ HELP);
             $io->writeError(sprintf('%s report written to %s', ucfirst($fileFormat->value), $path));
         }
         if ($format !== ReportFormat::None) {
-            $output->write($format->render($plan, $minimal));
+            $decorated = $format === ReportFormat::Text && $output->isDecorated();
+            $output->write($format->render($plan, $minimal, $decorated), false, $decorated ? OutputInterface::OUTPUT_NORMAL : OutputInterface::OUTPUT_RAW);
         }
 
         return $plan->exitCode();

@@ -1,0 +1,127 @@
+<!DOCTYPE html><html lang="en"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Composer Remediate — 2 findings</title>
+<style>:root{color-scheme:light dark;--bg:#fff;--fg:#1c1e21;--muted:#5f6b7a;--border:#d9dee5;--panel:#f6f8fa;--ok:#1a7f37;--bad:#b42318;--warn:#9a6700;--accent:#0f6b8a}
+@media(prefers-color-scheme:dark){:root{--bg:#0f1418;--fg:#e6edf3;--muted:#9aa7b4;--border:#2b3640;--panel:#161c22;--ok:#3fb950;--bad:#f0665b;--warn:#d4a72c;--accent:#58b8d8}}
+body{margin:0;background:var(--bg);color:var(--fg);font:15px/1.5 system-ui,-apple-system,Segoe UI,Roboto,sans-serif}
+header{padding:1.5rem 2rem;border-bottom:1px solid var(--border)}header h1{margin:0;font-size:1.4rem}.sub{margin:.25rem 0 0;color:var(--muted)}
+main{max-width:70rem;margin:0 auto;padding:1rem 2rem 3rem}
+section{margin:1.5rem 0}.finding{border:1px solid var(--border);border-radius:8px;padding:1rem 1.25rem;background:var(--panel)}
+h2{font-size:1.15rem;margin:.25rem 0 .5rem}h3{font-size:.95rem;margin:1rem 0 .35rem;color:var(--muted);text-transform:uppercase;letter-spacing:.04em}
+.version{font-weight:400;color:var(--muted)}.state{margin:0;color:var(--muted)}
+code{font:.9em ui-monospace,SFMono-Regular,Menlo,monospace;background:rgba(127,127,127,.12);padding:.1em .35em;border-radius:4px;word-break:break-all}
+pre{font:.85rem ui-monospace,SFMono-Regular,Menlo,monospace;background:rgba(127,127,127,.1);padding:.75rem 1rem;border-radius:6px;overflow-x:auto;margin:.25rem 0}
+pre.reason{white-space:pre-wrap;margin:0;background:none;padding:0}
+.command code{display:block;padding:.6rem .8rem;font-size:.95rem;border-left:4px solid var(--accent)}
+table{border-collapse:collapse;width:100%;font-size:.92rem}th,td{text-align:left;padding:.4rem .6rem;border-bottom:1px solid var(--border);vertical-align:top}th{color:var(--muted);font-weight:600}
+.badge{display:inline-block;font-size:.75rem;font-weight:600;padding:.1rem .5rem;border-radius:999px;border:1px solid currentColor;white-space:nowrap}
+.badge.ok{color:var(--ok)}.badge.none,.badge.rejected{color:var(--bad)}.badge.skipped,.badge.dev{color:var(--muted)}
+.badge.sev-critical,.badge.sev-high{color:var(--bad)}.badge.sev-medium{color:var(--warn)}.badge.sev-low{color:var(--muted)}
+.warning{border-left:4px solid var(--warn);padding:.5rem .8rem;background:rgba(212,167,44,.1)}.clean{color:var(--ok);font-weight:600}
+.none-box{border-left:4px solid var(--bad);padding:.5rem .8rem;background:rgba(180,35,24,.08)}
+.advisories{padding-left:1.2rem}.advisories li{margin:.4rem 0}
+details summary{cursor:pointer;color:var(--accent);margin:.5rem 0}
+.meta dl{display:grid;grid-template-columns:max-content 1fr;gap:.2rem 1rem;font-size:.85rem;color:var(--muted)}.meta dt{font-weight:600}.meta dd{margin:0;word-break:break-all}</style></head><body>
+<header><h1>Composer Remediate</h1><p class="sub">Composer Remediate — 2 findings in <code>bookstack-guzzle-stale-lock</code></p></header>
+<main>
+<section><h2>Summary</h2><table class="summary"><thead><tr><th>Package</th><th>Advisories</th><th>Status</th><th>Recommended command</th></tr></thead><tbody><tr><td><a href="#finding-1">guzzlehttp/guzzle 7.4.2</a></td><td>CVE-2022-31043, CVE-2022-29248, CVE-2022-31042, CVE-2022-31090, CVE-2022-31091</td><td><span class="badge ok">verified</span></td><td><code>composer update guzzlehttp/guzzle -w -m</code></td></tr><tr><td><a href="#finding-2">dompdf/dompdf v1.2.2</a></td><td>CVE-2022-0085</td><td><span class="badge ok">verified</span></td><td><code>composer require --no-update barryvdh/laravel-dompdf:^2.0 &amp;&amp; composer update barryvdh/laravel-dompdf -W -m</code></td></tr></tbody></table></section>
+<section class="finding" id="finding-1">
+<h2>guzzlehttp/guzzle <span class="version">7.4.2</span></h2>
+<p class="state">Direct dependency.</p>
+<h3>Advisories</h3><ul class="advisories">
+<li><strong><a href="https://github.com/guzzle/guzzle/security/advisories/GHSA-w248-ffj2-4v5q" rel="noopener">CVE-2022-31043 <small>(PKSA-2z36-j4q9-rsfy)</small></a></strong> <span class="badge sev-high">high</span><br>Fix failure to strip Authorization header on HTTP downgrade<br><small>affected versions: <code>&gt;=7,&lt;7.4.4|&gt;=4,&lt;6.5.7</code></small></li>
+<li><strong><a href="https://github.com/guzzle/guzzle/security/advisories/GHSA-cwmx-hcrq-mhc3" rel="noopener">CVE-2022-29248 <small>(PKSA-6d8m-6kgw-18zr)</small></a></strong> <span class="badge sev-high">high</span><br>Cross-domain cookie leakage<br><small>affected versions: <code>&gt;=7,&lt;7.4.3|&gt;=4,&lt;6.5.6</code></small></li>
+<li><strong><a href="https://github.com/guzzle/guzzle/security/advisories/GHSA-f2wf-25xc-69c9" rel="noopener">CVE-2022-31042 <small>(PKSA-fvw5-9t6n-nwvr)</small></a></strong> <span class="badge sev-high">high</span><br>Failure to strip the Cookie header on change in host or HTTP downgrade<br><small>affected versions: <code>&gt;=7,&lt;7.4.4|&gt;=4,&lt;6.5.7</code></small></li>
+<li><strong><a href="https://github.com/guzzle/guzzle/security/advisories/GHSA-25mq-v84q-4j7r" rel="noopener">CVE-2022-31090 <small>(PKSA-k1b4-kshy-xgbh)</small></a></strong> <span class="badge sev-high">high</span><br>CURLOPT_HTTPAUTH option not cleared on change of origin<br><small>affected versions: <code>&gt;=7,&lt;7.4.5|&gt;=4,&lt;6.5.8</code></small></li>
+<li><strong><a href="https://github.com/guzzle/guzzle/security/advisories/GHSA-q559-8m2m-g699" rel="noopener">CVE-2022-31091 <small>(PKSA-yfw5-9gnj-n2c7)</small></a></strong> <span class="badge sev-high">high</span><br>Change in port should be considered a change in origin<br><small>affected versions: <code>&gt;=7,&lt;7.4.5|&gt;=4,&lt;6.5.8</code></small></li>
+</ul>
+<h3>Introduced by</h3>
+<pre class="tree">root
+└── guzzlehttp/guzzle 7.4.2  (requires ^7.4)
+
+root
+└── league/flysystem-aws-s3-v3 1.0.29
+    └── aws/aws-sdk-php 3.222.7
+        └── guzzlehttp/guzzle 7.4.2  (requires ^5.3.3 || ^6.2.1 || ^7.0)
+
+root
+└── laravel/socialite v5.5.2
+    └── guzzlehttp/guzzle 7.4.2  (requires ^6.0|^7.0)
+
+root
+└── socialiteproviders/discord 4.1.1
+    └── socialiteproviders/manager v4.1.0
+        └── laravel/socialite v5.5.2
+            └── guzzlehttp/guzzle 7.4.2  (requires ^6.0|^7.0)
+
+root
+└── socialiteproviders/gitlab 4.1.0
+    └── socialiteproviders/manager v4.1.0
+        └── laravel/socialite v5.5.2
+            └── guzzlehttp/guzzle 7.4.2  (requires ^6.0|^7.0)</pre>
+<p><small>… and 12 more paths</small></p>
+<h3>Recommended remediation</h3>
+<p class="command"><code>composer update guzzlehttp/guzzle -w -m</code></p>
+<p class="validation"><span class="badge ok">Composer validation: PASS</span> 2 packages changed, 0 added, 0 removed, 0 root constraints changed.</p>
+<details open><summary>Expected changes (2)</summary><table class="changes"><thead><tr><th>Package</th><th>From</th><th>To</th><th>Kind</th></tr></thead><tbody>
+<tr><td>guzzlehttp/guzzle</td><td>7.4.2</td><td>7.4.5</td><td>upgraded, patch</td></tr>
+<tr><td>guzzlehttp/psr7</td><td>2.2.1</td><td>2.4.0</td><td>upgraded, minor</td></tr>
+</tbody></table></details>
+<details><summary>Other candidates (10)</summary><table class="candidates"><thead><tr><th>Outcome</th><th>Command</th><th>Detail</th></tr></thead><tbody>
+<tr><td><span class="badge ok">valid, rank 2</span></td><td><code>composer update guzzlehttp/guzzle -W -m --with &apos;guzzlehttp/guzzle:&gt;=7.4.5&apos;</code></td><td>2 changes</td></tr>
+<tr><td><span class="badge ok">valid, rank 3</span></td><td><code>composer update laravel/socialite -W -m --with &apos;guzzlehttp/guzzle:&gt;=7.4.5&apos;</code></td><td>2 changes</td></tr>
+<tr><td><span class="badge ok">valid, rank 4</span></td><td><code>composer update league/oauth2-client -W -m --with &apos;guzzlehttp/guzzle:&gt;=7.4.5&apos;</code></td><td>2 changes</td></tr>
+<tr><td><span class="badge ok">valid, rank 5</span></td><td><code>composer update league/flysystem-aws-s3-v3 -W -m --with &apos;guzzlehttp/guzzle:&gt;=7.4.5&apos;</code></td><td>2 changes</td></tr>
+<tr><td><span class="badge ok">valid, rank 6</span></td><td><code>composer update socialiteproviders/discord -W -m --with &apos;guzzlehttp/guzzle:&gt;=7.4.5&apos;</code></td><td>2 changes</td></tr>
+<tr><td><span class="badge ok">valid, rank 7</span></td><td><code>composer update socialiteproviders/gitlab -W -m --with &apos;guzzlehttp/guzzle:&gt;=7.4.5&apos;</code></td><td>2 changes</td></tr>
+<tr><td><span class="badge ok">valid, rank 8</span></td><td><code>composer update league/flysystem-aws-s3-v3 laravel/socialite league/oauth2-client guzzlehttp/guzzle -W -m --with &apos;guzzlehttp/guzzle:&gt;=7.4.5&apos;</code></td><td>2 changes</td></tr>
+<tr><td><span class="badge rejected">rejected</span></td><td><code>composer update guzzlehttp/guzzle</code></td><td><pre class="reason">resolves, but guzzlehttp/guzzle ends at 7.4.4 which is still affected by PKSA-k1b4-kshy-xgbh, PKSA-yfw5-9gnj-n2c7</pre></td></tr>
+<tr><td><span class="badge skipped">not tried</span></td><td><code>composer require --no-update guzzlehttp/guzzle:^8.0 &amp;&amp; composer update guzzlehttp/guzzle -W -m --with &apos;guzzlehttp/guzzle:&gt;=7.4.5&apos;</code></td><td>a better candidate already exists</td></tr>
+</tbody></table></details>
+</section>
+<section class="finding" id="finding-2">
+<h2>dompdf/dompdf <span class="version">v1.2.2</span></h2>
+<p class="state">Transitive dependency.</p>
+<h3>Advisories</h3><ul class="advisories">
+<li><strong><a href="https://github.com/advisories/GHSA-pf6p-25r2-fx45" rel="noopener">CVE-2022-0085 <small>(PKSA-872h-8556-2chm)</small></a></strong> <span class="badge sev-medium">medium</span><br>Server-Side Request Forgery in dompdf/dompdf<br><small>affected versions: <code>&lt;2.0.0</code></small></li>
+</ul>
+<h3>Introduced by</h3>
+<pre class="tree">root
+└── barryvdh/laravel-dompdf v1.0.0
+    └── dompdf/dompdf v1.2.2  (requires ^1)</pre>
+<h3>Recommended remediation</h3>
+<p class="command"><code>composer require --no-update barryvdh/laravel-dompdf:^2.0 &amp;&amp; composer update barryvdh/laravel-dompdf -W -m</code></p>
+<p class="validation"><span class="badge ok">Composer validation: PASS</span> 2 packages changed, 1 added, 0 removed, 1 root constraint changed, <strong>includes a major version change</strong>.</p>
+<p>composer.json: <code>barryvdh/laravel-dompdf</code> ^1.0 → <code>^2.0</code></p>
+<p class="warning">Installs pre-release versions: barryvdh/laravel-dompdf v2.0.0-beta2. No stable release satisfies the constraints yet.</p>
+<details open><summary>Expected changes (3)</summary><table class="changes"><thead><tr><th>Package</th><th>From</th><th>To</th><th>Kind</th></tr></thead><tbody>
+<tr><td>barryvdh/laravel-dompdf</td><td>v1.0.0</td><td>v2.0.0-beta2</td><td>upgraded, major</td></tr>
+<tr><td>dompdf/dompdf</td><td>v1.2.2</td><td>v2.0.0</td><td>upgraded, major</td></tr>
+<tr><td>masterminds/html5</td><td>—</td><td>2.7.5</td><td>added</td></tr>
+</tbody></table></details>
+<details><summary>Other candidates (5)</summary><table class="candidates"><thead><tr><th>Outcome</th><th>Command</th><th>Detail</th></tr></thead><tbody>
+<tr><td><span class="badge ok">valid, rank 2</span></td><td><code>composer require --no-update barryvdh/laravel-dompdf:^2.0 &amp;&amp; composer update barryvdh/laravel-dompdf:v2.0.0-beta1 -W -m --with &apos;dompdf/dompdf:&gt;=2.0.0&apos;</code></td><td>3 changes</td></tr>
+<tr><td><span class="badge rejected">rejected</span></td><td><code>composer update dompdf/dompdf</code></td><td><pre class="reason">resolves, but dompdf/dompdf ends at v1.2.2 which is still affected by PKSA-872h-8556-2chm</pre></td></tr>
+<tr><td><span class="badge rejected">rejected</span></td><td><code>composer update dompdf/dompdf -w -m --with &apos;dompdf/dompdf:&gt;=2.0.0&apos;</code></td><td><pre class="reason">Composer could not resolve the dependencies: Your requirements could not be resolved to an installable set of packages.
+  Problem 1
+    - barryvdh/laravel-dompdf is locked to version v1.0.0 and an update of this package was not requested.
+    - barryvdh/laravel-dompdf v1.0.0 requires dompdf/dompdf ^1 -&gt; found dompdf/dompdf[v1.2.2] but it conflicts with your temporary update constraint (dompdf/dompdf:&gt;=2.0.0).
+Use the option --with-all-dependencies (-W) to allow upgrades, downgrades and removals for packages currently locked to specific versions.</pre></td></tr>
+<tr><td><span class="badge rejected">rejected</span></td><td><code>composer update barryvdh/laravel-dompdf -W -m --with &apos;dompdf/dompdf:&gt;=2.0.0&apos;</code></td><td><pre class="reason">Composer could not resolve the dependencies: Your requirements could not be resolved to an installable set of packages.
+  Problem 1
+    - Root composer.json requires barryvdh/laravel-dompdf ^1.0 -&gt; satisfiable by barryvdh/laravel-dompdf[v1.0.0, v1.0.1, v1.0.2].
+    - barryvdh/laravel-dompdf v1.0.0 requires dompdf/dompdf ^1 -&gt; found dompdf/dompdf[v1.2.2] but it conflicts with your temporary update constraint (dompdf/dompdf:&gt;=2.0.0).
+    - barryvdh/laravel-dompdf[v1.0.1, ..., v1.0.2] require dompdf/dompdf ^1.2.1 -&gt; found dompdf/dompdf[v1.2.2] but it conflicts with your temporary update constraint (dompdf/dompdf:&gt;=2.0.0).</pre></td></tr>
+</tbody></table></details>
+</section>
+<section class="meta"><h2>Analysis metadata</h2><dl>
+<dt>project</dt><dd>bookstack-guzzle-stale-lock</dd>
+<dt>composer version</dt><dd>(fixture)</dd>
+<dt>php version</dt><dd>(fixture)</dd>
+<dt>advisory source</dt><dd>advisory snapshot advisories.json</dd>
+<dt>solver</dt><dd>in-process Composer dry-run</dd>
+<dt>composer json sha256</dt><dd>d1c57a2acd2bdf77e608e6bfae0844941320895493f2236e0000d981bd631659</dd>
+<dt>composer lock sha256</dt><dd>344de0dd32e1d22719c6e0c717527e601702e8ed4d57664dd0770e606102f7af</dd>
+<dt>analysis timestamp</dt><dd>(fixture)</dd>
+<dt>locked packages</dt><dd>155</dd>
+</dl></section>
+</main></body></html>

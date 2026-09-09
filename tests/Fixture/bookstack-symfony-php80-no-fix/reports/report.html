@@ -1,0 +1,273 @@
+<!DOCTYPE html><html lang="en"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Composer Remediate — 4 findings</title>
+<style>:root{color-scheme:light dark;--bg:#fff;--fg:#1c1e21;--muted:#5f6b7a;--border:#d9dee5;--panel:#f6f8fa;--ok:#1a7f37;--bad:#b42318;--warn:#9a6700;--accent:#0f6b8a}
+@media(prefers-color-scheme:dark){:root{--bg:#0f1418;--fg:#e6edf3;--muted:#9aa7b4;--border:#2b3640;--panel:#161c22;--ok:#3fb950;--bad:#f0665b;--warn:#d4a72c;--accent:#58b8d8}}
+body{margin:0;background:var(--bg);color:var(--fg);font:15px/1.5 system-ui,-apple-system,Segoe UI,Roboto,sans-serif}
+header{padding:1.5rem 2rem;border-bottom:1px solid var(--border)}header h1{margin:0;font-size:1.4rem}.sub{margin:.25rem 0 0;color:var(--muted)}
+main{max-width:70rem;margin:0 auto;padding:1rem 2rem 3rem}
+section{margin:1.5rem 0}.finding{border:1px solid var(--border);border-radius:8px;padding:1rem 1.25rem;background:var(--panel)}
+h2{font-size:1.15rem;margin:.25rem 0 .5rem}h3{font-size:.95rem;margin:1rem 0 .35rem;color:var(--muted);text-transform:uppercase;letter-spacing:.04em}
+.version{font-weight:400;color:var(--muted)}.state{margin:0;color:var(--muted)}
+code{font:.9em ui-monospace,SFMono-Regular,Menlo,monospace;background:rgba(127,127,127,.12);padding:.1em .35em;border-radius:4px;word-break:break-all}
+pre{font:.85rem ui-monospace,SFMono-Regular,Menlo,monospace;background:rgba(127,127,127,.1);padding:.75rem 1rem;border-radius:6px;overflow-x:auto;margin:.25rem 0}
+pre.reason{white-space:pre-wrap;margin:0;background:none;padding:0}
+.command code{display:block;padding:.6rem .8rem;font-size:.95rem;border-left:4px solid var(--accent)}
+table{border-collapse:collapse;width:100%;font-size:.92rem}th,td{text-align:left;padding:.4rem .6rem;border-bottom:1px solid var(--border);vertical-align:top}th{color:var(--muted);font-weight:600}
+.badge{display:inline-block;font-size:.75rem;font-weight:600;padding:.1rem .5rem;border-radius:999px;border:1px solid currentColor;white-space:nowrap}
+.badge.ok{color:var(--ok)}.badge.none,.badge.rejected{color:var(--bad)}.badge.skipped,.badge.dev{color:var(--muted)}
+.badge.sev-critical,.badge.sev-high{color:var(--bad)}.badge.sev-medium{color:var(--warn)}.badge.sev-low{color:var(--muted)}
+.warning{border-left:4px solid var(--warn);padding:.5rem .8rem;background:rgba(212,167,44,.1)}.clean{color:var(--ok);font-weight:600}
+.none-box{border-left:4px solid var(--bad);padding:.5rem .8rem;background:rgba(180,35,24,.08)}
+.advisories{padding-left:1.2rem}.advisories li{margin:.4rem 0}
+details summary{cursor:pointer;color:var(--accent);margin:.5rem 0}
+.meta dl{display:grid;grid-template-columns:max-content 1fr;gap:.2rem 1rem;font-size:.85rem;color:var(--muted)}.meta dt{font-weight:600}.meta dd{margin:0;word-break:break-all}</style></head><body>
+<header><h1>Composer Remediate</h1><p class="sub">Composer Remediate — 4 findings in <code>bookstack-symfony-php80-no-fix</code></p></header>
+<main>
+<section><h2>Summary</h2><table class="summary"><thead><tr><th>Package</th><th>Advisories</th><th>Status</th><th>Recommended command</th></tr></thead><tbody><tr><td><a href="#finding-1">phenx/php-svg-lib 0.5.1</a></td><td>CVE-2024-25117, PKSA-qsyb-3psh-f1t3</td><td><span class="badge ok">verified</span></td><td><code>composer update phenx/php-svg-lib</code></td></tr><tr><td><a href="#finding-2">symfony/http-foundation v6.0.20</a></td><td>CVE-2024-50345</td><td><span class="badge none">no verified fix</span></td><td>—</td></tr><tr><td><a href="#finding-3">phpseclib/phpseclib 3.0.34</a></td><td>CVE-2024-27355, CVE-2024-27354</td><td><span class="badge ok">verified</span></td><td><code>composer update phpseclib/phpseclib</code></td></tr><tr><td><a href="#finding-4">symfony/process v6.0.19</a></td><td>CVE-2024-51736</td><td><span class="badge none">no verified fix</span></td><td>—</td></tr></tbody></table></section>
+<section class="finding" id="finding-1">
+<h2>phenx/php-svg-lib <span class="version">0.5.1</span></h2>
+<p class="state">Transitive dependency.</p>
+<h3>Advisories</h3><ul class="advisories">
+<li><strong><a href="https://github.com/advisories/GHSA-f3qr-qr4x-j273" rel="noopener">CVE-2024-25117 <small>(PKSA-3dsp-r6t7-8xmz)</small></a></strong> <span class="badge sev-medium">medium</span><br>php-svg-lib lacks path validation on font through SVG inline styles <br><small>affected versions: <code>&lt;0.5.2</code></small></li>
+<li><strong><a href="https://github.com/advisories/GHSA-97m3-52wr-xvv2" rel="noopener">PKSA-qsyb-3psh-f1t3</a></strong> <span class="badge sev-critical">critical</span><br>Dompdf&apos;s usage of vulnerable version of phenx/php-svg-lib leads to restriction bypass and potential RCE<br><small>affected versions: <code>&lt;0.5.2</code></small></li>
+</ul>
+<h3>Introduced by</h3>
+<pre class="tree">root
+└── barryvdh/laravel-dompdf v2.0.1
+    └── dompdf/dompdf v2.0.4
+        └── phenx/php-svg-lib 0.5.1  (requires &gt;=0.3.3 &lt;1.0.0)</pre>
+<h3>Recommended remediation</h3>
+<p class="command"><code>composer update phenx/php-svg-lib</code></p>
+<p class="validation"><span class="badge ok">Composer validation: PASS</span> 1 package changed, 0 added, 0 removed, 0 root constraints changed.</p>
+<details open><summary>Expected changes (1)</summary><table class="changes"><thead><tr><th>Package</th><th>From</th><th>To</th><th>Kind</th></tr></thead><tbody>
+<tr><td>phenx/php-svg-lib</td><td>0.5.1</td><td>0.5.4</td><td>upgraded, patch</td></tr>
+</tbody></table></details>
+<details><summary>Other candidates (3)</summary><table class="candidates"><thead><tr><th>Outcome</th><th>Command</th><th>Detail</th></tr></thead><tbody>
+<tr><td><span class="badge ok">valid, rank 2</span></td><td><code>composer update phenx/php-svg-lib -w -m --with &apos;phenx/php-svg-lib:&gt;=0.5.2&apos;</code></td><td>1 changes</td></tr>
+<tr><td><span class="badge ok">valid, rank 3</span></td><td><code>composer update barryvdh/laravel-dompdf -W -m --with &apos;phenx/php-svg-lib:&gt;=0.5.2&apos;</code></td><td>3 changes</td></tr>
+<tr><td><span class="badge skipped">not tried</span></td><td><code>composer require --no-update barryvdh/laravel-dompdf:^3.0 &amp;&amp; composer update barryvdh/laravel-dompdf -W -m --with &apos;phenx/php-svg-lib:&gt;=0.5.2&apos;</code></td><td>a better candidate already exists</td></tr>
+</tbody></table></details>
+</section>
+<section class="finding" id="finding-2">
+<h2>symfony/http-foundation <span class="version">v6.0.20</span></h2>
+<p class="state">Transitive dependency.</p>
+<h3>Advisories</h3><ul class="advisories">
+<li><strong><a href="https://symfony.com/cve-2024-50345" rel="noopener">CVE-2024-50345 <small>(PKSA-b35n-565h-rs4q)</small></a></strong> <span class="badge sev-low">low</span><br>CVE-2024-50345: Open redirect via browser-sanitized URLs<br><small>affected versions: <code>&gt;=2.0.0,&lt;3.0.0|&gt;=3.0.0,&lt;4.0.0|&gt;=4.0.0,&lt;5.0.0|&gt;=5.0.0,&lt;5.1.0|&gt;=5.1.0,&lt;5.2.0|&gt;=5.2.0,&lt;5.3.0|&gt;=5.3.0,&lt;5.4.0|&gt;=5.4.0,&lt;5.4.46|&gt;=6.0.0,&lt;6.1.0|&gt;=6.1.0,&lt;6.2.0|&gt;=6.2.0,&lt;6.3.0|&gt;=6.3.0,&lt;6.4.0|&gt;=6.4.0,&lt;6.4.14|&gt;=7.0.0,&lt;7.1.0|&gt;=7.1.0,&lt;7.1.7</code></small></li>
+</ul>
+<h3>Introduced by</h3>
+<pre class="tree">root
+└── laravel/framework v9.52.16
+    └── fruitcake/php-cors v1.3.0
+        └── symfony/http-foundation v6.0.20  (requires ^4.4|^5.4|^6|^7)
+
+root
+└── laravel/socialite v5.11.0
+    └── laravel/framework v9.52.16
+        └── fruitcake/php-cors v1.3.0
+            └── symfony/http-foundation v6.0.20  (requires ^4.4|^5.4|^6|^7)
+
+root
+└── socialiteproviders/discord 4.2.0
+    └── socialiteproviders/manager v4.4.0
+        └── laravel/socialite v5.11.0
+            └── laravel/framework v9.52.16
+                └── fruitcake/php-cors v1.3.0
+                    └── symfony/http-foundation v6.0.20  (requires ^4.4|^5.4|^6|^7)
+
+root
+└── socialiteproviders/gitlab 4.1.0
+    └── socialiteproviders/manager v4.4.0
+        └── laravel/socialite v5.11.0
+            └── laravel/framework v9.52.16
+                └── fruitcake/php-cors v1.3.0
+                    └── symfony/http-foundation v6.0.20  (requires ^4.4|^5.4|^6|^7)
+
+root
+└── socialiteproviders/microsoft-azure 5.1.0
+    └── socialiteproviders/manager v4.4.0
+        └── laravel/socialite v5.11.0
+            └── laravel/framework v9.52.16
+                └── fruitcake/php-cors v1.3.0
+                    └── symfony/http-foundation v6.0.20  (requires ^4.4|^5.4|^6|^7)</pre>
+<p><small>… and 37 more paths</small></p>
+<h3>Recommended remediation</h3><p class="none-box">No verified remediation found.</p>
+<details><summary>Other candidates (11)</summary><table class="candidates"><thead><tr><th>Outcome</th><th>Command</th><th>Detail</th></tr></thead><tbody>
+<tr><td><span class="badge rejected">rejected</span></td><td><code>composer update symfony/http-foundation</code></td><td><pre class="reason">resolves, but symfony/http-foundation ends at v6.0.20 which is still affected by PKSA-b35n-565h-rs4q</pre></td></tr>
+<tr><td><span class="badge rejected">rejected</span></td><td><code>composer update symfony/http-foundation -w -m --with &apos;symfony/http-foundation:&gt;=6.4.14,&lt;7.0.0 || &gt;=7.1.7&apos;</code></td><td><pre class="reason">Composer could not resolve the dependencies: Your requirements could not be resolved to an installable set of packages.
+  Problem 1
+    - laravel/framework is locked to version v9.52.16 and an update of this package was not requested.
+    - laravel/framework v9.52.16 requires symfony/http-foundation ^6.0 -&gt; satisfiable by symfony/http-foundation[v6.4.14, v6.4.15].
+    - symfony/http-foundation[v6.4.14, ..., v6.4.15] require php &gt;=8.1 -&gt; your php version (8.0.2; overridden via config.platform, actual: 8.5.5) does not satisfy that requirement.
+Use the option --with-all-dependencies (-W) to allow upgrades, downgrades and removals for packages currently locked to specific versions.</pre></td></tr>
+<tr><td><span class="badge rejected">rejected</span></td><td><code>composer update laravel/framework -W -m --with &apos;symfony/http-foundation:&gt;=6.4.14,&lt;7.0.0 || &gt;=7.1.7&apos;</code></td><td><pre class="reason">Composer could not resolve the dependencies: Your requirements could not be resolved to an installable set of packages.
+  Problem 1
+    - Root composer.json requires laravel/framework ^9.0 -&gt; satisfiable by laravel/framework[v9.52.16].
+    - laravel/framework v9.52.16 requires symfony/http-foundation ^6.0 -&gt; satisfiable by symfony/http-foundation[v6.4.14, v6.4.15].
+    - symfony/http-foundation[v6.4.14, ..., v6.4.15] require php &gt;=8.1 -&gt; your php version (8.0.2; overridden via config.platform, actual: 8.5.5) does not satisfy that requirement.</pre></td></tr>
+<tr><td><span class="badge rejected">rejected</span></td><td><code>composer update laravel/socialite -W -m --with &apos;symfony/http-foundation:&gt;=6.4.14,&lt;7.0.0 || &gt;=7.1.7&apos;</code></td><td><pre class="reason">Composer could not resolve the dependencies: Your requirements could not be resolved to an installable set of packages.
+  Problem 1
+    - Root composer.json requires laravel/framework ^9.0 -&gt; satisfiable by laravel/framework[v9.52.16].
+    - laravel/framework v9.52.16 requires symfony/http-foundation ^6.0 -&gt; satisfiable by symfony/http-foundation[v6.4.14, v6.4.15].
+    - symfony/http-foundation[v6.4.14, ..., v6.4.15] require php &gt;=8.1 -&gt; your php version (8.0.2; overridden via config.platform, actual: 8.5.5) does not satisfy that requirement.</pre></td></tr>
+<tr><td><span class="badge rejected">rejected</span></td><td><code>composer update laravel/tinker -W -m --with &apos;symfony/http-foundation:&gt;=6.4.14,&lt;7.0.0 || &gt;=7.1.7&apos;</code></td><td><pre class="reason">Composer could not resolve the dependencies: Your requirements could not be resolved to an installable set of packages.
+  Problem 1
+    - Root composer.json requires laravel/framework ^9.0 -&gt; satisfiable by laravel/framework[v9.52.16].
+    - laravel/framework v9.52.16 requires symfony/http-foundation ^6.0 -&gt; satisfiable by symfony/http-foundation[v6.4.14, v6.4.15].
+    - symfony/http-foundation[v6.4.14, ..., v6.4.15] require php &gt;=8.1 -&gt; your php version (8.0.2; overridden via config.platform, actual: 8.5.5) does not satisfy that requirement.</pre></td></tr>
+<tr><td><span class="badge rejected">rejected</span></td><td><code>composer update larastan/larastan -W -m --with &apos;symfony/http-foundation:&gt;=6.4.14,&lt;7.0.0 || &gt;=7.1.7&apos;</code></td><td><pre class="reason">Composer could not resolve the dependencies: Your requirements could not be resolved to an installable set of packages.
+  Problem 1
+    - Root composer.json requires laravel/framework ^9.0 -&gt; satisfiable by laravel/framework[v9.52.16].
+    - laravel/framework v9.52.16 requires symfony/http-foundation ^6.0 -&gt; satisfiable by symfony/http-foundation[v6.4.14, v6.4.15].
+    - symfony/http-foundation[v6.4.14, ..., v6.4.15] require php &gt;=8.1 -&gt; your php version (8.0.2; overridden via config.platform, actual: 8.5.5) does not satisfy that requirement.</pre></td></tr>
+<tr><td><span class="badge rejected">rejected</span></td><td><code>composer update socialiteproviders/discord -W -m --with &apos;symfony/http-foundation:&gt;=6.4.14,&lt;7.0.0 || &gt;=7.1.7&apos;</code></td><td><pre class="reason">Composer could not resolve the dependencies: Your requirements could not be resolved to an installable set of packages.
+  Problem 1
+    - Root composer.json requires laravel/framework ^9.0 -&gt; satisfiable by laravel/framework[v9.52.16].
+    - laravel/framework v9.52.16 requires symfony/http-foundation ^6.0 -&gt; satisfiable by symfony/http-foundation[v6.4.14, v6.4.15].
+    - symfony/http-foundation[v6.4.14, ..., v6.4.15] require php &gt;=8.1 -&gt; your php version (8.0.2; overridden via config.platform, actual: 8.5.5) does not satisfy that requirement.</pre></td></tr>
+<tr><td><span class="badge rejected">rejected</span></td><td><code>composer update socialiteproviders/gitlab -W -m --with &apos;symfony/http-foundation:&gt;=6.4.14,&lt;7.0.0 || &gt;=7.1.7&apos;</code></td><td><pre class="reason">Composer could not resolve the dependencies: Your requirements could not be resolved to an installable set of packages.
+  Problem 1
+    - Root composer.json requires laravel/framework ^9.0 -&gt; satisfiable by laravel/framework[v9.52.16].
+    - laravel/framework v9.52.16 requires symfony/http-foundation ^6.0 -&gt; satisfiable by symfony/http-foundation[v6.4.14, v6.4.15].
+    - symfony/http-foundation[v6.4.14, ..., v6.4.15] require php &gt;=8.1 -&gt; your php version (8.0.2; overridden via config.platform, actual: 8.5.5) does not satisfy that requirement.</pre></td></tr>
+<tr><td><span class="badge rejected">rejected</span></td><td><code>composer require --no-update laravel/framework:^10.0 &amp;&amp; composer update laravel/framework -W -m --with &apos;symfony/http-foundation:&gt;=6.4.14,&lt;7.0.0 || &gt;=7.1.7&apos;</code></td><td><pre class="reason">Composer could not resolve the dependencies: Your requirements could not be resolved to an installable set of packages.
+  Problem 1
+    - Root composer.json requires laravel/framework ^10.0 -&gt; satisfiable by laravel/framework[v10.0.0, ..., v10.48.22].
+    - laravel/framework[v10.0.0, ..., v10.48.22] require php ^8.1 -&gt; your php version (8.0.2; overridden via config.platform, actual: 8.5.5) does not satisfy that requirement.</pre></td></tr>
+<tr><td><span class="badge rejected">rejected</span></td><td><code>composer require --no-update laravel/socialite:^6.0 &amp;&amp; composer update laravel/socialite -W -m --with &apos;symfony/http-foundation:&gt;=6.4.14,&lt;7.0.0 || &gt;=7.1.7&apos;</code></td><td><pre class="reason">Composer could not resolve the dependencies: Your requirements could not be resolved to an installable set of packages.
+  Problem 1
+    - Root composer.json requires laravel/socialite ^6.0, found laravel/socialite[v5.11.0, ..., v5.16.0] but it does not match the constraint.
+  Problem 2
+    - laravel/framework is locked to version v9.52.16 and an update of this package was not requested.
+    - laravel/framework v9.52.16 requires symfony/http-foundation ^6.0 -&gt; found symfony/http-foundation[v6.0.20, ..., v6.4.15] but these were not loaded, likely because it conflicts with another require.
+  Problem 3
+    - larastan/larastan is locked to version v2.7.0 and an update of this package was not requested.
+    - larastan/larastan v2.7.0 requires illuminate/console ^9.52.16 || ^10.28.0 -&gt; satisfiable by laravel/framework[v9.52.16].
+    - laravel/framework v9.52.16 requires symfony/http-foundation ^6.0 -&gt; found symfony/http-foundation[v6.0.20, ..., v6.4.15] but these were not loaded, likely because it conflicts with another require.</pre></td></tr>
+<tr><td><span class="badge rejected">rejected</span></td><td><code>composer require --no-update laravel/socialite:^6.0 &amp;&amp; composer update laravel/socialite laravel/framework larastan/larastan -W -m --with &apos;symfony/http-foundation:&gt;=6.4.14,&lt;7.0.0 || &gt;=7.1.7&apos;</code></td><td><pre class="reason">Composer could not resolve the dependencies: Your requirements could not be resolved to an installable set of packages.
+  Problem 1
+    - Root composer.json requires laravel/socialite ^6.0, found laravel/socialite[v5.11.0, ..., v5.16.0] but it does not match the constraint.
+  Problem 2
+    - Root composer.json requires laravel/framework ^9.0 -&gt; satisfiable by laravel/framework[v9.52.16].
+    - laravel/framework v9.52.16 requires symfony/http-foundation ^6.0 -&gt; satisfiable by symfony/http-foundation[v6.4.14, v6.4.15].
+    - symfony/http-foundation[v6.4.14, ..., v6.4.15] require php &gt;=8.1 -&gt; your php version (8.0.2; overridden via config.platform, actual: 8.5.5) does not satisfy that requirement.</pre></td></tr>
+</tbody></table></details>
+</section>
+<section class="finding" id="finding-3">
+<h2>phpseclib/phpseclib <span class="version">3.0.34</span></h2>
+<p class="state">Direct dependency.</p>
+<h3>Advisories</h3><ul class="advisories">
+<li><strong><a href="https://github.com/advisories/GHSA-jr22-8qgm-4q87" rel="noopener">CVE-2024-27355 <small>(PKSA-jsh4-f6tg-bwyq)</small></a></strong> <span class="badge sev-high">high</span><br>phpseclib does not properly limit the ASN1 OID length<br><small>affected versions: <code>&gt;=3.0.0,&lt;3.0.36|&gt;=2.0.0,&lt;2.0.47|&gt;=1.0.0,&lt;1.0.23</code></small></li>
+<li><strong><a href="https://github.com/advisories/GHSA-hg35-mp25-qf6h" rel="noopener">CVE-2024-27354 <small>(PKSA-t5xz-td8w-f35v)</small></a></strong> <span class="badge sev-high">high</span><br>phpseclib a large prime can cause a denial of service<br><small>affected versions: <code>&gt;=3.0.0,&lt;3.0.36|&gt;=2.0.0,&lt;2.0.47|&gt;=1.0.0,&lt;1.0.23</code></small></li>
+</ul>
+<h3>Introduced by</h3>
+<pre class="tree">root
+└── phpseclib/phpseclib 3.0.34  (requires ^3.0)</pre>
+<h3>Recommended remediation</h3>
+<p class="command"><code>composer update phpseclib/phpseclib</code></p>
+<p class="validation"><span class="badge ok">Composer validation: PASS</span> 1 package changed, 0 added, 0 removed, 0 root constraints changed.</p>
+<details open><summary>Expected changes (1)</summary><table class="changes"><thead><tr><th>Package</th><th>From</th><th>To</th><th>Kind</th></tr></thead><tbody>
+<tr><td>phpseclib/phpseclib</td><td>3.0.34</td><td>3.0.42</td><td>upgraded, patch</td></tr>
+</tbody></table></details>
+<details><summary>Other candidates (3)</summary><table class="candidates"><thead><tr><th>Outcome</th><th>Command</th><th>Detail</th></tr></thead><tbody>
+<tr><td><span class="badge ok">valid, rank 2</span></td><td><code>composer update phpseclib/phpseclib -w -m --with &apos;phpseclib/phpseclib:&gt;=3.0.36&apos;</code></td><td>1 changes</td></tr>
+<tr><td><span class="badge ok">valid, rank 3</span></td><td><code>composer update phpseclib/phpseclib -W -m --with &apos;phpseclib/phpseclib:&gt;=3.0.36&apos;</code></td><td>1 changes</td></tr>
+<tr><td><span class="badge skipped">not tried</span></td><td><code>composer require --no-update phpseclib/phpseclib:^4.0 &amp;&amp; composer update phpseclib/phpseclib -W -m --with &apos;phpseclib/phpseclib:&gt;=3.0.36&apos;</code></td><td>a better candidate already exists</td></tr>
+</tbody></table></details>
+</section>
+<section class="finding" id="finding-4">
+<h2>symfony/process <span class="version">v6.0.19</span></h2>
+<p class="state">Transitive dependency.</p>
+<h3>Advisories</h3><ul class="advisories">
+<li><strong><a href="https://symfony.com/cve-2024-51736" rel="noopener">CVE-2024-51736 <small>(PKSA-wws7-mr54-jsny)</small></a></strong> <span class="badge sev-high">high</span><br>CVE-2024-51736: Command execution hijack on Windows with Process class<br><small>affected versions: <code>&gt;=2.0.0,&lt;3.0.0|&gt;=3.0.0,&lt;4.0.0|&gt;=4.0.0,&lt;5.0.0|&gt;=5.0.0,&lt;5.1.0|&gt;=5.1.0,&lt;5.2.0|&gt;=5.2.0,&lt;5.3.0|&gt;=5.3.0,&lt;5.4.0|&gt;=5.4.0,&lt;5.4.46|&gt;=6.0.0,&lt;6.1.0|&gt;=6.1.0,&lt;6.2.0|&gt;=6.2.0,&lt;6.3.0|&gt;=6.3.0,&lt;6.4.0|&gt;=6.4.0,&lt;6.4.14|&gt;=7.0.0,&lt;7.1.0|&gt;=7.1.0,&lt;7.1.7</code></small></li>
+</ul>
+<h3>Introduced by</h3>
+<pre class="tree">root
+└── barryvdh/laravel-snappy v1.0.2
+    └── knplabs/knp-snappy v1.4.4
+        └── symfony/process v6.0.19  (requires ~3.4||~4.3||~5.0||~6.0)
+
+root
+└── laravel/framework v9.52.16
+    └── symfony/process v6.0.19  (requires ^6.0)
+
+root
+└── laravel/socialite v5.11.0
+    └── laravel/framework v9.52.16
+        └── symfony/process v6.0.19  (requires ^6.0)
+
+root
+└── socialiteproviders/discord 4.2.0
+    └── socialiteproviders/manager v4.4.0
+        └── laravel/socialite v5.11.0
+            └── laravel/framework v9.52.16
+                └── symfony/process v6.0.19  (requires ^6.0)
+
+root
+└── socialiteproviders/gitlab 4.1.0
+    └── socialiteproviders/manager v4.4.0
+        └── laravel/socialite v5.11.0
+            └── laravel/framework v9.52.16
+                └── symfony/process v6.0.19  (requires ^6.0)</pre>
+<p><small>… and 10 more paths</small></p>
+<h3>Recommended remediation</h3><p class="none-box">No verified remediation found.</p>
+<details><summary>Other candidates (10)</summary><table class="candidates"><thead><tr><th>Outcome</th><th>Command</th><th>Detail</th></tr></thead><tbody>
+<tr><td><span class="badge rejected">rejected</span></td><td><code>composer update symfony/process</code></td><td><pre class="reason">resolves, but symfony/process ends at v6.0.19 which is still affected by PKSA-wws7-mr54-jsny</pre></td></tr>
+<tr><td><span class="badge rejected">rejected</span></td><td><code>composer update symfony/process -w -m --with &apos;symfony/process:&gt;=6.4.14,&lt;7.0.0 || &gt;=7.1.7&apos;</code></td><td><pre class="reason">Composer could not resolve the dependencies: Your requirements could not be resolved to an installable set of packages.
+  Problem 1
+    - laravel/framework is locked to version v9.52.16 and an update of this package was not requested.
+    - laravel/framework v9.52.16 requires symfony/process ^6.0 -&gt; satisfiable by symfony/process[v6.4.14, v6.4.15].
+    - symfony/process[v6.4.14, ..., v6.4.15] require php &gt;=8.1 -&gt; your php version (8.0.2; overridden via config.platform, actual: 8.5.5) does not satisfy that requirement.
+Use the option --with-all-dependencies (-W) to allow upgrades, downgrades and removals for packages currently locked to specific versions.</pre></td></tr>
+<tr><td><span class="badge rejected">rejected</span></td><td><code>composer update laravel/framework -W -m --with &apos;symfony/process:&gt;=6.4.14,&lt;7.0.0 || &gt;=7.1.7&apos;</code></td><td><pre class="reason">Composer could not resolve the dependencies: Your requirements could not be resolved to an installable set of packages.
+  Problem 1
+    - Root composer.json requires laravel/framework ^9.0 -&gt; satisfiable by laravel/framework[v9.52.16].
+    - laravel/framework v9.52.16 requires symfony/process ^6.0 -&gt; satisfiable by symfony/process[v6.4.14, v6.4.15].
+    - symfony/process[v6.4.14, ..., v6.4.15] require php &gt;=8.1 -&gt; your php version (8.0.2; overridden via config.platform, actual: 8.5.5) does not satisfy that requirement.</pre></td></tr>
+<tr><td><span class="badge rejected">rejected</span></td><td><code>composer update barryvdh/laravel-snappy -W -m --with &apos;symfony/process:&gt;=6.4.14,&lt;7.0.0 || &gt;=7.1.7&apos;</code></td><td><pre class="reason">Composer could not resolve the dependencies: Your requirements could not be resolved to an installable set of packages.
+  Problem 1
+    - Root composer.json requires laravel/framework ^9.0 -&gt; satisfiable by laravel/framework[v9.52.16].
+    - laravel/framework v9.52.16 requires symfony/process ^6.0 -&gt; satisfiable by symfony/process[v6.4.14, v6.4.15].
+    - symfony/process[v6.4.14, ..., v6.4.15] require php &gt;=8.1 -&gt; your php version (8.0.2; overridden via config.platform, actual: 8.5.5) does not satisfy that requirement.</pre></td></tr>
+<tr><td><span class="badge rejected">rejected</span></td><td><code>composer update laravel/socialite -W -m --with &apos;symfony/process:&gt;=6.4.14,&lt;7.0.0 || &gt;=7.1.7&apos;</code></td><td><pre class="reason">Composer could not resolve the dependencies: Your requirements could not be resolved to an installable set of packages.
+  Problem 1
+    - Root composer.json requires laravel/framework ^9.0 -&gt; satisfiable by laravel/framework[v9.52.16].
+    - laravel/framework v9.52.16 requires symfony/process ^6.0 -&gt; satisfiable by symfony/process[v6.4.14, v6.4.15].
+    - symfony/process[v6.4.14, ..., v6.4.15] require php &gt;=8.1 -&gt; your php version (8.0.2; overridden via config.platform, actual: 8.5.5) does not satisfy that requirement.</pre></td></tr>
+<tr><td><span class="badge rejected">rejected</span></td><td><code>composer update laravel/tinker -W -m --with &apos;symfony/process:&gt;=6.4.14,&lt;7.0.0 || &gt;=7.1.7&apos;</code></td><td><pre class="reason">Composer could not resolve the dependencies: Your requirements could not be resolved to an installable set of packages.
+  Problem 1
+    - Root composer.json requires laravel/framework ^9.0 -&gt; satisfiable by laravel/framework[v9.52.16].
+    - laravel/framework v9.52.16 requires symfony/process ^6.0 -&gt; satisfiable by symfony/process[v6.4.14, v6.4.15].
+    - symfony/process[v6.4.14, ..., v6.4.15] require php &gt;=8.1 -&gt; your php version (8.0.2; overridden via config.platform, actual: 8.5.5) does not satisfy that requirement.</pre></td></tr>
+<tr><td><span class="badge rejected">rejected</span></td><td><code>composer update larastan/larastan -W -m --with &apos;symfony/process:&gt;=6.4.14,&lt;7.0.0 || &gt;=7.1.7&apos;</code></td><td><pre class="reason">Composer could not resolve the dependencies: Your requirements could not be resolved to an installable set of packages.
+  Problem 1
+    - Root composer.json requires laravel/framework ^9.0 -&gt; satisfiable by laravel/framework[v9.52.16].
+    - laravel/framework v9.52.16 requires symfony/process ^6.0 -&gt; satisfiable by symfony/process[v6.4.14, v6.4.15].
+    - symfony/process[v6.4.14, ..., v6.4.15] require php &gt;=8.1 -&gt; your php version (8.0.2; overridden via config.platform, actual: 8.5.5) does not satisfy that requirement.</pre></td></tr>
+<tr><td><span class="badge rejected">rejected</span></td><td><code>composer update socialiteproviders/discord -W -m --with &apos;symfony/process:&gt;=6.4.14,&lt;7.0.0 || &gt;=7.1.7&apos;</code></td><td><pre class="reason">Composer could not resolve the dependencies: Your requirements could not be resolved to an installable set of packages.
+  Problem 1
+    - Root composer.json requires laravel/framework ^9.0 -&gt; satisfiable by laravel/framework[v9.52.16].
+    - laravel/framework v9.52.16 requires symfony/process ^6.0 -&gt; satisfiable by symfony/process[v6.4.14, v6.4.15].
+    - symfony/process[v6.4.14, ..., v6.4.15] require php &gt;=8.1 -&gt; your php version (8.0.2; overridden via config.platform, actual: 8.5.5) does not satisfy that requirement.</pre></td></tr>
+<tr><td><span class="badge rejected">rejected</span></td><td><code>composer update barryvdh/laravel-snappy laravel/framework -W -m --with &apos;symfony/process:&gt;=6.4.14,&lt;7.0.0 || &gt;=7.1.7&apos;</code></td><td><pre class="reason">Composer could not resolve the dependencies: Your requirements could not be resolved to an installable set of packages.
+  Problem 1
+    - Root composer.json requires laravel/framework ^9.0 -&gt; satisfiable by laravel/framework[v9.52.16].
+    - laravel/framework v9.52.16 requires symfony/process ^6.0 -&gt; satisfiable by symfony/process[v6.4.14, v6.4.15].
+    - symfony/process[v6.4.14, ..., v6.4.15] require php &gt;=8.1 -&gt; your php version (8.0.2; overridden via config.platform, actual: 8.5.5) does not satisfy that requirement.</pre></td></tr>
+<tr><td><span class="badge rejected">rejected</span></td><td><code>composer require --no-update laravel/framework:^10.0 &amp;&amp; composer update laravel/framework -W -m --with &apos;symfony/process:&gt;=6.4.14,&lt;7.0.0 || &gt;=7.1.7&apos;</code></td><td><pre class="reason">Composer could not resolve the dependencies: Your requirements could not be resolved to an installable set of packages.
+  Problem 1
+    - Root composer.json requires laravel/framework ^10.0 -&gt; satisfiable by laravel/framework[v10.0.0, ..., v10.48.22].
+    - laravel/framework[v10.0.0, ..., v10.48.22] require php ^8.1 -&gt; your php version (8.0.2; overridden via config.platform, actual: 8.5.5) does not satisfy that requirement.</pre></td></tr>
+</tbody></table></details>
+</section>
+<section class="meta"><h2>Analysis metadata</h2><dl>
+<dt>project</dt><dd>bookstack-symfony-php80-no-fix</dd>
+<dt>composer version</dt><dd>(fixture)</dd>
+<dt>php version</dt><dd>(fixture)</dd>
+<dt>advisory source</dt><dd>advisory snapshot advisories.json</dd>
+<dt>solver</dt><dd>in-process Composer dry-run</dd>
+<dt>composer json sha256</dt><dd>8f93e41906343069d6f933d8409ed3d4071084738f5175e777f1b1b798996526</dd>
+<dt>composer lock sha256</dt><dd>2a1120aa8ca21b5c330f266675c59b28a5bad86f46a9c1cb357e80c2671aa52e</dd>
+<dt>analysis timestamp</dt><dd>(fixture)</dd>
+<dt>locked packages</dt><dd>149</dd>
+</dl></section>
+</main></body></html>

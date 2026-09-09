@@ -1,0 +1,141 @@
+<!DOCTYPE html><html lang="en"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Composer Remediate — 2 findings</title>
+<style>:root{color-scheme:light dark;--bg:#fff;--fg:#1c1e21;--muted:#5f6b7a;--border:#d9dee5;--panel:#f6f8fa;--ok:#1a7f37;--bad:#b42318;--warn:#9a6700;--accent:#0f6b8a}
+@media(prefers-color-scheme:dark){:root{--bg:#0f1418;--fg:#e6edf3;--muted:#9aa7b4;--border:#2b3640;--panel:#161c22;--ok:#3fb950;--bad:#f0665b;--warn:#d4a72c;--accent:#58b8d8}}
+body{margin:0;background:var(--bg);color:var(--fg);font:15px/1.5 system-ui,-apple-system,Segoe UI,Roboto,sans-serif}
+header{padding:1.5rem 2rem;border-bottom:1px solid var(--border)}header h1{margin:0;font-size:1.4rem}.sub{margin:.25rem 0 0;color:var(--muted)}
+main{max-width:70rem;margin:0 auto;padding:1rem 2rem 3rem}
+section{margin:1.5rem 0}.finding{border:1px solid var(--border);border-radius:8px;padding:1rem 1.25rem;background:var(--panel)}
+h2{font-size:1.15rem;margin:.25rem 0 .5rem}h3{font-size:.95rem;margin:1rem 0 .35rem;color:var(--muted);text-transform:uppercase;letter-spacing:.04em}
+.version{font-weight:400;color:var(--muted)}.state{margin:0;color:var(--muted)}
+code{font:.9em ui-monospace,SFMono-Regular,Menlo,monospace;background:rgba(127,127,127,.12);padding:.1em .35em;border-radius:4px;word-break:break-all}
+pre{font:.85rem ui-monospace,SFMono-Regular,Menlo,monospace;background:rgba(127,127,127,.1);padding:.75rem 1rem;border-radius:6px;overflow-x:auto;margin:.25rem 0}
+pre.reason{white-space:pre-wrap;margin:0;background:none;padding:0}
+.command code{display:block;padding:.6rem .8rem;font-size:.95rem;border-left:4px solid var(--accent)}
+table{border-collapse:collapse;width:100%;font-size:.92rem}th,td{text-align:left;padding:.4rem .6rem;border-bottom:1px solid var(--border);vertical-align:top}th{color:var(--muted);font-weight:600}
+.badge{display:inline-block;font-size:.75rem;font-weight:600;padding:.1rem .5rem;border-radius:999px;border:1px solid currentColor;white-space:nowrap}
+.badge.ok{color:var(--ok)}.badge.none,.badge.rejected{color:var(--bad)}.badge.skipped,.badge.dev{color:var(--muted)}
+.badge.sev-critical,.badge.sev-high{color:var(--bad)}.badge.sev-medium{color:var(--warn)}.badge.sev-low{color:var(--muted)}
+.warning{border-left:4px solid var(--warn);padding:.5rem .8rem;background:rgba(212,167,44,.1)}.clean{color:var(--ok);font-weight:600}
+.none-box{border-left:4px solid var(--bad);padding:.5rem .8rem;background:rgba(180,35,24,.08)}
+.advisories{padding-left:1.2rem}.advisories li{margin:.4rem 0}
+details summary{cursor:pointer;color:var(--accent);margin:.5rem 0}
+.meta dl{display:grid;grid-template-columns:max-content 1fr;gap:.2rem 1rem;font-size:.85rem;color:var(--muted)}.meta dt{font-weight:600}.meta dd{margin:0;word-break:break-all}</style></head><body>
+<header><h1>Composer Remediate</h1><p class="sub">Composer Remediate — 2 findings in <code>koel-symfony-parent-permits</code></p></header>
+<main>
+<section><h2>Summary</h2><table class="summary"><thead><tr><th>Package</th><th>Advisories</th><th>Status</th><th>Recommended command</th></tr></thead><tbody><tr><td><a href="#finding-1">symfony/http-foundation v6.4.4</a></td><td>CVE-2024-50345</td><td><span class="badge ok">verified</span></td><td><code>composer update symfony/http-foundation</code></td></tr><tr><td><a href="#finding-2">symfony/process v6.4.4</a></td><td>CVE-2024-51736</td><td><span class="badge ok">verified</span></td><td><code>composer update symfony/process</code></td></tr></tbody></table></section>
+<section class="finding" id="finding-1">
+<h2>symfony/http-foundation <span class="version">v6.4.4</span></h2>
+<p class="state">Transitive dependency.</p>
+<h3>Advisories</h3><ul class="advisories">
+<li><strong><a href="https://symfony.com/cve-2024-50345" rel="noopener">CVE-2024-50345 <small>(PKSA-b35n-565h-rs4q)</small></a></strong> <span class="badge sev-low">low</span><br>CVE-2024-50345: Open redirect via browser-sanitized URLs<br><small>affected versions: <code>&gt;=2.0.0,&lt;3.0.0|&gt;=3.0.0,&lt;4.0.0|&gt;=4.0.0,&lt;5.0.0|&gt;=5.0.0,&lt;5.1.0|&gt;=5.1.0,&lt;5.2.0|&gt;=5.2.0,&lt;5.3.0|&gt;=5.3.0,&lt;5.4.0|&gt;=5.4.0,&lt;5.4.46|&gt;=6.0.0,&lt;6.1.0|&gt;=6.1.0,&lt;6.2.0|&gt;=6.2.0,&lt;6.3.0|&gt;=6.3.0,&lt;6.4.0|&gt;=6.4.0,&lt;6.4.14|&gt;=7.0.0,&lt;7.1.0|&gt;=7.1.0,&lt;7.1.7</code></small></li>
+</ul>
+<h3>Introduced by</h3>
+<pre class="tree">root
+└── laravel/framework v10.48.8
+    └── fruitcake/php-cors v1.3.0
+        └── symfony/http-foundation v6.4.4  (requires ^4.4|^5.4|^6|^7)
+
+root
+└── laravel/helpers v1.7.0
+    └── laravel/framework v10.48.8
+        └── fruitcake/php-cors v1.3.0
+            └── symfony/http-foundation v6.4.4  (requires ^4.4|^5.4|^6|^7)
+
+root
+└── laravel/prompts v0.1.25
+    └── laravel/framework v10.48.8
+        └── fruitcake/php-cors v1.3.0
+            └── symfony/http-foundation v6.4.4  (requires ^4.4|^5.4|^6|^7)
+
+root
+└── laravel/sanctum v3.3.3
+    └── laravel/framework v10.48.8
+        └── fruitcake/php-cors v1.3.0
+            └── symfony/http-foundation v6.4.4  (requires ^4.4|^5.4|^6|^7)
+
+root
+└── laravel/scout v10.8.6
+    └── laravel/framework v10.48.8
+        └── fruitcake/php-cors v1.3.0
+            └── symfony/http-foundation v6.4.4  (requires ^4.4|^5.4|^6|^7)</pre>
+<p><small>… and 37 more paths</small></p>
+<h3>Recommended remediation</h3>
+<p class="command"><code>composer update symfony/http-foundation</code></p>
+<p class="validation"><span class="badge ok">Composer validation: PASS</span> 1 package changed, 0 added, 0 removed, 0 root constraints changed.</p>
+<details open><summary>Expected changes (1)</summary><table class="changes"><thead><tr><th>Package</th><th>From</th><th>To</th><th>Kind</th></tr></thead><tbody>
+<tr><td>symfony/http-foundation</td><td>v6.4.4</td><td>v6.4.15</td><td>upgraded, patch</td></tr>
+</tbody></table></details>
+<details><summary>Other candidates (9)</summary><table class="candidates"><thead><tr><th>Outcome</th><th>Command</th><th>Detail</th></tr></thead><tbody>
+<tr><td><span class="badge ok">valid, rank 2</span></td><td><code>composer update symfony/http-foundation -w -m --with &apos;symfony/http-foundation:&gt;=6.4.14,&lt;7.0.0 || &gt;=7.1.7&apos;</code></td><td>1 changes</td></tr>
+<tr><td><span class="badge ok">valid, rank 3</span></td><td><code>composer update laravel/helpers -W -m --with &apos;symfony/http-foundation:&gt;=6.4.14,&lt;7.0.0 || &gt;=7.1.7&apos;</code></td><td>1 changes</td></tr>
+<tr><td><span class="badge ok">valid, rank 4</span></td><td><code>composer update laravel/prompts -W -m --with &apos;symfony/http-foundation:&gt;=6.4.14,&lt;7.0.0 || &gt;=7.1.7&apos;</code></td><td>1 changes</td></tr>
+<tr><td><span class="badge ok">valid, rank 5</span></td><td><code>composer update laravel/sanctum -W -m --with &apos;symfony/http-foundation:&gt;=6.4.14,&lt;7.0.0 || &gt;=7.1.7&apos;</code></td><td>1 changes</td></tr>
+<tr><td><span class="badge ok">valid, rank 6</span></td><td><code>composer update teamtnt/laravel-scout-tntsearch-driver -W -m --with &apos;symfony/http-foundation:&gt;=6.4.14,&lt;7.0.0 || &gt;=7.1.7&apos;</code></td><td>1 changes</td></tr>
+<tr><td><span class="badge ok">valid, rank 7</span></td><td><code>composer update laravel/framework -W -m --with &apos;symfony/http-foundation:&gt;=6.4.14,&lt;7.0.0 || &gt;=7.1.7&apos;</code></td><td>2 changes</td></tr>
+<tr><td><span class="badge ok">valid, rank 8</span></td><td><code>composer update laravel/scout -W -m --with &apos;symfony/http-foundation:&gt;=6.4.14,&lt;7.0.0 || &gt;=7.1.7&apos;</code></td><td>2 changes</td></tr>
+<tr><td><span class="badge skipped">not tried</span></td><td><code>composer require --no-update laravel/framework:^11.0 &amp;&amp; composer update laravel/framework -W -m --with &apos;symfony/http-foundation:&gt;=6.4.14,&lt;7.0.0 || &gt;=7.1.7&apos;</code></td><td>a better candidate already exists</td></tr>
+<tr><td><span class="badge skipped">not tried</span></td><td><code>composer require --no-update laravel/helpers:^2.0 &amp;&amp; composer update laravel/helpers -W -m --with &apos;symfony/http-foundation:&gt;=6.4.14,&lt;7.0.0 || &gt;=7.1.7&apos;</code></td><td>a better candidate already exists</td></tr>
+</tbody></table></details>
+</section>
+<section class="finding" id="finding-2">
+<h2>symfony/process <span class="version">v6.4.4</span></h2>
+<p class="state">Transitive dependency.</p>
+<h3>Advisories</h3><ul class="advisories">
+<li><strong><a href="https://symfony.com/cve-2024-51736" rel="noopener">CVE-2024-51736 <small>(PKSA-wws7-mr54-jsny)</small></a></strong> <span class="badge sev-high">high</span><br>CVE-2024-51736: Command execution hijack on Windows with Process class<br><small>affected versions: <code>&gt;=2.0.0,&lt;3.0.0|&gt;=3.0.0,&lt;4.0.0|&gt;=4.0.0,&lt;5.0.0|&gt;=5.0.0,&lt;5.1.0|&gt;=5.1.0,&lt;5.2.0|&gt;=5.2.0,&lt;5.3.0|&gt;=5.3.0,&lt;5.4.0|&gt;=5.4.0,&lt;5.4.46|&gt;=6.0.0,&lt;6.1.0|&gt;=6.1.0,&lt;6.2.0|&gt;=6.2.0,&lt;6.3.0|&gt;=6.3.0,&lt;6.4.0|&gt;=6.4.0,&lt;6.4.14|&gt;=7.0.0,&lt;7.1.0|&gt;=7.1.0,&lt;7.1.7</code></small></li>
+</ul>
+<h3>Introduced by</h3>
+<pre class="tree">root
+└── laravel/framework v10.48.8
+    └── symfony/process v6.4.4  (requires ^6.2)
+
+root
+└── laravel/helpers v1.7.0
+    └── laravel/framework v10.48.8
+        └── symfony/process v6.4.4  (requires ^6.2)
+
+root
+└── laravel/prompts v0.1.25
+    └── laravel/framework v10.48.8
+        └── symfony/process v6.4.4  (requires ^6.2)
+
+root
+└── laravel/sanctum v3.3.3
+    └── laravel/framework v10.48.8
+        └── symfony/process v6.4.4  (requires ^6.2)
+
+root
+└── laravel/scout v10.8.6
+    └── laravel/framework v10.48.8
+        └── symfony/process v6.4.4  (requires ^6.2)</pre>
+<p><small>… and 9 more paths</small></p>
+<h3>Recommended remediation</h3>
+<p class="command"><code>composer update symfony/process</code></p>
+<p class="validation"><span class="badge ok">Composer validation: PASS</span> 1 package changed, 0 added, 0 removed, 0 root constraints changed.</p>
+<details open><summary>Expected changes (1)</summary><table class="changes"><thead><tr><th>Package</th><th>From</th><th>To</th><th>Kind</th></tr></thead><tbody>
+<tr><td>symfony/process</td><td>v6.4.4</td><td>v6.4.15</td><td>upgraded, patch</td></tr>
+</tbody></table></details>
+<details><summary>Other candidates (9)</summary><table class="candidates"><thead><tr><th>Outcome</th><th>Command</th><th>Detail</th></tr></thead><tbody>
+<tr><td><span class="badge ok">valid, rank 2</span></td><td><code>composer update symfony/process -w -m --with &apos;symfony/process:&gt;=6.4.14,&lt;7.0.0 || &gt;=7.1.7&apos;</code></td><td>1 changes</td></tr>
+<tr><td><span class="badge ok">valid, rank 3</span></td><td><code>composer update laravel/helpers -W -m --with &apos;symfony/process:&gt;=6.4.14,&lt;7.0.0 || &gt;=7.1.7&apos;</code></td><td>1 changes</td></tr>
+<tr><td><span class="badge ok">valid, rank 4</span></td><td><code>composer update laravel/prompts -W -m --with &apos;symfony/process:&gt;=6.4.14,&lt;7.0.0 || &gt;=7.1.7&apos;</code></td><td>1 changes</td></tr>
+<tr><td><span class="badge ok">valid, rank 5</span></td><td><code>composer update laravel/sanctum -W -m --with &apos;symfony/process:&gt;=6.4.14,&lt;7.0.0 || &gt;=7.1.7&apos;</code></td><td>1 changes</td></tr>
+<tr><td><span class="badge ok">valid, rank 6</span></td><td><code>composer update teamtnt/laravel-scout-tntsearch-driver -W -m --with &apos;symfony/process:&gt;=6.4.14,&lt;7.0.0 || &gt;=7.1.7&apos;</code></td><td>1 changes</td></tr>
+<tr><td><span class="badge ok">valid, rank 7</span></td><td><code>composer update laravel/framework -W -m --with &apos;symfony/process:&gt;=6.4.14,&lt;7.0.0 || &gt;=7.1.7&apos;</code></td><td>2 changes</td></tr>
+<tr><td><span class="badge ok">valid, rank 8</span></td><td><code>composer update laravel/scout -W -m --with &apos;symfony/process:&gt;=6.4.14,&lt;7.0.0 || &gt;=7.1.7&apos;</code></td><td>2 changes</td></tr>
+<tr><td><span class="badge skipped">not tried</span></td><td><code>composer require --no-update laravel/framework:^11.0 &amp;&amp; composer update laravel/framework -W -m --with &apos;symfony/process:&gt;=6.4.14,&lt;7.0.0 || &gt;=7.1.7&apos;</code></td><td>a better candidate already exists</td></tr>
+<tr><td><span class="badge skipped">not tried</span></td><td><code>composer require --no-update laravel/helpers:^2.0 &amp;&amp; composer update laravel/helpers -W -m --with &apos;symfony/process:&gt;=6.4.14,&lt;7.0.0 || &gt;=7.1.7&apos;</code></td><td>a better candidate already exists</td></tr>
+</tbody></table></details>
+</section>
+<section class="meta"><h2>Analysis metadata</h2><dl>
+<dt>project</dt><dd>koel-symfony-parent-permits</dd>
+<dt>composer version</dt><dd>(fixture)</dd>
+<dt>php version</dt><dd>(fixture)</dd>
+<dt>advisory source</dt><dd>advisory snapshot advisories.json</dd>
+<dt>solver</dt><dd>in-process Composer dry-run</dd>
+<dt>composer json sha256</dt><dd>1d83a6fd0667cb9060ddcbb5134a53ca7288fda54fe0d88efddecffc9f57605d</dd>
+<dt>composer lock sha256</dt><dd>920a682f7d00cc3136de9c274c03cb9980e591ed30164b6328601b79faa6c5a0</dd>
+<dt>analysis timestamp</dt><dd>(fixture)</dd>
+<dt>locked packages</dt><dd>180</dd>
+</dl></section>
+</main></body></html>

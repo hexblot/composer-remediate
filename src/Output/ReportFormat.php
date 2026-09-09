@@ -37,10 +37,10 @@ enum ReportFormat: string
         return [$format, $spec];
     }
 
-    public function render(Plan $plan, bool $minimalChangesSupported): string
+    public function render(Plan $plan, bool $minimalChangesSupported, bool $decorated = false): string
     {
         return match ($this) {
-            self::Text => (new TextRenderer($minimalChangesSupported))->render($plan),
+            self::Text => (new TextRenderer($minimalChangesSupported, $decorated))->render($plan),
             self::Html => (new HtmlRenderer($minimalChangesSupported))->render($plan),
             self::Json => (new JsonRenderer($minimalChangesSupported))->render($plan),
             self::None => '',

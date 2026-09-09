@@ -19,6 +19,9 @@ final class JsonRenderer
 {
     public const SCHEMA_VERSION = 1;
 
+    /** Dependency paths listed per finding; the total is always reported in paths_total. */
+    public const MAX_PATHS = 10;
+
     public function __construct(private readonly bool $minimalChangesSupported = true)
     {
     }
@@ -91,10 +94,12 @@ final class JsonRenderer
                 'affected_versions' => $x->advisory->affectedVersions->getPrettyString(),
                 'sources' => $x->advisory->sources,
             ], $fp->allFindings()),
+            'paths_total' => count($f->paths),
             'paths' => array_map(static fn (DependencyPath $p): array => [
                 'cyclic' => $p->cyclic,
                 'chain' => array_map(static fn ($s): array => ['package' => $s->isRoot ? 'root' : $s->packageName, 'version' => $s->isRoot ? null : $s->prettyVersion, 'requires' => $s->requiresConstraint], array_reverse($p->segments)),
-            ], $f->paths),
+                'target' => ['package' => $f->packageName, 'version' => $f->prettyVersion],
+            ], array_slice($f->paths, 0, self::MAX_PATHS)),
             'remediation' => $rec === null ? ['status' => 'none', 'blocker' => $fp->blocker] : [
                 'status' => 'verified',
                 'command' => $rec->candidate->commandLine($this->minimalChangesSupported),

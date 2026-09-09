@@ -8,26 +8,42 @@ use Remediate\Engine\Graph\DependencyPath;
 use Remediate\Engine\Plan\EvaluatedCandidate;
 use Remediate\Engine\Plan\FindingPlan;
 use Remediate\Engine\Plan\Plan;
+use Symfony\Component\Console\Formatter\OutputFormatter;
 
 final class TextRenderer
 {
-    public function __construct(private readonly bool $minimalChangesSupported = true)
+    /**
+     * @param bool $decorated emit Symfony console formatting tags (colours) for terminal output;
+     *                        keep false when the text goes to a file
+     */
+    public function __construct(
+        private readonly bool $minimalChangesSupported = true,
+        private readonly bool $decorated = false,
+    ) {
+    }
+
+    private function tag(string $text, string $style): string
     {
+        if (!$this->decorated) {
+            return $text;
+        }
+
+        return sprintf('<%s>%s</>', $style, OutputFormatter::escape($text));
     }
 
     public function render(Plan $plan): string
     {
         $out = [];
-        $out[] = sprintf('Composer Remediate — %d finding%s in %s', count($plan->findings), count($plan->findings) === 1 ? '' : 's', $plan->metadata['project'] ?? '');
+        $out[] = $this->tag(sprintf('Composer Remediate — %d finding%s in %s', count($plan->findings), count($plan->findings) === 1 ? '' : 's', $plan->metadata['project'] ?? ''), 'options=bold');
         $out[] = sprintf('Advisories: %s', $plan->metadata['advisory_source'] ?? '');
         $out[] = sprintf('Solver: %s', $plan->metadata['solver'] ?? '');
         foreach ($plan->warnings as $warning) {
-            $out[] = 'Warning: ' . $warning;
+            $out[] = $this->tag('Warning: ' . $warning, 'fg=yellow');
         }
         $out[] = '';
 
         if ($plan->findings === []) {
-            $out[] = 'No known vulnerabilities in the locked dependencies.';
+            $out[] = $this->tag('No known vulnerabilities in the locked dependencies.', 'fg=green');
 
             return implode("\n", $out) . "\n";
         }
@@ -45,9 +61,9 @@ final class TextRenderer
     {
         $f = $plan->finding;
         $out = [];
-        $out[] = implode(', ', array_map(static fn ($finding): string => $finding->advisory->displayId(), $plan->allFindings()));
+        $out[] = $this->tag(implode(', ', array_map(static fn ($finding): string => $finding->advisory->displayId(), $plan->allFindings())), 'fg=red;options=bold');
         $out[] = str_repeat('─', 60);
-        $out[] = 'Affected';
+        $out[] = $this->heading('Affected');
         $out[] = sprintf('  %s %s%s', $f->packageName, $f->prettyVersion, $f->viaReplacedName !== null ? sprintf(' (replaces %s)', $f->viaReplacedName) : '');
         foreach ($plan->allFindings() as $finding) {
             $a = $finding->advisory;
@@ -58,7 +74,7 @@ final class TextRenderer
             $out[] = '    affected versions: ' . $a->affectedVersions->getPrettyString();
         }
 
-        $out[] = 'Introduced by';
+        $out[] = $this->heading('Introduced by');
         if ($f->paths === []) {
             $out[] = '  (no path to the root package found)';
         }
@@ -69,20 +85,20 @@ final class TextRenderer
             $out[] = sprintf('  … and %d more path%s', count($f->paths) - 5, count($f->paths) - 5 === 1 ? '' : 's');
         }
 
-        $out[] = 'Current state';
+        $out[] = $this->heading('Current state');
         $out[] = '  ' . ($f->isRootRequirement ? 'Direct dependency.' : 'Transitive dependency.') . ($f->isDev ? ' Development requirement only.' : '');
 
         $recommended = $plan->recommended();
         if ($recommended === null || $recommended->diff === null) {
-            $out[] = 'Recommended remediation';
-            $out[] = '  No verified remediation found.';
+            $out[] = $this->heading('Recommended remediation');
+            $out[] = $this->tag('  No verified remediation found.', 'fg=red');
             if ($plan->blocker !== null) {
                 $out[] = '  ' . $plan->blocker;
             }
         } else {
             $diff = $recommended->diff;
             $target = $diff->changeFor($f->packageName);
-            $out[] = 'Recommended remediation';
+            $out[] = $this->heading('Recommended remediation');
             foreach ($recommended->candidate->allowList as $name) {
                 $change = $diff->changeFor($name);
                 if ($change !== null) {
@@ -98,9 +114,9 @@ final class TextRenderer
             if ($diff->prereleaseTargets() !== []) {
                 $out[] = '  Note: installs pre-release versions (' . implode(', ', array_map(static fn ($c): string => $c->packageName . ' ' . $c->toPretty, $diff->prereleaseTargets())) . '); no stable release satisfies the constraints yet.';
             }
-            $out[] = 'Composer validation';
-            $out[] = sprintf(
-                '  PASS  %d package%s changed, %d added, %d removed, %d root constraint%s changed%s',
+            $out[] = $this->heading('Composer validation');
+            $out[] = $this->tag('  PASS', 'fg=green;options=bold') . sprintf(
+                '  %d package%s changed, %d added, %d removed, %d root constraint%s changed%s',
                 count($diff->versionChanges()),
                 count($diff->versionChanges()) === 1 ? '' : 's',
                 count($diff->added()),
@@ -109,43 +125,48 @@ final class TextRenderer
                 count($recommended->candidate->rootConstraintChanges) === 1 ? '' : 's',
                 $diff->hasMajorChange() ? ', includes a major version change' : '',
             );
-            $out[] = 'Expected changes';
+            $out[] = $this->heading('Expected changes');
             foreach (array_slice($diff->changes, 0, 30) as $change) {
                 $out[] = '  ' . $change->describe();
             }
             if ($diff->count() > 30) {
                 $out[] = sprintf('  … and %d more', $diff->count() - 30);
             }
-            $out[] = 'Recommended command';
-            $out[] = '  ' . $recommended->candidate->commandLine($this->minimalChangesSupported);
+            $out[] = $this->heading('Recommended command');
+            $out[] = '  ' . $this->tag($recommended->candidate->commandLine($this->minimalChangesSupported), 'fg=cyan;options=bold');
         }
 
         $others = array_values(array_filter($plan->evaluated, static fn (EvaluatedCandidate $c): bool => $c !== $recommended));
         if ($others !== [] || $plan->skipped !== []) {
-            $out[] = 'Other candidates';
+            $out[] = $this->heading('Other candidates');
             $rank = 2;
             foreach ($plan->ranked as $candidate) {
                 if ($candidate === $recommended) {
                     continue;
                 }
-                $out[] = sprintf('  valid, rank %d: %s  (%d changes)', $rank++, $candidate->candidate->commandLine($this->minimalChangesSupported), $candidate->diff?->count() ?? 0);
+                $out[] = '  ' . $this->tag(sprintf('valid, rank %d:', $rank++), 'fg=green') . sprintf(' %s  (%d changes)', $candidate->candidate->commandLine($this->minimalChangesSupported), $candidate->diff?->count() ?? 0);
             }
             foreach ($others as $candidate) {
                 if ($candidate->valid) {
                     continue;
                 }
-                $out[] = sprintf('  rejected: %s', $candidate->candidate->commandLine($this->minimalChangesSupported));
+                $out[] = '  ' . $this->tag('rejected:', 'fg=yellow') . ' ' . $candidate->candidate->commandLine($this->minimalChangesSupported);
                 $reason = $candidate->rejectionReason ?? '';
                 foreach (array_slice(explode("\n", $reason), 0, 6) as $line) {
                     $out[] = '      ' . $line;
                 }
             }
             foreach ($plan->skipped as $candidate) {
-                $out[] = sprintf('  not tried (a better candidate already exists): %s', $candidate->commandLine($this->minimalChangesSupported));
+                $out[] = '  ' . $this->tag('not tried (a better candidate already exists):', 'fg=gray') . ' ' . $candidate->commandLine($this->minimalChangesSupported);
             }
         }
 
         return $out;
+    }
+
+    private function heading(string $text): string
+    {
+        return $this->tag($text, 'options=underscore');
     }
 
     /** @return list<string> */
