@@ -1,0 +1,1932 @@
+{
+    "bomFormat": "CycloneDX",
+    "specVersion": "1.6",
+    "serialNumber": "urn:uuid:00000000-0000-4000-8000-000000000000",
+    "version": 1,
+    "metadata": {
+        "timestamp": "2026-01-01T00:00:00+00:00",
+        "tools": {
+            "components": [
+                {
+                    "type": "application",
+                    "name": "composer-remediate",
+                    "version": "dev-main"
+                }
+            ]
+        },
+        "properties": [
+            {
+                "name": "composer-remediate:composer_version",
+                "value": "(fixture)"
+            },
+            {
+                "name": "composer-remediate:advisory_source",
+                "value": "advisory snapshot advisories.json"
+            },
+            {
+                "name": "composer-remediate:composer_lock_sha256",
+                "value": "f0ddb6b55ce493414f04b4107b13651fca4f9c51feb3f57710197a41d2a00f93"
+            },
+            {
+                "name": "composer-remediate:combined_command",
+                "value": "composer update symfony/validator drupal/core-recommended:10.3.4 -W -m"
+            },
+            {
+                "name": "composer-remediate:exit_code",
+                "value": "2"
+            }
+        ]
+    },
+    "components": [
+        {
+            "type": "library",
+            "bom-ref": "pkg:composer/adci/full-name-parser@0.2.4",
+            "group": "adci",
+            "name": "full-name-parser",
+            "version": "0.2.4",
+            "purl": "pkg:composer/adci/full-name-parser@0.2.4",
+            "scope": "required"
+        },
+        {
+            "type": "library",
+            "bom-ref": "pkg:composer/asm89/stack-cors@2.2.0",
+            "group": "asm89",
+            "name": "stack-cors",
+            "version": "v2.2.0",
+            "purl": "pkg:composer/asm89/stack-cors@2.2.0",
+            "scope": "required"
+        },
+        {
+            "type": "library",
+            "bom-ref": "pkg:composer/carbonphp/carbon-doctrine-types@3.2.0",
+            "group": "carbonphp",
+            "name": "carbon-doctrine-types",
+            "version": "3.2.0",
+            "purl": "pkg:composer/carbonphp/carbon-doctrine-types@3.2.0",
+            "scope": "required"
+        },
+        {
+            "type": "library",
+            "bom-ref": "pkg:composer/chi-teck/drupal-code-generator@3.6.1",
+            "group": "chi-teck",
+            "name": "drupal-code-generator",
+            "version": "3.6.1",
+            "purl": "pkg:composer/chi-teck/drupal-code-generator@3.6.1",
+            "scope": "required"
+        },
+        {
+            "type": "library",
+            "bom-ref": "pkg:composer/citation-style-language/locales@0.0.20",
+            "group": "citation-style-language",
+            "name": "locales",
+            "version": "v0.0.20",
+            "purl": "pkg:composer/citation-style-language/locales@0.0.20",
+            "scope": "required"
+        },
+        {
+            "type": "library",
+            "bom-ref": "pkg:composer/citation-style-language/styles@0.0.439",
+            "group": "citation-style-language",
+            "name": "styles",
+            "version": "v0.0.439",
+            "purl": "pkg:composer/citation-style-language/styles@0.0.439",
+            "scope": "required"
+        },
+        {
+            "type": "library",
+            "bom-ref": "pkg:composer/composer/installers@1.12.0",
+            "group": "composer",
+            "name": "installers",
+            "version": "v1.12.0",
+            "purl": "pkg:composer/composer/installers@1.12.0",
+            "scope": "required"
+        },
+        {
+            "type": "library",
+            "bom-ref": "pkg:composer/composer/semver@3.4.2",
+            "group": "composer",
+            "name": "semver",
+            "version": "3.4.2",
+            "purl": "pkg:composer/composer/semver@3.4.2",
+            "scope": "required"
+        },
+        {
+            "type": "library",
+            "bom-ref": "pkg:composer/consolidation/annotated-command@4.10.0",
+            "group": "consolidation",
+            "name": "annotated-command",
+            "version": "4.10.0",
+            "purl": "pkg:composer/consolidation/annotated-command@4.10.0",
+            "scope": "required"
+        },
+        {
+            "type": "library",
+            "bom-ref": "pkg:composer/consolidation/config@2.1.2",
+            "group": "consolidation",
+            "name": "config",
+            "version": "2.1.2",
+            "purl": "pkg:composer/consolidation/config@2.1.2",
+            "scope": "required"
+        },
+        {
+            "type": "library",
+            "bom-ref": "pkg:composer/consolidation/filter-via-dot-access-data@2.0.2",
+            "group": "consolidation",
+            "name": "filter-via-dot-access-data",
+            "version": "2.0.2",
+            "purl": "pkg:composer/consolidation/filter-via-dot-access-data@2.0.2",
+            "scope": "required"
+        },
+        {
+            "type": "library",
+            "bom-ref": "pkg:composer/consolidation/log@3.1.0",
+            "group": "consolidation",
+            "name": "log",
+            "version": "3.1.0",
+            "purl": "pkg:composer/consolidation/log@3.1.0",
+            "scope": "required"
+        },
+        {
+            "type": "library",
+            "bom-ref": "pkg:composer/consolidation/output-formatters@4.5.0",
+            "group": "consolidation",
+            "name": "output-formatters",
+            "version": "4.5.0",
+            "purl": "pkg:composer/consolidation/output-formatters@4.5.0",
+            "scope": "required"
+        },
+        {
+            "type": "library",
+            "bom-ref": "pkg:composer/consolidation/robo@4.0.6",
+            "group": "consolidation",
+            "name": "robo",
+            "version": "4.0.6",
+            "purl": "pkg:composer/consolidation/robo@4.0.6",
+            "scope": "required"
+        },
+        {
+            "type": "library",
+            "bom-ref": "pkg:composer/consolidation/self-update@2.2.0",
+            "group": "consolidation",
+            "name": "self-update",
+            "version": "2.2.0",
+            "purl": "pkg:composer/consolidation/self-update@2.2.0",
+            "scope": "required"
+        },
+        {
+            "type": "library",
+            "bom-ref": "pkg:composer/consolidation/site-alias@4.1.0",
+            "group": "consolidation",
+            "name": "site-alias",
+            "version": "4.1.0",
+            "purl": "pkg:composer/consolidation/site-alias@4.1.0",
+            "scope": "required"
+        },
+        {
+            "type": "library",
+            "bom-ref": "pkg:composer/consolidation/site-process@5.4.0",
+            "group": "consolidation",
+            "name": "site-process",
+            "version": "5.4.0",
+            "purl": "pkg:composer/consolidation/site-process@5.4.0",
+            "scope": "required"
+        },
+        {
+            "type": "library",
+            "bom-ref": "pkg:composer/cweagans/composer-patches@1.7.3",
+            "group": "cweagans",
+            "name": "composer-patches",
+            "version": "1.7.3",
+            "purl": "pkg:composer/cweagans/composer-patches@1.7.3",
+            "scope": "required"
+        },
+        {
+            "type": "library",
+            "bom-ref": "pkg:composer/dflydev/dot-access-data@3.0.3",
+            "group": "dflydev",
+            "name": "dot-access-data",
+            "version": "v3.0.3",
+            "purl": "pkg:composer/dflydev/dot-access-data@3.0.3",
+            "scope": "required"
+        },
+        {
+            "type": "library",
+            "bom-ref": "pkg:composer/discoverygarden/dgi_image_discovery@1.3.1",
+            "group": "discoverygarden",
+            "name": "dgi_image_discovery",
+            "version": "v1.3.1",
+            "purl": "pkg:composer/discoverygarden/dgi_image_discovery@1.3.1",
+            "scope": "required"
+        },
+        {
+            "type": "library",
+            "bom-ref": "pkg:composer/doctrine/annotations@1.14.3",
+            "group": "doctrine",
+            "name": "annotations",
+            "version": "1.14.3",
+            "purl": "pkg:composer/doctrine/annotations@1.14.3",
+            "scope": "required"
+        },
+        {
+            "type": "library",
+            "bom-ref": "pkg:composer/doctrine/common@3.4.4",
+            "group": "doctrine",
+            "name": "common",
+            "version": "3.4.4",
+            "purl": "pkg:composer/doctrine/common@3.4.4",
+            "scope": "excluded"
+        },
+        {
+            "type": "library",
+            "bom-ref": "pkg:composer/doctrine/deprecations@1.1.3",
+            "group": "doctrine",
+            "name": "deprecations",
+            "version": "1.1.3",
+            "purl": "pkg:composer/doctrine/deprecations@1.1.3",
+            "scope": "required"
+        },
+        {
+            "type": "library",
+            "bom-ref": "pkg:composer/doctrine/event-manager@2.0.1",
+            "group": "doctrine",
+            "name": "event-manager",
+            "version": "2.0.1",
+            "purl": "pkg:composer/doctrine/event-manager@2.0.1",
+            "scope": "excluded"
+        },
+        {
+            "type": "library",
+            "bom-ref": "pkg:composer/doctrine/lexer@2.1.1",
+            "group": "doctrine",
+            "name": "lexer",
+            "version": "2.1.1",
+            "purl": "pkg:composer/doctrine/lexer@2.1.1",
+            "scope": "required"
+        },
+        {
+            "type": "library",
+            "bom-ref": "pkg:composer/doctrine/persistence@3.3.3",
+            "group": "doctrine",
+            "name": "persistence",
+            "version": "3.3.3",
+            "purl": "pkg:composer/doctrine/persistence@3.3.3",
+            "scope": "excluded"
+        },
+        {
+            "type": "library",
+            "bom-ref": "pkg:composer/drupal/action@0.2.1",
+            "group": "drupal",
+            "name": "action",
+            "version": "0.2.1",
+            "purl": "pkg:composer/drupal/action@0.2.1",
+            "scope": "required"
+        },
+        {
+            "type": "library",
+            "bom-ref": "pkg:composer/drupal/admin_toolbar@3.4.2",
+            "group": "drupal",
+            "name": "admin_toolbar",
+            "version": "3.4.2",
+            "purl": "pkg:composer/drupal/admin_toolbar@3.4.2",
+            "scope": "required"
+        },
+        {
+            "type": "library",
+            "bom-ref": "pkg:composer/drupal/advanced_search@2.1.0",
+            "group": "drupal",
+            "name": "advanced_search",
+            "version": "2.1.0",
+            "purl": "pkg:composer/drupal/advanced_search@2.1.0",
+            "scope": "required"
+        },
+        {
+            "type": "library",
+            "bom-ref": "pkg:composer/drupal/better_exposed_filters@6.0.6",
+            "group": "drupal",
+            "name": "better_exposed_filters",
+            "version": "6.0.6",
+            "purl": "pkg:composer/drupal/better_exposed_filters@6.0.6",
+            "scope": "required"
+        },
+        {
+            "type": "library",
+            "bom-ref": "pkg:composer/drupal/citation_select@2.0.0-beta1",
+            "group": "drupal",
+            "name": "citation_select",
+            "version": "2.0.0-beta1",
+            "purl": "pkg:composer/drupal/citation_select@2.0.0-beta1",
+            "scope": "required"
+        },
+        {
+            "type": "library",
+            "bom-ref": "pkg:composer/drupal/coi@4.0.0",
+            "group": "drupal",
+            "name": "coi",
+            "version": "4.0.0",
+            "purl": "pkg:composer/drupal/coi@4.0.0",
+            "scope": "required"
+        },
+        {
+            "type": "library",
+            "bom-ref": "pkg:composer/drupal/config_inspector@2.1.9",
+            "group": "drupal",
+            "name": "config_inspector",
+            "version": "2.1.9",
+            "purl": "pkg:composer/drupal/config_inspector@2.1.9",
+            "scope": "excluded"
+        },
+        {
+            "type": "library",
+            "bom-ref": "pkg:composer/drupal/config_override_core_fields@4.0.0",
+            "group": "drupal",
+            "name": "config_override_core_fields",
+            "version": "4.0.0",
+            "purl": "pkg:composer/drupal/config_override_core_fields@4.0.0",
+            "scope": "required"
+        },
+        {
+            "type": "library",
+            "bom-ref": "pkg:composer/drupal/config_update@2.0.0-alpha3",
+            "group": "drupal",
+            "name": "config_update",
+            "version": "2.0.0-alpha3",
+            "purl": "pkg:composer/drupal/config_update@2.0.0-alpha3",
+            "scope": "required"
+        },
+        {
+            "type": "library",
+            "bom-ref": "pkg:composer/drupal/context@5.0.0-rc1",
+            "group": "drupal",
+            "name": "context",
+            "version": "5.0.0-rc1",
+            "purl": "pkg:composer/drupal/context@5.0.0-rc1",
+            "scope": "required"
+        },
+        {
+            "type": "library",
+            "bom-ref": "pkg:composer/drupal/context_ui@5.0.0-rc1",
+            "group": "drupal",
+            "name": "context_ui",
+            "version": "5.0.0-rc1",
+            "purl": "pkg:composer/drupal/context_ui@5.0.0-rc1",
+            "scope": "required"
+        },
+        {
+            "type": "library",
+            "bom-ref": "pkg:composer/drupal/controlled_access_terms@2.4.3",
+            "group": "drupal",
+            "name": "controlled_access_terms",
+            "version": "2.4.3",
+            "purl": "pkg:composer/drupal/controlled_access_terms@2.4.3",
+            "scope": "required"
+        },
+        {
+            "type": "library",
+            "bom-ref": "pkg:composer/drupal/core@10.3.1",
+            "group": "drupal",
+            "name": "core",
+            "version": "10.3.1",
+            "purl": "pkg:composer/drupal/core@10.3.1",
+            "scope": "required"
+        },
+        {
+            "type": "library",
+            "bom-ref": "pkg:composer/drupal/core-composer-scaffold@10.3.1",
+            "group": "drupal",
+            "name": "core-composer-scaffold",
+            "version": "10.3.1",
+            "purl": "pkg:composer/drupal/core-composer-scaffold@10.3.1",
+            "scope": "required"
+        },
+        {
+            "type": "library",
+            "bom-ref": "pkg:composer/drupal/core-recommended@10.3.1",
+            "group": "drupal",
+            "name": "core-recommended",
+            "version": "10.3.1",
+            "purl": "pkg:composer/drupal/core-recommended@10.3.1",
+            "scope": "required"
+        },
+        {
+            "type": "library",
+            "bom-ref": "pkg:composer/drupal/csv_serialization@4.0.0",
+            "group": "drupal",
+            "name": "csv_serialization",
+            "version": "4.0.0",
+            "purl": "pkg:composer/drupal/csv_serialization@4.0.0",
+            "scope": "required"
+        },
+        {
+            "type": "library",
+            "bom-ref": "pkg:composer/drupal/ctools@4.1.0",
+            "group": "drupal",
+            "name": "ctools",
+            "version": "4.1.0",
+            "purl": "pkg:composer/drupal/ctools@4.1.0",
+            "scope": "required"
+        },
+        {
+            "type": "library",
+            "bom-ref": "pkg:composer/drupal/devel@5.2.1",
+            "group": "drupal",
+            "name": "devel",
+            "version": "5.2.1",
+            "purl": "pkg:composer/drupal/devel@5.2.1",
+            "scope": "excluded"
+        },
+        {
+            "type": "library",
+            "bom-ref": "pkg:composer/drupal/eva@3.1.0",
+            "group": "drupal",
+            "name": "eva",
+            "version": "3.1.0",
+            "purl": "pkg:composer/drupal/eva@3.1.0",
+            "scope": "required"
+        },
+        {
+            "type": "library",
+            "bom-ref": "pkg:composer/drupal/facets@2.0.7",
+            "group": "drupal",
+            "name": "facets",
+            "version": "2.0.7",
+            "purl": "pkg:composer/drupal/facets@2.0.7",
+            "scope": "required"
+        },
+        {
+            "type": "library",
+            "bom-ref": "pkg:composer/drupal/field_group@3.4.0",
+            "group": "drupal",
+            "name": "field_group",
+            "version": "3.4.0",
+            "purl": "pkg:composer/drupal/field_group@3.4.0",
+            "scope": "required"
+        },
+        {
+            "type": "library",
+            "bom-ref": "pkg:composer/drupal/field_permissions@1.3.0",
+            "group": "drupal",
+            "name": "field_permissions",
+            "version": "1.3.0",
+            "purl": "pkg:composer/drupal/field_permissions@1.3.0",
+            "scope": "required"
+        },
+        {
+            "type": "library",
+            "bom-ref": "pkg:composer/drupal/field_report@2.1.0",
+            "group": "drupal",
+            "name": "field_report",
+            "version": "2.1.0",
+            "purl": "pkg:composer/drupal/field_report@2.1.0",
+            "scope": "required"
+        },
+        {
+            "type": "library",
+            "bom-ref": "pkg:composer/drupal/file_replace@1.3.0",
+            "group": "drupal",
+            "name": "file_replace",
+            "version": "1.3.0",
+            "purl": "pkg:composer/drupal/file_replace@1.3.0",
+            "scope": "required"
+        },
+        {
+            "type": "library",
+            "bom-ref": "pkg:composer/drupal/filehash@3.0.3",
+            "group": "drupal",
+            "name": "filehash",
+            "version": "3.0.3",
+            "purl": "pkg:composer/drupal/filehash@3.0.3",
+            "scope": "required"
+        },
+        {
+            "type": "library",
+            "bom-ref": "pkg:composer/drupal/flysystem@2.2.0-alpha3",
+            "group": "drupal",
+            "name": "flysystem",
+            "version": "2.2.0-alpha3",
+            "purl": "pkg:composer/drupal/flysystem@2.2.0-alpha3",
+            "scope": "required"
+        },
+        {
+            "type": "library",
+            "bom-ref": "pkg:composer/drupal/fpa@4.0.0",
+            "group": "drupal",
+            "name": "fpa",
+            "version": "4.0.0",
+            "purl": "pkg:composer/drupal/fpa@4.0.0",
+            "scope": "required"
+        },
+        {
+            "type": "library",
+            "bom-ref": "pkg:composer/drupal/geolocation@3.13.0",
+            "group": "drupal",
+            "name": "geolocation",
+            "version": "3.13.0",
+            "purl": "pkg:composer/drupal/geolocation@3.13.0",
+            "scope": "required"
+        },
+        {
+            "type": "library",
+            "bom-ref": "pkg:composer/drupal/hal@2.0.2",
+            "group": "drupal",
+            "name": "hal",
+            "version": "2.0.2",
+            "purl": "pkg:composer/drupal/hal@2.0.2",
+            "scope": "required"
+        },
+        {
+            "type": "library",
+            "bom-ref": "pkg:composer/drupal/islandora@2.12.3",
+            "group": "drupal",
+            "name": "islandora",
+            "version": "2.12.3",
+            "purl": "pkg:composer/drupal/islandora@2.12.3",
+            "scope": "required"
+        },
+        {
+            "type": "library",
+            "bom-ref": "pkg:composer/drupal/islandora_iiif@2.12.3",
+            "group": "drupal",
+            "name": "islandora_iiif",
+            "version": "2.12.3",
+            "purl": "pkg:composer/drupal/islandora_iiif@2.12.3",
+            "scope": "required"
+        },
+        {
+            "type": "library",
+            "bom-ref": "pkg:composer/drupal/islandora_mirador@2.3.7",
+            "group": "drupal",
+            "name": "islandora_mirador",
+            "version": "2.3.7",
+            "purl": "pkg:composer/drupal/islandora_mirador@2.3.7",
+            "scope": "required"
+        },
+        {
+            "type": "library",
+            "bom-ref": "pkg:composer/drupal/jquery_ui@1.7.0",
+            "group": "drupal",
+            "name": "jquery_ui",
+            "version": "1.7.0",
+            "purl": "pkg:composer/drupal/jquery_ui@1.7.0",
+            "scope": "required"
+        },
+        {
+            "type": "library",
+            "bom-ref": "pkg:composer/drupal/jquery_ui_autocomplete@2.1.0",
+            "group": "drupal",
+            "name": "jquery_ui_autocomplete",
+            "version": "2.1.0",
+            "purl": "pkg:composer/drupal/jquery_ui_autocomplete@2.1.0",
+            "scope": "required"
+        },
+        {
+            "type": "library",
+            "bom-ref": "pkg:composer/drupal/jquery_ui_datepicker@2.1.0",
+            "group": "drupal",
+            "name": "jquery_ui_datepicker",
+            "version": "2.1.0",
+            "purl": "pkg:composer/drupal/jquery_ui_datepicker@2.1.0",
+            "scope": "required"
+        },
+        {
+            "type": "library",
+            "bom-ref": "pkg:composer/drupal/jquery_ui_menu@2.1.0",
+            "group": "drupal",
+            "name": "jquery_ui_menu",
+            "version": "2.1.0",
+            "purl": "pkg:composer/drupal/jquery_ui_menu@2.1.0",
+            "scope": "required"
+        },
+        {
+            "type": "library",
+            "bom-ref": "pkg:composer/drupal/jquery_ui_slider@2.1.0",
+            "group": "drupal",
+            "name": "jquery_ui_slider",
+            "version": "2.1.0",
+            "purl": "pkg:composer/drupal/jquery_ui_slider@2.1.0",
+            "scope": "required"
+        },
+        {
+            "type": "library",
+            "bom-ref": "pkg:composer/drupal/jquery_ui_touch_punch@1.1.1",
+            "group": "drupal",
+            "name": "jquery_ui_touch_punch",
+            "version": "1.1.1",
+            "purl": "pkg:composer/drupal/jquery_ui_touch_punch@1.1.1",
+            "scope": "required"
+        },
+        {
+            "type": "library",
+            "bom-ref": "pkg:composer/drupal/jsonld@3.0.1",
+            "group": "drupal",
+            "name": "jsonld",
+            "version": "3.0.1",
+            "purl": "pkg:composer/drupal/jsonld@3.0.1",
+            "scope": "required"
+        },
+        {
+            "type": "library",
+            "bom-ref": "pkg:composer/drupal/jwt@2.1.0",
+            "group": "drupal",
+            "name": "jwt",
+            "version": "2.1.0",
+            "purl": "pkg:composer/drupal/jwt@2.1.0",
+            "scope": "required"
+        },
+        {
+            "type": "library",
+            "bom-ref": "pkg:composer/drupal/key@1.19.0",
+            "group": "drupal",
+            "name": "key",
+            "version": "1.19.0",
+            "purl": "pkg:composer/drupal/key@1.19.0",
+            "scope": "required"
+        },
+        {
+            "type": "library",
+            "bom-ref": "pkg:composer/drupal/migrate_plus@6.0.2",
+            "group": "drupal",
+            "name": "migrate_plus",
+            "version": "6.0.2",
+            "purl": "pkg:composer/drupal/migrate_plus@6.0.2",
+            "scope": "required"
+        },
+        {
+            "type": "library",
+            "bom-ref": "pkg:composer/drupal/migrate_source_csv@3.6.0",
+            "group": "drupal",
+            "name": "migrate_source_csv",
+            "version": "3.6.0",
+            "purl": "pkg:composer/drupal/migrate_source_csv@3.6.0",
+            "scope": "required"
+        },
+        {
+            "type": "library",
+            "bom-ref": "pkg:composer/drupal/openseadragon@2.2.0",
+            "group": "drupal",
+            "name": "openseadragon",
+            "version": "2.2.0",
+            "purl": "pkg:composer/drupal/openseadragon@2.2.0",
+            "scope": "required"
+        },
+        {
+            "type": "library",
+            "bom-ref": "pkg:composer/drupal/pathauto@1.12.0",
+            "group": "drupal",
+            "name": "pathauto",
+            "version": "1.12.0",
+            "purl": "pkg:composer/drupal/pathauto@1.12.0",
+            "scope": "required"
+        },
+        {
+            "type": "library",
+            "bom-ref": "pkg:composer/drupal/pdf@1.2.0",
+            "group": "drupal",
+            "name": "pdf",
+            "version": "1.2.0",
+            "purl": "pkg:composer/drupal/pdf@1.2.0",
+            "scope": "required"
+        },
+        {
+            "type": "library",
+            "bom-ref": "pkg:composer/drupal/prepopulate@2.4.0",
+            "group": "drupal",
+            "name": "prepopulate",
+            "version": "2.4.0",
+            "purl": "pkg:composer/drupal/prepopulate@2.4.0",
+            "scope": "required"
+        },
+        {
+            "type": "library",
+            "bom-ref": "pkg:composer/drupal/rdf@2.1.1",
+            "group": "drupal",
+            "name": "rdf",
+            "version": "2.1.1",
+            "purl": "pkg:composer/drupal/rdf@2.1.1",
+            "scope": "required"
+        },
+        {
+            "type": "library",
+            "bom-ref": "pkg:composer/drupal/rest_oai_pmh@2.0.0-beta15",
+            "group": "drupal",
+            "name": "rest_oai_pmh",
+            "version": "2.0.0-beta15",
+            "purl": "pkg:composer/drupal/rest_oai_pmh@2.0.0-beta15",
+            "scope": "required"
+        },
+        {
+            "type": "library",
+            "bom-ref": "pkg:composer/drupal/restui@1.22.0",
+            "group": "drupal",
+            "name": "restui",
+            "version": "1.22.0",
+            "purl": "pkg:composer/drupal/restui@1.22.0",
+            "scope": "excluded"
+        },
+        {
+            "type": "library",
+            "bom-ref": "pkg:composer/drupal/search_api@1.35.0",
+            "group": "drupal",
+            "name": "search_api",
+            "version": "1.35.0",
+            "purl": "pkg:composer/drupal/search_api@1.35.0",
+            "scope": "required"
+        },
+        {
+            "type": "library",
+            "bom-ref": "pkg:composer/drupal/search_api_solr@4.3.4",
+            "group": "drupal",
+            "name": "search_api_solr",
+            "version": "4.3.4",
+            "purl": "pkg:composer/drupal/search_api_solr@4.3.4",
+            "scope": "required"
+        },
+        {
+            "type": "library",
+            "bom-ref": "pkg:composer/drupal/taxonomy_manager@2.0.11",
+            "group": "drupal",
+            "name": "taxonomy_manager",
+            "version": "2.0.11",
+            "purl": "pkg:composer/drupal/taxonomy_manager@2.0.11",
+            "scope": "required"
+        },
+        {
+            "type": "library",
+            "bom-ref": "pkg:composer/drupal/term_merge@2.0.0-beta6",
+            "group": "drupal",
+            "name": "term_merge",
+            "version": "2.0.0-beta6",
+            "purl": "pkg:composer/drupal/term_merge@2.0.0-beta6",
+            "scope": "required"
+        },
+        {
+            "type": "library",
+            "bom-ref": "pkg:composer/drupal/term_reference_change@2.0.0-beta3",
+            "group": "drupal",
+            "name": "term_reference_change",
+            "version": "2.0.0-beta3",
+            "purl": "pkg:composer/drupal/term_reference_change@2.0.0-beta3",
+            "scope": "required"
+        },
+        {
+            "type": "library",
+            "bom-ref": "pkg:composer/drupal/token@1.14.0",
+            "group": "drupal",
+            "name": "token",
+            "version": "1.14.0",
+            "purl": "pkg:composer/drupal/token@1.14.0",
+            "scope": "required"
+        },
+        {
+            "type": "library",
+            "bom-ref": "pkg:composer/drupal/twig_tweak@3.3.0",
+            "group": "drupal",
+            "name": "twig_tweak",
+            "version": "3.3.0",
+            "purl": "pkg:composer/drupal/twig_tweak@3.3.0",
+            "scope": "required"
+        },
+        {
+            "type": "library",
+            "bom-ref": "pkg:composer/drupal/views_data_export@1.4.0",
+            "group": "drupal",
+            "name": "views_data_export",
+            "version": "1.4.0",
+            "purl": "pkg:composer/drupal/views_data_export@1.4.0",
+            "scope": "required"
+        },
+        {
+            "type": "library",
+            "bom-ref": "pkg:composer/drupal/views_field_view@1.0.0-beta5",
+            "group": "drupal",
+            "name": "views_field_view",
+            "version": "1.0.0-beta5",
+            "purl": "pkg:composer/drupal/views_field_view@1.0.0-beta5",
+            "scope": "required"
+        },
+        {
+            "type": "library",
+            "bom-ref": "pkg:composer/drush/drush@13.0.0-beta5",
+            "group": "drush",
+            "name": "drush",
+            "version": "13.0.0-beta5",
+            "purl": "pkg:composer/drush/drush@13.0.0-beta5",
+            "scope": "required"
+        },
+        {
+            "type": "library",
+            "bom-ref": "pkg:composer/easyrdf/easyrdf@1.1.1",
+            "group": "easyrdf",
+            "name": "easyrdf",
+            "version": "1.1.1",
+            "purl": "pkg:composer/easyrdf/easyrdf@1.1.1",
+            "scope": "required"
+        },
+        {
+            "type": "library",
+            "bom-ref": "pkg:composer/egulias/email-validator@4.0.2",
+            "group": "egulias",
+            "name": "email-validator",
+            "version": "4.0.2",
+            "purl": "pkg:composer/egulias/email-validator@4.0.2",
+            "scope": "required"
+        },
+        {
+            "type": "library",
+            "bom-ref": "pkg:composer/firebase/php-jwt@6.10.1",
+            "group": "firebase",
+            "name": "php-jwt",
+            "version": "v6.10.1",
+            "purl": "pkg:composer/firebase/php-jwt@6.10.1",
+            "scope": "required"
+        },
+        {
+            "type": "library",
+            "bom-ref": "pkg:composer/grasmash/expander@3.0.0",
+            "group": "grasmash",
+            "name": "expander",
+            "version": "3.0.0",
+            "purl": "pkg:composer/grasmash/expander@3.0.0",
+            "scope": "required"
+        },
+        {
+            "type": "library",
+            "bom-ref": "pkg:composer/grasmash/yaml-cli@3.2.1",
+            "group": "grasmash",
+            "name": "yaml-cli",
+            "version": "3.2.1",
+            "purl": "pkg:composer/grasmash/yaml-cli@3.2.1",
+            "scope": "required"
+        },
+        {
+            "type": "library",
+            "bom-ref": "pkg:composer/guzzlehttp/guzzle@7.8.1",
+            "group": "guzzlehttp",
+            "name": "guzzle",
+            "version": "7.8.1",
+            "purl": "pkg:composer/guzzlehttp/guzzle@7.8.1",
+            "scope": "required"
+        },
+        {
+            "type": "library",
+            "bom-ref": "pkg:composer/guzzlehttp/promises@2.0.2",
+            "group": "guzzlehttp",
+            "name": "promises",
+            "version": "2.0.2",
+            "purl": "pkg:composer/guzzlehttp/promises@2.0.2",
+            "scope": "required"
+        },
+        {
+            "type": "library",
+            "bom-ref": "pkg:composer/guzzlehttp/psr7@2.6.2",
+            "group": "guzzlehttp",
+            "name": "psr7",
+            "version": "2.6.2",
+            "purl": "pkg:composer/guzzlehttp/psr7@2.6.2",
+            "scope": "required"
+        },
+        {
+            "type": "library",
+            "bom-ref": "pkg:composer/halaxa/json-machine@1.1.4",
+            "group": "halaxa",
+            "name": "json-machine",
+            "version": "1.1.4",
+            "purl": "pkg:composer/halaxa/json-machine@1.1.4",
+            "scope": "required"
+        },
+        {
+            "type": "library",
+            "bom-ref": "pkg:composer/illuminate/collections@11.16.0",
+            "group": "illuminate",
+            "name": "collections",
+            "version": "v11.16.0",
+            "purl": "pkg:composer/illuminate/collections@11.16.0",
+            "scope": "required"
+        },
+        {
+            "type": "library",
+            "bom-ref": "pkg:composer/illuminate/conditionable@11.16.0",
+            "group": "illuminate",
+            "name": "conditionable",
+            "version": "v11.16.0",
+            "purl": "pkg:composer/illuminate/conditionable@11.16.0",
+            "scope": "required"
+        },
+        {
+            "type": "library",
+            "bom-ref": "pkg:composer/illuminate/contracts@11.16.0",
+            "group": "illuminate",
+            "name": "contracts",
+            "version": "v11.16.0",
+            "purl": "pkg:composer/illuminate/contracts@11.16.0",
+            "scope": "required"
+        },
+        {
+            "type": "library",
+            "bom-ref": "pkg:composer/illuminate/macroable@11.16.0",
+            "group": "illuminate",
+            "name": "macroable",
+            "version": "v11.16.0",
+            "purl": "pkg:composer/illuminate/macroable@11.16.0",
+            "scope": "required"
+        },
+        {
+            "type": "library",
+            "bom-ref": "pkg:composer/islandora-rdm/islandora_fits@dev-8.x-1.x",
+            "group": "islandora-rdm",
+            "name": "islandora_fits",
+            "version": "dev-8.x-1.x",
+            "purl": "pkg:composer/islandora-rdm/islandora_fits@dev-8.x-1.x",
+            "scope": "required"
+        },
+        {
+            "type": "library",
+            "bom-ref": "pkg:composer/islandora/chullo@2.0.1",
+            "group": "islandora",
+            "name": "chullo",
+            "version": "2.0.1",
+            "purl": "pkg:composer/islandora/chullo@2.0.1",
+            "scope": "required"
+        },
+        {
+            "type": "library",
+            "bom-ref": "pkg:composer/islandora/fedora-entity-mapper@1.0.0",
+            "group": "islandora",
+            "name": "fedora-entity-mapper",
+            "version": "1.0.0",
+            "purl": "pkg:composer/islandora/fedora-entity-mapper@1.0.0",
+            "scope": "required"
+        },
+        {
+            "type": "library",
+            "bom-ref": "pkg:composer/islandora/views_nested_details@1.1.0",
+            "group": "islandora",
+            "name": "views_nested_details",
+            "version": "1.1.0",
+            "purl": "pkg:composer/islandora/views_nested_details@1.1.0",
+            "scope": "required"
+        },
+        {
+            "type": "library",
+            "bom-ref": "pkg:composer/laminas/laminas-stdlib@3.19.0",
+            "group": "laminas",
+            "name": "laminas-stdlib",
+            "version": "3.19.0",
+            "purl": "pkg:composer/laminas/laminas-stdlib@3.19.0",
+            "scope": "required"
+        },
+        {
+            "type": "library",
+            "bom-ref": "pkg:composer/laravel/prompts@0.1.24",
+            "group": "laravel",
+            "name": "prompts",
+            "version": "v0.1.24",
+            "purl": "pkg:composer/laravel/prompts@0.1.24",
+            "scope": "required"
+        },
+        {
+            "type": "library",
+            "bom-ref": "pkg:composer/league/container@4.2.2",
+            "group": "league",
+            "name": "container",
+            "version": "4.2.2",
+            "purl": "pkg:composer/league/container@4.2.2",
+            "scope": "required"
+        },
+        {
+            "type": "library",
+            "bom-ref": "pkg:composer/league/csv@9.16.0",
+            "group": "league",
+            "name": "csv",
+            "version": "9.16.0",
+            "purl": "pkg:composer/league/csv@9.16.0",
+            "scope": "required"
+        },
+        {
+            "type": "library",
+            "bom-ref": "pkg:composer/league/flysystem@1.1.10",
+            "group": "league",
+            "name": "flysystem",
+            "version": "1.1.10",
+            "purl": "pkg:composer/league/flysystem@1.1.10",
+            "scope": "required"
+        },
+        {
+            "type": "library",
+            "bom-ref": "pkg:composer/league/flysystem-replicate-adapter@1.0.1",
+            "group": "league",
+            "name": "flysystem-replicate-adapter",
+            "version": "1.0.1",
+            "purl": "pkg:composer/league/flysystem-replicate-adapter@1.0.1",
+            "scope": "required"
+        },
+        {
+            "type": "library",
+            "bom-ref": "pkg:composer/league/mime-type-detection@1.15.0",
+            "group": "league",
+            "name": "mime-type-detection",
+            "version": "1.15.0",
+            "purl": "pkg:composer/league/mime-type-detection@1.15.0",
+            "scope": "required"
+        },
+        {
+            "type": "library",
+            "bom-ref": "pkg:composer/library/pdf.js@2.16.105",
+            "group": "library",
+            "name": "pdf.js",
+            "version": "2.16.105",
+            "purl": "pkg:composer/library/pdf.js@2.16.105",
+            "scope": "required"
+        },
+        {
+            "type": "library",
+            "bom-ref": "pkg:composer/maennchen/zipstream-php@3.1.0",
+            "group": "maennchen",
+            "name": "zipstream-php",
+            "version": "3.1.0",
+            "purl": "pkg:composer/maennchen/zipstream-php@3.1.0",
+            "scope": "required"
+        },
+        {
+            "type": "library",
+            "bom-ref": "pkg:composer/masterminds/html5@2.9.0",
+            "group": "masterminds",
+            "name": "html5",
+            "version": "2.9.0",
+            "purl": "pkg:composer/masterminds/html5@2.9.0",
+            "scope": "required"
+        },
+        {
+            "type": "library",
+            "bom-ref": "pkg:composer/mck89/peast@1.16.2",
+            "group": "mck89",
+            "name": "peast",
+            "version": "v1.16.2",
+            "purl": "pkg:composer/mck89/peast@1.16.2",
+            "scope": "required"
+        },
+        {
+            "type": "library",
+            "bom-ref": "pkg:composer/mjordan/islandora_workbench_integration@dev-main",
+            "group": "mjordan",
+            "name": "islandora_workbench_integration",
+            "version": "dev-main",
+            "purl": "pkg:composer/mjordan/islandora_workbench_integration@dev-main",
+            "scope": "required"
+        },
+        {
+            "type": "library",
+            "bom-ref": "pkg:composer/ml/iri@1.1.4",
+            "group": "ml",
+            "name": "iri",
+            "version": "1.1.4",
+            "purl": "pkg:composer/ml/iri@1.1.4",
+            "scope": "required"
+        },
+        {
+            "type": "library",
+            "bom-ref": "pkg:composer/ml/json-ld@1.2.1",
+            "group": "ml",
+            "name": "json-ld",
+            "version": "1.2.1",
+            "purl": "pkg:composer/ml/json-ld@1.2.1",
+            "scope": "required"
+        },
+        {
+            "type": "library",
+            "bom-ref": "pkg:composer/myclabs/php-enum@1.8.4",
+            "group": "myclabs",
+            "name": "php-enum",
+            "version": "1.8.4",
+            "purl": "pkg:composer/myclabs/php-enum@1.8.4",
+            "scope": "required"
+        },
+        {
+            "type": "library",
+            "bom-ref": "pkg:composer/nesbot/carbon@2.72.5",
+            "group": "nesbot",
+            "name": "carbon",
+            "version": "2.72.5",
+            "purl": "pkg:composer/nesbot/carbon@2.72.5",
+            "scope": "required"
+        },
+        {
+            "type": "library",
+            "bom-ref": "pkg:composer/nikic/php-parser@5.1.0",
+            "group": "nikic",
+            "name": "php-parser",
+            "version": "v5.1.0",
+            "purl": "pkg:composer/nikic/php-parser@5.1.0",
+            "scope": "required"
+        },
+        {
+            "type": "library",
+            "bom-ref": "pkg:composer/pear/archive_tar@1.5.0",
+            "group": "pear",
+            "name": "archive_tar",
+            "version": "1.5.0",
+            "purl": "pkg:composer/pear/archive_tar@1.5.0",
+            "scope": "required"
+        },
+        {
+            "type": "library",
+            "bom-ref": "pkg:composer/pear/console_getopt@1.4.3",
+            "group": "pear",
+            "name": "console_getopt",
+            "version": "v1.4.3",
+            "purl": "pkg:composer/pear/console_getopt@1.4.3",
+            "scope": "required"
+        },
+        {
+            "type": "library",
+            "bom-ref": "pkg:composer/pear/pear-core-minimal@1.10.15",
+            "group": "pear",
+            "name": "pear-core-minimal",
+            "version": "v1.10.15",
+            "purl": "pkg:composer/pear/pear-core-minimal@1.10.15",
+            "scope": "required"
+        },
+        {
+            "type": "library",
+            "bom-ref": "pkg:composer/pear/pear_exception@1.0.2",
+            "group": "pear",
+            "name": "pear_exception",
+            "version": "v1.0.2",
+            "purl": "pkg:composer/pear/pear_exception@1.0.2",
+            "scope": "required"
+        },
+        {
+            "type": "library",
+            "bom-ref": "pkg:composer/phootwork/collection@3.2.2",
+            "group": "phootwork",
+            "name": "collection",
+            "version": "v3.2.2",
+            "purl": "pkg:composer/phootwork/collection@3.2.2",
+            "scope": "required"
+        },
+        {
+            "type": "library",
+            "bom-ref": "pkg:composer/phootwork/lang@3.2.2",
+            "group": "phootwork",
+            "name": "lang",
+            "version": "v3.2.2",
+            "purl": "pkg:composer/phootwork/lang@3.2.2",
+            "scope": "required"
+        },
+        {
+            "type": "library",
+            "bom-ref": "pkg:composer/phpowermove/docblock@4.0",
+            "group": "phpowermove",
+            "name": "docblock",
+            "version": "v4.0",
+            "purl": "pkg:composer/phpowermove/docblock@4.0",
+            "scope": "required"
+        },
+        {
+            "type": "library",
+            "bom-ref": "pkg:composer/politsin/jquery-ui-touch-punch@1.0",
+            "group": "politsin",
+            "name": "jquery-ui-touch-punch",
+            "version": "1.0",
+            "purl": "pkg:composer/politsin/jquery-ui-touch-punch@1.0",
+            "scope": "required"
+        },
+        {
+            "type": "library",
+            "bom-ref": "pkg:composer/professional-wiki/edtf@2.0.2",
+            "group": "professional-wiki",
+            "name": "edtf",
+            "version": "2.0.2",
+            "purl": "pkg:composer/professional-wiki/edtf@2.0.2",
+            "scope": "required"
+        },
+        {
+            "type": "library",
+            "bom-ref": "pkg:composer/psr/cache@3.0.0",
+            "group": "psr",
+            "name": "cache",
+            "version": "3.0.0",
+            "purl": "pkg:composer/psr/cache@3.0.0",
+            "scope": "required"
+        },
+        {
+            "type": "library",
+            "bom-ref": "pkg:composer/psr/clock@1.0.0",
+            "group": "psr",
+            "name": "clock",
+            "version": "1.0.0",
+            "purl": "pkg:composer/psr/clock@1.0.0",
+            "scope": "required"
+        },
+        {
+            "type": "library",
+            "bom-ref": "pkg:composer/psr/container@2.0.2",
+            "group": "psr",
+            "name": "container",
+            "version": "2.0.2",
+            "purl": "pkg:composer/psr/container@2.0.2",
+            "scope": "required"
+        },
+        {
+            "type": "library",
+            "bom-ref": "pkg:composer/psr/event-dispatcher@1.0.0",
+            "group": "psr",
+            "name": "event-dispatcher",
+            "version": "1.0.0",
+            "purl": "pkg:composer/psr/event-dispatcher@1.0.0",
+            "scope": "required"
+        },
+        {
+            "type": "library",
+            "bom-ref": "pkg:composer/psr/http-client@1.0.3",
+            "group": "psr",
+            "name": "http-client",
+            "version": "1.0.3",
+            "purl": "pkg:composer/psr/http-client@1.0.3",
+            "scope": "required"
+        },
+        {
+            "type": "library",
+            "bom-ref": "pkg:composer/psr/http-factory@1.1.0",
+            "group": "psr",
+            "name": "http-factory",
+            "version": "1.1.0",
+            "purl": "pkg:composer/psr/http-factory@1.1.0",
+            "scope": "required"
+        },
+        {
+            "type": "library",
+            "bom-ref": "pkg:composer/psr/http-message@2.0",
+            "group": "psr",
+            "name": "http-message",
+            "version": "2.0",
+            "purl": "pkg:composer/psr/http-message@2.0",
+            "scope": "required"
+        },
+        {
+            "type": "library",
+            "bom-ref": "pkg:composer/psr/log@3.0.0",
+            "group": "psr",
+            "name": "log",
+            "version": "3.0.0",
+            "purl": "pkg:composer/psr/log@3.0.0",
+            "scope": "required"
+        },
+        {
+            "type": "library",
+            "bom-ref": "pkg:composer/psr/simple-cache@3.0.0",
+            "group": "psr",
+            "name": "simple-cache",
+            "version": "3.0.0",
+            "purl": "pkg:composer/psr/simple-cache@3.0.0",
+            "scope": "required"
+        },
+        {
+            "type": "library",
+            "bom-ref": "pkg:composer/psy/psysh@0.12.4",
+            "group": "psy",
+            "name": "psysh",
+            "version": "v0.12.4",
+            "purl": "pkg:composer/psy/psysh@0.12.4",
+            "scope": "required"
+        },
+        {
+            "type": "library",
+            "bom-ref": "pkg:composer/ralouphie/getallheaders@3.0.3",
+            "group": "ralouphie",
+            "name": "getallheaders",
+            "version": "3.0.3",
+            "purl": "pkg:composer/ralouphie/getallheaders@3.0.3",
+            "scope": "required"
+        },
+        {
+            "type": "library",
+            "bom-ref": "pkg:composer/sebastian/diff@4.0.6",
+            "group": "sebastian",
+            "name": "diff",
+            "version": "4.0.6",
+            "purl": "pkg:composer/sebastian/diff@4.0.6",
+            "scope": "required"
+        },
+        {
+            "type": "library",
+            "bom-ref": "pkg:composer/seboettg/citeproc-php@2.6.2",
+            "group": "seboettg",
+            "name": "citeproc-php",
+            "version": "v2.6.2",
+            "purl": "pkg:composer/seboettg/citeproc-php@2.6.2",
+            "scope": "required"
+        },
+        {
+            "type": "library",
+            "bom-ref": "pkg:composer/seboettg/collection@3.1.0",
+            "group": "seboettg",
+            "name": "collection",
+            "version": "v3.1.0",
+            "purl": "pkg:composer/seboettg/collection@3.1.0",
+            "scope": "required"
+        },
+        {
+            "type": "library",
+            "bom-ref": "pkg:composer/solarium/solarium@6.3.5",
+            "group": "solarium",
+            "name": "solarium",
+            "version": "6.3.5",
+            "purl": "pkg:composer/solarium/solarium@6.3.5",
+            "scope": "required"
+        },
+        {
+            "type": "library",
+            "bom-ref": "pkg:composer/stomp-php/stomp-php@5.1.0",
+            "group": "stomp-php",
+            "name": "stomp-php",
+            "version": "5.1.0",
+            "purl": "pkg:composer/stomp-php/stomp-php@5.1.0",
+            "scope": "required"
+        },
+        {
+            "type": "library",
+            "bom-ref": "pkg:composer/symfony/console@6.4.9",
+            "group": "symfony",
+            "name": "console",
+            "version": "v6.4.9",
+            "purl": "pkg:composer/symfony/console@6.4.9",
+            "scope": "required"
+        },
+        {
+            "type": "library",
+            "bom-ref": "pkg:composer/symfony/dependency-injection@6.4.9",
+            "group": "symfony",
+            "name": "dependency-injection",
+            "version": "v6.4.9",
+            "purl": "pkg:composer/symfony/dependency-injection@6.4.9",
+            "scope": "required"
+        },
+        {
+            "type": "library",
+            "bom-ref": "pkg:composer/symfony/deprecation-contracts@3.5.0",
+            "group": "symfony",
+            "name": "deprecation-contracts",
+            "version": "v3.5.0",
+            "purl": "pkg:composer/symfony/deprecation-contracts@3.5.0",
+            "scope": "required"
+        },
+        {
+            "type": "library",
+            "bom-ref": "pkg:composer/symfony/error-handler@6.4.9",
+            "group": "symfony",
+            "name": "error-handler",
+            "version": "v6.4.9",
+            "purl": "pkg:composer/symfony/error-handler@6.4.9",
+            "scope": "required"
+        },
+        {
+            "type": "library",
+            "bom-ref": "pkg:composer/symfony/event-dispatcher@6.4.8",
+            "group": "symfony",
+            "name": "event-dispatcher",
+            "version": "v6.4.8",
+            "purl": "pkg:composer/symfony/event-dispatcher@6.4.8",
+            "scope": "required"
+        },
+        {
+            "type": "library",
+            "bom-ref": "pkg:composer/symfony/event-dispatcher-contracts@3.5.0",
+            "group": "symfony",
+            "name": "event-dispatcher-contracts",
+            "version": "v3.5.0",
+            "purl": "pkg:composer/symfony/event-dispatcher-contracts@3.5.0",
+            "scope": "required"
+        },
+        {
+            "type": "library",
+            "bom-ref": "pkg:composer/symfony/filesystem@6.4.9",
+            "group": "symfony",
+            "name": "filesystem",
+            "version": "v6.4.9",
+            "purl": "pkg:composer/symfony/filesystem@6.4.9",
+            "scope": "required"
+        },
+        {
+            "type": "library",
+            "bom-ref": "pkg:composer/symfony/finder@6.4.8",
+            "group": "symfony",
+            "name": "finder",
+            "version": "v6.4.8",
+            "purl": "pkg:composer/symfony/finder@6.4.8",
+            "scope": "required"
+        },
+        {
+            "type": "library",
+            "bom-ref": "pkg:composer/symfony/http-foundation@6.4.8",
+            "group": "symfony",
+            "name": "http-foundation",
+            "version": "v6.4.8",
+            "purl": "pkg:composer/symfony/http-foundation@6.4.8",
+            "scope": "required"
+        },
+        {
+            "type": "library",
+            "bom-ref": "pkg:composer/symfony/http-kernel@6.4.9",
+            "group": "symfony",
+            "name": "http-kernel",
+            "version": "v6.4.9",
+            "purl": "pkg:composer/symfony/http-kernel@6.4.9",
+            "scope": "required"
+        },
+        {
+            "type": "library",
+            "bom-ref": "pkg:composer/symfony/mailer@6.4.9",
+            "group": "symfony",
+            "name": "mailer",
+            "version": "v6.4.9",
+            "purl": "pkg:composer/symfony/mailer@6.4.9",
+            "scope": "required"
+        },
+        {
+            "type": "library",
+            "bom-ref": "pkg:composer/symfony/mime@6.4.9",
+            "group": "symfony",
+            "name": "mime",
+            "version": "v6.4.9",
+            "purl": "pkg:composer/symfony/mime@6.4.9",
+            "scope": "required"
+        },
+        {
+            "type": "library",
+            "bom-ref": "pkg:composer/symfony/polyfill-ctype@1.29.0",
+            "group": "symfony",
+            "name": "polyfill-ctype",
+            "version": "v1.29.0",
+            "purl": "pkg:composer/symfony/polyfill-ctype@1.29.0",
+            "scope": "required"
+        },
+        {
+            "type": "library",
+            "bom-ref": "pkg:composer/symfony/polyfill-iconv@1.29.0",
+            "group": "symfony",
+            "name": "polyfill-iconv",
+            "version": "v1.29.0",
+            "purl": "pkg:composer/symfony/polyfill-iconv@1.29.0",
+            "scope": "required"
+        },
+        {
+            "type": "library",
+            "bom-ref": "pkg:composer/symfony/polyfill-intl-grapheme@1.29.0",
+            "group": "symfony",
+            "name": "polyfill-intl-grapheme",
+            "version": "v1.29.0",
+            "purl": "pkg:composer/symfony/polyfill-intl-grapheme@1.29.0",
+            "scope": "required"
+        },
+        {
+            "type": "library",
+            "bom-ref": "pkg:composer/symfony/polyfill-intl-idn@1.29.0",
+            "group": "symfony",
+            "name": "polyfill-intl-idn",
+            "version": "v1.29.0",
+            "purl": "pkg:composer/symfony/polyfill-intl-idn@1.29.0",
+            "scope": "required"
+        },
+        {
+            "type": "library",
+            "bom-ref": "pkg:composer/symfony/polyfill-intl-normalizer@1.29.0",
+            "group": "symfony",
+            "name": "polyfill-intl-normalizer",
+            "version": "v1.29.0",
+            "purl": "pkg:composer/symfony/polyfill-intl-normalizer@1.29.0",
+            "scope": "required"
+        },
+        {
+            "type": "library",
+            "bom-ref": "pkg:composer/symfony/polyfill-mbstring@1.29.0",
+            "group": "symfony",
+            "name": "polyfill-mbstring",
+            "version": "v1.29.0",
+            "purl": "pkg:composer/symfony/polyfill-mbstring@1.29.0",
+            "scope": "required"
+        },
+        {
+            "type": "library",
+            "bom-ref": "pkg:composer/symfony/polyfill-php72@1.30.0",
+            "group": "symfony",
+            "name": "polyfill-php72",
+            "version": "v1.30.0",
+            "purl": "pkg:composer/symfony/polyfill-php72@1.30.0",
+            "scope": "required"
+        },
+        {
+            "type": "library",
+            "bom-ref": "pkg:composer/symfony/polyfill-php80@1.30.0",
+            "group": "symfony",
+            "name": "polyfill-php80",
+            "version": "v1.30.0",
+            "purl": "pkg:composer/symfony/polyfill-php80@1.30.0",
+            "scope": "required"
+        },
+        {
+            "type": "library",
+            "bom-ref": "pkg:composer/symfony/polyfill-php81@1.30.0",
+            "group": "symfony",
+            "name": "polyfill-php81",
+            "version": "v1.30.0",
+            "purl": "pkg:composer/symfony/polyfill-php81@1.30.0",
+            "scope": "required"
+        },
+        {
+            "type": "library",
+            "bom-ref": "pkg:composer/symfony/polyfill-php83@1.29.0",
+            "group": "symfony",
+            "name": "polyfill-php83",
+            "version": "v1.29.0",
+            "purl": "pkg:composer/symfony/polyfill-php83@1.29.0",
+            "scope": "required"
+        },
+        {
+            "type": "library",
+            "bom-ref": "pkg:composer/symfony/process@6.4.8",
+            "group": "symfony",
+            "name": "process",
+            "version": "v6.4.8",
+            "purl": "pkg:composer/symfony/process@6.4.8",
+            "scope": "required"
+        },
+        {
+            "type": "library",
+            "bom-ref": "pkg:composer/symfony/psr-http-message-bridge@6.4.8",
+            "group": "symfony",
+            "name": "psr-http-message-bridge",
+            "version": "v6.4.8",
+            "purl": "pkg:composer/symfony/psr-http-message-bridge@6.4.8",
+            "scope": "required"
+        },
+        {
+            "type": "library",
+            "bom-ref": "pkg:composer/symfony/routing@6.4.8",
+            "group": "symfony",
+            "name": "routing",
+            "version": "v6.4.8",
+            "purl": "pkg:composer/symfony/routing@6.4.8",
+            "scope": "required"
+        },
+        {
+            "type": "library",
+            "bom-ref": "pkg:composer/symfony/serializer@6.4.9",
+            "group": "symfony",
+            "name": "serializer",
+            "version": "v6.4.9",
+            "purl": "pkg:composer/symfony/serializer@6.4.9",
+            "scope": "required"
+        },
+        {
+            "type": "library",
+            "bom-ref": "pkg:composer/symfony/service-contracts@3.5.0",
+            "group": "symfony",
+            "name": "service-contracts",
+            "version": "v3.5.0",
+            "purl": "pkg:composer/symfony/service-contracts@3.5.0",
+            "scope": "required"
+        },
+        {
+            "type": "library",
+            "bom-ref": "pkg:composer/symfony/string@6.4.9",
+            "group": "symfony",
+            "name": "string",
+            "version": "v6.4.9",
+            "purl": "pkg:composer/symfony/string@6.4.9",
+            "scope": "required"
+        },
+        {
+            "type": "library",
+            "bom-ref": "pkg:composer/symfony/translation@6.4.8",
+            "group": "symfony",
+            "name": "translation",
+            "version": "v6.4.8",
+            "purl": "pkg:composer/symfony/translation@6.4.8",
+            "scope": "required"
+        },
+        {
+            "type": "library",
+            "bom-ref": "pkg:composer/symfony/translation-contracts@3.5.0",
+            "group": "symfony",
+            "name": "translation-contracts",
+            "version": "v3.5.0",
+            "purl": "pkg:composer/symfony/translation-contracts@3.5.0",
+            "scope": "required"
+        },
+        {
+            "type": "library",
+            "bom-ref": "pkg:composer/symfony/validator@6.4.9",
+            "group": "symfony",
+            "name": "validator",
+            "version": "v6.4.9",
+            "purl": "pkg:composer/symfony/validator@6.4.9",
+            "scope": "required"
+        },
+        {
+            "type": "library",
+            "bom-ref": "pkg:composer/symfony/var-dumper@6.4.9",
+            "group": "symfony",
+            "name": "var-dumper",
+            "version": "v6.4.9",
+            "purl": "pkg:composer/symfony/var-dumper@6.4.9",
+            "scope": "required"
+        },
+        {
+            "type": "library",
+            "bom-ref": "pkg:composer/symfony/var-exporter@6.4.9",
+            "group": "symfony",
+            "name": "var-exporter",
+            "version": "v6.4.9",
+            "purl": "pkg:composer/symfony/var-exporter@6.4.9",
+            "scope": "required"
+        },
+        {
+            "type": "library",
+            "bom-ref": "pkg:composer/symfony/yaml@6.4.8",
+            "group": "symfony",
+            "name": "yaml",
+            "version": "v6.4.8",
+            "purl": "pkg:composer/symfony/yaml@6.4.8",
+            "scope": "required"
+        },
+        {
+            "type": "library",
+            "bom-ref": "pkg:composer/twig/twig@3.10.3",
+            "group": "twig",
+            "name": "twig",
+            "version": "v3.10.3",
+            "purl": "pkg:composer/twig/twig@3.10.3",
+            "scope": "required"
+        },
+        {
+            "type": "library",
+            "bom-ref": "pkg:composer/twistor/flysystem-stream-wrapper@1.0.9",
+            "group": "twistor",
+            "name": "flysystem-stream-wrapper",
+            "version": "v1.0.9",
+            "purl": "pkg:composer/twistor/flysystem-stream-wrapper@1.0.9",
+            "scope": "required"
+        },
+        {
+            "type": "library",
+            "bom-ref": "pkg:composer/twistor/stream-util@1.0.1",
+            "group": "twistor",
+            "name": "stream-util",
+            "version": "v1.0.1",
+            "purl": "pkg:composer/twistor/stream-util@1.0.1",
+            "scope": "required"
+        }
+    ],
+    "vulnerabilities": [
+        {
+            "bom-ref": "vuln:PKSA-styk-3knc-d1bt@pkg:composer/drupal/core@10.3.1",
+            "id": "PKSA-styk-3knc-d1bt",
+            "source": {
+                "name": "Packagist",
+                "url": "https://packagist.org/security-advisories/PKSA-styk-3knc-d1bt"
+            },
+            "references": [
+                {
+                    "id": "CVE-2024-45440",
+                    "source": {
+                        "name": "NVD",
+                        "url": "https://nvd.nist.gov/vuln/detail/CVE-2024-45440"
+                    }
+                },
+                {
+                    "id": "CVE-2024-45440",
+                    "source": {
+                        "name": "advisory",
+                        "url": "https://github.com/advisories/GHSA-mg8j-w93w-xjgc"
+                    }
+                }
+            ],
+            "ratings": [
+                {
+                    "severity": "medium",
+                    "method": "other",
+                    "source": {
+                        "name": "Packagist",
+                        "url": "https://packagist.org/security-advisories/PKSA-styk-3knc-d1bt"
+                    }
+                }
+            ],
+            "description": "Drupal Full Path Disclosure",
+            "detail": "Affected versions: >=8.0.0,<10.2.9|>=10.3.0,<10.3.6|>=11.0.0,<11.0.5",
+            "recommendation": "No verified remediation found.",
+            "affects": [
+                {
+                    "ref": "pkg:composer/drupal/core@10.3.1"
+                }
+            ],
+            "properties": [
+                {
+                    "name": "composer-remediate:remediation_status",
+                    "value": "none"
+                },
+                {
+                    "name": "composer-remediate:direct",
+                    "value": "false"
+                },
+                {
+                    "name": "composer-remediate:dev",
+                    "value": "false"
+                }
+            ],
+            "published": "2024-08-29T12:31:05+00:00"
+        },
+        {
+            "bom-ref": "vuln:PKSA-35hc-pd1y-zwpc@pkg:composer/drupal/core-recommended@10.3.1",
+            "id": "PKSA-35hc-pd1y-zwpc",
+            "source": {
+                "name": "Packagist",
+                "url": "https://packagist.org/security-advisories/PKSA-35hc-pd1y-zwpc"
+            },
+            "references": [
+                {
+                    "id": "CVE-2024-45440",
+                    "source": {
+                        "name": "NVD",
+                        "url": "https://nvd.nist.gov/vuln/detail/CVE-2024-45440"
+                    }
+                },
+                {
+                    "id": "CVE-2024-45440",
+                    "source": {
+                        "name": "advisory",
+                        "url": "https://github.com/advisories/GHSA-mg8j-w93w-xjgc"
+                    }
+                }
+            ],
+            "ratings": [
+                {
+                    "severity": "medium",
+                    "method": "other",
+                    "source": {
+                        "name": "Packagist",
+                        "url": "https://packagist.org/security-advisories/PKSA-35hc-pd1y-zwpc"
+                    }
+                }
+            ],
+            "description": "Drupal Full Path Disclosure",
+            "detail": "Affected versions: >=8.0.0,<10.2.9|>=10.3.0,<10.3.6|>=11.0.0,<11.0.5",
+            "recommendation": "No verified remediation found.",
+            "affects": [
+                {
+                    "ref": "pkg:composer/drupal/core-recommended@10.3.1"
+                }
+            ],
+            "properties": [
+                {
+                    "name": "composer-remediate:remediation_status",
+                    "value": "none"
+                },
+                {
+                    "name": "composer-remediate:direct",
+                    "value": "true"
+                },
+                {
+                    "name": "composer-remediate:dev",
+                    "value": "false"
+                }
+            ],
+            "published": "2024-08-29T12:31:05+00:00"
+        },
+        {
+            "bom-ref": "vuln:PKSA-w2tw-kmfg-rt9s@pkg:composer/symfony/validator@6.4.9",
+            "id": "PKSA-w2tw-kmfg-rt9s",
+            "source": {
+                "name": "Packagist",
+                "url": "https://packagist.org/security-advisories/PKSA-w2tw-kmfg-rt9s"
+            },
+            "references": [
+                {
+                    "id": "CVE-2024-50343",
+                    "source": {
+                        "name": "NVD",
+                        "url": "https://nvd.nist.gov/vuln/detail/CVE-2024-50343"
+                    }
+                },
+                {
+                    "id": "CVE-2024-50343",
+                    "source": {
+                        "name": "advisory",
+                        "url": "https://symfony.com/cve-2024-50343"
+                    }
+                }
+            ],
+            "ratings": [
+                {
+                    "severity": "low",
+                    "method": "other",
+                    "source": {
+                        "name": "Packagist",
+                        "url": "https://packagist.org/security-advisories/PKSA-w2tw-kmfg-rt9s"
+                    }
+                }
+            ],
+            "description": "CVE-2024-50343: Incorrect response from Validator when input ends with `\n`",
+            "detail": "Affected versions: >=2.0.0,<3.0.0|>=3.0.0,<4.0.0|>=4.0.0,<5.0.0|>=5.0.0,<5.1.0|>=5.1.0,<5.2.0|>=5.2.0,<5.3.0|>=5.3.0,<5.4.0|>=5.4.0,<5.4.43|>=6.0.0,<6.1.0|>=6.1.0,<6.2.0|>=6.2.0,<6.3.0|>=6.3.0,<6.4.0|>=6.4.0,<6.4.11|>=7.0.0,<7.1.0|>=7.1.0,<7.1.4",
+            "recommendation": "Run: composer update symfony/validator",
+            "affects": [
+                {
+                    "ref": "pkg:composer/symfony/validator@6.4.9"
+                }
+            ],
+            "properties": [
+                {
+                    "name": "composer-remediate:remediation_status",
+                    "value": "verified"
+                },
+                {
+                    "name": "composer-remediate:command",
+                    "value": "composer update symfony/validator"
+                },
+                {
+                    "name": "composer-remediate:direct",
+                    "value": "false"
+                },
+                {
+                    "name": "composer-remediate:dev",
+                    "value": "false"
+                }
+            ],
+            "published": "2024-08-30T08:00:00+00:00",
+            "analysis": {
+                "state": "exploitable",
+                "response": [
+                    "update"
+                ],
+                "detail": "1 package change(s) verified by Composer's solver."
+            }
+        },
+        {
+            "bom-ref": "vuln:PKSA-6319-ffpf-gx66@pkg:composer/twig/twig@3.10.3",
+            "id": "PKSA-6319-ffpf-gx66",
+            "source": {
+                "name": "Packagist",
+                "url": "https://packagist.org/security-advisories/PKSA-6319-ffpf-gx66"
+            },
+            "references": [
+                {
+                    "id": "CVE-2024-45411",
+                    "source": {
+                        "name": "NVD",
+                        "url": "https://nvd.nist.gov/vuln/detail/CVE-2024-45411"
+                    }
+                },
+                {
+                    "id": "CVE-2024-45411",
+                    "source": {
+                        "name": "advisory",
+                        "url": "https://symfony.com/blog/twig-security-release-possible-sandbox-bypass"
+                    }
+                }
+            ],
+            "ratings": [
+                {
+                    "severity": "medium",
+                    "method": "other",
+                    "source": {
+                        "name": "Packagist",
+                        "url": "https://packagist.org/security-advisories/PKSA-6319-ffpf-gx66"
+                    }
+                }
+            ],
+            "description": "Possible sandbox bypass",
+            "detail": "Affected versions: >=1.0.0,<1.44.7|>=2.0.0,<2.16.0|>=3.0.0,<3.11.0|>=3.12.0,<3.14.0",
+            "recommendation": "Run: composer update drupal/core-recommended:10.3.4 -W -m",
+            "affects": [
+                {
+                    "ref": "pkg:composer/twig/twig@3.10.3"
+                }
+            ],
+            "properties": [
+                {
+                    "name": "composer-remediate:remediation_status",
+                    "value": "verified"
+                },
+                {
+                    "name": "composer-remediate:command",
+                    "value": "composer update drupal/core-recommended:10.3.4 -W -m"
+                },
+                {
+                    "name": "composer-remediate:direct",
+                    "value": "false"
+                },
+                {
+                    "name": "composer-remediate:dev",
+                    "value": "false"
+                }
+            ],
+            "published": "2024-09-09T08:51:06+00:00",
+            "analysis": {
+                "state": "exploitable",
+                "response": [
+                    "update"
+                ],
+                "detail": "3 package change(s) verified by Composer's solver."
+            }
+        }
+    ]
+}

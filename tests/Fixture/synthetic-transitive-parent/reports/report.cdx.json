@@ -1,0 +1,139 @@
+{
+    "bomFormat": "CycloneDX",
+    "specVersion": "1.6",
+    "serialNumber": "urn:uuid:00000000-0000-4000-8000-000000000000",
+    "version": 1,
+    "metadata": {
+        "timestamp": "2026-01-01T00:00:00+00:00",
+        "tools": {
+            "components": [
+                {
+                    "type": "application",
+                    "name": "composer-remediate",
+                    "version": "dev-main"
+                }
+            ]
+        },
+        "properties": [
+            {
+                "name": "composer-remediate:composer_version",
+                "value": "(fixture)"
+            },
+            {
+                "name": "composer-remediate:advisory_source",
+                "value": "advisory snapshot advisories.json"
+            },
+            {
+                "name": "composer-remediate:composer_lock_sha256",
+                "value": "f10764ed7b880765eee352528d15efa0b251503fe5d86e860e4344d3aada6dad"
+            },
+            {
+                "name": "composer-remediate:combined_command",
+                "value": "composer update acme/app-framework:1.1.0 -W -m"
+            },
+            {
+                "name": "composer-remediate:exit_code",
+                "value": "1"
+            }
+        ]
+    },
+    "components": [
+        {
+            "type": "library",
+            "bom-ref": "pkg:composer/acme/app-framework@1.0.0",
+            "group": "acme",
+            "name": "app-framework",
+            "version": "1.0.0",
+            "purl": "pkg:composer/acme/app-framework@1.0.0",
+            "scope": "required"
+        },
+        {
+            "type": "library",
+            "bom-ref": "pkg:composer/acme/helper@1.1.0",
+            "group": "acme",
+            "name": "helper",
+            "version": "1.1.0",
+            "purl": "pkg:composer/acme/helper@1.1.0",
+            "scope": "required"
+        },
+        {
+            "type": "library",
+            "bom-ref": "pkg:composer/acme/vuln-lib@1.0.1",
+            "group": "acme",
+            "name": "vuln-lib",
+            "version": "1.0.1",
+            "purl": "pkg:composer/acme/vuln-lib@1.0.1",
+            "scope": "required"
+        }
+    ],
+    "vulnerabilities": [
+        {
+            "bom-ref": "vuln:PKSA-synthetic-0001@pkg:composer/acme/vuln-lib@1.0.1",
+            "id": "PKSA-synthetic-0001",
+            "source": {
+                "name": "Packagist",
+                "url": "https://packagist.org/security-advisories/PKSA-synthetic-0001"
+            },
+            "references": [
+                {
+                    "id": "CVE-2026-00001",
+                    "source": {
+                        "name": "NVD",
+                        "url": "https://nvd.nist.gov/vuln/detail/CVE-2026-00001"
+                    }
+                },
+                {
+                    "id": "CVE-2026-00001",
+                    "source": {
+                        "name": "advisory",
+                        "url": "https://example.invalid/advisories/SYNTHETIC-0001"
+                    }
+                }
+            ],
+            "ratings": [
+                {
+                    "severity": "high",
+                    "method": "other",
+                    "source": {
+                        "name": "Packagist",
+                        "url": "https://packagist.org/security-advisories/PKSA-synthetic-0001"
+                    }
+                }
+            ],
+            "description": "Synthetic: request smuggling in acme/vuln-lib",
+            "detail": "Affected versions: <1.1.0",
+            "recommendation": "Run: composer update acme/app-framework:1.1.0 -W -m",
+            "affects": [
+                {
+                    "ref": "pkg:composer/acme/vuln-lib@1.0.1"
+                }
+            ],
+            "properties": [
+                {
+                    "name": "composer-remediate:remediation_status",
+                    "value": "verified"
+                },
+                {
+                    "name": "composer-remediate:command",
+                    "value": "composer update acme/app-framework:1.1.0 -W -m"
+                },
+                {
+                    "name": "composer-remediate:direct",
+                    "value": "false"
+                },
+                {
+                    "name": "composer-remediate:dev",
+                    "value": "false"
+                }
+            ],
+            "published": "2026-01-15T10:00:00+00:00",
+            "analysis": {
+                "state": "exploitable",
+                "response": [
+                    "update"
+                ],
+                "detail": "2 package change(s) verified by Composer's solver."
+            }
+        }
+    ]
+}

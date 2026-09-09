@@ -34,8 +34,8 @@ final class RemediateCommand extends BaseCommand
             ->setName('remediate')
             ->setDescription('Find the smallest Composer-verified upgrade that removes each known vulnerability from composer.lock')
             ->setDefinition([
-                new InputOption('format', 'f', InputOption::VALUE_REQUIRED, 'Format printed to standard output: text, html, json, sarif or none', 'text'),
-                new InputOption('output', 'o', InputOption::VALUE_REQUIRED | InputOption::VALUE_IS_ARRAY, 'Also write a report file; format inferred from the extension (.html, .json, .sarif, .txt) or given as sarif:path. Repeatable.'),
+                new InputOption('format', 'f', InputOption::VALUE_REQUIRED, 'Format printed to standard output: text, html, json, sarif, cyclonedx or none', 'text'),
+                new InputOption('output', 'o', InputOption::VALUE_REQUIRED | InputOption::VALUE_IS_ARRAY, 'Also write a report file; format inferred from the extension (.html, .json, .sarif, .cdx.json, .txt) or given as sarif:path. Repeatable.'),
                 new InputOption('fail-on', null, InputOption::VALUE_REQUIRED, 'Only findings at or above this severity (low, medium, high, critical) affect the exit code; findings of unknown severity always count'),
                 new InputOption('no-dev', null, InputOption::VALUE_NONE, 'Ignore vulnerabilities in require-dev packages'),
                 new InputOption('offline', null, InputOption::VALUE_NONE, 'Refuse all network access; needs a warm Composer cache plus --advisories-file or --database-location (sets COMPOSER_DISABLE_NETWORK=1)'),
@@ -98,7 +98,7 @@ HELP);
         $io = $this->getIO();
         $format = ReportFormat::tryFrom(strtolower((string) $input->getOption('format')));
         if ($format === null) {
-            $io->writeError(sprintf('<error>Unknown format "%s"; use text, html, json, sarif or none.</error>', (string) $input->getOption('format')));
+            $io->writeError(sprintf('<error>Unknown format "%s"; use text, html, json, sarif, cyclonedx or none.</error>', (string) $input->getOption('format')));
 
             return Plan::EXIT_ERROR;
         }

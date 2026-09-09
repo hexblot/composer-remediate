@@ -24,8 +24,9 @@ final class Plan
      * @param list<FindingPlan>     $findings
      * @param array<string, string> $metadata
      * @param list<string>          $warnings
-     * @param string|null           $failOn   severity threshold for the exit code: findings whose advisories are all
-     *                                        below it do not affect the exit code (unknown severity always counts)
+     * @param string|null           $failOn    severity threshold for the exit code: findings whose advisories are all
+     *                                         below it do not affect the exit code (unknown severity always counts)
+     * @param list<array{name: string, version: string, dev: bool}> $inventory every locked package, for SBOM output
      */
     public function __construct(
         public readonly array $findings,
@@ -33,6 +34,7 @@ final class Plan
         public readonly array $warnings = [],
         public readonly ?CombinedRemediation $combined = null,
         public readonly ?string $failOn = null,
+        public readonly array $inventory = [],
     ) {
     }
 
@@ -42,7 +44,7 @@ final class Plan
             throw new \InvalidArgumentException(sprintf('Unknown severity "%s"; use one of %s.', $severity, implode(', ', array_keys(self::SEVERITIES))));
         }
 
-        return new self($this->findings, $this->metadata, $this->warnings, $this->combined, $severity !== null ? strtolower($severity) : null);
+        return new self($this->findings, $this->metadata, $this->warnings, $this->combined, $severity !== null ? strtolower($severity) : null, $this->inventory);
     }
 
     /** Whether a finding counts towards the exit code under the configured threshold. */
@@ -83,7 +85,7 @@ final class Plan
     /** @param array<string, string> $overrides */
     public function withMetadata(array $overrides): self
     {
-        return new self($this->findings, array_replace($this->metadata, $overrides), $this->warnings, $this->combined, $this->failOn);
+        return new self($this->findings, array_replace($this->metadata, $overrides), $this->warnings, $this->combined, $this->failOn, $this->inventory);
     }
 
     public function exitCode(): int

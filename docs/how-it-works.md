@@ -195,6 +195,10 @@ composer remediate --format=json | jq '.findings[].remediation.command'
 - **sarif**: SARIF 2.1.0 for GitHub Code Scanning and other SARIF consumers. One rule per advisory
   (with a numeric `security-severity`), one result per vulnerable package located at its line in
   `composer.lock`, the verified command in the result message. See [CI integration](ci-integration.md).
+- **cyclonedx**: a CycloneDX 1.6 SBOM (`--output=sbom.cdx.json`) listing every locked package as a
+  component with a `pkg:composer/...` purl and every advisory as a vulnerability affecting its
+  component, with the verified command in the CycloneDX `recommendation` field. SBOM and VEX tooling
+  can consume the plan directly.
 - **json**: the same content for machines. Top-level keys: `schema_version`, `analysis_metadata`
   (Composer and PHP versions, advisory source, hashes of `composer.json` and `composer.lock`,
   timestamp), `exit_code`, `warnings`, `findings[]` (package, advisories, the first ten dependency

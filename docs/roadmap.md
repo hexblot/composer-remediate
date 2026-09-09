@@ -72,8 +72,8 @@ JavaScript ecosystem and that transfer to Composer, in priority order.
 
 1. **SARIF output** (`--output=results.sarif`) for GitHub Code Scanning: done. GitLab's
    dependency-scanning report format for the GitLab Security Dashboard: open.
-2. **CycloneDX 1.6 SBOM with vulnerabilities attached**, using the per-vulnerability `recommendation`
-   field for the verified command, so SBOM and VEX tooling can consume the plan.
+2. **CycloneDX 1.6 SBOM with vulnerabilities attached** (`--output=sbom.cdx.json`), using the
+   per-vulnerability `recommendation` field for the verified command: done.
 3. **`--fail-on <severity>`** gate threshold, combined with the existing exit codes: done.
 4. **EPSS and CISA KEV enrichment** in the advisory database build: exploit likelihood and
    "exploited in the wild" flags, used to order findings by urgency rather than severity label alone.

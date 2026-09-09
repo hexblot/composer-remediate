@@ -40,6 +40,9 @@ composer global require hexblot/composer-remediate
 composer remediate --no-dev --output=remediation-report.html --output=remediation-report.json
 ```
 
+Add `--fail-on high` to let low and medium findings pass, `--output=results.sarif` for GitHub Code
+Scanning annotations, or `--output=sbom.cdx.json` for a CycloneDX SBOM with the fixes attached.
+
 Ready-made GitHub Actions and GitLab CI jobs, and `jq` recipes for severity-based gates, are in
 [docs/ci-integration.md](docs/ci-integration.md). Every command and option is listed in
 [docs/cli-reference.md](docs/cli-reference.md).

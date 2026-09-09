@@ -115,6 +115,12 @@ tab and as pull request annotations:
 The `|| true` keeps the upload step reachable; gate on the exit code in a separate step as shown
 above (or capture it with `set +e` as in the full example).
 
+### SBOM with remediation
+
+`--output=sbom.cdx.json` writes a CycloneDX 1.6 SBOM of the whole lock with every advisory attached
+as a vulnerability and the verified command in its `recommendation`. Attach it as an artifact or feed
+it to Dependency-Track, Grype or any other CycloneDX consumer.
+
 ## GitLab CI
 
 ```yaml

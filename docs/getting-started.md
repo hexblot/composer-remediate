@@ -33,6 +33,8 @@ composer require --dev hexblot/composer-remediate
 ```bash
 composer remediate                         # analyse composer.lock, print a plan, change nothing
 composer remediate --output=report.html --output=report.json   # also write HTML and JSON reports (CI artifacts)
+composer remediate --output=results.sarif --output=sbom.cdx.json   # SARIF for GitHub Code Scanning, CycloneDX SBOM with fixes
+composer remediate --fail-on high                               # only high and critical findings affect the exit code
 composer remediate --format=json                                # machine-readable output on stdout
 composer remediate --no-dev                # ignore findings in require-dev packages
 composer remediate --ignore CVE-2024-50345 # leave an advisory out (also honours config.audit.ignore / config.policy)

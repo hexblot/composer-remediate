@@ -168,7 +168,20 @@ final class Planner
             'composer_lock_sha256' => self::fileHash($context->lockPath()),
             'analysis_timestamp' => gmdate('c'),
             'locked_packages' => (string) $lock->count(),
-        ], $warnings, $combined);
+        ], $warnings, $combined, null, self::inventory($lock));
+    }
+
+    /**
+     * @return list<array{name: string, version: string, dev: bool}>
+     */
+    private static function inventory(LockSnapshot $lock): array
+    {
+        $inventory = [];
+        foreach ($lock->packages as $name => $package) {
+            $inventory[] = ['name' => $name, 'version' => $package->getPrettyVersion(), 'dev' => $lock->isDev($name)];
+        }
+
+        return $inventory;
     }
 
     /**

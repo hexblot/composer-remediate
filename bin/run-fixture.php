@@ -7,12 +7,13 @@
  *
  *   php bin/run-fixture.php <fixture-name> [--format=text|html|json] [--write-reports] [--allow-direct-require] [-v]
  *
- * --write-reports stores report.md (console output), report.json, report.html and report.sarif under the fixture's reports/ directory
+ * --write-reports stores report.md (console output), report.json, report.html, report.sarif and report.cdx.json under the fixture's reports/ directory
  * with deterministic metadata (fixture name, fixed timestamp) so they can be committed as examples.
  */
 
 declare(strict_types=1);
 
+use Remediate\Output\CycloneDxRenderer;
 use Remediate\Output\LockLineIndex;
 use Remediate\Output\ReportFormat;
 use Symfony\Component\Console\Output\ConsoleOutput;
@@ -68,6 +69,7 @@ if ($writeReports) {
     file_put_contents("$dir/reports/report.json", ReportFormat::Json->render($stable, true));
     file_put_contents("$dir/reports/report.html", ReportFormat::Html->render($stable, true));
     file_put_contents("$dir/reports/report.sarif", ReportFormat::Sarif->render($stable, true, false, LockLineIndex::fromFile("$dir/composer.lock")));
+    file_put_contents("$dir/reports/report.cdx.json", (new CycloneDxRenderer(true, 'urn:uuid:00000000-0000-4000-8000-000000000000', '2026-01-01T00:00:00+00:00'))->render($stable));
     fwrite(STDERR, "reports written to $dir/reports\n");
 }
 $decorated = $format === ReportFormat::Text && stream_isatty(STDOUT);

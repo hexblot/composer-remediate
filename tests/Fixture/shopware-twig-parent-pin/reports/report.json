@@ -7,7 +7,7 @@
         "php_version": "(fixture)",
         "advisory_source": "advisory snapshot advisories.json",
         "solver": "in-process Composer dry-run",
-        "composer_json_sha256": "1a2851c5feaadb7a090cc9445a48e2d59373a3e2cdcfa13abc2b1b98846dcb2f",
+        "composer_json_sha256": "73bf35c44066508a4aeed63d23a0e63c9f8220aecc9d2406cb9cd2cd864efd70",
         "composer_lock_sha256": "0166a25c8ee830ae631dad4fee40c7826c06f7cd18e413ab36c454440d37c811",
         "analysis_timestamp": "(fixture)",
         "locked_packages": "202"

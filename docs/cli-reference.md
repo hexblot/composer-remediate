@@ -18,8 +18,8 @@ Exit codes: 0 no vulnerabilities, 1 vulnerabilities with a verified remediation,
 
 | Option | Value | Description |
 |---|---|---|
-| `--format`, `-f` | required, default `text` | Format printed to standard output: text, html, json, sarif or none |
-| `--output`, `-o` | repeatable | Also write a report file; format inferred from the extension (.html, .json, .sarif, .txt) or given as sarif:path. Repeatable. |
+| `--format`, `-f` | required, default `text` | Format printed to standard output: text, html, json, sarif, cyclonedx or none |
+| `--output`, `-o` | repeatable | Also write a report file; format inferred from the extension (.html, .json, .sarif, .cdx.json, .txt) or given as sarif:path. Repeatable. |
 | `--fail-on` | required | Only findings at or above this severity (low, medium, high, critical) affect the exit code; findings of unknown severity always count |
 | `--no-dev` | flag | Ignore vulnerabilities in require-dev packages |
 | `--offline` | flag | Refuse all network access; needs a warm Composer cache plus --advisories-file or --database-location (sets COMPOSER_DISABLE_NETWORK=1) |
