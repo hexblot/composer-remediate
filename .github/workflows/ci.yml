@@ -25,6 +25,30 @@ jobs:
       - name: CLI reference is up to date
         if: matrix.php == '8.4'
         run: php bin/cli-reference.php | diff -u docs/cli-reference.md - || (echo "::error::docs/cli-reference.md is stale; run php bin/cli-reference.php > docs/cli-reference.md" && exit 1)
+  composer-matrix:
+    name: composer ${{ matrix.composer }} on php ${{ matrix.php }}
+    runs-on: ubuntu-latest
+    strategy:
+      fail-fast: false
+      matrix:
+        include:
+          - { php: '8.1', composer: '2.4.*' }   # runtime floor
+          - { php: '8.2', composer: '2.7.*' }
+          - { php: '8.3', composer: '2.8.*' }   # last release without --minimal-changes
+          - { php: '8.4', composer: '2.9.*' }
+    env:
+      COMPOSER_NO_BLOCKING: '1'   # older composer/composer releases carry advisories; that is the point
+    steps:
+      - uses: actions/checkout@v7
+      - uses: shivammathur/setup-php@v2
+        with:
+          php-version: ${{ matrix.php }}
+          coverage: none
+          tools: composer:v2
+      - run: composer install --no-interaction --no-progress
+      - run: composer require --dev "composer/composer:${{ matrix.composer }}" --with-all-dependencies --no-interaction --no-progress
+      - run: composer show composer/composer | grep versions
+      - run: composer test
   docs-build:
     runs-on: ubuntu-latest
     steps:

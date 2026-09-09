@@ -11,6 +11,7 @@ use Composer\Filter\PlatformRequirementFilter\PlatformRequirementFilterFactory;
 use Composer\Filter\PlatformRequirementFilter\PlatformRequirementFilterInterface;
 use Composer\Installer;
 use Composer\IO\BufferIO;
+use Composer\IO\NullIO;
 use Composer\Policy\PolicyConfig;
 use Composer\Semver\Intervals;
 use Composer\Semver\VersionParser;
@@ -19,8 +20,9 @@ use Remediate\Engine\Lock\LockSnapshot;
 use Symfony\Component\Console\Output\OutputInterface;
 
 /**
- * Runs Composer's Installer in dry-run mode against a scratch copy and reads the resulting lock
- * transaction from memory. Nothing is written or installed. Advisory blocking (Composer >= 2.10) is
+ * Runs Composer's Installer against a scratch copy and reads the resulting lock: from memory after a
+ * dry run on Composer >= 2.9, from the lock file written into the scratch copy on older releases.
+ * Nothing is installed and the user's project is never touched. Advisory blocking (Composer >= 2.10) is
  * disabled for the solve so behaviour is identical across Composer versions; the planner performs
  * its own advisory check on the result.
  */
@@ -59,11 +61,17 @@ final class InProcessSolver implements SolverInterface
                 return new SolveResult(SolveStatus::Error, null, $io->getOutput(), 'Composer could not load the scratch project: ' . $e->getMessage());
             }
 
+            // Composer >= 2.9 exposes the solved lock in memory after a dry run. Older releases do
+            // not, so there the update writes composer.lock into the scratch copy (never the user's
+            // project) and the result is read back from that file.
+            $inMemory = method_exists(Installer::class, 'getLockTransaction'); // @phpstan-ignore function.alreadyNarrowedType
             $installer = Installer::create($io, $composer);
             $installer
-                ->setDryRun(true)
+                ->setDryRun($inMemory)
                 ->setUpdate(true)
                 ->setInstall(false)
+                ->setWriteLock(!$inMemory)
+                ->setExecuteOperations(false)
                 ->setDevMode(true)
                 ->setDumpAutoloader(false)
                 ->setRunScripts(false)
@@ -109,12 +117,20 @@ final class InProcessSolver implements SolverInterface
                 return new SolveResult($status, null, $io->getOutput(), null, $code);
             }
 
-            $transaction = $installer->getLockTransaction();
-            if ($transaction === null) {
-                return new SolveResult(SolveStatus::Error, null, $io->getOutput(), 'Composer reported success but produced no lock transaction.');
+            if ($inMemory) {
+                $transaction = $installer->getLockTransaction();
+                if ($transaction === null) {
+                    return new SolveResult(SolveStatus::Error, null, $io->getOutput(), 'Composer reported success but produced no lock transaction.');
+                }
+                $after = LockSnapshot::fromPackages($transaction->getNewLockPackages(false), $transaction->getNewLockPackages(true));
+            } else {
+                try {
+                    $reloaded = Factory::create(new NullIO(), $project->composerJsonPath(), true, true);
+                    $after = LockSnapshot::fromLocker($reloaded->getLocker());
+                } catch (\Throwable $e) {
+                    return new SolveResult(SolveStatus::Error, null, $io->getOutput(), 'Could not read the lock file written by the solve: ' . $e->getMessage());
+                }
             }
-
-            $after = LockSnapshot::fromPackages($transaction->getNewLockPackages(false), $transaction->getNewLockPackages(true));
 
             return new SolveResult(SolveStatus::Resolved, $after, $io->getOutput());
         } finally {
