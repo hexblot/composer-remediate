@@ -92,4 +92,4 @@ Show where the advisory database comes from and what it contains
 
 ## Report formats
 
-`--format` selects what goes to standard output (`text` by default, or `html`, `json`, `none`). `--output=<file>` writes a report file, format inferred from the extension (`.html`, `.json`, `.txt`) or given as a prefix (`json:path`); it may be repeated. See [How it works](how-it-works.md#8-output) for the JSON structure.
+`--format` selects what goes to standard output (`text` by default, or `html`, `json`, `none`). `--output=<file>` writes a report file, format inferred from the extension (`.html`, `.json`, `.txt`) or given as a prefix (`json:path`); it may be repeated. See [How it works](how-it-works.md#8-output) for the JSON structure and [schema/report.schema.json](schema/report.schema.json) for its JSON Schema.
