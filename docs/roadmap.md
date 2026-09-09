@@ -39,7 +39,7 @@ output.
 ## Phase 3 — ecosystem corpus, CI, version matrix
 
 - Drupal, Symfony and Laravel fixture corpora
-- Composer 2.4 through latest, PHP 8.2 through 8.5 in CI
+- Composer 2.4 through latest, PHP 8.1 through 8.5 in CI
 - CI integration recipes and a published JSON schema
 
 ## Phase 4 — global planning

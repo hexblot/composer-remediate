@@ -70,6 +70,9 @@ HELP);
                 return Plan::EXIT_ERROR;
             }
         }
+        if (PHP_VERSION_ID < 80200) {
+            $io->writeError(sprintf('<warning>PHP %s is end of life and no longer receives security fixes; upgrade the runtime that executes Composer.</warning>', PHP_VERSION));
+        }
         $composer = $this->requireComposer();
         $context = ProjectContext::fromComposer($composer);
 

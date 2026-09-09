@@ -161,7 +161,7 @@ and `--no-install` in 2.0.
 
 Refuse to run on Composer older than 2.4. On 2.4 through 2.8 omit `-m` and warn that resulting diffs
 may be larger than necessary. Develop and test against `composer/composer ^2.9` with 2.4, 2.8, 2.9
-and the latest release in the CI matrix. PHP 8.2 or newer: 8.1 reached end of life in December 2025, and a security tool should not run on an unsupported runtime.
+and the latest release in the CI matrix. PHP 8.1 or newer for reach (Composer itself runs on 7.2.5+); since 8.1 reached end of life in December 2025 the command prints a warning on PHP older than 8.2 rather than refusing to run, so teams on an unsupported runtime still get a remediation plan.
 
 ### Consequences
 
