@@ -19,6 +19,7 @@ use Remediate\Tests\Support\FixtureRunner;
  *     "description": "...",
  *     "platform": {"php": "8.3.0"},                 optional config.platform overrides
  *     "strict_findings": false,                     when true, the plan must contain exactly the listed findings
+ *     "combined_command": "composer update a b",   optional: the verified command covering all fixable findings
  *     "findings": [
  *       {
  *         "package": "symfony/http-foundation",
@@ -70,6 +71,10 @@ final class FixtureTest extends TestCase
         self::assertSame($plan->exitCode(), $json['exit_code']);
         self::assertCount(count($plan->findings), $json['findings']);
 
+        if (isset($expected['combined_command'])) {
+            self::assertNotNull($plan->combined, "Expected a combined command.\n$rendered");
+            self::assertSame($expected['combined_command'], $plan->combined->candidate->commandLine(true), "Combined command differs.\n$rendered");
+        }
         $expectedFindings = $expected['findings'] ?? [];
         self::assertIsArray($expectedFindings);
         if ((bool) ($expected['strict_findings'] ?? false)) {

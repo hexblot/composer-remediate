@@ -2379,29 +2379,6 @@
         ],
         "symfony/http-foundation": [
             {
-                "advisoryId": "PKSA-b35n-565h-rs4q",
-                "packageName": "symfony/http-foundation",
-                "remoteId": "symfony/http-foundation/CVE-2024-50345.yaml",
-                "title": "CVE-2024-50345: Open redirect via browser-sanitized URLs",
-                "link": "https://symfony.com/cve-2024-50345",
-                "cve": "CVE-2024-50345",
-                "affectedVersions": ">=2.0.0,<3.0.0|>=3.0.0,<4.0.0|>=4.0.0,<5.0.0|>=5.0.0,<5.1.0|>=5.1.0,<5.2.0|>=5.2.0,<5.3.0|>=5.3.0,<5.4.0|>=5.4.0,<5.4.46|>=6.0.0,<6.1.0|>=6.1.0,<6.2.0|>=6.2.0,<6.3.0|>=6.3.0,<6.4.0|>=6.4.0,<6.4.14|>=7.0.0,<7.1.0|>=7.1.0,<7.1.7",
-                "source": "FriendsOfPHP/security-advisories",
-                "reportedAt": "2024-11-05 08:00:00",
-                "composerRepository": "https://packagist.org",
-                "severity": "low",
-                "sources": [
-                    {
-                        "name": "GitHub",
-                        "remoteId": "GHSA-mrqx-rp3w-jpjp"
-                    },
-                    {
-                        "name": "FriendsOfPHP/security-advisories",
-                        "remoteId": "symfony/http-foundation/CVE-2024-50345.yaml"
-                    }
-                ]
-            },
-            {
                 "advisoryId": "PKSA-t4rz-hp2g-57t1",
                 "packageName": "symfony/http-foundation",
                 "remoteId": "symfony/http-foundation/CVE-2020-5255.yaml",
@@ -2893,31 +2870,6 @@
                 ]
             }
         ],
-        "symfony/process": [
-            {
-                "advisoryId": "PKSA-wws7-mr54-jsny",
-                "packageName": "symfony/process",
-                "remoteId": "symfony/process/CVE-2024-51736.yaml",
-                "title": "CVE-2024-51736: Command execution hijack on Windows with Process class",
-                "link": "https://symfony.com/cve-2024-51736",
-                "cve": "CVE-2024-51736",
-                "affectedVersions": ">=2.0.0,<3.0.0|>=3.0.0,<4.0.0|>=4.0.0,<5.0.0|>=5.0.0,<5.1.0|>=5.1.0,<5.2.0|>=5.2.0,<5.3.0|>=5.3.0,<5.4.0|>=5.4.0,<5.4.46|>=6.0.0,<6.1.0|>=6.1.0,<6.2.0|>=6.2.0,<6.3.0|>=6.3.0,<6.4.0|>=6.4.0,<6.4.14|>=7.0.0,<7.1.0|>=7.1.0,<7.1.7",
-                "source": "FriendsOfPHP/security-advisories",
-                "reportedAt": "2024-11-05 08:00:00",
-                "composerRepository": "https://packagist.org",
-                "severity": "high",
-                "sources": [
-                    {
-                        "name": "GitHub",
-                        "remoteId": "GHSA-qq5c-677p-737q"
-                    },
-                    {
-                        "name": "FriendsOfPHP/security-advisories",
-                        "remoteId": "symfony/process/CVE-2024-51736.yaml"
-                    }
-                ]
-            }
-        ],
         "symfony/proxy-manager-bridge": [
             {
                 "advisoryId": "PKSA-hxyb-xpnq-t8vg",
@@ -2987,31 +2939,6 @@
                     {
                         "name": "FriendsOfPHP/security-advisories",
                         "remoteId": "symfony/routing/CVE-2012-6431.yaml"
-                    }
-                ]
-            }
-        ],
-        "symfony/runtime": [
-            {
-                "advisoryId": "PKSA-d1rr-z8zb-qnm7",
-                "packageName": "symfony/runtime",
-                "remoteId": "symfony/runtime/CVE-2024-50340.yaml",
-                "title": "CVE-2024-50340: Ability to change environment from query",
-                "link": "https://symfony.com/cve-2024-50340",
-                "cve": "CVE-2024-50340",
-                "affectedVersions": ">=5.3.0,<5.4.0|>=5.4.0,<5.4.46|>=6.0.0,<6.1.0|>=6.1.0,<6.2.0|>=6.2.0,<6.3.0|>=6.3.0,<6.4.0|>=6.4.0,<6.4.14|>=7.0.0,<7.1.0|>=7.1.0,<7.1.7",
-                "source": "FriendsOfPHP/security-advisories",
-                "reportedAt": "2024-11-05 08:00:00",
-                "composerRepository": "https://packagist.org",
-                "severity": "medium",
-                "sources": [
-                    {
-                        "name": "GitHub",
-                        "remoteId": "GHSA-x8vp-gf4q-mw5j"
-                    },
-                    {
-                        "name": "FriendsOfPHP/security-advisories",
-                        "remoteId": "symfony/runtime/CVE-2024-50340.yaml"
                     }
                 ]
             }
@@ -3508,52 +3435,6 @@
             }
         ],
         "twig/twig": [
-            {
-                "advisoryId": "PKSA-yhcn-xrg3-68b1",
-                "packageName": "twig/twig",
-                "remoteId": "twig/twig/CVE-2024-51754.yaml",
-                "title": "Unguarded calls to __toString() when nesting an object into an array",
-                "link": "https://symfony.com/blog/cve-2024-51754-unguarded-calls-to-tostring-in-a-sandbox-when-an-object-is-in-an-array-or-an-argument-list",
-                "cve": "CVE-2024-51754",
-                "affectedVersions": ">=1.0.0,<2.0.0|>=2.0.0,<3.0.0|>=3.0.0,<3.11.2|>=3.12.0,<3.14.1",
-                "source": "FriendsOfPHP/security-advisories",
-                "reportedAt": "2024-11-06 08:00:00",
-                "composerRepository": "https://packagist.org",
-                "severity": "low",
-                "sources": [
-                    {
-                        "name": "GitHub",
-                        "remoteId": "GHSA-6377-hfv9-hqf6"
-                    },
-                    {
-                        "name": "FriendsOfPHP/security-advisories",
-                        "remoteId": "twig/twig/CVE-2024-51754.yaml"
-                    }
-                ]
-            },
-            {
-                "advisoryId": "PKSA-2wrf-1xmk-1pky",
-                "packageName": "twig/twig",
-                "remoteId": "twig/twig/CVE-2024-51755.yaml",
-                "title": "Unguarded calls to __isset() and to array-accesses when the sandbox is enabled",
-                "link": "https://symfony.com/blog/cve-2024-51755-unguarded-calls-to-isset-and-to-array-accesses-in-a-sandbox",
-                "cve": "CVE-2024-51755",
-                "affectedVersions": ">=1.0.0,<2.0.0|>=2.0.0,<3.0.0|>=3.0.0,<3.11.2|>=3.12.0,<3.14.1",
-                "source": "FriendsOfPHP/security-advisories",
-                "reportedAt": "2024-11-06 08:00:00",
-                "composerRepository": "https://packagist.org",
-                "severity": "low",
-                "sources": [
-                    {
-                        "name": "GitHub",
-                        "remoteId": "GHSA-jjxq-ff2g-95vh"
-                    },
-                    {
-                        "name": "FriendsOfPHP/security-advisories",
-                        "remoteId": "twig/twig/CVE-2024-51755.yaml"
-                    }
-                ]
-            },
             {
                 "advisoryId": "PKSA-6319-ffpf-gx66",
                 "packageName": "twig/twig",

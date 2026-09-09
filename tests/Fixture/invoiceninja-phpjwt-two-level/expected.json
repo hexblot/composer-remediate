@@ -1,11 +1,11 @@
 {
-  "description": "Case 1 and case 2 in one lock: phpseclib/phpseclib 3.0.18 is a direct requirement (^3.0) fixed in 3.0.19, and knplabs/knp-snappy 1.4.1 is transitive via barryvdh/laravel-snappy ^1.0 (requires ^1.4) and fixed in 1.4.2. Both are plain partial updates; the combined command fixes everything.",
+  "description": "Case 3 with a two-level chain: firebase/php-jwt 5.5.1 (CVE-2021-46743, fixed in 6.0.0) is required by google/apiclient 2.12.1 (root ^2.7) with ~5.0 and by google/auth 1.19.0 (not a root requirement) with ~5.0. google/apiclient 2.12.2 (2022-04-05) adds ~6.0 and google/auth 1.21.0 (2022-04-13) allows ^6.0; -W moves both. maximebf/debugbar's bundled jQuery advisories have no fix at the snapshot date.",
   "source": {
-    "project": "BookStackApp/BookStack",
-    "url": "https://github.com/BookStackApp/BookStack",
-    "commit": "f9fcc9f3c7851fec07923f335972a50efe11ba26",
-    "commit_date": "2023-02-16",
-    "as_of": "2023-03-25"
+    "project": "invoiceninja/invoiceninja",
+    "url": "https://github.com/invoiceninja/invoiceninja",
+    "commit": "5a4614da1f8836bc9a6482b5ef24588402da6aac",
+    "commit_date": "2022-04-01",
+    "as_of": "2022-04-20"
   },
   "platform": {
     "ext-apcu": "5.1.28",
@@ -74,26 +74,27 @@
     "ext-zend-opcache": "8.5.5",
     "ext-zip": "1.22.8",
     "ext-zlib": "8.5.5",
-    "php": "8.0.2"
+    "php": "8.0.30"
   },
   "findings": [
     {
-      "package": "phpseclib/phpseclib",
-      "advisory": "CVE-2023-27560",
+      "package": "firebase/php-jwt",
+      "advisory": "CVE-2021-46743",
       "remediation": true,
-      "command": "composer update phpseclib/phpseclib",
-      "target_version": "3.0.19",
-      "max_changes": 1
+      "command": "composer update google/apiclient:v2.12.2 -W -m --with 'firebase/php-jwt:>=6.0.0'",
+      "target_version": "v6.1.1",
+      "max_changes": 3
     },
     {
-      "package": "knplabs/knp-snappy",
-      "advisory": "CVE-2023-28115",
-      "remediation": true,
-      "command": "composer update knplabs/knp-snappy",
-      "target_version": "v1.4.2",
-      "max_changes": 1
+      "package": "maximebf/debugbar",
+      "advisory": "CVE-2020-11022",
+      "remediation": false
+    },
+    {
+      "package": "maximebf/debugbar",
+      "advisory": "CVE-2019-11358",
+      "remediation": false
     }
   ],
-  "strict_findings": true,
-  "combined_command": "composer update knplabs/knp-snappy phpseclib/phpseclib"
+  "strict_findings": true
 }

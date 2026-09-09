@@ -1,0 +1,119 @@
+<!DOCTYPE html><html lang="en"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Composer Remediate — 2 findings</title>
+<style>:root{color-scheme:light dark;--bg:#fff;--fg:#1c1e21;--muted:#5f6b7a;--border:#d9dee5;--panel:#f6f8fa;--ok:#1a7f37;--bad:#b42318;--warn:#9a6700;--accent:#0f6b8a}
+@media(prefers-color-scheme:dark){:root{--bg:#0f1418;--fg:#e6edf3;--muted:#9aa7b4;--border:#2b3640;--panel:#161c22;--ok:#3fb950;--bad:#f0665b;--warn:#d4a72c;--accent:#58b8d8}}
+body{margin:0;background:var(--bg);color:var(--fg);font:15px/1.5 system-ui,-apple-system,Segoe UI,Roboto,sans-serif}
+header{padding:1.5rem 2rem;border-bottom:1px solid var(--border)}header h1{margin:0;font-size:1.4rem}.sub{margin:.25rem 0 0;color:var(--muted)}
+main{max-width:70rem;margin:0 auto;padding:1rem 2rem 3rem}
+section{margin:1.5rem 0}.finding{border:1px solid var(--border);border-radius:8px;padding:1rem 1.25rem;background:var(--panel)}
+h2{font-size:1.15rem;margin:.25rem 0 .5rem}h3{font-size:.95rem;margin:1rem 0 .35rem;color:var(--muted);text-transform:uppercase;letter-spacing:.04em}
+.version{font-weight:400;color:var(--muted)}.state{margin:0;color:var(--muted)}
+code{font:.9em ui-monospace,SFMono-Regular,Menlo,monospace;background:rgba(127,127,127,.12);padding:.1em .35em;border-radius:4px;word-break:break-all}
+pre{font:.85rem ui-monospace,SFMono-Regular,Menlo,monospace;background:rgba(127,127,127,.1);padding:.75rem 1rem;border-radius:6px;overflow-x:auto;margin:.25rem 0}
+pre.reason{white-space:pre-wrap;margin:0;background:none;padding:0}
+.command code{display:block;padding:.6rem .8rem;font-size:.95rem;border-left:4px solid var(--accent)}
+table{border-collapse:collapse;width:100%;font-size:.92rem}th,td{text-align:left;padding:.4rem .6rem;border-bottom:1px solid var(--border);vertical-align:top}th{color:var(--muted);font-weight:600}
+.badge{display:inline-block;font-size:.75rem;font-weight:600;padding:.1rem .5rem;border-radius:999px;border:1px solid currentColor;white-space:nowrap}
+.badge.ok{color:var(--ok)}.badge.none,.badge.rejected{color:var(--bad)}.badge.skipped,.badge.dev{color:var(--muted)}
+.badge.sev-critical,.badge.sev-high{color:var(--bad)}.badge.sev-medium{color:var(--warn)}.badge.sev-low{color:var(--muted)}
+.warning{border-left:4px solid var(--warn);padding:.5rem .8rem;background:rgba(212,167,44,.1)}.clean{color:var(--ok);font-weight:600}
+.none-box{border-left:4px solid var(--bad);padding:.5rem .8rem;background:rgba(180,35,24,.08)}
+.advisories{padding-left:1.2rem}.advisories li{margin:.4rem 0}
+details summary{cursor:pointer;color:var(--accent);margin:.5rem 0}
+.meta dl{display:grid;grid-template-columns:max-content 1fr;gap:.2rem 1rem;font-size:.85rem;color:var(--muted)}.meta dt{font-weight:600}.meta dd{margin:0;word-break:break-all}</style></head><body>
+<header><h1>Composer Remediate</h1><p class="sub">Composer Remediate — 2 findings in <code>invoiceninja-phpjwt-two-level</code></p></header>
+<main>
+<section><h2>Summary</h2><p>3 advisories on 2 packages.</p><p class="command"><span class="badge ok">fixes 1 of 3</span> <code>composer update google/apiclient:v2.12.2 -W -m --with &apos;firebase/php-jwt:&gt;=6.0.0&apos;</code></p><table class="summary"><thead><tr><th>Package</th><th>Advisories</th><th>Status</th><th>Recommended command</th></tr></thead><tbody><tr><td><a href="#finding-1">firebase/php-jwt v5.5.1</a></td><td>CVE-2021-46743</td><td><span class="badge ok">verified</span></td><td><code>composer update google/apiclient:v2.12.2 -W -m --with &apos;firebase/php-jwt:&gt;=6.0.0&apos;</code></td></tr><tr><td><a href="#finding-2">maximebf/debugbar v1.18.0</a> <span class="badge dev">dev</span></td><td>CVE-2020-11022, CVE-2019-11358</td><td><span class="badge none">no verified fix</span></td><td>—</td></tr></tbody></table></section>
+<section class="finding" id="finding-1">
+<h2>firebase/php-jwt <span class="version">v5.5.1</span></h2>
+<p class="state">Transitive dependency.</p>
+<h3>Advisories</h3><ul class="advisories">
+<li><strong><a href="https://github.com/advisories/GHSA-8xf4-w7qw-pjjw" rel="noopener">CVE-2021-46743 <small>(PKSA-2kqm-ps5x-s4f5)</small></a></strong> <span class="badge sev-critical">critical</span><br>Key/algorithm type confusion<br><small>affected versions: <code>&lt;6.0.0</code></small></li>
+</ul>
+<h3>Introduced by</h3>
+<pre class="tree">root
+└── google/apiclient v2.12.1
+    └── firebase/php-jwt v5.5.1  (requires ~2.0||~3.0||~4.0||~5.0)
+
+root
+└── turbo124/laravel-gmail v5.0.2
+    └── google/apiclient v2.12.1
+        └── firebase/php-jwt v5.5.1  (requires ~2.0||~3.0||~4.0||~5.0)
+
+root
+└── google/apiclient v2.12.1
+    └── google/auth v1.19.0
+        └── firebase/php-jwt v5.5.1  (requires ~5.0)
+
+root
+└── turbo124/laravel-gmail v5.0.2
+    └── google/apiclient v2.12.1
+        └── google/auth v1.19.0
+            └── firebase/php-jwt v5.5.1  (requires ~5.0)</pre>
+<h3>Recommended remediation</h3>
+<p class="command"><code>composer update google/apiclient:v2.12.2 -W -m --with &apos;firebase/php-jwt:&gt;=6.0.0&apos;</code></p>
+<p class="validation"><span class="badge ok">Composer validation: PASS</span> 3 packages changed, 0 added, 0 removed, 0 root constraints changed, <strong>includes a major version change</strong>.</p>
+<details open><summary>Expected changes (3)</summary><table class="changes"><thead><tr><th>Package</th><th>From</th><th>To</th><th>Kind</th></tr></thead><tbody>
+<tr><td>firebase/php-jwt</td><td>v5.5.1</td><td>v6.1.1</td><td>upgraded, major</td></tr>
+<tr><td>google/apiclient</td><td>v2.12.1</td><td>v2.12.2</td><td>upgraded, patch</td></tr>
+<tr><td>google/auth</td><td>v1.19.0</td><td>v1.21.0</td><td>upgraded, minor</td></tr>
+</tbody></table></details>
+<details><summary>Other candidates (6)</summary><table class="candidates"><thead><tr><th>Outcome</th><th>Command</th><th>Detail</th></tr></thead><tbody>
+<tr><td><span class="badge ok">valid, rank 2</span></td><td><code>composer update google/apiclient -W -m --with &apos;firebase/php-jwt:&gt;=6.0.0&apos;</code></td><td>3 changes</td></tr>
+<tr><td><span class="badge ok">valid, rank 3</span></td><td><code>composer update turbo124/laravel-gmail -W -m --with &apos;firebase/php-jwt:&gt;=6.0.0&apos;</code></td><td>3 changes</td></tr>
+<tr><td><span class="badge rejected">rejected</span></td><td><code>composer update firebase/php-jwt</code></td><td><pre class="reason">resolves, but firebase/php-jwt ends at v5.5.1 which is still affected by PKSA-2kqm-ps5x-s4f5</pre></td></tr>
+<tr><td><span class="badge rejected">rejected</span></td><td><code>composer update firebase/php-jwt -w -m --with &apos;firebase/php-jwt:&gt;=6.0.0&apos;</code></td><td><pre class="reason">Composer could not resolve the dependencies: Your requirements could not be resolved to an installable set of packages.
+  Problem 1
+    - google/apiclient is locked to version v2.12.1 and an update of this package was not requested.
+    - google/apiclient v2.12.1 requires firebase/php-jwt ~2.0||~3.0||~4.0||~5.0 -&gt; found firebase/php-jwt[v5.5.1] but it conflicts with your temporary update constraint (firebase/php-jwt:&gt;=6.0.0).
+  Problem 2
+    - turbo124/laravel-gmail is locked to version v5.0.2 and an update of this package was not requested.
+    - google/apiclient v2.12.1 requires firebase/php-jwt ~2.0||~3.0||~4.0||~5.0 -&gt; found firebase/php-jwt[v5.5.1] but it conflicts with your temporary update constraint (firebase/php-jwt:&gt;=6.0.0).
+    - turbo124/laravel-gmail v5.0.2 requires google/apiclient ^2.5 -&gt; satisfiable by google/apiclient[v2.12.1].
+Use the option --with-all-dependencies (-W) to allow upgrades, downgrades and removals for packages currently locked to specific versions.</pre></td></tr>
+<tr><td><span class="badge skipped">not tried</span></td><td><code>composer require --no-update google/apiclient:^3.0 &amp;&amp; composer update google/apiclient -W -m --with &apos;firebase/php-jwt:&gt;=6.0.0&apos;</code></td><td>a better candidate already exists</td></tr>
+<tr><td><span class="badge skipped">not tried</span></td><td><code>composer require --no-update turbo124/laravel-gmail:^6.0 &amp;&amp; composer update turbo124/laravel-gmail -W -m --with &apos;firebase/php-jwt:&gt;=6.0.0&apos;</code></td><td>a better candidate already exists</td></tr>
+</tbody></table></details>
+</section>
+<section class="finding" id="finding-2">
+<h2>maximebf/debugbar <span class="version">v1.18.0</span></h2>
+<p class="state">Transitive dependency. Development requirement only.</p>
+<h3>Advisories</h3><ul class="advisories">
+<li><strong><a href="https://github.com/advisories/GHSA-gxr4-xjj5-5px2" rel="noopener">CVE-2020-11022 <small>(PKSA-dyrx-jq7h-gtxg)</small></a></strong> <span class="badge sev-medium">medium</span><br>Potential XSS vulnerability in jQuery<br><small>affected versions: <code>&lt;1.19.0</code></small></li>
+<li><strong><a href="https://github.com/advisories/GHSA-6c3j-c64m-qhgq" rel="noopener">CVE-2019-11358 <small>(PKSA-vf2x-zfw2-cnsj)</small></a></strong> <span class="badge sev-medium">medium</span><br>XSS in jQuery as used in Drupal, Backdrop CMS, and other products<br><small>affected versions: <code>&lt;1.19.0</code></small></li>
+</ul>
+<h3>Introduced by</h3>
+<pre class="tree">root
+└── barryvdh/laravel-debugbar v3.6.7
+    └── maximebf/debugbar v1.18.0  (requires ^1.17.2)</pre>
+<h3>Recommended remediation</h3><p class="none-box">No verified remediation found.</p>
+<details><summary>Other candidates (4)</summary><table class="candidates"><thead><tr><th>Outcome</th><th>Command</th><th>Detail</th></tr></thead><tbody>
+<tr><td><span class="badge rejected">rejected</span></td><td><code>composer update maximebf/debugbar</code></td><td><pre class="reason">resolves, but maximebf/debugbar ends at v1.18.1 which is still affected by PKSA-dyrx-jq7h-gtxg, PKSA-vf2x-zfw2-cnsj</pre></td></tr>
+<tr><td><span class="badge rejected">rejected</span></td><td><code>composer update maximebf/debugbar -w -m --with &apos;maximebf/debugbar:&gt;=1.19.0&apos;</code></td><td><pre class="reason">Composer could not resolve the dependencies: Your requirements could not be resolved to an installable set of packages.
+  Problem 1
+    - barryvdh/laravel-debugbar is locked to version v3.6.7 and an update of this package was not requested.
+    - barryvdh/laravel-debugbar v3.6.7 requires maximebf/debugbar ^1.17.2 -&gt; found maximebf/debugbar[v1.18.0, v1.18.1] but it conflicts with your temporary update constraint (maximebf/debugbar:&gt;=1.19.0).
+Use the option --with-all-dependencies (-W) to allow upgrades, downgrades and removals for packages currently locked to specific versions.</pre></td></tr>
+<tr><td><span class="badge rejected">rejected</span></td><td><code>composer update barryvdh/laravel-debugbar -W -m --with &apos;maximebf/debugbar:&gt;=1.19.0&apos;</code></td><td><pre class="reason">Composer could not resolve the dependencies: Your requirements could not be resolved to an installable set of packages.
+  Problem 1
+    - Root composer.json requires barryvdh/laravel-debugbar ^3.4 -&gt; satisfiable by barryvdh/laravel-debugbar[v3.6.7].
+    - barryvdh/laravel-debugbar v3.6.7 requires maximebf/debugbar ^1.17.2 -&gt; found maximebf/debugbar[v1.18.0, v1.18.1] but it conflicts with your temporary update constraint (maximebf/debugbar:&gt;=1.19.0).</pre></td></tr>
+<tr><td><span class="badge rejected">rejected</span></td><td><code>composer require --no-update barryvdh/laravel-debugbar:^4.0 &amp;&amp; composer update barryvdh/laravel-debugbar -W -m --with &apos;maximebf/debugbar:&gt;=1.19.0&apos;</code></td><td><pre class="reason">Composer could not resolve the dependencies: Your requirements could not be resolved to an installable set of packages.
+  Problem 1
+    - Root composer.json requires barryvdh/laravel-debugbar ^3.4 -&gt; satisfiable by barryvdh/laravel-debugbar[v3.6.7].
+    - barryvdh/laravel-debugbar v3.6.7 requires maximebf/debugbar ^1.17.2 -&gt; found maximebf/debugbar[v1.18.0, v1.18.1] but it conflicts with your temporary update constraint (maximebf/debugbar:&gt;=1.19.0).</pre></td></tr>
+</tbody></table></details>
+</section>
+<section class="meta"><h2>Analysis metadata</h2><dl>
+<dt>project</dt><dd>invoiceninja-phpjwt-two-level</dd>
+<dt>engine version</dt><dd>dev-main</dd>
+<dt>composer version</dt><dd>(fixture)</dd>
+<dt>php version</dt><dd>(fixture)</dd>
+<dt>advisory source</dt><dd>advisory snapshot advisories.json</dd>
+<dt>solver</dt><dd>in-process Composer dry-run</dd>
+<dt>composer json sha256</dt><dd>e0a1d006e5dfe588cb7bcd567a1e2777f2292b61e5df9ce7c336b3b6a6ac9084</dd>
+<dt>composer lock sha256</dt><dd>2dbaa7b34c4c01d7ef5715f78a6c4dfe11a0a4533a4b8855f22eb8d218f54b2f</dd>
+<dt>analysis timestamp</dt><dd>(fixture)</dd>
+<dt>locked packages</dt><dd>217</dd>
+</dl></section>
+</main></body></html>

@@ -1,11 +1,12 @@
 {
-  "description": "Case 1 and case 2 in one lock: phpseclib/phpseclib 3.0.18 is a direct requirement (^3.0) fixed in 3.0.19, and knplabs/knp-snappy 1.4.1 is transitive via barryvdh/laravel-snappy ^1.0 (requires ^1.4) and fixed in 1.4.2. Both are plain partial updates; the combined command fixes everything.",
+  "description": "Legacy platform mix on Symfony 4.4 and config.platform.php 7.3, with an `artifact` repository in composer.json. Transitive Symfony components move to 5.4 patch releases because symfony/framework-bundle 4.4 allows ^4.4|^5.0; twig 3.5.1 moves within 3.x; phpoffice/phpspreadsheet (direct) and symfony/validator (direct, ^4.4) have no fix reachable on PHP 7.3 or within the root constraint.",
   "source": {
-    "project": "BookStackApp/BookStack",
-    "url": "https://github.com/BookStackApp/BookStack",
-    "commit": "f9fcc9f3c7851fec07923f335972a50efe11ba26",
-    "commit_date": "2023-02-16",
-    "as_of": "2023-03-25"
+    "project": "kimai/kimai",
+    "url": "https://github.com/kimai/kimai",
+    "commit": "2d809b4f06d5083a66bb618d9e2adabe9b152e15",
+    "commit_date": "2023-02-17",
+    "branch": "1.x",
+    "as_of": "2024-11-10"
   },
   "platform": {
     "ext-apcu": "5.1.28",
@@ -74,26 +75,48 @@
     "ext-zend-opcache": "8.5.5",
     "ext-zip": "1.22.8",
     "ext-zlib": "8.5.5",
-    "php": "8.0.2"
+    "php": "7.3"
   },
   "findings": [
     {
-      "package": "phpseclib/phpseclib",
-      "advisory": "CVE-2023-27560",
+      "package": "symfony/http-foundation",
+      "advisory": "CVE-2024-50345",
       "remediation": true,
-      "command": "composer update phpseclib/phpseclib",
-      "target_version": "3.0.19",
+      "command": "composer update symfony/http-foundation",
+      "target_version": "v5.4.46",
       "max_changes": 1
     },
     {
-      "package": "knplabs/knp-snappy",
-      "advisory": "CVE-2023-28115",
+      "package": "symfony/process",
+      "advisory": "CVE-2024-51736",
       "remediation": true,
-      "command": "composer update knplabs/knp-snappy",
-      "target_version": "v1.4.2",
+      "command": "composer update symfony/process",
       "max_changes": 1
+    },
+    {
+      "package": "symfony/twig-bridge",
+      "advisory": "CVE-2023-46734",
+      "remediation": true,
+      "command": "composer update symfony/twig-bridge",
+      "max_changes": 1
+    },
+    {
+      "package": "twig/twig",
+      "advisory": "CVE-2024-45411",
+      "remediation": true,
+      "target_version": "v3.11.3",
+      "max_changes": 2
+    },
+    {
+      "package": "phpoffice/phpspreadsheet",
+      "advisory": "CVE-2024-45291",
+      "remediation": false
+    },
+    {
+      "package": "symfony/validator",
+      "advisory": "CVE-2024-50343",
+      "remediation": false
     }
   ],
-  "strict_findings": true,
-  "combined_command": "composer update knplabs/knp-snappy phpseclib/phpseclib"
+  "combined_command": "composer update symfony/http-foundation symfony/twig-bridge twig/twig symfony/process -w -m --with 'twig/twig:>=3.11.2,<3.12.0 || >=3.14.1'"
 }

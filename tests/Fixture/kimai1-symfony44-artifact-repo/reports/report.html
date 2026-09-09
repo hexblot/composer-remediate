@@ -1,0 +1,277 @@
+<!DOCTYPE html><html lang="en"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Composer Remediate — 6 findings</title>
+<style>:root{color-scheme:light dark;--bg:#fff;--fg:#1c1e21;--muted:#5f6b7a;--border:#d9dee5;--panel:#f6f8fa;--ok:#1a7f37;--bad:#b42318;--warn:#9a6700;--accent:#0f6b8a}
+@media(prefers-color-scheme:dark){:root{--bg:#0f1418;--fg:#e6edf3;--muted:#9aa7b4;--border:#2b3640;--panel:#161c22;--ok:#3fb950;--bad:#f0665b;--warn:#d4a72c;--accent:#58b8d8}}
+body{margin:0;background:var(--bg);color:var(--fg);font:15px/1.5 system-ui,-apple-system,Segoe UI,Roboto,sans-serif}
+header{padding:1.5rem 2rem;border-bottom:1px solid var(--border)}header h1{margin:0;font-size:1.4rem}.sub{margin:.25rem 0 0;color:var(--muted)}
+main{max-width:70rem;margin:0 auto;padding:1rem 2rem 3rem}
+section{margin:1.5rem 0}.finding{border:1px solid var(--border);border-radius:8px;padding:1rem 1.25rem;background:var(--panel)}
+h2{font-size:1.15rem;margin:.25rem 0 .5rem}h3{font-size:.95rem;margin:1rem 0 .35rem;color:var(--muted);text-transform:uppercase;letter-spacing:.04em}
+.version{font-weight:400;color:var(--muted)}.state{margin:0;color:var(--muted)}
+code{font:.9em ui-monospace,SFMono-Regular,Menlo,monospace;background:rgba(127,127,127,.12);padding:.1em .35em;border-radius:4px;word-break:break-all}
+pre{font:.85rem ui-monospace,SFMono-Regular,Menlo,monospace;background:rgba(127,127,127,.1);padding:.75rem 1rem;border-radius:6px;overflow-x:auto;margin:.25rem 0}
+pre.reason{white-space:pre-wrap;margin:0;background:none;padding:0}
+.command code{display:block;padding:.6rem .8rem;font-size:.95rem;border-left:4px solid var(--accent)}
+table{border-collapse:collapse;width:100%;font-size:.92rem}th,td{text-align:left;padding:.4rem .6rem;border-bottom:1px solid var(--border);vertical-align:top}th{color:var(--muted);font-weight:600}
+.badge{display:inline-block;font-size:.75rem;font-weight:600;padding:.1rem .5rem;border-radius:999px;border:1px solid currentColor;white-space:nowrap}
+.badge.ok{color:var(--ok)}.badge.none,.badge.rejected{color:var(--bad)}.badge.skipped,.badge.dev{color:var(--muted)}
+.badge.sev-critical,.badge.sev-high{color:var(--bad)}.badge.sev-medium{color:var(--warn)}.badge.sev-low{color:var(--muted)}
+.warning{border-left:4px solid var(--warn);padding:.5rem .8rem;background:rgba(212,167,44,.1)}.clean{color:var(--ok);font-weight:600}
+.none-box{border-left:4px solid var(--bad);padding:.5rem .8rem;background:rgba(180,35,24,.08)}
+.advisories{padding-left:1.2rem}.advisories li{margin:.4rem 0}
+details summary{cursor:pointer;color:var(--accent);margin:.5rem 0}
+.meta dl{display:grid;grid-template-columns:max-content 1fr;gap:.2rem 1rem;font-size:.85rem;color:var(--muted)}.meta dt{font-weight:600}.meta dd{margin:0;word-break:break-all}</style></head><body>
+<header><h1>Composer Remediate</h1><p class="sub">Composer Remediate — 6 findings in <code>kimai1-symfony44-artifact-repo</code></p></header>
+<main>
+<section><h2>Summary</h2><p>14 advisories on 6 packages.</p><p class="command"><span class="badge ok">fixes 6 of 14</span> <code>composer update symfony/http-foundation symfony/twig-bridge twig/twig symfony/process -w -m --with &apos;twig/twig:&gt;=3.11.2,&lt;3.12.0 || &gt;=3.14.1&apos;</code></p><table class="summary"><thead><tr><th>Package</th><th>Advisories</th><th>Status</th><th>Recommended command</th></tr></thead><tbody><tr><td><a href="#finding-1">phpoffice/phpspreadsheet 1.25.2</a></td><td>CVE-2024-45291, CVE-2024-45060, CVE-2024-45046, CVE-2024-45293, CVE-2024-45292, CVE-2024-45290, CVE-2024-45048</td><td><span class="badge none">no verified fix</span></td><td>—</td></tr><tr><td><a href="#finding-2">symfony/http-foundation v4.4.49</a></td><td>CVE-2024-50345</td><td><span class="badge ok">verified</span></td><td><code>composer update symfony/http-foundation</code></td></tr><tr><td><a href="#finding-3">symfony/twig-bridge v4.4.49</a></td><td>CVE-2023-46734</td><td><span class="badge ok">verified</span></td><td><code>composer update symfony/twig-bridge</code></td></tr><tr><td><a href="#finding-4">symfony/validator v4.4.48</a></td><td>CVE-2024-50343</td><td><span class="badge none">no verified fix</span></td><td>—</td></tr><tr><td><a href="#finding-5">twig/twig v3.5.1</a></td><td>CVE-2024-51755, CVE-2024-45411, CVE-2024-51754</td><td><span class="badge ok">verified</span></td><td><code>composer update twig/twig -w -m --with &apos;twig/twig:&gt;=3.11.2,&lt;3.12.0 || &gt;=3.14.1&apos;</code></td></tr><tr><td><a href="#finding-6">symfony/process v4.4.44</a> <span class="badge dev">dev</span></td><td>CVE-2024-51736</td><td><span class="badge ok">verified</span></td><td><code>composer update symfony/process</code></td></tr></tbody></table></section>
+<section class="finding" id="finding-1">
+<h2>phpoffice/phpspreadsheet <span class="version">1.25.2</span></h2>
+<p class="state">Direct dependency.</p>
+<h3>Advisories</h3><ul class="advisories">
+<li><strong><a href="https://github.com/advisories/GHSA-w9xv-qf98-ccq4" rel="noopener">CVE-2024-45291 <small>(PKSA-7f9v-sb8k-krfb)</small></a></strong> <span class="badge sev-medium">medium</span><br>PhpSpreadsheet allows absolute path traversal and Server-Side Request Forgery in HTML writer when embedding images is enabled<br><small>affected versions: <code>&gt;=2.0.0,&lt;2.1.1|&lt;1.29.2|&gt;=2.2.0,&lt;2.3.0</code></small></li>
+<li><strong><a href="https://github.com/advisories/GHSA-v66g-p9x6-v98p" rel="noopener">CVE-2024-45060 <small>(PKSA-dvbq-8ft2-ngrw)</small></a></strong> <span class="badge sev-medium">medium</span><br>PhpSpreadsheet has an Unauthenticated Cross-Site-Scripting (XSS) in sample file<br><small>affected versions: <code>&gt;=2.0.0,&lt;2.1.1|&lt;1.29.2|&gt;=2.2.0,&lt;2.3.0</code></small></li>
+<li><strong><a href="https://github.com/advisories/GHSA-wgmf-q9vr-vww6" rel="noopener">CVE-2024-45046 <small>(PKSA-m4hk-rk8p-4t5p)</small></a></strong> <span class="badge sev-medium">medium</span><br>PhpSpreadsheet HTML writer is vulnerable to Cross-Site Scripting via style information<br><small>affected versions: <code>&lt;1.29.1|&gt;=2.0.0,&lt;2.1.0</code></small></li>
+<li><strong><a href="https://github.com/advisories/GHSA-6hwr-6v2f-3m88" rel="noopener">CVE-2024-45293 <small>(PKSA-mkg2-1wyw-57y7)</small></a></strong> <span class="badge sev-high">high</span><br>XXE in PHPSpreadsheet&apos;s XLSX reader<br><small>affected versions: <code>&gt;=2.0.0,&lt;2.1.1|&lt;1.29.1|&gt;=2.2.0,&lt;2.3.0</code></small></li>
+<li><strong><a href="https://github.com/advisories/GHSA-r8w8-74ww-j4wh" rel="noopener">CVE-2024-45292 <small>(PKSA-p1pj-q951-6f1x)</small></a></strong> <span class="badge sev-medium">medium</span><br>PhpSpreadsheet HTML writer is vulnerable to Cross-Site Scripting via JavaScript hyperlinks<br><small>affected versions: <code>&gt;=2.0.0,&lt;2.1.1|&lt;1.29.2|&gt;=2.2.0,&lt;2.3.0</code></small></li>
+<li><strong><a href="https://github.com/advisories/GHSA-5gpr-w2p5-6m37" rel="noopener">CVE-2024-45290 <small>(PKSA-xk3k-rd1m-pxmg)</small></a></strong> <span class="badge sev-high">high</span><br>PhpSpreadsheet allows absolute path traversal and Server-Side Request Forgery when opening XLSX file<br><small>affected versions: <code>&gt;=2.0.0,&lt;2.1.1|&lt;1.29.2|&gt;=2.2.0,&lt;2.3.0</code></small></li>
+<li><strong><a href="https://github.com/advisories/GHSA-ghg6-32f9-2jp7" rel="noopener">CVE-2024-45048 <small>(PKSA-xp7t-fbrb-qjv4)</small></a></strong> <span class="badge sev-high">high</span><br>XXE in PHPSpreadsheet encoding is returned<br><small>affected versions: <code>&gt;=2.0.0,&lt;2.1.1|&gt;=2.2.0,&lt;2.2.1|&lt;1.29.1</code></small></li>
+</ul>
+<h3>Introduced by</h3>
+<pre class="tree">root
+└── phpoffice/phpspreadsheet 1.25.2  (requires ^1.16)</pre>
+<h3>Recommended remediation</h3><p class="none-box">No verified remediation found.</p>
+<details><summary>Other candidates (4)</summary><table class="candidates"><thead><tr><th>Outcome</th><th>Command</th><th>Detail</th></tr></thead><tbody>
+<tr><td><span class="badge rejected">rejected</span></td><td><code>composer update phpoffice/phpspreadsheet</code></td><td><pre class="reason">resolves, but phpoffice/phpspreadsheet ends at 1.25.2 which is still affected by PKSA-7f9v-sb8k-krfb, PKSA-dvbq-8ft2-ngrw, PKSA-m4hk-rk8p-4t5p, PKSA-mkg2-1wyw-57y7, PKSA-p1pj-q951-6f1x, PKSA-xk3k-rd1m-pxmg, PKSA-xp7t-fbrb-qjv4</pre></td></tr>
+<tr><td><span class="badge rejected">rejected</span></td><td><code>composer update phpoffice/phpspreadsheet -w -m --with &apos;phpoffice/phpspreadsheet:&gt;=1.29.2,&lt;2.0.0 || &gt;=2.1.1,&lt;2.2.0 || &gt;=2.3.0&apos;</code></td><td><pre class="reason">Composer could not resolve the dependencies: Your requirements could not be resolved to an installable set of packages.
+  Problem 1
+    - Root composer.json requires phpoffice/phpspreadsheet ^1.16 -&gt; satisfiable by phpoffice/phpspreadsheet[1.29.2, 1.29.4].
+    - phpoffice/phpspreadsheet[1.29.2, ..., 1.29.4] require php ^7.4 || ^8.0 -&gt; your php version (7.3; overridden via config.platform, actual: 8.5.5) does not satisfy that requirement.</pre></td></tr>
+<tr><td><span class="badge rejected">rejected</span></td><td><code>composer update phpoffice/phpspreadsheet -W -m --with &apos;phpoffice/phpspreadsheet:&gt;=1.29.2,&lt;2.0.0 || &gt;=2.1.1,&lt;2.2.0 || &gt;=2.3.0&apos;</code></td><td><pre class="reason">Composer could not resolve the dependencies: Your requirements could not be resolved to an installable set of packages.
+  Problem 1
+    - Root composer.json requires phpoffice/phpspreadsheet ^1.16 -&gt; satisfiable by phpoffice/phpspreadsheet[1.29.2, 1.29.4].
+    - phpoffice/phpspreadsheet[1.29.2, ..., 1.29.4] require php ^7.4 || ^8.0 -&gt; your php version (7.3; overridden via config.platform, actual: 8.5.5) does not satisfy that requirement.</pre></td></tr>
+<tr><td><span class="badge rejected">rejected</span></td><td><code>composer require --no-update phpoffice/phpspreadsheet:^2.0 &amp;&amp; composer update phpoffice/phpspreadsheet -W -m --with &apos;phpoffice/phpspreadsheet:&gt;=1.29.2,&lt;2.0.0 || &gt;=2.1.1,&lt;2.2.0 || &gt;=2.3.0&apos;</code></td><td><pre class="reason">Composer could not resolve the dependencies: Your requirements could not be resolved to an installable set of packages.
+  Problem 1
+    - Root composer.json requires phpoffice/phpspreadsheet ^2.0 -&gt; satisfiable by phpoffice/phpspreadsheet[2.1.1, 2.1.3, 2.3.0, 2.3.2].
+    - phpoffice/phpspreadsheet[2.1.1, ..., 2.1.3] require php ^8.0 -&gt; your php version (7.3; overridden via config.platform, actual: 8.5.5) does not satisfy that requirement.
+    - phpoffice/phpspreadsheet[2.3.0, ..., 2.3.2] require php ^8.1 -&gt; your php version (7.3; overridden via config.platform, actual: 8.5.5) does not satisfy that requirement.</pre></td></tr>
+</tbody></table></details>
+</section>
+<section class="finding" id="finding-2">
+<h2>symfony/http-foundation <span class="version">v4.4.49</span></h2>
+<p class="state">Transitive dependency.</p>
+<h3>Advisories</h3><ul class="advisories">
+<li><strong><a href="https://symfony.com/cve-2024-50345" rel="noopener">CVE-2024-50345 <small>(PKSA-b35n-565h-rs4q)</small></a></strong> <span class="badge sev-low">low</span><br>CVE-2024-50345: Open redirect via browser-sanitized URLs<br><small>affected versions: <code>&gt;=2.0.0,&lt;3.0.0|&gt;=3.0.0,&lt;4.0.0|&gt;=4.0.0,&lt;5.0.0|&gt;=5.0.0,&lt;5.1.0|&gt;=5.1.0,&lt;5.2.0|&gt;=5.2.0,&lt;5.3.0|&gt;=5.3.0,&lt;5.4.0|&gt;=5.4.0,&lt;5.4.46|&gt;=6.0.0,&lt;6.1.0|&gt;=6.1.0,&lt;6.2.0|&gt;=6.2.0,&lt;6.3.0|&gt;=6.3.0,&lt;6.4.0|&gt;=6.4.0,&lt;6.4.14|&gt;=7.0.0,&lt;7.1.0|&gt;=7.1.0,&lt;7.1.7</code></small></li>
+</ul>
+<h3>Introduced by</h3>
+<pre class="tree">root
+└── friendsofsymfony/rest-bundle 3.5.0
+    └── symfony/http-foundation v4.4.49  (requires ^4.4|^5.3|^6.0)
+
+root
+└── kevinpapst/adminlte-bundle 3.6.1
+    └── symfony/http-foundation v4.4.49  (requires &gt;4.3)
+
+root
+└── symfony/framework-bundle v4.4.49
+    └── symfony/http-foundation v4.4.49  (requires ^4.4|^5.0)
+
+root
+└── doctrine/doctrine-bundle 2.7.2
+    └── symfony/framework-bundle v4.4.49
+        └── symfony/http-foundation v4.4.49  (requires ^4.4|^5.0)
+
+root
+└── doctrine/doctrine-migrations-bundle 3.2.2
+    └── doctrine/doctrine-bundle 2.7.2
+        └── symfony/framework-bundle v4.4.49
+            └── symfony/http-foundation v4.4.49  (requires ^4.4|^5.0)</pre>
+<p><small>… and 51 more paths</small></p>
+<h3>Recommended remediation</h3>
+<p class="command"><code>composer update symfony/http-foundation</code></p>
+<p class="validation"><span class="badge ok">Composer validation: PASS</span> 1 package changed, 0 added, 0 removed, 0 root constraints changed, <strong>includes a major version change</strong>.</p>
+<details open><summary>Expected changes (1)</summary><table class="changes"><thead><tr><th>Package</th><th>From</th><th>To</th><th>Kind</th></tr></thead><tbody>
+<tr><td>symfony/http-foundation</td><td>v4.4.49</td><td>v5.4.46</td><td>upgraded, major</td></tr>
+</tbody></table></details>
+<details><summary>Other candidates (10)</summary><table class="candidates"><thead><tr><th>Outcome</th><th>Command</th><th>Detail</th></tr></thead><tbody>
+<tr><td><span class="badge ok">valid, rank 2</span></td><td><code>composer update symfony/http-foundation -w -m --with &apos;symfony/http-foundation:&gt;=5.4.46,&lt;6.0.0 || &gt;=6.4.14,&lt;7.0.0 || &gt;=7.1.7&apos;</code></td><td>1 changes</td></tr>
+<tr><td><span class="badge ok">valid, rank 3</span></td><td><code>composer update friendsofsymfony/rest-bundle -W -m --with &apos;symfony/http-foundation:&gt;=5.4.46,&lt;6.0.0 || &gt;=6.4.14,&lt;7.0.0 || &gt;=7.1.7&apos;</code></td><td>1 changes</td></tr>
+<tr><td><span class="badge ok">valid, rank 4</span></td><td><code>composer update kevinpapst/adminlte-bundle -W -m --with &apos;symfony/http-foundation:&gt;=5.4.46,&lt;6.0.0 || &gt;=6.4.14,&lt;7.0.0 || &gt;=7.1.7&apos;</code></td><td>1 changes</td></tr>
+<tr><td><span class="badge ok">valid, rank 5</span></td><td><code>composer update symfony/twig-bundle -W -m --with &apos;symfony/http-foundation:&gt;=5.4.46,&lt;6.0.0 || &gt;=6.4.14,&lt;7.0.0 || &gt;=7.1.7&apos;</code></td><td>1 changes</td></tr>
+<tr><td><span class="badge ok">valid, rank 6</span></td><td><code>composer update doctrine/doctrine-bundle -W -m --with &apos;symfony/http-foundation:&gt;=5.4.46,&lt;6.0.0 || &gt;=6.4.14,&lt;7.0.0 || &gt;=7.1.7&apos;</code></td><td>1 changes</td></tr>
+<tr><td><span class="badge ok">valid, rank 7</span></td><td><code>composer update doctrine/doctrine-migrations-bundle:3.2.3 -W -m --with &apos;symfony/http-foundation:&gt;=5.4.46,&lt;6.0.0 || &gt;=6.4.14,&lt;7.0.0 || &gt;=7.1.7&apos;</code></td><td>2 changes</td></tr>
+<tr><td><span class="badge ok">valid, rank 8</span></td><td><code>composer update symfony/framework-bundle -W -m --with &apos;symfony/http-foundation:&gt;=5.4.46,&lt;6.0.0 || &gt;=6.4.14,&lt;7.0.0 || &gt;=7.1.7&apos;</code></td><td>2 changes</td></tr>
+<tr><td><span class="badge ok">valid, rank 9</span></td><td><code>composer update doctrine/doctrine-migrations-bundle -W -m --with &apos;symfony/http-foundation:&gt;=5.4.46,&lt;6.0.0 || &gt;=6.4.14,&lt;7.0.0 || &gt;=7.1.7&apos;</code></td><td>2 changes</td></tr>
+<tr><td><span class="badge ok">valid, rank 10</span></td><td><code>composer update friendsofsymfony/rest-bundle kevinpapst/adminlte-bundle symfony/framework-bundle handcraftedinthealps/rest-routing-bundle sensio/framework-extra-bundle symfony/monolog-bundle symfony/security-bundle symfony/twig-bundle symfony/webpack-encore-bundle doctrine/doctrine-fixtures-bundle symfony/debug-bundle symfony/maker-bundle symfony/web-profiler-bundle -W -m --with &apos;symfony/http-foundation:&gt;=5.4.46,&lt;6.0.0 || &gt;=6.4.14,&lt;7.0.0 || &gt;=7.1.7&apos;</code></td><td>6 changes</td></tr>
+<tr><td><span class="badge skipped">not tried</span></td><td><code>composer require --no-update friendsofsymfony/rest-bundle:^4.0 &amp;&amp; composer update friendsofsymfony/rest-bundle -W -m --with &apos;symfony/http-foundation:&gt;=5.4.46,&lt;6.0.0 || &gt;=6.4.14,&lt;7.0.0 || &gt;=7.1.7&apos;</code></td><td>a better candidate already exists</td></tr>
+</tbody></table></details>
+</section>
+<section class="finding" id="finding-3">
+<h2>symfony/twig-bridge <span class="version">v4.4.49</span></h2>
+<p class="state">Transitive dependency.</p>
+<h3>Advisories</h3><ul class="advisories">
+<li><strong><a href="https://symfony.com/cve-2023-46734" rel="noopener">CVE-2023-46734 <small>(PKSA-ztgh-x9c8-k66g)</small></a></strong> <span class="badge sev-medium">medium</span><br>CVE-2023-46734: Potential XSS vulnerabilities in CodeExtension filters<br><small>affected versions: <code>&gt;=2.0.0,&lt;2.1.0|&gt;=2.1.0,&lt;2.2.0|&gt;=2.2.0,&lt;2.3.0|&gt;=2.3.0,&lt;2.4.0|&gt;=2.4.0,&lt;2.5.0|&gt;=2.5.0,&lt;2.6.0|&gt;=2.6.0,&lt;2.7.0|&gt;=2.7.0,&lt;2.8.0|&gt;=2.8.0,&lt;3.0.0|&gt;=3.0.0,&lt;3.1.0|&gt;=3.1.0,&lt;3.2.0|&gt;=3.2.0,&lt;3.3.0|&gt;=3.3.0,&lt;3.4.0|&gt;=3.4.0,&lt;4.0.0|&gt;=4.0.0,&lt;4.1.0|&gt;=4.1.0,&lt;4.2.0|&gt;=4.2.0,&lt;4.3.0|&gt;=4.3.0,&lt;4.4.0|&gt;=4.4.0,&lt;4.4.51|&gt;=5.0.0,&lt;5.1.0|&gt;=5.1.0,&lt;5.2.0|&gt;=5.2.0,&lt;5.3.0|&gt;=5.3.0,&lt;5.4.0|&gt;=5.4.0,&lt;5.4.31|&gt;=6.0.0,&lt;6.1.0|&gt;=6.1.0,&lt;6.2.0|&gt;=6.2.0,&lt;6.3.0|&gt;=6.3.0,&lt;6.3.8</code></small></li>
+</ul>
+<h3>Introduced by</h3>
+<pre class="tree">root
+└── kevinpapst/adminlte-bundle 3.6.1
+    └── symfony/twig-bridge v4.4.49  (requires &gt;4.3)
+
+root
+└── symfony/twig-bundle v4.4.41
+    └── symfony/twig-bridge v4.4.49  (requires ^4.4|^5.0)
+
+root
+└── twig/extra-bundle v3.5.1
+    └── symfony/twig-bundle v4.4.41
+        └── symfony/twig-bridge v4.4.49  (requires ^4.4|^5.0)
+
+root
+└── symfony/web-profiler-bundle v4.4.47
+    └── symfony/twig-bundle v4.4.41
+        └── symfony/twig-bridge v4.4.49  (requires ^4.4|^5.0)
+
+root
+└── symfony/debug-bundle v4.4.37
+    └── symfony/twig-bridge v4.4.49  (requires ^3.4|^4.0|^5.0)</pre>
+<h3>Recommended remediation</h3>
+<p class="command"><code>composer update symfony/twig-bridge</code></p>
+<p class="validation"><span class="badge ok">Composer validation: PASS</span> 1 package changed, 0 added, 0 removed, 0 root constraints changed.</p>
+<details open><summary>Expected changes (1)</summary><table class="changes"><thead><tr><th>Package</th><th>From</th><th>To</th><th>Kind</th></tr></thead><tbody>
+<tr><td>symfony/twig-bridge</td><td>v4.4.49</td><td>v4.4.51</td><td>upgraded, patch</td></tr>
+</tbody></table></details>
+<details><summary>Other candidates (9)</summary><table class="candidates"><thead><tr><th>Outcome</th><th>Command</th><th>Detail</th></tr></thead><tbody>
+<tr><td><span class="badge ok">valid, rank 2</span></td><td><code>composer update symfony/twig-bridge -w -m --with &apos;symfony/twig-bridge:&gt;=4.4.51,&lt;5.0.0 || &gt;=5.4.31,&lt;6.0.0 || &gt;=6.3.8&apos;</code></td><td>1 changes</td></tr>
+<tr><td><span class="badge ok">valid, rank 3</span></td><td><code>composer update kevinpapst/adminlte-bundle -W -m --with &apos;symfony/twig-bridge:&gt;=4.4.51,&lt;5.0.0 || &gt;=5.4.31,&lt;6.0.0 || &gt;=6.3.8&apos;</code></td><td>1 changes</td></tr>
+<tr><td><span class="badge ok">valid, rank 4</span></td><td><code>composer update symfony/twig-bundle -W -m --with &apos;symfony/twig-bridge:&gt;=4.4.51,&lt;5.0.0 || &gt;=5.4.31,&lt;6.0.0 || &gt;=6.3.8&apos;</code></td><td>1 changes</td></tr>
+<tr><td><span class="badge ok">valid, rank 5</span></td><td><code>composer update symfony/debug-bundle -W -m --with &apos;symfony/twig-bridge:&gt;=4.4.51,&lt;5.0.0 || &gt;=5.4.31,&lt;6.0.0 || &gt;=6.3.8&apos;</code></td><td>1 changes</td></tr>
+<tr><td><span class="badge ok">valid, rank 6</span></td><td><code>composer update symfony/web-profiler-bundle -W -m --with &apos;symfony/twig-bridge:&gt;=4.4.51,&lt;5.0.0 || &gt;=5.4.31,&lt;6.0.0 || &gt;=6.3.8&apos;</code></td><td>1 changes</td></tr>
+<tr><td><span class="badge ok">valid, rank 7</span></td><td><code>composer update kevinpapst/adminlte-bundle symfony/twig-bundle symfony/debug-bundle -W -m --with &apos;symfony/twig-bridge:&gt;=4.4.51,&lt;5.0.0 || &gt;=5.4.31,&lt;6.0.0 || &gt;=6.3.8&apos;</code></td><td>1 changes</td></tr>
+<tr><td><span class="badge ok">valid, rank 8</span></td><td><code>composer update twig/extra-bundle -W -m --with &apos;symfony/twig-bridge:&gt;=4.4.51,&lt;5.0.0 || &gt;=5.4.31,&lt;6.0.0 || &gt;=6.3.8&apos;</code></td><td>2 changes</td></tr>
+<tr><td><span class="badge skipped">not tried</span></td><td><code>composer require --no-update kevinpapst/adminlte-bundle:^4.0 &amp;&amp; composer update kevinpapst/adminlte-bundle -W -m --with &apos;symfony/twig-bridge:&gt;=4.4.51,&lt;5.0.0 || &gt;=5.4.31,&lt;6.0.0 || &gt;=6.3.8&apos;</code></td><td>a better candidate already exists</td></tr>
+<tr><td><span class="badge skipped">not tried</span></td><td><code>composer require --no-update symfony/twig-bundle:^5.0 &amp;&amp; composer update symfony/twig-bundle -W -m --with &apos;symfony/twig-bridge:&gt;=4.4.51,&lt;5.0.0 || &gt;=5.4.31,&lt;6.0.0 || &gt;=6.3.8&apos;</code></td><td>a better candidate already exists</td></tr>
+</tbody></table></details>
+</section>
+<section class="finding" id="finding-4">
+<h2>symfony/validator <span class="version">v4.4.48</span></h2>
+<p class="state">Direct dependency.</p>
+<h3>Advisories</h3><ul class="advisories">
+<li><strong><a href="https://symfony.com/cve-2024-50343" rel="noopener">CVE-2024-50343 <small>(PKSA-w2tw-kmfg-rt9s)</small></a></strong> <span class="badge sev-low">low</span><br>CVE-2024-50343: Incorrect response from Validator when input ends with `
+`<br><small>affected versions: <code>&gt;=2.0.0,&lt;3.0.0|&gt;=3.0.0,&lt;4.0.0|&gt;=4.0.0,&lt;5.0.0|&gt;=5.0.0,&lt;5.1.0|&gt;=5.1.0,&lt;5.2.0|&gt;=5.2.0,&lt;5.3.0|&gt;=5.3.0,&lt;5.4.0|&gt;=5.4.0,&lt;5.4.43|&gt;=6.0.0,&lt;6.1.0|&gt;=6.1.0,&lt;6.2.0|&gt;=6.2.0,&lt;6.3.0|&gt;=6.3.0,&lt;6.4.0|&gt;=6.4.0,&lt;6.4.11|&gt;=7.0.0,&lt;7.1.0|&gt;=7.1.0,&lt;7.1.4</code></small></li>
+</ul>
+<h3>Introduced by</h3>
+<pre class="tree">root
+└── symfony/validator v4.4.48  (requires ^4.4)</pre>
+<h3>Recommended remediation</h3><p class="none-box">No verified remediation found.</p>
+<details><summary>Other candidates (5)</summary><table class="candidates"><thead><tr><th>Outcome</th><th>Command</th><th>Detail</th></tr></thead><tbody>
+<tr><td><span class="badge rejected">rejected</span></td><td><code>composer update symfony/validator</code></td><td><pre class="reason">resolves, but symfony/validator ends at v4.4.48 which is still affected by PKSA-w2tw-kmfg-rt9s</pre></td></tr>
+<tr><td><span class="badge rejected">rejected</span></td><td><code>composer update symfony/validator -w -m --with &apos;symfony/validator:&gt;=5.4.43,&lt;6.0.0 || &gt;=6.4.11,&lt;7.0.0 || &gt;=7.1.4&apos;</code></td><td><pre class="reason">Composer could not resolve the dependencies: Your requirements could not be resolved to an installable set of packages.
+  Problem 1
+    - Root composer.json requires symfony/validator ^4.4, found symfony/validator[v4.4.48] but it conflicts with your temporary update constraint (symfony/validator:&gt;=5.4.43,&lt;6.0.0 || &gt;=6.4.11,&lt;7.0.0 || &gt;=7.1.4).</pre></td></tr>
+<tr><td><span class="badge rejected">rejected</span></td><td><code>composer update symfony/validator -W -m --with &apos;symfony/validator:&gt;=5.4.43,&lt;6.0.0 || &gt;=6.4.11,&lt;7.0.0 || &gt;=7.1.4&apos;</code></td><td><pre class="reason">Composer could not resolve the dependencies: Your requirements could not be resolved to an installable set of packages.
+  Problem 1
+    - Root composer.json requires symfony/validator ^4.4, found symfony/validator[v4.4.48] but it conflicts with your temporary update constraint (symfony/validator:&gt;=5.4.43,&lt;6.0.0 || &gt;=6.4.11,&lt;7.0.0 || &gt;=7.1.4).</pre></td></tr>
+<tr><td><span class="badge rejected">rejected</span></td><td><code>composer require --no-update symfony/validator:^5.0 &amp;&amp; composer update symfony/validator -W -m --with &apos;symfony/validator:&gt;=5.4.43,&lt;6.0.0 || &gt;=6.4.11,&lt;7.0.0 || &gt;=7.1.4&apos;</code></td><td><pre class="reason">Composer could not resolve the dependencies: Your requirements could not be resolved to an installable set of packages.
+  Problem 1
+    - symfony/expression-language is locked to version v4.4.47 and an update of this package was not requested.
+    - Root composer.json requires symfony/validator ^5.0 -&gt; satisfiable by symfony/validator[v5.4.43, ..., v5.4.47].
+    - symfony/validator[v5.4.43, ..., v5.4.47] conflict with symfony/expression-language &lt;5.1.</pre></td></tr>
+<tr><td><span class="badge rejected">rejected</span></td><td><code>composer require --no-update symfony/validator:^5.0 &amp;&amp; composer update symfony/validator symfony/expression-language -W -m --with &apos;symfony/validator:&gt;=5.4.43,&lt;6.0.0 || &gt;=6.4.11,&lt;7.0.0 || &gt;=7.1.4&apos;</code></td><td><pre class="reason">Composer could not resolve the dependencies: Your requirements could not be resolved to an installable set of packages.
+  Problem 1
+    - Root composer.json requires symfony/expression-language ^4.4 -&gt; satisfiable by symfony/expression-language[v4.4.47].
+    - Root composer.json requires symfony/validator ^5.0 -&gt; satisfiable by symfony/validator[v5.4.43, ..., v5.4.47].
+    - symfony/validator[v5.4.43, ..., v5.4.47] conflict with symfony/expression-language &lt;5.1.</pre></td></tr>
+</tbody></table></details>
+</section>
+<section class="finding" id="finding-5">
+<h2>twig/twig <span class="version">v3.5.1</span></h2>
+<p class="state">Transitive dependency.</p>
+<h3>Advisories</h3><ul class="advisories">
+<li><strong><a href="https://symfony.com/blog/cve-2024-51755-unguarded-calls-to-isset-and-to-array-accesses-in-a-sandbox" rel="noopener">CVE-2024-51755 <small>(PKSA-2wrf-1xmk-1pky)</small></a></strong> <span class="badge sev-low">low</span><br>Unguarded calls to __isset() and to array-accesses when the sandbox is enabled<br><small>affected versions: <code>&gt;=1.0.0,&lt;2.0.0|&gt;=2.0.0,&lt;3.0.0|&gt;=3.0.0,&lt;3.11.2|&gt;=3.12.0,&lt;3.14.1</code></small></li>
+<li><strong><a href="https://symfony.com/blog/twig-security-release-possible-sandbox-bypass" rel="noopener">CVE-2024-45411 <small>(PKSA-6319-ffpf-gx66)</small></a></strong> <span class="badge sev-medium">medium</span><br>Possible sandbox bypass<br><small>affected versions: <code>&gt;=1.0.0,&lt;1.44.7|&gt;=2.0.0,&lt;2.16.0|&gt;=3.0.0,&lt;3.11.0|&gt;=3.12.0,&lt;3.14.0</code></small></li>
+<li><strong><a href="https://symfony.com/blog/cve-2024-51754-unguarded-calls-to-tostring-in-a-sandbox-when-an-object-is-in-an-array-or-an-argument-list" rel="noopener">CVE-2024-51754 <small>(PKSA-yhcn-xrg3-68b1)</small></a></strong> <span class="badge sev-low">low</span><br>Unguarded calls to __toString() when nesting an object into an array<br><small>affected versions: <code>&gt;=1.0.0,&lt;2.0.0|&gt;=2.0.0,&lt;3.0.0|&gt;=3.0.0,&lt;3.11.2|&gt;=3.12.0,&lt;3.14.1</code></small></li>
+</ul>
+<h3>Introduced by</h3>
+<pre class="tree">root
+└── kevinpapst/adminlte-bundle 3.6.1
+    └── twig/twig v3.5.1  (requires &gt;2.0)
+
+root
+└── kevinpapst/adminlte-bundle 3.6.1
+    └── symfony/twig-bridge v4.4.49
+        └── twig/twig v3.5.1  (requires ^1.43|^2.13|^3.0.4)
+
+root
+└── symfony/twig-bundle v4.4.41
+    └── symfony/twig-bridge v4.4.49
+        └── twig/twig v3.5.1  (requires ^1.43|^2.13|^3.0.4)
+
+root
+└── twig/extra-bundle v3.5.1
+    └── symfony/twig-bundle v4.4.41
+        └── symfony/twig-bridge v4.4.49
+            └── twig/twig v3.5.1  (requires ^1.43|^2.13|^3.0.4)
+
+root
+└── symfony/web-profiler-bundle v4.4.47
+    └── symfony/twig-bundle v4.4.41
+        └── symfony/twig-bridge v4.4.49
+            └── twig/twig v3.5.1  (requires ^1.43|^2.13|^3.0.4)</pre>
+<p><small>… and 10 more paths</small></p>
+<h3>Recommended remediation</h3>
+<p class="command"><code>composer update twig/twig -w -m --with &apos;twig/twig:&gt;=3.11.2,&lt;3.12.0 || &gt;=3.14.1&apos;</code></p>
+<p class="validation"><span class="badge ok">Composer validation: PASS</span> 2 packages changed, 0 added, 0 removed, 0 root constraints changed.</p>
+<details open><summary>Expected changes (2)</summary><table class="changes"><thead><tr><th>Package</th><th>From</th><th>To</th><th>Kind</th></tr></thead><tbody>
+<tr><td>symfony/polyfill-php81</td><td>v1.27.0</td><td>v1.37.0</td><td>upgraded, minor</td></tr>
+<tr><td>twig/twig</td><td>v3.5.1</td><td>v3.11.3</td><td>upgraded, minor</td></tr>
+</tbody></table></details>
+<details><summary>Other candidates (12)</summary><table class="candidates"><thead><tr><th>Outcome</th><th>Command</th><th>Detail</th></tr></thead><tbody>
+<tr><td><span class="badge ok">valid, rank 2</span></td><td><code>composer update kevinpapst/adminlte-bundle -W -m --with &apos;twig/twig:&gt;=3.11.2,&lt;3.12.0 || &gt;=3.14.1&apos;</code></td><td>2 changes</td></tr>
+<tr><td><span class="badge ok">valid, rank 3</span></td><td><code>composer update symfony/twig-bundle -W -m --with &apos;twig/twig:&gt;=3.11.2,&lt;3.12.0 || &gt;=3.14.1&apos;</code></td><td>2 changes</td></tr>
+<tr><td><span class="badge ok">valid, rank 4</span></td><td><code>composer update symfony/web-profiler-bundle -W -m --with &apos;twig/twig:&gt;=3.11.2,&lt;3.12.0 || &gt;=3.14.1&apos;</code></td><td>2 changes</td></tr>
+<tr><td><span class="badge ok">valid, rank 5</span></td><td><code>composer update twig/extra-bundle:v3.6.0 -W -m --with &apos;twig/twig:&gt;=3.11.2,&lt;3.12.0 || &gt;=3.14.1&apos;</code></td><td>3 changes</td></tr>
+<tr><td><span class="badge ok">valid, rank 6</span></td><td><code>composer update twig/cssinliner-extra:v3.6.0 -W -m --with &apos;twig/twig:&gt;=3.11.2,&lt;3.12.0 || &gt;=3.14.1&apos;</code></td><td>3 changes</td></tr>
+<tr><td><span class="badge ok">valid, rank 7</span></td><td><code>composer update twig/inky-extra:v3.6.0 -W -m --with &apos;twig/twig:&gt;=3.11.2,&lt;3.12.0 || &gt;=3.14.1&apos;</code></td><td>3 changes</td></tr>
+<tr><td><span class="badge ok">valid, rank 8</span></td><td><code>composer update twig/extra-bundle -W -m --with &apos;twig/twig:&gt;=3.11.2,&lt;3.12.0 || &gt;=3.14.1&apos;</code></td><td>3 changes</td></tr>
+<tr><td><span class="badge ok">valid, rank 9</span></td><td><code>composer update twig/cssinliner-extra -W -m --with &apos;twig/twig:&gt;=3.11.2,&lt;3.12.0 || &gt;=3.14.1&apos;</code></td><td>3 changes</td></tr>
+<tr><td><span class="badge ok">valid, rank 10</span></td><td><code>composer update twig/inky-extra -W -m --with &apos;twig/twig:&gt;=3.11.2,&lt;3.12.0 || &gt;=3.14.1&apos;</code></td><td>3 changes</td></tr>
+<tr><td><span class="badge ok">valid, rank 11</span></td><td><code>composer update kevinpapst/adminlte-bundle symfony/twig-bundle symfony/debug-bundle twig/cssinliner-extra twig/extra-bundle twig/inky-extra twig/intl-extra twig/string-extra symfony/web-profiler-bundle -W -m --with &apos;twig/twig:&gt;=3.11.2,&lt;3.12.0 || &gt;=3.14.1&apos;</code></td><td>7 changes</td></tr>
+<tr><td><span class="badge rejected">rejected</span></td><td><code>composer update twig/twig</code></td><td><pre class="reason">resolves, but twig/twig ends at v3.10.3 which is still affected by PKSA-2wrf-1xmk-1pky, PKSA-6319-ffpf-gx66, PKSA-yhcn-xrg3-68b1</pre></td></tr>
+<tr><td><span class="badge skipped">not tried</span></td><td><code>composer require --no-update kevinpapst/adminlte-bundle:^4.0 &amp;&amp; composer update kevinpapst/adminlte-bundle -W -m --with &apos;twig/twig:&gt;=3.11.2,&lt;3.12.0 || &gt;=3.14.1&apos;</code></td><td>a better candidate already exists</td></tr>
+</tbody></table></details>
+</section>
+<section class="finding" id="finding-6">
+<h2>symfony/process <span class="version">v4.4.44</span></h2>
+<p class="state">Transitive dependency. Development requirement only.</p>
+<h3>Advisories</h3><ul class="advisories">
+<li><strong><a href="https://symfony.com/cve-2024-51736" rel="noopener">CVE-2024-51736 <small>(PKSA-wws7-mr54-jsny)</small></a></strong> <span class="badge sev-high">high</span><br>CVE-2024-51736: Command execution hijack on Windows with Process class<br><small>affected versions: <code>&gt;=2.0.0,&lt;3.0.0|&gt;=3.0.0,&lt;4.0.0|&gt;=4.0.0,&lt;5.0.0|&gt;=5.0.0,&lt;5.1.0|&gt;=5.1.0,&lt;5.2.0|&gt;=5.2.0,&lt;5.3.0|&gt;=5.3.0,&lt;5.4.0|&gt;=5.4.0,&lt;5.4.46|&gt;=6.0.0,&lt;6.1.0|&gt;=6.1.0,&lt;6.2.0|&gt;=6.2.0,&lt;6.3.0|&gt;=6.3.0,&lt;6.4.0|&gt;=6.4.0,&lt;6.4.14|&gt;=7.0.0,&lt;7.1.0|&gt;=7.1.0,&lt;7.1.7</code></small></li>
+</ul>
+<h3>Introduced by</h3>
+<pre class="tree">root
+└── friendsofphp/php-cs-fixer v3.4.0
+    └── symfony/process v4.4.44  (requires ^4.4.20 || ^5.0 || ^6.0)</pre>
+<h3>Recommended remediation</h3>
+<p class="command"><code>composer update symfony/process</code></p>
+<p class="validation"><span class="badge ok">Composer validation: PASS</span> 1 package changed, 0 added, 0 removed, 0 root constraints changed, <strong>includes a major version change</strong>.</p>
+<details open><summary>Expected changes (1)</summary><table class="changes"><thead><tr><th>Package</th><th>From</th><th>To</th><th>Kind</th></tr></thead><tbody>
+<tr><td>symfony/process</td><td>v4.4.44</td><td>v5.4.47</td><td>upgraded, major</td></tr>
+</tbody></table></details>
+<details><summary>Other candidates (3)</summary><table class="candidates"><thead><tr><th>Outcome</th><th>Command</th><th>Detail</th></tr></thead><tbody>
+<tr><td><span class="badge ok">valid, rank 2</span></td><td><code>composer update symfony/process -w -m --with &apos;symfony/process:&gt;=5.4.46,&lt;6.0.0 || &gt;=6.4.14,&lt;7.0.0 || &gt;=7.1.7&apos;</code></td><td>1 changes</td></tr>
+<tr><td><span class="badge ok">valid, rank 3</span></td><td><code>composer update friendsofphp/php-cs-fixer -W -m --with &apos;symfony/process:&gt;=5.4.46,&lt;6.0.0 || &gt;=6.4.14,&lt;7.0.0 || &gt;=7.1.7&apos;</code></td><td>1 changes</td></tr>
+<tr><td><span class="badge skipped">not tried</span></td><td><code>composer require --no-update friendsofphp/php-cs-fixer:^4.0 &amp;&amp; composer update friendsofphp/php-cs-fixer -W -m --with &apos;symfony/process:&gt;=5.4.46,&lt;6.0.0 || &gt;=6.4.14,&lt;7.0.0 || &gt;=7.1.7&apos;</code></td><td>a better candidate already exists</td></tr>
+</tbody></table></details>
+</section>
+<section class="meta"><h2>Analysis metadata</h2><dl>
+<dt>project</dt><dd>kimai1-symfony44-artifact-repo</dd>
+<dt>engine version</dt><dd>dev-main</dd>
+<dt>composer version</dt><dd>(fixture)</dd>
+<dt>php version</dt><dd>(fixture)</dd>
+<dt>advisory source</dt><dd>advisory snapshot advisories.json</dd>
+<dt>solver</dt><dd>in-process Composer dry-run</dd>
+<dt>composer json sha256</dt><dd>8aaff198aa526a5dad4abc99ec655b5b312d15f56104f39a62045d7801722a4e</dd>
+<dt>composer lock sha256</dt><dd>22fd0acc2517587b38c52afc1c3a03768d5ea1fae006f954fcc185f8abe5b05e</dd>
+<dt>analysis timestamp</dt><dd>(fixture)</dd>
+<dt>locked packages</dt><dd>192</dd>
+</dl></section>
+</main></body></html>

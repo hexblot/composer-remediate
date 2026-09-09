@@ -77,5 +77,17 @@ rather than today's. Without it, later advisories would turn a clean "upgrade th
 | 4 | `islandora-drupal-twig-meta-package` (Islandora starter site, 2024-08) | `twig/twig 3.10.3` pinned `~v3.10.2` by `drupal/core-recommended 10.3.1`; 10.3.4 is the first to allow the fix | `composer update drupal/core-recommended:10.3.4 -W -m` |
 | 5 | `bookstack-symfony-php80-no-fix` (BookStack, 2023-12) | `symfony/http-foundation 6.0.20` under `config.platform.php` 8.0.2; every fix needs PHP 8.1 | No verified remediation, with the PHP requirement shown as the blocker |
 
+## The Phase 3 corpus
+
+| Fixture | Ecosystem | What it exercises |
+|---|---|---|
+| `bookstack-phpseclib-knpsnappy` (BookStack, 2023-02) | Laravel | Direct and transitive fixes in one lock; combined command |
+| `bookstack-socialite-phpjwt-parent-minor` (BookStack, 2024-09, snapshot 2026-01) | Laravel | `firebase/php-jwt` pinned `^6.4` by `laravel/socialite`; descent pins socialite 5.24.1; twelve findings, one combined command |
+| `pixelfed-laravel11-symfony` (Pixelfed, 2024-10) | Laravel 11 | Symfony 7.1 components the parent already permits |
+| `usagov-drupal-core-recommended-twig` (USAGov, 2024-08) | Drupal 10.2 | Second `core-recommended` pin; the project's own next commit made the same upgrade |
+| `invoiceninja-phpjwt-two-level` (Invoice Ninja, 2022-04) | Laravel | Two-level chain: `google/apiclient` and the non-root `google/auth` both pin php-jwt; `-W` moves both |
+| `kimai1-symfony44-artifact-repo` (Kimai 1.x, 2023-02) | Symfony 4.4, PHP 7.3 | Mixed outcomes: 4.4 components jump to 5.4 patch releases, direct PhpSpreadsheet unfixable on PHP 7; `artifact` repository |
+| `shopware-6420-twig-no-fix` (Shopware 6.4.20.2, 2023-05) | Symfony / Shopware | Constraint-bound "no fix": last 6.4 release pins twig, 6.5 needs PHP 8.1; 7 of 26 findings fixable |
+
 Each fixture directory has a `README.md` with provenance and the reasoning behind the expected
-command. Phase 3 grows this into a corpus of Drupal, Symfony and Laravel cases.
+command, and a `reports/` directory with the stored console, JSON and HTML output.

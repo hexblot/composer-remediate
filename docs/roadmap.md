@@ -42,10 +42,14 @@ stands.
 - [x] private or organisational advisories as an additional source (`--include=<json>`)
 - [x] a reference shared instance published by this project (`.github/workflows/advisory-db.yml`): hourly build, release only when the dataset hash changes, sha256 and build-provenance attestation, `advisory-db-latest` moving pointer
 
-## Phase 3 — ecosystem corpus, CI, version matrix
+## Phase 3 — ecosystem corpus, CI, version matrix *(in progress)*
 
-- Drupal, Symfony and Laravel fixture corpora
-- Composer 2.4 through latest, PHP 8.1 through 8.5 in CI
+- [x] fixture corpus grown to twelve: BookStack ×4, koel, Pixelfed, Invoice Ninja, Kimai (Laravel and
+  Symfony), Islandora and USAGov (Drupal), Shopware ×2; covers multi-parent, two-level chain,
+  platform-bound and constraint-bound "no fix" cases (see [Test fixtures](fixtures.md))
+- [ ] more Drupal and plain Symfony application cases (five each was the target; two and three so far)
+- [x] Composer version matrix in CI (2.4, 2.7, 2.8, 2.9 and latest) on matching PHP versions, with the
+  lock-file fallback for releases without `Installer::getLockTransaction()`; PHP 8.1 through 8.5
 - [x] CI integration recipes (GitHub Actions, GitLab CI, JSON gates)
 - [x] published JSON Schema for the report (`docs/schema/report.schema.json`), validated against every fixture report in the test suite
 

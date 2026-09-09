@@ -1,0 +1,295 @@
+{
+    "schema_version": 1,
+    "analysis_metadata": {
+        "project": "bookstack-phpseclib-knpsnappy",
+        "engine_version": "dev-main",
+        "composer_version": "(fixture)",
+        "php_version": "(fixture)",
+        "advisory_source": "advisory snapshot advisories.json",
+        "solver": "in-process Composer dry-run",
+        "composer_json_sha256": "fc616d8709275034f8bcc1ec5bf6123428cbc02e1a931e931ff98ce41f762471",
+        "composer_lock_sha256": "b83ee5639d273303f1750c177fe3725eb939c5ef5780f423934677d0ee152feb",
+        "analysis_timestamp": "(fixture)",
+        "locked_packages": "147"
+    },
+    "exit_code": 1,
+    "warnings": [],
+    "summary": {
+        "advisories": 2,
+        "packages": 2,
+        "packages_with_fix": 2,
+        "combined_command": "composer update knplabs/knp-snappy phpseclib/phpseclib",
+        "combined_fixes": 2,
+        "combined_total": 2,
+        "combined_fixes_all": true,
+        "combined_changes": {
+            "changed": 2,
+            "added": 0,
+            "removed": 0,
+            "total": 2,
+            "major_change": false,
+            "downgrade": false,
+            "prerelease": false
+        }
+    },
+    "findings": [
+        {
+            "package": "knplabs/knp-snappy",
+            "version": "v1.4.1",
+            "version_normalized": "1.4.1.0",
+            "direct": false,
+            "dev": false,
+            "via_replaced_package": null,
+            "advisories": [
+                {
+                    "id": "PKSA-sdn5-dtyj-96rq",
+                    "cve": "CVE-2023-28115",
+                    "title": "PHAR deserialization allowing remote code execution",
+                    "link": "https://github.com/advisories/GHSA-gq6w-q6wh-jggc",
+                    "severity": "critical",
+                    "reported_at": "2023-03-17T15:47:00+00:00",
+                    "affected_versions": "<1.4.2",
+                    "sources": [
+                        {
+                            "name": "GitHub",
+                            "remoteId": "GHSA-gq6w-q6wh-jggc"
+                        },
+                        {
+                            "name": "FriendsOfPHP/security-advisories",
+                            "remoteId": "knplabs/knp-snappy/CVE-2023-28115.yaml"
+                        }
+                    ]
+                }
+            ],
+            "paths_total": 1,
+            "paths": [
+                {
+                    "cyclic": false,
+                    "chain": [
+                        {
+                            "package": "root",
+                            "version": null,
+                            "requires": "^1.0"
+                        },
+                        {
+                            "package": "barryvdh/laravel-snappy",
+                            "version": "v1.0.1",
+                            "requires": "^1.4"
+                        }
+                    ],
+                    "target": {
+                        "package": "knplabs/knp-snappy",
+                        "version": "v1.4.1"
+                    }
+                }
+            ],
+            "remediation": {
+                "status": "verified",
+                "command": "composer update knplabs/knp-snappy",
+                "strategy": "lock-refresh",
+                "root_constraint_changes": [],
+                "summary": {
+                    "changed": 1,
+                    "added": 0,
+                    "removed": 0,
+                    "total": 1,
+                    "major_change": false,
+                    "downgrade": false,
+                    "prerelease": false
+                },
+                "changes": [
+                    {
+                        "package": "knplabs/knp-snappy",
+                        "kind": "upgraded",
+                        "step": "patch",
+                        "from": "v1.4.1",
+                        "to": "v1.4.2"
+                    }
+                ]
+            },
+            "candidates": [
+                {
+                    "command": "composer update knplabs/knp-snappy",
+                    "strategy": "lock-refresh",
+                    "outcome": "valid",
+                    "rank": 1,
+                    "summary": {
+                        "changed": 1,
+                        "added": 0,
+                        "removed": 0,
+                        "total": 1,
+                        "major_change": false,
+                        "downgrade": false,
+                        "prerelease": false
+                    },
+                    "solver_status": "resolved"
+                },
+                {
+                    "command": "composer update knplabs/knp-snappy -w -m --with 'knplabs/knp-snappy:>=1.4.2'",
+                    "strategy": "with-dependencies",
+                    "outcome": "valid",
+                    "rank": 2,
+                    "summary": {
+                        "changed": 1,
+                        "added": 0,
+                        "removed": 0,
+                        "total": 1,
+                        "major_change": false,
+                        "downgrade": false,
+                        "prerelease": false
+                    },
+                    "solver_status": "resolved"
+                },
+                {
+                    "command": "composer update barryvdh/laravel-snappy -W -m --with 'knplabs/knp-snappy:>=1.4.2'",
+                    "strategy": "parent-update",
+                    "outcome": "valid",
+                    "rank": 3,
+                    "summary": {
+                        "changed": 1,
+                        "added": 0,
+                        "removed": 0,
+                        "total": 1,
+                        "major_change": false,
+                        "downgrade": false,
+                        "prerelease": false
+                    },
+                    "solver_status": "resolved"
+                },
+                {
+                    "command": "composer require --no-update barryvdh/laravel-snappy:^2.0 && composer update barryvdh/laravel-snappy -W -m --with 'knplabs/knp-snappy:>=1.4.2'",
+                    "strategy": "root-constraint-widen",
+                    "outcome": "skipped",
+                    "reason": "a better candidate already exists"
+                }
+            ]
+        },
+        {
+            "package": "phpseclib/phpseclib",
+            "version": "3.0.18",
+            "version_normalized": "3.0.18.0",
+            "direct": true,
+            "dev": false,
+            "via_replaced_package": null,
+            "advisories": [
+                {
+                    "id": "PKSA-qrgb-4pgm-cz41",
+                    "cve": "CVE-2023-27560",
+                    "title": "Infinite Loop vulnerability",
+                    "link": "https://github.com/advisories/GHSA-hm7p-r324-hhf3",
+                    "severity": "high",
+                    "reported_at": "2023-03-06T09:20:00+00:00",
+                    "affected_versions": ">=3.0.0,<3.0.19",
+                    "sources": [
+                        {
+                            "name": "GitHub",
+                            "remoteId": "GHSA-hm7p-r324-hhf3"
+                        },
+                        {
+                            "name": "FriendsOfPHP/security-advisories",
+                            "remoteId": "phpseclib/phpseclib/CVE-2023-27560.yaml"
+                        }
+                    ]
+                }
+            ],
+            "paths_total": 1,
+            "paths": [
+                {
+                    "cyclic": false,
+                    "chain": [
+                        {
+                            "package": "root",
+                            "version": null,
+                            "requires": "^3.0"
+                        }
+                    ],
+                    "target": {
+                        "package": "phpseclib/phpseclib",
+                        "version": "3.0.18"
+                    }
+                }
+            ],
+            "remediation": {
+                "status": "verified",
+                "command": "composer update phpseclib/phpseclib",
+                "strategy": "lock-refresh",
+                "root_constraint_changes": [],
+                "summary": {
+                    "changed": 1,
+                    "added": 0,
+                    "removed": 0,
+                    "total": 1,
+                    "major_change": false,
+                    "downgrade": false,
+                    "prerelease": false
+                },
+                "changes": [
+                    {
+                        "package": "phpseclib/phpseclib",
+                        "kind": "upgraded",
+                        "step": "patch",
+                        "from": "3.0.18",
+                        "to": "3.0.19"
+                    }
+                ]
+            },
+            "candidates": [
+                {
+                    "command": "composer update phpseclib/phpseclib",
+                    "strategy": "lock-refresh",
+                    "outcome": "valid",
+                    "rank": 1,
+                    "summary": {
+                        "changed": 1,
+                        "added": 0,
+                        "removed": 0,
+                        "total": 1,
+                        "major_change": false,
+                        "downgrade": false,
+                        "prerelease": false
+                    },
+                    "solver_status": "resolved"
+                },
+                {
+                    "command": "composer update phpseclib/phpseclib -w -m --with 'phpseclib/phpseclib:>=3.0.19'",
+                    "strategy": "with-dependencies",
+                    "outcome": "valid",
+                    "rank": 2,
+                    "summary": {
+                        "changed": 1,
+                        "added": 0,
+                        "removed": 0,
+                        "total": 1,
+                        "major_change": false,
+                        "downgrade": false,
+                        "prerelease": false
+                    },
+                    "solver_status": "resolved"
+                },
+                {
+                    "command": "composer update phpseclib/phpseclib -W -m --with 'phpseclib/phpseclib:>=3.0.19'",
+                    "strategy": "parent-update",
+                    "outcome": "valid",
+                    "rank": 3,
+                    "summary": {
+                        "changed": 1,
+                        "added": 0,
+                        "removed": 0,
+                        "total": 1,
+                        "major_change": false,
+                        "downgrade": false,
+                        "prerelease": false
+                    },
+                    "solver_status": "resolved"
+                },
+                {
+                    "command": "composer require --no-update phpseclib/phpseclib:^4.0 && composer update phpseclib/phpseclib -W -m --with 'phpseclib/phpseclib:>=3.0.19'",
+                    "strategy": "root-constraint-widen",
+                    "outcome": "skipped",
+                    "reason": "a better candidate already exists"
+                }
+            ]
+        }
+    ],
+    "unsolved_findings": []
+}

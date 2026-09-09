@@ -1,0 +1,396 @@
+{
+    "schema_version": 1,
+    "analysis_metadata": {
+        "project": "invoiceninja-phpjwt-two-level",
+        "engine_version": "dev-main",
+        "composer_version": "(fixture)",
+        "php_version": "(fixture)",
+        "advisory_source": "advisory snapshot advisories.json",
+        "solver": "in-process Composer dry-run",
+        "composer_json_sha256": "e0a1d006e5dfe588cb7bcd567a1e2777f2292b61e5df9ce7c336b3b6a6ac9084",
+        "composer_lock_sha256": "2dbaa7b34c4c01d7ef5715f78a6c4dfe11a0a4533a4b8855f22eb8d218f54b2f",
+        "analysis_timestamp": "(fixture)",
+        "locked_packages": "217"
+    },
+    "exit_code": 2,
+    "warnings": [],
+    "summary": {
+        "advisories": 3,
+        "packages": 2,
+        "packages_with_fix": 1,
+        "combined_command": "composer update google/apiclient:v2.12.2 -W -m --with 'firebase/php-jwt:>=6.0.0'",
+        "combined_fixes": 1,
+        "combined_total": 3,
+        "combined_fixes_all": false,
+        "combined_changes": {
+            "changed": 3,
+            "added": 0,
+            "removed": 0,
+            "total": 3,
+            "major_change": true,
+            "downgrade": false,
+            "prerelease": false
+        }
+    },
+    "findings": [
+        {
+            "package": "firebase/php-jwt",
+            "version": "v5.5.1",
+            "version_normalized": "5.5.1.0",
+            "direct": false,
+            "dev": false,
+            "via_replaced_package": null,
+            "advisories": [
+                {
+                    "id": "PKSA-2kqm-ps5x-s4f5",
+                    "cve": "CVE-2021-46743",
+                    "title": "Key/algorithm type confusion",
+                    "link": "https://github.com/advisories/GHSA-8xf4-w7qw-pjjw",
+                    "severity": "critical",
+                    "reported_at": "2022-03-30T00:00:00+00:00",
+                    "affected_versions": "<6.0.0",
+                    "sources": [
+                        {
+                            "name": "FriendsOfPHP/security-advisories",
+                            "remoteId": "firebase/php-jwt/CVE-2021-46743.yaml"
+                        },
+                        {
+                            "name": "GitHub",
+                            "remoteId": "GHSA-8xf4-w7qw-pjjw"
+                        }
+                    ]
+                }
+            ],
+            "paths_total": 4,
+            "paths": [
+                {
+                    "cyclic": false,
+                    "chain": [
+                        {
+                            "package": "root",
+                            "version": null,
+                            "requires": "^2.7"
+                        },
+                        {
+                            "package": "google/apiclient",
+                            "version": "v2.12.1",
+                            "requires": "~2.0||~3.0||~4.0||~5.0"
+                        }
+                    ],
+                    "target": {
+                        "package": "firebase/php-jwt",
+                        "version": "v5.5.1"
+                    }
+                },
+                {
+                    "cyclic": false,
+                    "chain": [
+                        {
+                            "package": "root",
+                            "version": null,
+                            "requires": "^5"
+                        },
+                        {
+                            "package": "turbo124/laravel-gmail",
+                            "version": "v5.0.2",
+                            "requires": "^2.5"
+                        },
+                        {
+                            "package": "google/apiclient",
+                            "version": "v2.12.1",
+                            "requires": "~2.0||~3.0||~4.0||~5.0"
+                        }
+                    ],
+                    "target": {
+                        "package": "firebase/php-jwt",
+                        "version": "v5.5.1"
+                    }
+                },
+                {
+                    "cyclic": false,
+                    "chain": [
+                        {
+                            "package": "root",
+                            "version": null,
+                            "requires": "^2.7"
+                        },
+                        {
+                            "package": "google/apiclient",
+                            "version": "v2.12.1",
+                            "requires": "^1.10"
+                        },
+                        {
+                            "package": "google/auth",
+                            "version": "v1.19.0",
+                            "requires": "~5.0"
+                        }
+                    ],
+                    "target": {
+                        "package": "firebase/php-jwt",
+                        "version": "v5.5.1"
+                    }
+                },
+                {
+                    "cyclic": false,
+                    "chain": [
+                        {
+                            "package": "root",
+                            "version": null,
+                            "requires": "^5"
+                        },
+                        {
+                            "package": "turbo124/laravel-gmail",
+                            "version": "v5.0.2",
+                            "requires": "^2.5"
+                        },
+                        {
+                            "package": "google/apiclient",
+                            "version": "v2.12.1",
+                            "requires": "^1.10"
+                        },
+                        {
+                            "package": "google/auth",
+                            "version": "v1.19.0",
+                            "requires": "~5.0"
+                        }
+                    ],
+                    "target": {
+                        "package": "firebase/php-jwt",
+                        "version": "v5.5.1"
+                    }
+                }
+            ],
+            "remediation": {
+                "status": "verified",
+                "command": "composer update google/apiclient:v2.12.2 -W -m --with 'firebase/php-jwt:>=6.0.0'",
+                "strategy": "parent-update",
+                "root_constraint_changes": [],
+                "summary": {
+                    "changed": 3,
+                    "added": 0,
+                    "removed": 0,
+                    "total": 3,
+                    "major_change": true,
+                    "downgrade": false,
+                    "prerelease": false
+                },
+                "changes": [
+                    {
+                        "package": "firebase/php-jwt",
+                        "kind": "upgraded",
+                        "step": "major",
+                        "from": "v5.5.1",
+                        "to": "v6.1.1"
+                    },
+                    {
+                        "package": "google/apiclient",
+                        "kind": "upgraded",
+                        "step": "patch",
+                        "from": "v2.12.1",
+                        "to": "v2.12.2"
+                    },
+                    {
+                        "package": "google/auth",
+                        "kind": "upgraded",
+                        "step": "minor",
+                        "from": "v1.19.0",
+                        "to": "v1.21.0"
+                    }
+                ]
+            },
+            "candidates": [
+                {
+                    "command": "composer update google/apiclient:v2.12.2 -W -m --with 'firebase/php-jwt:>=6.0.0'",
+                    "strategy": "parent-update",
+                    "outcome": "valid",
+                    "rank": 1,
+                    "summary": {
+                        "changed": 3,
+                        "added": 0,
+                        "removed": 0,
+                        "total": 3,
+                        "major_change": true,
+                        "downgrade": false,
+                        "prerelease": false
+                    },
+                    "solver_status": "resolved"
+                },
+                {
+                    "command": "composer update google/apiclient -W -m --with 'firebase/php-jwt:>=6.0.0'",
+                    "strategy": "parent-update",
+                    "outcome": "valid",
+                    "rank": 2,
+                    "summary": {
+                        "changed": 3,
+                        "added": 0,
+                        "removed": 0,
+                        "total": 3,
+                        "major_change": true,
+                        "downgrade": false,
+                        "prerelease": false
+                    },
+                    "solver_status": "resolved"
+                },
+                {
+                    "command": "composer update turbo124/laravel-gmail -W -m --with 'firebase/php-jwt:>=6.0.0'",
+                    "strategy": "parent-update",
+                    "outcome": "valid",
+                    "rank": 3,
+                    "summary": {
+                        "changed": 3,
+                        "added": 0,
+                        "removed": 0,
+                        "total": 3,
+                        "major_change": true,
+                        "downgrade": false,
+                        "prerelease": false
+                    },
+                    "solver_status": "resolved"
+                },
+                {
+                    "command": "composer update firebase/php-jwt",
+                    "strategy": "lock-refresh",
+                    "outcome": "rejected",
+                    "reason": "resolves, but firebase/php-jwt ends at v5.5.1 which is still affected by PKSA-2kqm-ps5x-s4f5",
+                    "summary": {
+                        "changed": 0,
+                        "added": 0,
+                        "removed": 0,
+                        "total": 0,
+                        "major_change": false,
+                        "downgrade": false,
+                        "prerelease": false
+                    },
+                    "solver_status": "resolved"
+                },
+                {
+                    "command": "composer update firebase/php-jwt -w -m --with 'firebase/php-jwt:>=6.0.0'",
+                    "strategy": "with-dependencies",
+                    "outcome": "rejected",
+                    "reason": "Composer could not resolve the dependencies: Your requirements could not be resolved to an installable set of packages.\n  Problem 1\n    - google/apiclient is locked to version v2.12.1 and an update of this package was not requested.\n    - google/apiclient v2.12.1 requires firebase/php-jwt ~2.0||~3.0||~4.0||~5.0 -> found firebase/php-jwt[v5.5.1] but it conflicts with your temporary update constraint (firebase/php-jwt:>=6.0.0).\n  Problem 2\n    - turbo124/laravel-gmail is locked to version v5.0.2 and an update of this package was not requested.\n    - google/apiclient v2.12.1 requires firebase/php-jwt ~2.0||~3.0||~4.0||~5.0 -> found firebase/php-jwt[v5.5.1] but it conflicts with your temporary update constraint (firebase/php-jwt:>=6.0.0).\n    - turbo124/laravel-gmail v5.0.2 requires google/apiclient ^2.5 -> satisfiable by google/apiclient[v2.12.1].\nUse the option --with-all-dependencies (-W) to allow upgrades, downgrades and removals for packages currently locked to specific versions.",
+                    "solver_status": "conflict"
+                },
+                {
+                    "command": "composer require --no-update google/apiclient:^3.0 && composer update google/apiclient -W -m --with 'firebase/php-jwt:>=6.0.0'",
+                    "strategy": "root-constraint-widen",
+                    "outcome": "skipped",
+                    "reason": "a better candidate already exists"
+                },
+                {
+                    "command": "composer require --no-update turbo124/laravel-gmail:^6.0 && composer update turbo124/laravel-gmail -W -m --with 'firebase/php-jwt:>=6.0.0'",
+                    "strategy": "root-constraint-widen",
+                    "outcome": "skipped",
+                    "reason": "a better candidate already exists"
+                }
+            ]
+        },
+        {
+            "package": "maximebf/debugbar",
+            "version": "v1.18.0",
+            "version_normalized": "1.18.0.0",
+            "direct": false,
+            "dev": true,
+            "via_replaced_package": null,
+            "advisories": [
+                {
+                    "id": "PKSA-dyrx-jq7h-gtxg",
+                    "cve": "CVE-2020-11022",
+                    "title": "Potential XSS vulnerability in jQuery",
+                    "link": "https://github.com/advisories/GHSA-gxr4-xjj5-5px2",
+                    "severity": "medium",
+                    "reported_at": "2020-04-29T22:18:55+00:00",
+                    "affected_versions": "<1.19.0",
+                    "sources": [
+                        {
+                            "name": "GitHub",
+                            "remoteId": "GHSA-gxr4-xjj5-5px2"
+                        }
+                    ]
+                },
+                {
+                    "id": "PKSA-vf2x-zfw2-cnsj",
+                    "cve": "CVE-2019-11358",
+                    "title": "XSS in jQuery as used in Drupal, Backdrop CMS, and other products",
+                    "link": "https://github.com/advisories/GHSA-6c3j-c64m-qhgq",
+                    "severity": "medium",
+                    "reported_at": "2019-04-26T16:29:11+00:00",
+                    "affected_versions": "<1.19.0",
+                    "sources": [
+                        {
+                            "name": "GitHub",
+                            "remoteId": "GHSA-6c3j-c64m-qhgq"
+                        }
+                    ]
+                }
+            ],
+            "paths_total": 1,
+            "paths": [
+                {
+                    "cyclic": false,
+                    "chain": [
+                        {
+                            "package": "root",
+                            "version": null,
+                            "requires": "^3.4"
+                        },
+                        {
+                            "package": "barryvdh/laravel-debugbar",
+                            "version": "v3.6.7",
+                            "requires": "^1.17.2"
+                        }
+                    ],
+                    "target": {
+                        "package": "maximebf/debugbar",
+                        "version": "v1.18.0"
+                    }
+                }
+            ],
+            "remediation": {
+                "status": "none",
+                "blocker": null
+            },
+            "candidates": [
+                {
+                    "command": "composer update maximebf/debugbar",
+                    "strategy": "lock-refresh",
+                    "outcome": "rejected",
+                    "reason": "resolves, but maximebf/debugbar ends at v1.18.1 which is still affected by PKSA-dyrx-jq7h-gtxg, PKSA-vf2x-zfw2-cnsj",
+                    "summary": {
+                        "changed": 1,
+                        "added": 0,
+                        "removed": 0,
+                        "total": 1,
+                        "major_change": false,
+                        "downgrade": false,
+                        "prerelease": false
+                    },
+                    "solver_status": "resolved"
+                },
+                {
+                    "command": "composer update maximebf/debugbar -w -m --with 'maximebf/debugbar:>=1.19.0'",
+                    "strategy": "with-dependencies",
+                    "outcome": "rejected",
+                    "reason": "Composer could not resolve the dependencies: Your requirements could not be resolved to an installable set of packages.\n  Problem 1\n    - barryvdh/laravel-debugbar is locked to version v3.6.7 and an update of this package was not requested.\n    - barryvdh/laravel-debugbar v3.6.7 requires maximebf/debugbar ^1.17.2 -> found maximebf/debugbar[v1.18.0, v1.18.1] but it conflicts with your temporary update constraint (maximebf/debugbar:>=1.19.0).\nUse the option --with-all-dependencies (-W) to allow upgrades, downgrades and removals for packages currently locked to specific versions.",
+                    "solver_status": "conflict"
+                },
+                {
+                    "command": "composer update barryvdh/laravel-debugbar -W -m --with 'maximebf/debugbar:>=1.19.0'",
+                    "strategy": "parent-update",
+                    "outcome": "rejected",
+                    "reason": "Composer could not resolve the dependencies: Your requirements could not be resolved to an installable set of packages.\n  Problem 1\n    - Root composer.json requires barryvdh/laravel-debugbar ^3.4 -> satisfiable by barryvdh/laravel-debugbar[v3.6.7].\n    - barryvdh/laravel-debugbar v3.6.7 requires maximebf/debugbar ^1.17.2 -> found maximebf/debugbar[v1.18.0, v1.18.1] but it conflicts with your temporary update constraint (maximebf/debugbar:>=1.19.0).",
+                    "solver_status": "conflict"
+                },
+                {
+                    "command": "composer require --no-update barryvdh/laravel-debugbar:^4.0 && composer update barryvdh/laravel-debugbar -W -m --with 'maximebf/debugbar:>=1.19.0'",
+                    "strategy": "root-constraint-widen",
+                    "outcome": "rejected",
+                    "reason": "Composer could not resolve the dependencies: Your requirements could not be resolved to an installable set of packages.\n  Problem 1\n    - Root composer.json requires barryvdh/laravel-debugbar ^3.4 -> satisfiable by barryvdh/laravel-debugbar[v3.6.7].\n    - barryvdh/laravel-debugbar v3.6.7 requires maximebf/debugbar ^1.17.2 -> found maximebf/debugbar[v1.18.0, v1.18.1] but it conflicts with your temporary update constraint (maximebf/debugbar:>=1.19.0).",
+                    "solver_status": "conflict"
+                }
+            ]
+        }
+    ],
+    "unsolved_findings": [
+        "maximebf/debugbar"
+    ]
+}

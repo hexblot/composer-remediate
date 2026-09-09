@@ -1,0 +1,82 @@
+<!DOCTYPE html><html lang="en"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Composer Remediate — 2 findings</title>
+<style>:root{color-scheme:light dark;--bg:#fff;--fg:#1c1e21;--muted:#5f6b7a;--border:#d9dee5;--panel:#f6f8fa;--ok:#1a7f37;--bad:#b42318;--warn:#9a6700;--accent:#0f6b8a}
+@media(prefers-color-scheme:dark){:root{--bg:#0f1418;--fg:#e6edf3;--muted:#9aa7b4;--border:#2b3640;--panel:#161c22;--ok:#3fb950;--bad:#f0665b;--warn:#d4a72c;--accent:#58b8d8}}
+body{margin:0;background:var(--bg);color:var(--fg);font:15px/1.5 system-ui,-apple-system,Segoe UI,Roboto,sans-serif}
+header{padding:1.5rem 2rem;border-bottom:1px solid var(--border)}header h1{margin:0;font-size:1.4rem}.sub{margin:.25rem 0 0;color:var(--muted)}
+main{max-width:70rem;margin:0 auto;padding:1rem 2rem 3rem}
+section{margin:1.5rem 0}.finding{border:1px solid var(--border);border-radius:8px;padding:1rem 1.25rem;background:var(--panel)}
+h2{font-size:1.15rem;margin:.25rem 0 .5rem}h3{font-size:.95rem;margin:1rem 0 .35rem;color:var(--muted);text-transform:uppercase;letter-spacing:.04em}
+.version{font-weight:400;color:var(--muted)}.state{margin:0;color:var(--muted)}
+code{font:.9em ui-monospace,SFMono-Regular,Menlo,monospace;background:rgba(127,127,127,.12);padding:.1em .35em;border-radius:4px;word-break:break-all}
+pre{font:.85rem ui-monospace,SFMono-Regular,Menlo,monospace;background:rgba(127,127,127,.1);padding:.75rem 1rem;border-radius:6px;overflow-x:auto;margin:.25rem 0}
+pre.reason{white-space:pre-wrap;margin:0;background:none;padding:0}
+.command code{display:block;padding:.6rem .8rem;font-size:.95rem;border-left:4px solid var(--accent)}
+table{border-collapse:collapse;width:100%;font-size:.92rem}th,td{text-align:left;padding:.4rem .6rem;border-bottom:1px solid var(--border);vertical-align:top}th{color:var(--muted);font-weight:600}
+.badge{display:inline-block;font-size:.75rem;font-weight:600;padding:.1rem .5rem;border-radius:999px;border:1px solid currentColor;white-space:nowrap}
+.badge.ok{color:var(--ok)}.badge.none,.badge.rejected{color:var(--bad)}.badge.skipped,.badge.dev{color:var(--muted)}
+.badge.sev-critical,.badge.sev-high{color:var(--bad)}.badge.sev-medium{color:var(--warn)}.badge.sev-low{color:var(--muted)}
+.warning{border-left:4px solid var(--warn);padding:.5rem .8rem;background:rgba(212,167,44,.1)}.clean{color:var(--ok);font-weight:600}
+.none-box{border-left:4px solid var(--bad);padding:.5rem .8rem;background:rgba(180,35,24,.08)}
+.advisories{padding-left:1.2rem}.advisories li{margin:.4rem 0}
+details summary{cursor:pointer;color:var(--accent);margin:.5rem 0}
+.meta dl{display:grid;grid-template-columns:max-content 1fr;gap:.2rem 1rem;font-size:.85rem;color:var(--muted)}.meta dt{font-weight:600}.meta dd{margin:0;word-break:break-all}</style></head><body>
+<header><h1>Composer Remediate</h1><p class="sub">Composer Remediate — 2 findings in <code>bookstack-phpseclib-knpsnappy</code></p></header>
+<main>
+<section><h2>Summary</h2><p>2 advisories on 2 packages.</p><p class="command"><span class="badge ok">fixes all 2</span> <code>composer update knplabs/knp-snappy phpseclib/phpseclib</code></p><table class="summary"><thead><tr><th>Package</th><th>Advisories</th><th>Status</th><th>Recommended command</th></tr></thead><tbody><tr><td><a href="#finding-1">knplabs/knp-snappy v1.4.1</a></td><td>CVE-2023-28115</td><td><span class="badge ok">verified</span></td><td><code>composer update knplabs/knp-snappy</code></td></tr><tr><td><a href="#finding-2">phpseclib/phpseclib 3.0.18</a></td><td>CVE-2023-27560</td><td><span class="badge ok">verified</span></td><td><code>composer update phpseclib/phpseclib</code></td></tr></tbody></table></section>
+<section class="finding" id="finding-1">
+<h2>knplabs/knp-snappy <span class="version">v1.4.1</span></h2>
+<p class="state">Transitive dependency.</p>
+<h3>Advisories</h3><ul class="advisories">
+<li><strong><a href="https://github.com/advisories/GHSA-gq6w-q6wh-jggc" rel="noopener">CVE-2023-28115 <small>(PKSA-sdn5-dtyj-96rq)</small></a></strong> <span class="badge sev-critical">critical</span><br>PHAR deserialization allowing remote code execution<br><small>affected versions: <code>&lt;1.4.2</code></small></li>
+</ul>
+<h3>Introduced by</h3>
+<pre class="tree">root
+└── barryvdh/laravel-snappy v1.0.1
+    └── knplabs/knp-snappy v1.4.1  (requires ^1.4)</pre>
+<h3>Recommended remediation</h3>
+<p class="command"><code>composer update knplabs/knp-snappy</code></p>
+<p class="validation"><span class="badge ok">Composer validation: PASS</span> 1 package changed, 0 added, 0 removed, 0 root constraints changed.</p>
+<details open><summary>Expected changes (1)</summary><table class="changes"><thead><tr><th>Package</th><th>From</th><th>To</th><th>Kind</th></tr></thead><tbody>
+<tr><td>knplabs/knp-snappy</td><td>v1.4.1</td><td>v1.4.2</td><td>upgraded, patch</td></tr>
+</tbody></table></details>
+<details><summary>Other candidates (3)</summary><table class="candidates"><thead><tr><th>Outcome</th><th>Command</th><th>Detail</th></tr></thead><tbody>
+<tr><td><span class="badge ok">valid, rank 2</span></td><td><code>composer update knplabs/knp-snappy -w -m --with &apos;knplabs/knp-snappy:&gt;=1.4.2&apos;</code></td><td>1 changes</td></tr>
+<tr><td><span class="badge ok">valid, rank 3</span></td><td><code>composer update barryvdh/laravel-snappy -W -m --with &apos;knplabs/knp-snappy:&gt;=1.4.2&apos;</code></td><td>1 changes</td></tr>
+<tr><td><span class="badge skipped">not tried</span></td><td><code>composer require --no-update barryvdh/laravel-snappy:^2.0 &amp;&amp; composer update barryvdh/laravel-snappy -W -m --with &apos;knplabs/knp-snappy:&gt;=1.4.2&apos;</code></td><td>a better candidate already exists</td></tr>
+</tbody></table></details>
+</section>
+<section class="finding" id="finding-2">
+<h2>phpseclib/phpseclib <span class="version">3.0.18</span></h2>
+<p class="state">Direct dependency.</p>
+<h3>Advisories</h3><ul class="advisories">
+<li><strong><a href="https://github.com/advisories/GHSA-hm7p-r324-hhf3" rel="noopener">CVE-2023-27560 <small>(PKSA-qrgb-4pgm-cz41)</small></a></strong> <span class="badge sev-high">high</span><br>Infinite Loop vulnerability<br><small>affected versions: <code>&gt;=3.0.0,&lt;3.0.19</code></small></li>
+</ul>
+<h3>Introduced by</h3>
+<pre class="tree">root
+└── phpseclib/phpseclib 3.0.18  (requires ^3.0)</pre>
+<h3>Recommended remediation</h3>
+<p class="command"><code>composer update phpseclib/phpseclib</code></p>
+<p class="validation"><span class="badge ok">Composer validation: PASS</span> 1 package changed, 0 added, 0 removed, 0 root constraints changed.</p>
+<details open><summary>Expected changes (1)</summary><table class="changes"><thead><tr><th>Package</th><th>From</th><th>To</th><th>Kind</th></tr></thead><tbody>
+<tr><td>phpseclib/phpseclib</td><td>3.0.18</td><td>3.0.19</td><td>upgraded, patch</td></tr>
+</tbody></table></details>
+<details><summary>Other candidates (3)</summary><table class="candidates"><thead><tr><th>Outcome</th><th>Command</th><th>Detail</th></tr></thead><tbody>
+<tr><td><span class="badge ok">valid, rank 2</span></td><td><code>composer update phpseclib/phpseclib -w -m --with &apos;phpseclib/phpseclib:&gt;=3.0.19&apos;</code></td><td>1 changes</td></tr>
+<tr><td><span class="badge ok">valid, rank 3</span></td><td><code>composer update phpseclib/phpseclib -W -m --with &apos;phpseclib/phpseclib:&gt;=3.0.19&apos;</code></td><td>1 changes</td></tr>
+<tr><td><span class="badge skipped">not tried</span></td><td><code>composer require --no-update phpseclib/phpseclib:^4.0 &amp;&amp; composer update phpseclib/phpseclib -W -m --with &apos;phpseclib/phpseclib:&gt;=3.0.19&apos;</code></td><td>a better candidate already exists</td></tr>
+</tbody></table></details>
+</section>
+<section class="meta"><h2>Analysis metadata</h2><dl>
+<dt>project</dt><dd>bookstack-phpseclib-knpsnappy</dd>
+<dt>engine version</dt><dd>dev-main</dd>
+<dt>composer version</dt><dd>(fixture)</dd>
+<dt>php version</dt><dd>(fixture)</dd>
+<dt>advisory source</dt><dd>advisory snapshot advisories.json</dd>
+<dt>solver</dt><dd>in-process Composer dry-run</dd>
+<dt>composer json sha256</dt><dd>fc616d8709275034f8bcc1ec5bf6123428cbc02e1a931e931ff98ce41f762471</dd>
+<dt>composer lock sha256</dt><dd>b83ee5639d273303f1750c177fe3725eb939c5ef5780f423934677d0ee152feb</dd>
+<dt>analysis timestamp</dt><dd>(fixture)</dd>
+<dt>locked packages</dt><dd>147</dd>
+</dl></section>
+</main></body></html>
