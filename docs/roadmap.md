@@ -24,13 +24,14 @@ conflict-driven discovery of sibling packages that pin the parent (Shopware), an
 "no fix" verdict with the PHP requirement as the explanation (BookStack on PHP 8.0). The go decision
 stands.
 
-## Phase 1 — deterministic single-finding remediation (release 0.1)
+## Phase 1 — deterministic single-finding remediation (release 0.1) *(complete)*
 
-- hardening, PHPStan level 8, classified solver failures
-- [x] JSON and HTML output with reproducibility metadata (pulled forward from Phase 1)
-- merge per-finding commands into one combined plan and re-verify
-- `--offline`, `--ignore`, respect for `config.audit.ignore` and `config.policy`
-- first Packagist release
+- [x] hardening, PHPStan level 8, classified solver failures (conflict, network, error) with exit code 5 for network
+- [x] JSON and HTML output with reproducibility metadata
+- [x] merge per-finding commands into one combined, re-verified command; report summary says how many findings it fixes
+- [x] `--offline`, `--ignore`, respect for `config.audit.ignore` and `config.policy.advisories.ignore`
+- [x] `provide` handled like `replace` in matching; development-only findings listed after production ones
+- [x] 0.1.0 tagged; Packagist submission is a manual step for the maintainer
 
 ## Phase 2 — advisory database: build locally, share centrally
 

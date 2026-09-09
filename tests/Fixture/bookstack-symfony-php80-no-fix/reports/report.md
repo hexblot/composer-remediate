@@ -37,6 +37,34 @@ Other candidates
   valid, rank 3: composer update barryvdh/laravel-dompdf -W -m --with 'phenx/php-svg-lib:>=0.5.2'  (3 changes)
   not tried (a better candidate already exists): composer require --no-update barryvdh/laravel-dompdf:^3.0 && composer update barryvdh/laravel-dompdf -W -m --with 'phenx/php-svg-lib:>=0.5.2'
 
+CVE-2024-27355, CVE-2024-27354
+────────────────────────────────────────────────────────────
+Affected
+  phpseclib/phpseclib 3.0.34
+  CVE-2024-27355 (PKSA-jsh4-f6tg-bwyq): phpseclib does not properly limit the ASN1 OID length
+    https://github.com/advisories/GHSA-jr22-8qgm-4q87
+    affected versions: >=3.0.0,<3.0.36|>=2.0.0,<2.0.47|>=1.0.0,<1.0.23
+  CVE-2024-27354 (PKSA-t5xz-td8w-f35v): phpseclib a large prime can cause a denial of service
+    https://github.com/advisories/GHSA-hg35-mp25-qf6h
+    affected versions: >=3.0.0,<3.0.36|>=2.0.0,<2.0.47|>=1.0.0,<1.0.23
+Introduced by
+  root
+  └── phpseclib/phpseclib 3.0.34  (requires ^3.0)
+Current state
+  Direct dependency.
+Recommended remediation
+  phpseclib/phpseclib 3.0.34 -> 3.0.42
+Composer validation
+  PASS  1 package changed, 0 added, 0 removed, 0 root constraints changed
+Expected changes
+  phpseclib/phpseclib 3.0.34 -> 3.0.42
+Recommended command
+  composer update phpseclib/phpseclib
+Other candidates
+  valid, rank 2: composer update phpseclib/phpseclib -w -m --with 'phpseclib/phpseclib:>=3.0.36'  (1 changes)
+  valid, rank 3: composer update phpseclib/phpseclib -W -m --with 'phpseclib/phpseclib:>=3.0.36'  (1 changes)
+  not tried (a better candidate already exists): composer require --no-update phpseclib/phpseclib:^4.0 && composer update phpseclib/phpseclib -W -m --with 'phpseclib/phpseclib:>=3.0.36'
+
 CVE-2024-50345
 ────────────────────────────────────────────────────────────
 Affected
@@ -146,34 +174,6 @@ Other candidates
           - Root composer.json requires laravel/framework ^9.0 -> satisfiable by laravel/framework[v9.52.16].
           - laravel/framework v9.52.16 requires symfony/http-foundation ^6.0 -> satisfiable by symfony/http-foundation[v6.4.14, v6.4.15].
 
-CVE-2024-27355, CVE-2024-27354
-────────────────────────────────────────────────────────────
-Affected
-  phpseclib/phpseclib 3.0.34
-  CVE-2024-27355 (PKSA-jsh4-f6tg-bwyq): phpseclib does not properly limit the ASN1 OID length
-    https://github.com/advisories/GHSA-jr22-8qgm-4q87
-    affected versions: >=3.0.0,<3.0.36|>=2.0.0,<2.0.47|>=1.0.0,<1.0.23
-  CVE-2024-27354 (PKSA-t5xz-td8w-f35v): phpseclib a large prime can cause a denial of service
-    https://github.com/advisories/GHSA-hg35-mp25-qf6h
-    affected versions: >=3.0.0,<3.0.36|>=2.0.0,<2.0.47|>=1.0.0,<1.0.23
-Introduced by
-  root
-  └── phpseclib/phpseclib 3.0.34  (requires ^3.0)
-Current state
-  Direct dependency.
-Recommended remediation
-  phpseclib/phpseclib 3.0.34 -> 3.0.42
-Composer validation
-  PASS  1 package changed, 0 added, 0 removed, 0 root constraints changed
-Expected changes
-  phpseclib/phpseclib 3.0.34 -> 3.0.42
-Recommended command
-  composer update phpseclib/phpseclib
-Other candidates
-  valid, rank 2: composer update phpseclib/phpseclib -w -m --with 'phpseclib/phpseclib:>=3.0.36'  (1 changes)
-  valid, rank 3: composer update phpseclib/phpseclib -W -m --with 'phpseclib/phpseclib:>=3.0.36'  (1 changes)
-  not tried (a better candidate already exists): composer require --no-update phpseclib/phpseclib:^4.0 && composer update phpseclib/phpseclib -W -m --with 'phpseclib/phpseclib:>=3.0.36'
-
 CVE-2024-51736
 ────────────────────────────────────────────────────────────
 Affected
@@ -267,4 +267,10 @@ Other candidates
         Problem 1
           - Root composer.json requires laravel/framework ^10.0 -> satisfiable by laravel/framework[v10.0.0, ..., v10.48.22].
           - laravel/framework[v10.0.0, ..., v10.48.22] require php ^8.1 -> your php version (8.0.2; overridden via config.platform, actual: 8.5.5) does not satisfy that requirement.
+
+Summary
+  Findings: 6 advisories on 4 packages, 2 packages with a verified fix
+  composer update phenx/php-svg-lib phpseclib/phpseclib fixes 4 of 6 findings
+    (2 packages changed, verified by Composer)
+  No verified fix: CVE-2024-50345 on symfony/http-foundation; CVE-2024-51736 on symfony/process
 ```

@@ -132,9 +132,10 @@ Several advisories on the same package are planned together: the fixed range is 
 the union of their affected ranges, and a candidate is valid only when all of them are gone. One
 package, one command.
 
-Across packages, per-finding winners will be merged into a single command and validated again
-(Phase 1). If every finding disappears, the report presents one combined plan; otherwise it presents
-per-finding plans.
+Across packages, the per-package winners are merged into a single command and validated with one
+more solve. The report's summary then says either "you can fix all N findings with …", or "… fixes
+k of N findings" when some advisories have no reachable fix, or lists the per-package commands when
+no single command resolves.
 
 ## 7. Pruning
 

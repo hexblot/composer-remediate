@@ -5,6 +5,7 @@ declare(strict_types=1);
 namespace Remediate\Engine\Matching;
 
 use Composer\Package\PackageInterface;
+use Remediate\Engine\Advisory\Advisory;
 use Remediate\Engine\Advisory\AdvisoryProvider;
 use Remediate\Engine\Lock\LockSnapshot;
 
@@ -15,8 +16,43 @@ use Remediate\Engine\Lock\LockSnapshot;
  */
 final class Matcher
 {
+    /** @var array<string, true> lower-cased advisory ids and CVEs to ignore */
+    private array $ignored = [];
+
+    private int $ignoredCount = 0;
+
     public function __construct(private readonly AdvisoryProvider $provider)
     {
+    }
+
+    /**
+     * @param list<string> $ids advisory ids (PKSA-…, GHSA-…) or CVEs, case-insensitive
+     */
+    public function withIgnored(array $ids): self
+    {
+        $clone = clone $this;
+        foreach ($ids as $id) {
+            $clone->ignored[strtolower($id)] = true;
+        }
+
+        return $clone;
+    }
+
+    /** Number of advisory matches suppressed by the ignore list during the last match() call. */
+    public function ignoredCount(): int
+    {
+        return $this->ignoredCount;
+    }
+
+    private function isIgnored(Advisory $advisory): bool
+    {
+        if (isset($this->ignored[strtolower($advisory->id)]) || ($advisory->cve !== null && isset($this->ignored[strtolower($advisory->cve)]))) {
+            ++$this->ignoredCount;
+
+            return true;
+        }
+
+        return false;
     }
 
     /**
@@ -28,21 +64,23 @@ final class Matcher
     {
         $advisories = $this->provider->advisoriesFor(self::namesToQuery($lock));
         $findings = [];
+        $this->ignoredCount = 0;
 
         foreach ($lock->packages as $package) {
             $name = $package->getName();
             foreach ($advisories[$name] ?? [] as $advisory) {
-                if ($advisory->affectsVersion($package->getVersion())) {
+                if ($advisory->affectsVersion($package->getVersion()) && !$this->isIgnored($advisory)) {
                     $findings[] = new Finding($advisory, $name, $package->getVersion(), $package->getPrettyVersion(), $lock->isDev($name), $isRootRequirement($name));
                 }
             }
-            foreach ($package->getReplaces() as $target => $link) {
+            // A package that replaces or provides another one is answerable for that package's advisories.
+            foreach ($package->getReplaces() + $package->getProvides() as $target => $link) {
                 $target = strtolower((string) $target);
                 if ($lock->has($target)) {
                     continue; // the replaced package is also installed on its own; it is matched directly
                 }
                 foreach ($advisories[$target] ?? [] as $advisory) {
-                    if ($advisory->affectsConstraint($link->getConstraint())) {
+                    if ($advisory->affectsConstraint($link->getConstraint()) && !$this->isIgnored($advisory)) {
                         $findings[] = new Finding($advisory, $name, $package->getVersion(), $package->getPrettyVersion(), $lock->isDev($name), $isRootRequirement($name), $target);
                     }
                 }
@@ -79,7 +117,7 @@ final class Matcher
         $names = [];
         foreach ($lock->packages as $package) {
             $names[$package->getName()] = true;
-            foreach (array_keys($package->getReplaces()) as $replaced) {
+            foreach (array_keys($package->getReplaces() + $package->getProvides()) as $replaced) {
                 $names[strtolower((string) $replaced)] = true;
             }
         }

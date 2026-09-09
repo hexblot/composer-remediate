@@ -52,8 +52,47 @@ final class TextRenderer
             array_push($out, ...$this->renderFinding($findingPlan));
             $out[] = '';
         }
+        array_push($out, ...$this->renderSummary($plan));
 
         return implode("\n", $out) . "\n";
+    }
+
+    /** @return list<string> */
+    private function renderSummary(Plan $plan): array
+    {
+        $out = [];
+        $out[] = $this->tag('Summary', 'options=bold;options=underscore');
+        $advisories = $plan->advisoryCount();
+        $packages = count($plan->findings);
+        $fixable = count($plan->findings) - count($plan->unsolved());
+        $out[] = sprintf('  Findings: %d advisor%s on %d package%s, %d package%s with a verified fix', $advisories, $advisories === 1 ? 'y' : 'ies', $packages, $packages === 1 ? '' : 's', $fixable, $fixable === 1 ? '' : 's');
+
+        $combined = $plan->combined;
+        if ($combined === null && $fixable === 0) {
+            $out[] = '  ' . $this->tag('No verified way to fix any of these findings.', 'fg=red');
+        } elseif ($combined === null) {
+            $out[] = '  No single command fixes everything; run the per-package commands above separately:';
+            foreach ($plan->findings as $fp) {
+                $rec = $fp->recommended();
+                if ($rec !== null) {
+                    $out[] = '    ' . $this->tag($rec->candidate->commandLine($this->minimalChangesSupported), 'fg=cyan');
+                }
+            }
+        } elseif ($combined->fixesAll()) {
+            $out[] = sprintf('  You can fix all %d finding%s with:', $advisories, $advisories === 1 ? '' : 's');
+            $out[] = '    ' . $this->tag($combined->candidate->commandLine($this->minimalChangesSupported), 'fg=cyan;options=bold');
+            $out[] = sprintf('    (%d package%s changed, verified by Composer)', $combined->diff->count(), $combined->diff->count() === 1 ? '' : 's');
+        } else {
+            $out[] = sprintf('  %s fixes %d of %d findings', $this->tag($combined->candidate->commandLine($this->minimalChangesSupported), 'fg=cyan;options=bold'), $combined->fixedCount(), $combined->totalCount());
+            $out[] = sprintf('    (%d package%s changed, verified by Composer)', $combined->diff->count(), $combined->diff->count() === 1 ? '' : 's');
+        }
+
+        $unsolved = $plan->unsolved();
+        if ($unsolved !== []) {
+            $out[] = '  ' . $this->tag('No verified fix:', 'fg=red') . ' ' . implode('; ', array_map(static fn (FindingPlan $p): string => implode(', ', array_map(static fn ($f): string => $f->advisory->displayId(), $p->allFindings())) . ' on ' . $p->finding->packageName, $unsolved));
+        }
+
+        return $out;
     }
 
     /** @return list<string> */

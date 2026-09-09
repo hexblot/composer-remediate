@@ -75,7 +75,20 @@ final class HtmlRenderer
             );
         }
 
-        return '<section><h2>Summary</h2><table class="summary"><thead><tr><th>Package</th><th>Advisories</th><th>Status</th><th>Recommended command</th></tr></thead><tbody>' . implode('', $rows) . '</tbody></table></section>';
+        $combined = $plan->combined;
+        $advisories = $plan->advisoryCount();
+        $lead = sprintf('<p>%d advisor%s on %d package%s.</p>', $advisories, $advisories === 1 ? 'y' : 'ies', count($plan->findings), count($plan->findings) === 1 ? '' : 's');
+        if ($combined !== null && $combined->fixesAll()) {
+            $lead .= '<p class="command"><span class="badge ok">fixes all ' . $advisories . '</span> <code>' . self::e($combined->candidate->commandLine($this->minimalChangesSupported)) . '</code></p>';
+        } elseif ($combined !== null) {
+            $lead .= '<p class="command"><span class="badge ok">fixes ' . $combined->fixedCount() . ' of ' . $combined->totalCount() . '</span> <code>' . self::e($combined->candidate->commandLine($this->minimalChangesSupported)) . '</code></p>';
+        } elseif (count($plan->unsolved()) === count($plan->findings)) {
+            $lead .= '<p class="none-box">No verified way to fix any of these findings.</p>';
+        } else {
+            $lead .= '<p>No single command fixes everything; run the per-package commands below separately.</p>';
+        }
+
+        return '<section><h2>Summary</h2>' . $lead . '<table class="summary"><thead><tr><th>Package</th><th>Advisories</th><th>Status</th><th>Recommended command</th></tr></thead><tbody>' . implode('', $rows) . '</tbody></table></section>';
     }
 
     private function finding(FindingPlan $plan, int $number): string

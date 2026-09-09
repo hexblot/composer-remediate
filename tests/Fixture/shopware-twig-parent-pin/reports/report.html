@@ -23,7 +23,7 @@ details summary{cursor:pointer;color:var(--accent);margin:.5rem 0}
 .meta dl{display:grid;grid-template-columns:max-content 1fr;gap:.2rem 1rem;font-size:.85rem;color:var(--muted)}.meta dt{font-weight:600}.meta dd{margin:0;word-break:break-all}</style></head><body>
 <header><h1>Composer Remediate</h1><p class="sub">Composer Remediate — 2 findings in <code>shopware-twig-parent-pin</code></p></header>
 <main>
-<section><h2>Summary</h2><table class="summary"><thead><tr><th>Package</th><th>Advisories</th><th>Status</th><th>Recommended command</th></tr></thead><tbody><tr><td><a href="#finding-1">shopwarelabs/dompdf v1.0.3</a></td><td>CVE-2022-0085, CVE-2022-41343, CVE-2022-2400</td><td><span class="badge none">no verified fix</span></td><td>—</td></tr><tr><td><a href="#finding-2">twig/twig v3.3.10</a></td><td>CVE-2022-39261</td><td><span class="badge ok">verified</span></td><td><code>composer update shopware/storefront:6.4.15.2 shopware/recovery shopware/elasticsearch shopware/administration -W -m</code></td></tr></tbody></table></section>
+<section><h2>Summary</h2><p>4 advisories on 2 packages.</p><p class="command"><span class="badge ok">fixes 1 of 4</span> <code>composer update shopware/storefront:6.4.15.2 shopware/recovery shopware/elasticsearch shopware/administration -W -m</code></p><table class="summary"><thead><tr><th>Package</th><th>Advisories</th><th>Status</th><th>Recommended command</th></tr></thead><tbody><tr><td><a href="#finding-1">shopwarelabs/dompdf v1.0.3</a></td><td>CVE-2022-0085, CVE-2022-41343, CVE-2022-2400</td><td><span class="badge none">no verified fix</span></td><td>—</td></tr><tr><td><a href="#finding-2">twig/twig v3.3.10</a></td><td>CVE-2022-39261</td><td><span class="badge ok">verified</span></td><td><code>composer update shopware/storefront:6.4.15.2 shopware/recovery shopware/elasticsearch shopware/administration -W -m</code></td></tr></tbody></table></section>
 <section class="finding" id="finding-1">
 <h2>shopwarelabs/dompdf <span class="version">v1.0.3</span> <small>replaces dompdf/dompdf</small></h2>
 <p class="state">Transitive dependency.</p>
@@ -480,11 +480,12 @@ Use the option --with-all-dependencies (-W) to allow upgrades, downgrades and re
 </section>
 <section class="meta"><h2>Analysis metadata</h2><dl>
 <dt>project</dt><dd>shopware-twig-parent-pin</dd>
+<dt>engine version</dt><dd>dev-main</dd>
 <dt>composer version</dt><dd>(fixture)</dd>
 <dt>php version</dt><dd>(fixture)</dd>
 <dt>advisory source</dt><dd>advisory snapshot advisories.json</dd>
 <dt>solver</dt><dd>in-process Composer dry-run</dd>
-<dt>composer json sha256</dt><dd>b1e52f70623aa144343b7bc6fc20d3e6b7dea9a57580fceb1324d30bafdc0510</dd>
+<dt>composer json sha256</dt><dd>5ee2c476fdfad54a38913e3d77e070cf7f964e518c8ad0d80383802375e9a731</dd>
 <dt>composer lock sha256</dt><dd>0166a25c8ee830ae631dad4fee40c7826c06f7cd18e413ab36c454440d37c811</dd>
 <dt>analysis timestamp</dt><dd>(fixture)</dd>
 <dt>locked packages</dt><dd>202</dd>

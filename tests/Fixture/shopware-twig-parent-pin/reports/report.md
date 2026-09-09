@@ -380,4 +380,10 @@ Other candidates
         Problem 2
           - shopware/recovery is locked to version 6.4.15.1 and an update of this package was not requested.
   not tried (a better candidate already exists): composer require --no-update shopware/core:^6.5 && composer update shopware/core -W -m --with 'twig/twig:>=3.4.3'
+
+Summary
+  Findings: 4 advisories on 2 packages, 1 package with a verified fix
+  composer update shopware/storefront:6.4.15.2 shopware/recovery shopware/elasticsearch shopware/administration -W -m fixes 1 of 4 findings
+    (6 packages changed, verified by Composer)
+  No verified fix: CVE-2022-0085, CVE-2022-41343, CVE-2022-2400 on shopwarelabs/dompdf
 ```

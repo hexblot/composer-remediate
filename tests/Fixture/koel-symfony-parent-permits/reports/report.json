@@ -2,17 +2,36 @@
     "schema_version": 1,
     "analysis_metadata": {
         "project": "koel-symfony-parent-permits",
+        "engine_version": "dev-main",
         "composer_version": "(fixture)",
         "php_version": "(fixture)",
         "advisory_source": "advisory snapshot advisories.json",
         "solver": "in-process Composer dry-run",
-        "composer_json_sha256": "1d83a6fd0667cb9060ddcbb5134a53ca7288fda54fe0d88efddecffc9f57605d",
+        "composer_json_sha256": "9c3759fe8bc26858e035fd8a5efc31eef89fd029d36aca5c74fa21b7d57094ed",
         "composer_lock_sha256": "920a682f7d00cc3136de9c274c03cb9980e591ed30164b6328601b79faa6c5a0",
         "analysis_timestamp": "(fixture)",
         "locked_packages": "180"
     },
     "exit_code": 1,
     "warnings": [],
+    "summary": {
+        "advisories": 2,
+        "packages": 2,
+        "packages_with_fix": 2,
+        "combined_command": "composer update symfony/http-foundation symfony/process",
+        "combined_fixes": 2,
+        "combined_total": 2,
+        "combined_fixes_all": true,
+        "combined_changes": {
+            "changed": 2,
+            "added": 0,
+            "removed": 0,
+            "total": 2,
+            "major_change": false,
+            "downgrade": false,
+            "prerelease": false
+        }
+    },
     "findings": [
         {
             "package": "symfony/http-foundation",

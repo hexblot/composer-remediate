@@ -41,4 +41,10 @@ Other candidates
           - acme/app-framework 1.0.0 requires acme/vuln-lib ~1.0.0 -> found acme/vuln-lib[1.0.0, 1.0.1, 1.0.4] but it conflicts with your temporary update constraint (acme/vuln-lib:>=1.1.0).
       Use the option --with-all-dependencies (-W) to allow upgrades, downgrades and removals for packages currently locked to specific versions.
   not tried (a better candidate already exists): composer require --no-update acme/app-framework:^2.0 && composer update acme/app-framework -W -m --with 'acme/vuln-lib:>=1.1.0'
+
+Summary
+  Findings: 1 advisory on 1 package, 1 package with a verified fix
+  You can fix all 1 finding with:
+    composer update acme/app-framework:1.1.0 -W -m
+    (2 packages changed, verified by Composer)
 ```

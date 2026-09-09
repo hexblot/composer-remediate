@@ -22,13 +22,26 @@ final class Plan
         public readonly array $findings,
         public readonly array $metadata,
         public readonly array $warnings = [],
+        public readonly ?CombinedRemediation $combined = null,
     ) {
+    }
+
+    /** Number of advisories across all packages. */
+    public function advisoryCount(): int
+    {
+        return array_sum(array_map(static fn (FindingPlan $p): int => count($p->allFindings()), $this->findings));
+    }
+
+    /** @return list<FindingPlan> */
+    public function unsolved(): array
+    {
+        return array_values(array_filter($this->findings, static fn (FindingPlan $p): bool => !$p->hasRemediation()));
     }
 
     /** @param array<string, string> $overrides */
     public function withMetadata(array $overrides): self
     {
-        return new self($this->findings, array_replace($this->metadata, $overrides), $this->warnings);
+        return new self($this->findings, array_replace($this->metadata, $overrides), $this->warnings, $this->combined);
     }
 
     public function exitCode(): int
@@ -36,10 +49,15 @@ final class Plan
         if ($this->findings === []) {
             return self::EXIT_CLEAN;
         }
-        foreach ($this->findings as $plan) {
-            if (!$plan->hasRemediation()) {
-                return self::EXIT_NO_REMEDIATION;
+        $unsolved = $this->unsolved();
+        if ($unsolved !== []) {
+            foreach ($unsolved as $plan) {
+                if ($plan->blocker === null || !str_contains($plan->blocker, 'network')) {
+                    return self::EXIT_NO_REMEDIATION;
+                }
             }
+
+            return self::EXIT_SOLVER_FAILURE;
         }
 
         return self::EXIT_REMEDIATION_AVAILABLE;

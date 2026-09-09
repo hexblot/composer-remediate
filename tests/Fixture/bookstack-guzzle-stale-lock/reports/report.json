@@ -2,18 +2,197 @@
     "schema_version": 1,
     "analysis_metadata": {
         "project": "bookstack-guzzle-stale-lock",
+        "engine_version": "dev-main",
         "composer_version": "(fixture)",
         "php_version": "(fixture)",
         "advisory_source": "advisory snapshot advisories.json",
         "solver": "in-process Composer dry-run",
-        "composer_json_sha256": "d1c57a2acd2bdf77e608e6bfae0844941320895493f2236e0000d981bd631659",
+        "composer_json_sha256": "518c198d6a25ffac5b89a039d42d24474c44ddf0e510348c05915d03a6e290b7",
         "composer_lock_sha256": "344de0dd32e1d22719c6e0c717527e601702e8ed4d57664dd0770e606102f7af",
         "analysis_timestamp": "(fixture)",
         "locked_packages": "155"
     },
     "exit_code": 1,
     "warnings": [],
+    "summary": {
+        "advisories": 6,
+        "packages": 2,
+        "packages_with_fix": 2,
+        "combined_command": "composer require --no-update barryvdh/laravel-dompdf:^2.0 && composer update barryvdh/laravel-dompdf guzzlehttp/guzzle -W -m",
+        "combined_fixes": 6,
+        "combined_total": 6,
+        "combined_fixes_all": true,
+        "combined_changes": {
+            "changed": 4,
+            "added": 1,
+            "removed": 0,
+            "total": 5,
+            "major_change": true,
+            "downgrade": false,
+            "prerelease": true
+        }
+    },
     "findings": [
+        {
+            "package": "dompdf/dompdf",
+            "version": "v1.2.2",
+            "version_normalized": "1.2.2.0",
+            "direct": false,
+            "dev": false,
+            "via_replaced_package": null,
+            "advisories": [
+                {
+                    "id": "PKSA-872h-8556-2chm",
+                    "cve": "CVE-2022-0085",
+                    "title": "Server-Side Request Forgery in dompdf/dompdf",
+                    "link": "https://github.com/advisories/GHSA-pf6p-25r2-fx45",
+                    "severity": "medium",
+                    "reported_at": "2022-06-23T13:55:00+00:00",
+                    "affected_versions": "<2.0.0",
+                    "sources": [
+                        {
+                            "name": "FriendsOfPHP/security-advisories",
+                            "remoteId": "dompdf/dompdf/CVE-2022-0085.yaml"
+                        },
+                        {
+                            "name": "GitHub",
+                            "remoteId": "GHSA-pf6p-25r2-fx45"
+                        }
+                    ]
+                }
+            ],
+            "paths_total": 1,
+            "paths": [
+                {
+                    "cyclic": false,
+                    "chain": [
+                        {
+                            "package": "root",
+                            "version": null,
+                            "requires": "^1.0"
+                        },
+                        {
+                            "package": "barryvdh/laravel-dompdf",
+                            "version": "v1.0.0",
+                            "requires": "^1"
+                        }
+                    ],
+                    "target": {
+                        "package": "dompdf/dompdf",
+                        "version": "v1.2.2"
+                    }
+                }
+            ],
+            "remediation": {
+                "status": "verified",
+                "command": "composer require --no-update barryvdh/laravel-dompdf:^2.0 && composer update barryvdh/laravel-dompdf -W -m",
+                "strategy": "root-constraint-widen",
+                "root_constraint_changes": [
+                    {
+                        "package": "barryvdh/laravel-dompdf",
+                        "from": "^1.0",
+                        "to": "^2.0",
+                        "dev": false
+                    }
+                ],
+                "summary": {
+                    "changed": 2,
+                    "added": 1,
+                    "removed": 0,
+                    "total": 3,
+                    "major_change": true,
+                    "downgrade": false,
+                    "prerelease": true
+                },
+                "changes": [
+                    {
+                        "package": "barryvdh/laravel-dompdf",
+                        "kind": "upgraded",
+                        "step": "major",
+                        "from": "v1.0.0",
+                        "to": "v2.0.0-beta2"
+                    },
+                    {
+                        "package": "dompdf/dompdf",
+                        "kind": "upgraded",
+                        "step": "major",
+                        "from": "v1.2.2",
+                        "to": "v2.0.0"
+                    },
+                    {
+                        "package": "masterminds/html5",
+                        "kind": "added",
+                        "step": null,
+                        "from": null,
+                        "to": "2.7.5"
+                    }
+                ]
+            },
+            "candidates": [
+                {
+                    "command": "composer require --no-update barryvdh/laravel-dompdf:^2.0 && composer update barryvdh/laravel-dompdf -W -m",
+                    "strategy": "root-constraint-widen",
+                    "outcome": "valid",
+                    "rank": 1,
+                    "summary": {
+                        "changed": 2,
+                        "added": 1,
+                        "removed": 0,
+                        "total": 3,
+                        "major_change": true,
+                        "downgrade": false,
+                        "prerelease": true
+                    },
+                    "solver_status": "resolved"
+                },
+                {
+                    "command": "composer require --no-update barryvdh/laravel-dompdf:^2.0 && composer update barryvdh/laravel-dompdf:v2.0.0-beta1 -W -m --with 'dompdf/dompdf:>=2.0.0'",
+                    "strategy": "root-constraint-widen",
+                    "outcome": "valid",
+                    "rank": 2,
+                    "summary": {
+                        "changed": 2,
+                        "added": 1,
+                        "removed": 0,
+                        "total": 3,
+                        "major_change": true,
+                        "downgrade": false,
+                        "prerelease": true
+                    },
+                    "solver_status": "resolved"
+                },
+                {
+                    "command": "composer update dompdf/dompdf",
+                    "strategy": "lock-refresh",
+                    "outcome": "rejected",
+                    "reason": "resolves, but dompdf/dompdf ends at v1.2.2 which is still affected by PKSA-872h-8556-2chm",
+                    "summary": {
+                        "changed": 0,
+                        "added": 0,
+                        "removed": 0,
+                        "total": 0,
+                        "major_change": false,
+                        "downgrade": false,
+                        "prerelease": false
+                    },
+                    "solver_status": "resolved"
+                },
+                {
+                    "command": "composer update dompdf/dompdf -w -m --with 'dompdf/dompdf:>=2.0.0'",
+                    "strategy": "with-dependencies",
+                    "outcome": "rejected",
+                    "reason": "Composer could not resolve the dependencies: Your requirements could not be resolved to an installable set of packages.\n  Problem 1\n    - barryvdh/laravel-dompdf is locked to version v1.0.0 and an update of this package was not requested.\n    - barryvdh/laravel-dompdf v1.0.0 requires dompdf/dompdf ^1 -> found dompdf/dompdf[v1.2.2] but it conflicts with your temporary update constraint (dompdf/dompdf:>=2.0.0).\nUse the option --with-all-dependencies (-W) to allow upgrades, downgrades and removals for packages currently locked to specific versions.",
+                    "solver_status": "conflict"
+                },
+                {
+                    "command": "composer update barryvdh/laravel-dompdf -W -m --with 'dompdf/dompdf:>=2.0.0'",
+                    "strategy": "parent-update",
+                    "outcome": "rejected",
+                    "reason": "Composer could not resolve the dependencies: Your requirements could not be resolved to an installable set of packages.\n  Problem 1\n    - Root composer.json requires barryvdh/laravel-dompdf ^1.0 -> satisfiable by barryvdh/laravel-dompdf[v1.0.0, v1.0.1, v1.0.2].\n    - barryvdh/laravel-dompdf v1.0.0 requires dompdf/dompdf ^1 -> found dompdf/dompdf[v1.2.2] but it conflicts with your temporary update constraint (dompdf/dompdf:>=2.0.0).\n    - barryvdh/laravel-dompdf[v1.0.1, ..., v1.0.2] require dompdf/dompdf ^1.2.1 -> found dompdf/dompdf[v1.2.2] but it conflicts with your temporary update constraint (dompdf/dompdf:>=2.0.0).",
+                    "solver_status": "conflict"
+                }
+            ]
+        },
         {
             "package": "guzzlehttp/guzzle",
             "version": "7.4.2",
@@ -557,166 +736,6 @@
                     "strategy": "root-constraint-widen",
                     "outcome": "skipped",
                     "reason": "a better candidate already exists"
-                }
-            ]
-        },
-        {
-            "package": "dompdf/dompdf",
-            "version": "v1.2.2",
-            "version_normalized": "1.2.2.0",
-            "direct": false,
-            "dev": false,
-            "via_replaced_package": null,
-            "advisories": [
-                {
-                    "id": "PKSA-872h-8556-2chm",
-                    "cve": "CVE-2022-0085",
-                    "title": "Server-Side Request Forgery in dompdf/dompdf",
-                    "link": "https://github.com/advisories/GHSA-pf6p-25r2-fx45",
-                    "severity": "medium",
-                    "reported_at": "2022-06-23T13:55:00+00:00",
-                    "affected_versions": "<2.0.0",
-                    "sources": [
-                        {
-                            "name": "FriendsOfPHP/security-advisories",
-                            "remoteId": "dompdf/dompdf/CVE-2022-0085.yaml"
-                        },
-                        {
-                            "name": "GitHub",
-                            "remoteId": "GHSA-pf6p-25r2-fx45"
-                        }
-                    ]
-                }
-            ],
-            "paths_total": 1,
-            "paths": [
-                {
-                    "cyclic": false,
-                    "chain": [
-                        {
-                            "package": "root",
-                            "version": null,
-                            "requires": "^1.0"
-                        },
-                        {
-                            "package": "barryvdh/laravel-dompdf",
-                            "version": "v1.0.0",
-                            "requires": "^1"
-                        }
-                    ],
-                    "target": {
-                        "package": "dompdf/dompdf",
-                        "version": "v1.2.2"
-                    }
-                }
-            ],
-            "remediation": {
-                "status": "verified",
-                "command": "composer require --no-update barryvdh/laravel-dompdf:^2.0 && composer update barryvdh/laravel-dompdf -W -m",
-                "strategy": "root-constraint-widen",
-                "root_constraint_changes": [
-                    {
-                        "package": "barryvdh/laravel-dompdf",
-                        "from": "^1.0",
-                        "to": "^2.0",
-                        "dev": false
-                    }
-                ],
-                "summary": {
-                    "changed": 2,
-                    "added": 1,
-                    "removed": 0,
-                    "total": 3,
-                    "major_change": true,
-                    "downgrade": false,
-                    "prerelease": true
-                },
-                "changes": [
-                    {
-                        "package": "barryvdh/laravel-dompdf",
-                        "kind": "upgraded",
-                        "step": "major",
-                        "from": "v1.0.0",
-                        "to": "v2.0.0-beta2"
-                    },
-                    {
-                        "package": "dompdf/dompdf",
-                        "kind": "upgraded",
-                        "step": "major",
-                        "from": "v1.2.2",
-                        "to": "v2.0.0"
-                    },
-                    {
-                        "package": "masterminds/html5",
-                        "kind": "added",
-                        "step": null,
-                        "from": null,
-                        "to": "2.7.5"
-                    }
-                ]
-            },
-            "candidates": [
-                {
-                    "command": "composer require --no-update barryvdh/laravel-dompdf:^2.0 && composer update barryvdh/laravel-dompdf -W -m",
-                    "strategy": "root-constraint-widen",
-                    "outcome": "valid",
-                    "rank": 1,
-                    "summary": {
-                        "changed": 2,
-                        "added": 1,
-                        "removed": 0,
-                        "total": 3,
-                        "major_change": true,
-                        "downgrade": false,
-                        "prerelease": true
-                    },
-                    "solver_status": "resolved"
-                },
-                {
-                    "command": "composer require --no-update barryvdh/laravel-dompdf:^2.0 && composer update barryvdh/laravel-dompdf:v2.0.0-beta1 -W -m --with 'dompdf/dompdf:>=2.0.0'",
-                    "strategy": "root-constraint-widen",
-                    "outcome": "valid",
-                    "rank": 2,
-                    "summary": {
-                        "changed": 2,
-                        "added": 1,
-                        "removed": 0,
-                        "total": 3,
-                        "major_change": true,
-                        "downgrade": false,
-                        "prerelease": true
-                    },
-                    "solver_status": "resolved"
-                },
-                {
-                    "command": "composer update dompdf/dompdf",
-                    "strategy": "lock-refresh",
-                    "outcome": "rejected",
-                    "reason": "resolves, but dompdf/dompdf ends at v1.2.2 which is still affected by PKSA-872h-8556-2chm",
-                    "summary": {
-                        "changed": 0,
-                        "added": 0,
-                        "removed": 0,
-                        "total": 0,
-                        "major_change": false,
-                        "downgrade": false,
-                        "prerelease": false
-                    },
-                    "solver_status": "resolved"
-                },
-                {
-                    "command": "composer update dompdf/dompdf -w -m --with 'dompdf/dompdf:>=2.0.0'",
-                    "strategy": "with-dependencies",
-                    "outcome": "rejected",
-                    "reason": "Composer could not resolve the dependencies: Your requirements could not be resolved to an installable set of packages.\n  Problem 1\n    - barryvdh/laravel-dompdf is locked to version v1.0.0 and an update of this package was not requested.\n    - barryvdh/laravel-dompdf v1.0.0 requires dompdf/dompdf ^1 -> found dompdf/dompdf[v1.2.2] but it conflicts with your temporary update constraint (dompdf/dompdf:>=2.0.0).\nUse the option --with-all-dependencies (-W) to allow upgrades, downgrades and removals for packages currently locked to specific versions.",
-                    "solver_status": "conflict"
-                },
-                {
-                    "command": "composer update barryvdh/laravel-dompdf -W -m --with 'dompdf/dompdf:>=2.0.0'",
-                    "strategy": "parent-update",
-                    "outcome": "rejected",
-                    "reason": "Composer could not resolve the dependencies: Your requirements could not be resolved to an installable set of packages.\n  Problem 1\n    - Root composer.json requires barryvdh/laravel-dompdf ^1.0 -> satisfiable by barryvdh/laravel-dompdf[v1.0.0, v1.0.1, v1.0.2].\n    - barryvdh/laravel-dompdf v1.0.0 requires dompdf/dompdf ^1 -> found dompdf/dompdf[v1.2.2] but it conflicts with your temporary update constraint (dompdf/dompdf:>=2.0.0).\n    - barryvdh/laravel-dompdf[v1.0.1, ..., v1.0.2] require dompdf/dompdf ^1.2.1 -> found dompdf/dompdf[v1.2.2] but it conflicts with your temporary update constraint (dompdf/dompdf:>=2.0.0).",
-                    "solver_status": "conflict"
                 }
             ]
         }

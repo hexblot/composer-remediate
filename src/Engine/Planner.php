@@ -15,6 +15,7 @@ use Remediate\Engine\Candidate\Strategy;
 use Remediate\Engine\Graph\DependencyGraph;
 use Remediate\Engine\Matching\Finding;
 use Remediate\Engine\Matching\Matcher;
+use Remediate\Engine\Plan\CombinedRemediation;
 use Remediate\Engine\Plan\EvaluatedCandidate;
 use Remediate\Engine\Plan\FindingPlan;
 use Remediate\Engine\Plan\Plan;
@@ -37,6 +38,9 @@ final class Planner
     /** @var callable(string): void|null */
     private $progress;
 
+    /**
+     * @param list<string> $ignoredAdvisories advisory ids or CVEs to leave out entirely
+     */
     public function __construct(
         private readonly AdvisoryProvider $advisories,
         private readonly SolverInterface $solver,
@@ -44,15 +48,25 @@ final class Planner
         private readonly bool $includeDev = true,
         private readonly int $maxCandidatesPerFinding = 10,
         ?callable $progress = null,
+        private readonly array $ignoredAdvisories = [],
     ) {
         $this->progress = $progress;
+    }
+
+    public static function engineVersion(): string
+    {
+        if (class_exists(\Composer\InstalledVersions::class) && \Composer\InstalledVersions::isInstalled('hexblot/composer-remediate')) {
+            return \Composer\InstalledVersions::getPrettyVersion('hexblot/composer-remediate') ?? 'dev';
+        }
+
+        return 'dev';
     }
 
     public function plan(ProjectContext $context, ScratchWorkspace $workspace): Plan
     {
         $lock = $context->lockSnapshot();
         $graph = new DependencyGraph($context->rootPackage(), $context->lockedRepository());
-        $matcher = new Matcher($this->advisories);
+        $matcher = (new Matcher($this->advisories))->withIgnored($this->ignoredAdvisories);
         $isRoot = static fn (string $name): bool => $context->isRootRequirement($name);
         $ranker = new Ranker($isRoot);
         $warnings = [];
@@ -62,9 +76,14 @@ final class Planner
         }
 
         $findings = $matcher->match($lock, $isRoot);
+        if ($matcher->ignoredCount() > 0) {
+            $warnings[] = sprintf('%d advisory match%s ignored per configuration (--ignore, config.audit.ignore or config.policy).', $matcher->ignoredCount(), $matcher->ignoredCount() === 1 ? '' : 'es');
+        }
         if (!$this->includeDev) {
             $findings = array_values(array_filter($findings, static fn (Finding $f): bool => !$f->isDev));
         }
+        // Production findings first, development-only findings after them.
+        usort($findings, static fn (Finding $a, Finding $b): int => [$a->isDev ? 1 : 0, $a->packageName, $a->advisory->id] <=> [$b->isDev ? 1 : 0, $b->packageName, $b->advisory->id]);
         $baseline = [];
         foreach ($findings as $finding) {
             $baseline[$finding->key()] = true;
@@ -136,8 +155,11 @@ final class Planner
             $plans[] = new FindingPlan($finding, $evaluated, $ranked, $blocker, $skipped, $related);
         }
 
+        $combined = $this->combine($plans, $lock, $baseline, $matcher, $workspace);
+
         return new Plan($plans, [
             'project' => $context->directory,
+            'engine_version' => self::engineVersion(),
             'composer_version' => $context->composerVersion(),
             'php_version' => PHP_VERSION,
             'advisory_source' => $this->advisories->describe(),
@@ -146,7 +168,101 @@ final class Planner
             'composer_lock_sha256' => self::fileHash($context->lockPath()),
             'analysis_timestamp' => gmdate('c'),
             'locked_packages' => (string) $lock->count(),
-        ], $warnings);
+        ], $warnings, $combined);
+    }
+
+    /**
+     * Merge the per-package winners into one command and verify it with a single solve. The result
+     * may fix everything, only some findings (reported as k of n), or not resolve at all.
+     *
+     * @param list<FindingPlan>   $plans
+     * @param array<string, true> $baseline
+     */
+    private function combine(array $plans, LockSnapshot $lock, array $baseline, Matcher $matcher, ScratchWorkspace $workspace): ?CombinedRemediation
+    {
+        $winners = [];
+        $allKeys = [];
+        foreach ($plans as $plan) {
+            foreach ($plan->allFindings() as $finding) {
+                $allKeys[$finding->key()] = true;
+            }
+            $recommended = $plan->recommended();
+            if ($recommended !== null) {
+                $winners[] = $recommended;
+            }
+        }
+        if ($winners === []) {
+            return null;
+        }
+
+        if (count($winners) === 1 && $winners[0]->result->after !== null && $winners[0]->diff !== null) {
+            $afterKeys = $matcher->findingKeys($winners[0]->result->after);
+
+            return new CombinedRemediation($winners[0]->candidate, $winners[0]->result, $winners[0]->diff, array_keys(array_diff_key($allKeys, $afterKeys)), array_keys(array_intersect_key($allKeys, $afterKeys)));
+        }
+
+        $allow = [];
+        $pins = [];
+        $temporary = [];
+        $roots = [];
+        $mode = Request::UPDATE_ONLY_LISTED;
+        $minimal = false;
+        $strategy = Strategy::LockRefresh;
+        foreach ($winners as $winner) {
+            $c = $winner->candidate;
+            foreach ($c->allowList as $name) {
+                $allow[$name] = true;
+            }
+            $pins += $c->pins;
+            $temporary += $c->temporaryConstraints;
+            $roots += $c->rootConstraintChanges;
+            $mode = max($mode, $c->transitiveMode);
+            $minimal = $minimal || $c->minimalChanges;
+            if ($c->strategy->rank() > $strategy->rank()) {
+                $strategy = $c->strategy;
+            }
+        }
+        $merged = new Candidate($strategy, array_keys($allow), $mode, $temporary, $minimal, $roots, 'all per-package remediations in one command', $pins);
+
+        $this->report('combining: ' . $merged->commandLine($this->solver->supportsMinimalChanges()));
+        $result = $this->solver->solve($merged, $workspace);
+        if (!$result->resolved() || $result->after === null) {
+            return null;
+        }
+        $afterKeys = $matcher->findingKeys($result->after);
+        if (array_diff_key($afterKeys, $baseline) !== []) {
+            return null; // introduces advisories that were not there before
+        }
+        $fixed = array_keys(array_diff_key($allKeys, $afterKeys));
+        $unfixed = array_keys(array_intersect_key($allKeys, $afterKeys));
+        $combined = new CombinedRemediation($merged, $result, LockDiff::between($lock, $result->after), $fixed, $unfixed);
+
+        // Prefer the simplest spelling that yields the identical lock.
+        foreach (self::simplerVariants($merged) as $variant) {
+            $variantResult = $this->solver->solve($variant, $workspace);
+            if ($variantResult->resolved() && $variantResult->after !== null && self::sameVersions($variantResult->after, $result->after)) {
+                return new CombinedRemediation($variant, $variantResult, $combined->diff, $fixed, $unfixed);
+            }
+        }
+
+        return $combined;
+    }
+
+    /** @return list<Candidate> */
+    private static function simplerVariants(Candidate $c): array
+    {
+        $variants = [];
+        if ($c->temporaryConstraints !== [] && $c->minimalChanges) {
+            $variants[] = new Candidate($c->strategy, $c->allowList, $c->transitiveMode, [], false, $c->rootConstraintChanges, $c->description, $c->pins);
+        }
+        if ($c->temporaryConstraints !== []) {
+            $variants[] = new Candidate($c->strategy, $c->allowList, $c->transitiveMode, [], $c->minimalChanges, $c->rootConstraintChanges, $c->description, $c->pins);
+        }
+        if ($c->minimalChanges) {
+            $variants[] = new Candidate($c->strategy, $c->allowList, $c->transitiveMode, $c->temporaryConstraints, false, $c->rootConstraintChanges, $c->description, $c->pins);
+        }
+
+        return $variants;
     }
 
     /**

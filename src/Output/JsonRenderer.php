@@ -43,11 +43,23 @@ final class JsonRenderer
             }
         }
 
+        $combined = $plan->combined;
+
         return [
             'schema_version' => self::SCHEMA_VERSION,
             'analysis_metadata' => $plan->metadata,
             'exit_code' => $plan->exitCode(),
             'warnings' => $plan->warnings,
+            'summary' => [
+                'advisories' => $plan->advisoryCount(),
+                'packages' => count($plan->findings),
+                'packages_with_fix' => count($plan->findings) - count($plan->unsolved()),
+                'combined_command' => $combined?->candidate->commandLine($this->minimalChangesSupported),
+                'combined_fixes' => $combined?->fixedCount(),
+                'combined_total' => $combined?->totalCount(),
+                'combined_fixes_all' => $combined?->fixesAll(),
+                'combined_changes' => $combined === null ? null : self::summary($combined->diff),
+            ],
             'findings' => $findings,
             'unsolved_findings' => $unsolved,
         ];

@@ -109,4 +109,10 @@ Other candidates
   valid, rank 8: composer update laravel/scout -W -m --with 'symfony/process:>=6.4.14,<7.0.0 || >=7.1.7'  (2 changes)
   not tried (a better candidate already exists): composer require --no-update laravel/framework:^11.0 && composer update laravel/framework -W -m --with 'symfony/process:>=6.4.14,<7.0.0 || >=7.1.7'
   not tried (a better candidate already exists): composer require --no-update laravel/helpers:^2.0 && composer update laravel/helpers -W -m --with 'symfony/process:>=6.4.14,<7.0.0 || >=7.1.7'
+
+Summary
+  Findings: 2 advisories on 2 packages, 2 packages with a verified fix
+  You can fix all 2 findings with:
+    composer update symfony/http-foundation symfony/process
+    (2 packages changed, verified by Composer)
 ```

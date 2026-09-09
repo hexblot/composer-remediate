@@ -23,7 +23,7 @@ details summary{cursor:pointer;color:var(--accent);margin:.5rem 0}
 .meta dl{display:grid;grid-template-columns:max-content 1fr;gap:.2rem 1rem;font-size:.85rem;color:var(--muted)}.meta dt{font-weight:600}.meta dd{margin:0;word-break:break-all}</style></head><body>
 <header><h1>Composer Remediate</h1><p class="sub">Composer Remediate — 1 finding in <code>synthetic-transitive-parent</code></p></header>
 <main>
-<section><h2>Summary</h2><table class="summary"><thead><tr><th>Package</th><th>Advisories</th><th>Status</th><th>Recommended command</th></tr></thead><tbody><tr><td><a href="#finding-1">acme/vuln-lib 1.0.1</a></td><td>CVE-2026-00001</td><td><span class="badge ok">verified</span></td><td><code>composer update acme/app-framework:1.1.0 -W -m</code></td></tr></tbody></table></section>
+<section><h2>Summary</h2><p>1 advisory on 1 package.</p><p class="command"><span class="badge ok">fixes all 1</span> <code>composer update acme/app-framework:1.1.0 -W -m</code></p><table class="summary"><thead><tr><th>Package</th><th>Advisories</th><th>Status</th><th>Recommended command</th></tr></thead><tbody><tr><td><a href="#finding-1">acme/vuln-lib 1.0.1</a></td><td>CVE-2026-00001</td><td><span class="badge ok">verified</span></td><td><code>composer update acme/app-framework:1.1.0 -W -m</code></td></tr></tbody></table></section>
 <section class="finding" id="finding-1">
 <h2>acme/vuln-lib <span class="version">1.0.1</span></h2>
 <p class="state">Transitive dependency.</p>
@@ -54,6 +54,7 @@ Use the option --with-all-dependencies (-W) to allow upgrades, downgrades and re
 </section>
 <section class="meta"><h2>Analysis metadata</h2><dl>
 <dt>project</dt><dd>synthetic-transitive-parent</dd>
+<dt>engine version</dt><dd>dev-main</dd>
 <dt>composer version</dt><dd>(fixture)</dd>
 <dt>php version</dt><dd>(fixture)</dd>
 <dt>advisory source</dt><dd>advisory snapshot advisories.json</dd>

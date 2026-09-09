@@ -2,6 +2,7 @@
     "schema_version": 1,
     "analysis_metadata": {
         "project": "synthetic-transitive-parent",
+        "engine_version": "dev-main",
         "composer_version": "(fixture)",
         "php_version": "(fixture)",
         "advisory_source": "advisory snapshot advisories.json",
@@ -13,6 +14,24 @@
     },
     "exit_code": 1,
     "warnings": [],
+    "summary": {
+        "advisories": 1,
+        "packages": 1,
+        "packages_with_fix": 1,
+        "combined_command": "composer update acme/app-framework:1.1.0 -W -m",
+        "combined_fixes": 1,
+        "combined_total": 1,
+        "combined_fixes_all": true,
+        "combined_changes": {
+            "changed": 2,
+            "added": 0,
+            "removed": 0,
+            "total": 2,
+            "major_change": false,
+            "downgrade": false,
+            "prerelease": false
+        }
+    },
     "findings": [
         {
             "package": "acme/vuln-lib",

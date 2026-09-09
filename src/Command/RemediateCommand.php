@@ -5,6 +5,8 @@ declare(strict_types=1);
 namespace Remediate\Command;
 
 use Composer\Command\BaseCommand;
+use Composer\Config;
+use Composer\Util\Platform;
 use Remediate\Engine\Advisory\AdvisoryLookupFailed;
 use Remediate\Engine\Advisory\ComposerRepositoryAdvisoryProvider;
 use Remediate\Engine\Advisory\JsonFileAdvisoryProvider;
@@ -30,6 +32,8 @@ final class RemediateCommand extends BaseCommand
                 new InputOption('format', 'f', InputOption::VALUE_REQUIRED, 'Format printed to standard output: text, html, json or none', 'text'),
                 new InputOption('output', 'o', InputOption::VALUE_REQUIRED | InputOption::VALUE_IS_ARRAY, 'Also write a report file; format inferred from the extension (.html, .json, .txt) or given as html:path. Repeatable.'),
                 new InputOption('no-dev', null, InputOption::VALUE_NONE, 'Ignore vulnerabilities in require-dev packages'),
+                new InputOption('offline', null, InputOption::VALUE_NONE, 'Refuse all network access; requires a warm Composer cache and --advisories-file (sets COMPOSER_DISABLE_NETWORK=1)'),
+                new InputOption('ignore', 'i', InputOption::VALUE_REQUIRED | InputOption::VALUE_IS_ARRAY, 'Advisory id or CVE to ignore (repeatable); config.audit.ignore and config.policy.advisories.ignore are honoured as well'),
                 new InputOption('allow-direct-require', null, InputOption::VALUE_NONE, 'Also consider adding a transitive package as a direct requirement to force a fixed version'),
                 new InputOption('advisories-file', null, InputOption::VALUE_REQUIRED, 'Read advisories from a JSON file in the Packagist API shape instead of the configured repositories'),
                 new InputOption('max-candidates', null, InputOption::VALUE_REQUIRED, 'Maximum number of candidate commands to try per finding', '10'),
@@ -46,6 +50,40 @@ Exit codes: 0 no vulnerabilities, 1 vulnerabilities with a verified remediation,
 2 at least one vulnerability without a verified remediation, 3 error,
 4 advisory data unavailable.
 HELP);
+    }
+
+    /**
+     * Advisory ids from config.audit.ignore (Composer <= 2.9) and config.policy.advisories.ignore /
+     * ignore-id (Composer >= 2.10), in either list or map form.
+     *
+     * @return list<string>
+     */
+    private static function configuredIgnores(Config $config): array
+    {
+        $ids = [];
+        $collect = static function (mixed $value) use (&$ids): void {
+            if (!is_array($value)) {
+                return;
+            }
+            foreach ($value as $key => $entry) {
+                if (is_string($key)) {
+                    $ids[] = $key;
+                } elseif (is_string($entry)) {
+                    $ids[] = $entry;
+                }
+            }
+        };
+        $audit = $config->get('audit');
+        if (is_array($audit)) {
+            $collect($audit['ignore'] ?? null);
+        }
+        $policy = $config->has('policy') ? $config->get('policy') : null;
+        if (is_array($policy) && is_array($policy['advisories'] ?? null)) {
+            $collect($policy['advisories']['ignore'] ?? null);
+            $collect($policy['advisories']['ignore-id'] ?? null);
+        }
+
+        return array_values(array_unique($ids));
     }
 
     protected function execute(InputInterface $input, OutputInterface $output): int
@@ -70,6 +108,12 @@ HELP);
                 return Plan::EXIT_ERROR;
             }
         }
+        if ((bool) $input->getOption('offline')) {
+            // The Composer instance (and its HttpDownloader, which reads this variable when constructed)
+            // may already exist when a plugin command runs; discard it so a fresh, network-less one is built.
+            Platform::putEnv('COMPOSER_DISABLE_NETWORK', '1');
+            $this->resetComposer();
+        }
         if (PHP_VERSION_ID < 80200) {
             $io->writeError(sprintf('<warning>PHP %s is end of life and no longer receives security fixes; upgrade the runtime that executes Composer.</warning>', PHP_VERSION));
         }
@@ -89,6 +133,8 @@ HELP);
 
         $solver = new InProcessSolver($this->getPlatformRequirementFilter($input));
         $maxCandidates = max(1, (int) $input->getOption('max-candidates'));
+        $ignored = array_values(array_filter(array_map('strval', (array) $input->getOption('ignore')), static fn (string $v): bool => $v !== ''));
+        array_push($ignored, ...self::configuredIgnores($composer->getConfig()));
         $planner = new Planner(
             $advisories,
             $solver,
@@ -98,12 +144,16 @@ HELP);
             static function (string $message) use ($io): void {
                 $io->writeError('<comment>' . $message . '</comment>', true, \Composer\IO\IOInterface::VERBOSE);
             },
+            $ignored,
         );
 
         try {
             $plan = $planner->plan($context, ScratchWorkspace::fromProject($context));
         } catch (AdvisoryLookupFailed $e) {
             $io->writeError('<error>Advisory data unavailable: ' . $e->getMessage() . '</error>');
+            if ((bool) $input->getOption('offline')) {
+                $io->writeError('<comment>Offline mode: pass --advisories-file=<json> with a snapshot in the Packagist API shape.</comment>');
+            }
 
             return Plan::EXIT_ADVISORIES_UNAVAILABLE;
         }

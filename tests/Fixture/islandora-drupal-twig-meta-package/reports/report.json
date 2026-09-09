@@ -2,18 +2,398 @@
     "schema_version": 1,
     "analysis_metadata": {
         "project": "islandora-drupal-twig-meta-package",
+        "engine_version": "dev-main",
         "composer_version": "(fixture)",
         "php_version": "(fixture)",
         "advisory_source": "advisory snapshot advisories.json",
         "solver": "in-process Composer dry-run",
-        "composer_json_sha256": "b04518f55120447d23f9caa7cd5f21fa955f50e77d386f141e818364005212d8",
+        "composer_json_sha256": "dfee78a48f1f5327e3ed683b0807486e7c2ab5309f8c70cf401063dd01ff3c2b",
         "composer_lock_sha256": "f0ddb6b55ce493414f04b4107b13651fca4f9c51feb3f57710197a41d2a00f93",
         "analysis_timestamp": "(fixture)",
         "locked_packages": "182"
     },
     "exit_code": 2,
     "warnings": [],
+    "summary": {
+        "advisories": 4,
+        "packages": 4,
+        "packages_with_fix": 2,
+        "combined_command": "composer update symfony/validator drupal/core-recommended:10.3.4 -W -m",
+        "combined_fixes": 2,
+        "combined_total": 4,
+        "combined_fixes_all": false,
+        "combined_changes": {
+            "changed": 4,
+            "added": 0,
+            "removed": 0,
+            "total": 4,
+            "major_change": false,
+            "downgrade": false,
+            "prerelease": false
+        }
+    },
     "findings": [
+        {
+            "package": "drupal/core",
+            "version": "10.3.1",
+            "version_normalized": "10.3.1.0",
+            "direct": false,
+            "dev": false,
+            "via_replaced_package": null,
+            "advisories": [
+                {
+                    "id": "PKSA-styk-3knc-d1bt",
+                    "cve": "CVE-2024-45440",
+                    "title": "Drupal Full Path Disclosure",
+                    "link": "https://github.com/advisories/GHSA-mg8j-w93w-xjgc",
+                    "severity": "medium",
+                    "reported_at": "2024-08-29T12:31:05+00:00",
+                    "affected_versions": ">=8.0.0,<10.2.9|>=10.3.0,<10.3.6|>=11.0.0,<11.0.5",
+                    "sources": [
+                        {
+                            "name": "GitHub",
+                            "remoteId": "GHSA-mg8j-w93w-xjgc"
+                        }
+                    ]
+                }
+            ],
+            "paths_total": 120,
+            "paths": [
+                {
+                    "cyclic": false,
+                    "chain": [
+                        {
+                            "package": "root",
+                            "version": null,
+                            "requires": "<=8"
+                        }
+                    ],
+                    "target": {
+                        "package": "drupal/core",
+                        "version": "10.3.1"
+                    }
+                },
+                {
+                    "cyclic": false,
+                    "chain": [
+                        {
+                            "package": "root",
+                            "version": null,
+                            "requires": "^2.8.1"
+                        },
+                        {
+                            "package": "drupal/islandora",
+                            "version": "2.12.3",
+                            "requires": "*"
+                        },
+                        {
+                            "package": "drupal/action",
+                            "version": "0.2.1",
+                            "requires": ">10.2"
+                        }
+                    ],
+                    "target": {
+                        "package": "drupal/core",
+                        "version": "10.3.1"
+                    }
+                },
+                {
+                    "cyclic": false,
+                    "chain": [
+                        {
+                            "package": "root",
+                            "version": null,
+                            "requires": "^2"
+                        },
+                        {
+                            "package": "drupal/islandora_mirador",
+                            "version": "2.3.7",
+                            "requires": "*"
+                        },
+                        {
+                            "package": "drupal/islandora_iiif",
+                            "version": "2.12.3",
+                            "requires": "^2"
+                        },
+                        {
+                            "package": "drupal/islandora",
+                            "version": "2.12.3",
+                            "requires": "*"
+                        },
+                        {
+                            "package": "drupal/action",
+                            "version": "0.2.1",
+                            "requires": ">10.2"
+                        }
+                    ],
+                    "target": {
+                        "package": "drupal/core",
+                        "version": "10.3.1"
+                    }
+                },
+                {
+                    "cyclic": false,
+                    "chain": [
+                        {
+                            "package": "root",
+                            "version": null,
+                            "requires": "^2"
+                        },
+                        {
+                            "package": "drupal/islandora_mirador",
+                            "version": "2.3.7",
+                            "requires": "^2"
+                        },
+                        {
+                            "package": "drupal/islandora",
+                            "version": "2.12.3",
+                            "requires": "*"
+                        },
+                        {
+                            "package": "drupal/action",
+                            "version": "0.2.1",
+                            "requires": ">10.2"
+                        }
+                    ],
+                    "target": {
+                        "package": "drupal/core",
+                        "version": "10.3.1"
+                    }
+                },
+                {
+                    "cyclic": false,
+                    "chain": [
+                        {
+                            "package": "root",
+                            "version": null,
+                            "requires": "^3.1"
+                        },
+                        {
+                            "package": "drupal/admin_toolbar",
+                            "version": "3.4.2",
+                            "requires": "^9.2 || ^10"
+                        }
+                    ],
+                    "target": {
+                        "package": "drupal/core",
+                        "version": "10.3.1"
+                    }
+                },
+                {
+                    "cyclic": false,
+                    "chain": [
+                        {
+                            "package": "root",
+                            "version": null,
+                            "requires": "^2.0.0@beta"
+                        },
+                        {
+                            "package": "drupal/advanced_search",
+                            "version": "2.1.0",
+                            "requires": "^8.8 || ^9 || ^10"
+                        }
+                    ],
+                    "target": {
+                        "package": "drupal/core",
+                        "version": "10.3.1"
+                    }
+                },
+                {
+                    "cyclic": false,
+                    "chain": [
+                        {
+                            "package": "root",
+                            "version": null,
+                            "requires": "^6.0"
+                        },
+                        {
+                            "package": "drupal/better_exposed_filters",
+                            "version": "6.0.6",
+                            "requires": "^9 || ^10"
+                        }
+                    ],
+                    "target": {
+                        "package": "drupal/core",
+                        "version": "10.3.1"
+                    }
+                },
+                {
+                    "cyclic": false,
+                    "chain": [
+                        {
+                            "package": "root",
+                            "version": null,
+                            "requires": "^2.0@beta"
+                        },
+                        {
+                            "package": "drupal/citation_select",
+                            "version": "2.0.0-beta1",
+                            "requires": "^8.8 || ^9 || ^10"
+                        }
+                    ],
+                    "target": {
+                        "package": "drupal/core",
+                        "version": "10.3.1"
+                    }
+                },
+                {
+                    "cyclic": false,
+                    "chain": [
+                        {
+                            "package": "root",
+                            "version": null,
+                            "requires": "^4.0"
+                        },
+                        {
+                            "package": "drupal/coi",
+                            "version": "4.0.0",
+                            "requires": "^10"
+                        }
+                    ],
+                    "target": {
+                        "package": "drupal/core",
+                        "version": "10.3.1"
+                    }
+                },
+                {
+                    "cyclic": false,
+                    "chain": [
+                        {
+                            "package": "root",
+                            "version": null,
+                            "requires": "^4.0"
+                        },
+                        {
+                            "package": "drupal/coi",
+                            "version": "4.0.0",
+                            "requires": "^4"
+                        },
+                        {
+                            "package": "drupal/config_override_core_fields",
+                            "version": "4.0.0",
+                            "requires": ">=10"
+                        }
+                    ],
+                    "target": {
+                        "package": "drupal/core",
+                        "version": "10.3.1"
+                    }
+                }
+            ],
+            "remediation": {
+                "status": "none",
+                "blocker": null
+            },
+            "candidates": [
+                {
+                    "command": "composer update drupal/core",
+                    "strategy": "lock-refresh",
+                    "outcome": "rejected",
+                    "reason": "resolves, but drupal/core ends at 10.3.1 which is still affected by PKSA-styk-3knc-d1bt",
+                    "summary": {
+                        "changed": 0,
+                        "added": 0,
+                        "removed": 0,
+                        "total": 0,
+                        "major_change": false,
+                        "downgrade": false,
+                        "prerelease": false
+                    },
+                    "solver_status": "resolved"
+                },
+                {
+                    "command": "composer update drupal/core -w -m --with 'drupal/core:>=10.3.6,<11.0.0 || >=11.0.5'",
+                    "strategy": "with-dependencies",
+                    "outcome": "rejected",
+                    "reason": "Composer could not resolve the dependencies: Your requirements could not be resolved to an installable set of packages.\n  Problem 1\n    - drupal/admin_toolbar is locked to version 3.4.2 and an update of this package was not requested.\n    - drupal/admin_toolbar 3.4.2 requires drupal/core ^9.2 || ^10 -> found drupal/core[10.3.1, ..., 10.3.5] but it conflicts with your temporary update constraint (drupal/core:>=10.3.6,<11.0.0 || >=11.0.5).\n  Problem 2\n    - drupal/advanced_search is locked to version 2.1.0 and an update of this package was not requested.\n    - drupal/advanced_search 2.1.0 requires drupal/core ^8.8 || ^9 || ^10 -> found drupal/core[10.3.1, ..., 10.3.5] but it conflicts with your temporary update constraint (drupal/core:>=10.3.6,<11.0.0 || >=11.0.5).\n  Problem 3\n    - drupal/better_exposed_filters is locked to version 6.0.6 and an update of this package was not requested.\n    - drupal/better_exposed_filters 6.0.6 requires drupal/core ^9 || ^10 -> found drupal/core[10.3.1, ..., 10.3.5] but it conflicts with your temporary update constraint (drupal/core:>=10.3.6,<11.0.0 || >=11.0.5).\n  Problem 4\n    - drupal/citation_select is locked to version 2.0.0-beta1 and an update of this package was not requested.\n    - drupal/citation_select 2.0.0-beta1 requires drupal/core ^8.8 || ^9 || ^10 -> found drupal/core[10.3.1, ..., 10.3.5] but it conflicts with your temporary update constraint (drupal/core:>=10.3.6,<11.0.0 || >=11.0.5).\n  Problem 5\n    - drupal/coi is locked to version 4.0.0 and an update of this package was not requested.\n    - drupal/coi 4.0.0 requires drupal/core ^10 -> found drupal/core[10.3.1, ..., 10.3.5] but it conflicts with your temporary update constraint (drupal/core:>=10.3.6,<11.0.0 || >=11.0.5).\n  Problem 6\n    - drupal/config_update is locked to version 2.0.0-alpha3 and an update of this package was not requested.\n    - drupal/config_update 2.0.0-alpha3 requires drupal/core ^9.4 || ^10 -> found drupal/core[10.3.1, ..., 10.3.5] but it conflicts with your temporary update constraint (drupal/core:>=10.3.6,<11.0.0 || >=11.0.5).\n  Problem 7\n    - drupal/context is locked to version 5.0.0-rc1 and an update of this package was not requested.\n    - drupal/context 5.0.0-rc1 requires drupal/core ^9.3 || ^10 -> found drupal/core[10.3.1, ..., 10.3.5] but it conflicts with your temporary update constraint (drupal/core:>=10.3.6,<11.0.0 || >=11.0.5).\n  Problem 8\n    - drupal/controlled_access_terms is locked to version 2.4.3 and an update of this package was not requested.\n    - drupal/controlled_access_terms 2.4.3 requires drupal/core ^10.2 -> found drupal/core[10.3.1, ..., 10.3.5] but it conflicts with your temporary update constraint (drupal/core:>=10.3.6,<11.0.0 || >=11.0.5).",
+                    "solver_status": "conflict"
+                },
+                {
+                    "command": "composer update drupal/islandora -W -m --with 'drupal/core:>=10.3.6,<11.0.0 || >=11.0.5'",
+                    "strategy": "parent-update",
+                    "outcome": "rejected",
+                    "reason": "Composer could not resolve the dependencies: Your requirements could not be resolved to an installable set of packages.\n  Problem 1\n    - drupal/admin_toolbar is locked to version 3.4.2 and an update of this package was not requested.\n    - drupal/admin_toolbar 3.4.2 requires drupal/core ^9.2 || ^10 -> found drupal/core[10.3.1, ..., 10.3.5] but it conflicts with your temporary update constraint (drupal/core:>=10.3.6,<11.0.0 || >=11.0.5).\n  Problem 2\n    - drupal/advanced_search is locked to version 2.1.0 and an update of this package was not requested.\n    - drupal/advanced_search 2.1.0 requires drupal/core ^8.8 || ^9 || ^10 -> found drupal/core[10.3.1, ..., 10.3.5] but it conflicts with your temporary update constraint (drupal/core:>=10.3.6,<11.0.0 || >=11.0.5).\n  Problem 3\n    - drupal/better_exposed_filters is locked to version 6.0.6 and an update of this package was not requested.\n    - drupal/better_exposed_filters 6.0.6 requires drupal/core ^9 || ^10 -> found drupal/core[10.3.1, ..., 10.3.5] but it conflicts with your temporary update constraint (drupal/core:>=10.3.6,<11.0.0 || >=11.0.5).\n  Problem 4\n    - drupal/citation_select is locked to version 2.0.0-beta1 and an update of this package was not requested.\n    - drupal/citation_select 2.0.0-beta1 requires drupal/core ^8.8 || ^9 || ^10 -> found drupal/core[10.3.1, ..., 10.3.5] but it conflicts with your temporary update constraint (drupal/core:>=10.3.6,<11.0.0 || >=11.0.5).\n  Problem 5\n    - drupal/coi is locked to version 4.0.0 and an update of this package was not requested.\n    - drupal/coi 4.0.0 requires drupal/core ^10 -> found drupal/core[10.3.1, ..., 10.3.5] but it conflicts with your temporary update constraint (drupal/core:>=10.3.6,<11.0.0 || >=11.0.5).\n  Problem 6\n    - drupal/config_update is locked to version 2.0.0-alpha3 and an update of this package was not requested.\n    - drupal/config_update 2.0.0-alpha3 requires drupal/core ^9.4 || ^10 -> found drupal/core[10.3.1, ..., 10.3.5] but it conflicts with your temporary update constraint (drupal/core:>=10.3.6,<11.0.0 || >=11.0.5).\n  Problem 7\n    - drupal/controlled_access_terms is locked to version 2.4.3 and an update of this package was not requested.\n    - drupal/controlled_access_terms 2.4.3 requires drupal/core ^10.2 -> found drupal/core[10.3.1, ..., 10.3.5] but it conflicts with your temporary update constraint (drupal/core:>=10.3.6,<11.0.0 || >=11.0.5).\n  Problem 8\n    - drupal/core-recommended is locked to version 10.3.1 and an update of this package was not requested.\n    - drupal/core-recommended 10.3.1 requires drupal/core 10.3.1 -> found drupal/core[10.3.1] but it conflicts with your temporary update constraint (drupal/core:>=10.3.6,<11.0.0 || >=11.0.5).",
+                    "solver_status": "conflict"
+                },
+                {
+                    "command": "composer update drupal/islandora drupal/admin_toolbar drupal/advanced_search drupal/better_exposed_filters drupal/citation_select drupal/coi drupal/config_update drupal/controlled_access_terms drupal/core-recommended drupal/facets drupal/field_group drupal/field_permissions drupal/field_report drupal/fpa drupal/islandora_mirador drupal/openseadragon drupal/pathauto drupal/pdf drupal/rest_oai_pmh drupal/search_api_solr drupal/taxonomy_manager drupal/term_merge drupal/twig_tweak drupal/views_data_export drupal/views_field_view drupal/config_inspector drupal/devel drupal/restui discoverygarden/dgi_image_discovery -W -m --with 'drupal/core:>=10.3.6,<11.0.0 || >=11.0.5'",
+                    "strategy": "parent-update",
+                    "outcome": "rejected",
+                    "reason": "Composer could not resolve the dependencies: Your requirements could not be resolved to an installable set of packages.\n  Problem 1\n    - Root composer.json requires drupal/better_exposed_filters ^6.0 -> satisfiable by drupal/better_exposed_filters[6.0.6].\n    - drupal/better_exposed_filters 6.0.6 requires drupal/core ^9 || ^10 -> found drupal/core[10.3.1, ..., 10.3.5] but it conflicts with your temporary update constraint (drupal/core:>=10.3.6,<11.0.0 || >=11.0.5).\n  Problem 2\n    - Root composer.json requires drupal/term_merge ^2.0@beta -> satisfiable by drupal/term_merge[2.0.0-beta6, 2.0.0].\n    - drupal/term_merge[2.0.0-beta6, ..., 2.0.0] require drupal/core ^9 || ^10 || ^11 -> found drupal/core[10.3.1, ..., 10.3.5, 11.0.0-alpha1, ..., 11.0.4] but it conflicts with your temporary update constraint (drupal/core:>=10.3.6,<11.0.0 || >=11.0.5).\n  Problem 3\n    - Root composer.json requires drupal/restui ^1.21 -> satisfiable by drupal/restui[1.22.0].\n    - drupal/restui 1.22.0 requires drupal/core ^9.5 || ^10 || ^11 -> found drupal/core[10.3.1, ..., 10.3.5, 11.0.0-alpha1, ..., 11.0.4] but it conflicts with your temporary update constraint (drupal/core:>=10.3.6,<11.0.0 || >=11.0.5).\n  Problem 4\n    - Root composer.json requires discoverygarden/dgi_image_discovery ^1 -> satisfiable by discoverygarden/dgi_image_discovery[v1.3.1, v1.4.0].\n    - discoverygarden/dgi_image_discovery[v1.3.1, ..., v1.4.0] require drupal/search_api ^1.19 -> satisfiable by drupal/search_api[1.35.0, ..., 1.41.0].\n    - drupal/search_api 1.35.0 requires drupal/core ^10.1 || ^11 -> found drupal/core[10.3.1, ..., 10.3.5, 11.0.0-alpha1, ..., 11.0.4] but it conflicts with your temporary update constraint (drupal/core:>=10.3.6,<11.0.0 || >=11.0.5).\n    - drupal/search_api[1.36.0, ..., 1.38.0] require drupal/core ^10.2 || ^11 -> found drupal/core[10.3.1, ..., 10.3.5, 11.0.0-alpha1, ..., 11.0.4] but it conflicts with your temporary update constraint (drupal/core:>=10.3.6,<11.0.0 || >=11.0.5).\n    - drupal/search_api[1.39.0, ..., 1.41.0] require drupal/core ^10.3 || ^11 -> found drupal/core[10.3.1, ..., 10.3.5, 11.0.0-alpha1, ..., 11.0.4] but it conflicts with your temporary update constraint (drupal/core:>=10.3.6,<11.0.0 || >=11.0.5).",
+                    "solver_status": "conflict"
+                },
+                {
+                    "command": "composer update drupal/islandora_mirador -W -m --with 'drupal/core:>=10.3.6,<11.0.0 || >=11.0.5'",
+                    "strategy": "parent-update",
+                    "outcome": "rejected",
+                    "reason": "Composer could not resolve the dependencies: Your requirements could not be resolved to an installable set of packages.\n  Problem 1\n    - drupal/admin_toolbar is locked to version 3.4.2 and an update of this package was not requested.\n    - drupal/admin_toolbar 3.4.2 requires drupal/core ^9.2 || ^10 -> found drupal/core[10.3.1, ..., 10.3.5] but it conflicts with your temporary update constraint (drupal/core:>=10.3.6,<11.0.0 || >=11.0.5).\n  Problem 2\n    - drupal/advanced_search is locked to version 2.1.0 and an update of this package was not requested.\n    - drupal/advanced_search 2.1.0 requires drupal/core ^8.8 || ^9 || ^10 -> found drupal/core[10.3.1, ..., 10.3.5] but it conflicts with your temporary update constraint (drupal/core:>=10.3.6,<11.0.0 || >=11.0.5).\n  Problem 3\n    - drupal/better_exposed_filters is locked to version 6.0.6 and an update of this package was not requested.\n    - drupal/better_exposed_filters 6.0.6 requires drupal/core ^9 || ^10 -> found drupal/core[10.3.1, ..., 10.3.5] but it conflicts with your temporary update constraint (drupal/core:>=10.3.6,<11.0.0 || >=11.0.5).\n  Problem 4\n    - drupal/citation_select is locked to version 2.0.0-beta1 and an update of this package was not requested.\n    - drupal/citation_select 2.0.0-beta1 requires drupal/core ^8.8 || ^9 || ^10 -> found drupal/core[10.3.1, ..., 10.3.5] but it conflicts with your temporary update constraint (drupal/core:>=10.3.6,<11.0.0 || >=11.0.5).\n  Problem 5\n    - drupal/coi is locked to version 4.0.0 and an update of this package was not requested.\n    - drupal/coi 4.0.0 requires drupal/core ^10 -> found drupal/core[10.3.1, ..., 10.3.5] but it conflicts with your temporary update constraint (drupal/core:>=10.3.6,<11.0.0 || >=11.0.5).\n  Problem 6\n    - drupal/config_update is locked to version 2.0.0-alpha3 and an update of this package was not requested.\n    - drupal/config_update 2.0.0-alpha3 requires drupal/core ^9.4 || ^10 -> found drupal/core[10.3.1, ..., 10.3.5] but it conflicts with your temporary update constraint (drupal/core:>=10.3.6,<11.0.0 || >=11.0.5).\n  Problem 7\n    - drupal/controlled_access_terms is locked to version 2.4.3 and an update of this package was not requested.\n    - drupal/controlled_access_terms 2.4.3 requires drupal/core ^10.2 -> found drupal/core[10.3.1, ..., 10.3.5] but it conflicts with your temporary update constraint (drupal/core:>=10.3.6,<11.0.0 || >=11.0.5).\n  Problem 8\n    - drupal/core-recommended is locked to version 10.3.1 and an update of this package was not requested.\n    - drupal/core-recommended 10.3.1 requires drupal/core 10.3.1 -> found drupal/core[10.3.1] but it conflicts with your temporary update constraint (drupal/core:>=10.3.6,<11.0.0 || >=11.0.5).",
+                    "solver_status": "conflict"
+                },
+                {
+                    "command": "composer update drupal/islandora_mirador drupal/admin_toolbar drupal/advanced_search drupal/better_exposed_filters drupal/citation_select drupal/coi drupal/config_update drupal/controlled_access_terms drupal/core-recommended drupal/facets drupal/field_group drupal/field_permissions drupal/field_report drupal/fpa drupal/openseadragon drupal/pathauto drupal/pdf drupal/rest_oai_pmh drupal/search_api_solr drupal/taxonomy_manager drupal/term_merge drupal/twig_tweak drupal/views_data_export drupal/views_field_view drupal/config_inspector drupal/devel drupal/restui discoverygarden/dgi_image_discovery -W -m --with 'drupal/core:>=10.3.6,<11.0.0 || >=11.0.5'",
+                    "strategy": "parent-update",
+                    "outcome": "rejected",
+                    "reason": "Composer could not resolve the dependencies: Your requirements could not be resolved to an installable set of packages.\n  Problem 1\n    - Root composer.json requires drupal/better_exposed_filters ^6.0 -> satisfiable by drupal/better_exposed_filters[6.0.6].\n    - drupal/better_exposed_filters 6.0.6 requires drupal/core ^9 || ^10 -> found drupal/core[10.3.1, ..., 10.3.5] but it conflicts with your temporary update constraint (drupal/core:>=10.3.6,<11.0.0 || >=11.0.5).\n  Problem 2\n    - Root composer.json requires drupal/term_merge ^2.0@beta -> satisfiable by drupal/term_merge[2.0.0-beta6, 2.0.0].\n    - drupal/term_merge[2.0.0-beta6, ..., 2.0.0] require drupal/core ^9 || ^10 || ^11 -> found drupal/core[10.3.1, ..., 10.3.5, 11.0.0-alpha1, ..., 11.0.4] but it conflicts with your temporary update constraint (drupal/core:>=10.3.6,<11.0.0 || >=11.0.5).\n  Problem 3\n    - Root composer.json requires drupal/restui ^1.21 -> satisfiable by drupal/restui[1.22.0].\n    - drupal/restui 1.22.0 requires drupal/core ^9.5 || ^10 || ^11 -> found drupal/core[10.3.1, ..., 10.3.5, 11.0.0-alpha1, ..., 11.0.4] but it conflicts with your temporary update constraint (drupal/core:>=10.3.6,<11.0.0 || >=11.0.5).\n  Problem 4\n    - Root composer.json requires discoverygarden/dgi_image_discovery ^1 -> satisfiable by discoverygarden/dgi_image_discovery[v1.3.1, v1.4.0].\n    - discoverygarden/dgi_image_discovery[v1.3.1, ..., v1.4.0] require drupal/search_api ^1.19 -> satisfiable by drupal/search_api[1.35.0, ..., 1.41.0].\n    - drupal/search_api 1.35.0 requires drupal/core ^10.1 || ^11 -> found drupal/core[10.3.1, ..., 10.3.5, 11.0.0-alpha1, ..., 11.0.4] but it conflicts with your temporary update constraint (drupal/core:>=10.3.6,<11.0.0 || >=11.0.5).\n    - drupal/search_api[1.36.0, ..., 1.38.0] require drupal/core ^10.2 || ^11 -> found drupal/core[10.3.1, ..., 10.3.5, 11.0.0-alpha1, ..., 11.0.4] but it conflicts with your temporary update constraint (drupal/core:>=10.3.6,<11.0.0 || >=11.0.5).\n    - drupal/search_api[1.39.0, ..., 1.41.0] require drupal/core ^10.3 || ^11 -> found drupal/core[10.3.1, ..., 10.3.5, 11.0.0-alpha1, ..., 11.0.4] but it conflicts with your temporary update constraint (drupal/core:>=10.3.6,<11.0.0 || >=11.0.5).",
+                    "solver_status": "conflict"
+                },
+                {
+                    "command": "composer update drupal/admin_toolbar -W -m --with 'drupal/core:>=10.3.6,<11.0.0 || >=11.0.5'",
+                    "strategy": "parent-update",
+                    "outcome": "rejected",
+                    "reason": "Composer could not resolve the dependencies: Your requirements could not be resolved to an installable set of packages.\n  Problem 1\n    - drupal/advanced_search is locked to version 2.1.0 and an update of this package was not requested.\n    - drupal/advanced_search 2.1.0 requires drupal/core ^8.8 || ^9 || ^10 -> found drupal/core[10.3.1, ..., 10.3.5] but it conflicts with your temporary update constraint (drupal/core:>=10.3.6,<11.0.0 || >=11.0.5).\n  Problem 2\n    - drupal/better_exposed_filters is locked to version 6.0.6 and an update of this package was not requested.\n    - drupal/better_exposed_filters 6.0.6 requires drupal/core ^9 || ^10 -> found drupal/core[10.3.1, ..., 10.3.5] but it conflicts with your temporary update constraint (drupal/core:>=10.3.6,<11.0.0 || >=11.0.5).\n  Problem 3\n    - drupal/citation_select is locked to version 2.0.0-beta1 and an update of this package was not requested.\n    - drupal/citation_select 2.0.0-beta1 requires drupal/core ^8.8 || ^9 || ^10 -> found drupal/core[10.3.1, ..., 10.3.5] but it conflicts with your temporary update constraint (drupal/core:>=10.3.6,<11.0.0 || >=11.0.5).\n  Problem 4\n    - drupal/coi is locked to version 4.0.0 and an update of this package was not requested.\n    - drupal/coi 4.0.0 requires drupal/core ^10 -> found drupal/core[10.3.1, ..., 10.3.5] but it conflicts with your temporary update constraint (drupal/core:>=10.3.6,<11.0.0 || >=11.0.5).\n  Problem 5\n    - drupal/config_update is locked to version 2.0.0-alpha3 and an update of this package was not requested.\n    - drupal/config_update 2.0.0-alpha3 requires drupal/core ^9.4 || ^10 -> found drupal/core[10.3.1, ..., 10.3.5] but it conflicts with your temporary update constraint (drupal/core:>=10.3.6,<11.0.0 || >=11.0.5).\n  Problem 6\n    - drupal/context is locked to version 5.0.0-rc1 and an update of this package was not requested.\n    - drupal/context 5.0.0-rc1 requires drupal/core ^9.3 || ^10 -> found drupal/core[10.3.1, ..., 10.3.5] but it conflicts with your temporary update constraint (drupal/core:>=10.3.6,<11.0.0 || >=11.0.5).\n  Problem 7\n    - drupal/controlled_access_terms is locked to version 2.4.3 and an update of this package was not requested.\n    - drupal/controlled_access_terms 2.4.3 requires drupal/core ^10.2 -> found drupal/core[10.3.1, ..., 10.3.5] but it conflicts with your temporary update constraint (drupal/core:>=10.3.6,<11.0.0 || >=11.0.5).\n  Problem 8\n    - drupal/core-recommended is locked to version 10.3.1 and an update of this package was not requested.\n    - drupal/core-recommended 10.3.1 requires drupal/core 10.3.1 -> found drupal/core[10.3.1] but it conflicts with your temporary update constraint (drupal/core:>=10.3.6,<11.0.0 || >=11.0.5).",
+                    "solver_status": "conflict"
+                },
+                {
+                    "command": "composer update drupal/admin_toolbar drupal/advanced_search drupal/better_exposed_filters drupal/citation_select drupal/coi drupal/config_update drupal/context drupal/controlled_access_terms drupal/core-recommended drupal/facets drupal/field_group drupal/field_permissions drupal/field_report drupal/flysystem drupal/fpa drupal/hal drupal/islandora drupal/islandora_mirador drupal/openseadragon drupal/pathauto drupal/pdf drupal/rest_oai_pmh drupal/search_api_solr drupal/taxonomy_manager drupal/term_merge drupal/twig_tweak drupal/views_data_export drupal/views_field_view drupal/config_inspector drupal/devel drupal/restui discoverygarden/dgi_image_discovery -W -m --with 'drupal/core:>=10.3.6,<11.0.0 || >=11.0.5'",
+                    "strategy": "parent-update",
+                    "outcome": "rejected",
+                    "reason": "Composer could not resolve the dependencies: Your requirements could not be resolved to an installable set of packages.\n  Problem 1\n    - Root composer.json requires drupal/better_exposed_filters ^6.0 -> satisfiable by drupal/better_exposed_filters[6.0.6].\n    - drupal/better_exposed_filters 6.0.6 requires drupal/core ^9 || ^10 -> found drupal/core[10.3.1, ..., 10.3.5] but it conflicts with your temporary update constraint (drupal/core:>=10.3.6,<11.0.0 || >=11.0.5).\n  Problem 2\n    - Root composer.json requires drupal/term_merge ^2.0@beta -> satisfiable by drupal/term_merge[2.0.0-beta6, 2.0.0].\n    - drupal/term_merge[2.0.0-beta6, ..., 2.0.0] require drupal/core ^9 || ^10 || ^11 -> found drupal/core[10.3.1, ..., 10.3.5, 11.0.0-alpha1, ..., 11.0.4] but it conflicts with your temporary update constraint (drupal/core:>=10.3.6,<11.0.0 || >=11.0.5).\n  Problem 3\n    - Root composer.json requires drupal/restui ^1.21 -> satisfiable by drupal/restui[1.22.0].\n    - drupal/restui 1.22.0 requires drupal/core ^9.5 || ^10 || ^11 -> found drupal/core[10.3.1, ..., 10.3.5, 11.0.0-alpha1, ..., 11.0.4] but it conflicts with your temporary update constraint (drupal/core:>=10.3.6,<11.0.0 || >=11.0.5).\n  Problem 4\n    - Root composer.json requires discoverygarden/dgi_image_discovery ^1 -> satisfiable by discoverygarden/dgi_image_discovery[v1.3.1, v1.4.0].\n    - discoverygarden/dgi_image_discovery[v1.3.1, ..., v1.4.0] require drupal/search_api ^1.19 -> satisfiable by drupal/search_api[1.35.0, ..., 1.41.0].\n    - drupal/search_api 1.35.0 requires drupal/core ^10.1 || ^11 -> found drupal/core[10.3.1, ..., 10.3.5, 11.0.0-alpha1, ..., 11.0.4] but it conflicts with your temporary update constraint (drupal/core:>=10.3.6,<11.0.0 || >=11.0.5).\n    - drupal/search_api[1.36.0, ..., 1.38.0] require drupal/core ^10.2 || ^11 -> found drupal/core[10.3.1, ..., 10.3.5, 11.0.0-alpha1, ..., 11.0.4] but it conflicts with your temporary update constraint (drupal/core:>=10.3.6,<11.0.0 || >=11.0.5).\n    - drupal/search_api[1.39.0, ..., 1.41.0] require drupal/core ^10.3 || ^11 -> found drupal/core[10.3.1, ..., 10.3.5, 11.0.0-alpha1, ..., 11.0.4] but it conflicts with your temporary update constraint (drupal/core:>=10.3.6,<11.0.0 || >=11.0.5).",
+                    "solver_status": "conflict"
+                },
+                {
+                    "command": "composer update drupal/advanced_search -W -m --with 'drupal/core:>=10.3.6,<11.0.0 || >=11.0.5'",
+                    "strategy": "parent-update",
+                    "outcome": "rejected",
+                    "reason": "Composer could not resolve the dependencies: Your requirements could not be resolved to an installable set of packages.\n  Problem 1\n    - drupal/admin_toolbar is locked to version 3.4.2 and an update of this package was not requested.\n    - drupal/admin_toolbar 3.4.2 requires drupal/core ^9.2 || ^10 -> found drupal/core[10.3.1, ..., 10.3.5] but it conflicts with your temporary update constraint (drupal/core:>=10.3.6,<11.0.0 || >=11.0.5).\n  Problem 2\n    - drupal/better_exposed_filters is locked to version 6.0.6 and an update of this package was not requested.\n    - drupal/better_exposed_filters 6.0.6 requires drupal/core ^9 || ^10 -> found drupal/core[10.3.1, ..., 10.3.5] but it conflicts with your temporary update constraint (drupal/core:>=10.3.6,<11.0.0 || >=11.0.5).\n  Problem 3\n    - drupal/citation_select is locked to version 2.0.0-beta1 and an update of this package was not requested.\n    - drupal/citation_select 2.0.0-beta1 requires drupal/core ^8.8 || ^9 || ^10 -> found drupal/core[10.3.1, ..., 10.3.5] but it conflicts with your temporary update constraint (drupal/core:>=10.3.6,<11.0.0 || >=11.0.5).\n  Problem 4\n    - drupal/coi is locked to version 4.0.0 and an update of this package was not requested.\n    - drupal/coi 4.0.0 requires drupal/core ^10 -> found drupal/core[10.3.1, ..., 10.3.5] but it conflicts with your temporary update constraint (drupal/core:>=10.3.6,<11.0.0 || >=11.0.5).\n  Problem 5\n    - drupal/config_update is locked to version 2.0.0-alpha3 and an update of this package was not requested.\n    - drupal/config_update 2.0.0-alpha3 requires drupal/core ^9.4 || ^10 -> found drupal/core[10.3.1, ..., 10.3.5] but it conflicts with your temporary update constraint (drupal/core:>=10.3.6,<11.0.0 || >=11.0.5).\n  Problem 6\n    - drupal/context is locked to version 5.0.0-rc1 and an update of this package was not requested.\n    - drupal/context 5.0.0-rc1 requires drupal/core ^9.3 || ^10 -> found drupal/core[10.3.1, ..., 10.3.5] but it conflicts with your temporary update constraint (drupal/core:>=10.3.6,<11.0.0 || >=11.0.5).\n  Problem 7\n    - drupal/controlled_access_terms is locked to version 2.4.3 and an update of this package was not requested.\n    - drupal/controlled_access_terms 2.4.3 requires drupal/core ^10.2 -> found drupal/core[10.3.1, ..., 10.3.5] but it conflicts with your temporary update constraint (drupal/core:>=10.3.6,<11.0.0 || >=11.0.5).\n  Problem 8\n    - drupal/core-recommended is locked to version 10.3.1 and an update of this package was not requested.\n    - drupal/core-recommended 10.3.1 requires drupal/core 10.3.1 -> found drupal/core[10.3.1] but it conflicts with your temporary update constraint (drupal/core:>=10.3.6,<11.0.0 || >=11.0.5).",
+                    "solver_status": "conflict"
+                },
+                {
+                    "command": "composer update drupal/advanced_search drupal/admin_toolbar drupal/better_exposed_filters drupal/citation_select drupal/coi drupal/config_update drupal/context drupal/controlled_access_terms drupal/core-recommended drupal/field_group drupal/field_permissions drupal/field_report drupal/flysystem drupal/fpa drupal/hal drupal/islandora drupal/islandora_mirador drupal/openseadragon drupal/pathauto drupal/pdf drupal/rest_oai_pmh drupal/taxonomy_manager drupal/term_merge drupal/twig_tweak drupal/views_data_export drupal/views_field_view drupal/config_inspector drupal/devel drupal/restui discoverygarden/dgi_image_discovery -W -m --with 'drupal/core:>=10.3.6,<11.0.0 || >=11.0.5'",
+                    "strategy": "parent-update",
+                    "outcome": "rejected",
+                    "reason": "Composer could not resolve the dependencies: Your requirements could not be resolved to an installable set of packages.\n  Problem 1\n    - Root composer.json requires drupal/better_exposed_filters ^6.0 -> satisfiable by drupal/better_exposed_filters[6.0.6].\n    - drupal/better_exposed_filters 6.0.6 requires drupal/core ^9 || ^10 -> found drupal/core[10.3.1, ..., 10.3.5] but it conflicts with your temporary update constraint (drupal/core:>=10.3.6,<11.0.0 || >=11.0.5).\n  Problem 2\n    - Root composer.json requires drupal/term_merge ^2.0@beta -> satisfiable by drupal/term_merge[2.0.0-beta6, 2.0.0].\n    - drupal/term_merge[2.0.0-beta6, ..., 2.0.0] require drupal/core ^9 || ^10 || ^11 -> found drupal/core[10.3.1, ..., 10.3.5, 11.0.0-alpha1, ..., 11.0.4] but it conflicts with your temporary update constraint (drupal/core:>=10.3.6,<11.0.0 || >=11.0.5).\n  Problem 3\n    - Root composer.json requires drupal/restui ^1.21 -> satisfiable by drupal/restui[1.22.0].\n    - drupal/restui 1.22.0 requires drupal/core ^9.5 || ^10 || ^11 -> found drupal/core[10.3.1, ..., 10.3.5, 11.0.0-alpha1, ..., 11.0.4] but it conflicts with your temporary update constraint (drupal/core:>=10.3.6,<11.0.0 || >=11.0.5).\n  Problem 4\n    - Root composer.json requires discoverygarden/dgi_image_discovery ^1 -> satisfiable by discoverygarden/dgi_image_discovery[v1.3.1, v1.4.0].\n    - discoverygarden/dgi_image_discovery[v1.3.1, ..., v1.4.0] require drupal/search_api ^1.19 -> satisfiable by drupal/search_api[1.35.0, ..., 1.41.0].\n    - drupal/search_api 1.35.0 requires drupal/core ^10.1 || ^11 -> found drupal/core[10.3.1, ..., 10.3.5, 11.0.0-alpha1, ..., 11.0.4] but it conflicts with your temporary update constraint (drupal/core:>=10.3.6,<11.0.0 || >=11.0.5).\n    - drupal/search_api[1.36.0, ..., 1.38.0] require drupal/core ^10.2 || ^11 -> found drupal/core[10.3.1, ..., 10.3.5, 11.0.0-alpha1, ..., 11.0.4] but it conflicts with your temporary update constraint (drupal/core:>=10.3.6,<11.0.0 || >=11.0.5).\n    - drupal/search_api[1.39.0, ..., 1.41.0] require drupal/core ^10.3 || ^11 -> found drupal/core[10.3.1, ..., 10.3.5, 11.0.0-alpha1, ..., 11.0.4] but it conflicts with your temporary update constraint (drupal/core:>=10.3.6,<11.0.0 || >=11.0.5).",
+                    "solver_status": "conflict"
+                },
+                {
+                    "command": "composer update drupal/better_exposed_filters -W -m --with 'drupal/core:>=10.3.6,<11.0.0 || >=11.0.5'",
+                    "strategy": "parent-update",
+                    "outcome": "rejected",
+                    "reason": "Composer could not resolve the dependencies: Your requirements could not be resolved to an installable set of packages.\n  Problem 1\n    - drupal/admin_toolbar is locked to version 3.4.2 and an update of this package was not requested.\n    - drupal/admin_toolbar 3.4.2 requires drupal/core ^9.2 || ^10 -> found drupal/core[10.3.1, ..., 10.3.5] but it conflicts with your temporary update constraint (drupal/core:>=10.3.6,<11.0.0 || >=11.0.5).\n  Problem 2\n    - drupal/advanced_search is locked to version 2.1.0 and an update of this package was not requested.\n    - drupal/advanced_search 2.1.0 requires drupal/core ^8.8 || ^9 || ^10 -> found drupal/core[10.3.1, ..., 10.3.5] but it conflicts with your temporary update constraint (drupal/core:>=10.3.6,<11.0.0 || >=11.0.5).\n  Problem 3\n    - Root composer.json requires drupal/better_exposed_filters ^6.0 -> satisfiable by drupal/better_exposed_filters[6.0.6].\n    - drupal/better_exposed_filters 6.0.6 requires drupal/core ^9 || ^10 -> found drupal/core[10.3.1, ..., 10.3.5] but it conflicts with your temporary update constraint (drupal/core:>=10.3.6,<11.0.0 || >=11.0.5).\n  Problem 4\n    - drupal/citation_select is locked to version 2.0.0-beta1 and an update of this package was not requested.\n    - drupal/citation_select 2.0.0-beta1 requires drupal/core ^8.8 || ^9 || ^10 -> found drupal/core[10.3.1, ..., 10.3.5] but it conflicts with your temporary update constraint (drupal/core:>=10.3.6,<11.0.0 || >=11.0.5).\n  Problem 5\n    - drupal/coi is locked to version 4.0.0 and an update of this package was not requested.\n    - drupal/coi 4.0.0 requires drupal/core ^10 -> found drupal/core[10.3.1, ..., 10.3.5] but it conflicts with your temporary update constraint (drupal/core:>=10.3.6,<11.0.0 || >=11.0.5).\n  Problem 6\n    - drupal/config_update is locked to version 2.0.0-alpha3 and an update of this package was not requested.\n    - drupal/config_update 2.0.0-alpha3 requires drupal/core ^9.4 || ^10 -> found drupal/core[10.3.1, ..., 10.3.5] but it conflicts with your temporary update constraint (drupal/core:>=10.3.6,<11.0.0 || >=11.0.5).\n  Problem 7\n    - drupal/context is locked to version 5.0.0-rc1 and an update of this package was not requested.\n    - drupal/context 5.0.0-rc1 requires drupal/core ^9.3 || ^10 -> found drupal/core[10.3.1, ..., 10.3.5] but it conflicts with your temporary update constraint (drupal/core:>=10.3.6,<11.0.0 || >=11.0.5).\n  Problem 8\n    - drupal/controlled_access_terms is locked to version 2.4.3 and an update of this package was not requested.\n    - drupal/controlled_access_terms 2.4.3 requires drupal/core ^10.2 -> found drupal/core[10.3.1, ..., 10.3.5] but it conflicts with your temporary update constraint (drupal/core:>=10.3.6,<11.0.0 || >=11.0.5).",
+                    "solver_status": "conflict"
+                },
+                {
+                    "command": "composer update drupal/citation_select -W -m --with 'drupal/core:>=10.3.6,<11.0.0 || >=11.0.5'",
+                    "strategy": "parent-update",
+                    "outcome": "rejected",
+                    "reason": "Composer could not resolve the dependencies: Your requirements could not be resolved to an installable set of packages.\n  Problem 1\n    - drupal/admin_toolbar is locked to version 3.4.2 and an update of this package was not requested.\n    - drupal/admin_toolbar 3.4.2 requires drupal/core ^9.2 || ^10 -> found drupal/core[10.3.1, ..., 10.3.5] but it conflicts with your temporary update constraint (drupal/core:>=10.3.6,<11.0.0 || >=11.0.5).\n  Problem 2\n    - drupal/advanced_search is locked to version 2.1.0 and an update of this package was not requested.\n    - drupal/advanced_search 2.1.0 requires drupal/core ^8.8 || ^9 || ^10 -> found drupal/core[10.3.1, ..., 10.3.5] but it conflicts with your temporary update constraint (drupal/core:>=10.3.6,<11.0.0 || >=11.0.5).\n  Problem 3\n    - drupal/better_exposed_filters is locked to version 6.0.6 and an update of this package was not requested.\n    - drupal/better_exposed_filters 6.0.6 requires drupal/core ^9 || ^10 -> found drupal/core[10.3.1, ..., 10.3.5] but it conflicts with your temporary update constraint (drupal/core:>=10.3.6,<11.0.0 || >=11.0.5).\n  Problem 4\n    - drupal/coi is locked to version 4.0.0 and an update of this package was not requested.\n    - drupal/coi 4.0.0 requires drupal/core ^10 -> found drupal/core[10.3.1, ..., 10.3.5] but it conflicts with your temporary update constraint (drupal/core:>=10.3.6,<11.0.0 || >=11.0.5).\n  Problem 5\n    - drupal/config_update is locked to version 2.0.0-alpha3 and an update of this package was not requested.\n    - drupal/config_update 2.0.0-alpha3 requires drupal/core ^9.4 || ^10 -> found drupal/core[10.3.1, ..., 10.3.5] but it conflicts with your temporary update constraint (drupal/core:>=10.3.6,<11.0.0 || >=11.0.5).\n  Problem 6\n    - drupal/context is locked to version 5.0.0-rc1 and an update of this package was not requested.\n    - drupal/context 5.0.0-rc1 requires drupal/core ^9.3 || ^10 -> found drupal/core[10.3.1, ..., 10.3.5] but it conflicts with your temporary update constraint (drupal/core:>=10.3.6,<11.0.0 || >=11.0.5).\n  Problem 7\n    - drupal/controlled_access_terms is locked to version 2.4.3 and an update of this package was not requested.\n    - drupal/controlled_access_terms 2.4.3 requires drupal/core ^10.2 -> found drupal/core[10.3.1, ..., 10.3.5] but it conflicts with your temporary update constraint (drupal/core:>=10.3.6,<11.0.0 || >=11.0.5).\n  Problem 8\n    - drupal/core-recommended is locked to version 10.3.1 and an update of this package was not requested.\n    - drupal/core-recommended 10.3.1 requires drupal/core 10.3.1 -> found drupal/core[10.3.1] but it conflicts with your temporary update constraint (drupal/core:>=10.3.6,<11.0.0 || >=11.0.5).",
+                    "solver_status": "conflict"
+                },
+                {
+                    "command": "composer require --no-update drupal/islandora:^3.0 && composer update drupal/islandora -W -m --with 'drupal/core:>=10.3.6,<11.0.0 || >=11.0.5'",
+                    "strategy": "root-constraint-widen",
+                    "outcome": "rejected",
+                    "reason": "Composer could not resolve the dependencies: Your requirements could not be resolved to an installable set of packages.\n  Problem 1\n    - Root composer.json requires drupal/islandora ^3.0, found drupal/islandora[2.12.3, ..., 2.19.0] but it does not match the constraint.\n  Problem 2\n    - drupal/admin_toolbar is locked to version 3.4.2 and an update of this package was not requested.\n    - drupal/admin_toolbar 3.4.2 requires drupal/core ^9.2 || ^10 -> found drupal/core[10.3.1, ..., 10.3.5] but it conflicts with your temporary update constraint (drupal/core:>=10.3.6,<11.0.0 || >=11.0.5).\n  Problem 3\n    - drupal/advanced_search is locked to version 2.1.0 and an update of this package was not requested.\n    - drupal/advanced_search 2.1.0 requires drupal/core ^8.8 || ^9 || ^10 -> found drupal/core[10.3.1, ..., 10.3.5] but it conflicts with your temporary update constraint (drupal/core:>=10.3.6,<11.0.0 || >=11.0.5).\n  Problem 4\n    - drupal/better_exposed_filters is locked to version 6.0.6 and an update of this package was not requested.\n    - drupal/better_exposed_filters 6.0.6 requires drupal/core ^9 || ^10 -> found drupal/core[10.3.1, ..., 10.3.5] but it conflicts with your temporary update constraint (drupal/core:>=10.3.6,<11.0.0 || >=11.0.5).\n  Problem 5\n    - drupal/citation_select is locked to version 2.0.0-beta1 and an update of this package was not requested.\n    - drupal/citation_select 2.0.0-beta1 requires drupal/core ^8.8 || ^9 || ^10 -> found drupal/core[10.3.1, ..., 10.3.5] but it conflicts with your temporary update constraint (drupal/core:>=10.3.6,<11.0.0 || >=11.0.5).\n  Problem 6\n    - drupal/coi is locked to version 4.0.0 and an update of this package was not requested.\n    - drupal/coi 4.0.0 requires drupal/core ^10 -> found drupal/core[10.3.1, ..., 10.3.5] but it conflicts with your temporary update constraint (drupal/core:>=10.3.6,<11.0.0 || >=11.0.5).\n  Problem 7\n    - drupal/config_update is locked to version 2.0.0-alpha3 and an update of this package was not requested.\n    - drupal/config_update 2.0.0-alpha3 requires drupal/core ^9.4 || ^10 -> found drupal/core[10.3.1, ..., 10.3.5] but it conflicts with your temporary update constraint (drupal/core:>=10.3.6,<11.0.0 || >=11.0.5).\n  Problem 8\n    - drupal/context is locked to version 5.0.0-rc1 and an update of this package was not requested.\n    - drupal/context 5.0.0-rc1 requires drupal/core ^9.3 || ^10 -> found drupal/core[10.3.1, ..., 10.3.5] but it conflicts with your temporary update constraint (drupal/core:>=10.3.6,<11.0.0 || >=11.0.5).\n  Problem 9",
+                    "solver_status": "conflict"
+                },
+                {
+                    "command": "composer require --no-update drupal/islandora:^3.0 && composer update drupal/islandora drupal/admin_toolbar drupal/advanced_search drupal/better_exposed_filters drupal/citation_select drupal/coi drupal/config_update drupal/context drupal/controlled_access_terms drupal/core-recommended drupal/facets drupal/field_group drupal/field_permissions drupal/field_report drupal/flysystem drupal/fpa drupal/hal drupal/islandora_mirador drupal/openseadragon drupal/pathauto drupal/pdf drupal/rest_oai_pmh drupal/search_api_solr drupal/taxonomy_manager drupal/term_merge drupal/twig_tweak drupal/views_data_export drupal/views_field_view drupal/config_inspector drupal/devel drupal/restui discoverygarden/dgi_image_discovery -W -m --with 'drupal/core:>=10.3.6,<11.0.0 || >=11.0.5'",
+                    "strategy": "root-constraint-widen",
+                    "outcome": "rejected",
+                    "reason": "Composer could not resolve the dependencies: Your requirements could not be resolved to an installable set of packages.\n  Problem 1\n    - Root composer.json requires drupal/islandora ^3.0, found drupal/islandora[2.12.3, ..., 2.19.0] but it does not match the constraint.\n  Problem 2\n    - Root composer.json requires drupal/better_exposed_filters ^6.0 -> satisfiable by drupal/better_exposed_filters[6.0.6].\n    - drupal/better_exposed_filters 6.0.6 requires drupal/core ^9 || ^10 -> found drupal/core[10.3.1, ..., 10.3.5] but it conflicts with your temporary update constraint (drupal/core:>=10.3.6,<11.0.0 || >=11.0.5).\n  Problem 3\n    - Root composer.json requires drupal/term_merge ^2.0@beta -> satisfiable by drupal/term_merge[2.0.0-beta6, 2.0.0].\n    - drupal/term_merge[2.0.0-beta6, ..., 2.0.0] require drupal/core ^9 || ^10 || ^11 -> found drupal/core[10.3.1, ..., 10.3.5, 11.0.0-alpha1, ..., 11.0.4] but it conflicts with your temporary update constraint (drupal/core:>=10.3.6,<11.0.0 || >=11.0.5).\n  Problem 4\n    - Root composer.json requires drupal/restui ^1.21 -> satisfiable by drupal/restui[1.22.0].\n    - drupal/restui 1.22.0 requires drupal/core ^9.5 || ^10 || ^11 -> found drupal/core[10.3.1, ..., 10.3.5, 11.0.0-alpha1, ..., 11.0.4] but it conflicts with your temporary update constraint (drupal/core:>=10.3.6,<11.0.0 || >=11.0.5).\n  Problem 5\n    - Root composer.json requires discoverygarden/dgi_image_discovery ^1 -> satisfiable by discoverygarden/dgi_image_discovery[v1.3.1, v1.4.0].\n    - discoverygarden/dgi_image_discovery[v1.3.1, ..., v1.4.0] require drupal/search_api ^1.19 -> satisfiable by drupal/search_api[1.35.0, ..., 1.41.0].\n    - drupal/search_api 1.35.0 requires drupal/core ^10.1 || ^11 -> found drupal/core[10.3.1, ..., 10.3.5, 11.0.0-alpha1, ..., 11.0.4] but it conflicts with your temporary update constraint (drupal/core:>=10.3.6,<11.0.0 || >=11.0.5).\n    - drupal/search_api[1.36.0, ..., 1.38.0] require drupal/core ^10.2 || ^11 -> found drupal/core[10.3.1, ..., 10.3.5, 11.0.0-alpha1, ..., 11.0.4] but it conflicts with your temporary update constraint (drupal/core:>=10.3.6,<11.0.0 || >=11.0.5).\n    - drupal/search_api[1.39.0, ..., 1.41.0] require drupal/core ^10.3 || ^11 -> found drupal/core[10.3.1, ..., 10.3.5, 11.0.0-alpha1, ..., 11.0.4] but it conflicts with your temporary update constraint (drupal/core:>=10.3.6,<11.0.0 || >=11.0.5).",
+                    "solver_status": "conflict"
+                }
+            ]
+        },
         {
             "package": "drupal/core-recommended",
             "version": "10.3.1",
@@ -96,6 +476,484 @@
                     "outcome": "rejected",
                     "reason": "Composer could not resolve the dependencies: Your requirements could not be resolved to an installable set of packages.\n  Problem 1\n    - Root composer.json requires drupal/core-recommended ^11.0, found drupal/core-recommended[11.0.0-alpha1, ..., 11.0.4] but it conflicts with your temporary update constraint (drupal/core-recommended:>=10.3.6,<11.0.0 || >=11.0.5).",
                     "solver_status": "conflict"
+                }
+            ]
+        },
+        {
+            "package": "symfony/validator",
+            "version": "v6.4.9",
+            "version_normalized": "6.4.9.0",
+            "direct": false,
+            "dev": false,
+            "via_replaced_package": null,
+            "advisories": [
+                {
+                    "id": "PKSA-w2tw-kmfg-rt9s",
+                    "cve": "CVE-2024-50343",
+                    "title": "CVE-2024-50343: Incorrect response from Validator when input ends with `\n`",
+                    "link": "https://symfony.com/cve-2024-50343",
+                    "severity": "low",
+                    "reported_at": "2024-08-30T08:00:00+00:00",
+                    "affected_versions": ">=2.0.0,<3.0.0|>=3.0.0,<4.0.0|>=4.0.0,<5.0.0|>=5.0.0,<5.1.0|>=5.1.0,<5.2.0|>=5.2.0,<5.3.0|>=5.3.0,<5.4.0|>=5.4.0,<5.4.43|>=6.0.0,<6.1.0|>=6.1.0,<6.2.0|>=6.2.0,<6.3.0|>=6.3.0,<6.4.0|>=6.4.0,<6.4.11|>=7.0.0,<7.1.0|>=7.1.0,<7.1.4",
+                    "sources": [
+                        {
+                            "name": "GitHub",
+                            "remoteId": "GHSA-g3rh-rrhp-jhh9"
+                        },
+                        {
+                            "name": "FriendsOfPHP/security-advisories",
+                            "remoteId": "symfony/validator/CVE-2024-50343.yaml"
+                        }
+                    ]
+                }
+            ],
+            "paths_total": 121,
+            "paths": [
+                {
+                    "cyclic": false,
+                    "chain": [
+                        {
+                            "package": "root",
+                            "version": null,
+                            "requires": "<=8"
+                        },
+                        {
+                            "package": "drupal/core",
+                            "version": "10.3.1",
+                            "requires": "^6.4"
+                        }
+                    ],
+                    "target": {
+                        "package": "symfony/validator",
+                        "version": "v6.4.9"
+                    }
+                },
+                {
+                    "cyclic": false,
+                    "chain": [
+                        {
+                            "package": "root",
+                            "version": null,
+                            "requires": "^2.8.1"
+                        },
+                        {
+                            "package": "drupal/islandora",
+                            "version": "2.12.3",
+                            "requires": "*"
+                        },
+                        {
+                            "package": "drupal/action",
+                            "version": "0.2.1",
+                            "requires": ">10.2"
+                        },
+                        {
+                            "package": "drupal/core",
+                            "version": "10.3.1",
+                            "requires": "^6.4"
+                        }
+                    ],
+                    "target": {
+                        "package": "symfony/validator",
+                        "version": "v6.4.9"
+                    }
+                },
+                {
+                    "cyclic": false,
+                    "chain": [
+                        {
+                            "package": "root",
+                            "version": null,
+                            "requires": "^2"
+                        },
+                        {
+                            "package": "drupal/islandora_mirador",
+                            "version": "2.3.7",
+                            "requires": "*"
+                        },
+                        {
+                            "package": "drupal/islandora_iiif",
+                            "version": "2.12.3",
+                            "requires": "^2"
+                        },
+                        {
+                            "package": "drupal/islandora",
+                            "version": "2.12.3",
+                            "requires": "*"
+                        },
+                        {
+                            "package": "drupal/action",
+                            "version": "0.2.1",
+                            "requires": ">10.2"
+                        },
+                        {
+                            "package": "drupal/core",
+                            "version": "10.3.1",
+                            "requires": "^6.4"
+                        }
+                    ],
+                    "target": {
+                        "package": "symfony/validator",
+                        "version": "v6.4.9"
+                    }
+                },
+                {
+                    "cyclic": false,
+                    "chain": [
+                        {
+                            "package": "root",
+                            "version": null,
+                            "requires": "^2"
+                        },
+                        {
+                            "package": "drupal/islandora_mirador",
+                            "version": "2.3.7",
+                            "requires": "^2"
+                        },
+                        {
+                            "package": "drupal/islandora",
+                            "version": "2.12.3",
+                            "requires": "*"
+                        },
+                        {
+                            "package": "drupal/action",
+                            "version": "0.2.1",
+                            "requires": ">10.2"
+                        },
+                        {
+                            "package": "drupal/core",
+                            "version": "10.3.1",
+                            "requires": "^6.4"
+                        }
+                    ],
+                    "target": {
+                        "package": "symfony/validator",
+                        "version": "v6.4.9"
+                    }
+                },
+                {
+                    "cyclic": false,
+                    "chain": [
+                        {
+                            "package": "root",
+                            "version": null,
+                            "requires": "^3.1"
+                        },
+                        {
+                            "package": "drupal/admin_toolbar",
+                            "version": "3.4.2",
+                            "requires": "^9.2 || ^10"
+                        },
+                        {
+                            "package": "drupal/core",
+                            "version": "10.3.1",
+                            "requires": "^6.4"
+                        }
+                    ],
+                    "target": {
+                        "package": "symfony/validator",
+                        "version": "v6.4.9"
+                    }
+                },
+                {
+                    "cyclic": false,
+                    "chain": [
+                        {
+                            "package": "root",
+                            "version": null,
+                            "requires": "^2.0.0@beta"
+                        },
+                        {
+                            "package": "drupal/advanced_search",
+                            "version": "2.1.0",
+                            "requires": "^8.8 || ^9 || ^10"
+                        },
+                        {
+                            "package": "drupal/core",
+                            "version": "10.3.1",
+                            "requires": "^6.4"
+                        }
+                    ],
+                    "target": {
+                        "package": "symfony/validator",
+                        "version": "v6.4.9"
+                    }
+                },
+                {
+                    "cyclic": false,
+                    "chain": [
+                        {
+                            "package": "root",
+                            "version": null,
+                            "requires": "^6.0"
+                        },
+                        {
+                            "package": "drupal/better_exposed_filters",
+                            "version": "6.0.6",
+                            "requires": "^9 || ^10"
+                        },
+                        {
+                            "package": "drupal/core",
+                            "version": "10.3.1",
+                            "requires": "^6.4"
+                        }
+                    ],
+                    "target": {
+                        "package": "symfony/validator",
+                        "version": "v6.4.9"
+                    }
+                },
+                {
+                    "cyclic": false,
+                    "chain": [
+                        {
+                            "package": "root",
+                            "version": null,
+                            "requires": "^2.0@beta"
+                        },
+                        {
+                            "package": "drupal/citation_select",
+                            "version": "2.0.0-beta1",
+                            "requires": "^8.8 || ^9 || ^10"
+                        },
+                        {
+                            "package": "drupal/core",
+                            "version": "10.3.1",
+                            "requires": "^6.4"
+                        }
+                    ],
+                    "target": {
+                        "package": "symfony/validator",
+                        "version": "v6.4.9"
+                    }
+                },
+                {
+                    "cyclic": false,
+                    "chain": [
+                        {
+                            "package": "root",
+                            "version": null,
+                            "requires": "^4.0"
+                        },
+                        {
+                            "package": "drupal/coi",
+                            "version": "4.0.0",
+                            "requires": "^10"
+                        },
+                        {
+                            "package": "drupal/core",
+                            "version": "10.3.1",
+                            "requires": "^6.4"
+                        }
+                    ],
+                    "target": {
+                        "package": "symfony/validator",
+                        "version": "v6.4.9"
+                    }
+                },
+                {
+                    "cyclic": false,
+                    "chain": [
+                        {
+                            "package": "root",
+                            "version": null,
+                            "requires": "^4.0"
+                        },
+                        {
+                            "package": "drupal/coi",
+                            "version": "4.0.0",
+                            "requires": "^4"
+                        },
+                        {
+                            "package": "drupal/config_override_core_fields",
+                            "version": "4.0.0",
+                            "requires": ">=10"
+                        },
+                        {
+                            "package": "drupal/core",
+                            "version": "10.3.1",
+                            "requires": "^6.4"
+                        }
+                    ],
+                    "target": {
+                        "package": "symfony/validator",
+                        "version": "v6.4.9"
+                    }
+                }
+            ],
+            "remediation": {
+                "status": "verified",
+                "command": "composer update symfony/validator",
+                "strategy": "lock-refresh",
+                "root_constraint_changes": [],
+                "summary": {
+                    "changed": 1,
+                    "added": 0,
+                    "removed": 0,
+                    "total": 1,
+                    "major_change": false,
+                    "downgrade": false,
+                    "prerelease": false
+                },
+                "changes": [
+                    {
+                        "package": "symfony/validator",
+                        "kind": "upgraded",
+                        "step": "patch",
+                        "from": "v6.4.9",
+                        "to": "v6.4.12"
+                    }
+                ]
+            },
+            "candidates": [
+                {
+                    "command": "composer update symfony/validator",
+                    "strategy": "lock-refresh",
+                    "outcome": "valid",
+                    "rank": 1,
+                    "summary": {
+                        "changed": 1,
+                        "added": 0,
+                        "removed": 0,
+                        "total": 1,
+                        "major_change": false,
+                        "downgrade": false,
+                        "prerelease": false
+                    },
+                    "solver_status": "resolved"
+                },
+                {
+                    "command": "composer update symfony/validator -w -m --with 'symfony/validator:>=6.4.11,<7.0.0 || >=7.1.4'",
+                    "strategy": "with-dependencies",
+                    "outcome": "valid",
+                    "rank": 2,
+                    "summary": {
+                        "changed": 1,
+                        "added": 0,
+                        "removed": 0,
+                        "total": 1,
+                        "major_change": false,
+                        "downgrade": false,
+                        "prerelease": false
+                    },
+                    "solver_status": "resolved"
+                },
+                {
+                    "command": "composer update drupal/better_exposed_filters -W -m --with 'symfony/validator:>=6.4.11,<7.0.0 || >=7.1.4'",
+                    "strategy": "parent-update",
+                    "outcome": "valid",
+                    "rank": 3,
+                    "summary": {
+                        "changed": 1,
+                        "added": 0,
+                        "removed": 0,
+                        "total": 1,
+                        "major_change": false,
+                        "downgrade": false,
+                        "prerelease": false
+                    },
+                    "solver_status": "resolved"
+                },
+                {
+                    "command": "composer update drupal/islandora_mirador -W -m --with 'symfony/validator:>=6.4.11,<7.0.0 || >=7.1.4'",
+                    "strategy": "parent-update",
+                    "outcome": "valid",
+                    "rank": 4,
+                    "summary": {
+                        "changed": 2,
+                        "added": 0,
+                        "removed": 0,
+                        "total": 2,
+                        "major_change": false,
+                        "downgrade": false,
+                        "prerelease": false
+                    },
+                    "solver_status": "resolved"
+                },
+                {
+                    "command": "composer update drupal/admin_toolbar -W -m --with 'symfony/validator:>=6.4.11,<7.0.0 || >=7.1.4'",
+                    "strategy": "parent-update",
+                    "outcome": "valid",
+                    "rank": 5,
+                    "summary": {
+                        "changed": 2,
+                        "added": 0,
+                        "removed": 0,
+                        "total": 2,
+                        "major_change": false,
+                        "downgrade": false,
+                        "prerelease": false
+                    },
+                    "solver_status": "resolved"
+                },
+                {
+                    "command": "composer update drupal/islandora -W -m --with 'symfony/validator:>=6.4.11,<7.0.0 || >=7.1.4'",
+                    "strategy": "parent-update",
+                    "outcome": "valid",
+                    "rank": 6,
+                    "summary": {
+                        "changed": 3,
+                        "added": 0,
+                        "removed": 0,
+                        "total": 3,
+                        "major_change": false,
+                        "downgrade": false,
+                        "prerelease": false
+                    },
+                    "solver_status": "resolved"
+                },
+                {
+                    "command": "composer update drupal/advanced_search -W -m --with 'symfony/validator:>=6.4.11,<7.0.0 || >=7.1.4'",
+                    "strategy": "parent-update",
+                    "outcome": "valid",
+                    "rank": 7,
+                    "summary": {
+                        "changed": 2,
+                        "added": 1,
+                        "removed": 0,
+                        "total": 3,
+                        "major_change": false,
+                        "downgrade": false,
+                        "prerelease": false
+                    },
+                    "solver_status": "resolved"
+                },
+                {
+                    "command": "composer update drupal/core-recommended -W -m --with 'symfony/validator:>=6.4.11,<7.0.0 || >=7.1.4'",
+                    "strategy": "parent-update",
+                    "outcome": "valid",
+                    "rank": 8,
+                    "summary": {
+                        "changed": 4,
+                        "added": 0,
+                        "removed": 0,
+                        "total": 4,
+                        "major_change": false,
+                        "downgrade": false,
+                        "prerelease": false
+                    },
+                    "solver_status": "resolved"
+                },
+                {
+                    "command": "composer update drupal/islandora drupal/admin_toolbar drupal/advanced_search drupal/better_exposed_filters drupal/citation_select drupal/coi drupal/config_update drupal/context drupal/controlled_access_terms drupal/core-recommended drupal/views_data_export drupal/pathauto drupal/facets drupal/field_group drupal/field_permissions drupal/field_report drupal/flysystem drupal/fpa drupal/hal drupal/islandora_mirador drupal/taxonomy_manager drupal/openseadragon drupal/pdf drupal/rest_oai_pmh discoverygarden/dgi_image_discovery drupal/search_api_solr drupal/term_merge drupal/twig_tweak drupal/views_field_view drupal/config_inspector drupal/devel drupal/restui -W -m --with 'symfony/validator:>=6.4.11,<7.0.0 || >=7.1.4'",
+                    "strategy": "parent-update",
+                    "outcome": "valid",
+                    "rank": 9,
+                    "summary": {
+                        "changed": 36,
+                        "added": 2,
+                        "removed": 1,
+                        "total": 39,
+                        "major_change": false,
+                        "downgrade": false,
+                        "prerelease": true
+                    },
+                    "solver_status": "resolved"
+                },
+                {
+                    "command": "composer require --no-update drupal/core-recommended:^11.0 && composer update drupal/core-recommended -W -m --with 'symfony/validator:>=6.4.11,<7.0.0 || >=7.1.4'",
+                    "strategy": "root-constraint-widen",
+                    "outcome": "skipped",
+                    "reason": "a better candidate already exists"
                 }
             ]
         },
@@ -723,849 +1581,10 @@
                     "reason": "a better candidate already exists"
                 }
             ]
-        },
-        {
-            "package": "drupal/core",
-            "version": "10.3.1",
-            "version_normalized": "10.3.1.0",
-            "direct": false,
-            "dev": false,
-            "via_replaced_package": null,
-            "advisories": [
-                {
-                    "id": "PKSA-styk-3knc-d1bt",
-                    "cve": "CVE-2024-45440",
-                    "title": "Drupal Full Path Disclosure",
-                    "link": "https://github.com/advisories/GHSA-mg8j-w93w-xjgc",
-                    "severity": "medium",
-                    "reported_at": "2024-08-29T12:31:05+00:00",
-                    "affected_versions": ">=8.0.0,<10.2.9|>=10.3.0,<10.3.6|>=11.0.0,<11.0.5",
-                    "sources": [
-                        {
-                            "name": "GitHub",
-                            "remoteId": "GHSA-mg8j-w93w-xjgc"
-                        }
-                    ]
-                }
-            ],
-            "paths_total": 120,
-            "paths": [
-                {
-                    "cyclic": false,
-                    "chain": [
-                        {
-                            "package": "root",
-                            "version": null,
-                            "requires": "<=8"
-                        }
-                    ],
-                    "target": {
-                        "package": "drupal/core",
-                        "version": "10.3.1"
-                    }
-                },
-                {
-                    "cyclic": false,
-                    "chain": [
-                        {
-                            "package": "root",
-                            "version": null,
-                            "requires": "^2.8.1"
-                        },
-                        {
-                            "package": "drupal/islandora",
-                            "version": "2.12.3",
-                            "requires": "*"
-                        },
-                        {
-                            "package": "drupal/action",
-                            "version": "0.2.1",
-                            "requires": ">10.2"
-                        }
-                    ],
-                    "target": {
-                        "package": "drupal/core",
-                        "version": "10.3.1"
-                    }
-                },
-                {
-                    "cyclic": false,
-                    "chain": [
-                        {
-                            "package": "root",
-                            "version": null,
-                            "requires": "^2"
-                        },
-                        {
-                            "package": "drupal/islandora_mirador",
-                            "version": "2.3.7",
-                            "requires": "*"
-                        },
-                        {
-                            "package": "drupal/islandora_iiif",
-                            "version": "2.12.3",
-                            "requires": "^2"
-                        },
-                        {
-                            "package": "drupal/islandora",
-                            "version": "2.12.3",
-                            "requires": "*"
-                        },
-                        {
-                            "package": "drupal/action",
-                            "version": "0.2.1",
-                            "requires": ">10.2"
-                        }
-                    ],
-                    "target": {
-                        "package": "drupal/core",
-                        "version": "10.3.1"
-                    }
-                },
-                {
-                    "cyclic": false,
-                    "chain": [
-                        {
-                            "package": "root",
-                            "version": null,
-                            "requires": "^2"
-                        },
-                        {
-                            "package": "drupal/islandora_mirador",
-                            "version": "2.3.7",
-                            "requires": "^2"
-                        },
-                        {
-                            "package": "drupal/islandora",
-                            "version": "2.12.3",
-                            "requires": "*"
-                        },
-                        {
-                            "package": "drupal/action",
-                            "version": "0.2.1",
-                            "requires": ">10.2"
-                        }
-                    ],
-                    "target": {
-                        "package": "drupal/core",
-                        "version": "10.3.1"
-                    }
-                },
-                {
-                    "cyclic": false,
-                    "chain": [
-                        {
-                            "package": "root",
-                            "version": null,
-                            "requires": "^3.1"
-                        },
-                        {
-                            "package": "drupal/admin_toolbar",
-                            "version": "3.4.2",
-                            "requires": "^9.2 || ^10"
-                        }
-                    ],
-                    "target": {
-                        "package": "drupal/core",
-                        "version": "10.3.1"
-                    }
-                },
-                {
-                    "cyclic": false,
-                    "chain": [
-                        {
-                            "package": "root",
-                            "version": null,
-                            "requires": "^2.0.0@beta"
-                        },
-                        {
-                            "package": "drupal/advanced_search",
-                            "version": "2.1.0",
-                            "requires": "^8.8 || ^9 || ^10"
-                        }
-                    ],
-                    "target": {
-                        "package": "drupal/core",
-                        "version": "10.3.1"
-                    }
-                },
-                {
-                    "cyclic": false,
-                    "chain": [
-                        {
-                            "package": "root",
-                            "version": null,
-                            "requires": "^6.0"
-                        },
-                        {
-                            "package": "drupal/better_exposed_filters",
-                            "version": "6.0.6",
-                            "requires": "^9 || ^10"
-                        }
-                    ],
-                    "target": {
-                        "package": "drupal/core",
-                        "version": "10.3.1"
-                    }
-                },
-                {
-                    "cyclic": false,
-                    "chain": [
-                        {
-                            "package": "root",
-                            "version": null,
-                            "requires": "^2.0@beta"
-                        },
-                        {
-                            "package": "drupal/citation_select",
-                            "version": "2.0.0-beta1",
-                            "requires": "^8.8 || ^9 || ^10"
-                        }
-                    ],
-                    "target": {
-                        "package": "drupal/core",
-                        "version": "10.3.1"
-                    }
-                },
-                {
-                    "cyclic": false,
-                    "chain": [
-                        {
-                            "package": "root",
-                            "version": null,
-                            "requires": "^4.0"
-                        },
-                        {
-                            "package": "drupal/coi",
-                            "version": "4.0.0",
-                            "requires": "^10"
-                        }
-                    ],
-                    "target": {
-                        "package": "drupal/core",
-                        "version": "10.3.1"
-                    }
-                },
-                {
-                    "cyclic": false,
-                    "chain": [
-                        {
-                            "package": "root",
-                            "version": null,
-                            "requires": "^4.0"
-                        },
-                        {
-                            "package": "drupal/coi",
-                            "version": "4.0.0",
-                            "requires": "^4"
-                        },
-                        {
-                            "package": "drupal/config_override_core_fields",
-                            "version": "4.0.0",
-                            "requires": ">=10"
-                        }
-                    ],
-                    "target": {
-                        "package": "drupal/core",
-                        "version": "10.3.1"
-                    }
-                }
-            ],
-            "remediation": {
-                "status": "none",
-                "blocker": null
-            },
-            "candidates": [
-                {
-                    "command": "composer update drupal/core",
-                    "strategy": "lock-refresh",
-                    "outcome": "rejected",
-                    "reason": "resolves, but drupal/core ends at 10.3.1 which is still affected by PKSA-styk-3knc-d1bt",
-                    "summary": {
-                        "changed": 0,
-                        "added": 0,
-                        "removed": 0,
-                        "total": 0,
-                        "major_change": false,
-                        "downgrade": false,
-                        "prerelease": false
-                    },
-                    "solver_status": "resolved"
-                },
-                {
-                    "command": "composer update drupal/core -w -m --with 'drupal/core:>=10.3.6,<11.0.0 || >=11.0.5'",
-                    "strategy": "with-dependencies",
-                    "outcome": "rejected",
-                    "reason": "Composer could not resolve the dependencies: Your requirements could not be resolved to an installable set of packages.\n  Problem 1\n    - drupal/admin_toolbar is locked to version 3.4.2 and an update of this package was not requested.\n    - drupal/admin_toolbar 3.4.2 requires drupal/core ^9.2 || ^10 -> found drupal/core[10.3.1, ..., 10.3.5] but it conflicts with your temporary update constraint (drupal/core:>=10.3.6,<11.0.0 || >=11.0.5).\n  Problem 2\n    - drupal/advanced_search is locked to version 2.1.0 and an update of this package was not requested.\n    - drupal/advanced_search 2.1.0 requires drupal/core ^8.8 || ^9 || ^10 -> found drupal/core[10.3.1, ..., 10.3.5] but it conflicts with your temporary update constraint (drupal/core:>=10.3.6,<11.0.0 || >=11.0.5).\n  Problem 3\n    - drupal/better_exposed_filters is locked to version 6.0.6 and an update of this package was not requested.\n    - drupal/better_exposed_filters 6.0.6 requires drupal/core ^9 || ^10 -> found drupal/core[10.3.1, ..., 10.3.5] but it conflicts with your temporary update constraint (drupal/core:>=10.3.6,<11.0.0 || >=11.0.5).\n  Problem 4\n    - drupal/citation_select is locked to version 2.0.0-beta1 and an update of this package was not requested.\n    - drupal/citation_select 2.0.0-beta1 requires drupal/core ^8.8 || ^9 || ^10 -> found drupal/core[10.3.1, ..., 10.3.5] but it conflicts with your temporary update constraint (drupal/core:>=10.3.6,<11.0.0 || >=11.0.5).\n  Problem 5\n    - drupal/coi is locked to version 4.0.0 and an update of this package was not requested.\n    - drupal/coi 4.0.0 requires drupal/core ^10 -> found drupal/core[10.3.1, ..., 10.3.5] but it conflicts with your temporary update constraint (drupal/core:>=10.3.6,<11.0.0 || >=11.0.5).\n  Problem 6\n    - drupal/config_update is locked to version 2.0.0-alpha3 and an update of this package was not requested.\n    - drupal/config_update 2.0.0-alpha3 requires drupal/core ^9.4 || ^10 -> found drupal/core[10.3.1, ..., 10.3.5] but it conflicts with your temporary update constraint (drupal/core:>=10.3.6,<11.0.0 || >=11.0.5).\n  Problem 7\n    - drupal/context is locked to version 5.0.0-rc1 and an update of this package was not requested.\n    - drupal/context 5.0.0-rc1 requires drupal/core ^9.3 || ^10 -> found drupal/core[10.3.1, ..., 10.3.5] but it conflicts with your temporary update constraint (drupal/core:>=10.3.6,<11.0.0 || >=11.0.5).\n  Problem 8\n    - drupal/controlled_access_terms is locked to version 2.4.3 and an update of this package was not requested.\n    - drupal/controlled_access_terms 2.4.3 requires drupal/core ^10.2 -> found drupal/core[10.3.1, ..., 10.3.5] but it conflicts with your temporary update constraint (drupal/core:>=10.3.6,<11.0.0 || >=11.0.5).",
-                    "solver_status": "conflict"
-                },
-                {
-                    "command": "composer update drupal/islandora -W -m --with 'drupal/core:>=10.3.6,<11.0.0 || >=11.0.5'",
-                    "strategy": "parent-update",
-                    "outcome": "rejected",
-                    "reason": "Composer could not resolve the dependencies: Your requirements could not be resolved to an installable set of packages.\n  Problem 1\n    - drupal/admin_toolbar is locked to version 3.4.2 and an update of this package was not requested.\n    - drupal/admin_toolbar 3.4.2 requires drupal/core ^9.2 || ^10 -> found drupal/core[10.3.1, ..., 10.3.5] but it conflicts with your temporary update constraint (drupal/core:>=10.3.6,<11.0.0 || >=11.0.5).\n  Problem 2\n    - drupal/advanced_search is locked to version 2.1.0 and an update of this package was not requested.\n    - drupal/advanced_search 2.1.0 requires drupal/core ^8.8 || ^9 || ^10 -> found drupal/core[10.3.1, ..., 10.3.5] but it conflicts with your temporary update constraint (drupal/core:>=10.3.6,<11.0.0 || >=11.0.5).\n  Problem 3\n    - drupal/better_exposed_filters is locked to version 6.0.6 and an update of this package was not requested.\n    - drupal/better_exposed_filters 6.0.6 requires drupal/core ^9 || ^10 -> found drupal/core[10.3.1, ..., 10.3.5] but it conflicts with your temporary update constraint (drupal/core:>=10.3.6,<11.0.0 || >=11.0.5).\n  Problem 4\n    - drupal/citation_select is locked to version 2.0.0-beta1 and an update of this package was not requested.\n    - drupal/citation_select 2.0.0-beta1 requires drupal/core ^8.8 || ^9 || ^10 -> found drupal/core[10.3.1, ..., 10.3.5] but it conflicts with your temporary update constraint (drupal/core:>=10.3.6,<11.0.0 || >=11.0.5).\n  Problem 5\n    - drupal/coi is locked to version 4.0.0 and an update of this package was not requested.\n    - drupal/coi 4.0.0 requires drupal/core ^10 -> found drupal/core[10.3.1, ..., 10.3.5] but it conflicts with your temporary update constraint (drupal/core:>=10.3.6,<11.0.0 || >=11.0.5).\n  Problem 6\n    - drupal/config_update is locked to version 2.0.0-alpha3 and an update of this package was not requested.\n    - drupal/config_update 2.0.0-alpha3 requires drupal/core ^9.4 || ^10 -> found drupal/core[10.3.1, ..., 10.3.5] but it conflicts with your temporary update constraint (drupal/core:>=10.3.6,<11.0.0 || >=11.0.5).\n  Problem 7\n    - drupal/controlled_access_terms is locked to version 2.4.3 and an update of this package was not requested.\n    - drupal/controlled_access_terms 2.4.3 requires drupal/core ^10.2 -> found drupal/core[10.3.1, ..., 10.3.5] but it conflicts with your temporary update constraint (drupal/core:>=10.3.6,<11.0.0 || >=11.0.5).\n  Problem 8\n    - drupal/core-recommended is locked to version 10.3.1 and an update of this package was not requested.\n    - drupal/core-recommended 10.3.1 requires drupal/core 10.3.1 -> found drupal/core[10.3.1] but it conflicts with your temporary update constraint (drupal/core:>=10.3.6,<11.0.0 || >=11.0.5).",
-                    "solver_status": "conflict"
-                },
-                {
-                    "command": "composer update drupal/islandora drupal/admin_toolbar drupal/advanced_search drupal/better_exposed_filters drupal/citation_select drupal/coi drupal/config_update drupal/controlled_access_terms drupal/core-recommended drupal/facets drupal/field_group drupal/field_permissions drupal/field_report drupal/fpa drupal/islandora_mirador drupal/openseadragon drupal/pathauto drupal/pdf drupal/rest_oai_pmh drupal/search_api_solr drupal/taxonomy_manager drupal/term_merge drupal/twig_tweak drupal/views_data_export drupal/views_field_view drupal/config_inspector drupal/devel drupal/restui discoverygarden/dgi_image_discovery -W -m --with 'drupal/core:>=10.3.6,<11.0.0 || >=11.0.5'",
-                    "strategy": "parent-update",
-                    "outcome": "rejected",
-                    "reason": "Composer could not resolve the dependencies: Your requirements could not be resolved to an installable set of packages.\n  Problem 1\n    - Root composer.json requires drupal/better_exposed_filters ^6.0 -> satisfiable by drupal/better_exposed_filters[6.0.6].\n    - drupal/better_exposed_filters 6.0.6 requires drupal/core ^9 || ^10 -> found drupal/core[10.3.1, ..., 10.3.5] but it conflicts with your temporary update constraint (drupal/core:>=10.3.6,<11.0.0 || >=11.0.5).\n  Problem 2\n    - Root composer.json requires drupal/term_merge ^2.0@beta -> satisfiable by drupal/term_merge[2.0.0-beta6, 2.0.0].\n    - drupal/term_merge[2.0.0-beta6, ..., 2.0.0] require drupal/core ^9 || ^10 || ^11 -> found drupal/core[10.3.1, ..., 10.3.5, 11.0.0-alpha1, ..., 11.0.4] but it conflicts with your temporary update constraint (drupal/core:>=10.3.6,<11.0.0 || >=11.0.5).\n  Problem 3\n    - Root composer.json requires drupal/restui ^1.21 -> satisfiable by drupal/restui[1.22.0].\n    - drupal/restui 1.22.0 requires drupal/core ^9.5 || ^10 || ^11 -> found drupal/core[10.3.1, ..., 10.3.5, 11.0.0-alpha1, ..., 11.0.4] but it conflicts with your temporary update constraint (drupal/core:>=10.3.6,<11.0.0 || >=11.0.5).\n  Problem 4\n    - Root composer.json requires discoverygarden/dgi_image_discovery ^1 -> satisfiable by discoverygarden/dgi_image_discovery[v1.3.1, v1.4.0].\n    - discoverygarden/dgi_image_discovery[v1.3.1, ..., v1.4.0] require drupal/search_api ^1.19 -> satisfiable by drupal/search_api[1.35.0, ..., 1.41.0].\n    - drupal/search_api 1.35.0 requires drupal/core ^10.1 || ^11 -> found drupal/core[10.3.1, ..., 10.3.5, 11.0.0-alpha1, ..., 11.0.4] but it conflicts with your temporary update constraint (drupal/core:>=10.3.6,<11.0.0 || >=11.0.5).\n    - drupal/search_api[1.36.0, ..., 1.38.0] require drupal/core ^10.2 || ^11 -> found drupal/core[10.3.1, ..., 10.3.5, 11.0.0-alpha1, ..., 11.0.4] but it conflicts with your temporary update constraint (drupal/core:>=10.3.6,<11.0.0 || >=11.0.5).\n    - drupal/search_api[1.39.0, ..., 1.41.0] require drupal/core ^10.3 || ^11 -> found drupal/core[10.3.1, ..., 10.3.5, 11.0.0-alpha1, ..., 11.0.4] but it conflicts with your temporary update constraint (drupal/core:>=10.3.6,<11.0.0 || >=11.0.5).",
-                    "solver_status": "conflict"
-                },
-                {
-                    "command": "composer update drupal/islandora_mirador -W -m --with 'drupal/core:>=10.3.6,<11.0.0 || >=11.0.5'",
-                    "strategy": "parent-update",
-                    "outcome": "rejected",
-                    "reason": "Composer could not resolve the dependencies: Your requirements could not be resolved to an installable set of packages.\n  Problem 1\n    - drupal/admin_toolbar is locked to version 3.4.2 and an update of this package was not requested.\n    - drupal/admin_toolbar 3.4.2 requires drupal/core ^9.2 || ^10 -> found drupal/core[10.3.1, ..., 10.3.5] but it conflicts with your temporary update constraint (drupal/core:>=10.3.6,<11.0.0 || >=11.0.5).\n  Problem 2\n    - drupal/advanced_search is locked to version 2.1.0 and an update of this package was not requested.\n    - drupal/advanced_search 2.1.0 requires drupal/core ^8.8 || ^9 || ^10 -> found drupal/core[10.3.1, ..., 10.3.5] but it conflicts with your temporary update constraint (drupal/core:>=10.3.6,<11.0.0 || >=11.0.5).\n  Problem 3\n    - drupal/better_exposed_filters is locked to version 6.0.6 and an update of this package was not requested.\n    - drupal/better_exposed_filters 6.0.6 requires drupal/core ^9 || ^10 -> found drupal/core[10.3.1, ..., 10.3.5] but it conflicts with your temporary update constraint (drupal/core:>=10.3.6,<11.0.0 || >=11.0.5).\n  Problem 4\n    - drupal/citation_select is locked to version 2.0.0-beta1 and an update of this package was not requested.\n    - drupal/citation_select 2.0.0-beta1 requires drupal/core ^8.8 || ^9 || ^10 -> found drupal/core[10.3.1, ..., 10.3.5] but it conflicts with your temporary update constraint (drupal/core:>=10.3.6,<11.0.0 || >=11.0.5).\n  Problem 5\n    - drupal/coi is locked to version 4.0.0 and an update of this package was not requested.\n    - drupal/coi 4.0.0 requires drupal/core ^10 -> found drupal/core[10.3.1, ..., 10.3.5] but it conflicts with your temporary update constraint (drupal/core:>=10.3.6,<11.0.0 || >=11.0.5).\n  Problem 6\n    - drupal/config_update is locked to version 2.0.0-alpha3 and an update of this package was not requested.\n    - drupal/config_update 2.0.0-alpha3 requires drupal/core ^9.4 || ^10 -> found drupal/core[10.3.1, ..., 10.3.5] but it conflicts with your temporary update constraint (drupal/core:>=10.3.6,<11.0.0 || >=11.0.5).\n  Problem 7\n    - drupal/controlled_access_terms is locked to version 2.4.3 and an update of this package was not requested.\n    - drupal/controlled_access_terms 2.4.3 requires drupal/core ^10.2 -> found drupal/core[10.3.1, ..., 10.3.5] but it conflicts with your temporary update constraint (drupal/core:>=10.3.6,<11.0.0 || >=11.0.5).\n  Problem 8\n    - drupal/core-recommended is locked to version 10.3.1 and an update of this package was not requested.\n    - drupal/core-recommended 10.3.1 requires drupal/core 10.3.1 -> found drupal/core[10.3.1] but it conflicts with your temporary update constraint (drupal/core:>=10.3.6,<11.0.0 || >=11.0.5).",
-                    "solver_status": "conflict"
-                },
-                {
-                    "command": "composer update drupal/islandora_mirador drupal/admin_toolbar drupal/advanced_search drupal/better_exposed_filters drupal/citation_select drupal/coi drupal/config_update drupal/controlled_access_terms drupal/core-recommended drupal/facets drupal/field_group drupal/field_permissions drupal/field_report drupal/fpa drupal/openseadragon drupal/pathauto drupal/pdf drupal/rest_oai_pmh drupal/search_api_solr drupal/taxonomy_manager drupal/term_merge drupal/twig_tweak drupal/views_data_export drupal/views_field_view drupal/config_inspector drupal/devel drupal/restui discoverygarden/dgi_image_discovery -W -m --with 'drupal/core:>=10.3.6,<11.0.0 || >=11.0.5'",
-                    "strategy": "parent-update",
-                    "outcome": "rejected",
-                    "reason": "Composer could not resolve the dependencies: Your requirements could not be resolved to an installable set of packages.\n  Problem 1\n    - Root composer.json requires drupal/better_exposed_filters ^6.0 -> satisfiable by drupal/better_exposed_filters[6.0.6].\n    - drupal/better_exposed_filters 6.0.6 requires drupal/core ^9 || ^10 -> found drupal/core[10.3.1, ..., 10.3.5] but it conflicts with your temporary update constraint (drupal/core:>=10.3.6,<11.0.0 || >=11.0.5).\n  Problem 2\n    - Root composer.json requires drupal/term_merge ^2.0@beta -> satisfiable by drupal/term_merge[2.0.0-beta6, 2.0.0].\n    - drupal/term_merge[2.0.0-beta6, ..., 2.0.0] require drupal/core ^9 || ^10 || ^11 -> found drupal/core[10.3.1, ..., 10.3.5, 11.0.0-alpha1, ..., 11.0.4] but it conflicts with your temporary update constraint (drupal/core:>=10.3.6,<11.0.0 || >=11.0.5).\n  Problem 3\n    - Root composer.json requires drupal/restui ^1.21 -> satisfiable by drupal/restui[1.22.0].\n    - drupal/restui 1.22.0 requires drupal/core ^9.5 || ^10 || ^11 -> found drupal/core[10.3.1, ..., 10.3.5, 11.0.0-alpha1, ..., 11.0.4] but it conflicts with your temporary update constraint (drupal/core:>=10.3.6,<11.0.0 || >=11.0.5).\n  Problem 4\n    - Root composer.json requires discoverygarden/dgi_image_discovery ^1 -> satisfiable by discoverygarden/dgi_image_discovery[v1.3.1, v1.4.0].\n    - discoverygarden/dgi_image_discovery[v1.3.1, ..., v1.4.0] require drupal/search_api ^1.19 -> satisfiable by drupal/search_api[1.35.0, ..., 1.41.0].\n    - drupal/search_api 1.35.0 requires drupal/core ^10.1 || ^11 -> found drupal/core[10.3.1, ..., 10.3.5, 11.0.0-alpha1, ..., 11.0.4] but it conflicts with your temporary update constraint (drupal/core:>=10.3.6,<11.0.0 || >=11.0.5).\n    - drupal/search_api[1.36.0, ..., 1.38.0] require drupal/core ^10.2 || ^11 -> found drupal/core[10.3.1, ..., 10.3.5, 11.0.0-alpha1, ..., 11.0.4] but it conflicts with your temporary update constraint (drupal/core:>=10.3.6,<11.0.0 || >=11.0.5).\n    - drupal/search_api[1.39.0, ..., 1.41.0] require drupal/core ^10.3 || ^11 -> found drupal/core[10.3.1, ..., 10.3.5, 11.0.0-alpha1, ..., 11.0.4] but it conflicts with your temporary update constraint (drupal/core:>=10.3.6,<11.0.0 || >=11.0.5).",
-                    "solver_status": "conflict"
-                },
-                {
-                    "command": "composer update drupal/admin_toolbar -W -m --with 'drupal/core:>=10.3.6,<11.0.0 || >=11.0.5'",
-                    "strategy": "parent-update",
-                    "outcome": "rejected",
-                    "reason": "Composer could not resolve the dependencies: Your requirements could not be resolved to an installable set of packages.\n  Problem 1\n    - drupal/advanced_search is locked to version 2.1.0 and an update of this package was not requested.\n    - drupal/advanced_search 2.1.0 requires drupal/core ^8.8 || ^9 || ^10 -> found drupal/core[10.3.1, ..., 10.3.5] but it conflicts with your temporary update constraint (drupal/core:>=10.3.6,<11.0.0 || >=11.0.5).\n  Problem 2\n    - drupal/better_exposed_filters is locked to version 6.0.6 and an update of this package was not requested.\n    - drupal/better_exposed_filters 6.0.6 requires drupal/core ^9 || ^10 -> found drupal/core[10.3.1, ..., 10.3.5] but it conflicts with your temporary update constraint (drupal/core:>=10.3.6,<11.0.0 || >=11.0.5).\n  Problem 3\n    - drupal/citation_select is locked to version 2.0.0-beta1 and an update of this package was not requested.\n    - drupal/citation_select 2.0.0-beta1 requires drupal/core ^8.8 || ^9 || ^10 -> found drupal/core[10.3.1, ..., 10.3.5] but it conflicts with your temporary update constraint (drupal/core:>=10.3.6,<11.0.0 || >=11.0.5).\n  Problem 4\n    - drupal/coi is locked to version 4.0.0 and an update of this package was not requested.\n    - drupal/coi 4.0.0 requires drupal/core ^10 -> found drupal/core[10.3.1, ..., 10.3.5] but it conflicts with your temporary update constraint (drupal/core:>=10.3.6,<11.0.0 || >=11.0.5).\n  Problem 5\n    - drupal/config_update is locked to version 2.0.0-alpha3 and an update of this package was not requested.\n    - drupal/config_update 2.0.0-alpha3 requires drupal/core ^9.4 || ^10 -> found drupal/core[10.3.1, ..., 10.3.5] but it conflicts with your temporary update constraint (drupal/core:>=10.3.6,<11.0.0 || >=11.0.5).\n  Problem 6\n    - drupal/context is locked to version 5.0.0-rc1 and an update of this package was not requested.\n    - drupal/context 5.0.0-rc1 requires drupal/core ^9.3 || ^10 -> found drupal/core[10.3.1, ..., 10.3.5] but it conflicts with your temporary update constraint (drupal/core:>=10.3.6,<11.0.0 || >=11.0.5).\n  Problem 7\n    - drupal/controlled_access_terms is locked to version 2.4.3 and an update of this package was not requested.\n    - drupal/controlled_access_terms 2.4.3 requires drupal/core ^10.2 -> found drupal/core[10.3.1, ..., 10.3.5] but it conflicts with your temporary update constraint (drupal/core:>=10.3.6,<11.0.0 || >=11.0.5).\n  Problem 8\n    - drupal/core-recommended is locked to version 10.3.1 and an update of this package was not requested.\n    - drupal/core-recommended 10.3.1 requires drupal/core 10.3.1 -> found drupal/core[10.3.1] but it conflicts with your temporary update constraint (drupal/core:>=10.3.6,<11.0.0 || >=11.0.5).",
-                    "solver_status": "conflict"
-                },
-                {
-                    "command": "composer update drupal/admin_toolbar drupal/advanced_search drupal/better_exposed_filters drupal/citation_select drupal/coi drupal/config_update drupal/context drupal/controlled_access_terms drupal/core-recommended drupal/facets drupal/field_group drupal/field_permissions drupal/field_report drupal/flysystem drupal/fpa drupal/hal drupal/islandora drupal/islandora_mirador drupal/openseadragon drupal/pathauto drupal/pdf drupal/rest_oai_pmh drupal/search_api_solr drupal/taxonomy_manager drupal/term_merge drupal/twig_tweak drupal/views_data_export drupal/views_field_view drupal/config_inspector drupal/devel drupal/restui discoverygarden/dgi_image_discovery -W -m --with 'drupal/core:>=10.3.6,<11.0.0 || >=11.0.5'",
-                    "strategy": "parent-update",
-                    "outcome": "rejected",
-                    "reason": "Composer could not resolve the dependencies: Your requirements could not be resolved to an installable set of packages.\n  Problem 1\n    - Root composer.json requires drupal/better_exposed_filters ^6.0 -> satisfiable by drupal/better_exposed_filters[6.0.6].\n    - drupal/better_exposed_filters 6.0.6 requires drupal/core ^9 || ^10 -> found drupal/core[10.3.1, ..., 10.3.5] but it conflicts with your temporary update constraint (drupal/core:>=10.3.6,<11.0.0 || >=11.0.5).\n  Problem 2\n    - Root composer.json requires drupal/term_merge ^2.0@beta -> satisfiable by drupal/term_merge[2.0.0-beta6, 2.0.0].\n    - drupal/term_merge[2.0.0-beta6, ..., 2.0.0] require drupal/core ^9 || ^10 || ^11 -> found drupal/core[10.3.1, ..., 10.3.5, 11.0.0-alpha1, ..., 11.0.4] but it conflicts with your temporary update constraint (drupal/core:>=10.3.6,<11.0.0 || >=11.0.5).\n  Problem 3\n    - Root composer.json requires drupal/restui ^1.21 -> satisfiable by drupal/restui[1.22.0].\n    - drupal/restui 1.22.0 requires drupal/core ^9.5 || ^10 || ^11 -> found drupal/core[10.3.1, ..., 10.3.5, 11.0.0-alpha1, ..., 11.0.4] but it conflicts with your temporary update constraint (drupal/core:>=10.3.6,<11.0.0 || >=11.0.5).\n  Problem 4\n    - Root composer.json requires discoverygarden/dgi_image_discovery ^1 -> satisfiable by discoverygarden/dgi_image_discovery[v1.3.1, v1.4.0].\n    - discoverygarden/dgi_image_discovery[v1.3.1, ..., v1.4.0] require drupal/search_api ^1.19 -> satisfiable by drupal/search_api[1.35.0, ..., 1.41.0].\n    - drupal/search_api 1.35.0 requires drupal/core ^10.1 || ^11 -> found drupal/core[10.3.1, ..., 10.3.5, 11.0.0-alpha1, ..., 11.0.4] but it conflicts with your temporary update constraint (drupal/core:>=10.3.6,<11.0.0 || >=11.0.5).\n    - drupal/search_api[1.36.0, ..., 1.38.0] require drupal/core ^10.2 || ^11 -> found drupal/core[10.3.1, ..., 10.3.5, 11.0.0-alpha1, ..., 11.0.4] but it conflicts with your temporary update constraint (drupal/core:>=10.3.6,<11.0.0 || >=11.0.5).\n    - drupal/search_api[1.39.0, ..., 1.41.0] require drupal/core ^10.3 || ^11 -> found drupal/core[10.3.1, ..., 10.3.5, 11.0.0-alpha1, ..., 11.0.4] but it conflicts with your temporary update constraint (drupal/core:>=10.3.6,<11.0.0 || >=11.0.5).",
-                    "solver_status": "conflict"
-                },
-                {
-                    "command": "composer update drupal/advanced_search -W -m --with 'drupal/core:>=10.3.6,<11.0.0 || >=11.0.5'",
-                    "strategy": "parent-update",
-                    "outcome": "rejected",
-                    "reason": "Composer could not resolve the dependencies: Your requirements could not be resolved to an installable set of packages.\n  Problem 1\n    - drupal/admin_toolbar is locked to version 3.4.2 and an update of this package was not requested.\n    - drupal/admin_toolbar 3.4.2 requires drupal/core ^9.2 || ^10 -> found drupal/core[10.3.1, ..., 10.3.5] but it conflicts with your temporary update constraint (drupal/core:>=10.3.6,<11.0.0 || >=11.0.5).\n  Problem 2\n    - drupal/better_exposed_filters is locked to version 6.0.6 and an update of this package was not requested.\n    - drupal/better_exposed_filters 6.0.6 requires drupal/core ^9 || ^10 -> found drupal/core[10.3.1, ..., 10.3.5] but it conflicts with your temporary update constraint (drupal/core:>=10.3.6,<11.0.0 || >=11.0.5).\n  Problem 3\n    - drupal/citation_select is locked to version 2.0.0-beta1 and an update of this package was not requested.\n    - drupal/citation_select 2.0.0-beta1 requires drupal/core ^8.8 || ^9 || ^10 -> found drupal/core[10.3.1, ..., 10.3.5] but it conflicts with your temporary update constraint (drupal/core:>=10.3.6,<11.0.0 || >=11.0.5).\n  Problem 4\n    - drupal/coi is locked to version 4.0.0 and an update of this package was not requested.\n    - drupal/coi 4.0.0 requires drupal/core ^10 -> found drupal/core[10.3.1, ..., 10.3.5] but it conflicts with your temporary update constraint (drupal/core:>=10.3.6,<11.0.0 || >=11.0.5).\n  Problem 5\n    - drupal/config_update is locked to version 2.0.0-alpha3 and an update of this package was not requested.\n    - drupal/config_update 2.0.0-alpha3 requires drupal/core ^9.4 || ^10 -> found drupal/core[10.3.1, ..., 10.3.5] but it conflicts with your temporary update constraint (drupal/core:>=10.3.6,<11.0.0 || >=11.0.5).\n  Problem 6\n    - drupal/context is locked to version 5.0.0-rc1 and an update of this package was not requested.\n    - drupal/context 5.0.0-rc1 requires drupal/core ^9.3 || ^10 -> found drupal/core[10.3.1, ..., 10.3.5] but it conflicts with your temporary update constraint (drupal/core:>=10.3.6,<11.0.0 || >=11.0.5).\n  Problem 7\n    - drupal/controlled_access_terms is locked to version 2.4.3 and an update of this package was not requested.\n    - drupal/controlled_access_terms 2.4.3 requires drupal/core ^10.2 -> found drupal/core[10.3.1, ..., 10.3.5] but it conflicts with your temporary update constraint (drupal/core:>=10.3.6,<11.0.0 || >=11.0.5).\n  Problem 8\n    - drupal/core-recommended is locked to version 10.3.1 and an update of this package was not requested.\n    - drupal/core-recommended 10.3.1 requires drupal/core 10.3.1 -> found drupal/core[10.3.1] but it conflicts with your temporary update constraint (drupal/core:>=10.3.6,<11.0.0 || >=11.0.5).",
-                    "solver_status": "conflict"
-                },
-                {
-                    "command": "composer update drupal/advanced_search drupal/admin_toolbar drupal/better_exposed_filters drupal/citation_select drupal/coi drupal/config_update drupal/context drupal/controlled_access_terms drupal/core-recommended drupal/field_group drupal/field_permissions drupal/field_report drupal/flysystem drupal/fpa drupal/hal drupal/islandora drupal/islandora_mirador drupal/openseadragon drupal/pathauto drupal/pdf drupal/rest_oai_pmh drupal/taxonomy_manager drupal/term_merge drupal/twig_tweak drupal/views_data_export drupal/views_field_view drupal/config_inspector drupal/devel drupal/restui discoverygarden/dgi_image_discovery -W -m --with 'drupal/core:>=10.3.6,<11.0.0 || >=11.0.5'",
-                    "strategy": "parent-update",
-                    "outcome": "rejected",
-                    "reason": "Composer could not resolve the dependencies: Your requirements could not be resolved to an installable set of packages.\n  Problem 1\n    - Root composer.json requires drupal/better_exposed_filters ^6.0 -> satisfiable by drupal/better_exposed_filters[6.0.6].\n    - drupal/better_exposed_filters 6.0.6 requires drupal/core ^9 || ^10 -> found drupal/core[10.3.1, ..., 10.3.5] but it conflicts with your temporary update constraint (drupal/core:>=10.3.6,<11.0.0 || >=11.0.5).\n  Problem 2\n    - Root composer.json requires drupal/term_merge ^2.0@beta -> satisfiable by drupal/term_merge[2.0.0-beta6, 2.0.0].\n    - drupal/term_merge[2.0.0-beta6, ..., 2.0.0] require drupal/core ^9 || ^10 || ^11 -> found drupal/core[10.3.1, ..., 10.3.5, 11.0.0-alpha1, ..., 11.0.4] but it conflicts with your temporary update constraint (drupal/core:>=10.3.6,<11.0.0 || >=11.0.5).\n  Problem 3\n    - Root composer.json requires drupal/restui ^1.21 -> satisfiable by drupal/restui[1.22.0].\n    - drupal/restui 1.22.0 requires drupal/core ^9.5 || ^10 || ^11 -> found drupal/core[10.3.1, ..., 10.3.5, 11.0.0-alpha1, ..., 11.0.4] but it conflicts with your temporary update constraint (drupal/core:>=10.3.6,<11.0.0 || >=11.0.5).\n  Problem 4\n    - Root composer.json requires discoverygarden/dgi_image_discovery ^1 -> satisfiable by discoverygarden/dgi_image_discovery[v1.3.1, v1.4.0].\n    - discoverygarden/dgi_image_discovery[v1.3.1, ..., v1.4.0] require drupal/search_api ^1.19 -> satisfiable by drupal/search_api[1.35.0, ..., 1.41.0].\n    - drupal/search_api 1.35.0 requires drupal/core ^10.1 || ^11 -> found drupal/core[10.3.1, ..., 10.3.5, 11.0.0-alpha1, ..., 11.0.4] but it conflicts with your temporary update constraint (drupal/core:>=10.3.6,<11.0.0 || >=11.0.5).\n    - drupal/search_api[1.36.0, ..., 1.38.0] require drupal/core ^10.2 || ^11 -> found drupal/core[10.3.1, ..., 10.3.5, 11.0.0-alpha1, ..., 11.0.4] but it conflicts with your temporary update constraint (drupal/core:>=10.3.6,<11.0.0 || >=11.0.5).\n    - drupal/search_api[1.39.0, ..., 1.41.0] require drupal/core ^10.3 || ^11 -> found drupal/core[10.3.1, ..., 10.3.5, 11.0.0-alpha1, ..., 11.0.4] but it conflicts with your temporary update constraint (drupal/core:>=10.3.6,<11.0.0 || >=11.0.5).",
-                    "solver_status": "conflict"
-                },
-                {
-                    "command": "composer update drupal/better_exposed_filters -W -m --with 'drupal/core:>=10.3.6,<11.0.0 || >=11.0.5'",
-                    "strategy": "parent-update",
-                    "outcome": "rejected",
-                    "reason": "Composer could not resolve the dependencies: Your requirements could not be resolved to an installable set of packages.\n  Problem 1\n    - drupal/admin_toolbar is locked to version 3.4.2 and an update of this package was not requested.\n    - drupal/admin_toolbar 3.4.2 requires drupal/core ^9.2 || ^10 -> found drupal/core[10.3.1, ..., 10.3.5] but it conflicts with your temporary update constraint (drupal/core:>=10.3.6,<11.0.0 || >=11.0.5).\n  Problem 2\n    - drupal/advanced_search is locked to version 2.1.0 and an update of this package was not requested.\n    - drupal/advanced_search 2.1.0 requires drupal/core ^8.8 || ^9 || ^10 -> found drupal/core[10.3.1, ..., 10.3.5] but it conflicts with your temporary update constraint (drupal/core:>=10.3.6,<11.0.0 || >=11.0.5).\n  Problem 3\n    - Root composer.json requires drupal/better_exposed_filters ^6.0 -> satisfiable by drupal/better_exposed_filters[6.0.6].\n    - drupal/better_exposed_filters 6.0.6 requires drupal/core ^9 || ^10 -> found drupal/core[10.3.1, ..., 10.3.5] but it conflicts with your temporary update constraint (drupal/core:>=10.3.6,<11.0.0 || >=11.0.5).\n  Problem 4\n    - drupal/citation_select is locked to version 2.0.0-beta1 and an update of this package was not requested.\n    - drupal/citation_select 2.0.0-beta1 requires drupal/core ^8.8 || ^9 || ^10 -> found drupal/core[10.3.1, ..., 10.3.5] but it conflicts with your temporary update constraint (drupal/core:>=10.3.6,<11.0.0 || >=11.0.5).\n  Problem 5\n    - drupal/coi is locked to version 4.0.0 and an update of this package was not requested.\n    - drupal/coi 4.0.0 requires drupal/core ^10 -> found drupal/core[10.3.1, ..., 10.3.5] but it conflicts with your temporary update constraint (drupal/core:>=10.3.6,<11.0.0 || >=11.0.5).\n  Problem 6\n    - drupal/config_update is locked to version 2.0.0-alpha3 and an update of this package was not requested.\n    - drupal/config_update 2.0.0-alpha3 requires drupal/core ^9.4 || ^10 -> found drupal/core[10.3.1, ..., 10.3.5] but it conflicts with your temporary update constraint (drupal/core:>=10.3.6,<11.0.0 || >=11.0.5).\n  Problem 7\n    - drupal/context is locked to version 5.0.0-rc1 and an update of this package was not requested.\n    - drupal/context 5.0.0-rc1 requires drupal/core ^9.3 || ^10 -> found drupal/core[10.3.1, ..., 10.3.5] but it conflicts with your temporary update constraint (drupal/core:>=10.3.6,<11.0.0 || >=11.0.5).\n  Problem 8\n    - drupal/controlled_access_terms is locked to version 2.4.3 and an update of this package was not requested.\n    - drupal/controlled_access_terms 2.4.3 requires drupal/core ^10.2 -> found drupal/core[10.3.1, ..., 10.3.5] but it conflicts with your temporary update constraint (drupal/core:>=10.3.6,<11.0.0 || >=11.0.5).",
-                    "solver_status": "conflict"
-                },
-                {
-                    "command": "composer update drupal/citation_select -W -m --with 'drupal/core:>=10.3.6,<11.0.0 || >=11.0.5'",
-                    "strategy": "parent-update",
-                    "outcome": "rejected",
-                    "reason": "Composer could not resolve the dependencies: Your requirements could not be resolved to an installable set of packages.\n  Problem 1\n    - drupal/admin_toolbar is locked to version 3.4.2 and an update of this package was not requested.\n    - drupal/admin_toolbar 3.4.2 requires drupal/core ^9.2 || ^10 -> found drupal/core[10.3.1, ..., 10.3.5] but it conflicts with your temporary update constraint (drupal/core:>=10.3.6,<11.0.0 || >=11.0.5).\n  Problem 2\n    - drupal/advanced_search is locked to version 2.1.0 and an update of this package was not requested.\n    - drupal/advanced_search 2.1.0 requires drupal/core ^8.8 || ^9 || ^10 -> found drupal/core[10.3.1, ..., 10.3.5] but it conflicts with your temporary update constraint (drupal/core:>=10.3.6,<11.0.0 || >=11.0.5).\n  Problem 3\n    - drupal/better_exposed_filters is locked to version 6.0.6 and an update of this package was not requested.\n    - drupal/better_exposed_filters 6.0.6 requires drupal/core ^9 || ^10 -> found drupal/core[10.3.1, ..., 10.3.5] but it conflicts with your temporary update constraint (drupal/core:>=10.3.6,<11.0.0 || >=11.0.5).\n  Problem 4\n    - drupal/coi is locked to version 4.0.0 and an update of this package was not requested.\n    - drupal/coi 4.0.0 requires drupal/core ^10 -> found drupal/core[10.3.1, ..., 10.3.5] but it conflicts with your temporary update constraint (drupal/core:>=10.3.6,<11.0.0 || >=11.0.5).\n  Problem 5\n    - drupal/config_update is locked to version 2.0.0-alpha3 and an update of this package was not requested.\n    - drupal/config_update 2.0.0-alpha3 requires drupal/core ^9.4 || ^10 -> found drupal/core[10.3.1, ..., 10.3.5] but it conflicts with your temporary update constraint (drupal/core:>=10.3.6,<11.0.0 || >=11.0.5).\n  Problem 6\n    - drupal/context is locked to version 5.0.0-rc1 and an update of this package was not requested.\n    - drupal/context 5.0.0-rc1 requires drupal/core ^9.3 || ^10 -> found drupal/core[10.3.1, ..., 10.3.5] but it conflicts with your temporary update constraint (drupal/core:>=10.3.6,<11.0.0 || >=11.0.5).\n  Problem 7\n    - drupal/controlled_access_terms is locked to version 2.4.3 and an update of this package was not requested.\n    - drupal/controlled_access_terms 2.4.3 requires drupal/core ^10.2 -> found drupal/core[10.3.1, ..., 10.3.5] but it conflicts with your temporary update constraint (drupal/core:>=10.3.6,<11.0.0 || >=11.0.5).\n  Problem 8\n    - drupal/core-recommended is locked to version 10.3.1 and an update of this package was not requested.\n    - drupal/core-recommended 10.3.1 requires drupal/core 10.3.1 -> found drupal/core[10.3.1] but it conflicts with your temporary update constraint (drupal/core:>=10.3.6,<11.0.0 || >=11.0.5).",
-                    "solver_status": "conflict"
-                },
-                {
-                    "command": "composer require --no-update drupal/islandora:^3.0 && composer update drupal/islandora -W -m --with 'drupal/core:>=10.3.6,<11.0.0 || >=11.0.5'",
-                    "strategy": "root-constraint-widen",
-                    "outcome": "rejected",
-                    "reason": "Composer could not resolve the dependencies: Your requirements could not be resolved to an installable set of packages.\n  Problem 1\n    - Root composer.json requires drupal/islandora ^3.0, found drupal/islandora[2.12.3, ..., 2.19.0] but it does not match the constraint.\n  Problem 2\n    - drupal/admin_toolbar is locked to version 3.4.2 and an update of this package was not requested.\n    - drupal/admin_toolbar 3.4.2 requires drupal/core ^9.2 || ^10 -> found drupal/core[10.3.1, ..., 10.3.5] but it conflicts with your temporary update constraint (drupal/core:>=10.3.6,<11.0.0 || >=11.0.5).\n  Problem 3\n    - drupal/advanced_search is locked to version 2.1.0 and an update of this package was not requested.\n    - drupal/advanced_search 2.1.0 requires drupal/core ^8.8 || ^9 || ^10 -> found drupal/core[10.3.1, ..., 10.3.5] but it conflicts with your temporary update constraint (drupal/core:>=10.3.6,<11.0.0 || >=11.0.5).\n  Problem 4\n    - drupal/better_exposed_filters is locked to version 6.0.6 and an update of this package was not requested.\n    - drupal/better_exposed_filters 6.0.6 requires drupal/core ^9 || ^10 -> found drupal/core[10.3.1, ..., 10.3.5] but it conflicts with your temporary update constraint (drupal/core:>=10.3.6,<11.0.0 || >=11.0.5).\n  Problem 5\n    - drupal/citation_select is locked to version 2.0.0-beta1 and an update of this package was not requested.\n    - drupal/citation_select 2.0.0-beta1 requires drupal/core ^8.8 || ^9 || ^10 -> found drupal/core[10.3.1, ..., 10.3.5] but it conflicts with your temporary update constraint (drupal/core:>=10.3.6,<11.0.0 || >=11.0.5).\n  Problem 6\n    - drupal/coi is locked to version 4.0.0 and an update of this package was not requested.\n    - drupal/coi 4.0.0 requires drupal/core ^10 -> found drupal/core[10.3.1, ..., 10.3.5] but it conflicts with your temporary update constraint (drupal/core:>=10.3.6,<11.0.0 || >=11.0.5).\n  Problem 7\n    - drupal/config_update is locked to version 2.0.0-alpha3 and an update of this package was not requested.\n    - drupal/config_update 2.0.0-alpha3 requires drupal/core ^9.4 || ^10 -> found drupal/core[10.3.1, ..., 10.3.5] but it conflicts with your temporary update constraint (drupal/core:>=10.3.6,<11.0.0 || >=11.0.5).\n  Problem 8\n    - drupal/context is locked to version 5.0.0-rc1 and an update of this package was not requested.\n    - drupal/context 5.0.0-rc1 requires drupal/core ^9.3 || ^10 -> found drupal/core[10.3.1, ..., 10.3.5] but it conflicts with your temporary update constraint (drupal/core:>=10.3.6,<11.0.0 || >=11.0.5).\n  Problem 9",
-                    "solver_status": "conflict"
-                },
-                {
-                    "command": "composer require --no-update drupal/islandora:^3.0 && composer update drupal/islandora drupal/admin_toolbar drupal/advanced_search drupal/better_exposed_filters drupal/citation_select drupal/coi drupal/config_update drupal/context drupal/controlled_access_terms drupal/core-recommended drupal/facets drupal/field_group drupal/field_permissions drupal/field_report drupal/flysystem drupal/fpa drupal/hal drupal/islandora_mirador drupal/openseadragon drupal/pathauto drupal/pdf drupal/rest_oai_pmh drupal/search_api_solr drupal/taxonomy_manager drupal/term_merge drupal/twig_tweak drupal/views_data_export drupal/views_field_view drupal/config_inspector drupal/devel drupal/restui discoverygarden/dgi_image_discovery -W -m --with 'drupal/core:>=10.3.6,<11.0.0 || >=11.0.5'",
-                    "strategy": "root-constraint-widen",
-                    "outcome": "rejected",
-                    "reason": "Composer could not resolve the dependencies: Your requirements could not be resolved to an installable set of packages.\n  Problem 1\n    - Root composer.json requires drupal/islandora ^3.0, found drupal/islandora[2.12.3, ..., 2.19.0] but it does not match the constraint.\n  Problem 2\n    - Root composer.json requires drupal/better_exposed_filters ^6.0 -> satisfiable by drupal/better_exposed_filters[6.0.6].\n    - drupal/better_exposed_filters 6.0.6 requires drupal/core ^9 || ^10 -> found drupal/core[10.3.1, ..., 10.3.5] but it conflicts with your temporary update constraint (drupal/core:>=10.3.6,<11.0.0 || >=11.0.5).\n  Problem 3\n    - Root composer.json requires drupal/term_merge ^2.0@beta -> satisfiable by drupal/term_merge[2.0.0-beta6, 2.0.0].\n    - drupal/term_merge[2.0.0-beta6, ..., 2.0.0] require drupal/core ^9 || ^10 || ^11 -> found drupal/core[10.3.1, ..., 10.3.5, 11.0.0-alpha1, ..., 11.0.4] but it conflicts with your temporary update constraint (drupal/core:>=10.3.6,<11.0.0 || >=11.0.5).\n  Problem 4\n    - Root composer.json requires drupal/restui ^1.21 -> satisfiable by drupal/restui[1.22.0].\n    - drupal/restui 1.22.0 requires drupal/core ^9.5 || ^10 || ^11 -> found drupal/core[10.3.1, ..., 10.3.5, 11.0.0-alpha1, ..., 11.0.4] but it conflicts with your temporary update constraint (drupal/core:>=10.3.6,<11.0.0 || >=11.0.5).\n  Problem 5\n    - Root composer.json requires discoverygarden/dgi_image_discovery ^1 -> satisfiable by discoverygarden/dgi_image_discovery[v1.3.1, v1.4.0].\n    - discoverygarden/dgi_image_discovery[v1.3.1, ..., v1.4.0] require drupal/search_api ^1.19 -> satisfiable by drupal/search_api[1.35.0, ..., 1.41.0].\n    - drupal/search_api 1.35.0 requires drupal/core ^10.1 || ^11 -> found drupal/core[10.3.1, ..., 10.3.5, 11.0.0-alpha1, ..., 11.0.4] but it conflicts with your temporary update constraint (drupal/core:>=10.3.6,<11.0.0 || >=11.0.5).\n    - drupal/search_api[1.36.0, ..., 1.38.0] require drupal/core ^10.2 || ^11 -> found drupal/core[10.3.1, ..., 10.3.5, 11.0.0-alpha1, ..., 11.0.4] but it conflicts with your temporary update constraint (drupal/core:>=10.3.6,<11.0.0 || >=11.0.5).\n    - drupal/search_api[1.39.0, ..., 1.41.0] require drupal/core ^10.3 || ^11 -> found drupal/core[10.3.1, ..., 10.3.5, 11.0.0-alpha1, ..., 11.0.4] but it conflicts with your temporary update constraint (drupal/core:>=10.3.6,<11.0.0 || >=11.0.5).",
-                    "solver_status": "conflict"
-                }
-            ]
-        },
-        {
-            "package": "symfony/validator",
-            "version": "v6.4.9",
-            "version_normalized": "6.4.9.0",
-            "direct": false,
-            "dev": false,
-            "via_replaced_package": null,
-            "advisories": [
-                {
-                    "id": "PKSA-w2tw-kmfg-rt9s",
-                    "cve": "CVE-2024-50343",
-                    "title": "CVE-2024-50343: Incorrect response from Validator when input ends with `\n`",
-                    "link": "https://symfony.com/cve-2024-50343",
-                    "severity": "low",
-                    "reported_at": "2024-08-30T08:00:00+00:00",
-                    "affected_versions": ">=2.0.0,<3.0.0|>=3.0.0,<4.0.0|>=4.0.0,<5.0.0|>=5.0.0,<5.1.0|>=5.1.0,<5.2.0|>=5.2.0,<5.3.0|>=5.3.0,<5.4.0|>=5.4.0,<5.4.43|>=6.0.0,<6.1.0|>=6.1.0,<6.2.0|>=6.2.0,<6.3.0|>=6.3.0,<6.4.0|>=6.4.0,<6.4.11|>=7.0.0,<7.1.0|>=7.1.0,<7.1.4",
-                    "sources": [
-                        {
-                            "name": "GitHub",
-                            "remoteId": "GHSA-g3rh-rrhp-jhh9"
-                        },
-                        {
-                            "name": "FriendsOfPHP/security-advisories",
-                            "remoteId": "symfony/validator/CVE-2024-50343.yaml"
-                        }
-                    ]
-                }
-            ],
-            "paths_total": 121,
-            "paths": [
-                {
-                    "cyclic": false,
-                    "chain": [
-                        {
-                            "package": "root",
-                            "version": null,
-                            "requires": "<=8"
-                        },
-                        {
-                            "package": "drupal/core",
-                            "version": "10.3.1",
-                            "requires": "^6.4"
-                        }
-                    ],
-                    "target": {
-                        "package": "symfony/validator",
-                        "version": "v6.4.9"
-                    }
-                },
-                {
-                    "cyclic": false,
-                    "chain": [
-                        {
-                            "package": "root",
-                            "version": null,
-                            "requires": "^2.8.1"
-                        },
-                        {
-                            "package": "drupal/islandora",
-                            "version": "2.12.3",
-                            "requires": "*"
-                        },
-                        {
-                            "package": "drupal/action",
-                            "version": "0.2.1",
-                            "requires": ">10.2"
-                        },
-                        {
-                            "package": "drupal/core",
-                            "version": "10.3.1",
-                            "requires": "^6.4"
-                        }
-                    ],
-                    "target": {
-                        "package": "symfony/validator",
-                        "version": "v6.4.9"
-                    }
-                },
-                {
-                    "cyclic": false,
-                    "chain": [
-                        {
-                            "package": "root",
-                            "version": null,
-                            "requires": "^2"
-                        },
-                        {
-                            "package": "drupal/islandora_mirador",
-                            "version": "2.3.7",
-                            "requires": "*"
-                        },
-                        {
-                            "package": "drupal/islandora_iiif",
-                            "version": "2.12.3",
-                            "requires": "^2"
-                        },
-                        {
-                            "package": "drupal/islandora",
-                            "version": "2.12.3",
-                            "requires": "*"
-                        },
-                        {
-                            "package": "drupal/action",
-                            "version": "0.2.1",
-                            "requires": ">10.2"
-                        },
-                        {
-                            "package": "drupal/core",
-                            "version": "10.3.1",
-                            "requires": "^6.4"
-                        }
-                    ],
-                    "target": {
-                        "package": "symfony/validator",
-                        "version": "v6.4.9"
-                    }
-                },
-                {
-                    "cyclic": false,
-                    "chain": [
-                        {
-                            "package": "root",
-                            "version": null,
-                            "requires": "^2"
-                        },
-                        {
-                            "package": "drupal/islandora_mirador",
-                            "version": "2.3.7",
-                            "requires": "^2"
-                        },
-                        {
-                            "package": "drupal/islandora",
-                            "version": "2.12.3",
-                            "requires": "*"
-                        },
-                        {
-                            "package": "drupal/action",
-                            "version": "0.2.1",
-                            "requires": ">10.2"
-                        },
-                        {
-                            "package": "drupal/core",
-                            "version": "10.3.1",
-                            "requires": "^6.4"
-                        }
-                    ],
-                    "target": {
-                        "package": "symfony/validator",
-                        "version": "v6.4.9"
-                    }
-                },
-                {
-                    "cyclic": false,
-                    "chain": [
-                        {
-                            "package": "root",
-                            "version": null,
-                            "requires": "^3.1"
-                        },
-                        {
-                            "package": "drupal/admin_toolbar",
-                            "version": "3.4.2",
-                            "requires": "^9.2 || ^10"
-                        },
-                        {
-                            "package": "drupal/core",
-                            "version": "10.3.1",
-                            "requires": "^6.4"
-                        }
-                    ],
-                    "target": {
-                        "package": "symfony/validator",
-                        "version": "v6.4.9"
-                    }
-                },
-                {
-                    "cyclic": false,
-                    "chain": [
-                        {
-                            "package": "root",
-                            "version": null,
-                            "requires": "^2.0.0@beta"
-                        },
-                        {
-                            "package": "drupal/advanced_search",
-                            "version": "2.1.0",
-                            "requires": "^8.8 || ^9 || ^10"
-                        },
-                        {
-                            "package": "drupal/core",
-                            "version": "10.3.1",
-                            "requires": "^6.4"
-                        }
-                    ],
-                    "target": {
-                        "package": "symfony/validator",
-                        "version": "v6.4.9"
-                    }
-                },
-                {
-                    "cyclic": false,
-                    "chain": [
-                        {
-                            "package": "root",
-                            "version": null,
-                            "requires": "^6.0"
-                        },
-                        {
-                            "package": "drupal/better_exposed_filters",
-                            "version": "6.0.6",
-                            "requires": "^9 || ^10"
-                        },
-                        {
-                            "package": "drupal/core",
-                            "version": "10.3.1",
-                            "requires": "^6.4"
-                        }
-                    ],
-                    "target": {
-                        "package": "symfony/validator",
-                        "version": "v6.4.9"
-                    }
-                },
-                {
-                    "cyclic": false,
-                    "chain": [
-                        {
-                            "package": "root",
-                            "version": null,
-                            "requires": "^2.0@beta"
-                        },
-                        {
-                            "package": "drupal/citation_select",
-                            "version": "2.0.0-beta1",
-                            "requires": "^8.8 || ^9 || ^10"
-                        },
-                        {
-                            "package": "drupal/core",
-                            "version": "10.3.1",
-                            "requires": "^6.4"
-                        }
-                    ],
-                    "target": {
-                        "package": "symfony/validator",
-                        "version": "v6.4.9"
-                    }
-                },
-                {
-                    "cyclic": false,
-                    "chain": [
-                        {
-                            "package": "root",
-                            "version": null,
-                            "requires": "^4.0"
-                        },
-                        {
-                            "package": "drupal/coi",
-                            "version": "4.0.0",
-                            "requires": "^10"
-                        },
-                        {
-                            "package": "drupal/core",
-                            "version": "10.3.1",
-                            "requires": "^6.4"
-                        }
-                    ],
-                    "target": {
-                        "package": "symfony/validator",
-                        "version": "v6.4.9"
-                    }
-                },
-                {
-                    "cyclic": false,
-                    "chain": [
-                        {
-                            "package": "root",
-                            "version": null,
-                            "requires": "^4.0"
-                        },
-                        {
-                            "package": "drupal/coi",
-                            "version": "4.0.0",
-                            "requires": "^4"
-                        },
-                        {
-                            "package": "drupal/config_override_core_fields",
-                            "version": "4.0.0",
-                            "requires": ">=10"
-                        },
-                        {
-                            "package": "drupal/core",
-                            "version": "10.3.1",
-                            "requires": "^6.4"
-                        }
-                    ],
-                    "target": {
-                        "package": "symfony/validator",
-                        "version": "v6.4.9"
-                    }
-                }
-            ],
-            "remediation": {
-                "status": "verified",
-                "command": "composer update symfony/validator",
-                "strategy": "lock-refresh",
-                "root_constraint_changes": [],
-                "summary": {
-                    "changed": 1,
-                    "added": 0,
-                    "removed": 0,
-                    "total": 1,
-                    "major_change": false,
-                    "downgrade": false,
-                    "prerelease": false
-                },
-                "changes": [
-                    {
-                        "package": "symfony/validator",
-                        "kind": "upgraded",
-                        "step": "patch",
-                        "from": "v6.4.9",
-                        "to": "v6.4.12"
-                    }
-                ]
-            },
-            "candidates": [
-                {
-                    "command": "composer update symfony/validator",
-                    "strategy": "lock-refresh",
-                    "outcome": "valid",
-                    "rank": 1,
-                    "summary": {
-                        "changed": 1,
-                        "added": 0,
-                        "removed": 0,
-                        "total": 1,
-                        "major_change": false,
-                        "downgrade": false,
-                        "prerelease": false
-                    },
-                    "solver_status": "resolved"
-                },
-                {
-                    "command": "composer update symfony/validator -w -m --with 'symfony/validator:>=6.4.11,<7.0.0 || >=7.1.4'",
-                    "strategy": "with-dependencies",
-                    "outcome": "valid",
-                    "rank": 2,
-                    "summary": {
-                        "changed": 1,
-                        "added": 0,
-                        "removed": 0,
-                        "total": 1,
-                        "major_change": false,
-                        "downgrade": false,
-                        "prerelease": false
-                    },
-                    "solver_status": "resolved"
-                },
-                {
-                    "command": "composer update drupal/better_exposed_filters -W -m --with 'symfony/validator:>=6.4.11,<7.0.0 || >=7.1.4'",
-                    "strategy": "parent-update",
-                    "outcome": "valid",
-                    "rank": 3,
-                    "summary": {
-                        "changed": 1,
-                        "added": 0,
-                        "removed": 0,
-                        "total": 1,
-                        "major_change": false,
-                        "downgrade": false,
-                        "prerelease": false
-                    },
-                    "solver_status": "resolved"
-                },
-                {
-                    "command": "composer update drupal/islandora_mirador -W -m --with 'symfony/validator:>=6.4.11,<7.0.0 || >=7.1.4'",
-                    "strategy": "parent-update",
-                    "outcome": "valid",
-                    "rank": 4,
-                    "summary": {
-                        "changed": 2,
-                        "added": 0,
-                        "removed": 0,
-                        "total": 2,
-                        "major_change": false,
-                        "downgrade": false,
-                        "prerelease": false
-                    },
-                    "solver_status": "resolved"
-                },
-                {
-                    "command": "composer update drupal/admin_toolbar -W -m --with 'symfony/validator:>=6.4.11,<7.0.0 || >=7.1.4'",
-                    "strategy": "parent-update",
-                    "outcome": "valid",
-                    "rank": 5,
-                    "summary": {
-                        "changed": 2,
-                        "added": 0,
-                        "removed": 0,
-                        "total": 2,
-                        "major_change": false,
-                        "downgrade": false,
-                        "prerelease": false
-                    },
-                    "solver_status": "resolved"
-                },
-                {
-                    "command": "composer update drupal/islandora -W -m --with 'symfony/validator:>=6.4.11,<7.0.0 || >=7.1.4'",
-                    "strategy": "parent-update",
-                    "outcome": "valid",
-                    "rank": 6,
-                    "summary": {
-                        "changed": 3,
-                        "added": 0,
-                        "removed": 0,
-                        "total": 3,
-                        "major_change": false,
-                        "downgrade": false,
-                        "prerelease": false
-                    },
-                    "solver_status": "resolved"
-                },
-                {
-                    "command": "composer update drupal/advanced_search -W -m --with 'symfony/validator:>=6.4.11,<7.0.0 || >=7.1.4'",
-                    "strategy": "parent-update",
-                    "outcome": "valid",
-                    "rank": 7,
-                    "summary": {
-                        "changed": 2,
-                        "added": 1,
-                        "removed": 0,
-                        "total": 3,
-                        "major_change": false,
-                        "downgrade": false,
-                        "prerelease": false
-                    },
-                    "solver_status": "resolved"
-                },
-                {
-                    "command": "composer update drupal/core-recommended -W -m --with 'symfony/validator:>=6.4.11,<7.0.0 || >=7.1.4'",
-                    "strategy": "parent-update",
-                    "outcome": "valid",
-                    "rank": 8,
-                    "summary": {
-                        "changed": 4,
-                        "added": 0,
-                        "removed": 0,
-                        "total": 4,
-                        "major_change": false,
-                        "downgrade": false,
-                        "prerelease": false
-                    },
-                    "solver_status": "resolved"
-                },
-                {
-                    "command": "composer update drupal/islandora drupal/admin_toolbar drupal/advanced_search drupal/better_exposed_filters drupal/citation_select drupal/coi drupal/config_update drupal/context drupal/controlled_access_terms drupal/core-recommended drupal/views_data_export drupal/pathauto drupal/facets drupal/field_group drupal/field_permissions drupal/field_report drupal/flysystem drupal/fpa drupal/hal drupal/islandora_mirador drupal/taxonomy_manager drupal/openseadragon drupal/pdf drupal/rest_oai_pmh discoverygarden/dgi_image_discovery drupal/search_api_solr drupal/term_merge drupal/twig_tweak drupal/views_field_view drupal/config_inspector drupal/devel drupal/restui -W -m --with 'symfony/validator:>=6.4.11,<7.0.0 || >=7.1.4'",
-                    "strategy": "parent-update",
-                    "outcome": "valid",
-                    "rank": 9,
-                    "summary": {
-                        "changed": 36,
-                        "added": 2,
-                        "removed": 1,
-                        "total": 39,
-                        "major_change": false,
-                        "downgrade": false,
-                        "prerelease": true
-                    },
-                    "solver_status": "resolved"
-                },
-                {
-                    "command": "composer require --no-update drupal/core-recommended:^11.0 && composer update drupal/core-recommended -W -m --with 'symfony/validator:>=6.4.11,<7.0.0 || >=7.1.4'",
-                    "strategy": "root-constraint-widen",
-                    "outcome": "skipped",
-                    "reason": "a better candidate already exists"
-                }
-            ]
         }
     ],
     "unsolved_findings": [
-        "drupal/core-recommended",
-        "drupal/core"
+        "drupal/core",
+        "drupal/core-recommended"
     ]
 }

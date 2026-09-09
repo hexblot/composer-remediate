@@ -10,143 +10,6 @@ Solver: in-process Composer dry-run
 CVE-2024-45440
 ────────────────────────────────────────────────────────────
 Affected
-  drupal/core-recommended 10.3.1
-  CVE-2024-45440 (PKSA-35hc-pd1y-zwpc): Drupal Full Path Disclosure
-    https://github.com/advisories/GHSA-mg8j-w93w-xjgc
-    affected versions: >=8.0.0,<10.2.9|>=10.3.0,<10.3.6|>=11.0.0,<11.0.5
-Introduced by
-  root
-  └── drupal/core-recommended 10.3.1  (requires ^10.1)
-Current state
-  Direct dependency.
-Recommended remediation
-  No verified remediation found.
-Other candidates
-  rejected: composer update drupal/core-recommended
-      resolves, but drupal/core-recommended ends at 10.3.1 which is still affected by PKSA-35hc-pd1y-zwpc
-  rejected: composer update drupal/core-recommended -w -m --with 'drupal/core-recommended:>=10.3.6,<11.0.0 || >=11.0.5'
-      Composer could not resolve the dependencies: Your requirements could not be resolved to an installable set of packages.
-        Problem 1
-          - Root composer.json requires drupal/core-recommended ^10.1, found drupal/core-recommended[10.3.1, ..., 10.3.5] but it conflicts with your temporary update constraint (drupal/core-recommended:>=10.3.6,<11.0.0 || >=11.0.5).
-  rejected: composer update drupal/core-recommended -W -m --with 'drupal/core-recommended:>=10.3.6,<11.0.0 || >=11.0.5'
-      Composer could not resolve the dependencies: Your requirements could not be resolved to an installable set of packages.
-        Problem 1
-          - Root composer.json requires drupal/core-recommended ^10.1, found drupal/core-recommended[10.3.1, ..., 10.3.5] but it conflicts with your temporary update constraint (drupal/core-recommended:>=10.3.6,<11.0.0 || >=11.0.5).
-  rejected: composer require --no-update drupal/core-recommended:^11.0 && composer update drupal/core-recommended -W -m --with 'drupal/core-recommended:>=10.3.6,<11.0.0 || >=11.0.5'
-      Composer could not resolve the dependencies: Your requirements could not be resolved to an installable set of packages.
-        Problem 1
-          - Root composer.json requires drupal/core-recommended ^11.0, found drupal/core-recommended[11.0.0-alpha1, ..., 11.0.4] but it conflicts with your temporary update constraint (drupal/core-recommended:>=10.3.6,<11.0.0 || >=11.0.5).
-
-CVE-2024-45411
-────────────────────────────────────────────────────────────
-Affected
-  twig/twig v3.10.3
-  CVE-2024-45411 (PKSA-6319-ffpf-gx66): Possible sandbox bypass
-    https://symfony.com/blog/twig-security-release-possible-sandbox-bypass
-    affected versions: >=1.0.0,<1.44.7|>=2.0.0,<2.16.0|>=3.0.0,<3.11.0|>=3.12.0,<3.14.0
-Introduced by
-  root
-  └── drush/drush 13.0.0-beta5
-      └── chi-teck/drupal-code-generator 3.6.1
-          └── twig/twig v3.10.3  (requires ^3.4)
-  root
-  └── drupal/core 10.3.1
-      └── twig/twig v3.10.3  (requires ^3.9.3)
-  root
-  └── drupal/islandora 2.12.3
-      └── drupal/action 0.2.1
-          └── drupal/core 10.3.1
-              └── twig/twig v3.10.3  (requires ^3.9.3)
-  root
-  └── drupal/islandora_mirador 2.3.7
-      └── drupal/islandora_iiif 2.12.3
-          └── drupal/islandora 2.12.3
-              └── drupal/action 0.2.1
-                  └── drupal/core 10.3.1
-                      └── twig/twig v3.10.3  (requires ^3.9.3)
-  root
-  └── drupal/islandora_mirador 2.3.7
-      └── drupal/islandora 2.12.3
-          └── drupal/action 0.2.1
-              └── drupal/core 10.3.1
-                  └── twig/twig v3.10.3  (requires ^3.9.3)
-  … and 118 more paths
-Current state
-  Transitive dependency.
-Recommended remediation
-  drupal/core-recommended 10.3.1 -> 10.3.4
-  twig/twig v3.10.3 -> v3.14.0
-Composer validation
-  PASS  3 packages changed, 0 added, 0 removed, 0 root constraints changed
-Expected changes
-  drupal/core 10.3.1 -> 10.3.4
-  drupal/core-recommended 10.3.1 -> 10.3.4
-  twig/twig v3.10.3 -> v3.14.0
-Recommended command
-  composer update drupal/core-recommended:10.3.4 -W -m
-Other candidates
-  valid, rank 2: composer update drupal/core-recommended -W -m --with 'twig/twig:>=3.11.0,<3.12.0 || >=3.14.0'  (3 changes)
-  valid, rank 3: composer update drupal/twig_tweak:3.4.0 drupal/core-recommended drupal/restui -W -m --with 'twig/twig:>=3.11.0,<3.12.0 || >=3.14.0'  (4 changes)
-  valid, rank 4: composer update drupal/twig_tweak drupal/core-recommended drupal/restui -W -m --with 'twig/twig:>=3.11.0,<3.12.0 || >=3.14.0'  (4 changes)
-  valid, rank 5: composer update drush/drush:13.0.0 drupal/core-recommended drupal/twig_tweak drupal/restui -W -m --with 'twig/twig:>=3.11.0,<3.12.0 || >=3.14.0'  (5 changes)
-  valid, rank 6: composer update drupal/islandora_mirador:2.3.10 drupal/core-recommended drupal/twig_tweak drupal/restui -W -m --with 'twig/twig:>=3.11.0,<3.12.0 || >=3.14.0'  (5 changes)
-  valid, rank 7: composer update drupal/admin_toolbar:3.5.1 drupal/core-recommended drupal/twig_tweak drupal/restui -W -m --with 'twig/twig:>=3.11.0,<3.12.0 || >=3.14.0'  (5 changes)
-  valid, rank 8: composer update drupal/islandora_mirador drupal/core-recommended drupal/twig_tweak drupal/restui -W -m --with 'twig/twig:>=3.11.0,<3.12.0 || >=3.14.0'  (5 changes)
-  valid, rank 9: composer update drush/drush drupal/core-recommended drupal/twig_tweak drupal/restui -W -m --with 'twig/twig:>=3.11.0,<3.12.0 || >=3.14.0'  (5 changes)
-  valid, rank 10: composer update drupal/admin_toolbar drupal/core-recommended drupal/twig_tweak drupal/restui -W -m --with 'twig/twig:>=3.11.0,<3.12.0 || >=3.14.0'  (5 changes)
-  valid, rank 11: composer update drupal/islandora:2.18.0 drupal/core-recommended drupal/twig_tweak drupal/restui -W -m --with 'twig/twig:>=3.11.0,<3.12.0 || >=3.14.0'  (6 changes)
-  valid, rank 12: composer update drupal/islandora drupal/core-recommended drupal/twig_tweak drupal/restui -W -m --with 'twig/twig:>=3.11.0,<3.12.0 || >=3.14.0'  (6 changes)
-  valid, rank 13: composer update drush/drush:13.0.0 drupal/islandora drupal/admin_toolbar drupal/advanced_search drupal/better_exposed_filters drupal/citation_select drupal/coi drupal/config_update drupal/context drupal/controlled_access_terms drupal/core-recommended drupal/views_data_export drupal/pathauto drupal/facets drupal/field_group drupal/field_permissions drupal/field_report drupal/flysystem drupal/fpa drupal/hal drupal/islandora_mirador drupal/taxonomy_manager drupal/openseadragon drupal/pdf drupal/rest_oai_pmh discoverygarden/dgi_image_discovery drupal/search_api_solr drupal/term_merge drupal/twig_tweak drupal/views_field_view drupal/config_inspector drupal/devel drupal/restui -W -m --with 'twig/twig:>=3.11.0,<3.12.0 || >=3.14.0'  (39 changes)
-  valid, rank 14: composer update drush/drush drupal/islandora drupal/admin_toolbar drupal/advanced_search drupal/better_exposed_filters drupal/citation_select drupal/coi drupal/config_update drupal/context drupal/controlled_access_terms drupal/core-recommended drupal/views_data_export drupal/pathauto drupal/facets drupal/field_group drupal/field_permissions drupal/field_report drupal/flysystem drupal/fpa drupal/hal drupal/islandora_mirador drupal/taxonomy_manager drupal/openseadragon drupal/pdf drupal/rest_oai_pmh discoverygarden/dgi_image_discovery drupal/search_api_solr drupal/term_merge drupal/twig_tweak drupal/views_field_view drupal/config_inspector drupal/devel drupal/restui -W -m --with 'twig/twig:>=3.11.0,<3.12.0 || >=3.14.0'  (39 changes)
-  rejected: composer update twig/twig
-      resolves, but twig/twig ends at v3.10.3 which is still affected by PKSA-6319-ffpf-gx66
-  rejected: composer update twig/twig -w -m --with 'twig/twig:>=3.11.0,<3.12.0 || >=3.14.0'
-      Composer could not resolve the dependencies: Your requirements could not be resolved to an installable set of packages.
-        Problem 1
-          - drupal/core-recommended is locked to version 10.3.1 and an update of this package was not requested.
-          - drupal/core-recommended 10.3.1 requires twig/twig ~v3.10.2 -> found twig/twig[v3.10.3] but it conflicts with your temporary update constraint (twig/twig:>=3.11.0,<3.12.0 || >=3.14.0).
-        Problem 2
-          - drupal/twig_tweak is locked to version 3.3.0 and an update of this package was not requested.
-  rejected: composer update drupal/twig_tweak -W -m --with 'twig/twig:>=3.11.0,<3.12.0 || >=3.14.0'
-      Composer could not resolve the dependencies: Your requirements could not be resolved to an installable set of packages.
-        Problem 1
-          - drupal/core-recommended is locked to version 10.3.1 and an update of this package was not requested.
-          - drupal/core-recommended 10.3.1 requires twig/twig ~v3.10.2 -> found twig/twig[v3.10.3] but it conflicts with your temporary update constraint (twig/twig:>=3.11.0,<3.12.0 || >=3.14.0).
-        Problem 2
-          - drupal/restui is locked to version 1.22.0 and an update of this package was not requested.
-  rejected: composer update drush/drush -W -m --with 'twig/twig:>=3.11.0,<3.12.0 || >=3.14.0'
-      Composer could not resolve the dependencies: Your requirements could not be resolved to an installable set of packages.
-        Problem 1
-          - drupal/core-recommended is locked to version 10.3.1 and an update of this package was not requested.
-          - drupal/core-recommended 10.3.1 requires twig/twig ~v3.10.2 -> found twig/twig[v3.10.3] but it conflicts with your temporary update constraint (twig/twig:>=3.11.0,<3.12.0 || >=3.14.0).
-        Problem 2
-          - drupal/twig_tweak is locked to version 3.3.0 and an update of this package was not requested.
-  rejected: composer update drupal/islandora -W -m --with 'twig/twig:>=3.11.0,<3.12.0 || >=3.14.0'
-      Composer could not resolve the dependencies: Your requirements could not be resolved to an installable set of packages.
-        Problem 1
-          - drupal/core-recommended is locked to version 10.3.1 and an update of this package was not requested.
-          - drupal/core-recommended 10.3.1 requires twig/twig ~v3.10.2 -> found twig/twig[v3.10.3] but it conflicts with your temporary update constraint (twig/twig:>=3.11.0,<3.12.0 || >=3.14.0).
-        Problem 2
-          - drupal/twig_tweak is locked to version 3.3.0 and an update of this package was not requested.
-  rejected: composer update drupal/islandora_mirador -W -m --with 'twig/twig:>=3.11.0,<3.12.0 || >=3.14.0'
-      Composer could not resolve the dependencies: Your requirements could not be resolved to an installable set of packages.
-        Problem 1
-          - drupal/core-recommended is locked to version 10.3.1 and an update of this package was not requested.
-          - drupal/core-recommended 10.3.1 requires twig/twig ~v3.10.2 -> found twig/twig[v3.10.3] but it conflicts with your temporary update constraint (twig/twig:>=3.11.0,<3.12.0 || >=3.14.0).
-        Problem 2
-          - drupal/twig_tweak is locked to version 3.3.0 and an update of this package was not requested.
-  rejected: composer update drupal/admin_toolbar -W -m --with 'twig/twig:>=3.11.0,<3.12.0 || >=3.14.0'
-      Composer could not resolve the dependencies: Your requirements could not be resolved to an installable set of packages.
-        Problem 1
-          - drupal/core-recommended is locked to version 10.3.1 and an update of this package was not requested.
-          - drupal/core-recommended 10.3.1 requires twig/twig ~v3.10.2 -> found twig/twig[v3.10.3] but it conflicts with your temporary update constraint (twig/twig:>=3.11.0,<3.12.0 || >=3.14.0).
-        Problem 2
-          - drupal/twig_tweak is locked to version 3.3.0 and an update of this package was not requested.
-  not tried (a better candidate already exists): composer require --no-update drupal/core-recommended:^11.0 && composer update drupal/core-recommended -W -m --with 'twig/twig:>=3.11.0,<3.12.0 || >=3.14.0'
-
-CVE-2024-45440
-────────────────────────────────────────────────────────────
-Affected
   drupal/core 10.3.1
   CVE-2024-45440 (PKSA-styk-3knc-d1bt): Drupal Full Path Disclosure
     https://github.com/advisories/GHSA-mg8j-w93w-xjgc
@@ -272,6 +135,36 @@ Other candidates
           - Root composer.json requires drupal/better_exposed_filters ^6.0 -> satisfiable by drupal/better_exposed_filters[6.0.6].
           - drupal/better_exposed_filters 6.0.6 requires drupal/core ^9 || ^10 -> found drupal/core[10.3.1, ..., 10.3.5] but it conflicts with your temporary update constraint (drupal/core:>=10.3.6,<11.0.0 || >=11.0.5).
 
+CVE-2024-45440
+────────────────────────────────────────────────────────────
+Affected
+  drupal/core-recommended 10.3.1
+  CVE-2024-45440 (PKSA-35hc-pd1y-zwpc): Drupal Full Path Disclosure
+    https://github.com/advisories/GHSA-mg8j-w93w-xjgc
+    affected versions: >=8.0.0,<10.2.9|>=10.3.0,<10.3.6|>=11.0.0,<11.0.5
+Introduced by
+  root
+  └── drupal/core-recommended 10.3.1  (requires ^10.1)
+Current state
+  Direct dependency.
+Recommended remediation
+  No verified remediation found.
+Other candidates
+  rejected: composer update drupal/core-recommended
+      resolves, but drupal/core-recommended ends at 10.3.1 which is still affected by PKSA-35hc-pd1y-zwpc
+  rejected: composer update drupal/core-recommended -w -m --with 'drupal/core-recommended:>=10.3.6,<11.0.0 || >=11.0.5'
+      Composer could not resolve the dependencies: Your requirements could not be resolved to an installable set of packages.
+        Problem 1
+          - Root composer.json requires drupal/core-recommended ^10.1, found drupal/core-recommended[10.3.1, ..., 10.3.5] but it conflicts with your temporary update constraint (drupal/core-recommended:>=10.3.6,<11.0.0 || >=11.0.5).
+  rejected: composer update drupal/core-recommended -W -m --with 'drupal/core-recommended:>=10.3.6,<11.0.0 || >=11.0.5'
+      Composer could not resolve the dependencies: Your requirements could not be resolved to an installable set of packages.
+        Problem 1
+          - Root composer.json requires drupal/core-recommended ^10.1, found drupal/core-recommended[10.3.1, ..., 10.3.5] but it conflicts with your temporary update constraint (drupal/core-recommended:>=10.3.6,<11.0.0 || >=11.0.5).
+  rejected: composer require --no-update drupal/core-recommended:^11.0 && composer update drupal/core-recommended -W -m --with 'drupal/core-recommended:>=10.3.6,<11.0.0 || >=11.0.5'
+      Composer could not resolve the dependencies: Your requirements could not be resolved to an installable set of packages.
+        Problem 1
+          - Root composer.json requires drupal/core-recommended ^11.0, found drupal/core-recommended[11.0.0-alpha1, ..., 11.0.4] but it conflicts with your temporary update constraint (drupal/core-recommended:>=10.3.6,<11.0.0 || >=11.0.5).
+
 CVE-2024-50343
 ────────────────────────────────────────────────────────────
 Affected
@@ -327,4 +220,117 @@ Other candidates
   valid, rank 8: composer update drupal/core-recommended -W -m --with 'symfony/validator:>=6.4.11,<7.0.0 || >=7.1.4'  (4 changes)
   valid, rank 9: composer update drupal/islandora drupal/admin_toolbar drupal/advanced_search drupal/better_exposed_filters drupal/citation_select drupal/coi drupal/config_update drupal/context drupal/controlled_access_terms drupal/core-recommended drupal/views_data_export drupal/pathauto drupal/facets drupal/field_group drupal/field_permissions drupal/field_report drupal/flysystem drupal/fpa drupal/hal drupal/islandora_mirador drupal/taxonomy_manager drupal/openseadragon drupal/pdf drupal/rest_oai_pmh discoverygarden/dgi_image_discovery drupal/search_api_solr drupal/term_merge drupal/twig_tweak drupal/views_field_view drupal/config_inspector drupal/devel drupal/restui -W -m --with 'symfony/validator:>=6.4.11,<7.0.0 || >=7.1.4'  (39 changes)
   not tried (a better candidate already exists): composer require --no-update drupal/core-recommended:^11.0 && composer update drupal/core-recommended -W -m --with 'symfony/validator:>=6.4.11,<7.0.0 || >=7.1.4'
+
+CVE-2024-45411
+────────────────────────────────────────────────────────────
+Affected
+  twig/twig v3.10.3
+  CVE-2024-45411 (PKSA-6319-ffpf-gx66): Possible sandbox bypass
+    https://symfony.com/blog/twig-security-release-possible-sandbox-bypass
+    affected versions: >=1.0.0,<1.44.7|>=2.0.0,<2.16.0|>=3.0.0,<3.11.0|>=3.12.0,<3.14.0
+Introduced by
+  root
+  └── drush/drush 13.0.0-beta5
+      └── chi-teck/drupal-code-generator 3.6.1
+          └── twig/twig v3.10.3  (requires ^3.4)
+  root
+  └── drupal/core 10.3.1
+      └── twig/twig v3.10.3  (requires ^3.9.3)
+  root
+  └── drupal/islandora 2.12.3
+      └── drupal/action 0.2.1
+          └── drupal/core 10.3.1
+              └── twig/twig v3.10.3  (requires ^3.9.3)
+  root
+  └── drupal/islandora_mirador 2.3.7
+      └── drupal/islandora_iiif 2.12.3
+          └── drupal/islandora 2.12.3
+              └── drupal/action 0.2.1
+                  └── drupal/core 10.3.1
+                      └── twig/twig v3.10.3  (requires ^3.9.3)
+  root
+  └── drupal/islandora_mirador 2.3.7
+      └── drupal/islandora 2.12.3
+          └── drupal/action 0.2.1
+              └── drupal/core 10.3.1
+                  └── twig/twig v3.10.3  (requires ^3.9.3)
+  … and 118 more paths
+Current state
+  Transitive dependency.
+Recommended remediation
+  drupal/core-recommended 10.3.1 -> 10.3.4
+  twig/twig v3.10.3 -> v3.14.0
+Composer validation
+  PASS  3 packages changed, 0 added, 0 removed, 0 root constraints changed
+Expected changes
+  drupal/core 10.3.1 -> 10.3.4
+  drupal/core-recommended 10.3.1 -> 10.3.4
+  twig/twig v3.10.3 -> v3.14.0
+Recommended command
+  composer update drupal/core-recommended:10.3.4 -W -m
+Other candidates
+  valid, rank 2: composer update drupal/core-recommended -W -m --with 'twig/twig:>=3.11.0,<3.12.0 || >=3.14.0'  (3 changes)
+  valid, rank 3: composer update drupal/twig_tweak:3.4.0 drupal/core-recommended drupal/restui -W -m --with 'twig/twig:>=3.11.0,<3.12.0 || >=3.14.0'  (4 changes)
+  valid, rank 4: composer update drupal/twig_tweak drupal/core-recommended drupal/restui -W -m --with 'twig/twig:>=3.11.0,<3.12.0 || >=3.14.0'  (4 changes)
+  valid, rank 5: composer update drush/drush:13.0.0 drupal/core-recommended drupal/twig_tweak drupal/restui -W -m --with 'twig/twig:>=3.11.0,<3.12.0 || >=3.14.0'  (5 changes)
+  valid, rank 6: composer update drupal/islandora_mirador:2.3.10 drupal/core-recommended drupal/twig_tweak drupal/restui -W -m --with 'twig/twig:>=3.11.0,<3.12.0 || >=3.14.0'  (5 changes)
+  valid, rank 7: composer update drupal/admin_toolbar:3.5.1 drupal/core-recommended drupal/twig_tweak drupal/restui -W -m --with 'twig/twig:>=3.11.0,<3.12.0 || >=3.14.0'  (5 changes)
+  valid, rank 8: composer update drupal/islandora_mirador drupal/core-recommended drupal/twig_tweak drupal/restui -W -m --with 'twig/twig:>=3.11.0,<3.12.0 || >=3.14.0'  (5 changes)
+  valid, rank 9: composer update drush/drush drupal/core-recommended drupal/twig_tweak drupal/restui -W -m --with 'twig/twig:>=3.11.0,<3.12.0 || >=3.14.0'  (5 changes)
+  valid, rank 10: composer update drupal/admin_toolbar drupal/core-recommended drupal/twig_tweak drupal/restui -W -m --with 'twig/twig:>=3.11.0,<3.12.0 || >=3.14.0'  (5 changes)
+  valid, rank 11: composer update drupal/islandora:2.18.0 drupal/core-recommended drupal/twig_tweak drupal/restui -W -m --with 'twig/twig:>=3.11.0,<3.12.0 || >=3.14.0'  (6 changes)
+  valid, rank 12: composer update drupal/islandora drupal/core-recommended drupal/twig_tweak drupal/restui -W -m --with 'twig/twig:>=3.11.0,<3.12.0 || >=3.14.0'  (6 changes)
+  valid, rank 13: composer update drush/drush:13.0.0 drupal/islandora drupal/admin_toolbar drupal/advanced_search drupal/better_exposed_filters drupal/citation_select drupal/coi drupal/config_update drupal/context drupal/controlled_access_terms drupal/core-recommended drupal/views_data_export drupal/pathauto drupal/facets drupal/field_group drupal/field_permissions drupal/field_report drupal/flysystem drupal/fpa drupal/hal drupal/islandora_mirador drupal/taxonomy_manager drupal/openseadragon drupal/pdf drupal/rest_oai_pmh discoverygarden/dgi_image_discovery drupal/search_api_solr drupal/term_merge drupal/twig_tweak drupal/views_field_view drupal/config_inspector drupal/devel drupal/restui -W -m --with 'twig/twig:>=3.11.0,<3.12.0 || >=3.14.0'  (39 changes)
+  valid, rank 14: composer update drush/drush drupal/islandora drupal/admin_toolbar drupal/advanced_search drupal/better_exposed_filters drupal/citation_select drupal/coi drupal/config_update drupal/context drupal/controlled_access_terms drupal/core-recommended drupal/views_data_export drupal/pathauto drupal/facets drupal/field_group drupal/field_permissions drupal/field_report drupal/flysystem drupal/fpa drupal/hal drupal/islandora_mirador drupal/taxonomy_manager drupal/openseadragon drupal/pdf drupal/rest_oai_pmh discoverygarden/dgi_image_discovery drupal/search_api_solr drupal/term_merge drupal/twig_tweak drupal/views_field_view drupal/config_inspector drupal/devel drupal/restui -W -m --with 'twig/twig:>=3.11.0,<3.12.0 || >=3.14.0'  (39 changes)
+  rejected: composer update twig/twig
+      resolves, but twig/twig ends at v3.10.3 which is still affected by PKSA-6319-ffpf-gx66
+  rejected: composer update twig/twig -w -m --with 'twig/twig:>=3.11.0,<3.12.0 || >=3.14.0'
+      Composer could not resolve the dependencies: Your requirements could not be resolved to an installable set of packages.
+        Problem 1
+          - drupal/core-recommended is locked to version 10.3.1 and an update of this package was not requested.
+          - drupal/core-recommended 10.3.1 requires twig/twig ~v3.10.2 -> found twig/twig[v3.10.3] but it conflicts with your temporary update constraint (twig/twig:>=3.11.0,<3.12.0 || >=3.14.0).
+        Problem 2
+          - drupal/twig_tweak is locked to version 3.3.0 and an update of this package was not requested.
+  rejected: composer update drupal/twig_tweak -W -m --with 'twig/twig:>=3.11.0,<3.12.0 || >=3.14.0'
+      Composer could not resolve the dependencies: Your requirements could not be resolved to an installable set of packages.
+        Problem 1
+          - drupal/core-recommended is locked to version 10.3.1 and an update of this package was not requested.
+          - drupal/core-recommended 10.3.1 requires twig/twig ~v3.10.2 -> found twig/twig[v3.10.3] but it conflicts with your temporary update constraint (twig/twig:>=3.11.0,<3.12.0 || >=3.14.0).
+        Problem 2
+          - drupal/restui is locked to version 1.22.0 and an update of this package was not requested.
+  rejected: composer update drush/drush -W -m --with 'twig/twig:>=3.11.0,<3.12.0 || >=3.14.0'
+      Composer could not resolve the dependencies: Your requirements could not be resolved to an installable set of packages.
+        Problem 1
+          - drupal/core-recommended is locked to version 10.3.1 and an update of this package was not requested.
+          - drupal/core-recommended 10.3.1 requires twig/twig ~v3.10.2 -> found twig/twig[v3.10.3] but it conflicts with your temporary update constraint (twig/twig:>=3.11.0,<3.12.0 || >=3.14.0).
+        Problem 2
+          - drupal/twig_tweak is locked to version 3.3.0 and an update of this package was not requested.
+  rejected: composer update drupal/islandora -W -m --with 'twig/twig:>=3.11.0,<3.12.0 || >=3.14.0'
+      Composer could not resolve the dependencies: Your requirements could not be resolved to an installable set of packages.
+        Problem 1
+          - drupal/core-recommended is locked to version 10.3.1 and an update of this package was not requested.
+          - drupal/core-recommended 10.3.1 requires twig/twig ~v3.10.2 -> found twig/twig[v3.10.3] but it conflicts with your temporary update constraint (twig/twig:>=3.11.0,<3.12.0 || >=3.14.0).
+        Problem 2
+          - drupal/twig_tweak is locked to version 3.3.0 and an update of this package was not requested.
+  rejected: composer update drupal/islandora_mirador -W -m --with 'twig/twig:>=3.11.0,<3.12.0 || >=3.14.0'
+      Composer could not resolve the dependencies: Your requirements could not be resolved to an installable set of packages.
+        Problem 1
+          - drupal/core-recommended is locked to version 10.3.1 and an update of this package was not requested.
+          - drupal/core-recommended 10.3.1 requires twig/twig ~v3.10.2 -> found twig/twig[v3.10.3] but it conflicts with your temporary update constraint (twig/twig:>=3.11.0,<3.12.0 || >=3.14.0).
+        Problem 2
+          - drupal/twig_tweak is locked to version 3.3.0 and an update of this package was not requested.
+  rejected: composer update drupal/admin_toolbar -W -m --with 'twig/twig:>=3.11.0,<3.12.0 || >=3.14.0'
+      Composer could not resolve the dependencies: Your requirements could not be resolved to an installable set of packages.
+        Problem 1
+          - drupal/core-recommended is locked to version 10.3.1 and an update of this package was not requested.
+          - drupal/core-recommended 10.3.1 requires twig/twig ~v3.10.2 -> found twig/twig[v3.10.3] but it conflicts with your temporary update constraint (twig/twig:>=3.11.0,<3.12.0 || >=3.14.0).
+        Problem 2
+          - drupal/twig_tweak is locked to version 3.3.0 and an update of this package was not requested.
+  not tried (a better candidate already exists): composer require --no-update drupal/core-recommended:^11.0 && composer update drupal/core-recommended -W -m --with 'twig/twig:>=3.11.0,<3.12.0 || >=3.14.0'
+
+Summary
+  Findings: 4 advisories on 4 packages, 2 packages with a verified fix
+  composer update symfony/validator drupal/core-recommended:10.3.4 -W -m fixes 2 of 4 findings
+    (4 packages changed, verified by Composer)
+  No verified fix: CVE-2024-45440 on drupal/core; CVE-2024-45440 on drupal/core-recommended
 ```

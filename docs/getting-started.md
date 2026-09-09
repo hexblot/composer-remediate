@@ -35,11 +35,18 @@ composer remediate                         # analyse composer.lock, print a plan
 composer remediate --output=report.html --output=report.json   # also write HTML and JSON reports (CI artifacts)
 composer remediate --format=json                                # machine-readable output on stdout
 composer remediate --no-dev                # ignore findings in require-dev packages
+composer remediate --ignore CVE-2024-50345 # leave an advisory out (also honours config.audit.ignore / config.policy)
+composer remediate --offline --advisories-file=advisories.json   # no network at all; needs a warm Composer cache
 composer remediate -v                      # show every candidate command as it is tried
 ```
 
 The plugin never writes to `composer.json`, `composer.lock` or `vendor/`. Every recommendation is a
-plain `composer update` command you run yourself.
+plain `composer update` command you run yourself. The report ends with a summary: how many
+advisories were found, and the single command that fixes all of them, or how many of them it fixes.
+
+Exit codes: `0` no vulnerabilities, `1` vulnerabilities with a verified remediation, `2` at least
+one vulnerability without a verified remediation, `3` error, `4` advisory data unavailable,
+`5` package metadata could not be fetched (network).
 
 ## Developing the plugin
 
