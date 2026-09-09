@@ -102,7 +102,7 @@ jobs:
         run: |
           v="${{ steps.version.outputs.version }}"
           gh release create "$v" out/advisories.sqlite out/advisories.sqlite.sha256 out/latest.json \
-            --title "Advisory database $v" \
+            --title "Advisory database $v" --latest=false \
             --notes "Advisory database built from Packagist, OSV and FriendsOfPHP. Dataset hash ${{ steps.build.outputs.hash }}. Use with \`composer remediate --database-location=https://github.com/${{ github.repository }}/releases/download/$v/advisories.sqlite\`. Aggregated advisory data; see docs/advisory-database.md for source licences."
           if gh release view advisory-db-latest >/dev/null 2>&1; then
             gh release upload advisory-db-latest out/advisories.sqlite out/advisories.sqlite.sha256 out/latest.json --clobber
