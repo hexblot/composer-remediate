@@ -7,7 +7,7 @@
         "php_version": "(fixture)",
         "advisory_source": "advisory snapshot advisories.json",
         "solver": "in-process Composer dry-run",
-        "composer_json_sha256": "7f56bb5e2c2c62094061ae2bb08a42be51717429b2febab71543743d722ba838",
+        "composer_json_sha256": "de45b1d494ad91837f2772e30304f9dd98d4e8b8e59792705686ee19887c9483",
         "composer_lock_sha256": "f0ddb6b55ce493414f04b4107b13651fca4f9c51feb3f57710197a41d2a00f93",
         "analysis_timestamp": "(fixture)",
         "locked_packages": "182"
@@ -20,6 +20,8 @@
         "packages_with_fix": 2,
         "fail_on": null,
         "packages_gated": 4,
+        "packages_baselined": 0,
+        "packages_with_constraint_drag": 0,
         "combined_command": "composer update symfony/validator drupal/core-recommended:10.3.4 -W -m",
         "combined_fixes": 2,
         "combined_total": 4,
@@ -41,6 +43,8 @@
             "version_normalized": "10.3.1.0",
             "direct": false,
             "dev": false,
+            "baselined": false,
+            "counts_for_exit": true,
             "via_replaced_package": null,
             "advisories": [
                 {
@@ -402,6 +406,8 @@
             "version_normalized": "10.3.1.0",
             "direct": true,
             "dev": false,
+            "baselined": false,
+            "counts_for_exit": true,
             "via_replaced_package": null,
             "advisories": [
                 {
@@ -487,6 +493,8 @@
             "version_normalized": "6.4.9.0",
             "direct": false,
             "dev": false,
+            "baselined": false,
+            "counts_for_exit": true,
             "via_replaced_package": null,
             "advisories": [
                 {
@@ -787,6 +795,7 @@
                 "command": "composer update symfony/validator",
                 "strategy": "lock-refresh",
                 "root_constraint_changes": [],
+                "constraint_drag": null,
                 "summary": {
                     "changed": 1,
                     "added": 0,
@@ -965,6 +974,8 @@
             "version_normalized": "3.10.3.0",
             "direct": false,
             "dev": false,
+            "baselined": false,
+            "counts_for_exit": true,
             "via_replaced_package": null,
             "advisories": [
                 {
@@ -1260,6 +1271,7 @@
                 "command": "composer update drupal/core-recommended:10.3.4 -W -m",
                 "strategy": "parent-update",
                 "root_constraint_changes": [],
+                "constraint_drag": null,
                 "summary": {
                     "changed": 3,
                     "added": 0,

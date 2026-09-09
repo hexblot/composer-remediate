@@ -37,7 +37,7 @@ final class JsonRenderer
         $findings = [];
         $unsolved = [];
         foreach ($plan->findings as $fp) {
-            $findings[] = $this->findingPlan($fp);
+            $findings[] = $this->findingPlan($fp, $plan);
             if (!$fp->hasRemediation()) {
                 $unsolved[] = $fp->finding->packageName;
             }
@@ -56,6 +56,8 @@ final class JsonRenderer
                 'packages_with_fix' => count($plan->findings) - count($plan->unsolved()),
                 'fail_on' => $plan->failOn,
                 'packages_gated' => count($plan->gated()),
+                'packages_baselined' => count($plan->baselined()),
+                'packages_with_constraint_drag' => count(array_filter($plan->findings, static fn (FindingPlan $p): bool => $p->constraintDrag() !== null)),
                 'combined_command' => $combined?->candidate->commandLine($this->minimalChangesSupported),
                 'combined_fixes' => $combined?->fixedCount(),
                 'combined_total' => $combined?->totalCount(),
@@ -68,7 +70,7 @@ final class JsonRenderer
     }
 
     /** @return array<string, mixed> */
-    private function findingPlan(FindingPlan $fp): array
+    private function findingPlan(FindingPlan $fp, Plan $plan): array
     {
         $f = $fp->finding;
         $rec = $fp->recommended();
@@ -97,6 +99,8 @@ final class JsonRenderer
             'version_normalized' => $f->version,
             'direct' => $f->isRootRequirement,
             'dev' => $f->isDev,
+            'baselined' => $plan->isBaselined($fp),
+            'counts_for_exit' => $plan->countsForExit($fp),
             'via_replaced_package' => $f->viaReplacedName,
             'advisories' => array_map(static fn (Finding $x): array => [
                 'id' => $x->advisory->id,
@@ -119,6 +123,7 @@ final class JsonRenderer
                 'command' => $rec->candidate->commandLine($this->minimalChangesSupported),
                 'strategy' => $rec->candidate->strategy->value,
                 'root_constraint_changes' => array_values(array_map(static fn ($c): array => ['package' => $c->packageName, 'from' => $c->fromConstraint, 'to' => $c->toConstraint, 'dev' => $c->isDev], $rec->candidate->rootConstraintChanges)),
+                'constraint_drag' => $fp->constraintDrag(),
                 'summary' => $rec->diff === null ? null : self::summary($rec->diff),
                 'changes' => $rec->diff === null ? [] : self::changes($rec->diff),
             ],

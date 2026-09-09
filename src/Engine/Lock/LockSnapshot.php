@@ -83,6 +83,10 @@ final class LockSnapshot
         $copy->setSourceReference($package->getSourceReference());
         $copy->setDistReference($package->getDistReference());
         $copy->setType($package->getType());
+        $released = $package->getReleaseDate();
+        if ($released !== null) {
+            $copy->setReleaseDate(\DateTime::createFromInterface($released));
+        }
 
         return $copy;
     }

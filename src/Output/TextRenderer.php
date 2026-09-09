@@ -31,8 +31,11 @@ final class TextRenderer
         return sprintf('<%s>%s</>', $style, OutputFormatter::escape($text));
     }
 
+    private ?Plan $currentPlan = null;
+
     public function render(Plan $plan): string
     {
+        $this->currentPlan = $plan;
         $out = [];
         $out[] = $this->tag(sprintf('Composer Remediate — %d finding%s in %s', count($plan->findings), count($plan->findings) === 1 ? '' : 's', $plan->metadata['project'] ?? ''), 'options=bold');
         $out[] = sprintf('Advisories: %s', $plan->metadata['advisory_source'] ?? '');
@@ -91,9 +94,17 @@ final class TextRenderer
         if ($unsolved !== []) {
             $out[] = '  ' . $this->tag('No verified fix:', 'fg=red') . ' ' . implode('; ', array_map(static fn (FindingPlan $p): string => implode(', ', array_map(static fn ($f): string => $f->advisory->displayId(), $p->allFindings())) . ' on ' . $p->finding->packageName, $unsolved));
         }
-        if ($plan->failOn !== null) {
+        $dragged = array_filter($plan->findings, static fn (FindingPlan $p): bool => $p->constraintDrag() !== null);
+        if ($dragged !== []) {
+            $out[] = sprintf('  Constraint drag: %d fix%s require%s widening a constraint in composer.json.', count($dragged), count($dragged) === 1 ? '' : 'es', count($dragged) === 1 ? 's' : '');
+        }
+        $baselined = $plan->baselined();
+        if ($baselined !== []) {
+            $out[] = sprintf('  Baseline: %d package%s accepted earlier and excluded from the exit code (%s).', count($baselined), count($baselined) === 1 ? '' : 's', implode(', ', array_map(static fn (FindingPlan $p): string => $p->finding->packageName, $baselined)));
+        }
+        if ($plan->failOn !== null || $baselined !== []) {
             $gated = count($plan->gated());
-            $out[] = sprintf('  Gate: --fail-on %s, %d of %d package%s count towards the exit code (%d).', $plan->failOn, $gated, $packages, $packages === 1 ? '' : 's', $plan->exitCode());
+            $out[] = sprintf('  Gate: %s%d of %d package%s count towards the exit code (%d).', $plan->failOn !== null ? '--fail-on ' . $plan->failOn . ', ' : '', $gated, $packages, $packages === 1 ? '' : 's', $plan->exitCode());
         }
 
         return $out;
@@ -104,7 +115,7 @@ final class TextRenderer
     {
         $f = $plan->finding;
         $out = [];
-        $out[] = $this->tag(implode(', ', array_map(static fn ($finding): string => $finding->advisory->displayId(), $plan->allFindings())), 'fg=red;options=bold');
+        $out[] = $this->tag(implode(', ', array_map(static fn ($finding): string => $finding->advisory->displayId(), $plan->allFindings())), 'fg=red;options=bold') . ($this->currentPlan?->isBaselined($plan) === true ? '  ' . $this->tag('[baselined]', 'fg=gray') : '');
         $out[] = str_repeat('─', 60);
         $out[] = $this->heading('Affected');
         $out[] = sprintf('  %s %s%s', $f->packageName, $f->prettyVersion, $f->viaReplacedName !== null ? sprintf(' (replaces %s)', $f->viaReplacedName) : '');
@@ -153,6 +164,10 @@ final class TextRenderer
             }
             foreach ($recommended->candidate->rootConstraintChanges as $change) {
                 $out[] = sprintf('  composer.json: %s %s -> %s', $change->packageName, $change->fromConstraint ?? '(new)', $change->toConstraint);
+            }
+            $drag = $plan->constraintDrag();
+            if ($drag !== null) {
+                $out[] = '  ' . $this->tag('Constraint drag:', 'fg=yellow') . ' ' . $drag;
             }
             if ($diff->prereleaseTargets() !== []) {
                 $out[] = '  Note: installs pre-release versions (' . implode(', ', array_map(static fn ($c): string => $c->packageName . ' ' . $c->toPretty, $diff->prereleaseTargets())) . '); no stable release satisfies the constraints yet.';

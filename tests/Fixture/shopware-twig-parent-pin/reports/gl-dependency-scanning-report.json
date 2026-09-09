@@ -1,0 +1,1421 @@
+{
+    "version": "15.2.1",
+    "vulnerabilities": [
+        {
+            "id": "0ea3cc7f-8d4a-59a1-b55b-f3800869c23e",
+            "category": "dependency_scanning",
+            "name": "CVE-2022-0085: Server-Side Request Forgery in dompdf/dompdf",
+            "description": "shopwarelabs/dompdf v1.0.3 is affected by CVE-2022-0085 (affected versions <2.0.0).",
+            "severity": "Medium",
+            "solution": "No verified remediation found.",
+            "identifiers": [
+                {
+                    "type": "cve",
+                    "name": "CVE-2022-0085",
+                    "value": "CVE-2022-0085",
+                    "url": "https://nvd.nist.gov/vuln/detail/CVE-2022-0085"
+                },
+                {
+                    "type": "ghsa",
+                    "name": "GHSA-pf6p-25r2-fx45",
+                    "value": "GHSA-pf6p-25r2-fx45",
+                    "url": "https://github.com/advisories/GHSA-pf6p-25r2-fx45"
+                },
+                {
+                    "type": "packagist_advisory",
+                    "name": "PKSA-872h-8556-2chm",
+                    "value": "PKSA-872h-8556-2chm",
+                    "url": "https://packagist.org/security-advisories/PKSA-872h-8556-2chm"
+                }
+            ],
+            "links": [
+                {
+                    "url": "https://github.com/advisories/GHSA-pf6p-25r2-fx45"
+                }
+            ],
+            "location": {
+                "file": "composer.lock",
+                "dependency": {
+                    "package": {
+                        "name": "shopwarelabs/dompdf"
+                    },
+                    "version": "v1.0.3",
+                    "direct": false
+                }
+            }
+        },
+        {
+            "id": "a3efb1ba-3830-5714-b81d-c088c443fff9",
+            "category": "dependency_scanning",
+            "name": "CVE-2022-41343: Remote file inclusion",
+            "description": "shopwarelabs/dompdf v1.0.3 is affected by CVE-2022-41343 (affected versions <2.0.1).",
+            "severity": "High",
+            "solution": "No verified remediation found.",
+            "identifiers": [
+                {
+                    "type": "cve",
+                    "name": "CVE-2022-41343",
+                    "value": "CVE-2022-41343",
+                    "url": "https://nvd.nist.gov/vuln/detail/CVE-2022-41343"
+                },
+                {
+                    "type": "ghsa",
+                    "name": "GHSA-6x28-7h8c-chx4",
+                    "value": "GHSA-6x28-7h8c-chx4",
+                    "url": "https://github.com/advisories/GHSA-6x28-7h8c-chx4"
+                },
+                {
+                    "type": "packagist_advisory",
+                    "name": "PKSA-hbk6-2vfz-8f8n",
+                    "value": "PKSA-hbk6-2vfz-8f8n",
+                    "url": "https://packagist.org/security-advisories/PKSA-hbk6-2vfz-8f8n"
+                }
+            ],
+            "links": [
+                {
+                    "url": "https://github.com/advisories/GHSA-6x28-7h8c-chx4"
+                }
+            ],
+            "location": {
+                "file": "composer.lock",
+                "dependency": {
+                    "package": {
+                        "name": "shopwarelabs/dompdf"
+                    },
+                    "version": "v1.0.3",
+                    "direct": false
+                }
+            }
+        },
+        {
+            "id": "3bbf2ba6-075a-567d-bedf-9b8f8a618802",
+            "category": "dependency_scanning",
+            "name": "CVE-2022-2400: Dompdf before v2.0.0 vulnerable to chroot check bypass",
+            "description": "shopwarelabs/dompdf v1.0.3 is affected by CVE-2022-2400 (affected versions <2.0.0).",
+            "severity": "Medium",
+            "solution": "No verified remediation found.",
+            "identifiers": [
+                {
+                    "type": "cve",
+                    "name": "CVE-2022-2400",
+                    "value": "CVE-2022-2400",
+                    "url": "https://nvd.nist.gov/vuln/detail/CVE-2022-2400"
+                },
+                {
+                    "type": "ghsa",
+                    "name": "GHSA-5qj8-6xxj-hp9h",
+                    "value": "GHSA-5qj8-6xxj-hp9h",
+                    "url": "https://github.com/advisories/GHSA-5qj8-6xxj-hp9h"
+                },
+                {
+                    "type": "packagist_advisory",
+                    "name": "PKSA-kj9c-tr41-t8mj",
+                    "value": "PKSA-kj9c-tr41-t8mj",
+                    "url": "https://packagist.org/security-advisories/PKSA-kj9c-tr41-t8mj"
+                }
+            ],
+            "links": [
+                {
+                    "url": "https://github.com/advisories/GHSA-5qj8-6xxj-hp9h"
+                }
+            ],
+            "location": {
+                "file": "composer.lock",
+                "dependency": {
+                    "package": {
+                        "name": "shopwarelabs/dompdf"
+                    },
+                    "version": "v1.0.3",
+                    "direct": false
+                }
+            }
+        },
+        {
+            "id": "1d4a2392-f6d8-5ea2-b662-a386430c6912",
+            "category": "dependency_scanning",
+            "name": "CVE-2022-39261: Possibility to load a template outside a configured directory when using the filesystem loader",
+            "description": "twig/twig v3.3.10 is affected by CVE-2022-39261 (affected versions >=1.0.0,<1.44.7|>=2.0.0,<2.15.3|>=3.0.0,<3.4.3).",
+            "severity": "High",
+            "solution": "Run `composer update shopware/storefront:6.4.15.2 shopware/recovery shopware/elasticsearch shopware/administration -W -m` (verified with Composer's solver, 6 package change(s)).",
+            "identifiers": [
+                {
+                    "type": "cve",
+                    "name": "CVE-2022-39261",
+                    "value": "CVE-2022-39261",
+                    "url": "https://nvd.nist.gov/vuln/detail/CVE-2022-39261"
+                },
+                {
+                    "type": "ghsa",
+                    "name": "GHSA-52m2-vc4m-jj33",
+                    "value": "GHSA-52m2-vc4m-jj33",
+                    "url": "https://github.com/advisories/GHSA-52m2-vc4m-jj33"
+                },
+                {
+                    "type": "packagist_advisory",
+                    "name": "PKSA-n7sg-8f52-pqtf",
+                    "value": "PKSA-n7sg-8f52-pqtf",
+                    "url": "https://packagist.org/security-advisories/PKSA-n7sg-8f52-pqtf"
+                }
+            ],
+            "links": [
+                {
+                    "url": "https://symfony.com/blog/twig-security-release-possibility-to-load-a-template-outside-a-configured-directory-when-using-the-filesystem-loader"
+                }
+            ],
+            "location": {
+                "file": "composer.lock",
+                "dependency": {
+                    "package": {
+                        "name": "twig/twig"
+                    },
+                    "version": "v3.3.10",
+                    "direct": false
+                }
+            }
+        }
+    ],
+    "dependency_files": [
+        {
+            "path": "composer.lock",
+            "package_manager": "composer",
+            "dependencies": [
+                {
+                    "package": {
+                        "name": "aws/aws-crt-php"
+                    },
+                    "version": "v1.0.2"
+                },
+                {
+                    "package": {
+                        "name": "aws/aws-sdk-php"
+                    },
+                    "version": "3.235.12"
+                },
+                {
+                    "package": {
+                        "name": "brick/math"
+                    },
+                    "version": "0.9.3"
+                },
+                {
+                    "package": {
+                        "name": "cocur/slugify"
+                    },
+                    "version": "v4.0.0"
+                },
+                {
+                    "package": {
+                        "name": "composer/ca-bundle"
+                    },
+                    "version": "1.3.3"
+                },
+                {
+                    "package": {
+                        "name": "composer/composer"
+                    },
+                    "version": "2.2.18"
+                },
+                {
+                    "package": {
+                        "name": "composer/metadata-minifier"
+                    },
+                    "version": "1.0.0"
+                },
+                {
+                    "package": {
+                        "name": "composer/pcre"
+                    },
+                    "version": "1.0.1"
+                },
+                {
+                    "package": {
+                        "name": "composer/semver"
+                    },
+                    "version": "3.3.2"
+                },
+                {
+                    "package": {
+                        "name": "composer/spdx-licenses"
+                    },
+                    "version": "1.5.7"
+                },
+                {
+                    "package": {
+                        "name": "composer/xdebug-handler"
+                    },
+                    "version": "3.0.3"
+                },
+                {
+                    "package": {
+                        "name": "defuse/php-encryption"
+                    },
+                    "version": "v2.2.1"
+                },
+                {
+                    "package": {
+                        "name": "dms/phpunit-arraysubset-asserts"
+                    },
+                    "version": "v0.2.1"
+                },
+                {
+                    "package": {
+                        "name": "doctrine/annotations"
+                    },
+                    "version": "1.13.1"
+                },
+                {
+                    "package": {
+                        "name": "doctrine/cache"
+                    },
+                    "version": "2.2.0"
+                },
+                {
+                    "package": {
+                        "name": "doctrine/collections"
+                    },
+                    "version": "1.7.3"
+                },
+                {
+                    "package": {
+                        "name": "doctrine/dbal"
+                    },
+                    "version": "2.13.9"
+                },
+                {
+                    "package": {
+                        "name": "doctrine/deprecations"
+                    },
+                    "version": "v1.0.0"
+                },
+                {
+                    "package": {
+                        "name": "doctrine/event-manager"
+                    },
+                    "version": "1.1.2"
+                },
+                {
+                    "package": {
+                        "name": "doctrine/inflector"
+                    },
+                    "version": "1.4.4"
+                },
+                {
+                    "package": {
+                        "name": "doctrine/instantiator"
+                    },
+                    "version": "1.4.1"
+                },
+                {
+                    "package": {
+                        "name": "doctrine/lexer"
+                    },
+                    "version": "1.2.3"
+                },
+                {
+                    "package": {
+                        "name": "doctrine/persistence"
+                    },
+                    "version": "2.5.4"
+                },
+                {
+                    "package": {
+                        "name": "egulias/email-validator"
+                    },
+                    "version": "3.2.1"
+                },
+                {
+                    "package": {
+                        "name": "elasticsearch/elasticsearch"
+                    },
+                    "version": "v7.16.0"
+                },
+                {
+                    "package": {
+                        "name": "enqueue/amqp-tools"
+                    },
+                    "version": "0.10.9"
+                },
+                {
+                    "package": {
+                        "name": "enqueue/dbal"
+                    },
+                    "version": "0.10.17"
+                },
+                {
+                    "package": {
+                        "name": "enqueue/dsn"
+                    },
+                    "version": "0.10.8"
+                },
+                {
+                    "package": {
+                        "name": "enqueue/enqueue"
+                    },
+                    "version": "0.10.16"
+                },
+                {
+                    "package": {
+                        "name": "enqueue/enqueue-bundle"
+                    },
+                    "version": "0.10.16"
+                },
+                {
+                    "package": {
+                        "name": "enqueue/null"
+                    },
+                    "version": "0.10.15"
+                },
+                {
+                    "package": {
+                        "name": "enqueue/redis"
+                    },
+                    "version": "0.10.9"
+                },
+                {
+                    "package": {
+                        "name": "ezimuel/guzzlestreams"
+                    },
+                    "version": "3.0.1"
+                },
+                {
+                    "package": {
+                        "name": "ezimuel/ringphp"
+                    },
+                    "version": "1.2.0"
+                },
+                {
+                    "package": {
+                        "name": "ezyang/htmlpurifier"
+                    },
+                    "version": "v4.13.0"
+                },
+                {
+                    "package": {
+                        "name": "fakerphp/faker"
+                    },
+                    "version": "v1.14.1"
+                },
+                {
+                    "package": {
+                        "name": "firebase/php-jwt"
+                    },
+                    "version": "v6.3.0"
+                },
+                {
+                    "package": {
+                        "name": "friendsofphp/proxy-manager-lts"
+                    },
+                    "version": "v1.0.12"
+                },
+                {
+                    "package": {
+                        "name": "google/auth"
+                    },
+                    "version": "v1.22.0"
+                },
+                {
+                    "package": {
+                        "name": "google/cloud-core"
+                    },
+                    "version": "v1.47.2"
+                },
+                {
+                    "package": {
+                        "name": "google/cloud-storage"
+                    },
+                    "version": "v1.25.2"
+                },
+                {
+                    "package": {
+                        "name": "google/crc32"
+                    },
+                    "version": "v0.1.0"
+                },
+                {
+                    "package": {
+                        "name": "guzzlehttp/guzzle"
+                    },
+                    "version": "7.4.5"
+                },
+                {
+                    "package": {
+                        "name": "guzzlehttp/promises"
+                    },
+                    "version": "1.5.2"
+                },
+                {
+                    "package": {
+                        "name": "guzzlehttp/psr7"
+                    },
+                    "version": "1.9.0"
+                },
+                {
+                    "package": {
+                        "name": "jdorn/sql-formatter"
+                    },
+                    "version": "v1.2.17"
+                },
+                {
+                    "package": {
+                        "name": "johnkary/phpunit-speedtrap"
+                    },
+                    "version": "v3.3.0"
+                },
+                {
+                    "package": {
+                        "name": "justinrainbow/json-schema"
+                    },
+                    "version": "5.2.12"
+                },
+                {
+                    "package": {
+                        "name": "laminas/laminas-code"
+                    },
+                    "version": "4.7.0"
+                },
+                {
+                    "package": {
+                        "name": "lcobucci/clock"
+                    },
+                    "version": "2.0.0"
+                },
+                {
+                    "package": {
+                        "name": "lcobucci/jwt"
+                    },
+                    "version": "4.1.5"
+                },
+                {
+                    "package": {
+                        "name": "league/event"
+                    },
+                    "version": "2.2.0"
+                },
+                {
+                    "package": {
+                        "name": "league/flysystem"
+                    },
+                    "version": "1.1.9"
+                },
+                {
+                    "package": {
+                        "name": "league/flysystem-aws-s3-v3"
+                    },
+                    "version": "1.0.30"
+                },
+                {
+                    "package": {
+                        "name": "league/flysystem-memory"
+                    },
+                    "version": "1.0.2"
+                },
+                {
+                    "package": {
+                        "name": "league/mime-type-detection"
+                    },
+                    "version": "1.11.0"
+                },
+                {
+                    "package": {
+                        "name": "league/oauth2-server"
+                    },
+                    "version": "8.3.5"
+                },
+                {
+                    "package": {
+                        "name": "league/uri"
+                    },
+                    "version": "6.7.2"
+                },
+                {
+                    "package": {
+                        "name": "league/uri-interfaces"
+                    },
+                    "version": "2.3.0"
+                },
+                {
+                    "package": {
+                        "name": "maltyxx/images-generator"
+                    },
+                    "version": "1.0.1"
+                },
+                {
+                    "package": {
+                        "name": "marc1706/fast-image-size"
+                    },
+                    "version": "v1.1.6"
+                },
+                {
+                    "package": {
+                        "name": "mbezhanov/faker-provider-collection"
+                    },
+                    "version": "2.0.1"
+                },
+                {
+                    "package": {
+                        "name": "meyfa/php-svg"
+                    },
+                    "version": "v0.11.3"
+                },
+                {
+                    "package": {
+                        "name": "monolog/monolog"
+                    },
+                    "version": "2.8.0"
+                },
+                {
+                    "package": {
+                        "name": "mtdowling/jmespath.php"
+                    },
+                    "version": "2.6.1"
+                },
+                {
+                    "package": {
+                        "name": "myclabs/deep-copy"
+                    },
+                    "version": "1.11.0"
+                },
+                {
+                    "package": {
+                        "name": "nikic/php-parser"
+                    },
+                    "version": "v4.13.2"
+                },
+                {
+                    "package": {
+                        "name": "nyholm/psr7"
+                    },
+                    "version": "1.4.0"
+                },
+                {
+                    "package": {
+                        "name": "ongr/elasticsearch-dsl"
+                    },
+                    "version": "v7.2.2"
+                },
+                {
+                    "package": {
+                        "name": "opis/json-schema"
+                    },
+                    "version": "1.0.19"
+                },
+                {
+                    "package": {
+                        "name": "padaliyajay/php-autoprefixer"
+                    },
+                    "version": "1.3"
+                },
+                {
+                    "package": {
+                        "name": "paragonie/random_compat"
+                    },
+                    "version": "v9.99.100"
+                },
+                {
+                    "package": {
+                        "name": "phar-io/manifest"
+                    },
+                    "version": "2.0.3"
+                },
+                {
+                    "package": {
+                        "name": "phar-io/version"
+                    },
+                    "version": "3.2.1"
+                },
+                {
+                    "package": {
+                        "name": "phenx/php-font-lib"
+                    },
+                    "version": "0.5.4"
+                },
+                {
+                    "package": {
+                        "name": "phenx/php-svg-lib"
+                    },
+                    "version": "0.3.4"
+                },
+                {
+                    "package": {
+                        "name": "php-http/message-factory"
+                    },
+                    "version": "v1.0.2"
+                },
+                {
+                    "package": {
+                        "name": "phpunit/php-code-coverage"
+                    },
+                    "version": "9.2.15"
+                },
+                {
+                    "package": {
+                        "name": "phpunit/php-file-iterator"
+                    },
+                    "version": "3.0.6"
+                },
+                {
+                    "package": {
+                        "name": "phpunit/php-invoker"
+                    },
+                    "version": "3.1.1"
+                },
+                {
+                    "package": {
+                        "name": "phpunit/php-text-template"
+                    },
+                    "version": "2.0.4"
+                },
+                {
+                    "package": {
+                        "name": "phpunit/php-timer"
+                    },
+                    "version": "5.0.3"
+                },
+                {
+                    "package": {
+                        "name": "phpunit/phpunit"
+                    },
+                    "version": "9.5.24"
+                },
+                {
+                    "package": {
+                        "name": "psr/cache"
+                    },
+                    "version": "1.0.1"
+                },
+                {
+                    "package": {
+                        "name": "psr/container"
+                    },
+                    "version": "1.1.2"
+                },
+                {
+                    "package": {
+                        "name": "psr/event-dispatcher"
+                    },
+                    "version": "1.0.0"
+                },
+                {
+                    "package": {
+                        "name": "psr/http-client"
+                    },
+                    "version": "1.0.1"
+                },
+                {
+                    "package": {
+                        "name": "psr/http-factory"
+                    },
+                    "version": "1.0.1"
+                },
+                {
+                    "package": {
+                        "name": "psr/http-message"
+                    },
+                    "version": "1.0.1"
+                },
+                {
+                    "package": {
+                        "name": "psr/log"
+                    },
+                    "version": "1.1.2"
+                },
+                {
+                    "package": {
+                        "name": "queue-interop/amqp-interop"
+                    },
+                    "version": "0.8.2"
+                },
+                {
+                    "package": {
+                        "name": "queue-interop/queue-interop"
+                    },
+                    "version": "0.8.1"
+                },
+                {
+                    "package": {
+                        "name": "ralouphie/getallheaders"
+                    },
+                    "version": "3.0.3"
+                },
+                {
+                    "package": {
+                        "name": "ramsey/collection"
+                    },
+                    "version": "1.2.2"
+                },
+                {
+                    "package": {
+                        "name": "ramsey/uuid"
+                    },
+                    "version": "4.2.3"
+                },
+                {
+                    "package": {
+                        "name": "react/promise"
+                    },
+                    "version": "v2.9.0"
+                },
+                {
+                    "package": {
+                        "name": "rize/uri-template"
+                    },
+                    "version": "0.3.4"
+                },
+                {
+                    "package": {
+                        "name": "sabberworm/php-css-parser"
+                    },
+                    "version": "8.4.0"
+                },
+                {
+                    "package": {
+                        "name": "scssphp/scssphp"
+                    },
+                    "version": "v1.10.0"
+                },
+                {
+                    "package": {
+                        "name": "sebastian/cli-parser"
+                    },
+                    "version": "1.0.1"
+                },
+                {
+                    "package": {
+                        "name": "sebastian/code-unit"
+                    },
+                    "version": "1.0.8"
+                },
+                {
+                    "package": {
+                        "name": "sebastian/code-unit-reverse-lookup"
+                    },
+                    "version": "2.0.3"
+                },
+                {
+                    "package": {
+                        "name": "sebastian/comparator"
+                    },
+                    "version": "4.0.8"
+                },
+                {
+                    "package": {
+                        "name": "sebastian/complexity"
+                    },
+                    "version": "2.0.2"
+                },
+                {
+                    "package": {
+                        "name": "sebastian/diff"
+                    },
+                    "version": "4.0.4"
+                },
+                {
+                    "package": {
+                        "name": "sebastian/environment"
+                    },
+                    "version": "5.1.4"
+                },
+                {
+                    "package": {
+                        "name": "sebastian/exporter"
+                    },
+                    "version": "4.0.5"
+                },
+                {
+                    "package": {
+                        "name": "sebastian/global-state"
+                    },
+                    "version": "5.0.5"
+                },
+                {
+                    "package": {
+                        "name": "sebastian/lines-of-code"
+                    },
+                    "version": "1.0.3"
+                },
+                {
+                    "package": {
+                        "name": "sebastian/object-enumerator"
+                    },
+                    "version": "4.0.4"
+                },
+                {
+                    "package": {
+                        "name": "sebastian/object-reflector"
+                    },
+                    "version": "2.0.4"
+                },
+                {
+                    "package": {
+                        "name": "sebastian/recursion-context"
+                    },
+                    "version": "4.0.4"
+                },
+                {
+                    "package": {
+                        "name": "sebastian/resource-operations"
+                    },
+                    "version": "3.0.3"
+                },
+                {
+                    "package": {
+                        "name": "sebastian/type"
+                    },
+                    "version": "3.2.0"
+                },
+                {
+                    "package": {
+                        "name": "sebastian/version"
+                    },
+                    "version": "3.0.2"
+                },
+                {
+                    "package": {
+                        "name": "seld/jsonlint"
+                    },
+                    "version": "1.9.0"
+                },
+                {
+                    "package": {
+                        "name": "seld/phar-utils"
+                    },
+                    "version": "1.2.1"
+                },
+                {
+                    "package": {
+                        "name": "sensio/framework-extra-bundle"
+                    },
+                    "version": "v6.2.8"
+                },
+                {
+                    "package": {
+                        "name": "setasign/fpdi"
+                    },
+                    "version": "v2.3.6"
+                },
+                {
+                    "package": {
+                        "name": "shopware/administration"
+                    },
+                    "version": "6.4.15.1"
+                },
+                {
+                    "package": {
+                        "name": "shopware/conflicts"
+                    },
+                    "version": "0.0.1"
+                },
+                {
+                    "package": {
+                        "name": "shopware/core"
+                    },
+                    "version": "6.4.15.1"
+                },
+                {
+                    "package": {
+                        "name": "shopware/elasticsearch"
+                    },
+                    "version": "6.4.15.1"
+                },
+                {
+                    "package": {
+                        "name": "shopware/recovery"
+                    },
+                    "version": "6.4.15.1"
+                },
+                {
+                    "package": {
+                        "name": "shopware/storefront"
+                    },
+                    "version": "6.4.15.1"
+                },
+                {
+                    "package": {
+                        "name": "shopwarelabs/dompdf"
+                    },
+                    "version": "v1.0.3"
+                },
+                {
+                    "package": {
+                        "name": "smalot/pdfparser"
+                    },
+                    "version": "v0.14.0"
+                },
+                {
+                    "package": {
+                        "name": "squirrelphp/twig-php-syntax"
+                    },
+                    "version": "v1.7"
+                },
+                {
+                    "package": {
+                        "name": "sroze/messenger-enqueue-transport"
+                    },
+                    "version": "0.4.0"
+                },
+                {
+                    "package": {
+                        "name": "superbalist/flysystem-google-storage"
+                    },
+                    "version": "7.2.2"
+                },
+                {
+                    "package": {
+                        "name": "symfony/amqp-messenger"
+                    },
+                    "version": "v5.4.11"
+                },
+                {
+                    "package": {
+                        "name": "symfony/asset"
+                    },
+                    "version": "v5.4.7"
+                },
+                {
+                    "package": {
+                        "name": "symfony/browser-kit"
+                    },
+                    "version": "v5.4.11"
+                },
+                {
+                    "package": {
+                        "name": "symfony/cache"
+                    },
+                    "version": "v5.4.11"
+                },
+                {
+                    "package": {
+                        "name": "symfony/cache-contracts"
+                    },
+                    "version": "v2.5.2"
+                },
+                {
+                    "package": {
+                        "name": "symfony/config"
+                    },
+                    "version": "v5.4.11"
+                },
+                {
+                    "package": {
+                        "name": "symfony/console"
+                    },
+                    "version": "v5.4.12"
+                },
+                {
+                    "package": {
+                        "name": "symfony/css-selector"
+                    },
+                    "version": "v5.4.11"
+                },
+                {
+                    "package": {
+                        "name": "symfony/debug-bundle"
+                    },
+                    "version": "v5.4.11"
+                },
+                {
+                    "package": {
+                        "name": "symfony/dependency-injection"
+                    },
+                    "version": "v5.4.11"
+                },
+                {
+                    "package": {
+                        "name": "symfony/deprecation-contracts"
+                    },
+                    "version": "v2.2.0"
+                },
+                {
+                    "package": {
+                        "name": "symfony/doctrine-messenger"
+                    },
+                    "version": "v5.4.12"
+                },
+                {
+                    "package": {
+                        "name": "symfony/dom-crawler"
+                    },
+                    "version": "v5.4.12"
+                },
+                {
+                    "package": {
+                        "name": "symfony/dotenv"
+                    },
+                    "version": "v5.4.5"
+                },
+                {
+                    "package": {
+                        "name": "symfony/error-handler"
+                    },
+                    "version": "v5.4.11"
+                },
+                {
+                    "package": {
+                        "name": "symfony/event-dispatcher"
+                    },
+                    "version": "v5.4.9"
+                },
+                {
+                    "package": {
+                        "name": "symfony/event-dispatcher-contracts"
+                    },
+                    "version": "v2.2.0"
+                },
+                {
+                    "package": {
+                        "name": "symfony/filesystem"
+                    },
+                    "version": "v5.4.12"
+                },
+                {
+                    "package": {
+                        "name": "symfony/finder"
+                    },
+                    "version": "v5.4.11"
+                },
+                {
+                    "package": {
+                        "name": "symfony/framework-bundle"
+                    },
+                    "version": "v5.4.12"
+                },
+                {
+                    "package": {
+                        "name": "symfony/http-foundation"
+                    },
+                    "version": "v5.4.12"
+                },
+                {
+                    "package": {
+                        "name": "symfony/http-kernel"
+                    },
+                    "version": "v5.4.12"
+                },
+                {
+                    "package": {
+                        "name": "symfony/inflector"
+                    },
+                    "version": "v5.4.11"
+                },
+                {
+                    "package": {
+                        "name": "symfony/intl"
+                    },
+                    "version": "v5.4.11"
+                },
+                {
+                    "package": {
+                        "name": "symfony/lock"
+                    },
+                    "version": "v5.4.10"
+                },
+                {
+                    "package": {
+                        "name": "symfony/mailer"
+                    },
+                    "version": "v5.4.12"
+                },
+                {
+                    "package": {
+                        "name": "symfony/messenger"
+                    },
+                    "version": "v5.4.11"
+                },
+                {
+                    "package": {
+                        "name": "symfony/mime"
+                    },
+                    "version": "v5.4.12"
+                },
+                {
+                    "package": {
+                        "name": "symfony/monolog-bridge"
+                    },
+                    "version": "v5.4.10"
+                },
+                {
+                    "package": {
+                        "name": "symfony/monolog-bundle"
+                    },
+                    "version": "v3.6.0"
+                },
+                {
+                    "package": {
+                        "name": "symfony/options-resolver"
+                    },
+                    "version": "v5.4.11"
+                },
+                {
+                    "package": {
+                        "name": "symfony/password-hasher"
+                    },
+                    "version": "v5.4.11"
+                },
+                {
+                    "package": {
+                        "name": "symfony/phpunit-bridge"
+                    },
+                    "version": "v5.4.11"
+                },
+                {
+                    "package": {
+                        "name": "symfony/polyfill-ctype"
+                    },
+                    "version": "v1.26.0"
+                },
+                {
+                    "package": {
+                        "name": "symfony/polyfill-intl-grapheme"
+                    },
+                    "version": "v1.26.0"
+                },
+                {
+                    "package": {
+                        "name": "symfony/polyfill-intl-idn"
+                    },
+                    "version": "v1.26.0"
+                },
+                {
+                    "package": {
+                        "name": "symfony/polyfill-intl-normalizer"
+                    },
+                    "version": "v1.26.0"
+                },
+                {
+                    "package": {
+                        "name": "symfony/polyfill-mbstring"
+                    },
+                    "version": "v1.26.0"
+                },
+                {
+                    "package": {
+                        "name": "symfony/polyfill-php72"
+                    },
+                    "version": "v1.26.0"
+                },
+                {
+                    "package": {
+                        "name": "symfony/polyfill-php73"
+                    },
+                    "version": "v1.26.0"
+                },
+                {
+                    "package": {
+                        "name": "symfony/polyfill-php80"
+                    },
+                    "version": "v1.23.1"
+                },
+                {
+                    "package": {
+                        "name": "symfony/polyfill-php81"
+                    },
+                    "version": "v1.23.0"
+                },
+                {
+                    "package": {
+                        "name": "symfony/process"
+                    },
+                    "version": "v5.4.11"
+                },
+                {
+                    "package": {
+                        "name": "symfony/property-access"
+                    },
+                    "version": "v5.4.11"
+                },
+                {
+                    "package": {
+                        "name": "symfony/property-info"
+                    },
+                    "version": "v5.4.11"
+                },
+                {
+                    "package": {
+                        "name": "symfony/proxy-manager-bridge"
+                    },
+                    "version": "v5.4.6"
+                },
+                {
+                    "package": {
+                        "name": "symfony/psr-http-message-bridge"
+                    },
+                    "version": "v2.1.0"
+                },
+                {
+                    "package": {
+                        "name": "symfony/rate-limiter"
+                    },
+                    "version": "v5.4.11"
+                },
+                {
+                    "package": {
+                        "name": "symfony/redis-messenger"
+                    },
+                    "version": "v5.4.6"
+                },
+                {
+                    "package": {
+                        "name": "symfony/routing"
+                    },
+                    "version": "v5.4.11"
+                },
+                {
+                    "package": {
+                        "name": "symfony/security-core"
+                    },
+                    "version": "v5.4.11"
+                },
+                {
+                    "package": {
+                        "name": "symfony/security-csrf"
+                    },
+                    "version": "v5.4.11"
+                },
+                {
+                    "package": {
+                        "name": "symfony/serializer"
+                    },
+                    "version": "v5.4.12"
+                },
+                {
+                    "package": {
+                        "name": "symfony/service-contracts"
+                    },
+                    "version": "v2.2.0"
+                },
+                {
+                    "package": {
+                        "name": "symfony/stopwatch"
+                    },
+                    "version": "v5.4.5"
+                },
+                {
+                    "package": {
+                        "name": "symfony/string"
+                    },
+                    "version": "v5.4.12"
+                },
+                {
+                    "package": {
+                        "name": "symfony/translation"
+                    },
+                    "version": "v5.4.12"
+                },
+                {
+                    "package": {
+                        "name": "symfony/translation-contracts"
+                    },
+                    "version": "v2.3.0"
+                },
+                {
+                    "package": {
+                        "name": "symfony/twig-bridge"
+                    },
+                    "version": "v5.4.12"
+                },
+                {
+                    "package": {
+                        "name": "symfony/twig-bundle"
+                    },
+                    "version": "v5.4.8"
+                },
+                {
+                    "package": {
+                        "name": "symfony/validator"
+                    },
+                    "version": "v5.4.12"
+                },
+                {
+                    "package": {
+                        "name": "symfony/var-dumper"
+                    },
+                    "version": "v5.4.11"
+                },
+                {
+                    "package": {
+                        "name": "symfony/var-exporter"
+                    },
+                    "version": "v5.4.10"
+                },
+                {
+                    "package": {
+                        "name": "symfony/web-profiler-bundle"
+                    },
+                    "version": "v5.4.10"
+                },
+                {
+                    "package": {
+                        "name": "symfony/yaml"
+                    },
+                    "version": "v5.4.12"
+                },
+                {
+                    "package": {
+                        "name": "tecnickcom/tcpdf"
+                    },
+                    "version": "6.4.4"
+                },
+                {
+                    "package": {
+                        "name": "theseer/tokenizer"
+                    },
+                    "version": "1.2.1"
+                },
+                {
+                    "package": {
+                        "name": "true/punycode"
+                    },
+                    "version": "v2.1.1"
+                },
+                {
+                    "package": {
+                        "name": "twig/intl-extra"
+                    },
+                    "version": "v3.3.5"
+                },
+                {
+                    "package": {
+                        "name": "twig/string-extra"
+                    },
+                    "version": "v3.3.5"
+                },
+                {
+                    "package": {
+                        "name": "twig/twig"
+                    },
+                    "version": "v3.3.10"
+                },
+                {
+                    "package": {
+                        "name": "zircote/swagger-php"
+                    },
+                    "version": "3.3.6"
+                }
+            ]
+        }
+    ],
+    "scan": {
+        "analyzer": {
+            "id": "composer-remediate",
+            "name": "Composer Remediate",
+            "version": "dev-main",
+            "vendor": {
+                "name": "composer-remediate"
+            },
+            "url": "https://hexblot.github.io/composer-remediate/"
+        },
+        "scanner": {
+            "id": "composer-remediate",
+            "name": "Composer Remediate",
+            "version": "dev-main",
+            "vendor": {
+                "name": "composer-remediate"
+            },
+            "url": "https://hexblot.github.io/composer-remediate/"
+        },
+        "type": "dependency_scanning",
+        "start_time": "2026-01-01T00:00:00",
+        "end_time": "2026-01-01T00:00:00",
+        "status": "success"
+    }
+}

@@ -7,7 +7,7 @@
         "php_version": "(fixture)",
         "advisory_source": "advisory snapshot advisories.json",
         "solver": "in-process Composer dry-run",
-        "composer_json_sha256": "97489e2f315b96627fe43a89b7054123d37582ee2b9e14fa55597a694bd8ad31",
+        "composer_json_sha256": "595c2e843f348c4dc84af40264ffc3754b76f2bbee5e0a913b7059517541f02a",
         "composer_lock_sha256": "a08d622ce079c4260dc4c0e941d5d0bde0544f15efc984d8da29abd2e07e5152",
         "analysis_timestamp": "(fixture)",
         "locked_packages": "147"
@@ -20,6 +20,8 @@
         "packages_with_fix": 9,
         "fail_on": null,
         "packages_gated": 9,
+        "packages_baselined": 0,
+        "packages_with_constraint_drag": 0,
         "combined_command": "composer update aws/aws-sdk-php laravel/socialite:v5.24.1 laravel/framework league/commonmark nesbot/carbon onelogin/php-saml robrichards/xmlseclibs symfony/http-foundation symfony/process -W -m --with 'firebase/php-jwt:>=7.0.0'",
         "combined_fixes": 12,
         "combined_total": 12,
@@ -41,6 +43,8 @@
             "version_normalized": "3.322.6.0",
             "direct": false,
             "dev": false,
+            "baselined": false,
+            "counts_for_exit": true,
             "via_replaced_package": null,
             "advisories": [
                 {
@@ -90,6 +94,7 @@
                 "command": "composer update aws/aws-sdk-php",
                 "strategy": "lock-refresh",
                 "root_constraint_changes": [],
+                "constraint_drag": null,
                 "summary": {
                     "changed": 1,
                     "added": 1,
@@ -195,6 +200,8 @@
             "version_normalized": "6.10.1.0",
             "direct": false,
             "dev": false,
+            "baselined": false,
+            "counts_for_exit": true,
             "via_replaced_package": null,
             "advisories": [
                 {
@@ -385,6 +392,7 @@
                 "command": "composer update laravel/socialite:v5.24.1 -W -m --with 'firebase/php-jwt:>=7.0.0'",
                 "strategy": "parent-update",
                 "root_constraint_changes": [],
+                "constraint_drag": null,
                 "summary": {
                     "changed": 3,
                     "added": 0,
@@ -574,6 +582,8 @@
             "version_normalized": "10.48.22.0",
             "direct": true,
             "dev": false,
+            "baselined": false,
+            "counts_for_exit": true,
             "via_replaced_package": null,
             "advisories": [
                 {
@@ -899,6 +909,7 @@
                 "command": "composer update laravel/framework",
                 "strategy": "lock-refresh",
                 "root_constraint_changes": [],
+                "constraint_drag": null,
                 "summary": {
                     "changed": 1,
                     "added": 0,
@@ -1077,6 +1088,8 @@
             "version_normalized": "2.5.3.0",
             "direct": true,
             "dev": false,
+            "baselined": false,
+            "counts_for_exit": true,
             "via_replaced_package": null,
             "advisories": [
                 {
@@ -1398,6 +1411,7 @@
                 "command": "composer update league/commonmark",
                 "strategy": "lock-refresh",
                 "root_constraint_changes": [],
+                "constraint_drag": null,
                 "summary": {
                     "changed": 1,
                     "added": 0,
@@ -1576,6 +1590,8 @@
             "version_normalized": "2.72.5.0",
             "direct": false,
             "dev": false,
+            "baselined": false,
+            "counts_for_exit": true,
             "via_replaced_package": null,
             "advisories": [
                 {
@@ -1897,6 +1913,7 @@
                 "command": "composer update nesbot/carbon",
                 "strategy": "lock-refresh",
                 "root_constraint_changes": [],
+                "constraint_drag": null,
                 "summary": {
                     "changed": 1,
                     "added": 0,
@@ -2065,6 +2082,8 @@
             "version_normalized": "4.2.0.0",
             "direct": true,
             "dev": false,
+            "baselined": false,
+            "counts_for_exit": true,
             "via_replaced_package": null,
             "advisories": [
                 {
@@ -2105,6 +2124,7 @@
                 "command": "composer update onelogin/php-saml -w",
                 "strategy": "with-dependencies",
                 "root_constraint_changes": [],
+                "constraint_drag": null,
                 "summary": {
                     "changed": 2,
                     "added": 0,
@@ -2194,6 +2214,8 @@
             "version_normalized": "3.1.1.0",
             "direct": false,
             "dev": false,
+            "baselined": false,
+            "counts_for_exit": true,
             "via_replaced_package": null,
             "advisories": [
                 {
@@ -2239,6 +2261,7 @@
                 "command": "composer update robrichards/xmlseclibs",
                 "strategy": "lock-refresh",
                 "root_constraint_changes": [],
+                "constraint_drag": null,
                 "summary": {
                     "changed": 1,
                     "added": 0,
@@ -2321,6 +2344,8 @@
             "version_normalized": "6.4.12.0",
             "direct": false,
             "dev": false,
+            "baselined": false,
+            "counts_for_exit": true,
             "via_replaced_package": null,
             "advisories": [
                 {
@@ -2715,6 +2740,7 @@
                 "command": "composer update symfony/http-foundation",
                 "strategy": "lock-refresh",
                 "root_constraint_changes": [],
+                "constraint_drag": null,
                 "summary": {
                     "changed": 1,
                     "added": 0,
@@ -2883,6 +2909,8 @@
             "version_normalized": "6.4.12.0",
             "direct": false,
             "dev": false,
+            "baselined": false,
+            "counts_for_exit": true,
             "via_replaced_package": null,
             "advisories": [
                 {
@@ -3198,6 +3226,7 @@
                 "command": "composer update symfony/process",
                 "strategy": "lock-refresh",
                 "root_constraint_changes": [],
+                "constraint_drag": null,
                 "summary": {
                     "changed": 1,
                     "added": 0,

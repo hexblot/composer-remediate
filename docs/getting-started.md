@@ -35,6 +35,8 @@ composer remediate                         # analyse composer.lock, print a plan
 composer remediate --output=report.html --output=report.json   # also write HTML and JSON reports (CI artifacts)
 composer remediate --output=results.sarif --output=sbom.cdx.json   # SARIF for GitHub Code Scanning, CycloneDX SBOM with fixes
 composer remediate --fail-on high                               # only high and critical findings affect the exit code
+composer remediate --baseline=baseline.json --update-baseline   # accept today's findings; later runs fail only on new ones
+composer remediate --min-release-age 7                          # never recommend a release younger than a week
 composer remediate --format=json                                # machine-readable output on stdout
 composer remediate --no-dev                # ignore findings in require-dev packages
 composer remediate --ignore CVE-2024-50345 # leave an advisory out (also honours config.audit.ignore / config.policy)

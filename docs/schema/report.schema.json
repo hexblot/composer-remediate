@@ -17,14 +17,16 @@
     "warnings": {"type": "array", "items": {"type": "string"}},
     "summary": {
       "type": "object",
-      "required": ["advisories", "packages", "packages_with_fix", "fail_on", "packages_gated", "combined_command", "combined_fixes", "combined_total", "combined_fixes_all", "combined_changes"],
+      "required": ["advisories", "packages", "packages_with_fix", "fail_on", "packages_gated", "packages_baselined", "packages_with_constraint_drag", "combined_command", "combined_fixes", "combined_total", "combined_fixes_all", "combined_changes"],
       "additionalProperties": false,
       "properties": {
         "advisories": {"type": "integer", "minimum": 0},
         "packages": {"type": "integer", "minimum": 0},
         "packages_with_fix": {"type": "integer", "minimum": 0},
         "fail_on": {"type": ["string", "null"], "enum": ["low", "medium", "moderate", "high", "critical", null], "description": "Severity threshold given with --fail-on, if any"},
-        "packages_gated": {"type": "integer", "minimum": 0, "description": "Packages whose findings count towards the exit code under the threshold"},
+        "packages_gated": {"type": "integer", "minimum": 0, "description": "Packages whose findings count towards the exit code under the threshold and baseline"},
+        "packages_baselined": {"type": "integer", "minimum": 0, "description": "Packages whose findings are all in the --baseline file"},
+        "packages_with_constraint_drag": {"type": "integer", "minimum": 0, "description": "Packages whose only fix requires widening a composer.json constraint"},
         "combined_command": {"type": ["string", "null"]},
         "combined_fixes": {"type": ["integer", "null"]},
         "combined_total": {"type": ["integer", "null"]},
@@ -122,13 +124,14 @@
         },
         {
           "type": "object",
-          "required": ["status", "command", "strategy", "root_constraint_changes", "summary", "changes"],
+          "required": ["status", "command", "strategy", "root_constraint_changes", "constraint_drag", "summary", "changes"],
           "additionalProperties": false,
           "properties": {
             "status": {"const": "verified"},
             "command": {"type": "string"},
             "strategy": {"$ref": "#/definitions/strategy"},
             "root_constraint_changes": {"type": "array", "items": {"$ref": "#/definitions/rootConstraintChange"}},
+            "constraint_drag": {"type": ["string", "null"], "description": "Explanation when the fix requires widening a composer.json constraint"},
             "summary": {"oneOf": [{"$ref": "#/definitions/changeSummary"}, {"type": "null"}]},
             "changes": {"type": "array", "items": {"$ref": "#/definitions/change"}}
           }
@@ -151,7 +154,7 @@
     },
     "finding": {
       "type": "object",
-      "required": ["package", "version", "version_normalized", "direct", "dev", "via_replaced_package", "advisories", "paths_total", "paths", "remediation", "candidates"],
+      "required": ["package", "version", "version_normalized", "direct", "dev", "baselined", "counts_for_exit", "via_replaced_package", "advisories", "paths_total", "paths", "remediation", "candidates"],
       "additionalProperties": false,
       "properties": {
         "package": {"type": "string"},
@@ -159,6 +162,8 @@
         "version_normalized": {"type": "string"},
         "direct": {"type": "boolean"},
         "dev": {"type": "boolean"},
+        "baselined": {"type": "boolean", "description": "All advisories of this package are in the --baseline file"},
+        "counts_for_exit": {"type": "boolean", "description": "Whether this package affects the exit code under --fail-on and the baseline"},
         "via_replaced_package": {"type": ["string", "null"]},
         "advisories": {"type": "array", "minItems": 1, "items": {"$ref": "#/definitions/advisory"}},
         "paths_total": {"type": "integer", "minimum": 0},

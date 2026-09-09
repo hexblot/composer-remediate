@@ -15,8 +15,10 @@ use Remediate\Engine\Advisory\Db\DatabaseLocator;
 use Remediate\Engine\Advisory\Db\SqliteAdvisoryProvider;
 use Remediate\Engine\Advisory\JsonFileAdvisoryProvider;
 use Remediate\Engine\Candidate\CandidateGenerator;
+use Remediate\Engine\Plan\BaselineFile;
 use Remediate\Engine\Plan\Plan;
 use Remediate\Engine\Planner;
+use Remediate\Engine\Solver\ReleaseAgeGuard;
 use Remediate\Engine\Project\ProjectContext;
 use Remediate\Engine\Solver\InProcessSolver;
 use Remediate\Engine\Solver\ScratchWorkspace;
@@ -34,9 +36,12 @@ final class RemediateCommand extends BaseCommand
             ->setName('remediate')
             ->setDescription('Find the smallest Composer-verified upgrade that removes each known vulnerability from composer.lock')
             ->setDefinition([
-                new InputOption('format', 'f', InputOption::VALUE_REQUIRED, 'Format printed to standard output: text, html, json, sarif, cyclonedx or none', 'text'),
-                new InputOption('output', 'o', InputOption::VALUE_REQUIRED | InputOption::VALUE_IS_ARRAY, 'Also write a report file; format inferred from the extension (.html, .json, .sarif, .cdx.json, .txt) or given as sarif:path. Repeatable.'),
+                new InputOption('format', 'f', InputOption::VALUE_REQUIRED, 'Format printed to standard output: text, html, json, sarif, cyclonedx, gitlab or none', 'text'),
+                new InputOption('output', 'o', InputOption::VALUE_REQUIRED | InputOption::VALUE_IS_ARRAY, 'Also write a report file; format inferred from the name (.html, .json, .sarif, .cdx.json, gl-dependency-scanning-report.json, .txt) or given as sarif:path. Repeatable.'),
                 new InputOption('fail-on', null, InputOption::VALUE_REQUIRED, 'Only findings at or above this severity (low, medium, high, critical) affect the exit code; findings of unknown severity always count'),
+                new InputOption('baseline', null, InputOption::VALUE_REQUIRED, 'Baseline file of accepted findings; findings listed there are reported but do not affect the exit code'),
+                new InputOption('update-baseline', null, InputOption::VALUE_NONE, 'Write every finding of this run to the --baseline file (accept the current state, then tighten over time)'),
+                new InputOption('min-release-age', null, InputOption::VALUE_REQUIRED, 'Never recommend a release published fewer than this many days ago (supply-chain cooldown)'),
                 new InputOption('no-dev', null, InputOption::VALUE_NONE, 'Ignore vulnerabilities in require-dev packages'),
                 new InputOption('offline', null, InputOption::VALUE_NONE, 'Refuse all network access; needs a warm Composer cache plus --advisories-file or --database-location (sets COMPOSER_DISABLE_NETWORK=1)'),
                 new InputOption('ignore', 'i', InputOption::VALUE_REQUIRED | InputOption::VALUE_IS_ARRAY, 'Advisory id or CVE to ignore (repeatable); config.audit.ignore and config.policy.advisories.ignore are honoured as well'),
@@ -98,7 +103,7 @@ HELP);
         $io = $this->getIO();
         $format = ReportFormat::tryFrom(strtolower((string) $input->getOption('format')));
         if ($format === null) {
-            $io->writeError(sprintf('<error>Unknown format "%s"; use text, html, json, sarif, cyclonedx or none.</error>', (string) $input->getOption('format')));
+            $io->writeError(sprintf('<error>Unknown format "%s"; use text, html, json, sarif, cyclonedx, gitlab or none.</error>', (string) $input->getOption('format')));
 
             return Plan::EXIT_ERROR;
         }
@@ -155,6 +160,8 @@ HELP);
         $maxCandidates = max(1, (int) $input->getOption('max-candidates'));
         $ignored = array_values(array_filter(array_map('strval', (array) $input->getOption('ignore')), static fn (string $v): bool => $v !== ''));
         array_push($ignored, ...self::configuredIgnores($composer->getConfig()));
+        $minAge = $input->getOption('min-release-age');
+        $releaseAge = is_string($minAge) && $minAge !== '' ? new ReleaseAgeGuard(max(0, (int) $minAge)) : null;
         $planner = new Planner(
             $advisories,
             $solver,
@@ -165,6 +172,7 @@ HELP);
                 $io->writeError('<comment>' . $message . '</comment>', true, \Composer\IO\IOInterface::VERBOSE);
             },
             $ignored,
+            $releaseAge,
         );
 
         try {
@@ -187,6 +195,28 @@ HELP);
 
                 return Plan::EXIT_ERROR;
             }
+        }
+        $baselinePath = $input->getOption('baseline');
+        if (is_string($baselinePath) && $baselinePath !== '') {
+            try {
+                if ((bool) $input->getOption('update-baseline')) {
+                    BaselineFile::write($baselinePath, $plan);
+                    $io->writeError(sprintf('Baseline written to %s (%d finding%s accepted).', $baselinePath, count($plan->findingKeys()), count($plan->findingKeys()) === 1 ? '' : 's'));
+                }
+                if (is_file($baselinePath)) {
+                    $plan = $plan->withBaseline(BaselineFile::read($baselinePath));
+                } else {
+                    $io->writeError(sprintf('<warning>Baseline %s does not exist; run with --update-baseline to create it.</warning>', $baselinePath));
+                }
+            } catch (\RuntimeException $e) {
+                $io->writeError('<error>' . $e->getMessage() . '</error>');
+
+                return Plan::EXIT_ERROR;
+            }
+        } elseif ((bool) $input->getOption('update-baseline')) {
+            $io->writeError('<error>--update-baseline needs --baseline=<file>.</error>');
+
+            return Plan::EXIT_ERROR;
         }
 
         $minimal = $solver->supportsMinimalChanges();

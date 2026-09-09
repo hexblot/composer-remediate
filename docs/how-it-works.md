@@ -137,7 +137,29 @@ more solve. The report's summary then says either "you can fix all N findings wi
 k of N findings" when some advisories have no reachable fix, or lists the per-package commands when
 no single command resolves.
 
-## 7. Pruning
+## 7. Gating, baselines and cooldowns
+
+The exit code encodes the outcome (0 clean, 1 fixable, 2 not fixable, 3 to 5 tool problems) and two
+options shape which findings count towards it:
+
+- `--fail-on <severity>`: findings whose advisories are all below the threshold are reported but do
+  not affect the exit code. Unknown severities always count.
+- `--baseline <file>`: findings listed in the file (advisory@package keys) are reported, marked
+  `[baselined]`, and excluded from the exit code. `--update-baseline` writes the current findings to the
+  file. This is how a gate is introduced on a project with existing findings: accept today's state,
+  fail on anything new, and delete entries as fixes land.
+
+`--min-release-age <days>` rejects every candidate whose resulting lock contains a release published
+within the last N days. It is a supply-chain cooldown: a version that appeared yesterday may be
+compromised or broken, and nothing forces a security fix to be applied within hours. When every fix
+is too young the finding reports "no verified remediation" with the young releases named.
+
+A finding whose only fix requires widening a `composer.json` constraint is marked as **constraint
+drag**: the report names the root requirement that blocks every fix within the current constraints.
+Ignore entries (`--ignore`, `config.audit.ignore`, `config.policy`) that match nothing in the lock are
+reported as stale so the configuration stays honest.
+
+## 8. Pruning
 
 Two rules keep the number of solves small. Root-constraint widening is never tried once a valid
 candidate without root changes exists, because ranking rule 1 would discard it anyway. The parent
@@ -145,7 +167,7 @@ descent is skipped when an existing valid candidate is already at least as good 
 the descent could reach (two changed packages, no major change). Skipped candidates are listed in
 the report so the reasoning stays visible.
 
-## 8. Output
+## 9. Output
 
 Text output is the default:
 
@@ -199,6 +221,9 @@ composer remediate --format=json | jq '.findings[].remediation.command'
   component with a `pkg:composer/...` purl and every advisory as a vulnerability affecting its
   component, with the verified command in the CycloneDX `recommendation` field. SBOM and VEX tooling
   can consume the plan directly.
+- **gitlab**: GitLab's dependency-scanning report (`--output=gl-dependency-scanning-report.json`),
+  declared as `artifacts: reports: dependency_scanning:` so findings appear in the merge request
+  security widget and the vulnerability report, with the verified command as the `solution`.
 - **json**: the same content for machines. Top-level keys: `schema_version`, `analysis_metadata`
   (Composer and PHP versions, advisory source, hashes of `composer.json` and `composer.lock`,
   timestamp), `exit_code`, `warnings`, `findings[]` (package, advisories, the first ten dependency

@@ -14,6 +14,7 @@
 declare(strict_types=1);
 
 use Remediate\Output\CycloneDxRenderer;
+use Remediate\Output\GitLabRenderer;
 use Remediate\Output\LockLineIndex;
 use Remediate\Output\ReportFormat;
 use Symfony\Component\Console\Output\ConsoleOutput;
@@ -70,6 +71,7 @@ if ($writeReports) {
     file_put_contents("$dir/reports/report.html", ReportFormat::Html->render($stable, true));
     file_put_contents("$dir/reports/report.sarif", ReportFormat::Sarif->render($stable, true, false, LockLineIndex::fromFile("$dir/composer.lock")));
     file_put_contents("$dir/reports/report.cdx.json", (new CycloneDxRenderer(true, 'urn:uuid:00000000-0000-4000-8000-000000000000', '2026-01-01T00:00:00+00:00'))->render($stable));
+    file_put_contents("$dir/reports/gl-dependency-scanning-report.json", (new GitLabRenderer(true, '2026-01-01T00:00:00', '2026-01-01T00:00:00'))->render($stable));
     fwrite(STDERR, "reports written to $dir/reports\n");
 }
 $decorated = $format === ReportFormat::Text && stream_isatty(STDOUT);

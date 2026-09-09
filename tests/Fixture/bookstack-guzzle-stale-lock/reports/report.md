@@ -24,6 +24,7 @@ Recommended remediation
   barryvdh/laravel-dompdf v1.0.0 -> v2.0.0-beta2
   dompdf/dompdf v1.2.2 -> v2.0.0
   composer.json: barryvdh/laravel-dompdf ^1.0 -> ^2.0
+  Constraint drag: composer.json requires barryvdh/laravel-dompdf ^1.0, which blocks every fix within the current constraints; the recommendation widens it to ^2.0.
   Note: installs pre-release versions (barryvdh/laravel-dompdf v2.0.0-beta2); no stable release satisfies the constraints yet.
 Composer validation
   PASS  2 packages changed, 1 added, 0 removed, 1 root constraint changed, includes a major version change
@@ -118,4 +119,5 @@ Summary
   You can fix all 6 findings with:
     composer require --no-update barryvdh/laravel-dompdf:^2.0 && composer update barryvdh/laravel-dompdf guzzlehttp/guzzle -W -m
     (5 packages changed, verified by Composer)
+  Constraint drag: 1 fix requires widening a constraint in composer.json.
 ```

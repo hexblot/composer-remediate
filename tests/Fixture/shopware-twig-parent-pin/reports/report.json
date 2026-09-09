@@ -7,7 +7,7 @@
         "php_version": "(fixture)",
         "advisory_source": "advisory snapshot advisories.json",
         "solver": "in-process Composer dry-run",
-        "composer_json_sha256": "73bf35c44066508a4aeed63d23a0e63c9f8220aecc9d2406cb9cd2cd864efd70",
+        "composer_json_sha256": "30f9ef023a7d8946a233eba6f731572a4843f3bc911026fb5c49de16511ecd4c",
         "composer_lock_sha256": "0166a25c8ee830ae631dad4fee40c7826c06f7cd18e413ab36c454440d37c811",
         "analysis_timestamp": "(fixture)",
         "locked_packages": "202"
@@ -20,6 +20,8 @@
         "packages_with_fix": 1,
         "fail_on": null,
         "packages_gated": 2,
+        "packages_baselined": 0,
+        "packages_with_constraint_drag": 0,
         "combined_command": "composer update shopware/storefront:6.4.15.2 shopware/recovery shopware/elasticsearch shopware/administration -W -m",
         "combined_fixes": 1,
         "combined_total": 4,
@@ -41,6 +43,8 @@
             "version_normalized": "1.0.3.0",
             "direct": false,
             "dev": false,
+            "baselined": false,
+            "counts_for_exit": true,
             "via_replaced_package": "dompdf/dompdf",
             "advisories": [
                 {
@@ -426,6 +430,8 @@
             "version_normalized": "3.3.10.0",
             "direct": false,
             "dev": false,
+            "baselined": false,
+            "counts_for_exit": true,
             "via_replaced_package": null,
             "advisories": [
                 {
@@ -701,6 +707,7 @@
                 "command": "composer update shopware/storefront:6.4.15.2 shopware/recovery shopware/elasticsearch shopware/administration -W -m",
                 "strategy": "parent-update",
                 "root_constraint_changes": [],
+                "constraint_drag": null,
                 "summary": {
                     "changed": 6,
                     "added": 0,

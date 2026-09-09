@@ -160,6 +160,34 @@ remediate:
 Use `allow_failure: { exit_codes: [2] }` instead of the `exit 0` branch if you prefer GitLab to show
 the job as passed-with-warnings.
 
+### GitLab security dashboard
+
+Add `--output=gl-dependency-scanning-report.json` and declare it as a dependency-scanning report;
+the findings then show in the merge request security widget and the project's vulnerability report,
+each with the verified command as its solution:
+
+```yaml
+  script:
+    - composer remediate --no-dev --output=gl-dependency-scanning-report.json --output=remediation-report.html || true
+  artifacts:
+    when: always
+    paths: [remediation-report.html]
+    reports:
+      dependency_scanning: gl-dependency-scanning-report.json
+```
+
+### Introducing a gate on an existing project
+
+Existing findings would fail the first pipeline. Accept them once, commit the baseline, and fail only
+on new ones:
+
+```bash
+composer remediate --baseline=.composer-remediate-baseline.json --update-baseline   # once, commit the file
+composer remediate --baseline=.composer-remediate-baseline.json                     # in CI
+```
+
+Remove entries from the file as you apply the recommended commands; the gate tightens as you go.
+
 ## Custom gates on the JSON report
 
 The JSON report makes finer policies possible without parsing text:

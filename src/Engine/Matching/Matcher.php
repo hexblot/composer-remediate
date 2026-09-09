@@ -38,18 +38,34 @@ final class Matcher
         return $clone;
     }
 
+    /** @var array<string, true> ignore entries that suppressed at least one match in the last match() call */
+    private array $usedIgnores = [];
+
     /** Number of advisory matches suppressed by the ignore list during the last match() call. */
     public function ignoredCount(): int
     {
         return $this->ignoredCount;
     }
 
+    /**
+     * Ignore entries that matched nothing in the last match() call: stale configuration worth cleaning up.
+     *
+     * @return list<string>
+     */
+    public function unusedIgnores(): array
+    {
+        return array_values(array_diff(array_keys($this->ignored), array_keys($this->usedIgnores)));
+    }
+
     private function isIgnored(Advisory $advisory): bool
     {
-        if (isset($this->ignored[strtolower($advisory->id)]) || ($advisory->cve !== null && isset($this->ignored[strtolower($advisory->cve)]))) {
-            ++$this->ignoredCount;
+        foreach ([$advisory->id, $advisory->cve] as $candidate) {
+            if ($candidate !== null && isset($this->ignored[strtolower($candidate)])) {
+                ++$this->ignoredCount;
+                $this->usedIgnores[strtolower($candidate)] = true;
 
-            return true;
+                return true;
+            }
         }
 
         return false;
@@ -65,6 +81,7 @@ final class Matcher
         $advisories = $this->provider->advisoriesFor(self::namesToQuery($lock));
         $findings = [];
         $this->ignoredCount = 0;
+        $this->usedIgnores = [];
 
         foreach ($lock->packages as $package) {
             $name = $package->getName();

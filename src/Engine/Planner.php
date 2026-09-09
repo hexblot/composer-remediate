@@ -23,6 +23,7 @@ use Remediate\Engine\Lock\LockSnapshot;
 use Remediate\Engine\Project\ProjectContext;
 use Remediate\Engine\Ranking\Ranker;
 use Remediate\Engine\Solver\LockDiff;
+use Remediate\Engine\Solver\ReleaseAgeGuard;
 use Remediate\Engine\Solver\ScratchWorkspace;
 use Remediate\Engine\Solver\SolveStatus;
 use Remediate\Engine\Solver\SolverInterface;
@@ -39,7 +40,8 @@ final class Planner
     private $progress;
 
     /**
-     * @param list<string> $ignoredAdvisories advisory ids or CVEs to leave out entirely
+     * @param list<string>          $ignoredAdvisories advisory ids or CVEs to leave out entirely
+     * @param ReleaseAgeGuard|null  $releaseAge        reject candidates that install releases younger than a cooldown
      */
     public function __construct(
         private readonly AdvisoryProvider $advisories,
@@ -49,6 +51,7 @@ final class Planner
         private readonly int $maxCandidatesPerFinding = 10,
         ?callable $progress = null,
         private readonly array $ignoredAdvisories = [],
+        private readonly ?ReleaseAgeGuard $releaseAge = null,
     ) {
         $this->progress = $progress;
     }
@@ -78,6 +81,10 @@ final class Planner
         $findings = $matcher->match($lock, $isRoot);
         if ($matcher->ignoredCount() > 0) {
             $warnings[] = sprintf('%d advisory match%s ignored per configuration (--ignore, config.audit.ignore or config.policy).', $matcher->ignoredCount(), $matcher->ignoredCount() === 1 ? '' : 'es');
+        }
+        $unused = $matcher->unusedIgnores();
+        if ($unused !== []) {
+            $warnings[] = sprintf('Ignore hygiene: %d ignore entr%s match%s nothing in this lock and can be removed: %s.', count($unused), count($unused) === 1 ? 'y' : 'ies', count($unused) === 1 ? 'es' : '', implode(', ', $unused));
         }
         if (!$this->includeDev) {
             $findings = array_values(array_filter($findings, static fn (Finding $f): bool => !$f->isDev));
@@ -389,6 +396,12 @@ final class Planner
         }
         if ($diff->count() === 0) {
             return new EvaluatedCandidate($candidate, $result, $diff, false, 'resolves without changing anything');
+        }
+        if ($this->releaseAge !== null) {
+            $young = $this->releaseAge->tooYoung($diff, $result->after);
+            if ($young !== []) {
+                return new EvaluatedCandidate($candidate, $result, $diff, false, 'resolves, but installs releases younger than the minimum release age: ' . implode(', ', $young));
+            }
         }
 
         return new EvaluatedCandidate($candidate, $result, $diff, true, null);

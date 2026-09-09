@@ -1,0 +1,92 @@
+{
+    "version": "15.2.1",
+    "vulnerabilities": [
+        {
+            "id": "fae74690-0667-592f-8eda-add5c3a6d916",
+            "category": "dependency_scanning",
+            "name": "CVE-2026-00001: Synthetic: request smuggling in acme/vuln-lib",
+            "description": "acme/vuln-lib 1.0.1 is affected by CVE-2026-00001 (affected versions <1.1.0).",
+            "severity": "High",
+            "solution": "Run `composer update acme/app-framework:1.1.0 -W -m` (verified with Composer's solver, 2 package change(s)).",
+            "identifiers": [
+                {
+                    "type": "cve",
+                    "name": "CVE-2026-00001",
+                    "value": "CVE-2026-00001",
+                    "url": "https://nvd.nist.gov/vuln/detail/CVE-2026-00001"
+                },
+                {
+                    "type": "packagist_advisory",
+                    "name": "PKSA-synthetic-0001",
+                    "value": "PKSA-synthetic-0001",
+                    "url": "https://packagist.org/security-advisories/PKSA-synthetic-0001"
+                }
+            ],
+            "links": [
+                {
+                    "url": "https://example.invalid/advisories/SYNTHETIC-0001"
+                }
+            ],
+            "location": {
+                "file": "composer.lock",
+                "dependency": {
+                    "package": {
+                        "name": "acme/vuln-lib"
+                    },
+                    "version": "1.0.1",
+                    "direct": false
+                }
+            }
+        }
+    ],
+    "dependency_files": [
+        {
+            "path": "composer.lock",
+            "package_manager": "composer",
+            "dependencies": [
+                {
+                    "package": {
+                        "name": "acme/app-framework"
+                    },
+                    "version": "1.0.0"
+                },
+                {
+                    "package": {
+                        "name": "acme/helper"
+                    },
+                    "version": "1.1.0"
+                },
+                {
+                    "package": {
+                        "name": "acme/vuln-lib"
+                    },
+                    "version": "1.0.1"
+                }
+            ]
+        }
+    ],
+    "scan": {
+        "analyzer": {
+            "id": "composer-remediate",
+            "name": "Composer Remediate",
+            "version": "dev-main",
+            "vendor": {
+                "name": "composer-remediate"
+            },
+            "url": "https://hexblot.github.io/composer-remediate/"
+        },
+        "scanner": {
+            "id": "composer-remediate",
+            "name": "Composer Remediate",
+            "version": "dev-main",
+            "vendor": {
+                "name": "composer-remediate"
+            },
+            "url": "https://hexblot.github.io/composer-remediate/"
+        },
+        "type": "dependency_scanning",
+        "start_time": "2026-01-01T00:00:00",
+        "end_time": "2026-01-01T00:00:00",
+        "status": "success"
+    }
+}

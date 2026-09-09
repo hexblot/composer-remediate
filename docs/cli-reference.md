@@ -18,9 +18,12 @@ Exit codes: 0 no vulnerabilities, 1 vulnerabilities with a verified remediation,
 
 | Option | Value | Description |
 |---|---|---|
-| `--format`, `-f` | required, default `text` | Format printed to standard output: text, html, json, sarif, cyclonedx or none |
-| `--output`, `-o` | repeatable | Also write a report file; format inferred from the extension (.html, .json, .sarif, .cdx.json, .txt) or given as sarif:path. Repeatable. |
+| `--format`, `-f` | required, default `text` | Format printed to standard output: text, html, json, sarif, cyclonedx, gitlab or none |
+| `--output`, `-o` | repeatable | Also write a report file; format inferred from the name (.html, .json, .sarif, .cdx.json, gl-dependency-scanning-report.json, .txt) or given as sarif:path. Repeatable. |
 | `--fail-on` | required | Only findings at or above this severity (low, medium, high, critical) affect the exit code; findings of unknown severity always count |
+| `--baseline` | required | Baseline file of accepted findings; findings listed there are reported but do not affect the exit code |
+| `--update-baseline` | flag | Write every finding of this run to the --baseline file (accept the current state, then tighten over time) |
+| `--min-release-age` | required | Never recommend a release published fewer than this many days ago (supply-chain cooldown) |
 | `--no-dev` | flag | Ignore vulnerabilities in require-dev packages |
 | `--offline` | flag | Refuse all network access; needs a warm Composer cache plus --advisories-file or --database-location (sets COMPOSER_DISABLE_NETWORK=1) |
 | `--ignore`, `-i` | repeatable | Advisory id or CVE to ignore (repeatable); config.audit.ignore and config.policy.advisories.ignore are honoured as well |
@@ -93,4 +96,4 @@ Show where the advisory database comes from and what it contains
 
 ## Report formats
 
-`--format` selects what goes to standard output (`text` by default, or `html`, `json`, `none`). `--output=<file>` writes a report file, format inferred from the extension (`.html`, `.json`, `.txt`) or given as a prefix (`json:path`); it may be repeated. See [How it works](how-it-works.md#8-output) for the JSON structure and [schema/report.schema.json](schema/report.schema.json) for its JSON Schema.
+`--format` selects what goes to standard output (`text` by default, or `html`, `json`, `sarif`, `cyclonedx`, `gitlab`, `none`). `--output=<file>` writes a report file, format inferred from the name (`.html`, `.json`, `.sarif`, `.cdx.json`, `gl-dependency-scanning-report.json`, `.txt`) or given as a prefix (`json:path`); it may be repeated. See [How it works](how-it-works.md#9-output) for the formats and [schema/report.schema.json](schema/report.schema.json) for the JSON Schema.

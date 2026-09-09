@@ -7,7 +7,7 @@
         "php_version": "(fixture)",
         "advisory_source": "advisory snapshot advisories.json",
         "solver": "in-process Composer dry-run",
-        "composer_json_sha256": "2a35444f0a6fd7b5d46d15aebeb6979ac2fc4bad31d6ee68a3ab06e1ef34f287",
+        "composer_json_sha256": "0b9ad06501e252e0c8af3c7191f3c2ee237ad0cc6e855e53d67693d0e94cb8e8",
         "composer_lock_sha256": "2dbaa7b34c4c01d7ef5715f78a6c4dfe11a0a4533a4b8855f22eb8d218f54b2f",
         "analysis_timestamp": "(fixture)",
         "locked_packages": "217"
@@ -20,6 +20,8 @@
         "packages_with_fix": 1,
         "fail_on": null,
         "packages_gated": 2,
+        "packages_baselined": 0,
+        "packages_with_constraint_drag": 0,
         "combined_command": "composer update google/apiclient:v2.12.2 -W -m --with 'firebase/php-jwt:>=6.0.0'",
         "combined_fixes": 1,
         "combined_total": 3,
@@ -41,6 +43,8 @@
             "version_normalized": "5.5.1.0",
             "direct": false,
             "dev": false,
+            "baselined": false,
+            "counts_for_exit": true,
             "via_replaced_package": null,
             "advisories": [
                 {
@@ -167,6 +171,7 @@
                 "command": "composer update google/apiclient:v2.12.2 -W -m --with 'firebase/php-jwt:>=6.0.0'",
                 "strategy": "parent-update",
                 "root_constraint_changes": [],
+                "constraint_drag": null,
                 "summary": {
                     "changed": 3,
                     "added": 0,
@@ -292,6 +297,8 @@
             "version_normalized": "1.18.0.0",
             "direct": false,
             "dev": true,
+            "baselined": false,
+            "counts_for_exit": true,
             "via_replaced_package": null,
             "advisories": [
                 {

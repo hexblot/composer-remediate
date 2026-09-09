@@ -7,7 +7,7 @@
         "php_version": "(fixture)",
         "advisory_source": "advisory snapshot advisories.json",
         "solver": "in-process Composer dry-run",
-        "composer_json_sha256": "72c50c1419b396a0a760482a4be1deb26873f4976004bdd07167082c2d6d84b8",
+        "composer_json_sha256": "3c3f4429d9c1301759c407368a75e415e9d4b9e313416d5ff1f18dd77611917d",
         "composer_lock_sha256": "344de0dd32e1d22719c6e0c717527e601702e8ed4d57664dd0770e606102f7af",
         "analysis_timestamp": "(fixture)",
         "locked_packages": "155"
@@ -20,6 +20,8 @@
         "packages_with_fix": 2,
         "fail_on": null,
         "packages_gated": 2,
+        "packages_baselined": 0,
+        "packages_with_constraint_drag": 1,
         "combined_command": "composer require --no-update barryvdh/laravel-dompdf:^2.0 && composer update barryvdh/laravel-dompdf guzzlehttp/guzzle -W -m",
         "combined_fixes": 6,
         "combined_total": 6,
@@ -41,6 +43,8 @@
             "version_normalized": "1.2.2.0",
             "direct": false,
             "dev": false,
+            "baselined": false,
+            "counts_for_exit": true,
             "via_replaced_package": null,
             "advisories": [
                 {
@@ -97,6 +101,7 @@
                         "dev": false
                     }
                 ],
+                "constraint_drag": "composer.json requires barryvdh/laravel-dompdf ^1.0, which blocks every fix within the current constraints; the recommendation widens it to ^2.0.",
                 "summary": {
                     "changed": 2,
                     "added": 1,
@@ -201,6 +206,8 @@
             "version_normalized": "7.4.2.0",
             "direct": true,
             "dev": false,
+            "baselined": false,
+            "counts_for_exit": true,
             "via_replaced_package": null,
             "advisories": [
                 {
@@ -562,6 +569,7 @@
                 "command": "composer update guzzlehttp/guzzle -w -m",
                 "strategy": "with-dependencies",
                 "root_constraint_changes": [],
+                "constraint_drag": null,
                 "summary": {
                     "changed": 2,
                     "added": 0,

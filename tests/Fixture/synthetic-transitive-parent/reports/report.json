@@ -20,6 +20,8 @@
         "packages_with_fix": 1,
         "fail_on": null,
         "packages_gated": 1,
+        "packages_baselined": 0,
+        "packages_with_constraint_drag": 0,
         "combined_command": "composer update acme/app-framework:1.1.0 -W -m",
         "combined_fixes": 1,
         "combined_total": 1,
@@ -41,6 +43,8 @@
             "version_normalized": "1.0.1.0",
             "direct": false,
             "dev": false,
+            "baselined": false,
+            "counts_for_exit": true,
             "via_replaced_package": null,
             "advisories": [
                 {
@@ -86,6 +90,7 @@
                 "command": "composer update acme/app-framework:1.1.0 -W -m",
                 "strategy": "parent-update",
                 "root_constraint_changes": [],
+                "constraint_drag": null,
                 "summary": {
                     "changed": 2,
                     "added": 0,

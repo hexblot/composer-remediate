@@ -40,4 +40,22 @@ final class FindingPlan
     {
         return $this->ranked !== [];
     }
+
+    /**
+     * Constraint drag: the fix is only reachable by changing a constraint in composer.json. Names the
+     * root requirement that blocks it, or null when the recommendation stays within current constraints.
+     */
+    public function constraintDrag(): ?string
+    {
+        $recommended = $this->recommended();
+        if ($recommended === null || !$recommended->candidate->changesRootConstraints()) {
+            return null;
+        }
+        $parts = [];
+        foreach ($recommended->candidate->rootConstraintChanges as $change) {
+            $parts[] = sprintf('%s %s', $change->packageName, $change->fromConstraint ?? '(not required)');
+        }
+
+        return sprintf('composer.json requires %s, which blocks every fix within the current constraints; the recommendation widens %s to %s.', implode(' and ', $parts), count($parts) === 1 ? 'it' : 'them', implode(', ', array_map(static fn ($c): string => $c->toConstraint, $recommended->candidate->rootConstraintChanges)));
+    }
 }

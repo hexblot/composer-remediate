@@ -97,7 +97,7 @@ $out[] = '| `config.platform` | Honoured by candidate solves exactly as by `comp
 $out[] = '';
 $out[] = '## Report formats';
 $out[] = '';
-$out[] = '`--format` selects what goes to standard output (`text` by default, or `html`, `json`, `none`). `--output=<file>` writes a report file, format inferred from the extension (`.html`, `.json`, `.txt`) or given as a prefix (`json:path`); it may be repeated. See [How it works](how-it-works.md#8-output) for the JSON structure and [schema/report.schema.json](schema/report.schema.json) for its JSON Schema.';
+$out[] = '`--format` selects what goes to standard output (`text` by default, or `html`, `json`, `sarif`, `cyclonedx`, `gitlab`, `none`). `--output=<file>` writes a report file, format inferred from the name (`.html`, `.json`, `.sarif`, `.cdx.json`, `gl-dependency-scanning-report.json`, `.txt`) or given as a prefix (`json:path`); it may be repeated. See [How it works](how-it-works.md#9-output) for the formats and [schema/report.schema.json](schema/report.schema.json) for the JSON Schema.';
 $out[] = '';
 
 echo implode("\n", $out);

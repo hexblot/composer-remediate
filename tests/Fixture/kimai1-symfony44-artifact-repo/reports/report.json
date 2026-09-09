@@ -7,7 +7,7 @@
         "php_version": "(fixture)",
         "advisory_source": "advisory snapshot advisories.json",
         "solver": "in-process Composer dry-run",
-        "composer_json_sha256": "3adff502ff3c9b5236bb8ffe45bd0ade1d5771c5469cf50804feac87b52f5360",
+        "composer_json_sha256": "cf301177062262726f7d5eeba4cd3f46b43ff1eb3fe677a41561ec10c661f4ea",
         "composer_lock_sha256": "22fd0acc2517587b38c52afc1c3a03768d5ea1fae006f954fcc185f8abe5b05e",
         "analysis_timestamp": "(fixture)",
         "locked_packages": "192"
@@ -20,6 +20,8 @@
         "packages_with_fix": 4,
         "fail_on": null,
         "packages_gated": 6,
+        "packages_baselined": 0,
+        "packages_with_constraint_drag": 0,
         "combined_command": "composer update symfony/http-foundation symfony/twig-bridge twig/twig symfony/process -w -m --with 'twig/twig:>=3.11.2,<3.12.0 || >=3.14.1'",
         "combined_fixes": 6,
         "combined_total": 14,
@@ -41,6 +43,8 @@
             "version_normalized": "1.25.2.0",
             "direct": true,
             "dev": false,
+            "baselined": false,
+            "counts_for_exit": true,
             "via_replaced_package": null,
             "advisories": [
                 {
@@ -216,6 +220,8 @@
             "version_normalized": "4.4.49.0",
             "direct": false,
             "dev": false,
+            "baselined": false,
+            "counts_for_exit": true,
             "via_replaced_package": null,
             "advisories": [
                 {
@@ -486,6 +492,7 @@
                 "command": "composer update symfony/http-foundation",
                 "strategy": "lock-refresh",
                 "root_constraint_changes": [],
+                "constraint_drag": null,
                 "summary": {
                     "changed": 1,
                     "added": 0,
@@ -680,6 +687,8 @@
             "version_normalized": "4.4.49.0",
             "direct": false,
             "dev": false,
+            "baselined": false,
+            "counts_for_exit": true,
             "via_replaced_package": null,
             "advisories": [
                 {
@@ -815,6 +824,7 @@
                 "command": "composer update symfony/twig-bridge",
                 "strategy": "lock-refresh",
                 "root_constraint_changes": [],
+                "constraint_drag": null,
                 "summary": {
                     "changed": 1,
                     "added": 0,
@@ -983,6 +993,8 @@
             "version_normalized": "4.4.48.0",
             "direct": true,
             "dev": false,
+            "baselined": false,
+            "counts_for_exit": true,
             "via_replaced_package": null,
             "advisories": [
                 {
@@ -1079,6 +1091,8 @@
             "version_normalized": "3.5.1.0",
             "direct": false,
             "dev": false,
+            "baselined": false,
+            "counts_for_exit": true,
             "via_replaced_package": null,
             "advisories": [
                 {
@@ -1382,6 +1396,7 @@
                 "command": "composer update twig/twig -w -m --with 'twig/twig:>=3.11.2,<3.12.0 || >=3.14.1'",
                 "strategy": "with-dependencies",
                 "root_constraint_changes": [],
+                "constraint_drag": null,
                 "summary": {
                     "changed": 2,
                     "added": 0,
@@ -1615,6 +1630,8 @@
             "version_normalized": "4.4.44.0",
             "direct": false,
             "dev": true,
+            "baselined": false,
+            "counts_for_exit": true,
             "via_replaced_package": null,
             "advisories": [
                 {
@@ -1664,6 +1681,7 @@
                 "command": "composer update symfony/process",
                 "strategy": "lock-refresh",
                 "root_constraint_changes": [],
+                "constraint_drag": null,
                 "summary": {
                     "changed": 1,
                     "added": 0,

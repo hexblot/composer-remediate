@@ -24,6 +24,7 @@ tests/Fixture/<name>/
   reports/report.html  the same plan as a self-contained HTML page
   reports/report.sarif the same plan as SARIF 2.1.0 (GitHub Code Scanning)
   reports/report.cdx.json  the lock as a CycloneDX 1.6 SBOM with the advisories attached
+  reports/gl-dependency-scanning-report.json  the same plan as a GitLab dependency-scanning report
 ```
 
 The `reports/` files are committed examples, regenerated with
