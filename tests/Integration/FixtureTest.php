@@ -61,7 +61,8 @@ final class FixtureTest extends TestCase
 
         $expectedFindings = $expected['findings'] ?? [];
         self::assertIsArray($expectedFindings);
-        self::assertCount(count($expectedFindings), $plan->findings, "Unexpected number of findings.\n$rendered");
+        $actualCount = array_sum(array_map(static fn (FindingPlan $p): int => count($p->allFindings()), $plan->findings));
+        self::assertSame(count($expectedFindings), $actualCount, "Unexpected number of findings.\n$rendered");
 
         foreach ($expectedFindings as $exp) {
             self::assertIsArray($exp);
@@ -97,9 +98,10 @@ final class FixtureTest extends TestCase
     private static function findingFor(array $plans, string $package, string $advisory): ?FindingPlan
     {
         foreach ($plans as $plan) {
-            $f = $plan->finding;
-            if ($f->packageName === $package && ($f->advisory->id === $advisory || $f->advisory->cve === $advisory)) {
-                return $plan;
+            foreach ($plan->allFindings() as $f) {
+                if ($f->packageName === $package && ($f->advisory->id === $advisory || $f->advisory->cve === $advisory)) {
+                    return $plan;
+                }
             }
         }
 

@@ -44,19 +44,19 @@ final class TextRenderer
     private function renderFinding(FindingPlan $plan): array
     {
         $f = $plan->finding;
-        $a = $f->advisory;
         $out = [];
-        $out[] = $a->displayId() . ($a->cve !== null && $a->cve !== $a->id ? sprintf(' (%s)', $a->id) : '');
+        $out[] = implode(', ', array_map(static fn ($finding): string => $finding->advisory->displayId(), $plan->allFindings()));
         $out[] = str_repeat('─', 60);
         $out[] = 'Affected';
         $out[] = sprintf('  %s %s%s', $f->packageName, $f->prettyVersion, $f->viaReplacedName !== null ? sprintf(' (replaces %s)', $f->viaReplacedName) : '');
-        if ($a->title !== null) {
-            $out[] = '  ' . $a->title;
+        foreach ($plan->allFindings() as $finding) {
+            $a = $finding->advisory;
+            $out[] = sprintf('  %s%s: %s', $a->displayId(), $a->cve !== null && $a->cve !== $a->id ? sprintf(' (%s)', $a->id) : '', $a->title ?? '(no title)');
+            if ($a->link !== null) {
+                $out[] = '    ' . $a->link;
+            }
+            $out[] = '    affected versions: ' . $a->affectedVersions->getPrettyString();
         }
-        if ($a->link !== null) {
-            $out[] = '  ' . $a->link;
-        }
-        $out[] = '  affected versions: ' . $a->affectedVersions->getPrettyString();
 
         $out[] = 'Introduced by';
         if ($f->paths === []) {

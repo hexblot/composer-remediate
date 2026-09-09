@@ -5,6 +5,7 @@ declare(strict_types=1);
 namespace Remediate\Engine;
 
 use Composer\Semver\Comparator;
+use Composer\Semver\Constraint\MultiConstraint;
 use Remediate\Engine\Advisory\AdvisoryProvider;
 use Remediate\Engine\Candidate\Candidate;
 use Remediate\Engine\Candidate\CandidateGenerator;
@@ -65,14 +66,28 @@ final class Planner
             $baseline[$finding->key()] = true;
         }
 
-        $plans = [];
+        // Several advisories on one package are remediated together: one command must escape all of them.
+        $groups = [];
         foreach ($findings as $finding) {
-            $finding = $finding->withPaths($graph->pathsToRoot($finding->packageName));
-            $this->report(sprintf('%s on %s %s', $finding->advisory->displayId(), $finding->packageName, $finding->prettyVersion));
+            $groups[$finding->packageName][] = $finding;
+        }
 
-            $candidates = $this->generator->generate($finding, $graph, $context->rootRequirements());
+        $plans = [];
+        foreach ($groups as $group) {
+            $finding = $group[0]->withPaths($graph->pathsToRoot($group[0]->packageName));
+            $related = array_slice($group, 1);
+            $groupKeys = [];
+            $affected = [];
+            foreach ($group as $member) {
+                $groupKeys[$member->key()] = true;
+                $affected[] = $member->advisory->affectedVersions;
+            }
+            $combinedAffected = count($affected) === 1 ? $affected[0] : MultiConstraint::create($affected, false);
+            $this->report(sprintf('%s on %s %s', implode(', ', array_map(static fn (Finding $f): string => $f->advisory->displayId(), $group)), $finding->packageName, $finding->prettyVersion));
+
+            $candidates = $this->generator->generate($finding, $graph, $context->rootRequirements(), $combinedAffected);
             if ($candidates === []) {
-                $plans[] = new FindingPlan($finding, [], [], sprintf('No release of %s newer than %s is outside the affected range %s.', $finding->packageName, $finding->prettyVersion, $finding->advisory->affectedVersions->getPrettyString()));
+                $plans[] = new FindingPlan($finding, [], [], sprintf('No release of %s newer than %s is outside the affected range %s.', $finding->packageName, $finding->prettyVersion, $combinedAffected->getPrettyString()), [], $related);
                 continue;
             }
 
@@ -85,13 +100,13 @@ final class Planner
                     $skipped[] = $candidate;
                     continue;
                 }
-                $evaluation = $this->evaluate($candidate, $finding, $lock, $baseline, $matcher, $workspace);
+                $evaluation = $this->evaluate($candidate, $finding, $groupKeys, $lock, $baseline, $matcher, $workspace);
                 if ($evaluation->result->status === SolveStatus::Transport) {
                     ++$transportFailures;
                 }
                 $evaluated[] = $evaluation;
                 if ($evaluation->valid && !self::descentIsDominated($evaluation, $evaluated, $ranker)) {
-                    array_push($evaluated, ...$this->descendParent($evaluation, $finding, $lock, $baseline, $matcher, $workspace));
+                    array_push($evaluated, ...$this->descendParent($evaluation, $finding, $groupKeys, $lock, $baseline, $matcher, $workspace));
                 }
             }
 
@@ -99,7 +114,7 @@ final class Planner
             if ($transportFailures > 0 && $transportFailures === count($evaluated)) {
                 $blocker = 'Every solve failed with a network error; package metadata could not be fetched.';
             }
-            $plans[] = new FindingPlan($finding, $evaluated, $ranker->rank($evaluated), $blocker, $skipped);
+            $plans[] = new FindingPlan($finding, $evaluated, $ranker->rank($evaluated), $blocker, $skipped, $related);
         }
 
         return new Plan($plans, [
@@ -151,9 +166,10 @@ final class Planner
     }
 
     /**
-     * @param array<string, true> $baseline finding keys present before remediation
+     * @param array<string, true> $groupKeys finding keys this candidate must remove
+     * @param array<string, true> $baseline  finding keys present before remediation
      */
-    private function evaluate(Candidate $candidate, Finding $finding, LockSnapshot $lock, array $baseline, Matcher $matcher, ScratchWorkspace $workspace): EvaluatedCandidate
+    private function evaluate(Candidate $candidate, Finding $finding, array $groupKeys, LockSnapshot $lock, array $baseline, Matcher $matcher, ScratchWorkspace $workspace): EvaluatedCandidate
     {
         $this->report('  trying ' . $candidate->commandLine($this->solver->supportsMinimalChanges()));
         $result = $this->solver->solve($candidate, $workspace);
@@ -164,10 +180,11 @@ final class Planner
 
         $diff = LockDiff::between($lock, $result->after);
         $afterKeys = $matcher->findingKeys($result->after);
-        if (isset($afterKeys[$finding->key()])) {
+        $remaining = array_keys(array_intersect_key($afterKeys, $groupKeys));
+        if ($remaining !== []) {
             $after = $result->after->get($finding->packageName);
 
-            return new EvaluatedCandidate($candidate, $result, $diff, false, sprintf('resolves, but %s stays at %s which is still affected', $finding->packageName, $after?->getPrettyVersion() ?? '?'));
+            return new EvaluatedCandidate($candidate, $result, $diff, false, sprintf('resolves, but %s ends at %s which is still affected by %s', $finding->packageName, $after?->getPrettyVersion() ?? '?', implode(', ', array_map(static fn (string $k): string => explode('@', $k)[0], $remaining))));
         }
         $introduced = array_keys(array_diff_key($afterKeys, $baseline));
         if ($introduced !== []) {
@@ -185,11 +202,12 @@ final class Planner
      * smallest change wants the *lowest* version of A that still admits the fix. Probe downwards
      * with a temporary upper bound until the solve breaks, then pin the lowest working version.
      *
+     * @param array<string, true> $groupKeys
      * @param array<string, true> $baseline
      *
      * @return list<EvaluatedCandidate>
      */
-    private function descendParent(EvaluatedCandidate $start, Finding $finding, LockSnapshot $lock, array $baseline, Matcher $matcher, ScratchWorkspace $workspace): array
+    private function descendParent(EvaluatedCandidate $start, Finding $finding, array $groupKeys, LockSnapshot $lock, array $baseline, Matcher $matcher, ScratchWorkspace $workspace): array
     {
         $candidate = $start->candidate;
         if (!in_array($candidate->strategy, [Strategy::ParentUpdate, Strategy::RootConstraintWiden], true) || count($candidate->allowList) !== 1 || $candidate->pins !== [] || $start->result->after === null) {
@@ -213,7 +231,7 @@ final class Planner
                 [$parent => $lowerBound . ',<' . FixedRangeResolver::shortVersion($high)],
                 sprintf('probe: is there a lower %s than %s that still admits the fix?', $parent, $after->getPrettyVersion()),
             );
-            $evaluation = $this->evaluate($probe, $finding, $lock, $baseline, $matcher, $workspace);
+            $evaluation = $this->evaluate($probe, $finding, $groupKeys, $lock, $baseline, $matcher, $workspace);
             $probed = $evaluation->result->after?->get($parent);
             if (!$evaluation->valid || $probed === null || !Comparator::lessThan($probed->getVersion(), $high)) {
                 break;
@@ -226,7 +244,7 @@ final class Planner
             return [];
         }
         $pinned = $candidate->withPin($parent, $best, sprintf('%s, pinned to %s, the lowest version that admits the fix', $candidate->description, $best));
-        $final = $this->evaluate($pinned, $finding, $lock, $baseline, $matcher, $workspace);
+        $final = $this->evaluate($pinned, $finding, $groupKeys, $lock, $baseline, $matcher, $workspace);
 
         return $final->valid ? [$final] : [];
     }

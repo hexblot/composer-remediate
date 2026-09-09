@@ -27,13 +27,15 @@ final class CandidateGenerator
     }
 
     /**
-     * @param array<string, Link> $rootRequirements
+     * @param array<string, Link>      $rootRequirements
+     * @param ConstraintInterface|null $affected         affected range to escape; defaults to the finding's advisory,
+     *                                                   callers pass the union when several advisories hit one package
      *
      * @return list<Candidate> empty when no fixed version newer than the locked one can exist
      */
-    public function generate(Finding $finding, DependencyGraph $graph, array $rootRequirements): array
+    public function generate(Finding $finding, DependencyGraph $graph, array $rootRequirements, ?ConstraintInterface $affected = null): array
     {
-        $fixed = $this->ranges->fixedRangeAbove($finding->advisory->affectedVersions, $finding->version);
+        $fixed = $this->ranges->fixedRangeAbove($affected ?? $finding->advisory->affectedVersions, $finding->version);
         if ($fixed === null) {
             return [];
         }

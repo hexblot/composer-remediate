@@ -110,10 +110,23 @@ A weighted score may replace these rules once the fixture corpus provides eviden
 
 ## 6. Multiple findings
 
-Per-finding winners are merged into a single command, which is validated again. If every finding
-disappears, the report presents one combined plan; otherwise it presents per-finding plans.
+Several advisories on the same package are planned together: the fixed range is the complement of
+the union of their affected ranges, and a candidate is valid only when all of them are gone. One
+package, one command.
 
-## 7. Output
+Across packages, per-finding winners will be merged into a single command and validated again
+(Phase 1). If every finding disappears, the report presents one combined plan; otherwise it presents
+per-finding plans.
+
+## 7. Pruning
+
+Two rules keep the number of solves small. Root-constraint widening is never tried once a valid
+candidate without root changes exists, because ranking rule 1 would discard it anyway. The parent
+descent is skipped when an existing valid candidate is already at least as good as the best result
+the descent could reach (two changed packages, no major change). Skipped candidates are listed in
+the report so the reasoning stays visible.
+
+## 8. Output
 
 Text output follows the format on the [home page](index.md). JSON output exposes the same structure
 plus reproducibility metadata: engine version, advisory source and fetch time, Composer and PHP

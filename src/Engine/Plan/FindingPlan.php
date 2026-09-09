@@ -13,6 +13,7 @@ final class FindingPlan
      * @param list<EvaluatedCandidate> $evaluated all candidates in evaluation order
      * @param list<EvaluatedCandidate> $ranked    valid candidates, best first
      * @param list<Candidate>          $skipped   candidates not solved because a better one already existed
+     * @param list<Finding>            $related   further advisories on the same package, remediated by the same plan
      */
     public function __construct(
         public readonly Finding $finding,
@@ -20,7 +21,14 @@ final class FindingPlan
         public readonly array $ranked,
         public readonly ?string $blocker = null,
         public readonly array $skipped = [],
+        public readonly array $related = [],
     ) {
+    }
+
+    /** @return list<Finding> the primary finding followed by the related ones */
+    public function allFindings(): array
+    {
+        return [$this->finding, ...$this->related];
     }
 
     public function recommended(): ?EvaluatedCandidate
