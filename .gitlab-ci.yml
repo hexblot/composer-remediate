@@ -19,7 +19,7 @@ docs:build:
   stage: test
   image: python:3.12-slim
   script:
-    - pip install mkdocs-material
+    - pip install mkdocs
     - mkdocs build --strict
   rules:
     - if: $CI_COMMIT_BRANCH != $CI_DEFAULT_BRANCH
@@ -28,7 +28,7 @@ pages:
   stage: deploy
   image: python:3.12-slim
   script:
-    - pip install mkdocs-material
+    - pip install mkdocs
     - mkdocs build --strict --site-dir public
   artifacts:
     paths: [public]

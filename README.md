@@ -35,7 +35,7 @@ ddev composer install
 ddev composer check      # phpstan + phpunit
 ```
 
-Documentation is built with MkDocs (`pipx run --spec mkdocs-material mkdocs serve`).
+Documentation is built with MkDocs (`pipx run mkdocs serve`).
 
 ## License
 

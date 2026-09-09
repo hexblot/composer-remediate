@@ -53,5 +53,5 @@ ddev composer test:fixtures  # the historical fixture suite only
 Documentation:
 
 ```bash
-pipx run --spec mkdocs-material mkdocs serve
+pipx run mkdocs serve
 ```

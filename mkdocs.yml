@@ -6,31 +6,20 @@ edit_uri: edit/main/docs/
 strict: true
 
 theme:
-  name: material
-  features:
-    - navigation.sections
-    - navigation.footer
-    - content.code.copy
-    - search.suggest
-  palette:
-    - scheme: default
-      primary: teal
-      toggle:
-        icon: material/brightness-7
-        name: Switch to dark mode
-    - scheme: slate
-      primary: teal
-      toggle:
-        icon: material/brightness-4
-        name: Switch to light mode
+  name: readthedocs
+  highlightjs: true
+  hljs_languages: [php, json, yaml, bash]
+  navigation_depth: 3
+  titles_only: false
 
 markdown_extensions:
   - admonition
   - tables
+  - fenced_code
+  - codehilite:
+      guess_lang: false
   - toc:
       permalink: true
-  - pymdownx.superfences
-  - pymdownx.details
 
 nav:
   - Home: index.md
