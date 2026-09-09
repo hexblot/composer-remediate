@@ -1,0 +1,12 @@
+name: composer-remediate
+type: php
+docroot: ""
+php_version: "8.3"
+webserver_type: nginx-fpm
+xdebug_enabled: false
+omit_containers: [db]
+use_dns_when_possible: true
+composer_version: "2"
+web_environment:
+  - COMPOSER_NO_INTERACTION=1
+corepack_enable: false

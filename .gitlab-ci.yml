@@ -1,0 +1,36 @@
+stages: [test, deploy]
+
+.php-test:
+  stage: test
+  image: php:${PHP_VERSION}-cli
+  before_script:
+    - apt-get update -qq && apt-get install -qq -y git unzip > /dev/null
+    - curl -sS https://getcomposer.org/installer | php -- --install-dir=/usr/local/bin --filename=composer
+    - composer install --no-interaction --no-progress
+  script:
+    - composer phpstan
+    - composer test
+
+test:php8.1: { extends: .php-test, variables: { PHP_VERSION: "8.1" } }
+test:php8.3: { extends: .php-test, variables: { PHP_VERSION: "8.3" } }
+test:php8.4: { extends: .php-test, variables: { PHP_VERSION: "8.4" } }
+
+docs:build:
+  stage: test
+  image: python:3.12-slim
+  script:
+    - pip install mkdocs-material
+    - mkdocs build --strict
+  rules:
+    - if: $CI_COMMIT_BRANCH != $CI_DEFAULT_BRANCH
+
+pages:
+  stage: deploy
+  image: python:3.12-slim
+  script:
+    - pip install mkdocs-material
+    - mkdocs build --strict --site-dir public
+  artifacts:
+    paths: [public]
+  rules:
+    - if: $CI_COMMIT_BRANCH == $CI_DEFAULT_BRANCH

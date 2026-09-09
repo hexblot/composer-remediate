@@ -1,0 +1,52 @@
+site_name: Composer Remediate
+site_description: From vulnerable dependency to verified Composer fix.
+site_url: https://hexblot.github.io/composer-remediate/
+repo_url: https://github.com/hexblot/composer-remediate
+edit_uri: edit/main/docs/
+strict: true
+
+theme:
+  name: material
+  features:
+    - navigation.sections
+    - navigation.footer
+    - content.code.copy
+    - search.suggest
+  palette:
+    - scheme: default
+      primary: teal
+      toggle:
+        icon: material/brightness-7
+        name: Switch to dark mode
+    - scheme: slate
+      primary: teal
+      toggle:
+        icon: material/brightness-4
+        name: Switch to light mode
+
+markdown_extensions:
+  - admonition
+  - tables
+  - toc:
+      permalink: true
+  - pymdownx.superfences
+  - pymdownx.details
+
+nav:
+  - Home: index.md
+  - Getting started: getting-started.md
+  - How it works: how-it-works.md
+  - Privacy and network behaviour: privacy-and-network.md
+  - Test fixtures: fixtures.md
+  - Roadmap: roadmap.md
+  - Contributing: contributing.md
+  - Decisions:
+      - Overview: adr/index.md
+      - 0001 Composer plugin, not standalone CLI: adr/0001-composer-plugin.md
+      - 0002 Candidates are Composer commands: adr/0002-candidates-are-commands.md
+      - 0003 In-process solver, subprocess fallback: adr/0003-in-process-solver.md
+      - 0004 Honest privacy promise: adr/0004-privacy-promise.md
+      - 0005 Advisory database built locally, shared centrally: adr/0005-advisory-database.md
+      - 0006 Fixtures freeze package metadata: adr/0006-frozen-fixtures.md
+      - 0007 Composer version floor: adr/0007-composer-floor.md
+      - 0008 Isolate Composer internals: adr/0008-isolate-internals.md

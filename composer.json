@@ -1,0 +1,45 @@
+{
+    "name": "hexblot/composer-remediate",
+    "description": "Composer plugin that traces vulnerable dependencies to the packages you control and uses Composer's own solver to find the smallest verified upgrade that removes them.",
+    "type": "composer-plugin",
+    "license": "MIT",
+    "keywords": ["composer", "plugin", "security", "vulnerability", "remediation", "audit", "dependencies"],
+    "homepage": "https://github.com/hexblot/composer-remediate",
+    "require": {
+        "php": "^8.1",
+        "composer-plugin-api": "^2.0"
+    },
+    "require-dev": {
+        "composer/composer": "^2.9",
+        "phpstan/phpstan": "^2.1",
+        "phpunit/phpunit": "^10.5"
+    },
+    "autoload": {
+        "psr-4": {
+            "Remediate\\": "src/"
+        }
+    },
+    "autoload-dev": {
+        "psr-4": {
+            "Remediate\\Tests\\": "tests/"
+        }
+    },
+    "extra": {
+        "class": "Remediate\\Plugin",
+        "plugin-modifies-downloads": false,
+        "plugin-modifies-install-path": false
+    },
+    "config": {
+        "sort-packages": true,
+        "platform-check": false
+    },
+    "scripts": {
+        "test": "phpunit",
+        "test:unit": "phpunit --testsuite unit",
+        "test:fixtures": "phpunit --testsuite fixtures",
+        "phpstan": "phpstan analyse --memory-limit=1G",
+        "check": ["@phpstan", "@test"]
+    },
+    "minimum-stability": "stable",
+    "prefer-stable": true
+}

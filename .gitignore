@@ -1,0 +1,11 @@
+/vendor/
+/composer.lock
+/.phpunit.cache/
+/.phpunit.result.cache
+/build/
+/site/
+/public/
+/.ddev/**/*
+!/.ddev/config.yaml
+.DS_Store
+/tests/Fixture/*/.work/
