@@ -1,0 +1,3697 @@
+{
+    "advisories": {
+        "aws/aws-sdk-php": [
+            {
+                "advisoryId": "PKSA-n3s6-289w-qtqb",
+                "packageName": "aws/aws-sdk-php",
+                "remoteId": "aws/aws-sdk-php/CVE-2023-51651.yaml",
+                "title": "Potential URI resolution path traversal in the AWS SDK for PHP",
+                "link": "https://nvd.nist.gov/vuln/detail/CVE-2023-51651",
+                "cve": "CVE-2023-51651",
+                "affectedVersions": ">=3.0.0,<3.288.1",
+                "source": "FriendsOfPHP/security-advisories",
+                "reportedAt": "2023-11-22 00:00:00",
+                "composerRepository": "https://packagist.org",
+                "severity": "medium",
+                "sources": [
+                    {
+                        "name": "FriendsOfPHP/security-advisories",
+                        "remoteId": "aws/aws-sdk-php/CVE-2023-51651.yaml"
+                    },
+                    {
+                        "name": "GitHub",
+                        "remoteId": "GHSA-557v-xcg6-rm5m"
+                    }
+                ]
+            },
+            {
+                "advisoryId": "PKSA-stsw-jsf7-f6vs",
+                "packageName": "aws/aws-sdk-php",
+                "remoteId": "aws/aws-sdk-php/CVE-2015-5723.yaml",
+                "title": "Security Misconfiguration Vulnerability in the AWS SDK for PHP",
+                "link": "https://github.com/aws/aws-sdk-php/releases/tag/3.2.1",
+                "cve": "CVE-2015-5723",
+                "affectedVersions": ">=3.0.0,<3.2.1",
+                "source": "FriendsOfPHP/security-advisories",
+                "reportedAt": "2015-07-24 00:41:41",
+                "composerRepository": "https://packagist.org",
+                "severity": "high",
+                "sources": [
+                    {
+                        "name": "FriendsOfPHP/security-advisories",
+                        "remoteId": "aws/aws-sdk-php/CVE-2015-5723.yaml"
+                    },
+                    {
+                        "name": "GitHub",
+                        "remoteId": "GHSA-pw5c-xqf2-6xc2"
+                    }
+                ]
+            }
+        ],
+        "composer/composer": [
+            {
+                "advisoryId": "PKSA-s25b-vbmp-jvhh",
+                "packageName": "composer/composer",
+                "remoteId": "GHSA-47f6-5gq3-vx9c",
+                "title": "Composer has a command injection via malicious git branch name",
+                "link": "https://github.com/advisories/GHSA-47f6-5gq3-vx9c",
+                "cve": "CVE-2024-35241",
+                "affectedVersions": ">=2.3,<2.7.7|>=2.0,<2.2.24",
+                "source": "GitHub",
+                "reportedAt": "2024-06-10 21:36:32",
+                "composerRepository": "https://packagist.org",
+                "severity": "high",
+                "sources": [
+                    {
+                        "name": "GitHub",
+                        "remoteId": "GHSA-47f6-5gq3-vx9c"
+                    }
+                ]
+            },
+            {
+                "advisoryId": "PKSA-b8f7-zn44-r4gz",
+                "packageName": "composer/composer",
+                "remoteId": "GHSA-v9qv-c7wm-wgmf",
+                "title": "Composer has multiple command injections via malicious git/hg branch names",
+                "link": "https://github.com/advisories/GHSA-v9qv-c7wm-wgmf",
+                "cve": "CVE-2024-35242",
+                "affectedVersions": ">=2.3,<2.7.7|>=2.0,<2.2.24",
+                "source": "GitHub",
+                "reportedAt": "2024-06-10 21:36:25",
+                "composerRepository": "https://packagist.org",
+                "severity": "high",
+                "sources": [
+                    {
+                        "name": "GitHub",
+                        "remoteId": "GHSA-v9qv-c7wm-wgmf"
+                    }
+                ]
+            },
+            {
+                "advisoryId": "PKSA-jn72-4kr8-gj3h",
+                "packageName": "composer/composer",
+                "remoteId": "GHSA-7c6p-848j-wh5h",
+                "title": "Composer code execution and possible privilege escalation via compromised InstalledVersions.php or installed.php",
+                "link": "https://github.com/advisories/GHSA-7c6p-848j-wh5h",
+                "cve": "CVE-2024-24821",
+                "affectedVersions": ">=2.3.0-rc1,<2.7.0|>=2.0.0-alpha1,<2.2.23",
+                "source": "GitHub",
+                "reportedAt": "2024-02-08 15:06:38",
+                "composerRepository": "https://packagist.org",
+                "severity": "high",
+                "sources": [
+                    {
+                        "name": "GitHub",
+                        "remoteId": "GHSA-7c6p-848j-wh5h"
+                    }
+                ]
+            },
+            {
+                "advisoryId": "PKSA-m1ph-vmbx-2xd3",
+                "packageName": "composer/composer",
+                "remoteId": "GHSA-jm6m-4632-36hf",
+                "title": "Composer Remote Code Execution vulnerability via web-accessible composer.phar",
+                "link": "https://github.com/advisories/GHSA-jm6m-4632-36hf",
+                "cve": "CVE-2023-43655",
+                "affectedVersions": ">=2.3.0,<2.6.4|>=2.0.0,<2.2.22|<1.10.27",
+                "source": "GitHub",
+                "reportedAt": "2023-09-29 20:39:21",
+                "composerRepository": "https://packagist.org",
+                "severity": "high",
+                "sources": [
+                    {
+                        "name": "GitHub",
+                        "remoteId": "GHSA-jm6m-4632-36hf"
+                    }
+                ]
+            },
+            {
+                "advisoryId": "PKSA-6zmq-d6mk-r5wm",
+                "packageName": "composer/composer",
+                "remoteId": "composer/composer/CVE-2022-24828.yaml",
+                "title": "Missing input validation can lead to command execution in composer",
+                "link": "https://github.com/composer/composer/security/advisories/GHSA-x7cr-6qr6-2hh6",
+                "cve": "CVE-2022-24828",
+                "affectedVersions": ">=2.3,<2.3.5|>=2.0,<2.2.12|<1.10.26",
+                "source": "FriendsOfPHP/security-advisories",
+                "reportedAt": "2022-04-13 14:54:58",
+                "composerRepository": "https://packagist.org",
+                "severity": "high",
+                "sources": [
+                    {
+                        "name": "FriendsOfPHP/security-advisories",
+                        "remoteId": "composer/composer/CVE-2022-24828.yaml"
+                    },
+                    {
+                        "name": "GitHub",
+                        "remoteId": "GHSA-x7cr-6qr6-2hh6"
+                    }
+                ]
+            },
+            {
+                "advisoryId": "PKSA-93hy-9dc1-gbwt",
+                "packageName": "composer/composer",
+                "remoteId": "composer/composer/CVE-2021-41116.yaml",
+                "title": "Improper escaping of command arguments on Windows leading to command injection",
+                "link": "https://github.com/composer/composer/security/advisories/GHSA-frqg-7g38-6gcf",
+                "cve": "CVE-2021-41116",
+                "affectedVersions": ">=2.0.0-alpha1,<2.1.9|<1.10.23",
+                "source": "FriendsOfPHP/security-advisories",
+                "reportedAt": "2021-10-05 07:39:00",
+                "composerRepository": "https://packagist.org",
+                "severity": "high",
+                "sources": [
+                    {
+                        "name": "FriendsOfPHP/security-advisories",
+                        "remoteId": "composer/composer/CVE-2021-41116.yaml"
+                    },
+                    {
+                        "name": "GitHub",
+                        "remoteId": "GHSA-frqg-7g38-6gcf"
+                    }
+                ]
+            },
+            {
+                "advisoryId": "PKSA-9p8h-97x3-qxpm",
+                "packageName": "composer/composer",
+                "remoteId": "composer/composer/CVE-2021-29472.yaml",
+                "title": "Missing argument delimiter can lead to command execution via VCS repository URLs or source download URLs on systems with Mercurial",
+                "link": "https://github.com/composer/composer/security/advisories/GHSA-h5h8-pc6h-jvvx",
+                "cve": "CVE-2021-29472",
+                "affectedVersions": ">=2.0.0-alpha1,<2.0.13|<1.10.22",
+                "source": "FriendsOfPHP/security-advisories",
+                "reportedAt": "2021-04-27 11:10:45",
+                "composerRepository": "https://packagist.org",
+                "severity": "high",
+                "sources": [
+                    {
+                        "name": "FriendsOfPHP/security-advisories",
+                        "remoteId": "composer/composer/CVE-2021-29472.yaml"
+                    },
+                    {
+                        "name": "GitHub",
+                        "remoteId": "GHSA-h5h8-pc6h-jvvx"
+                    }
+                ]
+            },
+            {
+                "advisoryId": "PKSA-qx8p-c3v3-6yfg",
+                "packageName": "composer/composer",
+                "remoteId": "composer/composer/CVE-2015-8371.yaml",
+                "title": "Composer Cache Injection vulnerability",
+                "link": "http://flyingmana.de/blog_en/2016/02/14/composer_cache_injection_vulnerability_cve_2015_8371.html",
+                "cve": "CVE-2015-8371",
+                "affectedVersions": "<1.0.0-beta1",
+                "source": "FriendsOfPHP/security-advisories",
+                "reportedAt": "2016-02-10 14:51:23",
+                "composerRepository": "https://packagist.org",
+                "severity": "high",
+                "sources": [
+                    {
+                        "name": "FriendsOfPHP/security-advisories",
+                        "remoteId": "composer/composer/CVE-2015-8371.yaml"
+                    },
+                    {
+                        "name": "GitHub",
+                        "remoteId": "GHSA-725m-w832-q973"
+                    }
+                ]
+            }
+        ],
+        "doctrine/annotations": [
+            {
+                "advisoryId": "PKSA-1cs3-hr6c-fftt",
+                "packageName": "doctrine/annotations",
+                "remoteId": "doctrine/annotations/CVE-2015-5723.yaml",
+                "title": "Security Misconfiguration Vulnerability in various Doctrine projects",
+                "link": "https://www.doctrine-project.org/2015/08/31/security_misconfiguration_vulnerability_in_various_doctrine_projects.html",
+                "cve": "CVE-2015-5723",
+                "affectedVersions": ">=1.0.0,<1.2.7",
+                "source": "FriendsOfPHP/security-advisories",
+                "reportedAt": "2015-08-31 12:36:03",
+                "composerRepository": "https://packagist.org",
+                "severity": "high",
+                "sources": [
+                    {
+                        "name": "FriendsOfPHP/security-advisories",
+                        "remoteId": "doctrine/annotations/CVE-2015-5723.yaml"
+                    },
+                    {
+                        "name": "GitHub",
+                        "remoteId": "GHSA-pw5c-xqf2-6xc2"
+                    }
+                ]
+            }
+        ],
+        "doctrine/cache": [
+            {
+                "advisoryId": "PKSA-5g3y-77s3-wsh1",
+                "packageName": "doctrine/cache",
+                "remoteId": "doctrine/cache/CVE-2015-5723.yaml",
+                "title": "Security Misconfiguration Vulnerability in various Doctrine projects",
+                "link": "https://www.doctrine-project.org/2015/08/31/security_misconfiguration_vulnerability_in_various_doctrine_projects.html",
+                "cve": "CVE-2015-5723",
+                "affectedVersions": ">=1.0.0,<1.3.2|>=1.4.0,<1.4.2",
+                "source": "FriendsOfPHP/security-advisories",
+                "reportedAt": "2015-08-31 12:37:47",
+                "composerRepository": "https://packagist.org",
+                "severity": "high",
+                "sources": [
+                    {
+                        "name": "FriendsOfPHP/security-advisories",
+                        "remoteId": "doctrine/cache/CVE-2015-5723.yaml"
+                    },
+                    {
+                        "name": "GitHub",
+                        "remoteId": "GHSA-pw5c-xqf2-6xc2"
+                    }
+                ]
+            }
+        ],
+        "doctrine/common": [
+            {
+                "advisoryId": "PKSA-gsgw-t7tw-12tc",
+                "packageName": "doctrine/common",
+                "remoteId": "doctrine/common/CVE-2015-5723.yaml",
+                "title": "Security Misconfiguration Vulnerability in various Doctrine projects",
+                "link": "https://www.doctrine-project.org/2015/08/31/security_misconfiguration_vulnerability_in_various_doctrine_projects.html",
+                "cve": "CVE-2015-5723",
+                "affectedVersions": ">=2.0.0,<2.4.3|>=2.5.0,<2.5.1",
+                "source": "FriendsOfPHP/security-advisories",
+                "reportedAt": "2015-08-31 13:02:01",
+                "composerRepository": "https://packagist.org",
+                "severity": "high",
+                "sources": [
+                    {
+                        "name": "FriendsOfPHP/security-advisories",
+                        "remoteId": "doctrine/common/CVE-2015-5723.yaml"
+                    },
+                    {
+                        "name": "GitHub",
+                        "remoteId": "GHSA-pw5c-xqf2-6xc2"
+                    }
+                ]
+            }
+        ],
+        "doctrine/dbal": [
+            {
+                "advisoryId": "PKSA-zr2w-r29k-4d9q",
+                "packageName": "doctrine/dbal",
+                "remoteId": "doctrine/dbal/CVE-2021-43608.yaml",
+                "title": "SQL Injection in Limit Clause Generation API",
+                "link": "https://github.com/doctrine/dbal/security/advisories/GHSA-r7cj-8hjg-x622",
+                "cve": "CVE-2021-43608",
+                "affectedVersions": ">=3.0.0,<3.0.99|>=3.1.0,<3.1.4",
+                "source": "FriendsOfPHP/security-advisories",
+                "reportedAt": "2021-11-11 13:30:00",
+                "composerRepository": "https://packagist.org",
+                "severity": "critical",
+                "sources": [
+                    {
+                        "name": "FriendsOfPHP/security-advisories",
+                        "remoteId": "doctrine/dbal/CVE-2021-43608.yaml"
+                    },
+                    {
+                        "name": "GitHub",
+                        "remoteId": "GHSA-r7cj-8hjg-x622"
+                    }
+                ]
+            },
+            {
+                "advisoryId": "PKSA-1hnn-m3vz-cr6v",
+                "packageName": "doctrine/dbal",
+                "remoteId": "doctrine/dbal/2011-09-25.yaml",
+                "title": "SQL injection possibility",
+                "link": "https://www.doctrine-project.org/blog/dbal-security-2011-1.html",
+                "cve": null,
+                "affectedVersions": ">=2.0.0,<2.0.8|>=2.1.0,<2.1.2",
+                "source": "FriendsOfPHP/security-advisories",
+                "reportedAt": "2011-09-25 00:00:00",
+                "composerRepository": "https://packagist.org",
+                "severity": "high",
+                "sources": [
+                    {
+                        "name": "FriendsOfPHP/security-advisories",
+                        "remoteId": "doctrine/dbal/2011-09-25.yaml"
+                    },
+                    {
+                        "name": "GitHub",
+                        "remoteId": "GHSA-76w8-mqx4-wjrf"
+                    }
+                ]
+            }
+        ],
+        "dompdf/dompdf": [
+            {
+                "advisoryId": "PKSA-7ztm-rpt3-qqzk",
+                "packageName": "dompdf/dompdf",
+                "remoteId": "dompdf/dompdf/CVE-2023-50262.yaml",
+                "title": "Denial of service caused by infinite recursion when parsing SVG images",
+                "link": "https://nvd.nist.gov/vuln/detail/CVE-2023-50262",
+                "cve": "CVE-2023-50262",
+                "affectedVersions": "<2.0.4",
+                "source": "FriendsOfPHP/security-advisories",
+                "reportedAt": "2023-12-12 09:17:00",
+                "composerRepository": "https://packagist.org",
+                "severity": "medium",
+                "sources": [
+                    {
+                        "name": "FriendsOfPHP/security-advisories",
+                        "remoteId": "dompdf/dompdf/CVE-2023-50262.yaml"
+                    },
+                    {
+                        "name": "GitHub",
+                        "remoteId": "GHSA-3qx2-6f78-w2j2"
+                    }
+                ]
+            },
+            {
+                "advisoryId": "PKSA-2kw5-jd8w-5mvh",
+                "packageName": "dompdf/dompdf",
+                "remoteId": "GHSA-56gj-mvh6-rp75",
+                "title": "URI validation failure on SVG parsing. Bypass of CVE-2023-23924",
+                "link": "https://github.com/advisories/GHSA-56gj-mvh6-rp75",
+                "cve": "CVE-2023-24813",
+                "affectedVersions": "=2.0.2",
+                "source": "GitHub",
+                "reportedAt": "2023-02-07 18:16:23",
+                "composerRepository": "https://packagist.org",
+                "severity": "critical",
+                "sources": [
+                    {
+                        "name": "GitHub",
+                        "remoteId": "GHSA-56gj-mvh6-rp75"
+                    }
+                ]
+            },
+            {
+                "advisoryId": "PKSA-4jrs-y99s-q8j6",
+                "packageName": "dompdf/dompdf",
+                "remoteId": "dompdf/dompdf/CVE-2023-23924.yaml",
+                "title": "Dompdf vulnerable to URI validation failure on SVG parsing",
+                "link": "https://github.com/advisories/GHSA-3cw5-7cxw-v5qg",
+                "cve": "CVE-2023-23924",
+                "affectedVersions": "<2.0.2",
+                "source": "FriendsOfPHP/security-advisories",
+                "reportedAt": "2023-01-31 14:30:00",
+                "composerRepository": "https://packagist.org",
+                "severity": "critical",
+                "sources": [
+                    {
+                        "name": "FriendsOfPHP/security-advisories",
+                        "remoteId": "dompdf/dompdf/CVE-2023-23924.yaml"
+                    },
+                    {
+                        "name": "GitHub",
+                        "remoteId": "GHSA-3cw5-7cxw-v5qg"
+                    }
+                ]
+            },
+            {
+                "advisoryId": "PKSA-hbk6-2vfz-8f8n",
+                "packageName": "dompdf/dompdf",
+                "remoteId": "dompdf/dompdf/CVE-2022-41343.yaml",
+                "title": "Remote file inclusion",
+                "link": "https://github.com/advisories/GHSA-6x28-7h8c-chx4",
+                "cve": "CVE-2022-41343",
+                "affectedVersions": "<2.0.1",
+                "source": "FriendsOfPHP/security-advisories",
+                "reportedAt": "2022-09-22 13:54:00",
+                "composerRepository": "https://packagist.org",
+                "severity": "high",
+                "sources": [
+                    {
+                        "name": "FriendsOfPHP/security-advisories",
+                        "remoteId": "dompdf/dompdf/CVE-2022-41343.yaml"
+                    },
+                    {
+                        "name": "GitHub",
+                        "remoteId": "GHSA-6x28-7h8c-chx4"
+                    }
+                ]
+            },
+            {
+                "advisoryId": "PKSA-kj9c-tr41-t8mj",
+                "packageName": "dompdf/dompdf",
+                "remoteId": "GHSA-5qj8-6xxj-hp9h",
+                "title": "Dompdf before v2.0.0 vulnerable to chroot check bypass",
+                "link": "https://github.com/advisories/GHSA-5qj8-6xxj-hp9h",
+                "cve": "CVE-2022-2400",
+                "affectedVersions": "<2.0.0",
+                "source": "GitHub",
+                "reportedAt": "2022-07-19 00:00:26",
+                "composerRepository": "https://packagist.org",
+                "severity": "medium",
+                "sources": [
+                    {
+                        "name": "GitHub",
+                        "remoteId": "GHSA-5qj8-6xxj-hp9h"
+                    }
+                ]
+            },
+            {
+                "advisoryId": "PKSA-872h-8556-2chm",
+                "packageName": "dompdf/dompdf",
+                "remoteId": "dompdf/dompdf/CVE-2022-0085.yaml",
+                "title": "Server-Side Request Forgery in dompdf/dompdf",
+                "link": "https://github.com/advisories/GHSA-pf6p-25r2-fx45",
+                "cve": "CVE-2022-0085",
+                "affectedVersions": "<2.0.0",
+                "source": "FriendsOfPHP/security-advisories",
+                "reportedAt": "2022-06-23 13:55:00",
+                "composerRepository": "https://packagist.org",
+                "severity": "medium",
+                "sources": [
+                    {
+                        "name": "FriendsOfPHP/security-advisories",
+                        "remoteId": "dompdf/dompdf/CVE-2022-0085.yaml"
+                    },
+                    {
+                        "name": "GitHub",
+                        "remoteId": "GHSA-pf6p-25r2-fx45"
+                    }
+                ]
+            },
+            {
+                "advisoryId": "PKSA-99tj-gg5v-4g74",
+                "packageName": "dompdf/dompdf",
+                "remoteId": "dompdf/dompdf/CVE-2022-28368.yaml",
+                "title": "Remote code injection via remote fonts",
+                "link": "https://github.com/advisories/GHSA-x752-qjv4-c4hc",
+                "cve": "CVE-2022-28368",
+                "affectedVersions": "<1.2.1",
+                "source": "FriendsOfPHP/security-advisories",
+                "reportedAt": "2022-03-24 13:59:00",
+                "composerRepository": "https://packagist.org",
+                "severity": "critical",
+                "sources": [
+                    {
+                        "name": "FriendsOfPHP/security-advisories",
+                        "remoteId": "dompdf/dompdf/CVE-2022-28368.yaml"
+                    },
+                    {
+                        "name": "GitHub",
+                        "remoteId": "GHSA-x752-qjv4-c4hc"
+                    }
+                ]
+            },
+            {
+                "advisoryId": "PKSA-5s2b-r7bs-gpkz",
+                "packageName": "dompdf/dompdf",
+                "remoteId": "dompdf/dompdf/CVE-2014-5012.yaml",
+                "title": "Denial Of Service Vector",
+                "link": "https://github.com/dompdf/dompdf/releases/tag/v0.6.2",
+                "cve": "CVE-2014-5012",
+                "affectedVersions": ">=0.6,<0.6.2",
+                "source": "FriendsOfPHP/security-advisories",
+                "reportedAt": "2015-12-07 00:07:13",
+                "composerRepository": "https://packagist.org",
+                "severity": "medium",
+                "sources": [
+                    {
+                        "name": "FriendsOfPHP/security-advisories",
+                        "remoteId": "dompdf/dompdf/CVE-2014-5012.yaml"
+                    },
+                    {
+                        "name": "GitHub",
+                        "remoteId": "GHSA-q83c-64c9-c42m"
+                    }
+                ]
+            },
+            {
+                "advisoryId": "PKSA-cy5h-xj19-9vd7",
+                "packageName": "dompdf/dompdf",
+                "remoteId": "dompdf/dompdf/CVE-2014-5013.yaml",
+                "title": "Remote Code Execution (complement of CVE-2014-2383)",
+                "link": "https://github.com/dompdf/dompdf/releases/tag/v0.6.2",
+                "cve": "CVE-2014-5013",
+                "affectedVersions": ">=0.6,<0.6.2",
+                "source": "FriendsOfPHP/security-advisories",
+                "reportedAt": "2015-12-07 00:07:13",
+                "composerRepository": "https://packagist.org",
+                "severity": "high",
+                "sources": [
+                    {
+                        "name": "FriendsOfPHP/security-advisories",
+                        "remoteId": "dompdf/dompdf/CVE-2014-5013.yaml"
+                    },
+                    {
+                        "name": "GitHub",
+                        "remoteId": "GHSA-jjwj-w3gc-gcw4"
+                    }
+                ]
+            },
+            {
+                "advisoryId": "PKSA-jkcx-z3k3-bbrv",
+                "packageName": "dompdf/dompdf",
+                "remoteId": "dompdf/dompdf/CVE-2014-5011.yaml",
+                "title": "Information Disclosure",
+                "link": "https://github.com/dompdf/dompdf/releases/tag/v0.6.2",
+                "cve": "CVE-2014-5011",
+                "affectedVersions": ">=0.6,<0.6.2",
+                "source": "FriendsOfPHP/security-advisories",
+                "reportedAt": "2015-12-07 00:07:13",
+                "composerRepository": "https://packagist.org",
+                "severity": "medium",
+                "sources": [
+                    {
+                        "name": "FriendsOfPHP/security-advisories",
+                        "remoteId": "dompdf/dompdf/CVE-2014-5011.yaml"
+                    },
+                    {
+                        "name": "GitHub",
+                        "remoteId": "GHSA-jwf8-mjj8-r8hq"
+                    }
+                ]
+            },
+            {
+                "advisoryId": "PKSA-pw9z-cywx-mmj2",
+                "packageName": "dompdf/dompdf",
+                "remoteId": "dompdf/dompdf/CVE-2010-4879.yaml",
+                "title": "PHP remote file inclusion vulnerability in dompdf.php",
+                "link": "https://github.com/dompdf/dompdf/releases/tag/v0.6.2",
+                "cve": "CVE-2010-4879",
+                "affectedVersions": ">=0.6,<0.6.1",
+                "source": "FriendsOfPHP/security-advisories",
+                "reportedAt": "2014-03-10 21:57:58",
+                "composerRepository": "https://packagist.org",
+                "severity": "high",
+                "sources": [
+                    {
+                        "name": "FriendsOfPHP/security-advisories",
+                        "remoteId": "dompdf/dompdf/CVE-2010-4879.yaml"
+                    },
+                    {
+                        "name": "GitHub",
+                        "remoteId": "GHSA-48r9-4v93-x4wh"
+                    }
+                ]
+            },
+            {
+                "advisoryId": "PKSA-s5g4-3y43-c9p2",
+                "packageName": "dompdf/dompdf",
+                "remoteId": "dompdf/dompdf/CVE-2014-2383.yaml",
+                "title": "Arbitrary file read in dompdf",
+                "link": "https://www.portcullis-security.com/security-research-and-downloads/security-advisories/cve-2014-2383/",
+                "cve": "CVE-2014-2383",
+                "affectedVersions": ">=0.6.0,<0.6.1",
+                "source": "FriendsOfPHP/security-advisories",
+                "reportedAt": "2014-03-10 21:57:58",
+                "composerRepository": "https://packagist.org",
+                "severity": "medium",
+                "sources": [
+                    {
+                        "name": "FriendsOfPHP/security-advisories",
+                        "remoteId": "dompdf/dompdf/CVE-2014-2383.yaml"
+                    },
+                    {
+                        "name": "GitHub",
+                        "remoteId": "GHSA-qr6q-w4gj-3865"
+                    }
+                ]
+            }
+        ],
+        "ezyang/htmlpurifier": [
+            {
+                "advisoryId": "PKSA-bscq-3hjz-7cqm",
+                "packageName": "ezyang/htmlpurifier",
+                "remoteId": "GHSA-jw86-5cjf-mv79",
+                "title": "HTML Purifier allows remote attackers to obtain sensitive information",
+                "link": "https://github.com/advisories/GHSA-jw86-5cjf-mv79",
+                "cve": "CVE-2011-3744",
+                "affectedVersions": "<=4.2.0",
+                "source": "GitHub",
+                "reportedAt": "2022-05-17 05:31:55",
+                "composerRepository": "https://packagist.org",
+                "severity": "medium",
+                "sources": [
+                    {
+                        "name": "GitHub",
+                        "remoteId": "GHSA-jw86-5cjf-mv79"
+                    }
+                ]
+            },
+            {
+                "advisoryId": "PKSA-393x-4q3x-x5sn",
+                "packageName": "ezyang/htmlpurifier",
+                "remoteId": "GHSA-6fh7-fwqj-mv49",
+                "title": "HTML Purifier Cross-site Scripting vulnerability",
+                "link": "https://github.com/advisories/GHSA-6fh7-fwqj-mv49",
+                "cve": "CVE-2007-3498",
+                "affectedVersions": "<2.0.1",
+                "source": "GitHub",
+                "reportedAt": "2022-05-01 18:14:25",
+                "composerRepository": "https://packagist.org",
+                "severity": "medium",
+                "sources": [
+                    {
+                        "name": "GitHub",
+                        "remoteId": "GHSA-6fh7-fwqj-mv49"
+                    }
+                ]
+            },
+            {
+                "advisoryId": "PKSA-mxmm-yhr7-jf8c",
+                "packageName": "ezyang/htmlpurifier",
+                "remoteId": "ezyang/htmlpurifier/CVE-2010-2479.yaml",
+                "title": "XSS vulnerability exploitable on Internet Explorer",
+                "link": "http://htmlpurifier.org/news/2010/0531-4.1.1-released",
+                "cve": "CVE-2010-2479",
+                "affectedVersions": "<4.1.1",
+                "source": "FriendsOfPHP/security-advisories",
+                "reportedAt": "2010-06-01 00:00:00",
+                "composerRepository": "https://packagist.org",
+                "severity": "medium",
+                "sources": [
+                    {
+                        "name": "FriendsOfPHP/security-advisories",
+                        "remoteId": "ezyang/htmlpurifier/CVE-2010-2479.yaml"
+                    },
+                    {
+                        "name": "GitHub",
+                        "remoteId": "GHSA-6rm6-mjmh-86jq"
+                    }
+                ]
+            },
+            {
+                "advisoryId": "PKSA-dcn7-gtzn-nbj6",
+                "packageName": "ezyang/htmlpurifier",
+                "remoteId": "ezyang/htmlpurifier/CVE-2010-4183.yaml",
+                "title": "Multiple XSS vulnerabilities exploitable on Internet Explorer",
+                "link": "http://htmlpurifier.org/security/2010/css-quoting",
+                "cve": "CVE-2010-4183",
+                "affectedVersions": "<4.1.0",
+                "source": "FriendsOfPHP/security-advisories",
+                "reportedAt": "2010-04-26 16:06:06",
+                "composerRepository": "https://packagist.org",
+                "severity": "medium",
+                "sources": [
+                    {
+                        "name": "FriendsOfPHP/security-advisories",
+                        "remoteId": "ezyang/htmlpurifier/CVE-2010-4183.yaml"
+                    },
+                    {
+                        "name": "GitHub",
+                        "remoteId": "GHSA-3p68-m5qw-9g9w"
+                    }
+                ]
+            }
+        ],
+        "firebase/php-jwt": [
+            {
+                "advisoryId": "PKSA-2kqm-ps5x-s4f5",
+                "packageName": "firebase/php-jwt",
+                "remoteId": "firebase/php-jwt/CVE-2021-46743.yaml",
+                "title": "Key/algorithm type confusion",
+                "link": "https://github.com/advisories/GHSA-8xf4-w7qw-pjjw",
+                "cve": "CVE-2021-46743",
+                "affectedVersions": "<6.0.0",
+                "source": "FriendsOfPHP/security-advisories",
+                "reportedAt": "2022-03-30 00:00:00",
+                "composerRepository": "https://packagist.org",
+                "severity": "critical",
+                "sources": [
+                    {
+                        "name": "FriendsOfPHP/security-advisories",
+                        "remoteId": "firebase/php-jwt/CVE-2021-46743.yaml"
+                    },
+                    {
+                        "name": "GitHub",
+                        "remoteId": "GHSA-8xf4-w7qw-pjjw"
+                    }
+                ]
+            },
+            {
+                "advisoryId": "PKSA-9g4f-46cc-2gr4",
+                "packageName": "firebase/php-jwt",
+                "remoteId": "firebase/php-jwt/2015-04-02.yaml",
+                "title": "Critical vulnerabilities in JSON Web Token libraries",
+                "link": "https://auth0.com/blog/critical-vulnerabilities-in-json-web-token-libraries/",
+                "cve": null,
+                "affectedVersions": "<2.0.0",
+                "source": "FriendsOfPHP/security-advisories",
+                "reportedAt": "2015-04-02 00:00:00",
+                "composerRepository": "https://packagist.org",
+                "severity": "critical",
+                "sources": [
+                    {
+                        "name": "FriendsOfPHP/security-advisories",
+                        "remoteId": "firebase/php-jwt/2015-04-02.yaml"
+                    },
+                    {
+                        "name": "GitHub",
+                        "remoteId": "GHSA-h533-5v22-8vcp"
+                    }
+                ]
+            }
+        ],
+        "google/protobuf": [
+            {
+                "advisoryId": "PKSA-yqjh-6qvh-g493",
+                "packageName": "google/protobuf",
+                "remoteId": "GHSA-jwvw-v7c5-m82h",
+                "title": "protobuf susceptible to buffer overflow",
+                "link": "https://github.com/advisories/GHSA-jwvw-v7c5-m82h",
+                "cve": "CVE-2015-5237",
+                "affectedVersions": "<3.4.0",
+                "source": "GitHub",
+                "reportedAt": "2022-05-13 01:06:54",
+                "composerRepository": "https://packagist.org",
+                "severity": "high",
+                "sources": [
+                    {
+                        "name": "GitHub",
+                        "remoteId": "GHSA-jwvw-v7c5-m82h"
+                    }
+                ]
+            }
+        ],
+        "guzzlehttp/guzzle": [
+            {
+                "advisoryId": "PKSA-yfw5-9gnj-n2c7",
+                "packageName": "guzzlehttp/guzzle",
+                "remoteId": "guzzlehttp/guzzle/CVE-2022-31091.yaml",
+                "title": "Change in port should be considered a change in origin",
+                "link": "https://github.com/guzzle/guzzle/security/advisories/GHSA-q559-8m2m-g699",
+                "cve": "CVE-2022-31091",
+                "affectedVersions": ">=7,<7.4.5|>=4,<6.5.8",
+                "source": "FriendsOfPHP/security-advisories",
+                "reportedAt": "2022-06-20 22:16:07",
+                "composerRepository": "https://packagist.org",
+                "severity": "high",
+                "sources": [
+                    {
+                        "name": "GitHub",
+                        "remoteId": "GHSA-q559-8m2m-g699"
+                    },
+                    {
+                        "name": "FriendsOfPHP/security-advisories",
+                        "remoteId": "guzzlehttp/guzzle/CVE-2022-31091.yaml"
+                    }
+                ]
+            },
+            {
+                "advisoryId": "PKSA-k1b4-kshy-xgbh",
+                "packageName": "guzzlehttp/guzzle",
+                "remoteId": "guzzlehttp/guzzle/CVE-2022-31090.yaml",
+                "title": "CURLOPT_HTTPAUTH option not cleared on change of origin",
+                "link": "https://github.com/guzzle/guzzle/security/advisories/GHSA-25mq-v84q-4j7r",
+                "cve": "CVE-2022-31090",
+                "affectedVersions": ">=7,<7.4.5|>=4,<6.5.8",
+                "source": "FriendsOfPHP/security-advisories",
+                "reportedAt": "2022-06-20 22:16:07",
+                "composerRepository": "https://packagist.org",
+                "severity": "high",
+                "sources": [
+                    {
+                        "name": "GitHub",
+                        "remoteId": "GHSA-25mq-v84q-4j7r"
+                    },
+                    {
+                        "name": "FriendsOfPHP/security-advisories",
+                        "remoteId": "guzzlehttp/guzzle/CVE-2022-31090.yaml"
+                    }
+                ]
+            },
+            {
+                "advisoryId": "PKSA-2z36-j4q9-rsfy",
+                "packageName": "guzzlehttp/guzzle",
+                "remoteId": "guzzlehttp/guzzle/CVE-2022-31043.yaml",
+                "title": "Fix failure to strip Authorization header on HTTP downgrade",
+                "link": "https://github.com/guzzle/guzzle/security/advisories/GHSA-w248-ffj2-4v5q",
+                "cve": "CVE-2022-31043",
+                "affectedVersions": ">=7,<7.4.4|>=4,<6.5.7",
+                "source": "FriendsOfPHP/security-advisories",
+                "reportedAt": "2022-06-09 21:36:50",
+                "composerRepository": "https://packagist.org",
+                "severity": "high",
+                "sources": [
+                    {
+                        "name": "GitHub",
+                        "remoteId": "GHSA-w248-ffj2-4v5q"
+                    },
+                    {
+                        "name": "FriendsOfPHP/security-advisories",
+                        "remoteId": "guzzlehttp/guzzle/CVE-2022-31043.yaml"
+                    }
+                ]
+            },
+            {
+                "advisoryId": "PKSA-fvw5-9t6n-nwvr",
+                "packageName": "guzzlehttp/guzzle",
+                "remoteId": "guzzlehttp/guzzle/CVE-2022-31042.yaml",
+                "title": "Failure to strip the Cookie header on change in host or HTTP downgrade",
+                "link": "https://github.com/guzzle/guzzle/security/advisories/GHSA-f2wf-25xc-69c9",
+                "cve": "CVE-2022-31042",
+                "affectedVersions": ">=7,<7.4.4|>=4,<6.5.7",
+                "source": "FriendsOfPHP/security-advisories",
+                "reportedAt": "2022-06-09 21:36:50",
+                "composerRepository": "https://packagist.org",
+                "severity": "high",
+                "sources": [
+                    {
+                        "name": "GitHub",
+                        "remoteId": "GHSA-f2wf-25xc-69c9"
+                    },
+                    {
+                        "name": "FriendsOfPHP/security-advisories",
+                        "remoteId": "guzzlehttp/guzzle/CVE-2022-31042.yaml"
+                    }
+                ]
+            },
+            {
+                "advisoryId": "PKSA-6d8m-6kgw-18zr",
+                "packageName": "guzzlehttp/guzzle",
+                "remoteId": "guzzlehttp/guzzle/CVE-2022-29248.yaml",
+                "title": "Cross-domain cookie leakage",
+                "link": "https://github.com/guzzle/guzzle/security/advisories/GHSA-cwmx-hcrq-mhc3",
+                "cve": "CVE-2022-29248",
+                "affectedVersions": ">=7,<7.4.3|>=4,<6.5.6",
+                "source": "FriendsOfPHP/security-advisories",
+                "reportedAt": "2022-05-25 13:19:12",
+                "composerRepository": "https://packagist.org",
+                "severity": "high",
+                "sources": [
+                    {
+                        "name": "GitHub",
+                        "remoteId": "GHSA-cwmx-hcrq-mhc3"
+                    },
+                    {
+                        "name": "FriendsOfPHP/security-advisories",
+                        "remoteId": "guzzlehttp/guzzle/CVE-2022-29248.yaml"
+                    }
+                ]
+            },
+            {
+                "advisoryId": "PKSA-stmn-hvzq-wph6",
+                "packageName": "guzzlehttp/guzzle",
+                "remoteId": "guzzlehttp/guzzle/CVE-2016-5385.yaml",
+                "title": "HTTP Proxy header vulnerability",
+                "link": "https://github.com/guzzle/guzzle/releases/tag/6.2.1",
+                "cve": "CVE-2016-5385",
+                "affectedVersions": ">=6,<6.2.1|>=4.0.0-rc2,<4.2.4|>=5,<5.3.1",
+                "source": "FriendsOfPHP/security-advisories",
+                "reportedAt": "2016-07-15 17:44:18",
+                "composerRepository": "https://packagist.org",
+                "severity": "high",
+                "sources": [
+                    {
+                        "name": "GitHub",
+                        "remoteId": "GHSA-m6ch-gg5f-wxx3"
+                    },
+                    {
+                        "name": "FriendsOfPHP/security-advisories",
+                        "remoteId": "guzzlehttp/guzzle/CVE-2016-5385.yaml"
+                    }
+                ]
+            }
+        ],
+        "guzzlehttp/psr7": [
+            {
+                "advisoryId": "PKSA-hn62-zkx4-1y5q",
+                "packageName": "guzzlehttp/psr7",
+                "remoteId": "guzzlehttp/psr7/CVE-2023-29197.yaml",
+                "title": "Improper header validation",
+                "link": "https://github.com/guzzle/psr7/security/advisories/GHSA-wxmh-65f7-jcvw",
+                "cve": "CVE-2023-29197",
+                "affectedVersions": ">=2,<2.4.5|<1.9.1",
+                "source": "FriendsOfPHP/security-advisories",
+                "reportedAt": "2023-04-17 16:00:37",
+                "composerRepository": "https://packagist.org",
+                "severity": "medium",
+                "sources": [
+                    {
+                        "name": "GitHub",
+                        "remoteId": "GHSA-wxmh-65f7-jcvw"
+                    },
+                    {
+                        "name": "FriendsOfPHP/security-advisories",
+                        "remoteId": "guzzlehttp/psr7/CVE-2023-29197.yaml"
+                    }
+                ]
+            },
+            {
+                "advisoryId": "PKSA-gvzg-s447-b5b5",
+                "packageName": "guzzlehttp/psr7",
+                "remoteId": "guzzlehttp/psr7/CVE-2022-24775.yaml",
+                "title": "Inproper parsing of HTTP headers",
+                "link": "https://github.com/guzzle/psr7/security/advisories/GHSA-q7rv-6hp3-vh96",
+                "cve": "CVE-2022-24775",
+                "affectedVersions": ">=2,<2.1.1|<1.8.4",
+                "source": "FriendsOfPHP/security-advisories",
+                "reportedAt": "2022-03-20 13:44:44",
+                "composerRepository": "https://packagist.org",
+                "severity": "medium",
+                "sources": [
+                    {
+                        "name": "GitHub",
+                        "remoteId": "GHSA-q7rv-6hp3-vh96"
+                    },
+                    {
+                        "name": "FriendsOfPHP/security-advisories",
+                        "remoteId": "guzzlehttp/psr7/CVE-2022-24775.yaml"
+                    }
+                ]
+            }
+        ],
+        "lcobucci/jwt": [
+            {
+                "advisoryId": "PKSA-876w-myjj-h9h4",
+                "packageName": "lcobucci/jwt",
+                "remoteId": "lcobucci/jwt/CVE-2021-41106.yaml",
+                "title": "CVE-2021-41106: File reference keys leads to incorrect hashes on HMAC algorithms",
+                "link": "https://github.com/lcobucci/jwt/security/advisories/GHSA-7322-jrq4-x5hf",
+                "cve": "CVE-2021-41106",
+                "affectedVersions": ">=3.4.0,<3.4.6|>=4.0.0,<4.0.4|>=4.1.0,<4.1.5",
+                "source": "FriendsOfPHP/security-advisories",
+                "reportedAt": "2021-09-28 19:36:49",
+                "composerRepository": "https://packagist.org",
+                "severity": "medium",
+                "sources": [
+                    {
+                        "name": "GitHub",
+                        "remoteId": "GHSA-7322-jrq4-x5hf"
+                    },
+                    {
+                        "name": "FriendsOfPHP/security-advisories",
+                        "remoteId": "lcobucci/jwt/CVE-2021-41106.yaml"
+                    }
+                ]
+            }
+        ],
+        "league/flysystem": [
+            {
+                "advisoryId": "PKSA-pwh8-d4fr-nywn",
+                "packageName": "league/flysystem",
+                "remoteId": "league/flysystem/CVE-2021-32708.yaml",
+                "title": "TOCTOU Race Condition enabling remote code execution",
+                "link": "https://github.com/thephpleague/flysystem/security/advisories/GHSA-9f46-5r25-5wfm",
+                "cve": "CVE-2021-32708",
+                "affectedVersions": "<1.1.4|>=2.0.0,<2.1.1",
+                "source": "FriendsOfPHP/security-advisories",
+                "reportedAt": "2021-06-23 23:56:59",
+                "composerRepository": "https://packagist.org",
+                "severity": "critical",
+                "sources": [
+                    {
+                        "name": "GitHub",
+                        "remoteId": "GHSA-9f46-5r25-5wfm"
+                    },
+                    {
+                        "name": "FriendsOfPHP/security-advisories",
+                        "remoteId": "league/flysystem/CVE-2021-32708.yaml"
+                    }
+                ]
+            }
+        ],
+        "league/oauth2-server": [
+            {
+                "advisoryId": "PKSA-pc52-dbxt-c1w6",
+                "packageName": "league/oauth2-server",
+                "remoteId": "GHSA-wj7q-gjg8-3cpm",
+                "title": "league/oauth2-server key exposed in exception message when passing as a string and providing an invalid pass phrase",
+                "link": "https://github.com/advisories/GHSA-wj7q-gjg8-3cpm",
+                "cve": "CVE-2023-37260",
+                "affectedVersions": ">=8.5.0,<8.5.3|>=8.3.2,<8.4.2",
+                "source": "GitHub",
+                "reportedAt": "2023-07-06 21:07:27",
+                "composerRepository": "https://packagist.org",
+                "severity": "high",
+                "sources": [
+                    {
+                        "name": "GitHub",
+                        "remoteId": "GHSA-wj7q-gjg8-3cpm"
+                    }
+                ]
+            }
+        ],
+        "monolog/monolog": [
+            {
+                "advisoryId": "PKSA-dmw8-jd8k-q3c6",
+                "packageName": "monolog/monolog",
+                "remoteId": "monolog/monolog/2014-12-29-1.yaml",
+                "title": "Header injection in NativeMailerHandler",
+                "link": "https://github.com/Seldaek/monolog/pull/448#issuecomment-68208704",
+                "cve": null,
+                "affectedVersions": ">=1.8.0,<1.12.0",
+                "source": "FriendsOfPHP/security-advisories",
+                "reportedAt": "2014-12-29 00:00:00",
+                "composerRepository": "https://packagist.org",
+                "severity": "low",
+                "sources": [
+                    {
+                        "name": "GitHub",
+                        "remoteId": "GHSA-f57v-q966-7fh6"
+                    },
+                    {
+                        "name": "FriendsOfPHP/security-advisories",
+                        "remoteId": "monolog/monolog/2014-12-29-1.yaml"
+                    }
+                ]
+            }
+        ],
+        "nyholm/psr7": [
+            {
+                "advisoryId": "PKSA-8ds9-sp96-ghmb",
+                "packageName": "nyholm/psr7",
+                "remoteId": "nyholm/psr7/2023-04-17.yaml",
+                "title": "Improper Input Validation in headers",
+                "link": "https://github.com/advisories/GHSA-wjfc-pgfp-pv9c",
+                "cve": null,
+                "affectedVersions": "<1.6.1",
+                "source": "FriendsOfPHP/security-advisories",
+                "reportedAt": "2023-04-17 00:00:00",
+                "composerRepository": "https://packagist.org",
+                "severity": "medium",
+                "sources": [
+                    {
+                        "name": "GitHub",
+                        "remoteId": "GHSA-wjfc-pgfp-pv9c"
+                    },
+                    {
+                        "name": "FriendsOfPHP/security-advisories",
+                        "remoteId": "nyholm/psr7/2023-04-17.yaml"
+                    }
+                ]
+            }
+        ],
+        "paragonie/random_compat": [
+            {
+                "advisoryId": "PKSA-cncr-q695-v65g",
+                "packageName": "paragonie/random_compat",
+                "remoteId": "paragonie/random_compat/2016-03-16.yaml",
+                "title": "Uses insecure CSPRNG (openssl_random_pseudo_bytes())",
+                "link": "https://github.com/paragonie/random_compat/issues/96",
+                "cve": null,
+                "affectedVersions": "<2.0",
+                "source": "FriendsOfPHP/security-advisories",
+                "reportedAt": "2016-03-16 00:00:00",
+                "composerRepository": "https://packagist.org",
+                "severity": "low",
+                "sources": [
+                    {
+                        "name": "GitHub",
+                        "remoteId": "GHSA-3fmq-x9q6-wm39"
+                    },
+                    {
+                        "name": "FriendsOfPHP/security-advisories",
+                        "remoteId": "paragonie/random_compat/2016-03-16.yaml"
+                    }
+                ]
+            }
+        ],
+        "phenx/php-svg-lib": [
+            {
+                "advisoryId": "PKSA-qsyb-3psh-f1t3",
+                "packageName": "phenx/php-svg-lib",
+                "remoteId": "GHSA-97m3-52wr-xvv2",
+                "title": "Dompdf's usage of vulnerable version of phenx/php-svg-lib leads to restriction bypass and potential RCE",
+                "link": "https://github.com/advisories/GHSA-97m3-52wr-xvv2",
+                "cve": null,
+                "affectedVersions": "<0.5.2",
+                "source": "GitHub",
+                "reportedAt": "2024-02-22 18:15:41",
+                "composerRepository": "https://packagist.org",
+                "severity": "critical",
+                "sources": [
+                    {
+                        "name": "GitHub",
+                        "remoteId": "GHSA-97m3-52wr-xvv2"
+                    }
+                ]
+            },
+            {
+                "advisoryId": "PKSA-3dsp-r6t7-8xmz",
+                "packageName": "phenx/php-svg-lib",
+                "remoteId": "GHSA-f3qr-qr4x-j273",
+                "title": "php-svg-lib lacks path validation on font through SVG inline styles ",
+                "link": "https://github.com/advisories/GHSA-f3qr-qr4x-j273",
+                "cve": "CVE-2024-25117",
+                "affectedVersions": "<0.5.2",
+                "source": "GitHub",
+                "reportedAt": "2024-02-21 18:04:16",
+                "composerRepository": "https://packagist.org",
+                "severity": "medium",
+                "sources": [
+                    {
+                        "name": "GitHub",
+                        "remoteId": "GHSA-f3qr-qr4x-j273"
+                    }
+                ]
+            },
+            {
+                "advisoryId": "PKSA-cwpj-dtf9-6fg1",
+                "packageName": "phenx/php-svg-lib",
+                "remoteId": "GHSA-ff5x-7qg5-vwf2",
+                "title": "Denial of service caused by infinite recursion when parsing SVG document",
+                "link": "https://github.com/advisories/GHSA-ff5x-7qg5-vwf2",
+                "cve": "CVE-2023-50251",
+                "affectedVersions": "<0.5.1",
+                "source": "GitHub",
+                "reportedAt": "2023-12-13 13:32:21",
+                "composerRepository": "https://packagist.org",
+                "severity": "medium",
+                "sources": [
+                    {
+                        "name": "GitHub",
+                        "remoteId": "GHSA-ff5x-7qg5-vwf2"
+                    }
+                ]
+            }
+        ],
+        "phpseclib/phpseclib": [
+            {
+                "advisoryId": "PKSA-4p7m-np8m-fq35",
+                "packageName": "phpseclib/phpseclib",
+                "remoteId": "GHSA-ff7q-6vwh-v9m4",
+                "title": "Name confusion in x509 Subject Alternative Name fields",
+                "link": "https://github.com/advisories/GHSA-ff7q-6vwh-v9m4",
+                "cve": "CVE-2023-52892",
+                "affectedVersions": ">=3.0.0,<3.0.33|>=2.0.0,<2.0.46|<1.0.22",
+                "source": "GitHub",
+                "reportedAt": "2024-06-28 00:33:31",
+                "composerRepository": "https://packagist.org",
+                "severity": "high",
+                "sources": [
+                    {
+                        "name": "GitHub",
+                        "remoteId": "GHSA-ff7q-6vwh-v9m4"
+                    }
+                ]
+            },
+            {
+                "advisoryId": "PKSA-t5xz-td8w-f35v",
+                "packageName": "phpseclib/phpseclib",
+                "remoteId": "phpseclib/phpseclib/CVE-2024-27354.yaml",
+                "title": "phpseclib a large prime can cause a denial of service",
+                "link": "https://github.com/advisories/GHSA-hg35-mp25-qf6h",
+                "cve": "CVE-2024-27354",
+                "affectedVersions": ">=3.0.0,<3.0.36|>=2.0.0,<2.0.47|>=1.0.0,<1.0.23",
+                "source": "FriendsOfPHP/security-advisories",
+                "reportedAt": "2024-03-02 00:31:33",
+                "composerRepository": "https://packagist.org",
+                "severity": "high",
+                "sources": [
+                    {
+                        "name": "GitHub",
+                        "remoteId": "GHSA-2528-jw5q-ww88"
+                    },
+                    {
+                        "name": "FriendsOfPHP/security-advisories",
+                        "remoteId": "phpseclib/phpseclib/CVE-2024-27354.yaml"
+                    }
+                ]
+            },
+            {
+                "advisoryId": "PKSA-jsh4-f6tg-bwyq",
+                "packageName": "phpseclib/phpseclib",
+                "remoteId": "phpseclib/phpseclib/CVE-2024-27355.yaml",
+                "title": "phpseclib does not properly limit the ASN1 OID length",
+                "link": "https://github.com/advisories/GHSA-jr22-8qgm-4q87",
+                "cve": "CVE-2024-27355",
+                "affectedVersions": ">=3.0.0,<3.0.36|>=2.0.0,<2.0.47|>=1.0.0,<1.0.23",
+                "source": "FriendsOfPHP/security-advisories",
+                "reportedAt": "2024-03-02 00:31:33",
+                "composerRepository": "https://packagist.org",
+                "severity": "high",
+                "sources": [
+                    {
+                        "name": "GitHub",
+                        "remoteId": "GHSA-f2qx-66wf-wvvx"
+                    },
+                    {
+                        "name": "FriendsOfPHP/security-advisories",
+                        "remoteId": "phpseclib/phpseclib/CVE-2024-27355.yaml"
+                    }
+                ]
+            },
+            {
+                "advisoryId": "PKSA-vpz8-6fv7-t3fd",
+                "packageName": "phpseclib/phpseclib",
+                "remoteId": "phpseclib/phpseclib/CVE-2023-49316.yaml",
+                "title": "phpseclib vulnerable to denial of service",
+                "link": "https://github.com/advisories/GHSA-jpr7-q523-hx25",
+                "cve": "CVE-2023-49316",
+                "affectedVersions": ">=3.0.0,<3.0.34",
+                "source": "FriendsOfPHP/security-advisories",
+                "reportedAt": "2023-11-27 18:31:14",
+                "composerRepository": "https://packagist.org",
+                "severity": "high",
+                "sources": [
+                    {
+                        "name": "GitHub",
+                        "remoteId": "GHSA-2f25-pfq3-c7h8"
+                    },
+                    {
+                        "name": "FriendsOfPHP/security-advisories",
+                        "remoteId": "phpseclib/phpseclib/CVE-2023-49316.yaml"
+                    }
+                ]
+            },
+            {
+                "advisoryId": "PKSA-qrgb-4pgm-cz41",
+                "packageName": "phpseclib/phpseclib",
+                "remoteId": "phpseclib/phpseclib/CVE-2023-27560.yaml",
+                "title": "Infinite Loop vulnerability",
+                "link": "https://github.com/advisories/GHSA-hm7p-r324-hhf3",
+                "cve": "CVE-2023-27560",
+                "affectedVersions": ">=3.0.0,<3.0.19",
+                "source": "FriendsOfPHP/security-advisories",
+                "reportedAt": "2023-03-06 09:20:00",
+                "composerRepository": "https://packagist.org",
+                "severity": "high",
+                "sources": [
+                    {
+                        "name": "GitHub",
+                        "remoteId": "GHSA-hm7p-r324-hhf3"
+                    },
+                    {
+                        "name": "FriendsOfPHP/security-advisories",
+                        "remoteId": "phpseclib/phpseclib/CVE-2023-27560.yaml"
+                    }
+                ]
+            },
+            {
+                "advisoryId": "PKSA-mnsd-qtjt-pgcq",
+                "packageName": "phpseclib/phpseclib",
+                "remoteId": "phpseclib/phpseclib/CVE-2021-30130.yaml",
+                "title": "Improper Certificate Validation in phpseclib",
+                "link": "https://github.com/phpseclib/phpseclib/pull/1635",
+                "cve": "CVE-2021-30130",
+                "affectedVersions": "<2.0.31|>=3.0.0,<3.0.7",
+                "source": "FriendsOfPHP/security-advisories",
+                "reportedAt": "2021-04-06 13:43:13",
+                "composerRepository": "https://packagist.org",
+                "severity": "high",
+                "sources": [
+                    {
+                        "name": "GitHub",
+                        "remoteId": "GHSA-vf4w-fg7r-5v94"
+                    },
+                    {
+                        "name": "FriendsOfPHP/security-advisories",
+                        "remoteId": "phpseclib/phpseclib/CVE-2021-30130.yaml"
+                    }
+                ]
+            }
+        ],
+        "phpunit/phpunit": [
+            {
+                "advisoryId": "PKSA-w57n-mhp6-c9sd",
+                "packageName": "phpunit/phpunit",
+                "remoteId": "phpunit/phpunit/CVE-2017-9841.yaml",
+                "title": "RCE vulnerability in phpunit",
+                "link": "https://nvd.nist.gov/vuln/detail/CVE-2017-9841",
+                "cve": "CVE-2017-9841",
+                "affectedVersions": ">=5.0.10,<5.6.3|>=4.8.19,<4.8.28",
+                "source": "FriendsOfPHP/security-advisories",
+                "reportedAt": "2016-11-13 17:52:50",
+                "composerRepository": "https://packagist.org",
+                "severity": "critical",
+                "sources": [
+                    {
+                        "name": "GitHub",
+                        "remoteId": "GHSA-r7c9-c69m-rph8"
+                    },
+                    {
+                        "name": "FriendsOfPHP/security-advisories",
+                        "remoteId": "phpunit/phpunit/CVE-2017-9841.yaml"
+                    }
+                ]
+            }
+        ],
+        "sabberworm/php-css-parser": [
+            {
+                "advisoryId": "PKSA-2b5y-mhcw-mt5g",
+                "packageName": "sabberworm/php-css-parser",
+                "remoteId": "sabberworm/php-css-parser/CVE-2020-13756.yaml",
+                "title": "Code injection vulnerability in allSelectors()",
+                "link": "https://packetstormsecurity.com/files/cve/CVE-2020-13756",
+                "cve": "CVE-2020-13756",
+                "affectedVersions": ">=8.3.0,<8.3.1|>=8.2.0,<8.2.1|>=8.1.0,<8.1.1|>=8.0.0,<8.0.1|>=7.0.0,<7.0.4|>=6.0.0,<6.0.2|>=5.2.0,<5.2.1|>=5.1.0,<5.1.3|>=5.0.0,<5.0.9|>=4.0.0,<4.0.1|>=3.0.0,<3.0.1|>=2.0.0,<2.0.1|>=1.0.0,<1.0.1",
+                "source": "FriendsOfPHP/security-advisories",
+                "reportedAt": "2020-01-01 00:00:00",
+                "composerRepository": "https://packagist.org",
+                "severity": "critical",
+                "sources": [
+                    {
+                        "name": "GitHub",
+                        "remoteId": "GHSA-phrq-v4q2-hmq6"
+                    },
+                    {
+                        "name": "FriendsOfPHP/security-advisories",
+                        "remoteId": "sabberworm/php-css-parser/CVE-2020-13756.yaml"
+                    }
+                ]
+            }
+        ],
+        "shopware/core": [
+            {
+                "advisoryId": "PKSA-wp2c-7yp8-5fvs",
+                "packageName": "shopware/core",
+                "remoteId": "GHSA-p6w9-r443-r752",
+                "title": "Shopware vulnerable to blind SQL-injection in DAL aggregations",
+                "link": "https://github.com/advisories/GHSA-p6w9-r443-r752",
+                "cve": "CVE-2024-42357",
+                "affectedVersions": ">=6.6.0.0,<=6.6.5.0|<=6.5.8.12",
+                "source": "GitHub",
+                "reportedAt": "2024-08-08 14:53:57",
+                "composerRepository": "https://packagist.org",
+                "severity": "medium",
+                "sources": [
+                    {
+                        "name": "GitHub",
+                        "remoteId": "GHSA-p6w9-r443-r752"
+                    }
+                ]
+            },
+            {
+                "advisoryId": "PKSA-kt1g-n1g2-hzb4",
+                "packageName": "shopware/core",
+                "remoteId": "GHSA-35jp-8cgg-p4wj",
+                "title": "Shopware vulnerable to Server Side Template Injection in Twig using Context functions",
+                "link": "https://github.com/advisories/GHSA-35jp-8cgg-p4wj",
+                "cve": "CVE-2024-42356",
+                "affectedVersions": ">=6.6.0.0,<=6.6.5.0|<=6.5.8.12",
+                "source": "GitHub",
+                "reportedAt": "2024-08-08 14:50:11",
+                "composerRepository": "https://packagist.org",
+                "severity": "high",
+                "sources": [
+                    {
+                        "name": "GitHub",
+                        "remoteId": "GHSA-35jp-8cgg-p4wj"
+                    }
+                ]
+            },
+            {
+                "advisoryId": "PKSA-6stq-czfs-1nvv",
+                "packageName": "shopware/core",
+                "remoteId": "GHSA-27wp-jvhw-v4xp",
+                "title": "Shopware vulnerable to Server Side Template Injection in Twig using deprecation silence tag",
+                "link": "https://github.com/advisories/GHSA-27wp-jvhw-v4xp",
+                "cve": "CVE-2024-42355",
+                "affectedVersions": ">=6.6.0.0,<=6.6.5.0|<=6.5.8.12",
+                "source": "GitHub",
+                "reportedAt": "2024-08-08 14:48:03",
+                "composerRepository": "https://packagist.org",
+                "severity": "high",
+                "sources": [
+                    {
+                        "name": "GitHub",
+                        "remoteId": "GHSA-27wp-jvhw-v4xp"
+                    }
+                ]
+            },
+            {
+                "advisoryId": "PKSA-4spx-rq41-wk8h",
+                "packageName": "shopware/core",
+                "remoteId": "GHSA-hhcq-ph6w-494g",
+                "title": "Shopware vulnerable to Improper Access Control with ManyToMany associations in store-api",
+                "link": "https://github.com/advisories/GHSA-hhcq-ph6w-494g",
+                "cve": "CVE-2024-42354",
+                "affectedVersions": ">=6.6.0.0,<=6.6.5.0|<=6.5.8.12",
+                "source": "GitHub",
+                "reportedAt": "2024-08-08 14:42:58",
+                "composerRepository": "https://packagist.org",
+                "severity": "medium",
+                "sources": [
+                    {
+                        "name": "GitHub",
+                        "remoteId": "GHSA-hhcq-ph6w-494g"
+                    }
+                ]
+            },
+            {
+                "advisoryId": "PKSA-s8vz-878v-gv1c",
+                "packageName": "shopware/core",
+                "remoteId": "GHSA-5297-wrrp-rcj7",
+                "title": "Shopware Improper Session Handling in store-api account logout",
+                "link": "https://github.com/advisories/GHSA-5297-wrrp-rcj7",
+                "cve": "CVE-2024-31447",
+                "affectedVersions": ">=6.6.0.0-rc1,<6.6.1.0|>=6.3.5.0,<6.5.8.8",
+                "source": "GitHub",
+                "reportedAt": "2024-04-08 15:48:27",
+                "composerRepository": "https://packagist.org",
+                "severity": "medium",
+                "sources": [
+                    {
+                        "name": "GitHub",
+                        "remoteId": "GHSA-5297-wrrp-rcj7"
+                    }
+                ]
+            },
+            {
+                "advisoryId": "PKSA-mm7q-gnjj-tttn",
+                "packageName": "shopware/core",
+                "remoteId": "GHSA-3867-jc5c-66qf",
+                "title": "Broken Access Control order API in Shopware",
+                "link": "https://github.com/advisories/GHSA-3867-jc5c-66qf",
+                "cve": "CVE-2024-22407",
+                "affectedVersions": "<=6.5.7.3",
+                "source": "GitHub",
+                "reportedAt": "2024-01-17 20:29:33",
+                "composerRepository": "https://packagist.org",
+                "severity": "medium",
+                "sources": [
+                    {
+                        "name": "GitHub",
+                        "remoteId": "GHSA-3867-jc5c-66qf"
+                    }
+                ]
+            },
+            {
+                "advisoryId": "PKSA-ktmn-6519-qrdp",
+                "packageName": "shopware/core",
+                "remoteId": "GHSA-qmp9-2xwj-m6m9",
+                "title": "Blind SQL injection in shopware",
+                "link": "https://github.com/advisories/GHSA-qmp9-2xwj-m6m9",
+                "cve": "CVE-2024-22406",
+                "affectedVersions": "<=6.5.7.3",
+                "source": "GitHub",
+                "reportedAt": "2024-01-17 20:28:50",
+                "composerRepository": "https://packagist.org",
+                "severity": "critical",
+                "sources": [
+                    {
+                        "name": "GitHub",
+                        "remoteId": "GHSA-qmp9-2xwj-m6m9"
+                    }
+                ]
+            },
+            {
+                "advisoryId": "PKSA-kd1k-vbw9-69fx",
+                "packageName": "shopware/core",
+                "remoteId": "GHSA-7v2v-9rm4-7m8f",
+                "title": "Shopware Has Improper Control of Generation of Code in Twig rendered views",
+                "link": "https://github.com/advisories/GHSA-7v2v-9rm4-7m8f",
+                "cve": "CVE-2023-2017",
+                "affectedVersions": "<=6.4.20.0",
+                "source": "GitHub",
+                "reportedAt": "2023-04-18 13:14:20",
+                "composerRepository": "https://packagist.org",
+                "severity": "high",
+                "sources": [
+                    {
+                        "name": "GitHub",
+                        "remoteId": "GHSA-7v2v-9rm4-7m8f"
+                    }
+                ]
+            },
+            {
+                "advisoryId": "PKSA-zbt5-mjsz-9f2t",
+                "packageName": "shopware/core",
+                "remoteId": "GHSA-46h7-vj7x-fxg2",
+                "title": "Shopware has Improper Input Validation issue in newsletter subscription",
+                "link": "https://github.com/advisories/GHSA-46h7-vj7x-fxg2",
+                "cve": "CVE-2023-22734",
+                "affectedVersions": "<=6.4.18.0",
+                "source": "GitHub",
+                "reportedAt": "2023-01-20 23:18:41",
+                "composerRepository": "https://packagist.org",
+                "severity": "medium",
+                "sources": [
+                    {
+                        "name": "GitHub",
+                        "remoteId": "GHSA-46h7-vj7x-fxg2"
+                    }
+                ]
+            },
+            {
+                "advisoryId": "PKSA-bnh5-5drc-b8g8",
+                "packageName": "shopware/core",
+                "remoteId": "GHSA-59qg-93jg-236f",
+                "title": "Shopware has Insufficient Session Expiration in Administration",
+                "link": "https://github.com/advisories/GHSA-59qg-93jg-236f",
+                "cve": "CVE-2023-22732",
+                "affectedVersions": "<=6.4.18.0",
+                "source": "GitHub",
+                "reportedAt": "2023-01-20 23:18:17",
+                "composerRepository": "https://packagist.org",
+                "severity": "low",
+                "sources": [
+                    {
+                        "name": "GitHub",
+                        "remoteId": "GHSA-59qg-93jg-236f"
+                    }
+                ]
+            },
+            {
+                "advisoryId": "PKSA-88mf-d614-87c1",
+                "packageName": "shopware/core",
+                "remoteId": "GHSA-7cp7-jfp6-jh4f",
+                "title": "Shopware's log module vulnerable to Improper Output Neutralization",
+                "link": "https://github.com/advisories/GHSA-7cp7-jfp6-jh4f",
+                "cve": "CVE-2023-22733",
+                "affectedVersions": "<=6.4.18.0",
+                "source": "GitHub",
+                "reportedAt": "2023-01-20 17:33:54",
+                "composerRepository": "https://packagist.org",
+                "severity": "low",
+                "sources": [
+                    {
+                        "name": "GitHub",
+                        "remoteId": "GHSA-7cp7-jfp6-jh4f"
+                    }
+                ]
+            },
+            {
+                "advisoryId": "PKSA-s94v-mcmm-ycmg",
+                "packageName": "shopware/core",
+                "remoteId": "GHSA-93cw-f5jj-x85w",
+                "title": "Shopware vulnerable to Improper Control of Generation of Code in Twig rendered views",
+                "link": "https://github.com/advisories/GHSA-93cw-f5jj-x85w",
+                "cve": "CVE-2023-22731",
+                "affectedVersions": "<=6.4.18.0",
+                "source": "GitHub",
+                "reportedAt": "2023-01-17 23:58:06",
+                "composerRepository": "https://packagist.org",
+                "severity": "critical",
+                "sources": [
+                    {
+                        "name": "GitHub",
+                        "remoteId": "GHSA-93cw-f5jj-x85w"
+                    }
+                ]
+            },
+            {
+                "advisoryId": "PKSA-zr2k-54cr-tb84",
+                "packageName": "shopware/core",
+                "remoteId": "GHSA-8r6h-m72v-38fg",
+                "title": "Shopware vulnerable to Improper Input Validation of Clearance sale in cart",
+                "link": "https://github.com/advisories/GHSA-8r6h-m72v-38fg",
+                "cve": "CVE-2023-22730",
+                "affectedVersions": "<=6.4.18.0",
+                "source": "GitHub",
+                "reportedAt": "2023-01-17 23:57:23",
+                "composerRepository": "https://packagist.org",
+                "severity": "medium",
+                "sources": [
+                    {
+                        "name": "GitHub",
+                        "remoteId": "GHSA-8r6h-m72v-38fg"
+                    }
+                ]
+            },
+            {
+                "advisoryId": "PKSA-9p6y-gqwk-1x5q",
+                "packageName": "shopware/core",
+                "remoteId": "GHSA-r4ph-mx67-x58p",
+                "title": "Shopware database password is leaked to an unauthenticated users",
+                "link": "https://github.com/advisories/GHSA-r4ph-mx67-x58p",
+                "cve": "CVE-2020-13997",
+                "affectedVersions": ">=6.0.0,<6.2.3",
+                "source": "GitHub",
+                "reportedAt": "2022-05-24 17:24:28",
+                "composerRepository": "https://packagist.org",
+                "severity": "high",
+                "sources": [
+                    {
+                        "name": "GitHub",
+                        "remoteId": "GHSA-r4ph-mx67-x58p"
+                    }
+                ]
+            },
+            {
+                "advisoryId": "PKSA-np7f-fmcq-spzn",
+                "packageName": "shopware/core",
+                "remoteId": "GHSA-9wrv-g75h-8ccc",
+                "title": "Improper Access Control in Shopware",
+                "link": "https://github.com/advisories/GHSA-9wrv-g75h-8ccc",
+                "cve": "CVE-2022-24872",
+                "affectedVersions": "<=6.3.4.0",
+                "source": "GitHub",
+                "reportedAt": "2022-04-22 21:04:27",
+                "composerRepository": "https://packagist.org",
+                "severity": "high",
+                "sources": [
+                    {
+                        "name": "GitHub",
+                        "remoteId": "GHSA-9wrv-g75h-8ccc"
+                    }
+                ]
+            },
+            {
+                "advisoryId": "PKSA-34sw-dmrz-s3ct",
+                "packageName": "shopware/core",
+                "remoteId": "GHSA-7gm7-8q8v-9gf2",
+                "title": "Server-Side Request Forgery (SSRF) in Shopware",
+                "link": "https://github.com/advisories/GHSA-7gm7-8q8v-9gf2",
+                "cve": "CVE-2022-24871",
+                "affectedVersions": "<=6.4.9.0",
+                "source": "GitHub",
+                "reportedAt": "2022-04-22 21:04:07",
+                "composerRepository": "https://packagist.org",
+                "severity": "high",
+                "sources": [
+                    {
+                        "name": "GitHub",
+                        "remoteId": "GHSA-7gm7-8q8v-9gf2"
+                    }
+                ]
+            },
+            {
+                "advisoryId": "PKSA-3mg1-qgkz-fhzr",
+                "packageName": "shopware/core",
+                "remoteId": "GHSA-83vp-6jqg-6cmr",
+                "title": "Incorrect Authentication in shopware",
+                "link": "https://github.com/advisories/GHSA-83vp-6jqg-6cmr",
+                "cve": "CVE-2022-24748",
+                "affectedVersions": "<=6.4.8.1",
+                "source": "GitHub",
+                "reportedAt": "2022-03-10 18:02:14",
+                "composerRepository": "https://packagist.org",
+                "severity": "medium",
+                "sources": [
+                    {
+                        "name": "GitHub",
+                        "remoteId": "GHSA-83vp-6jqg-6cmr"
+                    }
+                ]
+            },
+            {
+                "advisoryId": "PKSA-ccnj-bqfc-887j",
+                "packageName": "shopware/core",
+                "remoteId": "GHSA-6wrh-279j-6hvw",
+                "title": "HTTP caching is marking private HTTP headers as public in Shopware",
+                "link": "https://github.com/advisories/GHSA-6wrh-279j-6hvw",
+                "cve": "CVE-2022-24747",
+                "affectedVersions": "<=6.4.8.1",
+                "source": "GitHub",
+                "reportedAt": "2022-03-10 17:55:21",
+                "composerRepository": "https://packagist.org",
+                "severity": "medium",
+                "sources": [
+                    {
+                        "name": "GitHub",
+                        "remoteId": "GHSA-6wrh-279j-6hvw"
+                    }
+                ]
+            },
+            {
+                "advisoryId": "PKSA-tnyf-cn12-jhmf",
+                "packageName": "shopware/core",
+                "remoteId": "GHSA-952p-fqcp-g8pc",
+                "title": "HTML injection possibility in voucher code form in Shopware",
+                "link": "https://github.com/advisories/GHSA-952p-fqcp-g8pc",
+                "cve": "CVE-2022-24746",
+                "affectedVersions": "<=6.4.8.0",
+                "source": "GitHub",
+                "reportedAt": "2022-03-10 17:49:26",
+                "composerRepository": "https://packagist.org",
+                "severity": "medium",
+                "sources": [
+                    {
+                        "name": "GitHub",
+                        "remoteId": "GHSA-952p-fqcp-g8pc"
+                    }
+                ]
+            },
+            {
+                "advisoryId": "PKSA-9h2g-h8jc-v38b",
+                "packageName": "shopware/core",
+                "remoteId": "GHSA-w267-m9c4-8555",
+                "title": "Shopware user session is not logged out if the password is reset via password recovery",
+                "link": "https://github.com/advisories/GHSA-w267-m9c4-8555",
+                "cve": "CVE-2022-24744",
+                "affectedVersions": "<=6.4.8.0",
+                "source": "GitHub",
+                "reportedAt": "2022-03-10 17:37:43",
+                "composerRepository": "https://packagist.org",
+                "severity": "low",
+                "sources": [
+                    {
+                        "name": "GitHub",
+                        "remoteId": "GHSA-w267-m9c4-8555"
+                    }
+                ]
+            },
+            {
+                "advisoryId": "PKSA-r6j6-5wr2-cc9q",
+                "packageName": "shopware/core",
+                "remoteId": "GHSA-r64m-qchj-hrjp",
+                "title": "Webcache Poisoning in shopware/platform and shopware/core",
+                "link": "https://github.com/advisories/GHSA-r64m-qchj-hrjp",
+                "cve": null,
+                "affectedVersions": "<=6.4.6.0",
+                "source": "GitHub",
+                "reportedAt": "2021-11-24 20:05:19",
+                "composerRepository": "https://packagist.org",
+                "severity": "critical",
+                "sources": [
+                    {
+                        "name": "GitHub",
+                        "remoteId": "GHSA-r64m-qchj-hrjp"
+                    }
+                ]
+            },
+            {
+                "advisoryId": "PKSA-tncs-rfhx-6t79",
+                "packageName": "shopware/core",
+                "remoteId": "GHSA-54gp-qff8-946c",
+                "title": "Insecure direct object reference of log files of the Import/Export feature",
+                "link": "https://github.com/advisories/GHSA-54gp-qff8-946c",
+                "cve": "CVE-2021-37709",
+                "affectedVersions": "<=6.4.3.0",
+                "source": "GitHub",
+                "reportedAt": "2021-08-30 16:14:19",
+                "composerRepository": "https://packagist.org",
+                "severity": "medium",
+                "sources": [
+                    {
+                        "name": "GitHub",
+                        "remoteId": "GHSA-54gp-qff8-946c"
+                    }
+                ]
+            },
+            {
+                "advisoryId": "PKSA-wctr-h2vg-1nrg",
+                "packageName": "shopware/core",
+                "remoteId": "GHSA-xh55-2fqp-p775",
+                "title": "Command injection in mail agent settings",
+                "link": "https://github.com/advisories/GHSA-xh55-2fqp-p775",
+                "cve": "CVE-2021-37708",
+                "affectedVersions": "<=6.4.3.0",
+                "source": "GitHub",
+                "reportedAt": "2021-08-30 16:14:09",
+                "composerRepository": "https://packagist.org",
+                "severity": "high",
+                "sources": [
+                    {
+                        "name": "GitHub",
+                        "remoteId": "GHSA-xh55-2fqp-p775"
+                    }
+                ]
+            },
+            {
+                "advisoryId": "PKSA-76b3-wj95-w3n3",
+                "packageName": "shopware/core",
+                "remoteId": "GHSA-9f8f-574q-8jmf",
+                "title": "Manipulation of product reviews via API",
+                "link": "https://github.com/advisories/GHSA-9f8f-574q-8jmf",
+                "cve": "CVE-2021-37707",
+                "affectedVersions": "<=6.4.3.0",
+                "source": "GitHub",
+                "reportedAt": "2021-08-30 16:14:00",
+                "composerRepository": "https://packagist.org",
+                "severity": "medium",
+                "sources": [
+                    {
+                        "name": "GitHub",
+                        "remoteId": "GHSA-9f8f-574q-8jmf"
+                    }
+                ]
+            },
+            {
+                "advisoryId": "PKSA-dcdx-j2xt-9813",
+                "packageName": "shopware/core",
+                "remoteId": "GHSA-fc38-mxwr-pfhx",
+                "title": "Cross-Site Scripting via SVG media files",
+                "link": "https://github.com/advisories/GHSA-fc38-mxwr-pfhx",
+                "cve": "CVE-2021-37710",
+                "affectedVersions": "<=6.4.3.0",
+                "source": "GitHub",
+                "reportedAt": "2021-08-23 19:43:00",
+                "composerRepository": "https://packagist.org",
+                "severity": "high",
+                "sources": [
+                    {
+                        "name": "GitHub",
+                        "remoteId": "GHSA-fc38-mxwr-pfhx"
+                    }
+                ]
+            },
+            {
+                "advisoryId": "PKSA-3yhk-2pz8-h48v",
+                "packageName": "shopware/core",
+                "remoteId": "GHSA-gcvv-gq92-x94r",
+                "title": "Authenticated server-side request forgery in file upload via URL.",
+                "link": "https://github.com/advisories/GHSA-gcvv-gq92-x94r",
+                "cve": "CVE-2021-37711",
+                "affectedVersions": "<=6.4.3.0",
+                "source": "GitHub",
+                "reportedAt": "2021-08-23 19:42:49",
+                "composerRepository": "https://packagist.org",
+                "severity": "high",
+                "sources": [
+                    {
+                        "name": "GitHub",
+                        "remoteId": "GHSA-gcvv-gq92-x94r"
+                    }
+                ]
+            },
+            {
+                "advisoryId": "PKSA-3p6r-87dj-whfm",
+                "packageName": "shopware/core",
+                "remoteId": "GHSA-243q-g9j3-qf6r",
+                "title": "non-admin users can create integration role with administrator role",
+                "link": "https://github.com/advisories/GHSA-243q-g9j3-qf6r",
+                "cve": null,
+                "affectedVersions": "<=6.4.1.0",
+                "source": "GitHub",
+                "reportedAt": "2021-06-28 18:21:01",
+                "composerRepository": "https://packagist.org",
+                "severity": "medium",
+                "sources": [
+                    {
+                        "name": "GitHub",
+                        "remoteId": "GHSA-243q-g9j3-qf6r"
+                    }
+                ]
+            },
+            {
+                "advisoryId": "PKSA-8p45-24gp-8k7z",
+                "packageName": "shopware/core",
+                "remoteId": "GHSA-gpmh-g94g-qrhr",
+                "title": "Internal hidden fields are visible on to many associations in admin api",
+                "link": "https://github.com/advisories/GHSA-gpmh-g94g-qrhr",
+                "cve": null,
+                "affectedVersions": "<=6.4.1.0",
+                "source": "GitHub",
+                "reportedAt": "2021-06-28 18:20:53",
+                "composerRepository": "https://packagist.org",
+                "severity": "medium",
+                "sources": [
+                    {
+                        "name": "GitHub",
+                        "remoteId": "GHSA-gpmh-g94g-qrhr"
+                    }
+                ]
+            },
+            {
+                "advisoryId": "PKSA-kgcc-rqqz-w9xv",
+                "packageName": "shopware/core",
+                "remoteId": "GHSA-vrf2-xghr-j52v",
+                "title": "Private files publicly accessible with Cloud Storage providers",
+                "link": "https://github.com/advisories/GHSA-vrf2-xghr-j52v",
+                "cve": null,
+                "affectedVersions": "<=6.4.1.0",
+                "source": "GitHub",
+                "reportedAt": "2021-06-28 18:20:42",
+                "composerRepository": "https://packagist.org",
+                "severity": "high",
+                "sources": [
+                    {
+                        "name": "GitHub",
+                        "remoteId": "GHSA-vrf2-xghr-j52v"
+                    }
+                ]
+            },
+            {
+                "advisoryId": "PKSA-2xdh-9trx-qcrk",
+                "packageName": "shopware/core",
+                "remoteId": "GHSA-g7w8-pp9w-7p32",
+                "title": "Creation of order credits was not validated by acl in admin orders",
+                "link": "https://github.com/advisories/GHSA-g7w8-pp9w-7p32",
+                "cve": null,
+                "affectedVersions": "<=6.4.1.0",
+                "source": "GitHub",
+                "reportedAt": "2021-06-28 16:57:32",
+                "composerRepository": "https://packagist.org",
+                "severity": "low",
+                "sources": [
+                    {
+                        "name": "GitHub",
+                        "remoteId": "GHSA-g7w8-pp9w-7p32"
+                    }
+                ]
+            },
+            {
+                "advisoryId": "PKSA-k445-97f2-7qf2",
+                "packageName": "shopware/core",
+                "remoteId": "GHSA-wq3r-jwrq-xg6w",
+                "title": "Canceling of orders not related to the logged-in user",
+                "link": "https://github.com/advisories/GHSA-wq3r-jwrq-xg6w",
+                "cve": null,
+                "affectedVersions": "<=6.4.1.0",
+                "source": "GitHub",
+                "reportedAt": "2021-06-28 16:57:23",
+                "composerRepository": "https://packagist.org",
+                "severity": "medium",
+                "sources": [
+                    {
+                        "name": "GitHub",
+                        "remoteId": "GHSA-wq3r-jwrq-xg6w"
+                    }
+                ]
+            },
+            {
+                "advisoryId": "PKSA-r1zt-9fkv-dfbw",
+                "packageName": "shopware/core",
+                "remoteId": "GHSA-88rc-3p98-rgvx",
+                "title": "After order payment process manipulation in shopware/platform and shopware/core ",
+                "link": "https://github.com/advisories/GHSA-88rc-3p98-rgvx",
+                "cve": null,
+                "affectedVersions": "<=6.3.5.2",
+                "source": "GitHub",
+                "reportedAt": "2021-04-13 15:13:48",
+                "composerRepository": "https://packagist.org",
+                "severity": "critical",
+                "sources": [
+                    {
+                        "name": "GitHub",
+                        "remoteId": "GHSA-88rc-3p98-rgvx"
+                    }
+                ]
+            },
+            {
+                "advisoryId": "PKSA-yqs3-j5sh-fdbk",
+                "packageName": "shopware/core",
+                "remoteId": "GHSA-qg7c-q3vq-rgxr",
+                "title": "Leak of information via Store-API aggregations in shopware/platform and shopware/core",
+                "link": "https://github.com/advisories/GHSA-qg7c-q3vq-rgxr",
+                "cve": null,
+                "affectedVersions": "<=6.3.5.2",
+                "source": "GitHub",
+                "reportedAt": "2021-04-13 15:13:26",
+                "composerRepository": "https://packagist.org",
+                "severity": "critical",
+                "sources": [
+                    {
+                        "name": "GitHub",
+                        "remoteId": "GHSA-qg7c-q3vq-rgxr"
+                    }
+                ]
+            },
+            {
+                "advisoryId": "PKSA-vjm7-rzy9-mbj6",
+                "packageName": "shopware/core",
+                "remoteId": "GHSA-8pfh-mm2g-hmc3",
+                "title": "Authenticated Server Side Request Forgery",
+                "link": "https://github.com/advisories/GHSA-8pfh-mm2g-hmc3",
+                "cve": null,
+                "affectedVersions": "<=6.3.4.0",
+                "source": "GitHub",
+                "reportedAt": "2020-12-21 18:01:24",
+                "composerRepository": "https://packagist.org",
+                "severity": "low",
+                "sources": [
+                    {
+                        "name": "GitHub",
+                        "remoteId": "GHSA-8pfh-mm2g-hmc3"
+                    }
+                ]
+            },
+            {
+                "advisoryId": "PKSA-38x3-88s9-63nc",
+                "packageName": "shopware/core",
+                "remoteId": "GHSA-cq6h-w3mc-57f4",
+                "title": "Information exposure via query strings in URL",
+                "link": "https://github.com/advisories/GHSA-cq6h-w3mc-57f4",
+                "cve": null,
+                "affectedVersions": "<=6.3.4.0",
+                "source": "GitHub",
+                "reportedAt": "2020-12-21 18:01:16",
+                "composerRepository": "https://packagist.org",
+                "severity": "low",
+                "sources": [
+                    {
+                        "name": "GitHub",
+                        "remoteId": "GHSA-cq6h-w3mc-57f4"
+                    }
+                ]
+            },
+            {
+                "advisoryId": "PKSA-8v5c-w6ym-24yy",
+                "packageName": "shopware/core",
+                "remoteId": "GHSA-5q58-x5h2-v5rx",
+                "title": "Authenticated Privilege Escalation",
+                "link": "https://github.com/advisories/GHSA-5q58-x5h2-v5rx",
+                "cve": null,
+                "affectedVersions": "<=6.3.4.0",
+                "source": "GitHub",
+                "reportedAt": "2020-12-21 18:01:08",
+                "composerRepository": "https://packagist.org",
+                "severity": "low",
+                "sources": [
+                    {
+                        "name": "GitHub",
+                        "remoteId": "GHSA-5q58-x5h2-v5rx"
+                    }
+                ]
+            },
+            {
+                "advisoryId": "PKSA-vnb3-v6ks-9jtq",
+                "packageName": "shopware/core",
+                "remoteId": "GHSA-p68v-frgx-4rjp",
+                "title": "Denial of Service via Cache Flooding",
+                "link": "https://github.com/advisories/GHSA-p68v-frgx-4rjp",
+                "cve": null,
+                "affectedVersions": "<=6.3.2.0",
+                "source": "GitHub",
+                "reportedAt": "2020-10-19 21:34:14",
+                "composerRepository": "https://packagist.org",
+                "severity": "low",
+                "sources": [
+                    {
+                        "name": "GitHub",
+                        "remoteId": "GHSA-p68v-frgx-4rjp"
+                    }
+                ]
+            },
+            {
+                "advisoryId": "PKSA-d2xz-mykd-kfb6",
+                "packageName": "shopware/core",
+                "remoteId": "GHSA-8xv9-qcr9-ww9j",
+                "title": "Authenticated XML External Entity Processing",
+                "link": "https://github.com/advisories/GHSA-8xv9-qcr9-ww9j",
+                "cve": null,
+                "affectedVersions": "<=6.3.2.0",
+                "source": "GitHub",
+                "reportedAt": "2020-10-19 21:32:18",
+                "composerRepository": "https://packagist.org",
+                "severity": "medium",
+                "sources": [
+                    {
+                        "name": "GitHub",
+                        "remoteId": "GHSA-8xv9-qcr9-ww9j"
+                    }
+                ]
+            },
+            {
+                "advisoryId": "PKSA-y1sr-zggs-293q",
+                "packageName": "shopware/core",
+                "remoteId": "GHSA-qvhr-55hg-3qwv",
+                "title": "Non-persistent XSS in the Storefront in Shopware",
+                "link": "https://github.com/advisories/GHSA-qvhr-55hg-3qwv",
+                "cve": null,
+                "affectedVersions": "<=6.3.1.0",
+                "source": "GitHub",
+                "reportedAt": "2020-09-23 17:20:39",
+                "composerRepository": "https://packagist.org",
+                "severity": "low",
+                "sources": [
+                    {
+                        "name": "GitHub",
+                        "remoteId": "GHSA-qvhr-55hg-3qwv"
+                    }
+                ]
+            },
+            {
+                "advisoryId": "PKSA-3fgf-95z8-37f5",
+                "packageName": "shopware/core",
+                "remoteId": "GHSA-qvc5-cfrr-384v",
+                "title": "RCE in Third Party Library in Shopware",
+                "link": "https://github.com/advisories/GHSA-qvc5-cfrr-384v",
+                "cve": null,
+                "affectedVersions": "<=6.3.1.0",
+                "source": "GitHub",
+                "reportedAt": "2020-09-23 17:20:28",
+                "composerRepository": "https://packagist.org",
+                "severity": "low",
+                "sources": [
+                    {
+                        "name": "GitHub",
+                        "remoteId": "GHSA-qvc5-cfrr-384v"
+                    }
+                ]
+            }
+        ],
+        "shopware/storefront": [
+            {
+                "advisoryId": "PKSA-5pbs-7q37-td9b",
+                "packageName": "shopware/storefront",
+                "remoteId": "GHSA-c2f9-4jmm-v45m",
+                "title": "Shopware's session is persistent in Cache for 404 pages",
+                "link": "https://github.com/advisories/GHSA-c2f9-4jmm-v45m",
+                "cve": "CVE-2024-27917",
+                "affectedVersions": ">=6.5.8.0,<6.5.8.7",
+                "source": "GitHub",
+                "reportedAt": "2024-03-06 15:06:54",
+                "composerRepository": "https://packagist.org",
+                "severity": "high",
+                "sources": [
+                    {
+                        "name": "GitHub",
+                        "remoteId": "GHSA-c2f9-4jmm-v45m"
+                    }
+                ]
+            },
+            {
+                "advisoryId": "PKSA-jkxk-vsfj-5htm",
+                "packageName": "shopware/storefront",
+                "remoteId": "GHSA-6wrh-279j-6hvw",
+                "title": "HTTP caching is marking private HTTP headers as public in Shopware",
+                "link": "https://github.com/advisories/GHSA-6wrh-279j-6hvw",
+                "cve": "CVE-2022-24747",
+                "affectedVersions": "<=6.4.8.1",
+                "source": "GitHub",
+                "reportedAt": "2022-03-10 17:55:21",
+                "composerRepository": "https://packagist.org",
+                "severity": "medium",
+                "sources": [
+                    {
+                        "name": "GitHub",
+                        "remoteId": "GHSA-6wrh-279j-6hvw"
+                    }
+                ]
+            },
+            {
+                "advisoryId": "PKSA-8jwr-9m26-8fx2",
+                "packageName": "shopware/storefront",
+                "remoteId": "GHSA-952p-fqcp-g8pc",
+                "title": "HTML injection possibility in voucher code form in Shopware",
+                "link": "https://github.com/advisories/GHSA-952p-fqcp-g8pc",
+                "cve": "CVE-2022-24746",
+                "affectedVersions": "<=6.4.8.0",
+                "source": "GitHub",
+                "reportedAt": "2022-03-10 17:49:26",
+                "composerRepository": "https://packagist.org",
+                "severity": "medium",
+                "sources": [
+                    {
+                        "name": "GitHub",
+                        "remoteId": "GHSA-952p-fqcp-g8pc"
+                    }
+                ]
+            },
+            {
+                "advisoryId": "PKSA-yfgt-8j4b-756q",
+                "packageName": "shopware/storefront",
+                "remoteId": "GHSA-jp6h-mxhx-pgqh",
+                "title": "Shopware guest session is shared between customers",
+                "link": "https://github.com/advisories/GHSA-jp6h-mxhx-pgqh",
+                "cve": "CVE-2022-24745",
+                "affectedVersions": "<=6.4.8.1",
+                "source": "GitHub",
+                "reportedAt": "2022-03-10 17:28:55",
+                "composerRepository": "https://packagist.org",
+                "severity": "medium",
+                "sources": [
+                    {
+                        "name": "GitHub",
+                        "remoteId": "GHSA-jp6h-mxhx-pgqh"
+                    }
+                ]
+            }
+        ],
+        "symfony/cache": [
+            {
+                "advisoryId": "PKSA-w17b-j6zx-knvn",
+                "packageName": "symfony/cache",
+                "remoteId": "symfony/cache/CVE-2019-18889.yaml",
+                "title": "CVE-2019-18889: Forbid serializing AbstractAdapter and TagAwareAdapter instances",
+                "link": "https://symfony.com/cve-2019-18889",
+                "cve": "CVE-2019-18889",
+                "affectedVersions": ">=3.1.0,<3.2.0|>=3.2.0,<3.3.0|>=3.3.0,<3.4.0|>=3.4.0,<3.4.35|>=4.0.0,<4.1.0|>=4.1.0,<4.2.0|>=4.2.0,<4.2.12|>=4.3.0,<4.3.8",
+                "source": "FriendsOfPHP/security-advisories",
+                "reportedAt": "2019-11-13 08:00:00",
+                "composerRepository": "https://packagist.org",
+                "severity": "critical",
+                "sources": [
+                    {
+                        "name": "GitHub",
+                        "remoteId": "GHSA-79gr-58r3-pwm3"
+                    },
+                    {
+                        "name": "FriendsOfPHP/security-advisories",
+                        "remoteId": "symfony/cache/CVE-2019-18889.yaml"
+                    }
+                ]
+            },
+            {
+                "advisoryId": "PKSA-y75j-trtt-wgfj",
+                "packageName": "symfony/cache",
+                "remoteId": "symfony/cache/CVE-2019-10912.yaml",
+                "title": "CVE-2019-10912: Prevent destructors with side-effects from being unserialized",
+                "link": "https://symfony.com/cve-2019-10912",
+                "cve": "CVE-2019-10912",
+                "affectedVersions": ">=3.1.0,<3.2.0|>=3.2.0,<3.3.0|>=3.3.0,<3.4.0|>=3.4.0,<3.4.26|>=4.0.0,<4.1.0|>=4.1.0,<4.1.12|>=4.2.0,<4.2.7",
+                "source": "FriendsOfPHP/security-advisories",
+                "reportedAt": "2019-04-16 11:01:24",
+                "composerRepository": "https://packagist.org",
+                "severity": "high",
+                "sources": [
+                    {
+                        "name": "GitHub",
+                        "remoteId": "GHSA-w2fr-65vp-mxw3"
+                    },
+                    {
+                        "name": "FriendsOfPHP/security-advisories",
+                        "remoteId": "symfony/cache/CVE-2019-10912.yaml"
+                    }
+                ]
+            }
+        ],
+        "symfony/dependency-injection": [
+            {
+                "advisoryId": "PKSA-g5sp-m8wk-grpd",
+                "packageName": "symfony/dependency-injection",
+                "remoteId": "symfony/dependency-injection/CVE-2019-10910.yaml",
+                "title": "CVE-2019-10910: Check service IDs are valid",
+                "link": "https://symfony.com/cve-2019-10910",
+                "cve": "CVE-2019-10910",
+                "affectedVersions": ">=2.7.0,<2.7.51|>=2.8.0,<2.8.50|>=3.0.0,<3.1.0|>=3.1.0,<3.2.0|>=3.2.0,<3.3.0|>=3.3.0,<3.4.0|>=3.4.0,<3.4.26|>=4.0.0,<4.1.0|>=4.1.0,<4.1.12|>=4.2.0,<4.2.7",
+                "source": "FriendsOfPHP/security-advisories",
+                "reportedAt": "2019-04-16 12:48:27",
+                "composerRepository": "https://packagist.org",
+                "severity": "critical",
+                "sources": [
+                    {
+                        "name": "GitHub",
+                        "remoteId": "GHSA-pgwj-prpq-jpc2"
+                    },
+                    {
+                        "name": "FriendsOfPHP/security-advisories",
+                        "remoteId": "symfony/dependency-injection/CVE-2019-10910.yaml"
+                    }
+                ]
+            },
+            {
+                "advisoryId": "PKSA-q1m3-5gzj-p6jw",
+                "packageName": "symfony/dependency-injection",
+                "remoteId": "symfony/dependency-injection/2012-08-28.yaml",
+                "title": "Security fixes related to the way XML is handled",
+                "link": "https://symfony.com/blog/security-release-symfony-2-0-17-released",
+                "cve": null,
+                "affectedVersions": ">=2.0.0,<2.0.17",
+                "source": "FriendsOfPHP/security-advisories",
+                "reportedAt": "2012-08-28 00:00:00",
+                "composerRepository": "https://packagist.org",
+                "severity": "high",
+                "sources": [
+                    {
+                        "name": "GitHub",
+                        "remoteId": "GHSA-c636-cg5r-2498"
+                    },
+                    {
+                        "name": "FriendsOfPHP/security-advisories",
+                        "remoteId": "symfony/dependency-injection/2012-08-28.yaml"
+                    }
+                ]
+            }
+        ],
+        "symfony/error-handler": [
+            {
+                "advisoryId": "PKSA-879x-hms2-k3mp",
+                "packageName": "symfony/error-handler",
+                "remoteId": "symfony/error-handler/CVE-2020-5274.yaml",
+                "title": "CVE-2020-5274: Fix Exception message escaping rendered by ErrorHandler",
+                "link": "https://symfony.com/cve-2020-5274",
+                "cve": "CVE-2020-5274",
+                "affectedVersions": ">=4.4.0,<4.4.4|>=5.0.0,<5.0.4",
+                "source": "FriendsOfPHP/security-advisories",
+                "reportedAt": "2020-03-30 14:00:00",
+                "composerRepository": "https://packagist.org",
+                "severity": "medium",
+                "sources": [
+                    {
+                        "name": "GitHub",
+                        "remoteId": "GHSA-m884-279h-32v2"
+                    },
+                    {
+                        "name": "FriendsOfPHP/security-advisories",
+                        "remoteId": "symfony/error-handler/CVE-2020-5274.yaml"
+                    }
+                ]
+            }
+        ],
+        "symfony/framework-bundle": [
+            {
+                "advisoryId": "PKSA-br8k-ghrn-5w34",
+                "packageName": "symfony/framework-bundle",
+                "remoteId": "symfony/framework-bundle/CVE-2022-23601.yaml",
+                "title": "CVE-2022-23601: CSRF token missing in forms",
+                "link": "https://symfony.com/cve-2022-23601",
+                "cve": "CVE-2022-23601",
+                "affectedVersions": ">=5.3.14,<5.3.15|>=5.4.3,<5.4.4|>=6.0.3,<6.0.4",
+                "source": "FriendsOfPHP/security-advisories",
+                "reportedAt": "2022-01-29 12:00:00",
+                "composerRepository": "https://packagist.org",
+                "severity": "high",
+                "sources": [
+                    {
+                        "name": "GitHub",
+                        "remoteId": "GHSA-vvmr-8829-6whx"
+                    },
+                    {
+                        "name": "FriendsOfPHP/security-advisories",
+                        "remoteId": "symfony/framework-bundle/CVE-2022-23601.yaml"
+                    }
+                ]
+            },
+            {
+                "advisoryId": "PKSA-q2sm-x6px-qrth",
+                "packageName": "symfony/framework-bundle",
+                "remoteId": "symfony/framework-bundle/CVE-2019-10909.yaml",
+                "title": "CVE-2019-10909: Escape validation messages in the PHP templating engine",
+                "link": "https://symfony.com/cve-2019-10909",
+                "cve": "CVE-2019-10909",
+                "affectedVersions": ">=2.7.0,<2.7.51|>=2.8.0,<2.8.50|>=3.0.0,<3.1.0|>=3.1.0,<3.2.0|>=3.2.0,<3.3.0|>=3.3.0,<3.4.0|>=3.4.0,<3.4.26|>=4.0.0,<4.1.0|>=4.1.0,<4.1.12|>=4.2.0,<4.2.7",
+                "source": "FriendsOfPHP/security-advisories",
+                "reportedAt": "2019-04-16 11:40:42",
+                "composerRepository": "https://packagist.org",
+                "severity": "medium",
+                "sources": [
+                    {
+                        "name": "GitHub",
+                        "remoteId": "GHSA-g996-q5r8-w7g2"
+                    },
+                    {
+                        "name": "FriendsOfPHP/security-advisories",
+                        "remoteId": "symfony/framework-bundle/CVE-2019-10909.yaml"
+                    }
+                ]
+            },
+            {
+                "advisoryId": "PKSA-vhr9-kcbz-8dgv",
+                "packageName": "symfony/framework-bundle",
+                "remoteId": "symfony/framework-bundle/CVE-2014-4931.yaml",
+                "title": "Code injection in the way Symfony implements translation caching in FrameworkBundle",
+                "link": "https://symfony.com/blog/security-releases-cve-2014-4931-symfony-2-3-18-2-4-8-and-2-5-2-released",
+                "cve": "CVE-2014-4931",
+                "affectedVersions": ">=2.0.0,<2.1.0|>=2.1.0,<2.2.0|>=2.2.0,<2.3.0|>=2.3.0,<2.3.18|>=2.4.0,<2.4.8|>=2.5.0,<2.5.2",
+                "source": "FriendsOfPHP/security-advisories",
+                "reportedAt": "2014-07-15 15:35:51",
+                "composerRepository": "https://packagist.org",
+                "severity": "high",
+                "sources": [
+                    {
+                        "name": "GitHub",
+                        "remoteId": "GHSA-wfv7-5x33-v22h"
+                    },
+                    {
+                        "name": "FriendsOfPHP/security-advisories",
+                        "remoteId": "symfony/framework-bundle/CVE-2014-4931.yaml"
+                    }
+                ]
+            }
+        ],
+        "symfony/http-foundation": [
+            {
+                "advisoryId": "PKSA-b35n-565h-rs4q",
+                "packageName": "symfony/http-foundation",
+                "remoteId": "symfony/http-foundation/CVE-2024-50345.yaml",
+                "title": "CVE-2024-50345: Open redirect via browser-sanitized URLs",
+                "link": "https://symfony.com/cve-2024-50345",
+                "cve": "CVE-2024-50345",
+                "affectedVersions": ">=2.0.0,<3.0.0|>=3.0.0,<4.0.0|>=4.0.0,<5.0.0|>=5.0.0,<5.1.0|>=5.1.0,<5.2.0|>=5.2.0,<5.3.0|>=5.3.0,<5.4.0|>=5.4.0,<5.4.46|>=6.0.0,<6.1.0|>=6.1.0,<6.2.0|>=6.2.0,<6.3.0|>=6.3.0,<6.4.0|>=6.4.0,<6.4.14|>=7.0.0,<7.1.0|>=7.1.0,<7.1.7",
+                "source": "FriendsOfPHP/security-advisories",
+                "reportedAt": "2024-11-05 08:00:00",
+                "composerRepository": "https://packagist.org",
+                "severity": "low",
+                "sources": [
+                    {
+                        "name": "GitHub",
+                        "remoteId": "GHSA-mrqx-rp3w-jpjp"
+                    },
+                    {
+                        "name": "FriendsOfPHP/security-advisories",
+                        "remoteId": "symfony/http-foundation/CVE-2024-50345.yaml"
+                    }
+                ]
+            },
+            {
+                "advisoryId": "PKSA-t4rz-hp2g-57t1",
+                "packageName": "symfony/http-foundation",
+                "remoteId": "symfony/http-foundation/CVE-2020-5255.yaml",
+                "title": "CVE-2020-5255: Prevent cache poisoning via a Response Content-Type header",
+                "link": "https://symfony.com/cve-2020-5255",
+                "cve": "CVE-2020-5255",
+                "affectedVersions": ">=4.4.0,<4.4.7|>=5.0.0,<5.0.7",
+                "source": "FriendsOfPHP/security-advisories",
+                "reportedAt": "2020-03-30 14:00:00",
+                "composerRepository": "https://packagist.org",
+                "severity": "low",
+                "sources": [
+                    {
+                        "name": "GitHub",
+                        "remoteId": "GHSA-mcx4-f5f5-4859"
+                    },
+                    {
+                        "name": "FriendsOfPHP/security-advisories",
+                        "remoteId": "symfony/http-foundation/CVE-2020-5255.yaml"
+                    }
+                ]
+            },
+            {
+                "advisoryId": "PKSA-9w98-4rwq-spxr",
+                "packageName": "symfony/http-foundation",
+                "remoteId": "symfony/http-foundation/CVE-2019-18888.yaml",
+                "title": "CVE-2019-18888: Prevent argument injection in a MimeTypeGuesser",
+                "link": "https://symfony.com/cve-2019-18888",
+                "cve": "CVE-2019-18888",
+                "affectedVersions": ">=2.0.0,<2.1.0|>=2.1.0,<2.2.0|>=2.2.0,<2.3.0|>=2.3.0,<2.4.0|>=2.4.0,<2.5.0|>=2.5.0,<2.6.0|>=2.6.0,<2.7.0|>=2.7.0,<2.8.0|>=2.8.0,<2.8.52|>=3.0.0,<3.1.0|>=3.1.0,<3.2.0|>=3.2.0,<3.3.0|>=3.3.0,<3.4.0|>=3.4.0,<3.4.35|>=4.0.0,<4.1.0|>=4.1.0,<4.2.0|>=4.2.0,<4.2.12|>=4.3.0,<4.3.8",
+                "source": "FriendsOfPHP/security-advisories",
+                "reportedAt": "2019-11-13 08:00:00",
+                "composerRepository": "https://packagist.org",
+                "severity": "high",
+                "sources": [
+                    {
+                        "name": "GitHub",
+                        "remoteId": "GHSA-xhh6-956q-4q69"
+                    },
+                    {
+                        "name": "FriendsOfPHP/security-advisories",
+                        "remoteId": "symfony/http-foundation/CVE-2019-18888.yaml"
+                    }
+                ]
+            },
+            {
+                "advisoryId": "PKSA-324d-pqmd-hptz",
+                "packageName": "symfony/http-foundation",
+                "remoteId": "symfony/http-foundation/CVE-2019-10913.yaml",
+                "title": "CVE-2019-10913: Reject invalid HTTP method overrides",
+                "link": "https://symfony.com/cve-2019-10913",
+                "cve": "CVE-2019-10913",
+                "affectedVersions": ">=2.7.0,<2.7.51|>=2.8.0,<2.8.50|>=3.0.0,<3.1.0|>=3.1.0,<3.2.0|>=3.2.0,<3.3.0|>=3.3.0,<3.4.0|>=3.4.0,<3.4.26|>=4.0.0,<4.1.0|>=4.1.0,<4.1.12|>=4.2.0,<4.2.7",
+                "source": "FriendsOfPHP/security-advisories",
+                "reportedAt": "2019-04-16 10:45:11",
+                "composerRepository": "https://packagist.org",
+                "severity": "critical",
+                "sources": [
+                    {
+                        "name": "GitHub",
+                        "remoteId": "GHSA-x92h-wmg2-6hp7"
+                    },
+                    {
+                        "name": "FriendsOfPHP/security-advisories",
+                        "remoteId": "symfony/http-foundation/CVE-2019-10913.yaml"
+                    }
+                ]
+            },
+            {
+                "advisoryId": "PKSA-nqj4-v43p-2gxc",
+                "packageName": "symfony/http-foundation",
+                "remoteId": "symfony/http-foundation/CVE-2018-14773.yaml",
+                "title": "CVE-2018-14773: Remove support for legacy and risky HTTP headers",
+                "link": "https://symfony.com/blog/cve-2018-14773-remove-support-for-legacy-and-risky-http-headers",
+                "cve": "CVE-2018-14773",
+                "affectedVersions": ">=2.0.0,<2.1.0|>=2.1.0,<2.2.0|>=2.2.0,<2.3.0|>=2.3.0,<2.4.0|>=2.4.0,<2.5.0|>=2.5.0,<2.6.0|>=2.6.0,<2.7.0|>=2.7.0,<2.7.49|>=2.8.0,<2.8.44|>=3.0.0,<3.1.0|>=3.1.0,<3.2.0|>=3.2.0,<3.3.0|>=3.3.0,<3.3.18|>=3.4.0,<3.4.14|>=4.0.0,<4.0.14|>=4.1.0,<4.1.3",
+                "source": "FriendsOfPHP/security-advisories",
+                "reportedAt": "2018-08-01 15:57:00",
+                "composerRepository": "https://packagist.org",
+                "severity": "medium",
+                "sources": [
+                    {
+                        "name": "GitHub",
+                        "remoteId": "GHSA-8wgj-6wx8-h5hq"
+                    },
+                    {
+                        "name": "FriendsOfPHP/security-advisories",
+                        "remoteId": "symfony/http-foundation/CVE-2018-14773.yaml"
+                    }
+                ]
+            },
+            {
+                "advisoryId": "PKSA-f8b8-pbjy-s9k8",
+                "packageName": "symfony/http-foundation",
+                "remoteId": "symfony/http-foundation/CVE-2018-11386.yaml",
+                "title": "CVE-2018-11386: Denial of service when using PDOSessionHandler",
+                "link": "https://symfony.com/cve-2018-11386",
+                "cve": "CVE-2018-11386",
+                "affectedVersions": ">=2.0.0,<2.1.0|>=2.1.0,<2.2.0|>=2.2.0,<2.3.0|>=2.3.0,<2.4.0|>=2.4.0,<2.5.0|>=2.5.0,<2.6.0|>=2.6.0,<2.7.0|>=2.7.0,<2.7.48|>=2.8.0,<2.8.41|>=3.0.0,<3.1.0|>=3.1.0,<3.2.0|>=3.2.0,<3.3.0|>=3.3.0,<3.3.17|>=3.4.0,<3.4.11|>=4.0.0,<4.0.11",
+                "source": "FriendsOfPHP/security-advisories",
+                "reportedAt": "2018-05-25 11:46:22",
+                "composerRepository": "https://packagist.org",
+                "severity": "medium",
+                "sources": [
+                    {
+                        "name": "GitHub",
+                        "remoteId": "GHSA-r2rq-3h56-fqm4"
+                    },
+                    {
+                        "name": "FriendsOfPHP/security-advisories",
+                        "remoteId": "symfony/http-foundation/CVE-2018-11386.yaml"
+                    }
+                ]
+            },
+            {
+                "advisoryId": "PKSA-md26-zdw9-222r",
+                "packageName": "symfony/http-foundation",
+                "remoteId": "symfony/http-foundation/CVE-2015-2309.yaml",
+                "title": "Unsafe methods in the Request class",
+                "link": "https://symfony.com/cve-2015-2309",
+                "cve": "CVE-2015-2309",
+                "affectedVersions": ">=2.0.0,<2.1.0|>=2.1.0,<2.2.0|>=2.2.0,<2.3.0|>=2.3.0,<2.3.27|>=2.4.0,<2.5.0|>=2.5.0,<2.5.11|>=2.6.0,<2.6.6",
+                "source": "FriendsOfPHP/security-advisories",
+                "reportedAt": "2015-04-01 18:55:26",
+                "composerRepository": "https://packagist.org",
+                "severity": "medium",
+                "sources": [
+                    {
+                        "name": "GitHub",
+                        "remoteId": "GHSA-p684-f7fh-jv2j"
+                    },
+                    {
+                        "name": "FriendsOfPHP/security-advisories",
+                        "remoteId": "symfony/http-foundation/CVE-2015-2309.yaml"
+                    }
+                ]
+            },
+            {
+                "advisoryId": "PKSA-dr6c-z2rf-wh36",
+                "packageName": "symfony/http-foundation",
+                "remoteId": "symfony/http-foundation/CVE-2014-6061.yaml",
+                "title": "Security issue when parsing the Authorization header",
+                "link": "https://symfony.com/cve-2014-6061",
+                "cve": "CVE-2014-6061",
+                "affectedVersions": ">=2.0.0,<2.1.0|>=2.1.0,<2.2.0|>=2.2.0,<2.3.0|>=2.3.0,<2.3.19|>=2.4.0,<2.4.9|>=2.5.0,<2.5.4",
+                "source": "FriendsOfPHP/security-advisories",
+                "reportedAt": "2014-09-03 07:38:23",
+                "composerRepository": "https://packagist.org",
+                "severity": "medium",
+                "sources": [
+                    {
+                        "name": "GitHub",
+                        "remoteId": "GHSA-h7v2-2qwg-h829"
+                    },
+                    {
+                        "name": "FriendsOfPHP/security-advisories",
+                        "remoteId": "symfony/http-foundation/CVE-2014-6061.yaml"
+                    }
+                ]
+            },
+            {
+                "advisoryId": "PKSA-rhzp-d9k8-shyq",
+                "packageName": "symfony/http-foundation",
+                "remoteId": "symfony/http-foundation/CVE-2014-5244.yaml",
+                "title": "Denial of service with a malicious HTTP Host header",
+                "link": "https://symfony.com/cve-2014-5244",
+                "cve": "CVE-2014-5244",
+                "affectedVersions": ">=2.0.0,<2.1.0|>=2.1.0,<2.2.0|>=2.2.0,<2.3.0|>=2.3.0,<2.3.19|>=2.4.0,<2.4.9|>=2.5.0,<2.5.4",
+                "source": "FriendsOfPHP/security-advisories",
+                "reportedAt": "2014-09-03 07:37:21",
+                "composerRepository": "https://packagist.org",
+                "severity": "high",
+                "sources": [
+                    {
+                        "name": "GitHub",
+                        "remoteId": "GHSA-v77v-x634-9m56"
+                    },
+                    {
+                        "name": "FriendsOfPHP/security-advisories",
+                        "remoteId": "symfony/http-foundation/CVE-2014-5244.yaml"
+                    }
+                ]
+            },
+            {
+                "advisoryId": "PKSA-tf6z-kynr-311v",
+                "packageName": "symfony/http-foundation",
+                "remoteId": "symfony/http-foundation/CVE-2013-4752.yaml",
+                "title": "Request::getHost() poisoning",
+                "link": "https://symfony.com/blog/security-releases-symfony-2-0-24-2-1-12-2-2-5-and-2-3-3-released",
+                "cve": "CVE-2013-4752",
+                "affectedVersions": ">=2.0.0,<2.0.24|>=2.1.0,<2.1.12|>=2.2.0,<2.2.5|>=2.3.0,<2.3.3",
+                "source": "FriendsOfPHP/security-advisories",
+                "reportedAt": "2013-08-17 09:14:49",
+                "composerRepository": "https://packagist.org",
+                "severity": "medium",
+                "sources": [
+                    {
+                        "name": "GitHub",
+                        "remoteId": "GHSA-22pv-7v9j-hqxp"
+                    },
+                    {
+                        "name": "FriendsOfPHP/security-advisories",
+                        "remoteId": "symfony/http-foundation/CVE-2013-4752.yaml"
+                    }
+                ]
+            },
+            {
+                "advisoryId": "PKSA-hd3k-4852-jhv2",
+                "packageName": "symfony/http-foundation",
+                "remoteId": "symfony/http-foundation/2012-11-29.yaml",
+                "title": "Request::getClientIp() when the trust proxy mode is enabled",
+                "link": "https://symfony.com/blog/security-release-symfony-2-0-19-and-2-1-4",
+                "cve": null,
+                "affectedVersions": ">=2.0.0,<2.0.19|>=2.1.0,<2.1.4",
+                "source": "FriendsOfPHP/security-advisories",
+                "reportedAt": "2012-11-29 00:00:00",
+                "composerRepository": "https://packagist.org",
+                "severity": "medium",
+                "sources": [
+                    {
+                        "name": "GitHub",
+                        "remoteId": "GHSA-vfm6-r2gc-pwww"
+                    },
+                    {
+                        "name": "FriendsOfPHP/security-advisories",
+                        "remoteId": "symfony/http-foundation/2012-11-29.yaml"
+                    }
+                ]
+            },
+            {
+                "advisoryId": "PKSA-msdq-r83n-tdy4",
+                "packageName": "symfony/http-foundation",
+                "remoteId": "symfony/http-foundation/CVE-2012-6431.yaml",
+                "title": "Routes behind a firewall are accessible even when not logged in",
+                "link": "https://symfony.com/blog/security-release-symfony-2-0-20-and-2-1-5-released",
+                "cve": "CVE-2012-6431",
+                "affectedVersions": ">=2.0.0,<2.0.19",
+                "source": "FriendsOfPHP/security-advisories",
+                "reportedAt": "2012-03-19 15:59:52",
+                "composerRepository": "https://packagist.org",
+                "severity": "medium",
+                "sources": [
+                    {
+                        "name": "GitHub",
+                        "remoteId": "GHSA-83c3-qx27-2rwr"
+                    },
+                    {
+                        "name": "FriendsOfPHP/security-advisories",
+                        "remoteId": "symfony/http-foundation/CVE-2012-6431.yaml"
+                    }
+                ]
+            }
+        ],
+        "symfony/http-kernel": [
+            {
+                "advisoryId": "PKSA-hr4y-jwk2-1yb9",
+                "packageName": "symfony/http-kernel",
+                "remoteId": "symfony/http-kernel/CVE-2022-24894.yaml",
+                "title": "CVE-2022-24894: Prevent storing cookie headers in HttpCache",
+                "link": "https://symfony.com/cve-2022-24894",
+                "cve": "CVE-2022-24894",
+                "affectedVersions": ">=2.0.0,<2.1.0|>=2.1.0,<2.2.0|>=2.2.0,<2.3.0|>=2.3.0,<2.4.0|>=2.4.0,<2.5.0|>=2.5.0,<2.6.0|>=2.6.0,<2.7.0|>=2.7.0,<2.8.0|>=2.8.0,<3.0.0|>=3.0.0,<3.1.0|>=3.1.0,<3.2.0|>=3.2.0,<3.3.0|>=3.3.0,<3.4.0|>=3.4.0,<4.0.0|>=4.0.0,<4.1.0|>=4.1.0,<4.2.0|>=4.2.0,<4.3.0|>=4.3.0,<4.4.0|>=4.4.0,<4.4.50|>=5.0.0,<5.1.0|>=5.1.0,<5.2.0|>=5.2.0,<5.3.0|>=5.3.0,<5.4.0|>=5.4.0,<5.4.20|>=6.0.0,<6.0.20|>=6.1.0,<6.1.12|>=6.2.0,<6.2.6",
+                "source": "FriendsOfPHP/security-advisories",
+                "reportedAt": "2023-02-01 08:00:00",
+                "composerRepository": "https://packagist.org",
+                "severity": "medium",
+                "sources": [
+                    {
+                        "name": "GitHub",
+                        "remoteId": "GHSA-h7vf-5wrv-9fhv"
+                    },
+                    {
+                        "name": "FriendsOfPHP/security-advisories",
+                        "remoteId": "symfony/http-kernel/CVE-2022-24894.yaml"
+                    }
+                ]
+            },
+            {
+                "advisoryId": "PKSA-ftqt-8gzv-r53t",
+                "packageName": "symfony/http-kernel",
+                "remoteId": "symfony/http-kernel/CVE-2021-41267.yaml",
+                "title": "CVE-2021-41267: Webcache Poisoning via X-Forwarded-Prefix and sub-request",
+                "link": "https://symfony.com/cve-2021-41267",
+                "cve": "CVE-2021-41267",
+                "affectedVersions": ">=5.2.0,<5.3.0|>=5.3.0,<5.3.12",
+                "source": "FriendsOfPHP/security-advisories",
+                "reportedAt": "2021-10-09 12:10:44",
+                "composerRepository": "https://packagist.org",
+                "severity": "medium",
+                "sources": [
+                    {
+                        "name": "GitHub",
+                        "remoteId": "GHSA-q3j3-w37x-hq2q"
+                    },
+                    {
+                        "name": "FriendsOfPHP/security-advisories",
+                        "remoteId": "symfony/http-kernel/CVE-2021-41267.yaml"
+                    }
+                ]
+            },
+            {
+                "advisoryId": "PKSA-8knv-7jsn-12w8",
+                "packageName": "symfony/http-kernel",
+                "remoteId": "symfony/http-kernel/CVE-2020-15094.yaml",
+                "title": "CVE-2020-15094: Prevent RCE when calling untrusted remote with CachingHttpClient",
+                "link": "https://symfony.com/cve-2020-15094",
+                "cve": "CVE-2020-15094",
+                "affectedVersions": ">=4.3.0,<4.4.0|>=4.4.0,<4.4.13|>=5.0.0,<5.1.0|>=5.1.0,<5.1.5",
+                "source": "FriendsOfPHP/security-advisories",
+                "reportedAt": "2020-09-02 08:00:00",
+                "composerRepository": "https://packagist.org",
+                "severity": "high",
+                "sources": [
+                    {
+                        "name": "GitHub",
+                        "remoteId": "GHSA-754h-5r27-7x3r"
+                    },
+                    {
+                        "name": "FriendsOfPHP/security-advisories",
+                        "remoteId": "symfony/http-kernel/CVE-2020-15094.yaml"
+                    }
+                ]
+            },
+            {
+                "advisoryId": "PKSA-sn9k-4yr8-6s9c",
+                "packageName": "symfony/http-kernel",
+                "remoteId": "symfony/http-kernel/CVE-2019-18887.yaml",
+                "title": "CVE-2019-18887: Use constant time comparison in UriSigner",
+                "link": "https://symfony.com/cve-2019-18887",
+                "cve": "CVE-2019-18887",
+                "affectedVersions": ">=2.2.0,<2.3.0|>=2.3.0,<2.4.0|>=2.4.0,<2.5.0|>=2.5.0,<2.6.0|>=2.6.0,<2.7.0|>=2.7.0,<2.8.0|>=2.8.0,<2.8.52|>=3.0.0,<3.1.0|>=3.1.0,<3.2.0|>=3.2.0,<3.3.0|>=3.3.0,<3.4.0|>=3.4.0,<3.4.35|>=4.0.0,<4.1.0|>=4.1.0,<4.2.0|>=4.2.0,<4.2.12|>=4.3.0,<4.3.8",
+                "source": "FriendsOfPHP/security-advisories",
+                "reportedAt": "2019-11-13 08:00:00",
+                "composerRepository": "https://packagist.org",
+                "severity": "high",
+                "sources": [
+                    {
+                        "name": "GitHub",
+                        "remoteId": "GHSA-q8hg-pf8v-cxrv"
+                    },
+                    {
+                        "name": "FriendsOfPHP/security-advisories",
+                        "remoteId": "symfony/http-kernel/CVE-2019-18887.yaml"
+                    }
+                ]
+            },
+            {
+                "advisoryId": "PKSA-35ts-w5by-rx5d",
+                "packageName": "symfony/http-kernel",
+                "remoteId": "symfony/http-kernel/CVE-2015-4050.yaml",
+                "title": "CVE-2015-4050: ESI unauthorized access",
+                "link": "https://symfony.com/cve-2015-4050",
+                "cve": "CVE-2015-4050",
+                "affectedVersions": ">=2.3.19,<2.3.29|>=2.4.9,<2.5.0|>=2.5.4,<2.5.12|>=2.6.0,<2.6.8",
+                "source": "FriendsOfPHP/security-advisories",
+                "reportedAt": "2015-05-26 23:55:51",
+                "composerRepository": "https://packagist.org",
+                "severity": "medium",
+                "sources": [
+                    {
+                        "name": "GitHub",
+                        "remoteId": "GHSA-qmqw-mpqp-mr54"
+                    },
+                    {
+                        "name": "FriendsOfPHP/security-advisories",
+                        "remoteId": "symfony/http-kernel/CVE-2015-4050.yaml"
+                    }
+                ]
+            },
+            {
+                "advisoryId": "PKSA-15jn-wzq4-94pw",
+                "packageName": "symfony/http-kernel",
+                "remoteId": "symfony/http-kernel/CVE-2015-2308.yaml",
+                "title": "Esi Code Injection",
+                "link": "https://symfony.com/cve-2015-2308",
+                "cve": "CVE-2015-2308",
+                "affectedVersions": ">=2.0.0,<2.1.0|>=2.1.0,<2.2.0|>=2.2.0,<2.3.0|>=2.3.0,<2.3.27|>=2.4.0,<2.5.0|>=2.5.0,<2.5.11|>=2.6.0,<2.6.6",
+                "source": "FriendsOfPHP/security-advisories",
+                "reportedAt": "2015-04-01 18:55:26",
+                "composerRepository": "https://packagist.org",
+                "severity": "medium",
+                "sources": [
+                    {
+                        "name": "GitHub",
+                        "remoteId": "GHSA-5c58-w9xc-qcj9"
+                    },
+                    {
+                        "name": "FriendsOfPHP/security-advisories",
+                        "remoteId": "symfony/http-kernel/CVE-2015-2308.yaml"
+                    }
+                ]
+            },
+            {
+                "advisoryId": "PKSA-6dsk-crym-v443",
+                "packageName": "symfony/http-kernel",
+                "remoteId": "symfony/http-kernel/CVE-2014-5245.yaml",
+                "title": "Direct access of ESI URLs behind a trusted proxy",
+                "link": "https://symfony.com/cve-2014-5245",
+                "cve": "CVE-2014-5245",
+                "affectedVersions": ">=2.0.0,<2.1.0|>=2.1.0,<2.2.0|>=2.2.0,<2.3.0|>=2.3.0,<2.3.19|>=2.4.0,<2.4.9|>=2.5.0,<2.5.4",
+                "source": "FriendsOfPHP/security-advisories",
+                "reportedAt": "2014-09-03 07:40:02",
+                "composerRepository": "https://packagist.org",
+                "severity": "high",
+                "sources": [
+                    {
+                        "name": "GitHub",
+                        "remoteId": "GHSA-wvjv-p5rr-mmqm"
+                    },
+                    {
+                        "name": "FriendsOfPHP/security-advisories",
+                        "remoteId": "symfony/http-kernel/CVE-2014-5245.yaml"
+                    }
+                ]
+            }
+        ],
+        "symfony/intl": [
+            {
+                "advisoryId": "PKSA-rp6j-7m48-zr61",
+                "packageName": "symfony/intl",
+                "remoteId": "symfony/intl/CVE-2017-16654.yaml",
+                "title": "CVE-2017-16654: Intl bundle readers breaking out of paths",
+                "link": "https://symfony.com/cve-2017-16654",
+                "cve": "CVE-2017-16654",
+                "affectedVersions": ">=2.7.0,<2.7.38|>=2.8.0,<2.8.31|>=3.0.0,<3.1.0|>=3.1.0,<3.2.0|>=3.2.0,<3.2.14|>=3.3.0,<3.3.13",
+                "source": "FriendsOfPHP/security-advisories",
+                "reportedAt": "2017-11-16 15:15:44",
+                "composerRepository": "https://packagist.org",
+                "severity": "high",
+                "sources": [
+                    {
+                        "name": "GitHub",
+                        "remoteId": "GHSA-c49r-8gj6-768r"
+                    },
+                    {
+                        "name": "FriendsOfPHP/security-advisories",
+                        "remoteId": "symfony/intl/CVE-2017-16654.yaml"
+                    }
+                ]
+            }
+        ],
+        "symfony/mime": [
+            {
+                "advisoryId": "PKSA-7y15-t1fp-w94f",
+                "packageName": "symfony/mime",
+                "remoteId": "symfony/mime/CVE-2019-18888.yaml",
+                "title": "CVE-2019-18888: Prevent argument injection in a MimeTypeGuesser",
+                "link": "https://symfony.com/cve-2019-18888",
+                "cve": "CVE-2019-18888",
+                "affectedVersions": ">=4.3.0,<4.3.8",
+                "source": "FriendsOfPHP/security-advisories",
+                "reportedAt": "2019-11-13 08:00:00",
+                "composerRepository": "https://packagist.org",
+                "severity": "high",
+                "sources": [
+                    {
+                        "name": "GitHub",
+                        "remoteId": "GHSA-xhh6-956q-4q69"
+                    },
+                    {
+                        "name": "FriendsOfPHP/security-advisories",
+                        "remoteId": "symfony/mime/CVE-2019-18888.yaml"
+                    }
+                ]
+            }
+        ],
+        "symfony/phpunit-bridge": [
+            {
+                "advisoryId": "PKSA-zwyw-7xtc-xrq1",
+                "packageName": "symfony/phpunit-bridge",
+                "remoteId": "symfony/phpunit-bridge/CVE-2019-10912.yaml",
+                "title": "CVE-2019-10912: Prevent destructors with side-effects from being unserialized",
+                "link": "https://symfony.com/cve-2019-10912",
+                "cve": "CVE-2019-10912",
+                "affectedVersions": ">=2.8.0,<2.8.50|>=3.0.0,<3.1.0|>=3.1.0,<3.2.0|>=3.2.0,<3.3.0|>=3.3.0,<3.4.0|>=3.4.0,<3.4.26|>=4.0.0,<4.1.0|>=4.1.0,<4.1.12|>=4.2.0,<4.2.7",
+                "source": "FriendsOfPHP/security-advisories",
+                "reportedAt": "2019-04-16 11:01:24",
+                "composerRepository": "https://packagist.org",
+                "severity": "high",
+                "sources": [
+                    {
+                        "name": "GitHub",
+                        "remoteId": "GHSA-w2fr-65vp-mxw3"
+                    },
+                    {
+                        "name": "FriendsOfPHP/security-advisories",
+                        "remoteId": "symfony/phpunit-bridge/CVE-2019-10912.yaml"
+                    }
+                ]
+            }
+        ],
+        "symfony/process": [
+            {
+                "advisoryId": "PKSA-wws7-mr54-jsny",
+                "packageName": "symfony/process",
+                "remoteId": "symfony/process/CVE-2024-51736.yaml",
+                "title": "CVE-2024-51736: Command execution hijack on Windows with Process class",
+                "link": "https://symfony.com/cve-2024-51736",
+                "cve": "CVE-2024-51736",
+                "affectedVersions": ">=2.0.0,<3.0.0|>=3.0.0,<4.0.0|>=4.0.0,<5.0.0|>=5.0.0,<5.1.0|>=5.1.0,<5.2.0|>=5.2.0,<5.3.0|>=5.3.0,<5.4.0|>=5.4.0,<5.4.46|>=6.0.0,<6.1.0|>=6.1.0,<6.2.0|>=6.2.0,<6.3.0|>=6.3.0,<6.4.0|>=6.4.0,<6.4.14|>=7.0.0,<7.1.0|>=7.1.0,<7.1.7",
+                "source": "FriendsOfPHP/security-advisories",
+                "reportedAt": "2024-11-05 08:00:00",
+                "composerRepository": "https://packagist.org",
+                "severity": "high",
+                "sources": [
+                    {
+                        "name": "GitHub",
+                        "remoteId": "GHSA-qq5c-677p-737q"
+                    },
+                    {
+                        "name": "FriendsOfPHP/security-advisories",
+                        "remoteId": "symfony/process/CVE-2024-51736.yaml"
+                    }
+                ]
+            }
+        ],
+        "symfony/proxy-manager-bridge": [
+            {
+                "advisoryId": "PKSA-hxyb-xpnq-t8vg",
+                "packageName": "symfony/proxy-manager-bridge",
+                "remoteId": "symfony/proxy-manager-bridge/CVE-2019-10910.yaml",
+                "title": "CVE-2019-10910: Check service IDs are valid",
+                "link": "https://symfony.com/cve-2019-10910",
+                "cve": "CVE-2019-10910",
+                "affectedVersions": ">=2.7.0,<2.7.51|>=2.8.0,<2.8.50|>=3.0.0,<3.1.0|>=3.1.0,<3.2.0|>=3.2.0,<3.3.0|>=3.3.0,<3.4.0|>=3.4.0,<3.4.26|>=4.0.0,<4.1.0|>=4.1.0,<4.1.12|>=4.2.0,<4.2.7",
+                "source": "FriendsOfPHP/security-advisories",
+                "reportedAt": "2019-04-16 12:48:27",
+                "composerRepository": "https://packagist.org",
+                "severity": "critical",
+                "sources": [
+                    {
+                        "name": "GitHub",
+                        "remoteId": "GHSA-pgwj-prpq-jpc2"
+                    },
+                    {
+                        "name": "FriendsOfPHP/security-advisories",
+                        "remoteId": "symfony/proxy-manager-bridge/CVE-2019-10910.yaml"
+                    }
+                ]
+            }
+        ],
+        "symfony/routing": [
+            {
+                "advisoryId": "PKSA-g1jq-pppn-wyhk",
+                "packageName": "symfony/routing",
+                "remoteId": "symfony/routing/2012-08-28.yaml",
+                "title": "Security fixes related to the way XML is handled",
+                "link": "https://symfony.com/blog/security-release-symfony-2-0-17-released",
+                "cve": null,
+                "affectedVersions": ">=2.0.0,<2.0.17",
+                "source": "FriendsOfPHP/security-advisories",
+                "reportedAt": "2012-08-28 00:00:00",
+                "composerRepository": "https://packagist.org",
+                "severity": "high",
+                "sources": [
+                    {
+                        "name": "GitHub",
+                        "remoteId": "GHSA-rjpm-qmq7-q85w"
+                    },
+                    {
+                        "name": "FriendsOfPHP/security-advisories",
+                        "remoteId": "symfony/routing/2012-08-28.yaml"
+                    }
+                ]
+            },
+            {
+                "advisoryId": "PKSA-p71j-52x5-sfs1",
+                "packageName": "symfony/routing",
+                "remoteId": "symfony/routing/CVE-2012-6431.yaml",
+                "title": "Routes behind a firewall are accessible even when not logged in",
+                "link": "https://symfony.com/blog/security-release-symfony-2-0-20-and-2-1-5-released",
+                "cve": "CVE-2012-6431",
+                "affectedVersions": ">=2.0.0,<2.0.19",
+                "source": "FriendsOfPHP/security-advisories",
+                "reportedAt": "2012-03-19 15:59:52",
+                "composerRepository": "https://packagist.org",
+                "severity": "medium",
+                "sources": [
+                    {
+                        "name": "GitHub",
+                        "remoteId": "GHSA-83c3-qx27-2rwr"
+                    },
+                    {
+                        "name": "FriendsOfPHP/security-advisories",
+                        "remoteId": "symfony/routing/CVE-2012-6431.yaml"
+                    }
+                ]
+            }
+        ],
+        "symfony/runtime": [
+            {
+                "advisoryId": "PKSA-d1rr-z8zb-qnm7",
+                "packageName": "symfony/runtime",
+                "remoteId": "symfony/runtime/CVE-2024-50340.yaml",
+                "title": "CVE-2024-50340: Ability to change environment from query",
+                "link": "https://symfony.com/cve-2024-50340",
+                "cve": "CVE-2024-50340",
+                "affectedVersions": ">=5.3.0,<5.4.0|>=5.4.0,<5.4.46|>=6.0.0,<6.1.0|>=6.1.0,<6.2.0|>=6.2.0,<6.3.0|>=6.3.0,<6.4.0|>=6.4.0,<6.4.14|>=7.0.0,<7.1.0|>=7.1.0,<7.1.7",
+                "source": "FriendsOfPHP/security-advisories",
+                "reportedAt": "2024-11-05 08:00:00",
+                "composerRepository": "https://packagist.org",
+                "severity": "medium",
+                "sources": [
+                    {
+                        "name": "GitHub",
+                        "remoteId": "GHSA-x8vp-gf4q-mw5j"
+                    },
+                    {
+                        "name": "FriendsOfPHP/security-advisories",
+                        "remoteId": "symfony/runtime/CVE-2024-50340.yaml"
+                    }
+                ]
+            }
+        ],
+        "symfony/security-core": [
+            {
+                "advisoryId": "PKSA-jjrg-2n5t-nkkj",
+                "packageName": "symfony/security-core",
+                "remoteId": "symfony/security-core/CVE-2021-21424.yaml",
+                "title": "CVE-2021-21424: Prevent user enumeration via response content in authentication mechanisms",
+                "link": "https://symfony.com/cve-2021-21424",
+                "cve": "CVE-2021-21424",
+                "affectedVersions": ">=2.8.0,<3.0.0|>=3.0.0,<3.1.0|>=3.1.0,<3.2.0|>=3.2.0,<3.3.0|>=3.3.0,<3.4.0|>=3.4.0,<3.4.49|>=4.0.0,<4.1.0|>=4.1.0,<4.2.0|>=4.2.0,<4.3.0|>=4.3.0,<4.4.0|>=4.4.0,<4.4.24|>=5.0.0,<5.1.0|>=5.1.0,<5.2.0|>=5.2.0,<5.2.9",
+                "source": "FriendsOfPHP/security-advisories",
+                "reportedAt": "2021-05-12 08:00:00",
+                "composerRepository": "https://packagist.org",
+                "severity": "medium",
+                "sources": [
+                    {
+                        "name": "GitHub",
+                        "remoteId": "GHSA-5pv8-ppvj-4h68"
+                    },
+                    {
+                        "name": "FriendsOfPHP/security-advisories",
+                        "remoteId": "symfony/security-core/CVE-2021-21424.yaml"
+                    }
+                ]
+            },
+            {
+                "advisoryId": "PKSA-4v2q-7qd7-pgw2",
+                "packageName": "symfony/security-core",
+                "remoteId": "symfony/security-core/CVE-2018-11407.yaml",
+                "title": "CVE-2018-11407: Unauthorized access on a misconfigured LDAP server when using an empty password",
+                "link": "https://symfony.com/cve-2018-11407",
+                "cve": "CVE-2018-11407",
+                "affectedVersions": ">=2.8.0,<2.8.37|>=3.0.0,<3.1.0|>=3.1.0,<3.2.0|>=3.2.0,<3.3.0|>=3.3.0,<3.3.17|>=3.4.0,<3.4.7|>=4.0.0,<4.0.7",
+                "source": "FriendsOfPHP/security-advisories",
+                "reportedAt": "2018-05-25 12:12:59",
+                "composerRepository": "https://packagist.org",
+                "severity": "critical",
+                "sources": [
+                    {
+                        "name": "GitHub",
+                        "remoteId": "GHSA-35c5-28pg-2qg4"
+                    },
+                    {
+                        "name": "FriendsOfPHP/security-advisories",
+                        "remoteId": "symfony/security-core/CVE-2018-11407.yaml"
+                    }
+                ]
+            },
+            {
+                "advisoryId": "PKSA-2672-j1r9-dm6x",
+                "packageName": "symfony/security-core",
+                "remoteId": "symfony/security-core/CVE-2017-11365.yaml",
+                "title": "CVE-2017-11365: Empty passwords validation issue",
+                "link": "https://symfony.com/cve-2017-11365",
+                "cve": "CVE-2017-11365",
+                "affectedVersions": ">=2.7.30,<2.7.32|>=2.8.23,<2.8.25|>=3.2.10,<3.2.12|>=3.3.3,<3.3.5",
+                "source": "FriendsOfPHP/security-advisories",
+                "reportedAt": "2017-07-17 10:54:11",
+                "composerRepository": "https://packagist.org",
+                "severity": "critical",
+                "sources": [
+                    {
+                        "name": "GitHub",
+                        "remoteId": "GHSA-q87v-q8fw-gmj5"
+                    },
+                    {
+                        "name": "FriendsOfPHP/security-advisories",
+                        "remoteId": "symfony/security-core/CVE-2017-11365.yaml"
+                    }
+                ]
+            },
+            {
+                "advisoryId": "PKSA-nz2g-y52j-n79q",
+                "packageName": "symfony/security-core",
+                "remoteId": "symfony/security-core/CVE-2016-2403.yaml",
+                "title": "CVE-2016-2403: Unauthorized access on a misconfigured Ldap server when using an empty password",
+                "link": "https://symfony.com/cve-2016-2403",
+                "cve": "CVE-2016-2403",
+                "affectedVersions": ">=2.8.0,<2.8.6|>=3.0.0,<3.0.6",
+                "source": "FriendsOfPHP/security-advisories",
+                "reportedAt": "2016-05-09 21:34:47",
+                "composerRepository": "https://packagist.org",
+                "severity": "critical",
+                "sources": [
+                    {
+                        "name": "GitHub",
+                        "remoteId": "GHSA-wvj5-r78r-hhfq"
+                    },
+                    {
+                        "name": "FriendsOfPHP/security-advisories",
+                        "remoteId": "symfony/security-core/CVE-2016-2403.yaml"
+                    }
+                ]
+            },
+            {
+                "advisoryId": "PKSA-cdq8-87w8-19rq",
+                "packageName": "symfony/security-core",
+                "remoteId": "symfony/security-core/CVE-2016-1902.yaml",
+                "title": "CVE-2016-1902: SecureRandom's fallback not secure when OpenSSL fails ",
+                "link": "https://symfony.com/cve-2016-1902",
+                "cve": "CVE-2016-1902",
+                "affectedVersions": ">=2.4.0,<2.5.0|>=2.5.0,<2.6.0|>=2.6.0,<2.6.13|>=2.7.0,<2.7.9",
+                "source": "FriendsOfPHP/security-advisories",
+                "reportedAt": "2016-01-14 09:48:01",
+                "composerRepository": "https://packagist.org",
+                "severity": "high",
+                "sources": [
+                    {
+                        "name": "GitHub",
+                        "remoteId": "GHSA-jjx5-fq5g-8xpc"
+                    },
+                    {
+                        "name": "FriendsOfPHP/security-advisories",
+                        "remoteId": "symfony/security-core/CVE-2016-1902.yaml"
+                    }
+                ]
+            }
+        ],
+        "symfony/security-csrf": [
+            {
+                "advisoryId": "PKSA-894f-kqgr-2n7p",
+                "packageName": "symfony/security-csrf",
+                "remoteId": "symfony/security-csrf/CVE-2018-11406.yaml",
+                "title": "CVE-2018-11406: CSRF Token Fixation",
+                "link": "https://symfony.com/cve-2018-11406",
+                "cve": "CVE-2018-11406",
+                "affectedVersions": ">=2.4.0,<2.7.48|>=2.5.0,<2.7.48|>=2.6.0,<2.7.48|>=2.7.0,<2.7.48|>=2.8.0,<2.8.41|>=3.0.0,<3.1.0|>=3.1.0,<3.2.0|>=3.2.0,<3.3.0|>=3.3.0,<3.3.17|>=3.4.0,<3.4.11|>=4.0.0,<4.0.11",
+                "source": "FriendsOfPHP/security-advisories",
+                "reportedAt": "2018-05-25 11:46:22",
+                "composerRepository": "https://packagist.org",
+                "severity": null,
+                "sources": [
+                    {
+                        "name": "FriendsOfPHP/security-advisories",
+                        "remoteId": "symfony/security-csrf/CVE-2018-11406.yaml"
+                    }
+                ]
+            },
+            {
+                "advisoryId": "PKSA-c7kd-tcsk-4236",
+                "packageName": "symfony/security-csrf",
+                "remoteId": "symfony/security-csrf/CVE-2017-16653.yaml",
+                "title": "CVE-2017-16653: CSRF protection does not use different tokens for HTTP and HTTPS",
+                "link": "https://symfony.com/cve-2017-16653",
+                "cve": "CVE-2017-16653",
+                "affectedVersions": ">=2.7.0,<2.7.38|>=2.8.0,<2.8.31|>=3.0.0,<3.1.0|>=3.1.0,<3.2.0|>=3.2.0,<3.2.14|>=3.3.0,<3.3.13",
+                "source": "FriendsOfPHP/security-advisories",
+                "reportedAt": "2017-11-16 15:12:07",
+                "composerRepository": "https://packagist.org",
+                "severity": "medium",
+                "sources": [
+                    {
+                        "name": "GitHub",
+                        "remoteId": "GHSA-92x6-h2gr-8gxq"
+                    },
+                    {
+                        "name": "FriendsOfPHP/security-advisories",
+                        "remoteId": "symfony/security-csrf/CVE-2017-16653.yaml"
+                    }
+                ]
+            }
+        ],
+        "symfony/serializer": [
+            {
+                "advisoryId": "PKSA-s1hc-69wj-fhpp",
+                "packageName": "symfony/serializer",
+                "remoteId": "symfony/serializer/CVE-2021-41270.yaml",
+                "title": "CVE-2021-41270: Prevent CSV Injection via formulas",
+                "link": "https://symfony.com/cve-2021-41270",
+                "cve": "CVE-2021-41270",
+                "affectedVersions": ">=4.1.0,<4.2.0|>=4.2.0,<4.3.0|>=4.3.0,<4.4.0|>=4.4.0,<4.4.35|>=5.0.0,<5.1.0|>=5.1.0,<5.2.0|>=5.2.0,<5.3.0|>=5.3.0,<5.3.12",
+                "source": "FriendsOfPHP/security-advisories",
+                "reportedAt": "2021-11-15 10:47:04",
+                "composerRepository": "https://packagist.org",
+                "severity": "medium",
+                "sources": [
+                    {
+                        "name": "GitHub",
+                        "remoteId": "GHSA-2xhg-w2g5-w95x"
+                    },
+                    {
+                        "name": "FriendsOfPHP/security-advisories",
+                        "remoteId": "symfony/serializer/CVE-2021-41270.yaml"
+                    }
+                ]
+            },
+            {
+                "advisoryId": "PKSA-ft85-yyfg-zynf",
+                "packageName": "symfony/serializer",
+                "remoteId": "symfony/serializer/2012-02-24.yaml",
+                "title": "XML decoding attack vector through external entities",
+                "link": "https://symfony.com/blog/security-release-symfony-2-0-11-released",
+                "cve": null,
+                "affectedVersions": ">=2.0.0,<2.0.11",
+                "source": "FriendsOfPHP/security-advisories",
+                "reportedAt": "2012-02-24 00:00:00",
+                "composerRepository": "https://packagist.org",
+                "severity": "critical",
+                "sources": [
+                    {
+                        "name": "GitHub",
+                        "remoteId": "GHSA-j68w-pg49-f6vx"
+                    },
+                    {
+                        "name": "FriendsOfPHP/security-advisories",
+                        "remoteId": "symfony/serializer/2012-02-24.yaml"
+                    }
+                ]
+            }
+        ],
+        "symfony/translation": [
+            {
+                "advisoryId": "PKSA-9dxk-2dxf-2khq",
+                "packageName": "symfony/translation",
+                "remoteId": "symfony/translation/2012-08-28.yaml",
+                "title": "Security fixes related to the way XML is handled",
+                "link": "https://symfony.com/blog/security-release-symfony-2-0-17-released",
+                "cve": null,
+                "affectedVersions": ">=2.0.0,<2.0.17",
+                "source": "FriendsOfPHP/security-advisories",
+                "reportedAt": "2012-08-28 00:00:00",
+                "composerRepository": "https://packagist.org",
+                "severity": "high",
+                "sources": [
+                    {
+                        "name": "GitHub",
+                        "remoteId": "GHSA-f75p-x5vm-83qp"
+                    },
+                    {
+                        "name": "FriendsOfPHP/security-advisories",
+                        "remoteId": "symfony/translation/2012-08-28.yaml"
+                    }
+                ]
+            }
+        ],
+        "symfony/twig-bridge": [
+            {
+                "advisoryId": "PKSA-ztgh-x9c8-k66g",
+                "packageName": "symfony/twig-bridge",
+                "remoteId": "symfony/twig-bridge/CVE-2023-46734.yaml",
+                "title": "CVE-2023-46734: Potential XSS vulnerabilities in CodeExtension filters",
+                "link": "https://symfony.com/cve-2023-46734",
+                "cve": "CVE-2023-46734",
+                "affectedVersions": ">=2.0.0,<2.1.0|>=2.1.0,<2.2.0|>=2.2.0,<2.3.0|>=2.3.0,<2.4.0|>=2.4.0,<2.5.0|>=2.5.0,<2.6.0|>=2.6.0,<2.7.0|>=2.7.0,<2.8.0|>=2.8.0,<3.0.0|>=3.0.0,<3.1.0|>=3.1.0,<3.2.0|>=3.2.0,<3.3.0|>=3.3.0,<3.4.0|>=3.4.0,<4.0.0|>=4.0.0,<4.1.0|>=4.1.0,<4.2.0|>=4.2.0,<4.3.0|>=4.3.0,<4.4.0|>=4.4.0,<4.4.51|>=5.0.0,<5.1.0|>=5.1.0,<5.2.0|>=5.2.0,<5.3.0|>=5.3.0,<5.4.0|>=5.4.0,<5.4.31|>=6.0.0,<6.1.0|>=6.1.0,<6.2.0|>=6.2.0,<6.3.0|>=6.3.0,<6.3.8",
+                "source": "FriendsOfPHP/security-advisories",
+                "reportedAt": "2023-11-10 08:00:00",
+                "composerRepository": "https://packagist.org",
+                "severity": "medium",
+                "sources": [
+                    {
+                        "name": "GitHub",
+                        "remoteId": "GHSA-q847-2q57-wmr3"
+                    },
+                    {
+                        "name": "FriendsOfPHP/security-advisories",
+                        "remoteId": "symfony/twig-bridge/CVE-2023-46734.yaml"
+                    }
+                ]
+            }
+        ],
+        "symfony/validator": [
+            {
+                "advisoryId": "PKSA-w2tw-kmfg-rt9s",
+                "packageName": "symfony/validator",
+                "remoteId": "symfony/validator/CVE-2024-50343.yaml",
+                "title": "CVE-2024-50343: Incorrect response from Validator when input ends with `\n`",
+                "link": "https://symfony.com/cve-2024-50343",
+                "cve": "CVE-2024-50343",
+                "affectedVersions": ">=2.0.0,<3.0.0|>=3.0.0,<4.0.0|>=4.0.0,<5.0.0|>=5.0.0,<5.1.0|>=5.1.0,<5.2.0|>=5.2.0,<5.3.0|>=5.3.0,<5.4.0|>=5.4.0,<5.4.43|>=6.0.0,<6.1.0|>=6.1.0,<6.2.0|>=6.2.0,<6.3.0|>=6.3.0,<6.4.0|>=6.4.0,<6.4.11|>=7.0.0,<7.1.0|>=7.1.0,<7.1.4",
+                "source": "FriendsOfPHP/security-advisories",
+                "reportedAt": "2024-08-30 08:00:00",
+                "composerRepository": "https://packagist.org",
+                "severity": "low",
+                "sources": [
+                    {
+                        "name": "GitHub",
+                        "remoteId": "GHSA-g3rh-rrhp-jhh9"
+                    },
+                    {
+                        "name": "FriendsOfPHP/security-advisories",
+                        "remoteId": "symfony/validator/CVE-2024-50343.yaml"
+                    }
+                ]
+            },
+            {
+                "advisoryId": "PKSA-kd6c-vk25-4qyx",
+                "packageName": "symfony/validator",
+                "remoteId": "symfony/validator/CVE-2013-4751.yaml",
+                "title": "Validation metadata serialization and loss of information",
+                "link": "https://symfony.com/blog/security-releases-symfony-2-0-24-2-1-12-2-2-5-and-2-3-3-released",
+                "cve": "CVE-2013-4751",
+                "affectedVersions": ">=2.0.0,<2.0.24|>=2.1.0,<2.1.12|>=2.2.0,<2.2.5|>=2.3.0,<2.3.3",
+                "source": "FriendsOfPHP/security-advisories",
+                "reportedAt": "2013-08-17 07:55:32",
+                "composerRepository": "https://packagist.org",
+                "severity": "high",
+                "sources": [
+                    {
+                        "name": "GitHub",
+                        "remoteId": "GHSA-q8j7-fjh7-25v5"
+                    },
+                    {
+                        "name": "FriendsOfPHP/security-advisories",
+                        "remoteId": "symfony/validator/CVE-2013-4751.yaml"
+                    }
+                ]
+            },
+            {
+                "advisoryId": "PKSA-7bh2-7tsx-64wj",
+                "packageName": "symfony/validator",
+                "remoteId": "symfony/validator/2012-08-28.yaml",
+                "title": "Security fixes related to the way XML is handled",
+                "link": "https://symfony.com/blog/security-release-symfony-2-0-17-released",
+                "cve": null,
+                "affectedVersions": ">=2.0.0,<2.0.17",
+                "source": "FriendsOfPHP/security-advisories",
+                "reportedAt": "2012-08-28 00:00:00",
+                "composerRepository": "https://packagist.org",
+                "severity": "high",
+                "sources": [
+                    {
+                        "name": "GitHub",
+                        "remoteId": "GHSA-4vf2-qfg3-7598"
+                    },
+                    {
+                        "name": "FriendsOfPHP/security-advisories",
+                        "remoteId": "symfony/validator/2012-08-28.yaml"
+                    }
+                ]
+            }
+        ],
+        "symfony/var-exporter": [
+            {
+                "advisoryId": "PKSA-qdcz-9b22-7g4s",
+                "packageName": "symfony/var-exporter",
+                "remoteId": "symfony/var-exporter/CVE-2019-11325.yaml",
+                "title": "CVE-2019-11325: Fix escaping of strings in VarExporter",
+                "link": "https://symfony.com/cve-2019-11325",
+                "cve": "CVE-2019-11325",
+                "affectedVersions": ">=4.2.0,<4.2.12|>=4.3.0,<4.3.8",
+                "source": "FriendsOfPHP/security-advisories",
+                "reportedAt": "2019-11-13 08:00:00",
+                "composerRepository": "https://packagist.org",
+                "severity": "critical",
+                "sources": [
+                    {
+                        "name": "GitHub",
+                        "remoteId": "GHSA-w4rc-rx25-8m86"
+                    },
+                    {
+                        "name": "FriendsOfPHP/security-advisories",
+                        "remoteId": "symfony/var-exporter/CVE-2019-11325.yaml"
+                    }
+                ]
+            }
+        ],
+        "symfony/web-profiler-bundle": [
+            {
+                "advisoryId": "PKSA-6thw-45qq-kvhy",
+                "packageName": "symfony/web-profiler-bundle",
+                "remoteId": "symfony/web-profiler-bundle/CVE-2014-6072.yaml",
+                "title": "CSRF vulnerability in the Web Profiler",
+                "link": "https://symfony.com/cve-2014-6072",
+                "cve": "CVE-2014-6072",
+                "affectedVersions": ">=2.0.0,<2.1.0|>=2.1.0,<2.2.0|>=2.2.0,<2.3.0|>=2.3.0,<2.3.19|>=2.4.0,<2.4.9|>=2.5.0,<2.5.4",
+                "source": "FriendsOfPHP/security-advisories",
+                "reportedAt": "2014-09-03 07:40:30",
+                "composerRepository": "https://packagist.org",
+                "severity": "high",
+                "sources": [
+                    {
+                        "name": "GitHub",
+                        "remoteId": "GHSA-v35g-4rrw-h4fw"
+                    },
+                    {
+                        "name": "FriendsOfPHP/security-advisories",
+                        "remoteId": "symfony/web-profiler-bundle/CVE-2014-6072.yaml"
+                    }
+                ]
+            }
+        ],
+        "symfony/yaml": [
+            {
+                "advisoryId": "PKSA-xxgb-wq2d-7gpg",
+                "packageName": "symfony/yaml",
+                "remoteId": "symfony/yaml/CVE-2013-1397.yaml",
+                "title": "Ability to enable/disable object support in YAML parsing and dumping",
+                "link": "https://symfony.com/blog/security-release-symfony-2-0-22-and-2-1-7-released",
+                "cve": "CVE-2013-1397",
+                "affectedVersions": ">=2.0.0,<2.0.22|>=2.1.0,<2.1.7",
+                "source": "FriendsOfPHP/security-advisories",
+                "reportedAt": "2013-01-15 21:21:51",
+                "composerRepository": "https://packagist.org",
+                "severity": "high",
+                "sources": [
+                    {
+                        "name": "GitHub",
+                        "remoteId": "GHSA-7w53-hfpw-rg3g"
+                    },
+                    {
+                        "name": "FriendsOfPHP/security-advisories",
+                        "remoteId": "symfony/yaml/CVE-2013-1397.yaml"
+                    }
+                ]
+            },
+            {
+                "advisoryId": "PKSA-4y51-dgkc-x4zc",
+                "packageName": "symfony/yaml",
+                "remoteId": "symfony/yaml/CVE-2013-1348.yaml",
+                "title": "Ability to enable/disable PHP parsing in Yaml::parse()",
+                "link": "https://symfony.com/blog/security-release-symfony-2-0-22-and-2-1-7-released",
+                "cve": "CVE-2013-1348",
+                "affectedVersions": ">=2.0.0,<2.0.22",
+                "source": "FriendsOfPHP/security-advisories",
+                "reportedAt": "2013-01-15 21:16:19",
+                "composerRepository": "https://packagist.org",
+                "severity": "high",
+                "sources": [
+                    {
+                        "name": "GitHub",
+                        "remoteId": "GHSA-2r5h-6r7v-5m7c"
+                    },
+                    {
+                        "name": "FriendsOfPHP/security-advisories",
+                        "remoteId": "symfony/yaml/CVE-2013-1348.yaml"
+                    }
+                ]
+            }
+        ],
+        "tecnickcom/tcpdf": [
+            {
+                "advisoryId": "PKSA-jwjn-w3mx-tq38",
+                "packageName": "tecnickcom/tcpdf",
+                "remoteId": "GHSA-mx3p-fhpw-x6rv",
+                "title": "TCPDF vulnerable to Regular Expression Denial of Service",
+                "link": "https://github.com/advisories/GHSA-mx3p-fhpw-x6rv",
+                "cve": "CVE-2024-22640",
+                "affectedVersions": "<=6.7.4",
+                "source": "GitHub",
+                "reportedAt": "2024-04-19 18:31:11",
+                "composerRepository": "https://packagist.org",
+                "severity": "medium",
+                "sources": [
+                    {
+                        "name": "GitHub",
+                        "remoteId": "GHSA-mx3p-fhpw-x6rv"
+                    }
+                ]
+            },
+            {
+                "advisoryId": "PKSA-d3g2-dzgm-n74r",
+                "packageName": "tecnickcom/tcpdf",
+                "remoteId": "GHSA-g9wg-98c2-qv3v",
+                "title": "TCPDF Cross-site Scripting vulnerability",
+                "link": "https://github.com/advisories/GHSA-g9wg-98c2-qv3v",
+                "cve": "CVE-2024-32489",
+                "affectedVersions": "<6.7.4",
+                "source": "GitHub",
+                "reportedAt": "2024-04-15 06:30:35",
+                "composerRepository": "https://packagist.org",
+                "severity": "medium",
+                "sources": [
+                    {
+                        "name": "GitHub",
+                        "remoteId": "GHSA-g9wg-98c2-qv3v"
+                    }
+                ]
+            },
+            {
+                "advisoryId": "PKSA-jvj8-gbfh-v875",
+                "packageName": "tecnickcom/tcpdf",
+                "remoteId": "tecnickcom/tcpdf/CVE-2018-17057.yaml",
+                "title": "Attackers can trigger deserialization of arbitrary data via the phar:// wrapper.",
+                "link": "https://github.com/tecnickcom/TCPDF/commit/1861e33fe05f653b67d070f7c106463e7a5c26ed",
+                "cve": "CVE-2018-17057",
+                "affectedVersions": "<6.2.22",
+                "source": "FriendsOfPHP/security-advisories",
+                "reportedAt": "2018-09-14 15:26:29",
+                "composerRepository": "https://packagist.org",
+                "severity": "critical",
+                "sources": [
+                    {
+                        "name": "GitHub",
+                        "remoteId": "GHSA-5hw4-m7f3-hhx8"
+                    },
+                    {
+                        "name": "FriendsOfPHP/security-advisories",
+                        "remoteId": "tecnickcom/tcpdf/CVE-2018-17057.yaml"
+                    }
+                ]
+            }
+        ],
+        "twig/twig": [
+            {
+                "advisoryId": "PKSA-yhcn-xrg3-68b1",
+                "packageName": "twig/twig",
+                "remoteId": "twig/twig/CVE-2024-51754.yaml",
+                "title": "Unguarded calls to __toString() when nesting an object into an array",
+                "link": "https://symfony.com/blog/cve-2024-51754-unguarded-calls-to-tostring-in-a-sandbox-when-an-object-is-in-an-array-or-an-argument-list",
+                "cve": "CVE-2024-51754",
+                "affectedVersions": ">=1.0.0,<2.0.0|>=2.0.0,<3.0.0|>=3.0.0,<3.11.2|>=3.12.0,<3.14.1",
+                "source": "FriendsOfPHP/security-advisories",
+                "reportedAt": "2024-11-06 08:00:00",
+                "composerRepository": "https://packagist.org",
+                "severity": "low",
+                "sources": [
+                    {
+                        "name": "GitHub",
+                        "remoteId": "GHSA-6377-hfv9-hqf6"
+                    },
+                    {
+                        "name": "FriendsOfPHP/security-advisories",
+                        "remoteId": "twig/twig/CVE-2024-51754.yaml"
+                    }
+                ]
+            },
+            {
+                "advisoryId": "PKSA-2wrf-1xmk-1pky",
+                "packageName": "twig/twig",
+                "remoteId": "twig/twig/CVE-2024-51755.yaml",
+                "title": "Unguarded calls to __isset() and to array-accesses when the sandbox is enabled",
+                "link": "https://symfony.com/blog/cve-2024-51755-unguarded-calls-to-isset-and-to-array-accesses-in-a-sandbox",
+                "cve": "CVE-2024-51755",
+                "affectedVersions": ">=1.0.0,<2.0.0|>=2.0.0,<3.0.0|>=3.0.0,<3.11.2|>=3.12.0,<3.14.1",
+                "source": "FriendsOfPHP/security-advisories",
+                "reportedAt": "2024-11-06 08:00:00",
+                "composerRepository": "https://packagist.org",
+                "severity": "low",
+                "sources": [
+                    {
+                        "name": "GitHub",
+                        "remoteId": "GHSA-jjxq-ff2g-95vh"
+                    },
+                    {
+                        "name": "FriendsOfPHP/security-advisories",
+                        "remoteId": "twig/twig/CVE-2024-51755.yaml"
+                    }
+                ]
+            },
+            {
+                "advisoryId": "PKSA-6319-ffpf-gx66",
+                "packageName": "twig/twig",
+                "remoteId": "twig/twig/CVE-2024-45411.yaml",
+                "title": "Possible sandbox bypass",
+                "link": "https://symfony.com/blog/twig-security-release-possible-sandbox-bypass",
+                "cve": "CVE-2024-45411",
+                "affectedVersions": ">=1.0.0,<1.44.7|>=2.0.0,<2.16.0|>=3.0.0,<3.11.0|>=3.12.0,<3.14.0",
+                "source": "FriendsOfPHP/security-advisories",
+                "reportedAt": "2024-09-09 08:51:06",
+                "composerRepository": "https://packagist.org",
+                "severity": "medium",
+                "sources": [
+                    {
+                        "name": "GitHub",
+                        "remoteId": "GHSA-6j75-5wfj-gh66"
+                    },
+                    {
+                        "name": "FriendsOfPHP/security-advisories",
+                        "remoteId": "twig/twig/CVE-2024-45411.yaml"
+                    }
+                ]
+            },
+            {
+                "advisoryId": "PKSA-n7sg-8f52-pqtf",
+                "packageName": "twig/twig",
+                "remoteId": "twig/twig/CVE-2022-39261.yaml",
+                "title": "Possibility to load a template outside a configured directory when using the filesystem loader",
+                "link": "https://symfony.com/blog/twig-security-release-possibility-to-load-a-template-outside-a-configured-directory-when-using-the-filesystem-loader",
+                "cve": "CVE-2022-39261",
+                "affectedVersions": ">=1.0.0,<1.44.7|>=2.0.0,<2.15.3|>=3.0.0,<3.4.3",
+                "source": "FriendsOfPHP/security-advisories",
+                "reportedAt": "2022-09-28 10:36:08",
+                "composerRepository": "https://packagist.org",
+                "severity": "high",
+                "sources": [
+                    {
+                        "name": "GitHub",
+                        "remoteId": "GHSA-52m2-vc4m-jj33"
+                    },
+                    {
+                        "name": "FriendsOfPHP/security-advisories",
+                        "remoteId": "twig/twig/CVE-2022-39261.yaml"
+                    }
+                ]
+            },
+            {
+                "advisoryId": "PKSA-8kk8-h2xr-h5nx",
+                "packageName": "twig/twig",
+                "remoteId": "twig/twig/CVE-2022-23614.yaml",
+                "title": "Disallow non closures in the sort filter",
+                "link": "https://symfony.com/blog/twig-security-release-disallow-non-closures-in-the-sort-filter",
+                "cve": "CVE-2022-23614",
+                "affectedVersions": ">=2.0.0,<2.14.11|>=3.0.0,<3.3.8",
+                "source": "FriendsOfPHP/security-advisories",
+                "reportedAt": "2022-02-04 06:52:21",
+                "composerRepository": "https://packagist.org",
+                "severity": "high",
+                "sources": [
+                    {
+                        "name": "GitHub",
+                        "remoteId": "GHSA-5mv2-rx3q-4w2v"
+                    },
+                    {
+                        "name": "FriendsOfPHP/security-advisories",
+                        "remoteId": "twig/twig/CVE-2022-23614.yaml"
+                    }
+                ]
+            },
+            {
+                "advisoryId": "PKSA-6cvh-gt46-wq7q",
+                "packageName": "twig/twig",
+                "remoteId": "twig/twig/CVE-2019-9942.yaml",
+                "title": "Sandbox Information Disclosure",
+                "link": "https://symfony.com/blog/twig-sandbox-information-disclosure",
+                "cve": "CVE-2019-9942",
+                "affectedVersions": "<1.38.0|>=2.0.0,<2.7.0",
+                "source": "FriendsOfPHP/security-advisories",
+                "reportedAt": "2019-03-12 12:35:01",
+                "composerRepository": "https://packagist.org",
+                "severity": "low",
+                "sources": [
+                    {
+                        "name": "GitHub",
+                        "remoteId": "GHSA-vxrc-68xx-x48g"
+                    },
+                    {
+                        "name": "FriendsOfPHP/security-advisories",
+                        "remoteId": "twig/twig/CVE-2019-9942.yaml"
+                    }
+                ]
+            },
+            {
+                "advisoryId": "PKSA-19rw-dqx2-75hc",
+                "packageName": "twig/twig",
+                "remoteId": "twig/twig/CVE-2015-7809.yaml",
+                "title": "Remote code execution in templates",
+                "link": "https://symfony.com/blog/security-release-twig-1-20-0",
+                "cve": "CVE-2015-7809",
+                "affectedVersions": "<1.20.0",
+                "source": "FriendsOfPHP/security-advisories",
+                "reportedAt": "2015-08-12 15:53:50",
+                "composerRepository": "https://packagist.org",
+                "severity": "high",
+                "sources": [
+                    {
+                        "name": "GitHub",
+                        "remoteId": "GHSA-xw83-pwrm-9j74"
+                    },
+                    {
+                        "name": "FriendsOfPHP/security-advisories",
+                        "remoteId": "twig/twig/CVE-2015-7809.yaml"
+                    }
+                ]
+            },
+            {
+                "advisoryId": "PKSA-g1zx-twcw-9z6k",
+                "packageName": "twig/twig",
+                "remoteId": "twig/twig/2013-04-08.yaml",
+                "title": "Vulnerability in the filesystem loader",
+                "link": "http://blog.twig.sensiolabs.org/post/47461911874/security-release-twig-1-12-3-released",
+                "cve": null,
+                "affectedVersions": ">=1.0.0,<1.12.3",
+                "source": "FriendsOfPHP/security-advisories",
+                "reportedAt": "2013-04-08 00:00:00",
+                "composerRepository": "https://packagist.org",
+                "severity": "medium",
+                "sources": [
+                    {
+                        "name": "GitHub",
+                        "remoteId": "GHSA-7cvr-xhm5-x998"
+                    },
+                    {
+                        "name": "FriendsOfPHP/security-advisories",
+                        "remoteId": "twig/twig/2013-04-08.yaml"
+                    }
+                ]
+            }
+        ]
+    }
+}

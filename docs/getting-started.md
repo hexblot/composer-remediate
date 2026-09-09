@@ -9,7 +9,7 @@
 | Requirement | Minimum | Notes |
 |---|---|---|
 | PHP | 8.1 | 8.1 reached end of life in December 2025; the plugin still runs there but prints a warning |
-| Composer | 2.4 | `composer audit` and transitive `--with` constraints appeared in 2.4 |
+| Composer | 2.4 | `composer audit` and transitive `--with` constraints appeared in 2.4; the suite runs against 2.4, 2.7, 2.8, 2.9 and the latest release in CI |
 | Composer, full feature set | 2.9 | `--minimal-changes` (`-m`) appeared in 2.9; on older versions the planner omits it and warns that diffs may be larger |
 
 ## Installation (intended)

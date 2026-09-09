@@ -63,7 +63,8 @@ final class InProcessSolver implements SolverInterface
 
             // Composer >= 2.9 exposes the solved lock in memory after a dry run. Older releases do
             // not, so there the update writes composer.lock into the scratch copy (never the user's
-            // project) and the result is read back from that file.
+            // project) and the result is read back from that file. Composer writes the lock only when
+            // executeOperations stays enabled; with install disabled no operation runs anyway.
             $inMemory = method_exists(Installer::class, 'getLockTransaction'); // @phpstan-ignore function.alreadyNarrowedType
             $installer = Installer::create($io, $composer);
             $installer
@@ -71,7 +72,6 @@ final class InProcessSolver implements SolverInterface
                 ->setUpdate(true)
                 ->setInstall(false)
                 ->setWriteLock(!$inMemory)
-                ->setExecuteOperations(false)
                 ->setDevMode(true)
                 ->setDumpAutoloader(false)
                 ->setRunScripts(false)
