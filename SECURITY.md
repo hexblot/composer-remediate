@@ -67,12 +67,17 @@ Out of scope:
   Composer has already activated the analysed project's other allowed plugins before it runs, as for
   any Composer command; the planner itself then solves every candidate in fresh Composer instances
   with plugins and scripts disabled. `composer-remediate` (the shipped binary) forces
-  `--no-plugins --no-scripts` from the first instruction, so nothing from the analysed project
-  executes. Neither entry point writes to the analysed project; candidate solves run in a temporary
-  copy that is deleted afterwards.
+  `--no-plugins --no-scripts` from the first instruction and never includes a project's
+  `vendor/autoload.php` (whose `autoload.files` are project code), so nothing from the analysed
+  project executes, including when the binary is installed inside that project. Neither entry point
+  writes to the analysed project; candidate solves run in a temporary copy that is deleted afterwards,
+  and the subprocess solver pins `COMPOSER` to that copy so an inherited `COMPOSER` variable cannot
+  point an update at the real lock file. Both properties have regression tests.
 - Absence of data is never a clean result: no advisory-capable repository, a malformed advisory
   document or an unparsable range stop the run with exit 4 instead of reporting zero findings, and a
-  solver or network failure during the search yields exit 3 or 5 rather than "no fix exists".
+  solver or network failure during the search yields exit 3 or 5 rather than "no fix exists". An
+  advisory database keeps the upstream records its build could not interpret as coverage gaps, and a
+  run warns for every gap that names a package in the lock.
 - Advisory data is treated as untrusted input: it influences which versions are considered fixed,
   and every recommendation is still validated by re-checking the resulting lock against the same
   data. It is never executed or interpolated into commands without quoting.

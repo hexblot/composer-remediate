@@ -92,7 +92,11 @@ final class SubprocessSolver implements SolverInterface
             }
             array_push($args, ...$candidate->extraArguments, ...$this->extraArguments);
 
+            // The child must solve the scratch copy and nothing else. COMPOSER is inherited from the
+            // parent and may name the analysed project's manifest (COMPOSER=/path/alternate.json);
+            // pointing it at the scratch manifest keeps the update inside the scratch directory.
             $process = new Process($args, $project->directory(), [
+                'COMPOSER' => $project->composerJsonPath(),
                 'COMPOSER_NO_INTERACTION' => '1',
                 'COMPOSER_NO_BLOCKING' => '1',
                 'COMPOSER_NO_SECURITY_BLOCKING' => '1',
@@ -112,6 +116,10 @@ final class SubprocessSolver implements SolverInterface
             }
 
             try {
+                $lockPath = $project->directory() . '/composer.lock';
+                if (!is_file($lockPath)) {
+                    return new SolveResult(SolveStatus::Error, null, $output, 'Composer reported success but wrote no lock file into the scratch directory.');
+                }
                 $composer = Factory::create(new NullIO(), $project->composerJsonPath(), true, true);
                 $after = LockSnapshot::fromLocker($composer->getLocker());
             } catch (\Throwable $e) {

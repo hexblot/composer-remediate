@@ -4,6 +4,7 @@ declare(strict_types=1);
 
 namespace Remediate\Engine\Advisory\Db;
 
+use Composer\Semver\Comparator;
 use Composer\Semver\Interval;
 use Composer\Semver\Intervals;
 use Composer\Semver\VersionParser;
@@ -21,9 +22,15 @@ final class RangeNormalizer
     }
 
     /**
-     * OSV `ranges` of type ECOSYSTEM/SEMVER (events introduced/fixed/last_affected/limit) combined
-     * with the explicit `versions` list: per the OSV evaluation rules a version is affected when it is
-     * in either, so explicit versions outside the ranges are added as exact matches.
+     * OSV `ranges` of type ECOSYSTEM/SEMVER combined with the explicit `versions` list: per the OSV
+     * evaluation rules a version is affected when it is in either, so explicit versions outside the
+     * ranges are added as exact matches.
+     *
+     * Events are evaluated the way the OSV specification describes: sorted by version, `introduced`
+     * opens an affected interval, the next `fixed` or `last_affected` closes it, and `limit` caps the
+     * whole range (every interval is cut at the smallest limit) rather than closing an interval of its
+     * own. Input order is therefore irrelevant and "introduced 1.0, fixed 1.1, limit 2.0" affects
+     * exactly [1.0, 1.1).
      *
      * @param list<array<string, mixed>> $ranges
      * @param list<string>               $versions
@@ -36,33 +43,65 @@ final class RangeNormalizer
             if (!in_array($type, ['ECOSYSTEM', 'SEMVER'], true) || !is_array($range['events'] ?? null)) {
                 continue;
             }
-            $introduced = null;
+            /** @var list<array{kind: string, version: string, normalized: string}> $events */
+            $events = [];
+            $limit = null;
             foreach ($range['events'] as $event) {
                 if (!is_array($event)) {
                     continue;
                 }
-                if (isset($event['introduced']) && is_string($event['introduced'])) {
-                    $introduced = $event['introduced'];
+                foreach (['introduced', 'fixed', 'last_affected', 'limit'] as $kind) {
+                    if (!isset($event[$kind]) || !is_string($event[$kind])) {
+                        continue;
+                    }
+                    $raw = $event[$kind];
+                    if ($kind === 'limit' && $raw === '*') {
+                        break;
+                    }
+                    $version = $kind === 'introduced' && $raw === '0' ? '0' : self::clean($raw);
+                    try {
+                        $normalized = $version === '0' ? '0.0.0.0' : $this->parser->normalize($version);
+                    } catch (\UnexpectedValueException) {
+                        return null; // a version the ecosystem cannot express: the record becomes a coverage gap
+                    }
+                    if ($kind === 'limit') {
+                        if ($limit === null || Comparator::lessThan($normalized, $limit['normalized'])) {
+                            $limit = ['version' => $version, 'normalized' => $normalized];
+                        }
+                        break;
+                    }
+                    $events[] = ['kind' => $kind, 'version' => $version, 'normalized' => $normalized];
+                    break;
+                }
+            }
+            // Sort by version; at equal versions a closing event precedes the next opening one.
+            usort($events, static function (array $a, array $b): int {
+                if ($a['normalized'] === $b['normalized']) {
+                    return ($a['kind'] === 'introduced' ? 1 : 0) <=> ($b['kind'] === 'introduced' ? 1 : 0);
+                }
+
+                return Comparator::lessThan($a['normalized'], $b['normalized']) ? -1 : 1;
+            });
+            $introduced = null;
+            foreach ($events as $event) {
+                if ($event['kind'] === 'introduced') {
+                    $introduced ??= $event;
                     continue;
                 }
-                $bound = null;
-                if (isset($event['fixed']) && is_string($event['fixed'])) {
-                    $bound = '<' . self::clean($event['fixed']);
-                } elseif (isset($event['last_affected']) && is_string($event['last_affected'])) {
-                    $bound = '<=' . self::clean($event['last_affected']);
-                } elseif (isset($event['limit']) && is_string($event['limit']) && $event['limit'] !== '*') {
-                    // "limit" caps the range without asserting a fix; versions from it onwards are not affected
-                    $bound = '<' . self::clean($event['limit']);
+                if ($introduced === null) {
+                    continue; // a fix without an introduction closes nothing
                 }
-                if ($bound === null) {
-                    continue;
+                $piece = self::osvPiece($introduced, $event['kind'] === 'fixed' ? '<' : '<=', $event, $limit);
+                if ($piece !== null) {
+                    $parts[] = $piece;
                 }
-                $parts[] = ($introduced !== null && $introduced !== '0' ? '>=' . self::clean($introduced) . ',' : '') . $bound;
                 $introduced = null;
             }
             if ($introduced !== null) {
-                // an open-ended range: everything from "introduced" onwards
-                $parts[] = $introduced === '0' ? '*' : '>=' . self::clean($introduced);
+                $piece = self::osvPiece($introduced, null, null, $limit);
+                if ($piece !== null) {
+                    $parts[] = $piece;
+                }
             }
         }
 
@@ -89,6 +128,32 @@ final class RangeNormalizer
         }
 
         return $this->validate(implode('|', array_unique($parts)));
+    }
+
+    /**
+     * One affected interval as a Composer constraint, cut at the range's limit when there is one.
+     *
+     * @param array{kind: string, version: string, normalized: string}      $introduced
+     * @param array{kind: string, version: string, normalized: string}|null $end
+     * @param array{version: string, normalized: string}|null               $limit
+     */
+    private static function osvPiece(array $introduced, ?string $endOperator, ?array $end, ?array $limit): ?string
+    {
+        $lower = $introduced['version'] === '0' ? null : '>=' . $introduced['version'];
+        $upper = $end !== null && $endOperator !== null ? $endOperator . $end['version'] : null;
+        if ($limit !== null) {
+            if ($lower !== null && !Comparator::lessThan($introduced['normalized'], $limit['normalized'])) {
+                return null; // the interval starts at or beyond the limit: nothing of it is affected
+            }
+            if ($upper === null || Comparator::lessThan($limit['normalized'], $end['normalized'] ?? $limit['normalized']) || ($endOperator === '<=' && $limit['normalized'] === ($end['normalized'] ?? ''))) {
+                $upper = '<' . $limit['version'];
+            }
+        }
+        if ($lower === null && $upper === null) {
+            return '*';
+        }
+
+        return implode(',', array_filter([$lower, $upper], static fn (?string $p): bool => $p !== null));
     }
 
     /**

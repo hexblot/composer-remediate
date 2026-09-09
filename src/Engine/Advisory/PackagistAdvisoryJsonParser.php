@@ -4,8 +4,6 @@ declare(strict_types=1);
 
 namespace Remediate\Engine\Advisory;
 
-use Composer\Pcre\Preg;
-use Composer\Semver\Constraint\Constraint;
 use Composer\Semver\Constraint\ConstraintInterface;
 use Composer\Semver\VersionParser;
 
@@ -114,26 +112,6 @@ final class PackagistAdvisoryJsonParser
             return $this->versionParser->parseConstraints($expression);
         } catch (\UnexpectedValueException $e) {
             throw new AdvisoryLookupFailed(sprintf('Advisory %s has an unparsable affectedVersions "%s": %s', $advisoryId, $expression, $e->getMessage()), 0, $e);
-        }
-    }
-
-    /**
-     * Mirrors Composer's own leniency: fall back to the leading constraint fragment when the full
-     * expression is unparsable, and to an impossible constraint when even that fails. Used only for
-     * ranges that came out of a database build, where unparsable input was already rejected.
-     */
-    public function parseAffectedVersions(string $expression): ConstraintInterface
-    {
-        try {
-            return $this->versionParser->parseConstraints($expression);
-        } catch (\UnexpectedValueException) {
-            try {
-                $fragment = Preg::replace('{(^[>=<^~]*[\d.]+).*}', '$1', $expression);
-
-                return $this->versionParser->parseConstraints($fragment);
-            } catch (\UnexpectedValueException) {
-                return new Constraint(Constraint::STR_OP_EQ, '0.0.0-invalid-version');
-            }
         }
     }
 

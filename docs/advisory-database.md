@@ -86,7 +86,21 @@ is downloaded into Composer's cache directory and refreshed when the copy is old
 with `--offline` the cached copy is used as is.
 
 `composer remediate:db-status` shows where the database comes from, when it was built, which
-sources contributed how many records, and the dataset hash. Every option of both commands is listed
+sources contributed how many records, the dataset hash, and the coverage gaps.
+
+### Coverage gaps
+
+Upstream data is not always readable: an OSV record may use a version scheme Composer cannot parse,
+a FriendsOfPHP file may fail to parse, a Packagist entry may carry an affected range that is not a
+constraint. The build does not drop such records silently. Each one is stored in the database as a
+**coverage gap** with its source, identifier, the package it names and the reason, and
+`composer remediate` prints a warning for every gap that names a package in the lock: the package is
+treated as unaffected by that record, and the report says so. `remediate:db-status` lists the gaps.
+Databases built before gap tracking existed are flagged as such; rebuild them.
+
+Private advisories are different: a record in an `--include` file that cannot be interpreted fails
+the build, the same way an unparsable `--advisories-file` fails a run, because that data is yours to
+fix. Every option of both commands is listed
 in the [CLI reference](cli-reference.md).
 
 ## Sharing a database
@@ -125,7 +139,9 @@ sha256sum -c advisories.sqlite.sha256      # the sidecar is `sha256sum` output: 
 
 What the client verifies on its own: when `--database-location` is a URL, the plugin also fetches
 `<url>.sha256` and refuses a download whose digest does not match (exit 4). A URL without a sidecar
-is accepted with a warning in the report saying the download was not verified. The attestation is
+is accepted with a warning in the report saying the download was not verified; that outcome is
+recorded next to the cached copy, and every later run that reuses the copy repeats the warning, so
+the disclosure belongs to the bytes in use rather than to the request that fetched them. The attestation is
 **not** checked automatically; it is there for `gh attestation verify` in a pipeline step, and the
 trust the client places in a URL is the trust in TLS plus the publisher's checksum, nothing more.
 

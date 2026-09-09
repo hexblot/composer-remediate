@@ -6,6 +6,7 @@ namespace Remediate\Engine\Advisory\Db\Source;
 
 use Composer\Util\HttpDownloader;
 use Remediate\Engine\Advisory\Db\AffectedRange;
+use Remediate\Engine\Advisory\Db\CoverageGap;
 use Remediate\Engine\Advisory\Db\NormalizedAdvisory;
 use Remediate\Engine\Advisory\Db\RangeNormalizer;
 use Remediate\Engine\Advisory\Db\SourceRecord;
@@ -19,6 +20,9 @@ use Symfony\Component\Yaml\Yaml;
 final class FriendsOfPhpSource implements AdvisorySourceInterface
 {
     public const URL = 'https://codeload.github.com/FriendsOfPHP/security-advisories/zip/refs/heads/master';
+
+    /** @var list<CoverageGap> */
+    private array $gaps = [];
 
     public function __construct(
         private readonly HttpDownloader $downloader,
@@ -37,11 +41,15 @@ final class FriendsOfPhpSource implements AdvisorySourceInterface
     public function fetch(callable $log): array
     {
         $records = [];
+        $this->gaps = [];
         $skipped = 0;
         $visit = function (string $path, string $contents) use (&$records, &$skipped): void {
-            $record = $this->record($path, $contents);
+            $record = $this->record($path, $contents, $gap);
             if ($record === null) {
                 ++$skipped;
+                if ($gap !== null) {
+                    $this->gaps[] = $gap;
+                }
 
                 return;
             }
@@ -68,29 +76,44 @@ final class FriendsOfPhpSource implements AdvisorySourceInterface
                 },
             );
         }
-        $log(sprintf('FriendsOfPHP: %d files, %d records%s', $count, count($records), $skipped > 0 ? sprintf(', %d skipped', $skipped) : ''));
+        $log(sprintf('FriendsOfPHP: %d files, %d records%s', $count, count($records), $skipped > 0 ? sprintf(', %d skipped (recorded as coverage gaps)', $skipped) : ''));
 
         return $records;
     }
 
-    private function record(string $path, string $contents): ?NormalizedAdvisory
+    public function gaps(): array
     {
+        return $this->gaps;
+    }
+
+    /** @param-out CoverageGap|null $gap */
+    private function record(string $path, string $contents, ?CoverageGap &$gap = null): ?NormalizedAdvisory
+    {
+        $gap = null;
+        // The directory layout names the package even when the file cannot be read.
+        $fromPath = preg_match('{^([^/]+/[^/]+)/}', $path, $m) === 1 ? strtolower($m[1]) : null;
         try {
             $doc = Yaml::parse($contents);
-        } catch (ParseException) {
+        } catch (ParseException $e) {
+            $gap = new CoverageGap('FriendsOfPHP', $path, $fromPath, 'invalid YAML', $e->getMessage());
+
             return null;
         }
         if (!is_array($doc)) {
+            $gap = new CoverageGap('FriendsOfPHP', $path, $fromPath, 'document is not a map');
+
             return null;
         }
         $reference = $doc['reference'] ?? null;
         if (!is_string($reference) || !str_starts_with($reference, 'composer://')) {
-            return null;
+            return null; // not a Composer package (e.g. a Drupal or WordPress advisory): not a gap
         }
         $package = strtolower(substr($reference, strlen('composer://')));
         $branches = is_array($doc['branches'] ?? null) ? $doc['branches'] : [];
         $expression = $this->ranges->fromFriendsOfPhp($branches);
         if ($expression === null) {
+            $gap = new CoverageGap('FriendsOfPHP', $path, $package, 'no usable version range in branches', json_encode($branches, JSON_UNESCAPED_SLASHES) ?: null);
+
             return null;
         }
 

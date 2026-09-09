@@ -178,7 +178,9 @@ blocking is disabled.
 A finding whose only fix requires widening a `composer.json` constraint is marked as **constraint
 drag**: the report names the root requirement that blocks every fix within the current constraints.
 Ignore entries (`--ignore`, `config.audit.ignore`, `config.policy`) that match nothing in the lock are
-reported as stale so the configuration stays honest. Composer's own scoping is respected: an
+reported as stale so the configuration stays honest. When the advisory source is a database, upstream
+records its build could not interpret are reported as coverage gaps for the affected locked packages
+(see [Advisory database](advisory-database.md#coverage-gaps)). Composer's own scoping is respected: an
 `audit.ignore` entry with `apply: block` or a `policy.advisories` entry with `on-audit: false` is an
 install-time exception, not an audit-time one, and does not suppress a finding here; package rules
 apply only within their constraint.

@@ -5,6 +5,7 @@ declare(strict_types=1);
 namespace Remediate\Engine\Advisory\Db\Source;
 
 use Remediate\Engine\Advisory\Db\AffectedRange;
+use Remediate\Engine\Advisory\Db\CoverageGap;
 use Remediate\Engine\Advisory\Db\NormalizedAdvisory;
 use Remediate\Engine\Advisory\Db\RangeNormalizer;
 use Remediate\Engine\Advisory\Db\SourceRecord;
@@ -22,16 +23,27 @@ final class PackagistShapeMapper
 
     /**
      * @param array<mixed> $entry
+     * @param-out CoverageGap|null $gap why the record was left out, when it was
      */
-    public function map(string $package, array $entry, string $sourceName): ?NormalizedAdvisory
+    public function map(string $package, array $entry, string $sourceName, ?CoverageGap &$gap = null): ?NormalizedAdvisory
     {
+        $gap = null;
         $id = $entry['advisoryId'] ?? null;
         $affected = $entry['affectedVersions'] ?? null;
-        if (!is_string($id) || $id === '' || !is_string($affected)) {
+        if (!is_string($id) || $id === '') {
+            $gap = new CoverageGap($sourceName, '(no advisoryId)', strtolower($package), 'record has no advisoryId');
+
+            return null;
+        }
+        if (!is_string($affected)) {
+            $gap = new CoverageGap($sourceName, $id, strtolower($package), 'record has no affectedVersions');
+
             return null;
         }
         $expression = $this->ranges->validate($affected);
         if ($expression === null) {
+            $gap = new CoverageGap($sourceName, $id, strtolower($package), 'unparsable affectedVersions', $affected);
+
             return null;
         }
         $aliases = [$id];
@@ -79,12 +91,13 @@ final class PackagistShapeMapper
      *
      * @param array<mixed> $document
      *
-     * @return array{records: list<NormalizedAdvisory>, skipped: int}
+     * @return array{records: list<NormalizedAdvisory>, skipped: int, gaps: list<CoverageGap>}
      */
     public function mapDocument(array $document, string $sourceName): array
     {
         $records = [];
         $skipped = 0;
+        $gaps = [];
         $advisories = $document['advisories'] ?? null;
         if (!is_array($advisories)) {
             throw new \RuntimeException(sprintf('%s: document has no "advisories" map', $sourceName));
@@ -96,17 +109,21 @@ final class PackagistShapeMapper
             foreach ($list as $entry) {
                 if (!is_array($entry)) {
                     ++$skipped;
+                    $gaps[] = new CoverageGap($sourceName, '(malformed entry)', strtolower($packageName), 'advisory entry is not an object');
                     continue;
                 }
-                $record = $this->map($packageName, $entry, $sourceName);
+                $record = $this->map($packageName, $entry, $sourceName, $gap);
                 if ($record === null) {
                     ++$skipped;
+                    if ($gap !== null) {
+                        $gaps[] = $gap;
+                    }
                     continue;
                 }
                 $records[] = $record;
             }
         }
 
-        return ['records' => $records, 'skipped' => $skipped];
+        return ['records' => $records, 'skipped' => $skipped, 'gaps' => $gaps];
     }
 }

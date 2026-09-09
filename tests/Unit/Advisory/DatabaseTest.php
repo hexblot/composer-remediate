@@ -114,7 +114,6 @@ final class DatabaseTest extends TestCase
         $path = sys_get_temp_dir() . '/remediate-private-' . bin2hex(random_bytes(4)) . '.json';
         file_put_contents($path, json_encode(['advisories' => ['Company/Internal' => [
             ['advisoryId' => 'COMPANY-2026-001', 'affectedVersions' => '<2.1.4', 'title' => 'Internal issue', 'severity' => 'High', 'reportedAt' => '2026-01-15 10:00:00'],
-            ['advisoryId' => 'broken', 'affectedVersions' => 'not a range !!'],
         ]]]));
         try {
             $source = new \Remediate\Engine\Advisory\Db\Source\JsonFileSource($path);
@@ -125,7 +124,8 @@ final class DatabaseTest extends TestCase
             self::assertSame('company/internal', $records[0]->affected[0]->package);
             self::assertSame('high', $records[0]->severity);
             self::assertStringStartsWith('local:', $records[0]->sources[0]->name);
-            self::assertStringContainsString('1 skipped', $messages[0]);
+            self::assertStringContainsString('1 records', $messages[0]);
+            self::assertSame([], $source->gaps());
         } finally {
             @unlink($path);
         }

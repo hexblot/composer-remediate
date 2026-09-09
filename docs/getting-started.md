@@ -30,8 +30,10 @@ composer require --dev hexblot/composer-remediate
 
 Both forms also install `vendor/bin/composer-remediate` (or `~/.composer/vendor/bin/composer-remediate`
 for a global install): a standalone entry point that runs the same commands with the analysed
-project's plugins and scripts disabled from the first instruction. Prefer it when the project under
-analysis is not trusted; see [Privacy and network behaviour](privacy-and-network.md#the-plugin-boundary).
+project's plugins and scripts disabled from the first instruction, and that never includes a
+project's autoloader. It needs a Composer phar on PATH (or `REMEDIATE_COMPOSER_BINARY`). Prefer it
+when the project under analysis is not trusted; see
+[Privacy and network behaviour](privacy-and-network.md#the-plugin-boundary).
 
 ## Usage
 

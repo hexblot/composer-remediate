@@ -70,6 +70,56 @@ final class Database
         return (int) $this->query('SELECT COUNT(*) FROM advisory')->fetchColumn();
     }
 
+    /** Databases built before coverage gaps were recorded have no gap table. */
+    public function tracksGaps(): bool
+    {
+        return (int) $this->query("SELECT COUNT(*) FROM sqlite_master WHERE type = 'table' AND name = 'gap'")->fetchColumn() === 1;
+    }
+
+    public function gapCount(): int
+    {
+        return $this->tracksGaps() ? (int) $this->query('SELECT COUNT(*) FROM gap')->fetchColumn() : 0;
+    }
+
+    /**
+     * Upstream records about the given packages that the build could not interpret.
+     *
+     * @param list<string>|null $packageNames null for every gap
+     *
+     * @return list<CoverageGap>
+     */
+    public function gapsFor(?array $packageNames, int $limit = 1000): array
+    {
+        if (!$this->tracksGaps()) {
+            return [];
+        }
+        $gaps = [];
+        if ($packageNames === null) {
+            $statement = $this->pdo->prepare('SELECT source, remote_id, package, reason, raw FROM gap ORDER BY package, source, remote_id LIMIT ?');
+            $statement->execute([$limit]);
+            $this->collectGaps($statement, $gaps);
+
+            return $gaps;
+        }
+        foreach (array_chunk(array_values(array_unique(array_map('strtolower', $packageNames))), 400) as $chunk) {
+            $placeholders = implode(',', array_fill(0, count($chunk), '?'));
+            $statement = $this->pdo->prepare("SELECT source, remote_id, package, reason, raw FROM gap WHERE package IN ($placeholders) ORDER BY package, source, remote_id");
+            $statement->execute($chunk);
+            $this->collectGaps($statement, $gaps);
+        }
+
+        return $gaps;
+    }
+
+    /** @param list<CoverageGap> $gaps */
+    private function collectGaps(\PDOStatement $statement, array &$gaps): void
+    {
+        foreach ($statement->fetchAll(\PDO::FETCH_ASSOC) as $row) {
+            /** @var array{source: string, remote_id: string, package: ?string, reason: string, raw: ?string} $row */
+            $gaps[] = new CoverageGap($row['source'], $row['remote_id'], $row['package'], $row['reason'], $row['raw']);
+        }
+    }
+
     private function query(string $sql): \PDOStatement
     {
         $statement = $this->pdo->query($sql);
@@ -125,7 +175,7 @@ final class Database
                     $result[$package][] = new Advisory(
                         $data['canonical_id'],
                         $package,
-                        self::union(array_keys($data['expressions']), $parser),
+                        self::union(array_keys($data['expressions']), $parser, $data['canonical_id']),
                         $data['title'],
                         $this->cve($advisoryId, $data['canonical_id']),
                         $data['link'],
@@ -142,15 +192,17 @@ final class Database
 
     /**
      * Sources disagreeing on a range are unioned: a version any source calls affected is affected.
+     * Ranges were validated when the database was built; one that no longer parses means a corrupt
+     * or hand-edited file, which is fatal rather than silently matching nothing.
      *
      * @param list<string> $expressions
      */
-    private static function union(array $expressions, PackagistAdvisoryJsonParser $parser): ConstraintInterface
+    private static function union(array $expressions, PackagistAdvisoryJsonParser $parser, string $advisoryId): ConstraintInterface
     {
         if (count($expressions) === 1) {
-            return $parser->parseAffectedVersions($expressions[0]);
+            return $parser->parseAffectedVersionsStrict($expressions[0], $advisoryId);
         }
-        $constraints = array_map(static fn (string $e): ConstraintInterface => $parser->parseAffectedVersions($e), $expressions);
+        $constraints = array_map(static fn (string $e): ConstraintInterface => $parser->parseAffectedVersionsStrict($e, $advisoryId), $expressions);
         $union = MultiConstraint::create($constraints, false);
         $union->setPrettyString(implode('|', $expressions));
 

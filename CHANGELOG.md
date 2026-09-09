@@ -6,7 +6,34 @@ All notable changes to this project are documented here. The format follows
 ## [Unreleased]
 
 This release responds to an external architecture review of 0.3.0 (twenty findings, nine rated as
-able to undermine a security decision). Every finding is addressed below and covered by a test.
+able to undermine a security decision) and to the reviewer's recheck of the first response (six
+remaining findings). Each item below names its change; the tests that establish it are listed in the
+"Tests" bullets, and where a boundary is documented rather than removed the text says so.
+
+### Recheck (second round)
+
+- The subprocess solver pins `COMPOSER` to the scratch manifest. Before, the child inherited a
+  `COMPOSER=/path/alternate.json` from the parent and updated the analysed project's real lock while
+  the planner read the untouched scratch lock. Covered by an integration test that runs the real
+  Composer binary with `COMPOSER` set to another manifest and asserts that file is unchanged.
+- `composer-remediate` never includes any project's `vendor/autoload.php` (Composer's autoloader
+  executes `autoload.files`, which is project code). It boots Composer from the phar it finds and
+  registers the plugin's own classes through a PSR-4 mapping. Covered by an entry-point test that
+  installs the binary in a project whose autoloader plants a probe and asserts the probe never runs.
+- Database ingestion keeps coverage gaps: an upstream record the build cannot interpret is stored in
+  a `gap` table with source, id, package and reason; `composer remediate` warns for every gap that
+  names a package in the lock ("treated as unaffected by that record"); `remediate:db-status` lists
+  them; databases built before gap tracking are flagged. A private `--include` file with an
+  unreadable record fails the build, matching `--advisories-file`. Database reads use the strict range
+  parser; the lenient one is gone.
+- OSV events are evaluated per the specification: sorted by version, `introduced` opens an interval,
+  the next `fixed`/`last_affected` closes it, and `limit` caps the whole range instead of closing an
+  interval of its own. "introduced 1.0, fixed 1.1, limit 2.0" no longer marks 1.5 affected.
+- The locator records whether a cached download was verified (`<cache>.status.json`) and repeats the
+  disclosure on every cache hit, offline included; caches written by earlier versions are flagged as
+  unverified.
+- The fixture harness executes the printed command through a shell, verbatim, with a `composer` on
+  PATH that adds `--no-install`; quoted constraints are no longer split on whitespace.
 
 ### Added
 
@@ -35,12 +62,15 @@ able to undermine a security decision). Every finding is addressed below and cov
 - `IgnorePolicy`: `config.audit.ignore` entries with `apply: block` and `config.policy.advisories`
   entries with `on-audit: false` no longer suppress findings; package rules are matched as packages
   (with their constraint), not as advisory ids.
-- Tests for each guarantee: planner rules with a scripted solver (unknown severity, tool-error and
-  network exits, combined-command cooldown, `--no-dev` baseline, all-advisory fixed range, platform
-  flags, blocking risk, budget), parser strictness, OSV `versions`/`limit`, ignore scoping, HTML link
-  safety, fallback solver; freshly rendered JSON validated against the schema for every fixture; the
-  synthetic fixture's recommended command executed by the real Composer binary and the resulting
-  lock re-matched.
+- Tests: planner rules with a scripted solver (unknown severity, tool-error and network exits,
+  combined-command cooldown, `--no-dev` baseline, all-advisory fixed range, platform flags, blocking
+  risk, budget), parser strictness, OSV `versions`/`limit`/event order, ignore scoping, HTML link
+  safety, fallback solver composition (with scripted routes), the real subprocess solver, the
+  standalone entry point, database download/checksum/cache behaviour with a scripted HTTP layer,
+  coverage gaps from build to report; freshly rendered JSON validated against the schema for every
+  fixture; the synthetic fixture's recommended command executed verbatim by a shell with the real
+  Composer binary and the resulting lock re-matched. Not covered by tests: the CLI driven against a
+  live advisory repository, and the Composer 2.4 advisory adapter beyond the CI matrix job.
 
 ### Changed
 

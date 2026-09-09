@@ -6,10 +6,13 @@
  *
  * `composer remediate` runs inside Composer's own command dispatch, which has already activated
  * every plugin the analysed project allows before this command starts. This binary runs the same
- * commands with `--no-plugins --no-scripts` forced from the first instruction, so nothing from
- * the analysed project executes during planning. It reuses the Composer installation it can find
- * (the `composer` on PATH, or REMEDIATE_COMPOSER_BINARY) for both its classes and the fallback
- * solver, so the plugin needs no copy of composer/composer of its own.
+ * commands with `--no-plugins --no-scripts` forced from the first instruction, so nothing from the
+ * analysed project executes during planning.
+ *
+ * To keep that promise it never includes a project's vendor/autoload.php: Composer's autoloader runs
+ * every `autoload.files` entry of the root package and its dependencies, which is project code.
+ * Instead it loads Composer's classes from the Composer phar it finds (REMEDIATE_COMPOSER_BINARY, or
+ * `composer` on PATH) and registers the plugin's own classes with a plain PSR-4 mapping.
  */
 
 declare(strict_types=1);
@@ -19,78 +22,88 @@ if (PHP_SAPI !== 'cli') {
     exit(3);
 }
 
-/** @return list<string> */
-$candidates = static function (): array {
-    $list = [];
-    $env = getenv('REMEDIATE_COMPOSER_BINARY');
-    if (is_string($env) && $env !== '') {
-        $list[] = $env;
+/**
+ * Loads Composer's classes from a phar. Returns false when the candidate is not a phar carrying
+ * Composer's bootstrap. Source checkouts are accepted only when named explicitly through
+ * REMEDIATE_COMPOSER_BINARY, because their bootstrap includes that checkout's vendor/autoload.php.
+ */
+$bootComposer = static function (string $candidate, bool $allowSourceCheckout): bool {
+    $real = realpath($candidate);
+    if ($real === false || !is_file($real)) {
+        return false;
     }
+    try {
+        Phar::loadPhar($real, 'composer.phar');
+        if (is_file('phar://composer.phar/src/bootstrap.php')) {
+            require 'phar://composer.phar/src/bootstrap.php';
+
+            return class_exists(Composer\Console\Application::class);
+        }
+    } catch (Throwable) {
+        // not a phar
+    }
+    if ($allowSourceCheckout) {
+        $bootstrap = dirname($real) . '/../src/bootstrap.php';
+        if (is_file($bootstrap) && is_file(dirname($real) . '/../src/Composer/Console/Application.php')) {
+            require $bootstrap;
+
+            return class_exists(Composer\Console\Application::class);
+        }
+    }
+
+    return false;
+};
+
+$composerBinary = null;
+$explicit = getenv('REMEDIATE_COMPOSER_BINARY');
+if (is_string($explicit) && $explicit !== '') {
+    if (!$bootComposer($explicit, true)) {
+        fwrite(STDERR, sprintf('composer-remediate: REMEDIATE_COMPOSER_BINARY=%s is not a Composer phar or source checkout.%s', $explicit, PHP_EOL));
+        exit(3);
+    }
+    $composerBinary = realpath($explicit) ?: $explicit;
+} else {
     foreach (explode(PATH_SEPARATOR, (string) getenv('PATH')) as $dir) {
         if ($dir === '') {
             continue;
         }
         foreach (['composer', 'composer.phar'] as $name) {
             $path = rtrim($dir, '/\\') . DIRECTORY_SEPARATOR . $name;
-            if (is_file($path)) {
-                $list[] = $path;
-            }
-        }
-    }
-
-    return $list;
-};
-
-$ownAutoload = static function (): ?string {
-    // Installed as a dependency (vendor/hexblot/composer-remediate/bin) or run from a checkout.
-    foreach ([__DIR__ . '/../../../autoload.php', __DIR__ . '/../vendor/autoload.php'] as $file) {
-        if (is_file($file)) {
-            return realpath($file) ?: $file;
-        }
-    }
-
-    return null;
-};
-
-$composerBinary = null;
-foreach ($candidates() as $candidate) {
-    $real = realpath($candidate);
-    if ($real === false) {
-        continue;
-    }
-    if (str_contains((string) file_get_contents($real, false, null, 0, 4096), 'phar://') || substr((string) file_get_contents($real, false, null, 0, 2), 0, 2) === '#!') {
-        // A phar (possibly with a shebang) or a source checkout's bin/composer.
-        try {
-            Phar::loadPhar($real, 'composer.phar');
-            if (is_file('phar://composer.phar/src/bootstrap.php')) {
-                require 'phar://composer.phar/src/bootstrap.php';
-                $composerBinary = $real;
-                break;
-            }
-        } catch (Throwable) {
-            $bootstrap = dirname($real) . '/../src/bootstrap.php';
-            if (is_file($bootstrap)) {
-                require $bootstrap;
-                $composerBinary = $real;
-                break;
+            if (is_file($path) && $bootComposer($path, false)) {
+                $composerBinary = realpath($path) ?: $path;
+                break 2;
             }
         }
     }
 }
 
-$autoload = $ownAutoload();
-if ($autoload === null) {
-    fwrite(STDERR, 'composer-remediate: cannot find the plugin autoloader; install hexblot/composer-remediate with Composer.' . PHP_EOL);
-    exit(3);
+if ($composerBinary === null) {
+    // Development checkout of this repository: composer/composer is a dev dependency. This autoloader
+    // belongs to the plugin itself, never to an analysed project (a dependency install has no vendor/).
+    $own = __DIR__ . '/../vendor/autoload.php';
+    if (is_file($own) && is_dir(__DIR__ . '/../vendor/composer/composer')) {
+        require $own;
+    }
 }
-$loader = require $autoload;
 if (!class_exists(Composer\Console\Application::class)) {
-    fwrite(STDERR, 'composer-remediate: no Composer installation found. Put `composer` on PATH or set REMEDIATE_COMPOSER_BINARY to the composer phar.' . PHP_EOL);
+    fwrite(STDERR, 'composer-remediate: no Composer installation found. Put the composer phar on PATH or set REMEDIATE_COMPOSER_BINARY.' . PHP_EOL);
     exit(3);
 }
 if ($composerBinary !== null) {
     putenv('REMEDIATE_COMPOSER_BINARY=' . $composerBinary);
 }
+
+// The plugin's own classes, plus symfony/yaml (used by remediate:db-build for FriendsOfPHP), through
+// a PSR-4 mapping only: no autoload.files of any project run.
+$loader = new Composer\Autoload\ClassLoader();
+$loader->addPsr4('Remediate\\', __DIR__ . '/../src');
+foreach ([__DIR__ . '/../../../symfony/yaml', __DIR__ . '/../vendor/symfony/yaml'] as $yaml) {
+    if (is_dir($yaml) && !class_exists(Symfony\Component\Yaml\Yaml::class, false)) {
+        $loader->addPsr4('Symfony\\Component\\Yaml\\', $yaml);
+        break;
+    }
+}
+$loader->register(true);
 
 use Composer\Console\Application;
 use Composer\Util\Platform;

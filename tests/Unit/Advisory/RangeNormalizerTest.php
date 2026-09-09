@@ -35,6 +35,40 @@ final class RangeNormalizerTest extends TestCase
         self::assertFalse($this->affects($expression, '3.0.0'));
     }
 
+    public function testLimitCapsTheWholeRangeWithoutOpeningAnInterval(): void
+    {
+        // introduced 1.0, fixed 1.1, limit 2.0: only [1.0, 1.1) is affected; the limit does not add "<2.0".
+        $expression = (new RangeNormalizer())->fromOsv([['type' => 'ECOSYSTEM', 'events' => [['introduced' => '1.0.0'], ['fixed' => '1.1.0'], ['limit' => '2.0.0']]]]);
+        self::assertNotNull($expression);
+        self::assertTrue($this->affects($expression, '1.0.5'));
+        self::assertFalse($this->affects($expression, '1.5.0'));
+        self::assertFalse($this->affects($expression, '0.9.0'));
+
+        // A limit below an open interval's end cuts it: introduced 1.0, introduced 3.0, fixed 1.1, limit 3.5.
+        $expression = (new RangeNormalizer())->fromOsv([['type' => 'ECOSYSTEM', 'events' => [['introduced' => '3.0.0'], ['limit' => '3.5.0'], ['fixed' => '1.1.0'], ['introduced' => '1.0.0']]]]);
+        self::assertNotNull($expression);
+        self::assertTrue($this->affects($expression, '1.0.5'));
+        self::assertFalse($this->affects($expression, '2.0.0'));
+        self::assertTrue($this->affects($expression, '3.2.0'));
+        self::assertFalse($this->affects($expression, '3.5.0'));
+        self::assertFalse($this->affects($expression, '4.0.0'));
+    }
+
+    public function testEventsAreEvaluatedInVersionOrderNotInputOrder(): void
+    {
+        $sorted = (new RangeNormalizer())->fromOsv([['type' => 'ECOSYSTEM', 'events' => [['introduced' => '1.0.0'], ['fixed' => '1.1.0'], ['introduced' => '2.0.0'], ['fixed' => '2.1.0']]]]);
+        $shuffled = (new RangeNormalizer())->fromOsv([['type' => 'ECOSYSTEM', 'events' => [['fixed' => '2.1.0'], ['introduced' => '2.0.0'], ['fixed' => '1.1.0'], ['introduced' => '1.0.0']]]]);
+        self::assertNotNull($sorted);
+        self::assertSame($sorted, $shuffled);
+        self::assertTrue($this->affects($sorted, '2.0.5'));
+        self::assertFalse($this->affects($sorted, '1.5.0'));
+    }
+
+    public function testUnparsableVersionMakesTheRecordUnreadable(): void
+    {
+        self::assertNull((new RangeNormalizer())->fromOsv([['type' => 'ECOSYSTEM', 'events' => [['introduced' => 'not a version !!']]]]));
+    }
+
     public function testOpenEndedRange(): void
     {
         $expression = (new RangeNormalizer())->fromOsv([['type' => 'ECOSYSTEM', 'events' => [['introduced' => '3.0.0']]]]);

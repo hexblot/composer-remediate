@@ -50,6 +50,9 @@ final class DbStatusCommand extends BaseCommand
             return Plan::EXIT_ADVISORIES_UNAVAILABLE;
         }
         $output->writeln(sprintf('File: %s (%.1f MB)', $path, (int) filesize($path) / 1048576));
+        if (!$db->tracksGaps()) {
+            $output->writeln('<warning>Built before coverage gaps were recorded; rebuild to learn which upstream records were left out.</warning>');
+        }
         foreach ($db->meta() as $key => $value) {
             if ($key === 'sources') {
                 $decoded = json_decode($value, true);
@@ -63,6 +66,14 @@ final class DbStatusCommand extends BaseCommand
                 continue;
             }
             $output->writeln(sprintf('  %s: %s', $key, $value));
+        }
+
+        $gaps = $db->gapsFor(null, 50);
+        if ($gaps !== []) {
+            $output->writeln(sprintf('Coverage gaps (%d, showing up to 50): upstream records the build could not interpret; the packages they name are treated as unaffected by them.', $db->gapCount()));
+            foreach ($gaps as $gap) {
+                $output->writeln('  ' . $gap->describe());
+            }
         }
 
         return 0;

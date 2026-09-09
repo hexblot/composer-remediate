@@ -22,21 +22,23 @@ final class DatabaseBuilder
      * @param callable(string): void $log
      * @param array<string, string>  $extraMeta
      *
-     * @return array{path: string, hash: string, advisories: int, conflicts: int, bytes: int, records: int}
+     * @return array{path: string, hash: string, advisories: int, conflicts: int, gaps: int, bytes: int, records: int}
      */
     public function build(string $path, callable $log, array $extraMeta = []): array
     {
         $records = [];
+        $gaps = [];
         $stats = [];
         foreach ($this->sources as $source) {
             $fetched = $source->fetch($log);
             array_push($records, ...$fetched);
-            $stats[] = ['name' => $source->name(), 'fetched_at' => gmdate(DATE_ATOM), 'records' => count($fetched)];
+            array_push($gaps, ...$source->gaps());
+            $stats[] = ['name' => $source->name(), 'fetched_at' => gmdate(DATE_ATOM), 'records' => count($fetched), 'gaps' => count($source->gaps())];
         }
         $log(sprintf('Merging %d records…', count($records)));
         $merged = $this->merger->merge($records);
-        $result = $this->writer->write($merged, $stats, $path, $extraMeta);
-        $log(sprintf('%d advisories (%d with conflicting ranges), dataset %s, %.1f MB written to %s', $result['advisories'], $result['conflicts'], substr($result['hash'], 0, 12), $result['bytes'] / 1048576, $result['path']));
+        $result = $this->writer->write($merged, $stats, $path, $extraMeta, $gaps);
+        $log(sprintf('%d advisories (%d with conflicting ranges, %d coverage gap%s), dataset %s, %.1f MB written to %s', $result['advisories'], $result['conflicts'], $result['gaps'], $result['gaps'] === 1 ? '' : 's', substr($result['hash'], 0, 12), $result['bytes'] / 1048576, $result['path']));
 
         return $result + ['records' => count($records)];
     }

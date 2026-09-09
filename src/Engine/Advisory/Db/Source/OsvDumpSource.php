@@ -6,6 +6,7 @@ namespace Remediate\Engine\Advisory\Db\Source;
 
 use Composer\Util\HttpDownloader;
 use Remediate\Engine\Advisory\Db\AffectedRange;
+use Remediate\Engine\Advisory\Db\CoverageGap;
 use Remediate\Engine\Advisory\Db\NormalizedAdvisory;
 use Remediate\Engine\Advisory\Db\RangeNormalizer;
 use Remediate\Engine\Advisory\Db\SourceRecord;
@@ -16,6 +17,9 @@ use Remediate\Engine\Advisory\Db\SourceRecord;
 final class OsvDumpSource implements AdvisorySourceInterface
 {
     public const URL = 'https://osv-vulnerabilities.storage.googleapis.com/Packagist/all.zip';
+
+    /** @var list<CoverageGap> */
+    private array $gaps = [];
 
     public function __construct(
         private readonly HttpDownloader $downloader,
@@ -34,36 +38,53 @@ final class OsvDumpSource implements AdvisorySourceInterface
     {
         $log('OSV: downloading the Packagist ecosystem archive…');
         $records = [];
+        $this->gaps = [];
         $skipped = ['invalid JSON' => 0, 'no Packagist package' => 0, 'no usable range' => 0];
         $reader = new ZipArchiveReader($this->downloader, $this->tempDir);
         $entries = $reader->each($this->url, static fn (string $name): bool => str_ends_with($name, '.json'), function (string $name, string $contents) use (&$records, &$skipped): void {
             $doc = json_decode($contents, true);
             if (!is_array($doc)) {
                 ++$skipped['invalid JSON'];
+                $this->gaps[] = new CoverageGap('OSV', basename($name, '.json'), null, 'invalid JSON');
 
                 return;
             }
-            $record = $this->record($doc, $reason);
+            $record = $this->record($doc, $reason, $packages);
             if ($record === null) {
                 ++$skipped[$reason ?? 'no usable range'];
+                if ($reason !== 'no Packagist package') {
+                    // A record about a Packagist package that could not be read is a coverage gap for that package.
+                    $id = is_string($doc['id'] ?? null) ? $doc['id'] : basename($name, '.json');
+                    foreach ($packages === [] ? [null] : $packages as $package) {
+                        $this->gaps[] = new CoverageGap('OSV', $id, $package, $reason ?? 'no usable range');
+                    }
+                }
 
                 return;
             }
             $records[] = $record;
         });
         $reasons = array_filter($skipped);
-        $log(sprintf('OSV: %d documents, %d records%s', $entries, count($records), $reasons !== [] ? ', skipped: ' . implode(', ', array_map(static fn (string $k, int $v): string => "$v $k", array_keys($reasons), $reasons)) : ''));
+        $log(sprintf('OSV: %d documents, %d records%s', $entries, count($records), $reasons !== [] ? ', skipped: ' . implode(', ', array_map(static fn (string $k, int $v): string => "$v $k", array_keys($reasons), $reasons)) . ' (Packagist records recorded as coverage gaps)' : ''));
 
         return $records;
     }
 
+    public function gaps(): array
+    {
+        return $this->gaps;
+    }
+
     /**
-     * @param array<mixed> $doc
+     * @param array<mixed>      $doc
+     * @param list<string>|null $packages
      * @param-out string|null $reason
+     * @param-out list<string> $packages Packagist packages the document names, for gap reporting
      */
-    private function record(array $doc, ?string &$reason = null): ?NormalizedAdvisory
+    private function record(array $doc, ?string &$reason = null, ?array &$packages = null): ?NormalizedAdvisory
     {
         $reason = null;
+        $packages = [];
         $id = $doc['id'] ?? null;
         if (!is_string($id) || $id === '') {
             $reason = 'invalid JSON';
@@ -82,6 +103,7 @@ final class OsvDumpSource implements AdvisorySourceInterface
                 continue;
             }
             $sawPackagist = true;
+            $packages[] = strtolower($package['name']);
             /** @var list<array<string, mixed>> $ranges */
             $ranges = is_array($entry['ranges'] ?? null) ? array_values(array_filter($entry['ranges'], 'is_array')) : [];
             /** @var list<string> $versions */

@@ -140,17 +140,23 @@ final class FixtureTest extends TestCase
         $composer = dirname(__DIR__, 2) . '/vendor/bin/composer';
         self::assertFileExists($composer, 'composer/composer must be installed as a dev dependency');
         $project = $this->runner->workspace($fixtureDir)->materialize();
+        // A `composer` on PATH that runs the dev-dependency Composer with --no-install appended (the
+        // fixture's dist URLs are not fetchable; resolution and the lock are unaffected). The printed
+        // command line is then executed by a shell exactly as printed, quoting included.
+        $binDir = $project->directory() . '/.bin';
+        mkdir($binDir, 0700);
+        file_put_contents($binDir . '/composer', "#!/bin/sh\nexec " . escapeshellarg(PHP_BINARY) . ' ' . escapeshellarg($composer) . " \"\$@\" --no-install --no-interaction --no-progress --no-ansi\n");
+        chmod($binDir . '/composer', 0700);
         try {
-            // `composer require --no-update x && composer update ...`: run each part in order, replacing
-            // the leading "composer" with the dev-dependency binary and adding --no-install (the fixture's
-            // dist URLs are not fetchable; resolution and the lock are unaffected).
-            foreach (explode(' && ', $commandLine) as $part) {
-                self::assertStringStartsWith('composer ', $part);
-                $args = array_map(static fn (string $a): string => trim($a, "'"), preg_split('{\s+}', trim(substr($part, 9))) ?: []);
-                $process = new Process([PHP_BINARY, $composer, ...$args, '--no-install', '--no-interaction', '--no-progress', '--no-ansi'], $project->directory(), ['COMPOSER_HOME' => (string) getenv('COMPOSER_HOME'), 'COMPOSER_CACHE_DIR' => (string) getenv('COMPOSER_CACHE_DIR'), 'COMPOSER_NO_INTERACTION' => '1'], null, 600);
-                $process->run();
-                self::assertSame(0, $process->getExitCode(), "`$part` failed:\n" . $process->getOutput() . $process->getErrorOutput());
-            }
+            $process = new Process(['sh', '-c', $commandLine], $project->directory(), [
+                'PATH' => $binDir . PATH_SEPARATOR . (string) getenv('PATH'),
+                'COMPOSER' => $project->directory() . '/composer.json',
+                'COMPOSER_HOME' => (string) getenv('COMPOSER_HOME'),
+                'COMPOSER_CACHE_DIR' => (string) getenv('COMPOSER_CACHE_DIR'),
+                'COMPOSER_NO_INTERACTION' => '1',
+            ], null, 600);
+            $process->run();
+            self::assertSame(0, $process->getExitCode(), "`$commandLine` failed:\n" . $process->getOutput() . $process->getErrorOutput());
             $lock = json_decode((string) file_get_contents($project->directory() . '/composer.lock'), true, 512, JSON_THROW_ON_ERROR);
             self::assertIsArray($lock);
             $loader = new \Composer\Package\Loader\ArrayLoader();

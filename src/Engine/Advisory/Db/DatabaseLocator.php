@@ -101,11 +101,14 @@ final class DatabaseLocator
         $file = $dir . '/db-' . sha1($url) . '.sqlite';
         $fresh = is_file($file) && (time() - (int) filemtime($file)) < self::TTL_SECONDS;
         if ($fresh) {
+            $this->recallVerification($file, $url);
+
             return $file;
         }
         if ($this->offline) {
             if (is_file($file)) {
                 $this->warnings[] = sprintf('Offline: using the advisory database cached %s from %s; advisories published since then are unknown.', self::age($file), $url);
+                $this->recallVerification($file, $url);
 
                 return $file;
             }
@@ -118,25 +121,50 @@ final class DatabaseLocator
             @unlink($tmp);
             if (is_file($file)) {
                 $this->warnings[] = sprintf('Advisory database refresh failed (%s); using the copy cached %s. Advisories published since then are unknown to this run.', self::shortError($e), self::age($file));
+                $this->recallVerification($file, $url);
 
                 return $file;
             }
             throw new AdvisoryLookupFailed(sprintf('Could not download advisory database %s: %s', $url, $e->getMessage()), 0, $e);
         }
-        $this->verifyChecksum($url, $tmp);
+        $verified = $this->verifyChecksum($url, $tmp);
         if (!@rename($tmp, $file)) {
             @unlink($tmp);
             throw new AdvisoryLookupFailed(sprintf('Could not store downloaded advisory database in %s.', $file));
         }
+        // The verification outcome is a property of the cached bytes, not of this request: record it so
+        // every later run that reuses the cache repeats the disclosure.
+        @file_put_contents(self::statusFile($file), json_encode(['verified' => $verified, 'url' => $url, 'fetched_at' => gmdate(DATE_ATOM)], JSON_THROW_ON_ERROR));
 
         return $file;
+    }
+
+    private static function statusFile(string $file): string
+    {
+        return $file . '.status.json';
+    }
+
+    /** Re-emits the disclosure recorded when the cached copy was downloaded. */
+    private function recallVerification(string $file, string $url): void
+    {
+        $raw = @file_get_contents(self::statusFile($file));
+        $status = is_string($raw) ? json_decode($raw, true) : null;
+        if (!is_array($status) || !array_key_exists('verified', $status)) {
+            $this->warnings[] = sprintf('The cached copy of %s carries no verification record (downloaded by an older version); its sha256 was not checked against the publisher\'s.', $url);
+
+            return;
+        }
+        if ($status['verified'] !== true) {
+            $this->warnings[] = sprintf('The cached copy of %s was downloaded without a published sha256 to verify against (%s).', $url, is_string($status['fetched_at'] ?? null) ? 'fetched ' . $status['fetched_at'] : 'date unknown');
+        }
     }
 
     /**
      * Compares the download with the publisher's `<url>.sha256` sidecar (either a bare digest or
      * `sha256sum` output with a filename). No sidecar means no verification, which is reported.
+     * Returns whether the download was verified.
      */
-    private function verifyChecksum(string $url, string $file): void
+    private function verifyChecksum(string $url, string $file): bool
     {
         $sidecar = $file . '.sha256';
         try {
@@ -145,7 +173,7 @@ final class DatabaseLocator
             @unlink($sidecar);
             $this->warnings[] = sprintf('No checksum published next to %s (%s); the download was not verified against a sha256.', $url, self::shortError($e));
 
-            return;
+            return false;
         }
         $published = trim((string) file_get_contents($sidecar));
         @unlink($sidecar);
@@ -158,6 +186,8 @@ final class DatabaseLocator
             @unlink($file);
             throw new AdvisoryLookupFailed(sprintf('Advisory database %s does not match its published sha256 (expected %s, got %s).', $url, $m[1], $actual === false ? '?' : $actual));
         }
+
+        return true;
     }
 
     private static function age(string $file): string

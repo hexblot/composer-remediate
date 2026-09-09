@@ -67,10 +67,10 @@ target version are checked.
 A synthetic fixture (`synthetic-transitive-parent`) exists purely to exercise the harness; every
 other fixture must be a real historical project state. For fixtures with `"execute": true` in
 `expected.json` the harness goes one step further than comparing command strings: it runs the
-recommended command with the real Composer binary (the `composer/composer` dev dependency, the same
-release the in-process solver used) in a scratch copy, adds `--no-install`, and re-matches the lock
-file Composer writes against the advisory snapshot. The command the report prints is the command
-that was executed. Every fixture's freshly rendered JSON report is validated against the published
+recommended command through a shell, verbatim, in a scratch copy: a `composer` wrapper on PATH runs
+the `composer/composer` dev dependency (the same release the in-process solver used) with
+`--no-install` appended, and the lock file Composer writes is re-matched against the advisory
+snapshot. The string the report prints is the string the shell executed, quoting included. Every fixture's freshly rendered JSON report is validated against the published
 schema in the same test.
 
 ## Historical snapshots

@@ -8,8 +8,8 @@ use Composer\DependencyResolver\Request;
 use Composer\Semver\Comparator;
 use Composer\Semver\Constraint\ConstraintInterface;
 use Composer\Semver\Constraint\MultiConstraint;
-use Remediate\Engine\Advisory\Advisory;
 use Remediate\Engine\Advisory\AdvisoryProvider;
+use Remediate\Engine\Advisory\CoverageAware;
 use Remediate\Engine\Candidate\Candidate;
 use Remediate\Engine\Candidate\CandidateGenerator;
 use Remediate\Engine\Candidate\FixedRangeResolver;
@@ -98,6 +98,10 @@ final class Planner
         }
 
         $allFindings = $matcher->match($lock, $isRoot);
+        if ($this->advisories instanceof CoverageAware) {
+            // Records the source could not read are not evidence of safety; say so next to the result.
+            array_push($warnings, ...$this->advisories->coverageWarnings($lock->names()));
+        }
         if ($matcher->ignoredCount() > 0) {
             $warnings[] = sprintf('%d advisory match%s ignored per configuration (--ignore, config.audit.ignore or config.policy).', $matcher->ignoredCount(), $matcher->ignoredCount() === 1 ? '' : 'es');
         }

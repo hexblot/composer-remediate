@@ -34,6 +34,17 @@ alongside the plugin: it boots Composer with `--no-plugins --no-scripts` forced 
 instruction, so nothing from the analysed project runs, and it applies `--offline` before any HTTP
 client exists.
 
+What "nothing from the analysed project runs" rests on: the binary never includes a project's
+`vendor/autoload.php` (Composer's autoloader executes every `autoload.files` entry, which is project
+code). It loads Composer's classes from the Composer phar it finds (`REMEDIATE_COMPOSER_BINARY`, or
+`composer` on PATH) and the plugin's own classes through a plain PSR-4 mapping. That holds for a
+project-local installation (`vendor/bin/composer-remediate` next to the project's autoloader) as much
+as for a global one. Non-phar Composer installations are accepted only when named explicitly through
+`REMEDIATE_COMPOSER_BINARY`, because their bootstrap includes that installation's own autoloader.
+The candidate solves, in both entry points, run in scratch copies; the subprocess route pins
+`COMPOSER` to the scratch manifest so an inherited `COMPOSER=alternate.json` cannot redirect an
+update to the analysed project's lock file.
+
 ## `--offline`
 
 With `--offline` the planner sets Composer's `COMPOSER_DISABLE_NETWORK` before it builds its own
@@ -46,5 +57,7 @@ falling back to the network.
 With an [advisory database](advisory-database.md) (`--database-location`) the first row of the
 table disappears: advisories are read from a local SQLite file you built yourself or downloaded
 once, and no package names are sent anywhere for the advisory lookup. A database URL is fetched
-along with its `.sha256` sidecar; the download is verified against it, and a refresh that fails
-falls back to the cached copy with a warning in the report naming its age.
+along with its `.sha256` sidecar; the download is verified against it, the verification outcome is
+recorded next to the cached copy and repeated as a warning on every later run that reuses an
+unverified copy, and a refresh that fails falls back to the cached copy with a warning in the report
+naming its age.

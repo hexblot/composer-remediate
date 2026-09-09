@@ -104,7 +104,10 @@ HELP);
         }
 
         $output->writeln(sprintf('<info>Advisory database written:</info> %s', $result['path']));
-        $output->writeln(sprintf('  %d advisories from %d source records, %d with conflicting ranges, %.1f MB', $result['advisories'], $result['records'], $result['conflicts'], $result['bytes'] / 1048576));
+        $output->writeln(sprintf('  %d advisories from %d source records, %d with conflicting ranges, %d coverage gap%s, %.1f MB', $result['advisories'], $result['records'], $result['conflicts'], $result['gaps'], $result['gaps'] === 1 ? '' : 's', $result['bytes'] / 1048576));
+        if ($result['gaps'] > 0) {
+            $output->writeln('  Coverage gaps are upstream records the build could not interpret; they are stored in the database and reported by composer remediate for packages in the lock. List them with remediate:db-status.');
+        }
         $output->writeln(sprintf('  dataset hash %s', $result['hash']));
         $output->writeln(sprintf('Use it with: <comment>composer remediate --database-location=%s</comment>', $result['path']));
 

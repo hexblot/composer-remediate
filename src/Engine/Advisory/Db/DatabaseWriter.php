@@ -12,12 +12,13 @@ final class DatabaseWriter
 {
     /**
      * @param list<NormalizedAdvisory>                                              $advisories
-     * @param list<array{name: string, fetched_at: string, records: int}>           $sourceStats
+     * @param list<array{name: string, fetched_at: string, records: int, gaps?: int}>  $sourceStats
      * @param array<string, string>                                                 $extraMeta
+     * @param list<CoverageGap>                                                     $gaps       upstream records left out because they could not be read
      *
-     * @return array{path: string, hash: string, advisories: int, conflicts: int, bytes: int}
+     * @return array{path: string, hash: string, advisories: int, conflicts: int, gaps: int, bytes: int}
      */
-    public function write(array $advisories, array $sourceStats, string $path, array $extraMeta = []): array
+    public function write(array $advisories, array $sourceStats, string $path, array $extraMeta = [], array $gaps = []): array
     {
         if (!extension_loaded('pdo_sqlite')) {
             throw new \RuntimeException('The pdo_sqlite PHP extension is required to build an advisory database.');
@@ -40,6 +41,8 @@ final class DatabaseWriter
         $pdo->exec('CREATE TABLE affected (advisory_id INTEGER NOT NULL, package TEXT NOT NULL, constraint_expr TEXT NOT NULL, source TEXT NOT NULL)');
         $pdo->exec('CREATE INDEX affected_package ON affected (package)');
         $pdo->exec('CREATE TABLE source (advisory_id INTEGER NOT NULL, name TEXT NOT NULL, remote_id TEXT NOT NULL, url TEXT, modified_at TEXT)');
+        $pdo->exec('CREATE TABLE gap (source TEXT NOT NULL, remote_id TEXT NOT NULL, package TEXT, reason TEXT NOT NULL, raw TEXT)');
+        $pdo->exec('CREATE INDEX gap_package ON gap (package)');
 
         $pdo->beginTransaction();
         $insertAdvisory = $pdo->prepare('INSERT INTO advisory (canonical_id, title, link, severity, reported_at, withdrawn_at, has_conflict) VALUES (?, ?, ?, ?, ?, ?, ?)');
@@ -71,12 +74,17 @@ final class DatabaseWriter
                 $insertSource->execute([$id, $source->name, $source->remoteId, $source->url, $source->modifiedAt?->format(DATE_ATOM)]);
             }
         }
+        $insertGap = $pdo->prepare('INSERT INTO gap (source, remote_id, package, reason, raw) VALUES (?, ?, ?, ?, ?)');
+        foreach ($gaps as $gap) {
+            $insertGap->execute([$gap->source, $gap->remoteId, $gap->package !== null ? strtolower($gap->package) : null, $gap->reason, $gap->raw !== null ? substr($gap->raw, 0, 500) : null]);
+        }
         $meta = [
             'schema_version' => (string) Database::SCHEMA_VERSION,
             'built_at' => gmdate(DATE_ATOM),
             'dataset_hash' => $hash,
             'advisory_count' => (string) count($advisories),
             'conflict_count' => (string) $conflicts,
+            'gap_count' => (string) count($gaps),
             'sources' => json_encode($sourceStats, JSON_THROW_ON_ERROR),
         ] + $extraMeta;
         $insertMeta = $pdo->prepare('INSERT INTO meta (key, value) VALUES (?, ?)');
@@ -92,7 +100,7 @@ final class DatabaseWriter
             throw new \RuntimeException("Cannot write $path");
         }
 
-        return ['path' => $path, 'hash' => $hash, 'advisories' => count($advisories), 'conflicts' => $conflicts, 'bytes' => (int) filesize($path)];
+        return ['path' => $path, 'hash' => $hash, 'advisories' => count($advisories), 'conflicts' => $conflicts, 'gaps' => count($gaps), 'bytes' => (int) filesize($path)];
     }
 
     /**
