@@ -6,7 +6,7 @@
 - PHPStan level 8 must pass: `ddev composer phpstan`.
 - Documentation is part of the change. If a page in `docs/` describes the code you touched,
   update it in the same commit; `mkdocs build --strict` runs in CI.
-- Design decisions are recorded as ADRs under `docs/adr/`. Add one when you change a decision.
+- Design decisions and their reasons are recorded in `docs/design-decisions.md`. Add a section when you change one.
 
 ## Commit messages
 

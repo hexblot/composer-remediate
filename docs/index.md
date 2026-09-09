@@ -50,4 +50,4 @@ remediation a competent human would choose for at least four of five real histor
 
 - [Getting started](getting-started.md)
 - [How it works](how-it-works.md)
-- [Design decisions](adr/index.md)
+- [Design decisions](design-decisions.md)

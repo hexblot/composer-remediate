@@ -1,7 +1,8 @@
 # Roadmap
 
-The original pitch and technical design live in the repository under `pitch/`. This page is the
-current plan; the [decision records](adr/index.md) explain where and why it departs from the pitch.
+This page is the current plan; the [design decisions](design-decisions.md) page explains the reasoning
+behind it. The original pitch documents that started the project are in the repository history
+(first commits on `main`).
 
 ## Phase 0 — prove the algorithm *(in progress)*
 
