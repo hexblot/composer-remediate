@@ -71,6 +71,7 @@ final class OsvDumpSource implements AdvisorySourceInterface
             return null;
         }
         $affected = [];
+        $perPackage = [];
         $sawPackagist = false;
         foreach (is_array($doc['affected'] ?? null) ? $doc['affected'] : [] as $entry) {
             if (!is_array($entry) || !is_array($entry['package'] ?? null)) {
@@ -87,8 +88,11 @@ final class OsvDumpSource implements AdvisorySourceInterface
             $versions = is_array($entry['versions'] ?? null) ? array_values(array_filter($entry['versions'], 'is_string')) : [];
             $expression = $this->ranges->fromOsv($ranges, $versions);
             if ($expression !== null) {
-                $affected[] = new AffectedRange(strtolower($package['name']), $expression, 'OSV');
+                $perPackage[strtolower($package['name'])][] = $expression;
             }
+        }
+        foreach ($perPackage as $name => $expressions) {
+            $affected[] = new AffectedRange($name, implode('|', array_unique($expressions)), 'OSV');
         }
         if ($affected === []) {
             $reason = $sawPackagist ? 'no usable range' : 'no Packagist package';

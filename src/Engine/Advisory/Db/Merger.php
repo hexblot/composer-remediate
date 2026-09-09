@@ -112,12 +112,21 @@ final class Merger
         $ids = array_values($aliases);
         usort($ids, static fn (string $a, string $b): int => [NormalizedAdvisory::rankId($a), $a] <=> [NormalizedAdvisory::rankId($b), $b]);
 
-        // conflicts: same package, semantically different ranges between sources
-        $byPackage = [];
+        // conflicts: for a package, the union of what each source says differs semantically between sources
+        $bySource = [];
         foreach ($affected as $range) {
-            $byPackage[strtolower($range->package)][$this->ranges->fingerprint($range->constraint)] = true;
+            $bySource[strtolower($range->package)][$range->source][] = $range->constraint;
         }
-        $conflicts = array_keys(array_filter($byPackage, static fn (array $expressions): bool => count($expressions) > 1));
+        $conflicts = [];
+        foreach ($bySource as $package => $perSource) {
+            $fingerprints = [];
+            foreach ($perSource as $expressions) {
+                $fingerprints[$this->ranges->fingerprint(implode('|', array_unique($expressions)))] = true;
+            }
+            if (count($fingerprints) > 1) {
+                $conflicts[] = $package;
+            }
+        }
 
         return new NormalizedAdvisory($ids[0], $ids, $title, $link, $severity, $reportedAt, $allWithdrawn ? $withdrawnAt : null, $affected, $sources, $conflicts);
     }
