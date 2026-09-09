@@ -77,14 +77,20 @@ final class Planner
             }
 
             $evaluated = [];
+            $skipped = [];
             $transportFailures = 0;
             foreach (array_slice($candidates, 0, $this->maxCandidatesPerFinding) as $candidate) {
+                // Ranking rule 1: any candidate without root constraint changes beats every candidate with them.
+                if ($candidate->changesRootConstraints() && self::hasValidWithoutRootChanges($evaluated)) {
+                    $skipped[] = $candidate;
+                    continue;
+                }
                 $evaluation = $this->evaluate($candidate, $finding, $lock, $baseline, $matcher, $workspace);
                 if ($evaluation->result->status === SolveStatus::Transport) {
                     ++$transportFailures;
                 }
                 $evaluated[] = $evaluation;
-                if ($evaluation->valid) {
+                if ($evaluation->valid && !self::descentIsDominated($evaluation, $evaluated, $ranker)) {
                     array_push($evaluated, ...$this->descendParent($evaluation, $finding, $lock, $baseline, $matcher, $workspace));
                 }
             }
@@ -93,7 +99,7 @@ final class Planner
             if ($transportFailures > 0 && $transportFailures === count($evaluated)) {
                 $blocker = 'Every solve failed with a network error; package metadata could not be fetched.';
             }
-            $plans[] = new FindingPlan($finding, $evaluated, $ranker->rank($evaluated), $blocker);
+            $plans[] = new FindingPlan($finding, $evaluated, $ranker->rank($evaluated), $blocker, $skipped);
         }
 
         return new Plan($plans, [
@@ -107,6 +113,41 @@ final class Planner
             'analysis_timestamp' => gmdate('c'),
             'locked_packages' => (string) $lock->count(),
         ], $warnings);
+    }
+
+    /**
+     * @param list<EvaluatedCandidate> $evaluated
+     */
+    private static function hasValidWithoutRootChanges(array $evaluated): bool
+    {
+        foreach ($evaluated as $candidate) {
+            if ($candidate->valid && !$candidate->candidate->changesRootConstraints()) {
+                return true;
+            }
+        }
+
+        return false;
+    }
+
+    /**
+     * A descent can at best reach two changed packages (the parent and the vulnerable package) with no
+     * major change. Skip it when an already valid candidate is at least that good.
+     *
+     * @param list<EvaluatedCandidate> $evaluated
+     */
+    private static function descentIsDominated(EvaluatedCandidate $start, array $evaluated, Ranker $ranker): bool
+    {
+        $optimistic = [$start->candidate->changesRootConstraints() ? 1 : 0, 0, 2, 0, 0, 0, 0, 0];
+        foreach ($evaluated as $candidate) {
+            if ($candidate === $start || !$candidate->valid) {
+                continue;
+            }
+            if ($ranker->sortKey($candidate) <= $optimistic) {
+                return true;
+            }
+        }
+
+        return false;
     }
 
     /**

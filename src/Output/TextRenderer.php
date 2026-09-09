@@ -118,7 +118,7 @@ final class TextRenderer
         }
 
         $others = array_values(array_filter($plan->evaluated, static fn (EvaluatedCandidate $c): bool => $c !== $recommended));
-        if ($others !== []) {
+        if ($others !== [] || $plan->skipped !== []) {
             $out[] = 'Other candidates';
             $rank = 2;
             foreach ($plan->ranked as $candidate) {
@@ -136,6 +136,9 @@ final class TextRenderer
                 foreach (array_slice(explode("\n", $reason), 0, 6) as $line) {
                     $out[] = '      ' . $line;
                 }
+            }
+            foreach ($plan->skipped as $candidate) {
+                $out[] = sprintf('  not tried (a better candidate already exists): %s', $candidate->commandLine($this->minimalChangesSupported));
             }
         }
 

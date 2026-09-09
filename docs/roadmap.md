@@ -8,11 +8,13 @@ current plan; the [decision records](adr/index.md) explain where and why it depa
 Exit criterion: five real historical fixtures, and the planner reproduces the human-chosen
 remediation for at least four.
 
-- ddev development environment, CI, this documentation site
-- fixture format and harness with frozen package metadata
-- dependency graph, advisory matching, candidate generation, in-process solver validation,
-  deterministic ranking, text output
-- `composer remediate` command wired as a plugin
+- [x] ddev development environment, CI, this documentation site
+- [x] fixture format and harness with frozen package metadata, `bin/build-fixture.php`
+- [x] dependency graph, advisory matching (including `replace`), candidate generation, in-process
+  solver validation, lowest-parent-version descent, deterministic ranking, text output
+- [x] `composer remediate` command wired as a plugin
+- [ ] five real historical fixtures with the human-chosen remediation recorded
+- [ ] planner reproduces the human choice for at least four of them
 
 This phase is a go/no-go gate. If the simplest strategy trivially wins every fixture, the
 documentation will say so and the project narrows to multi-finding planning, explanation and CI

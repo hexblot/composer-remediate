@@ -14,3 +14,5 @@ replacement.
 | [0006](0006-frozen-fixtures.md) | Fixtures freeze package metadata, not just advisories | accepted |
 | [0007](0007-composer-floor.md) | Composer 2.4 minimum, 2.9 for the full feature set | accepted |
 | [0008](0008-isolate-internals.md) | Touch Composer's `@internal` classes only inside adapters | accepted |
+| [0009](0009-parent-descent.md) | Search downwards for the lowest parent version that admits the fix | accepted |
+| [0010](0010-disable-blocking-in-solves.md) | Disable Composer's advisory blocking inside candidate solves | accepted |

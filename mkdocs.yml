@@ -50,3 +50,5 @@ nav:
       - 0006 Fixtures freeze package metadata: adr/0006-frozen-fixtures.md
       - 0007 Composer version floor: adr/0007-composer-floor.md
       - 0008 Isolate Composer internals: adr/0008-isolate-internals.md
+      - 0009 Lowest working parent version: adr/0009-parent-descent.md
+      - 0010 Disable blocking in solves: adr/0010-disable-blocking-in-solves.md

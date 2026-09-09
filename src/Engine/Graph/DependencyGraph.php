@@ -44,7 +44,10 @@ final class DependencyGraph
         $paths = [];
         $this->walk($results, [], $paths, 0);
 
-        return $paths;
+        // Cycles and orphans only matter when nothing reaches the root at all.
+        $rooted = array_values(array_filter($paths, static fn (DependencyPath $p): bool => $p->reachesRoot()));
+
+        return $rooted !== [] ? $rooted : $paths;
     }
 
     public function isRootRequirement(string $name): bool
