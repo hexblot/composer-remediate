@@ -65,6 +65,22 @@ each path, candidates are generated in this order:
 outside `F` from the solver's pool, and it works for transitive packages since Composer 2.4. The
 package must still be reachable through the allow list or `-w`/`-W` for the solver to change it.
 
+### Finding the lowest working parent version
+
+`composer update A -W -m` keeps *transitive* packages where they are when possible, but it still
+moves `A` itself to the newest version the root constraint allows. That is often more than the
+smallest safe change: if `A` 1.1.0 already requires the fixed `V`, jumping to `A` 1.2.0 may drag
+other packages along. After a parent update validates, the planner therefore probes downwards with
+a temporary upper bound on `A` (`--with 'A:>current,<newest'`) until the solve breaks or the
+vulnerability comes back, and then pins the lowest version that worked:
+
+```text
+composer update A:1.1.0 -W -m --with 'V:>=1.1.0'
+```
+
+The descent is bounded to a handful of solves per finding. Both the pinned command and the plain
+one are kept as candidates; ranking decides.
+
 ## 4. Validation
 
 Each candidate is executed as a **dry-run** of Composer's `Installer` against a fresh in-memory

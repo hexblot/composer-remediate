@@ -1,0 +1,14 @@
+{
+    "name": "fixture/synthetic-transitive-parent",
+    "description": "Synthetic fixture: vulnerable transitive package pinned by a parent constraint that excludes the fix.",
+    "type": "project",
+    "license": "MIT",
+    "require": {
+        "acme/app-framework": "^1.0"
+    },
+    "config": {
+        "platform": {"php": "8.3.0"}
+    },
+    "minimum-stability": "stable",
+    "prefer-stable": true
+}

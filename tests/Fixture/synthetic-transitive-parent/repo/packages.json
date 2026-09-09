@@ -1,0 +1,25 @@
+{
+  "packages": {
+    "acme/app-framework": {
+      "1.0.0": {"name":"acme/app-framework","version":"1.0.0","type":"library","require":{"acme/vuln-lib":"~1.0.0","acme/helper":"^1.0"},"dist":{"type":"zip","url":"https://example.invalid/acme-app-framework-1.0.0.zip","reference":"1.0.0"}},
+      "1.0.1": {"name":"acme/app-framework","version":"1.0.1","type":"library","require":{"acme/vuln-lib":"~1.0.0","acme/helper":"^1.0"},"dist":{"type":"zip","url":"https://example.invalid/acme-app-framework-1.0.1.zip","reference":"1.0.1"}},
+      "1.1.0": {"name":"acme/app-framework","version":"1.1.0","type":"library","require":{"acme/vuln-lib":"^1.1","acme/helper":"^1.0"},"dist":{"type":"zip","url":"https://example.invalid/acme-app-framework-1.1.0.zip","reference":"1.1.0"}},
+      "1.2.0": {"name":"acme/app-framework","version":"1.2.0","type":"library","require":{"acme/vuln-lib":"^1.1","acme/helper":"^1.2"},"dist":{"type":"zip","url":"https://example.invalid/acme-app-framework-1.2.0.zip","reference":"1.2.0"}},
+      "2.0.0": {"name":"acme/app-framework","version":"2.0.0","type":"library","require":{"acme/vuln-lib":"^2.0","acme/helper":"^2.0"},"dist":{"type":"zip","url":"https://example.invalid/acme-app-framework-2.0.0.zip","reference":"2.0.0"}}
+    },
+    "acme/vuln-lib": {
+      "1.0.0": {"name":"acme/vuln-lib","version":"1.0.0","type":"library","require":{},"dist":{"type":"zip","url":"https://example.invalid/acme-vuln-lib-1.0.0.zip","reference":"1.0.0"}},
+      "1.0.1": {"name":"acme/vuln-lib","version":"1.0.1","type":"library","require":{},"dist":{"type":"zip","url":"https://example.invalid/acme-vuln-lib-1.0.1.zip","reference":"1.0.1"}},
+      "1.0.4": {"name":"acme/vuln-lib","version":"1.0.4","type":"library","require":{},"dist":{"type":"zip","url":"https://example.invalid/acme-vuln-lib-1.0.4.zip","reference":"1.0.4"}},
+      "1.1.0": {"name":"acme/vuln-lib","version":"1.1.0","type":"library","require":{},"dist":{"type":"zip","url":"https://example.invalid/acme-vuln-lib-1.1.0.zip","reference":"1.1.0"}},
+      "1.1.1": {"name":"acme/vuln-lib","version":"1.1.1","type":"library","require":{},"dist":{"type":"zip","url":"https://example.invalid/acme-vuln-lib-1.1.1.zip","reference":"1.1.1"}},
+      "2.0.0": {"name":"acme/vuln-lib","version":"2.0.0","type":"library","require":{},"dist":{"type":"zip","url":"https://example.invalid/acme-vuln-lib-2.0.0.zip","reference":"2.0.0"}}
+    },
+    "acme/helper": {
+      "1.0.0": {"name":"acme/helper","version":"1.0.0","type":"library","require":{},"dist":{"type":"zip","url":"https://example.invalid/acme-helper-1.0.0.zip","reference":"1.0.0"}},
+      "1.1.0": {"name":"acme/helper","version":"1.1.0","type":"library","require":{},"dist":{"type":"zip","url":"https://example.invalid/acme-helper-1.1.0.zip","reference":"1.1.0"}},
+      "1.2.0": {"name":"acme/helper","version":"1.2.0","type":"library","require":{},"dist":{"type":"zip","url":"https://example.invalid/acme-helper-1.2.0.zip","reference":"1.2.0"}},
+      "2.0.0": {"name":"acme/helper","version":"2.0.0","type":"library","require":{},"dist":{"type":"zip","url":"https://example.invalid/acme-helper-2.0.0.zip","reference":"2.0.0"}}
+    }
+  }
+}

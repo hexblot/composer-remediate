@@ -3,8 +3,27 @@
     "description": "Composer plugin that traces vulnerable dependencies to the packages you control and uses Composer's own solver to find the smallest verified upgrade that removes them.",
     "type": "composer-plugin",
     "license": "MIT",
-    "keywords": ["composer", "plugin", "security", "vulnerability", "remediation", "audit", "dependencies"],
+    "keywords": [
+        "composer",
+        "plugin",
+        "security",
+        "vulnerability",
+        "remediation",
+        "audit",
+        "dependencies"
+    ],
     "homepage": "https://github.com/hexblot/composer-remediate",
+    "authors": [
+        {
+            "name": "Nikolaos Andriopoulos",
+            "email": "nick.andriopoulos@lambda-twelve.com"
+        }
+    ],
+    "support": {
+        "issues": "https://github.com/hexblot/composer-remediate/issues",
+        "security": "https://github.com/hexblot/composer-remediate/security/advisories/new",
+        "docs": "https://hexblot.github.io/composer-remediate/"
+    },
     "require": {
         "php": "^8.1",
         "composer-plugin-api": "^2.0"
@@ -38,7 +57,10 @@
         "test:unit": "phpunit --testsuite unit",
         "test:fixtures": "phpunit --testsuite fixtures",
         "phpstan": "phpstan analyse --memory-limit=1G",
-        "check": ["@phpstan", "@test"]
+        "check": [
+            "@phpstan",
+            "@test"
+        ]
     },
     "minimum-stability": "stable",
     "prefer-stable": true

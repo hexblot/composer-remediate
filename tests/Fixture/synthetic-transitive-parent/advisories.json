@@ -1,0 +1,20 @@
+{
+  "advisories": {
+    "acme/vuln-lib": [
+      {
+        "advisoryId": "PKSA-synthetic-0001",
+        "packageName": "acme/vuln-lib",
+        "remoteId": "acme/vuln-lib/SYNTHETIC-0001.yaml",
+        "title": "Synthetic: request smuggling in acme/vuln-lib",
+        "link": "https://example.invalid/advisories/SYNTHETIC-0001",
+        "cve": "CVE-2026-00001",
+        "affectedVersions": "<1.1.0",
+        "source": "Synthetic",
+        "reportedAt": "2026-01-15 10:00:00",
+        "composerRepository": "https://packagist.org",
+        "severity": "high",
+        "sources": [{"name": "Synthetic", "remoteId": "SYNTHETIC-0001"}]
+      }
+    ]
+  }
+}

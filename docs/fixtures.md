@@ -34,9 +34,23 @@ together with any `config.platform` from `expected.json`. The committed fixture 
 
 ## Building a fixture
 
-`bin/build-fixture.php` takes a project directory, performs one solve with a dedicated Composer
-cache, then assembles `repo/packages.json` from the cached metadata and fetches the advisory
-snapshot for the lock's package list.
+```bash
+ddev exec php bin/build-fixture.php --project=/path/to/project --name=<fixture-name>
+```
+
+The script copies `composer.json` and `composer.lock` to a scratch directory with an empty Composer
+cache, runs one full dry-run update so Composer fetches every metadata file the solver could need,
+and turns that cache into `repo/packages.json`. Versions older than the locked one are dropped and
+each version is trimmed to the fields the solver reads (`require`, `replace`, `provide`, `conflict`,
+`dist`), which keeps Drupal-sized fixtures in the low megabytes. It then fetches advisories for every
+package name in the repository from Packagist, records the build environment's PHP and extension
+versions as `platform`, and writes an `expected.json` skeleton listing the findings it detected.
+
+Finish the fixture by hand: describe the case, record provenance in `README.md`, and fill in the
+command a competent human would run. The harness compares the planner's recommendation against it.
+
+A synthetic fixture (`synthetic-transitive-parent`) exists purely to exercise the harness; every
+other fixture must be a real historical project state.
 
 ## The Phase 0 set
 

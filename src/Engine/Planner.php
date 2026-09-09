@@ -1,0 +1,219 @@
+<?php
+
+declare(strict_types=1);
+
+namespace Remediate\Engine;
+
+use Composer\Semver\Comparator;
+use Remediate\Engine\Advisory\AdvisoryProvider;
+use Remediate\Engine\Candidate\Candidate;
+use Remediate\Engine\Candidate\CandidateGenerator;
+use Remediate\Engine\Candidate\FixedRangeResolver;
+use Remediate\Engine\Candidate\Strategy;
+use Remediate\Engine\Graph\DependencyGraph;
+use Remediate\Engine\Matching\Finding;
+use Remediate\Engine\Matching\Matcher;
+use Remediate\Engine\Plan\EvaluatedCandidate;
+use Remediate\Engine\Plan\FindingPlan;
+use Remediate\Engine\Plan\Plan;
+use Remediate\Engine\Lock\LockSnapshot;
+use Remediate\Engine\Project\ProjectContext;
+use Remediate\Engine\Ranking\Ranker;
+use Remediate\Engine\Solver\LockDiff;
+use Remediate\Engine\Solver\ScratchWorkspace;
+use Remediate\Engine\Solver\SolveStatus;
+use Remediate\Engine\Solver\SolverInterface;
+
+final class Planner
+{
+    /** Maximum number of downward probes when searching for the lowest working parent version. */
+    public const MAX_DESCENT_STEPS = 6;
+
+    /** @var callable(string): void|null */
+    private $progress;
+
+    public function __construct(
+        private readonly AdvisoryProvider $advisories,
+        private readonly SolverInterface $solver,
+        private readonly CandidateGenerator $generator = new CandidateGenerator(),
+        private readonly bool $includeDev = true,
+        private readonly int $maxCandidatesPerFinding = 10,
+        ?callable $progress = null,
+    ) {
+        $this->progress = $progress;
+    }
+
+    public function plan(ProjectContext $context, ScratchWorkspace $workspace): Plan
+    {
+        $lock = $context->lockSnapshot();
+        $graph = new DependencyGraph($context->rootPackage(), $context->lockedRepository());
+        $matcher = new Matcher($this->advisories);
+        $isRoot = static fn (string $name): bool => $context->isRootRequirement($name);
+        $ranker = new Ranker($isRoot);
+        $warnings = [];
+
+        if (!$this->advisories->isComplete()) {
+            $warnings[] = sprintf('Advisory source "%s" only knows advisories for the current lock; candidate locks cannot be checked for other advisories.', $this->advisories->describe());
+        }
+
+        $findings = $matcher->match($lock, $isRoot);
+        if (!$this->includeDev) {
+            $findings = array_values(array_filter($findings, static fn (Finding $f): bool => !$f->isDev));
+        }
+        $baseline = [];
+        foreach ($findings as $finding) {
+            $baseline[$finding->key()] = true;
+        }
+
+        $plans = [];
+        foreach ($findings as $finding) {
+            $finding = $finding->withPaths($graph->pathsToRoot($finding->packageName));
+            $this->report(sprintf('%s on %s %s', $finding->advisory->displayId(), $finding->packageName, $finding->prettyVersion));
+
+            $candidates = $this->generator->generate($finding, $graph, $context->rootRequirements());
+            if ($candidates === []) {
+                $plans[] = new FindingPlan($finding, [], [], sprintf('No release of %s newer than %s is outside the affected range %s.', $finding->packageName, $finding->prettyVersion, $finding->advisory->affectedVersions->getPrettyString()));
+                continue;
+            }
+
+            $evaluated = [];
+            $transportFailures = 0;
+            foreach (array_slice($candidates, 0, $this->maxCandidatesPerFinding) as $candidate) {
+                $evaluation = $this->evaluate($candidate, $finding, $lock, $baseline, $matcher, $workspace);
+                if ($evaluation->result->status === SolveStatus::Transport) {
+                    ++$transportFailures;
+                }
+                $evaluated[] = $evaluation;
+                if ($evaluation->valid) {
+                    array_push($evaluated, ...$this->descendParent($evaluation, $finding, $lock, $baseline, $matcher, $workspace));
+                }
+            }
+
+            $blocker = null;
+            if ($transportFailures > 0 && $transportFailures === count($evaluated)) {
+                $blocker = 'Every solve failed with a network error; package metadata could not be fetched.';
+            }
+            $plans[] = new FindingPlan($finding, $evaluated, $ranker->rank($evaluated), $blocker);
+        }
+
+        return new Plan($plans, [
+            'project' => $context->directory,
+            'composer_version' => $context->composerVersion(),
+            'php_version' => PHP_VERSION,
+            'advisory_source' => $this->advisories->describe(),
+            'solver' => $this->solver->describe(),
+            'composer_json_sha256' => self::fileHash($context->composerJsonPath()),
+            'composer_lock_sha256' => self::fileHash($context->lockPath()),
+            'analysis_timestamp' => gmdate('c'),
+            'locked_packages' => (string) $lock->count(),
+        ], $warnings);
+    }
+
+    /**
+     * @param array<string, true> $baseline finding keys present before remediation
+     */
+    private function evaluate(Candidate $candidate, Finding $finding, LockSnapshot $lock, array $baseline, Matcher $matcher, ScratchWorkspace $workspace): EvaluatedCandidate
+    {
+        $this->report('  trying ' . $candidate->commandLine($this->solver->supportsMinimalChanges()));
+        $result = $this->solver->solve($candidate, $workspace);
+
+        if (!$result->resolved() || $result->after === null) {
+            return new EvaluatedCandidate($candidate, $result, null, false, self::describeFailure($result->status) . ': ' . $result->explanation());
+        }
+
+        $diff = LockDiff::between($lock, $result->after);
+        $afterKeys = $matcher->findingKeys($result->after);
+        if (isset($afterKeys[$finding->key()])) {
+            $after = $result->after->get($finding->packageName);
+
+            return new EvaluatedCandidate($candidate, $result, $diff, false, sprintf('resolves, but %s stays at %s which is still affected', $finding->packageName, $after?->getPrettyVersion() ?? '?'));
+        }
+        $introduced = array_keys(array_diff_key($afterKeys, $baseline));
+        if ($introduced !== []) {
+            return new EvaluatedCandidate($candidate, $result, $diff, false, 'resolves, but introduces new advisories: ' . implode(', ', $introduced));
+        }
+        if ($diff->count() === 0) {
+            return new EvaluatedCandidate($candidate, $result, $diff, false, 'resolves without changing anything');
+        }
+
+        return new EvaluatedCandidate($candidate, $result, $diff, true, null);
+    }
+
+    /**
+     * `composer update A -W -m` moves A to its newest allowed version. A human asking for the
+     * smallest change wants the *lowest* version of A that still admits the fix. Probe downwards
+     * with a temporary upper bound until the solve breaks, then pin the lowest working version.
+     *
+     * @param array<string, true> $baseline
+     *
+     * @return list<EvaluatedCandidate>
+     */
+    private function descendParent(EvaluatedCandidate $start, Finding $finding, LockSnapshot $lock, array $baseline, Matcher $matcher, ScratchWorkspace $workspace): array
+    {
+        $candidate = $start->candidate;
+        if (!in_array($candidate->strategy, [Strategy::ParentUpdate, Strategy::RootConstraintWiden], true) || count($candidate->allowList) !== 1 || $candidate->pins !== [] || $start->result->after === null) {
+            return [];
+        }
+        $parent = $candidate->allowList[0];
+        if ($parent === $finding->packageName) {
+            return [];
+        }
+        $before = $lock->get($parent);
+        $after = $start->result->after->get($parent);
+        if ($before === null || $after === null || str_starts_with($before->getVersion(), 'dev-') || str_starts_with($after->getVersion(), 'dev-')) {
+            return [];
+        }
+
+        $high = $after->getVersion();
+        $lowerBound = '>' . FixedRangeResolver::shortVersion($before->getVersion());
+        $best = null;
+        for ($step = 0; $step < self::MAX_DESCENT_STEPS; ++$step) {
+            $probe = $candidate->withTemporaryConstraints(
+                [$parent => $lowerBound . ',<' . FixedRangeResolver::shortVersion($high)],
+                sprintf('probe: is there a lower %s than %s that still admits the fix?', $parent, $after->getPrettyVersion()),
+            );
+            $evaluation = $this->evaluate($probe, $finding, $lock, $baseline, $matcher, $workspace);
+            $probed = $evaluation->result->after?->get($parent);
+            if (!$evaluation->valid || $probed === null || !Comparator::lessThan($probed->getVersion(), $high)) {
+                break;
+            }
+            $high = $probed->getVersion();
+            $best = $probed->getPrettyVersion();
+        }
+
+        if ($best === null) {
+            return [];
+        }
+        $pinned = $candidate->withPin($parent, $best, sprintf('%s, pinned to %s, the lowest version that admits the fix', $candidate->description, $best));
+        $final = $this->evaluate($pinned, $finding, $lock, $baseline, $matcher, $workspace);
+
+        return $final->valid ? [$final] : [];
+    }
+
+    private static function fileHash(string $path): string
+    {
+        if (!is_file($path)) {
+            return '';
+        }
+        $hash = hash_file('sha256', $path);
+
+        return $hash === false ? '' : $hash;
+    }
+
+    private static function describeFailure(SolveStatus $status): string
+    {
+        return match ($status) {
+            SolveStatus::Conflict => 'Composer could not resolve the dependencies',
+            SolveStatus::Transport => 'network error while fetching package metadata',
+            SolveStatus::Error => 'Composer failed',
+            SolveStatus::Resolved => 'unexpected',
+        };
+    }
+
+    private function report(string $message): void
+    {
+        if ($this->progress !== null) {
+            ($this->progress)($message);
+        }
+    }
+}
