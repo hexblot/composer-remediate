@@ -19,7 +19,7 @@ use Remediate\Tests\Support\FixtureRunner;
 use Symfony\Component\Process\Process;
 
 /**
- * Every directory under tests/Fixture with an expected.json is a test case. expected.json:
+ * Every directory under tests/Fixture/third-party with an expected.json is a test case. expected.json:
  *
  *   {
  *     "description": "...",

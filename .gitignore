@@ -14,4 +14,4 @@
 /.ddev/php/*
 !/.ddev/php/custom.ini
 .DS_Store
-/tests/Fixture/*/.work/
+/tests/Fixture/third-party/*/.work/

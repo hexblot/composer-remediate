@@ -17,7 +17,7 @@ final class JsonSchemaTest extends TestCase
     /** @return iterable<string, array{string}> */
     public static function reports(): iterable
     {
-        foreach (glob(__DIR__ . '/../../Fixture/*/reports/report.json') ?: [] as $file) {
+        foreach (glob(__DIR__ . '/../../Fixture/third-party/*/reports/report.json') ?: [] as $file) {
             yield basename(dirname($file, 2)) => [$file];
         }
     }

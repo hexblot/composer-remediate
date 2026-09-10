@@ -270,4 +270,4 @@ composer remediate --format=json | jq '.findings[].remediation.command'
   `candidates` with their outcome) and `unsolved_findings[]`. The structure is published as a JSON
   Schema at [schema/report.schema.json](schema/report.schema.json); every stored fixture report is
   validated against it in the test suite. Stored examples for every fixture live under
-  `tests/Fixture/<name>/reports/`.
+  `tests/Fixture/third-party/<name>/reports/`.

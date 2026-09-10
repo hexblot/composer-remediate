@@ -31,6 +31,10 @@ All notable changes to this project are documented here. The format follows
 
 - Findings are ordered by urgency (see above); before, they were ordered by package name. The stored
   fixture reports and the case-studies page are regenerated accordingly.
+- Test fixtures moved from `tests/Fixture/<name>` to `tests/Fixture/third-party/<name>`. GitHub's
+  dependency graph treats a `third-party` path as vendored and does not scan the manifests inside, so
+  the fixtures' historical lock files (vulnerable on purpose) no longer raise Dependabot alerts against
+  this repository. `bin/build-fixture.php` writes there by default.
 
 [Unreleased]: https://github.com/hexblot/composer-remediate/compare/v0.4.2...HEAD
 

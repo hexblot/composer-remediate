@@ -15,9 +15,9 @@
  *
  * Options:
  *   --project=<dir>        project containing composer.json and composer.lock (required)
- *   --name=<fixture>       directory name under tests/Fixture (required)
+ *   --name=<fixture>       directory name under tests/Fixture/third-party (required)
  *   --composer=<binary>    Composer executable (default: composer)
- *   --fixture-root=<dir>   default: tests/Fixture next to this script's parent
+ *   --fixture-root=<dir>   default: tests/Fixture/third-party next to this script's parent
  *   --keep-dev-versions    keep dev-* versions in the static repository (default: dropped unless locked)
  *   --as-of=<YYYY-MM-DD>   historical snapshot: drop package versions released and advisories reported after this date
  *   --platform-php=<ver>   PHP version to record in expected.json (default: the project's config.platform.php, else the build PHP)
@@ -43,7 +43,7 @@ $options = getopt('', ['project:', 'name:', 'composer::', 'fixture-root::', 'kee
 $projectDir = is_string($options['project'] ?? null) ? realpath($options['project']) : false;
 $name = is_string($options['name'] ?? null) ? $options['name'] : '';
 $composerBinary = is_string($options['composer'] ?? null) ? $options['composer'] : 'composer';
-$fixtureRoot = is_string($options['fixture-root'] ?? null) ? $options['fixture-root'] : dirname(__DIR__) . '/tests/Fixture';
+$fixtureRoot = is_string($options['fixture-root'] ?? null) ? $options['fixture-root'] : dirname(__DIR__) . '/tests/Fixture/third-party';
 $keepDev = array_key_exists('keep-dev-versions', $options);
 $asOf = null;
 if (is_string($options['as-of'] ?? null) && $options['as-of'] !== '') {

@@ -12,7 +12,7 @@ carries its own static Composer repository, and packagist.org is disabled during
 ## Layout
 
 ```text
-tests/Fixture/<name>/
+tests/Fixture/third-party/<name>/
   composer.json        real project manifest
   composer.lock        real lock file
   repo/packages.json.gz  static Composer repository (gzipped): every package version the solver may consider
@@ -26,6 +26,11 @@ tests/Fixture/<name>/
   reports/report.cdx.json  the lock as a CycloneDX 1.6 SBOM with the advisories attached
   reports/gl-dependency-scanning-report.json  the same plan as a GitLab dependency-scanning report
 ```
+
+The `third-party` directory name is deliberate: GitHub's dependency graph treats paths with that
+name as vendored code and does not scan the manifests inside, so the historical `composer.lock`
+files (which contain vulnerable versions on purpose) raise no Dependabot alerts against this
+repository. The synthetic fixture lives there too, for one set of tooling paths.
 
 The `reports/` files are committed examples, regenerated with
 `php bin/run-fixture.php <name> --write-reports`; they carry fixed metadata so the output is

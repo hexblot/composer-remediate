@@ -20,7 +20,8 @@ use Remediate\Engine\Solver\ScratchWorkspace;
  */
 final class FixtureRunner
 {
-    public const FIXTURE_ROOT = __DIR__ . '/../Fixture';
+    /** Fixtures live under a directory GitHub's dependency graph treats as vendored, so their lock files raise no Dependabot alerts. */
+    public const FIXTURE_ROOT = __DIR__ . '/../Fixture/third-party';
 
     /** @var list<ScratchProject> */
     private array $materialized = [];
