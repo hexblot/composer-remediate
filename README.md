@@ -31,16 +31,11 @@ CVE-2026-XXXXX  symfony/http-foundation 6.4.21
 ```
 
 Status: released as **0.x** on [Packagist](https://packagist.org/packages/hexblot/composer-remediate);
-the current version is in the [changelog](CHANGELOG.md). Phases 0 to 2 of the
-[roadmap](https://hexblot.github.io/composer-remediate/roadmap/) are complete: the planner reproduces
-the remediation a competent human would choose on every one of twelve real historical projects
-(BookStack, koel, Pixelfed, Invoice Ninja, Kimai, Shopware, two Drupal sites, and platform- and
-constraint-bound "no fix" cases), and the advisory database can be built locally or shared. Phase 3
-(a larger Drupal and Symfony corpus) is in progress; most Phase 6 integrations (SARIF, GitLab and
-CycloneDX reports, severity gate, baselines, release cooldown) have landed. Two rounds of external
-architecture review are answered in the changelog, each finding with a test. Global planning
-(Phase 4) and `--apply` (Phase 5) are still ahead, so every release recommends and never modifies
-your project. Full documentation: [hexblot.github.io/composer-remediate](https://hexblot.github.io/composer-remediate/).
+every release so far recommends and never modifies your project. Phases 0 to 2 and 6 of the
+[roadmap](https://hexblot.github.io/composer-remediate/roadmap/) are complete, Phase 3 (a larger
+Drupal and Symfony corpus) is in progress, global planning (Phase 4) and `--apply` (Phase 5) are ahead.
+Three rounds of adversarial adoption review are answered in the [changelog](CHANGELOG.md), each finding
+with a test. Current state, fixtures and evidence: [hexblot.github.io/composer-remediate](https://hexblot.github.io/composer-remediate/).
 
 ## Using it as a CI gate
 

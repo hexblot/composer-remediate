@@ -48,8 +48,10 @@ current version is listed in the [changelog](https://github.com/hexblot/composer
 Of the [roadmap](roadmap.md), Phases 0 to 2 are complete: the planner reproduces the remediation a
 competent human would choose on every one of twelve real historical projects, and the advisory
 database can be built locally or shared. Phase 3 (a larger Drupal and Symfony corpus) is in
-progress, and most Phase 6 integrations (SARIF, GitLab and CycloneDX reports, severity gate,
-baselines, release cooldown) have landed. An external architecture review of 0.3.0 found twenty
+progress, and the Phase 6 integrations (SARIF, GitLab and CycloneDX reports, severity gate,
+baselines, release cooldown, EPSS and CISA KEV urgency ordering, abandoned-package flagging) have
+landed. An adversarial adoption review of 0.3.0 (another AI model working from the published
+repository, reproducing each finding) found twenty
 defects, nine of them able to turn a tool failure or a policy exception into a clean result; 0.4.0
 answers that review and the reviewer's recheck, with a test behind each change, and 0.4.1 puts the
 command layer, the advisory feed readers and both advisory adapters under test (171 tests, 94% of

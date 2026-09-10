@@ -1,0 +1,154 @@
+name: Incorrect or missed remediation
+description: Report a remediation that is missing, incorrect, unsafe, or more disruptive than necessary.
+title: "[Remediation]: "
+labels:
+  - remediation
+body:
+  - type: markdown
+    attributes:
+      value: |
+        Use this form when Composer Remediate detects a vulnerability but its
+        remediation result appears incorrect — for example, no fix is found when
+        one exists, the recommended command does not remove the vulnerability,
+        or a less disruptive valid remediation is available.
+
+        **Security-sensitive results:** If Composer Remediate incorrectly reports
+        a vulnerable project as clean, recommends an unsafe remediation, or the
+        issue could otherwise cause users to make an incorrect security decision,
+        please use GitHub's private vulnerability reporting instead.
+
+  - type: input
+    id: version
+    attributes:
+      label: Composer Remediate version
+      placeholder: "0.4.2"
+    validations:
+      required: true
+
+  - type: input
+    id: advisory
+    attributes:
+      label: Advisory identifier
+      description: CVE, GHSA, PKSA, OSV identifier, or other advisory ID if available.
+      placeholder: "CVE-YYYY-NNNNN / GHSA-..."
+    validations:
+      required: true
+
+  - type: input
+    id: vulnerable-package
+    attributes:
+      label: Vulnerable package and version
+      placeholder: "vendor/package 1.2.3"
+    validations:
+      required: true
+
+  - type: textarea
+    id: dependency-path
+    attributes:
+      label: Dependency path
+      description: |
+        If known, show how the vulnerable package is introduced into the project.
+        `composer why vendor/package` output can be useful.
+      placeholder: |
+        root/project
+        └── vendor/parent
+            └── vendor/vulnerable 1.2.3
+
+  - type: dropdown
+    id: problem
+    attributes:
+      label: What appears to be wrong?
+      options:
+        - No remediation was found, but a valid remediation exists
+        - The recommended command does not remove the vulnerability
+        - The recommendation changes more packages than necessary
+        - The recommendation selects an unexpected package/version
+        - The vulnerability or affected version was matched incorrectly
+        - The dependency path or root-controllable package is incorrect
+        - Other remediation-planning problem
+    validations:
+      required: true
+
+  - type: textarea
+    id: actual
+    attributes:
+      label: What did Composer Remediate recommend?
+      description: Paste the relevant text or JSON report output.
+    validations:
+      required: true
+
+  - type: textarea
+    id: expected
+    attributes:
+      label: What remediation did you expect?
+      description: |
+        If you know a command or dependency change that works, provide it here.
+        Please explain how you verified it if possible.
+      placeholder: |
+        Expected:
+        composer update vendor/parent ...
+
+        Result:
+        vulnerable package changed from ...
+    validations:
+      required: true
+
+  - type: textarea
+    id: verification
+    attributes:
+      label: How did you verify the alternative?
+      description: |
+        For example, did Composer resolve successfully? What version was installed
+        afterward? Did `composer audit` or another advisory source confirm that
+        the vulnerability was removed?
+
+  - type: input
+    id: php-version
+    attributes:
+      label: PHP version
+      placeholder: "PHP 8.4.x"
+    validations:
+      required: true
+
+  - type: input
+    id: composer-version
+    attributes:
+      label: Composer version
+      placeholder: "Composer version 2.x.x"
+    validations:
+      required: true
+
+  - type: textarea
+    id: project
+    attributes:
+      label: Reproduction project or Composer configuration
+      description: |
+        A minimal public repository or sanitized composer.json/composer.lock
+        information is extremely helpful. Do not publish private repository
+        credentials, tokens, or other sensitive information.
+
+  - type: textarea
+    id: command
+    attributes:
+      label: Command and options used
+      placeholder: "composer-remediate ..."
+      render: shell
+    validations:
+      required: true
+
+  - type: textarea
+    id: additional
+    attributes:
+      label: Additional context
+
+  - type: checkboxes
+    id: checks
+    attributes:
+      label: Before submitting
+      options:
+        - label: I have checked that this remediation issue has not already been reported.
+          required: true
+        - label: I have removed credentials and other sensitive information.
+          required: true
+        - label: This report does not expose a security issue that should be reported privately.
+          required: true

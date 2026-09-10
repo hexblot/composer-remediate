@@ -1,0 +1,10 @@
+blank_issues_enabled: false
+
+contact_links:
+  - name: Report a security vulnerability
+    url: https://github.com/hexblot/composer-remediate/security/advisories/new
+    about: Privately report vulnerabilities or security-sensitive incorrect results.
+
+  - name: Documentation
+    url: https://hexblot.github.io/composer-remediate/
+    about: Check the documentation, CLI reference, CI recipes, and project design before opening an issue.

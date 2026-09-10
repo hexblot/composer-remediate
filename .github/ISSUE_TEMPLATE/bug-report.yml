@@ -1,0 +1,121 @@
+name: Bug report
+description: Report incorrect behaviour, crashes, or other defects in Composer Remediate.
+title: "[Bug]: "
+labels:
+  - bug
+body:
+  - type: markdown
+    attributes:
+      value: |
+        Thanks for reporting a problem.
+
+        If this issue could have security implications, especially if it could cause
+        Composer Remediate to produce an unsafe or misleading security decision,
+        please use GitHub's private vulnerability reporting instead of opening a
+        public issue.
+
+  - type: input
+    id: version
+    attributes:
+      label: Composer Remediate version
+      description: The installed package version, e.g. from `composer show hexblot/composer-remediate` (the report's `engine_version` field also carries it).
+      placeholder: "0.4.2"
+    validations:
+      required: true
+
+  - type: input
+    id: php-version
+    attributes:
+      label: PHP version
+      description: Output of `php --version` (the first line is sufficient).
+      placeholder: "PHP 8.4.x"
+    validations:
+      required: true
+
+  - type: input
+    id: composer-version
+    attributes:
+      label: Composer version
+      description: Output of `composer --version`.
+      placeholder: "Composer version 2.x.x"
+    validations:
+      required: true
+
+  - type: dropdown
+    id: invocation
+    attributes:
+      label: How are you running Composer Remediate?
+      options:
+        - Standalone composer-remediate binary
+        - Composer plugin (`composer remediate`)
+        - CI/CD
+        - Other
+    validations:
+      required: true
+
+  - type: textarea
+    id: description
+    attributes:
+      label: What happened?
+      description: Describe the problem and what you were trying to do.
+      placeholder: Tell us what went wrong.
+    validations:
+      required: true
+
+  - type: textarea
+    id: expected
+    attributes:
+      label: What did you expect to happen?
+    validations:
+      required: true
+
+  - type: textarea
+    id: reproduce
+    attributes:
+      label: Steps to reproduce
+      description: |
+        Provide the smallest sequence of steps that reproduces the problem.
+        Include the command you ran and relevant options. A minimal Composer
+        project or public repository is particularly useful.
+      placeholder: |
+        1. Install ...
+        2. Run `composer-remediate ...`
+        3. Observe ...
+    validations:
+      required: true
+
+  - type: textarea
+    id: output
+    attributes:
+      label: Relevant output
+      description: |
+        Paste relevant console or report output. Please remove credentials,
+        private repository URLs, tokens, and other sensitive information.
+      render: shell
+
+  - type: textarea
+    id: composer-context
+    attributes:
+      label: Relevant Composer configuration
+      description: |
+        If relevant, provide a minimal or sanitized composer.json, dependency
+        information, repository configuration, or other context needed to
+        reproduce the issue. Do not publish credentials or private information.
+
+  - type: textarea
+    id: additional
+    attributes:
+      label: Additional context
+      description: Anything else that may help reproduce or understand the problem.
+
+  - type: checkboxes
+    id: checks
+    attributes:
+      label: Before submitting
+      options:
+        - label: I have checked that this issue has not already been reported.
+          required: true
+        - label: I have removed credentials and other sensitive information from this report.
+          required: true
+        - label: This is not a security vulnerability requiring private disclosure.
+          required: true

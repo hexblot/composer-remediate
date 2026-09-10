@@ -1,0 +1,82 @@
+name: Feature request
+description: Suggest an improvement or new capability for Composer Remediate.
+title: "[Feature]: "
+labels:
+  - enhancement
+body:
+  - type: markdown
+    attributes:
+      value: |
+        Thanks for suggesting an improvement.
+
+        Composer Remediate is intentionally focused on actionable vulnerability
+        remediation for Composer dependency graphs. Explaining the problem or
+        workflow you are trying to improve is more useful than proposing an
+        implementation alone.
+
+  - type: textarea
+    id: problem
+    attributes:
+      label: What problem would this solve?
+      description: |
+        Describe the use case or limitation you have encountered. What are you
+        unable to do with Composer Remediate today?
+      placeholder: |
+        When I ..., I need to ..., but currently ...
+    validations:
+      required: true
+
+  - type: textarea
+    id: proposed
+    attributes:
+      label: What would you like Composer Remediate to do?
+      description: Describe the behaviour or outcome you would find useful.
+    validations:
+      required: true
+
+  - type: textarea
+    id: current-workaround
+    attributes:
+      label: How do you handle this today?
+      description: |
+        If there is an existing Composer command, external tool, script, or
+        manual process that addresses the problem, tell us about it.
+
+  - type: dropdown
+    id: area
+    attributes:
+      label: Area
+      options:
+        - Remediation planning
+        - Advisory data
+        - Composer integration
+        - CI/CD and policy
+        - Reports and machine-readable output
+        - CLI / user experience
+        - Documentation
+        - Other
+    validations:
+      required: true
+
+  - type: textarea
+    id: examples
+    attributes:
+      label: Example
+      description: |
+        If useful, show an example command, dependency graph, expected output,
+        or workflow. Examples help establish the intended behaviour.
+
+  - type: textarea
+    id: additional
+    attributes:
+      label: Additional context
+
+  - type: checkboxes
+    id: checks
+    attributes:
+      label: Before submitting
+      options:
+        - label: I have checked the roadmap and existing issues for this feature or a similar request.
+          required: true
+        - label: This request is within Composer Remediate's vulnerability-remediation scope.
+          required: false

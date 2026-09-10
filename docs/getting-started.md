@@ -1,9 +1,5 @@
 # Getting started
 
-!!! warning "Pre-alpha"
-    Nothing is published on Packagist yet. These instructions describe the intended
-    installation path and the current development setup.
-
 ## Requirements
 
 | Requirement | Minimum | Notes |
@@ -12,7 +8,7 @@
 | Composer | 2.4 | `composer audit` and transitive `--with` constraints appeared in 2.4; the suite runs against 2.4, 2.7, 2.8, 2.9 and the latest release in CI |
 | Composer, full feature set | 2.7 | `--minimal-changes` (`-m`) appeared in 2.7.0 (2.9 extended it to full updates); on older versions the planner omits it and diffs may be larger |
 
-## Installation (intended)
+## Installation
 
 Globally, so it is available in every project without touching their `composer.json`:
 

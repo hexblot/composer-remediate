@@ -167,7 +167,7 @@ for `type: composer` repositories, so no web server is involved.
 The pitch's example command uses `-m` (`--minimal-changes`). Composer's changelog places that flag
 in 2.7.0 (February 2024) for partial updates, extended to full updates in 2.9.0; `composer audit`
 and temporary constraints on transitive packages arrived in 2.4.0, `--no-install` in 2.0. An earlier
-revision of this page attributed the flag to 2.9; an external review caught the error.
+revision of this page attributed the flag to 2.9; an adversarial adoption review caught the error.
 
 ### Decision
 
