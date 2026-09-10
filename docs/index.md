@@ -53,7 +53,8 @@ baselines, release cooldown) have landed. An external architecture review of 0.3
 defects, nine of them able to turn a tool failure or a policy exception into a clean result; 0.4.0
 answers that review and the reviewer's recheck, with a test behind each change, and 0.4.1 puts the
 command layer, the advisory feed readers and both advisory adapters under test (171 tests, 94% of
-lines). Global planning
+lines); 0.4.2 answers a third recheck (three findings on the audit fallback's plugin boundary, OSV
+limit semantics and coverage-gap bookkeeping), which the reviewer then confirmed closed. Global planning
 (Phase 4) and `--apply` (Phase 5) are still ahead, so every release so far recommends and never
 modifies your project.
 

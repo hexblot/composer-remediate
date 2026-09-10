@@ -3,12 +3,14 @@
 All notable changes to this project are documented here. The format follows
 [Keep a Changelog](https://keepachangelog.com/en/1.1.0/); versions follow [Semantic Versioning](https://semver.org/).
 
-## [Unreleased]
+## [0.4.2] - 2026-09-10
+
+A correctness release answering the third external recheck. The recheck of 0.4.1 confirmed the six
+earlier findings as fixed and reported three new ones, all rated P1; each is fixed here with a test
+that reproduces the reviewer's case, and the reviewer's closure pass on these fixes found nothing
+further.
 
 ### Recheck (third round)
-
-An external recheck of 0.4.1 (three findings, all rated P1) confirmed the six earlier findings as
-fixed and reported the following, each fixed here with a test that reproduces the reviewer's case.
 
 - The `composer audit --locked` fallback wired in 0.4.1 launched its child without `--no-plugins
   --no-scripts`, so Composer activated the analysed project's allowed plugins in that child: the
@@ -28,7 +30,7 @@ fixed and reported the following, each fixed here with a test that reproduces th
   The record is kept for the readable packages and a gap is recorded for each unreadable one.
   Covered by mapper, private-file and OSV-source tests.
 
-[Unreleased]: https://github.com/hexblot/composer-remediate/compare/v0.4.1...HEAD
+[0.4.2]: https://github.com/hexblot/composer-remediate/releases/tag/v0.4.2
 
 ## [0.4.1] - 2026-09-10
 
