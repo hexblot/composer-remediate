@@ -3,7 +3,7 @@
 All notable changes to this project are documented here. The format follows
 [Keep a Changelog](https://keepachangelog.com/en/1.1.0/); versions follow [Semantic Versioning](https://semver.org/).
 
-## [Unreleased]
+## [0.4.0] - 2026-09-10
 
 This release responds to an external architecture review of 0.3.0 (twenty findings, nine rated as
 able to undermine a security decision) and to the reviewer's recheck of the first response (six
@@ -34,6 +34,9 @@ remaining findings). Each item below names its change; the tests that establish 
   unverified.
 - The fixture harness executes the printed command through a shell, verbatim, with a `composer` on
   PATH that adds `--no-install`; quoted constraints are no longer split on whitespace.
+- Documentation regrouped by intent (Use it, Understand it, Integrate it, Evidence, Project) with
+  three new pages: Reading the report, Comparison with other tools, and Case studies generated from
+  the fixture corpus (`bin/case-studies.php`, checked for staleness in CI).
 
 ### Added
 
@@ -124,6 +127,8 @@ remaining findings). Each item below names its change; the tests that establish 
   now performs a lock-only update inside the scratch copy there and reads the lock back.
 - Solver results are copied into detached package objects and cycles are collected after each
   solve; peak memory for 136 solves dropped from 1.5 GB to 87 MB.
+
+[0.4.0]: https://github.com/hexblot/composer-remediate/releases/tag/v0.4.0
 
 [0.3.0]: https://github.com/hexblot/composer-remediate/releases/tag/v0.3.0
 
