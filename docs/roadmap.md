@@ -31,7 +31,7 @@ stands.
 - [x] merge per-finding commands into one combined, re-verified command; report summary says how many findings it fixes
 - [x] `--offline`, `--ignore`, respect for `config.audit.ignore` and `config.policy.advisories.ignore`
 - [x] `provide` handled like `replace` in matching; development-only findings listed after production ones
-- [x] 0.1.0 tagged; Packagist submission is a manual step for the maintainer
+- [x] 0.1.0 tagged; published on Packagist as `hexblot/composer-remediate`
 
 ## Phase 2 — advisory database: build locally, share centrally *(complete)*
 
@@ -69,7 +69,7 @@ stands.
 - [x] explain why smaller changes were rejected: every step of the search is listed in the summary
   and in `summary.combined_search` of the JSON report, with the solver's reason
 
-## Phase 5 — optional automation
+## Phase 5 — optional automation *(next)*
 
 - [ ] `--apply`, only after the planner has earned trust
 - [ ] a GitHub Action wrapper that runs `--apply` on a schedule and opens **one batched pull request**
@@ -100,3 +100,28 @@ JavaScript ecosystem and that transfer to Composer, in priority order.
 Deliberately not adopted: license compliance and usage-based reachability (outside the remediation
 scope), npm-style override hygiene (no Composer equivalent), multi-lockfile monorepo scanning (rare
 for Composer projects).
+
+## Assurance *(ongoing, alongside the phases)*
+
+Work that does not add features but decides whether the recommendations can be trusted. Each item
+has a regression test behind it; the [changelog](https://github.com/hexblot/composer-remediate/blob/main/CHANGELOG.md)
+has the details.
+
+- [x] adversarial adoption review of 0.3.0 (another AI model working from the published repository)
+  and three rechecks, answered in 0.4.0, 0.4.1 and 0.4.2; the reviewer confirmed the last recheck closed
+- [x] command layer, advisory feed readers and both advisory adapters under test; 225 tests, 94% of
+  lines, with PCOV in CI and in the DDEV image so local and CI figures match
+- [x] Aikido scan of the workflows (SHA-pinned actions, job-scoped permissions, no template injection,
+  the database release bound to a protected environment) and of the code (fail closed on incomplete
+  sources, unread coverage gaps and unverified database downloads; sanitised console output;
+  reference-only lock changes counted), answered in 0.6.0
+- [x] architecture rules with Deptrac (`deptrac.yaml`): project layers and every third-party
+  namespace classified, unclassified dependencies fail CI, badge in the README
+- [x] the longest methods split after a reader's review; a Severity enum replaces the last lookup table
+- [ ] SonarQube Cloud for the open-source project (applied for), as an independent view on complexity
+  and duplication
+- [ ] remaining long methods (`InProcessSolver::solve`, `DbBuildCommand::execute`,
+  `HtmlRenderer::finding`, the planner's per-finding search) and the `PackageChange` kind constants
+  as an enum
+- [ ] a fourth adversarial review once `--apply` exists, since that is the first feature that changes
+  a project
