@@ -3,7 +3,12 @@
 All notable changes to this project are documented here. The format follows
 [Keep a Changelog](https://keepachangelog.com/en/1.1.0/); versions follow [Semantic Versioning](https://semver.org/).
 
-## [Unreleased]
+## [0.4.1] - 2026-09-10
+
+A testing release. The suite grows from 111 to 171 tests and line coverage from 74% to 94%, with
+no source file below 75%: the command layer, the advisory feed readers and both advisory adapters,
+none of which had a test before, are now covered. Two defects surfaced on the way and are fixed
+below, and the `composer audit` fallback that the design had promised since 0.1.0 is wired in.
 
 ### Added
 
@@ -54,7 +59,7 @@ All notable changes to this project are documented here. The format follows
 - Test bootstrap: Composer reads `$_SERVER` before `getenv()`, so the cache isolation was lost when
   the environment already exported `COMPOSER_CACHE_DIR` (DDEV does); tests now set both.
 
-[Unreleased]: https://github.com/hexblot/composer-remediate/compare/v0.4.0...HEAD
+[0.4.1]: https://github.com/hexblot/composer-remediate/releases/tag/v0.4.1
 
 ## [0.4.0] - 2026-09-10
 

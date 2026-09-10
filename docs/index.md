@@ -51,7 +51,9 @@ database can be built locally or shared. Phase 3 (a larger Drupal and Symfony co
 progress, and most Phase 6 integrations (SARIF, GitLab and CycloneDX reports, severity gate,
 baselines, release cooldown) have landed. An external architecture review of 0.3.0 found twenty
 defects, nine of them able to turn a tool failure or a policy exception into a clean result; 0.4.0
-answers that review and the reviewer's recheck, with a test behind each change. Global planning
+answers that review and the reviewer's recheck, with a test behind each change, and 0.4.1 puts the
+command layer, the advisory feed readers and both advisory adapters under test (171 tests, 94% of
+lines). Global planning
 (Phase 4) and `--apply` (Phase 5) are still ahead, so every release so far recommends and never
 modifies your project.
 
