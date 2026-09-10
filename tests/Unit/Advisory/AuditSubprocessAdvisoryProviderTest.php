@@ -73,7 +73,7 @@ final class AuditSubprocessAdvisoryProviderTest extends TestCase
         self::assertTrue($result['acme/lib'][0]->affectsVersion('0.9.0.0'));
 
         self::assertSame([], $provider->advisoriesFor(['acme/other']));
-        self::assertSame([realpath($this->dir) . ' audit --locked --format=json --no-interaction'], $this->calls(), 'the audit runs once, in the project directory');
+        self::assertSame([realpath($this->dir) . ' audit --locked --format=json --no-interaction --no-plugins --no-scripts'], $this->calls(), 'the audit runs once, in the project directory, with the analysed project\'s plugins and scripts disabled');
 
         self::assertFalse($provider->isComplete(), 'composer audit only knows the advisories of the current lock');
         self::assertSame(sprintf('`%s audit --locked` (current-lock advisories only)', $binary), $provider->describe());
@@ -86,7 +86,7 @@ final class AuditSubprocessAdvisoryProviderTest extends TestCase
         $provider = new AuditSubprocessAdvisoryProvider($this->dir, [PHP_BINARY, $script]);
 
         self::assertSame([], $provider->advisoriesFor(['acme/lib']));
-        self::assertSame([realpath($this->dir) . ' audit --locked --format=json --no-interaction'], $this->calls());
+        self::assertSame([realpath($this->dir) . ' audit --locked --format=json --no-interaction --no-plugins --no-scripts'], $this->calls());
         self::assertSame(sprintf('`%s %s audit --locked` (current-lock advisories only)', PHP_BINARY, $script), $provider->describe());
     }
 

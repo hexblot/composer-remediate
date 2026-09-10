@@ -40,8 +40,9 @@ final class OsvDumpSource implements AdvisorySourceInterface
         $records = [];
         $this->gaps = [];
         $skipped = ['invalid JSON' => 0, 'no Packagist package' => 0, 'no usable range' => 0];
+        $partial = 0;
         $reader = new ZipArchiveReader($this->downloader, $this->tempDir);
-        $entries = $reader->each($this->url, static fn (string $name): bool => str_ends_with($name, '.json'), function (string $name, string $contents) use (&$records, &$skipped): void {
+        $entries = $reader->each($this->url, static fn (string $name): bool => str_ends_with($name, '.json'), function (string $name, string $contents) use (&$records, &$skipped, &$partial): void {
             $doc = json_decode($contents, true);
             if (!is_array($doc)) {
                 ++$skipped['invalid JSON'];
@@ -49,7 +50,7 @@ final class OsvDumpSource implements AdvisorySourceInterface
 
                 return;
             }
-            $record = $this->record($doc, $reason, $packages);
+            $record = $this->record($doc, $reason, $packages, $unreadable);
             if ($record === null) {
                 ++$skipped[$reason ?? 'no usable range'];
                 if ($reason !== 'no Packagist package') {
@@ -63,9 +64,21 @@ final class OsvDumpSource implements AdvisorySourceInterface
                 return;
             }
             $records[] = $record;
+            // A readable document may still carry a package entry whose range cannot be expressed; that
+            // package's coverage is incomplete even though the record is kept for the others.
+            foreach ($unreadable as $package) {
+                ++$partial;
+                $this->gaps[] = new CoverageGap('OSV', $record->sources[0]->remoteId, $package, 'no usable range');
+            }
         });
         $reasons = array_filter($skipped);
-        $log(sprintf('OSV: %d documents, %d records%s', $entries, count($records), $reasons !== [] ? ', skipped: ' . implode(', ', array_map(static fn (string $k, int $v): string => "$v $k", array_keys($reasons), $reasons)) . ' (Packagist records recorded as coverage gaps)' : ''));
+        $log(sprintf(
+            'OSV: %d documents, %d records%s%s',
+            $entries,
+            count($records),
+            $reasons !== [] ? ', skipped: ' . implode(', ', array_map(static fn (string $k, int $v): string => "$v $k", array_keys($reasons), $reasons)) . ' (Packagist records recorded as coverage gaps)' : '',
+            $partial > 0 ? sprintf(', %d package entr%s unreadable inside kept records (recorded as coverage gaps)', $partial, $partial === 1 ? 'y' : 'ies') : '',
+        ));
 
         return $records;
     }
@@ -78,13 +91,16 @@ final class OsvDumpSource implements AdvisorySourceInterface
     /**
      * @param array<mixed>      $doc
      * @param list<string>|null $packages
+     * @param list<string>|null $unreadable
      * @param-out string|null $reason
-     * @param-out list<string> $packages Packagist packages the document names, for gap reporting
+     * @param-out list<string> $packages   Packagist packages the document names, for gap reporting
+     * @param-out list<string> $unreadable Packagist packages whose range could not be expressed although the record is kept
      */
-    private function record(array $doc, ?string &$reason = null, ?array &$packages = null): ?NormalizedAdvisory
+    private function record(array $doc, ?string &$reason = null, ?array &$packages = null, ?array &$unreadable = null): ?NormalizedAdvisory
     {
         $reason = null;
         $packages = [];
+        $unreadable = [];
         $id = $doc['id'] ?? null;
         if (!is_string($id) || $id === '') {
             $reason = 'invalid JSON';
@@ -111,8 +127,11 @@ final class OsvDumpSource implements AdvisorySourceInterface
             $expression = $this->ranges->fromOsv($ranges, $versions);
             if ($expression !== null) {
                 $perPackage[strtolower($package['name'])][] = $expression;
+            } else {
+                $unreadable[] = strtolower($package['name']);
             }
         }
+        $unreadable = array_values(array_unique($unreadable));
         foreach ($perPackage as $name => $expressions) {
             $affected[] = new AffectedRange($name, implode('|', array_unique($expressions)), 'OSV');
         }

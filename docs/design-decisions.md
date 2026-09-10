@@ -211,7 +211,10 @@ The same rule applies to any other `@internal` API the engine needs.
   unavailable". When the fallback engages, the report's advisory source reads
   `composer audit --locked` and a warning explains that only current-lock advisories are known, so
   candidate locks could not be checked for other advisories. Composer older than 2.4 has neither
-  route and is rejected up front.
+  route and is rejected up front. The child runs with `--no-plugins --no-scripts`: a subprocess
+  does not inherit the parent's switches, and without them Composer would activate the analysed
+  project's allowed plugins (see the plugin boundary below). A test installs a real plugin whose
+  `activate()` leaves a marker and asserts the fallback never triggers it.
 
 ## The plugin boundary: `composer remediate` versus `composer-remediate`
 ### Context

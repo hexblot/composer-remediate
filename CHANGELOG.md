@@ -3,6 +3,33 @@
 All notable changes to this project are documented here. The format follows
 [Keep a Changelog](https://keepachangelog.com/en/1.1.0/); versions follow [Semantic Versioning](https://semver.org/).
 
+## [Unreleased]
+
+### Recheck (third round)
+
+An external recheck of 0.4.1 (three findings, all rated P1) confirmed the six earlier findings as
+fixed and reported the following, each fixed here with a test that reproduces the reviewer's case.
+
+- The `composer audit --locked` fallback wired in 0.4.1 launched its child without `--no-plugins
+  --no-scripts`, so Composer activated the analysed project's allowed plugins in that child: the
+  compatibility-recovery route broke the plugin boundary the standalone binary exists to keep. The
+  child now carries both switches. Covered by an integration test that installs a real plugin whose
+  `activate()` writes a marker, shows that a plain `composer audit` does trigger it, and asserts the
+  fallback adapter never does.
+- OSV `limit` events: the normaliser kept the smallest of several limits and ignored an explicit
+  `limit: "*"`. OSV's BeforeLimits predicate accepts a version below *any* limit, so the cap is the
+  largest limit and a `*` limit lifts it; the old behaviour truncated genuinely affected versions
+  (introduced 1.0.0 with limits 2.0.0 and 3.0.0 lost 2.x). Covered by unit tests for both shapes.
+- Coverage gaps: a package whose value in a Packagist-shaped document is not a list of advisories
+  (`{"advisories":{"acme/lib":"upstream-error"}}`) was skipped without a gap, so a private
+  `--include` file with that shape built a clean database; it is now a gap for that package, which
+  fails a private-file build and is retained for public feeds. An OSV record naming several packages
+  recorded a gap only when *every* package's range was unreadable; a readable sibling hid the failure.
+  The record is kept for the readable packages and a gap is recorded for each unreadable one.
+  Covered by mapper, private-file and OSV-source tests.
+
+[Unreleased]: https://github.com/hexblot/composer-remediate/compare/v0.4.1...HEAD
+
 ## [0.4.1] - 2026-09-10
 
 A testing release. The suite grows from 111 to 171 tests and line coverage from 74% to 94%, with

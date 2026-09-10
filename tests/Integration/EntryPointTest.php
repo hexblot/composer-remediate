@@ -5,6 +5,7 @@ declare(strict_types=1);
 namespace Remediate\Tests\Integration;
 
 use PHPUnit\Framework\TestCase;
+use Remediate\Tests\Support\ComposerPhar;
 use Symfony\Component\Process\Process;
 
 /**
@@ -40,18 +41,7 @@ final class EntryPointTest extends TestCase
 
     private function composerPhar(): string
     {
-        $env = getenv('REMEDIATE_COMPOSER_BINARY');
-        $candidates = is_string($env) && $env !== '' ? [$env] : [];
-        foreach (explode(PATH_SEPARATOR, (string) getenv('PATH')) as $dir) {
-            $candidates[] = rtrim($dir, '/') . '/composer';
-            $candidates[] = rtrim($dir, '/') . '/composer.phar';
-        }
-        foreach ($candidates as $candidate) {
-            if (is_file($candidate) && str_contains((string) file_get_contents($candidate, false, null, 0, 4096), 'phar://')) {
-                return $candidate;
-            }
-        }
-        self::markTestSkipped('no Composer phar available to boot the standalone binary');
+        return ComposerPhar::find() ?? self::markTestSkipped('no Composer phar available to boot the standalone binary');
     }
 
     /** @param list<string> $args */

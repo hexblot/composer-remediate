@@ -10,6 +10,10 @@ use Symfony\Component\Process\Process;
  * Fallback adapter: runs `composer audit --locked --format=json` in the project directory. It only
  * returns advisories matching the *current* lock, so it cannot prove that a candidate lock is free
  * of advisories the current lock does not have. The planner warns when this provider is in use.
+ *
+ * The child runs with `--no-plugins --no-scripts`: a subprocess does not inherit the parent's
+ * switches, and without them Composer would activate the analysed project's allowed plugins, which
+ * is project code (see docs/design-decisions.md, the plugin boundary).
  */
 final class AuditSubprocessAdvisoryProvider implements AdvisoryProvider
 {
@@ -59,7 +63,7 @@ final class AuditSubprocessAdvisoryProvider implements AdvisoryProvider
             return $this->advisories;
         }
         $process = new Process(
-            [...$this->composerCommand, 'audit', '--locked', '--format=json', '--no-interaction'],
+            [...$this->composerCommand, 'audit', '--locked', '--format=json', '--no-interaction', '--no-plugins', '--no-scripts'],
             $this->projectDirectory,
             ['COMPOSER_NO_INTERACTION' => '1'],
             null,

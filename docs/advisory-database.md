@@ -92,10 +92,13 @@ sources contributed how many records, the dataset hash, and the coverage gaps.
 
 Upstream data is not always readable: an OSV record may use a version scheme Composer cannot parse,
 a FriendsOfPHP file may fail to parse, a Packagist entry may carry an affected range that is not a
-constraint. The build does not drop such records silently. Each one is stored in the database as a
-**coverage gap** with its source, identifier, the package it names and the reason, and
-`composer remediate` prints a warning for every gap that names a package in the lock: the package is
-treated as unaffected by that record, and the report says so. `remediate:db-status` lists the gaps.
+constraint, or a package's whole entry may be something other than a list of advisories. The build
+does not drop such data silently. Each failure is stored in the database as a **coverage gap** with
+its source, identifier, the package it names and the reason. This includes the partial case: an OSV
+record naming several packages is kept for the packages whose ranges can be read, and a gap is
+recorded for each package whose range cannot. `composer remediate` prints a warning for every gap
+that names a package in the lock, and
+the package is treated as unaffected by that record, and the report says so. `remediate:db-status` lists the gaps.
 Databases built before gap tracking existed are flagged as such; rebuild them.
 
 Private advisories are different: a record in an `--include` file that cannot be interpreted fails

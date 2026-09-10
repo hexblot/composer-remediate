@@ -28,9 +28,10 @@ final class RangeNormalizer
      *
      * Events are evaluated the way the OSV specification describes: sorted by version, `introduced`
      * opens an affected interval, the next `fixed` or `last_affected` closes it, and `limit` caps the
-     * whole range (every interval is cut at the smallest limit) rather than closing an interval of its
-     * own. Input order is therefore irrelevant and "introduced 1.0, fixed 1.1, limit 2.0" affects
-     * exactly [1.0, 1.1).
+     * whole range rather than closing an interval of its own. Input order is therefore irrelevant and
+     * "introduced 1.0, fixed 1.1, limit 2.0" affects exactly [1.0, 1.1). OSV's BeforeLimits predicate
+     * accepts a version below *any* limit, so with several limits the cap is the largest one, and an
+     * explicit `limit: "*"` lifts the cap altogether.
      *
      * @param list<array<string, mixed>> $ranges
      * @param list<string>               $versions
@@ -46,6 +47,7 @@ final class RangeNormalizer
             /** @var list<array{kind: string, version: string, normalized: string}> $events */
             $events = [];
             $limit = null;
+            $unlimited = false;
             foreach ($range['events'] as $event) {
                 if (!is_array($event)) {
                     continue;
@@ -56,6 +58,7 @@ final class RangeNormalizer
                     }
                     $raw = $event[$kind];
                     if ($kind === 'limit' && $raw === '*') {
+                        $unlimited = true;
                         break;
                     }
                     $version = $kind === 'introduced' && $raw === '0' ? '0' : self::clean($raw);
@@ -65,7 +68,7 @@ final class RangeNormalizer
                         return null; // a version the ecosystem cannot express: the record becomes a coverage gap
                     }
                     if ($kind === 'limit') {
-                        if ($limit === null || Comparator::lessThan($normalized, $limit['normalized'])) {
+                        if ($limit === null || Comparator::greaterThan($normalized, $limit['normalized'])) {
                             $limit = ['version' => $version, 'normalized' => $normalized];
                         }
                         break;
@@ -73,6 +76,9 @@ final class RangeNormalizer
                     $events[] = ['kind' => $kind, 'version' => $version, 'normalized' => $normalized];
                     break;
                 }
+            }
+            if ($unlimited) {
+                $limit = null; // "below any limit" is always true once one limit is infinite
             }
             // Sort by version; at equal versions a closing event precedes the next opening one.
             usort($events, static function (array $a, array $b): int {

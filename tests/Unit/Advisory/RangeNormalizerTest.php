@@ -54,6 +54,31 @@ final class RangeNormalizerTest extends TestCase
         self::assertFalse($this->affects($expression, '4.0.0'));
     }
 
+    public function testSeveralLimitsKeepTheLargestBecauseAVersionBelowAnyLimitIsAffected(): void
+    {
+        // OSV BeforeLimits: v is affected when it is below *any* limit, so limits union rather than intersect.
+        $expression = (new RangeNormalizer())->fromOsv([['type' => 'ECOSYSTEM', 'events' => [['introduced' => '1.0.0'], ['limit' => '2.0.0'], ['limit' => '3.0.0']]]]);
+        self::assertNotNull($expression);
+        self::assertTrue($this->affects($expression, '1.5.0'));
+        self::assertTrue($this->affects($expression, '2.5.0'), 'below the 3.0.0 limit');
+        self::assertFalse($this->affects($expression, '3.0.0'));
+    }
+
+    public function testAStarLimitLiftsTheCapEntirely(): void
+    {
+        $expression = (new RangeNormalizer())->fromOsv([['type' => 'ECOSYSTEM', 'events' => [['introduced' => '1.0.0'], ['limit' => '2.0.0'], ['limit' => '*']]]]);
+        self::assertNotNull($expression);
+        self::assertTrue($this->affects($expression, '2.5.0'), 'every version is below an infinite limit');
+        self::assertTrue($this->affects($expression, '9.0.0'));
+        self::assertFalse($this->affects($expression, '0.9.0'));
+
+        // The same with a closing event: the star limit changes nothing about the fixed bound.
+        $expression = (new RangeNormalizer())->fromOsv([['type' => 'ECOSYSTEM', 'events' => [['introduced' => '1.0.0'], ['fixed' => '1.1.0'], ['limit' => '*']]]]);
+        self::assertNotNull($expression);
+        self::assertTrue($this->affects($expression, '1.0.5'));
+        self::assertFalse($this->affects($expression, '1.1.0'));
+    }
+
     public function testEventsAreEvaluatedInVersionOrderNotInputOrder(): void
     {
         $sorted = (new RangeNormalizer())->fromOsv([['type' => 'ECOSYSTEM', 'events' => [['introduced' => '1.0.0'], ['fixed' => '1.1.0'], ['introduced' => '2.0.0'], ['fixed' => '2.1.0']]]]);

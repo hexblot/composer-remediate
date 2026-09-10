@@ -89,6 +89,38 @@ final class CoverageGapTest extends TestCase
         self::assertStringContainsString('unparsable affectedVersions: garbage !!', $result['gaps'][0]->describe());
     }
 
+    public function testMalformedPackageContainersAreGapsNotSilence(): void
+    {
+        $result = (new PackagistShapeMapper())->mapDocument(['advisories' => [
+            'acme/lib' => 'upstream-error',
+            'acme/ok' => [['advisoryId' => 'OK-1', 'affectedVersions' => '<1.0']],
+            'acme/null' => null,
+        ]], 'Test');
+        self::assertCount(1, $result['records']);
+        self::assertSame(2, $result['skipped']);
+        self::assertCount(2, $result['gaps']);
+        self::assertSame('acme/lib', $result['gaps'][0]->package, 'the container names the package even when its value is garbage');
+        self::assertSame('package value is not a list of advisories', $result['gaps'][0]->reason);
+        self::assertSame('upstream-error', $result['gaps'][0]->raw);
+        self::assertSame('acme/null', $result['gaps'][1]->package);
+
+        $list = (new PackagistShapeMapper())->mapDocument(['advisories' => [['advisoryId' => 'X-1', 'affectedVersions' => '<1.0']]], 'Test');
+        self::assertSame([], $list['records'], 'a list where the package map should be cannot attribute its entries');
+        self::assertCount(1, $list['gaps']);
+        self::assertNull($list['gaps'][0]->package);
+        self::assertSame('advisories map has a non-string package key', $list['gaps'][0]->reason);
+    }
+
+    public function testPrivateAdvisoryFileWithAMalformedPackageContainerFailsTheBuild(): void
+    {
+        $file = $this->tmp('.json');
+        file_put_contents($file, '{"advisories":{"acme/lib":"upstream-error"}}');
+        $this->expectException(\RuntimeException::class);
+        $this->expectExceptionMessage('package value is not a list of advisories');
+        (new JsonFileSource($file))->fetch(static function (): void {
+        });
+    }
+
     public function testPrivateAdvisoryFileWithAnUnreadableRecordFailsTheBuild(): void
     {
         $file = $this->tmp('.json');

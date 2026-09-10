@@ -147,6 +147,31 @@ final class OsvDumpSourceTest extends TestCase
         }
     }
 
+    public function testAnUnreadablePackageEntryInsideAKeptRecordIsStillAGapForThatPackage(): void
+    {
+        $doc = json_encode([
+            'id' => 'GHSA-partial',
+            'affected' => [
+                ['package' => ['ecosystem' => 'Packagist', 'name' => 'acme/good'], 'versions' => ['1.0.0']],
+                ['package' => ['ecosystem' => 'Packagist', 'name' => 'acme/bad'], 'ranges' => [['type' => 'ECOSYSTEM', 'events' => [['introduced' => 'not a version']]]]],
+            ],
+        ], JSON_THROW_ON_ERROR);
+        $source = new OsvDumpSource(new ScriptedDownloader([OsvDumpSource::URL => Zips::build(['GHSA-partial.json' => $doc])]), $this->tempDir);
+        $log = [];
+        $records = $source->fetch(static function (string $line) use (&$log): void {
+            $log[] = $line;
+        });
+
+        self::assertCount(1, $records, 'the readable part of the record is kept');
+        self::assertSame(['acme/good'], $records[0]->packages());
+        $gaps = $source->gaps();
+        self::assertCount(1, $gaps, 'the unreadable part is not lost');
+        self::assertSame('GHSA-partial', $gaps[0]->remoteId);
+        self::assertSame('acme/bad', $gaps[0]->package);
+        self::assertSame('no usable range', $gaps[0]->reason);
+        self::assertSame('OSV: 1 documents, 1 records, 1 package entry unreadable inside kept records (recorded as coverage gaps)', $log[1]);
+    }
+
     public function testAFetchResetsThePreviousGaps(): void
     {
         $downloader = new ScriptedDownloader([OsvDumpSource::URL => Zips::build(['broken.json' => '{'])]);

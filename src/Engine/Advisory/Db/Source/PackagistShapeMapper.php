@@ -103,7 +103,15 @@ final class PackagistShapeMapper
             throw new \RuntimeException(sprintf('%s: document has no "advisories" map', $sourceName));
         }
         foreach ($advisories as $packageName => $list) {
-            if (!is_string($packageName) || !is_array($list)) {
+            if (!is_string($packageName)) {
+                // A list where a map was expected: the entries cannot be attributed to a package.
+                ++$skipped;
+                $gaps[] = new CoverageGap($sourceName, '(malformed document)', null, 'advisories map has a non-string package key', (string) $packageName);
+                continue;
+            }
+            if (!is_array($list)) {
+                ++$skipped;
+                $gaps[] = new CoverageGap($sourceName, '(malformed package entry)', strtolower($packageName), 'package value is not a list of advisories', is_scalar($list) ? (string) $list : gettype($list));
                 continue;
             }
             foreach ($list as $entry) {
