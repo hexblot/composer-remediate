@@ -61,35 +61,35 @@ stands.
 
 ## Phase 4 — global planning
 
-- treat all findings jointly and search for the smallest command set that fixes everything
-- explain why smaller changes were rejected
+- [ ] treat all findings jointly and search for the smallest command set that fixes everything
+- [ ] explain why smaller changes were rejected
 
 ## Phase 5 — optional automation
 
-- `--apply`, only after the planner has earned trust
-- a GitHub Action wrapper that runs `--apply` on a schedule and opens **one batched pull request**
+- [ ] `--apply`, only after the planner has earned trust
+- [ ] a GitHub Action wrapper that runs `--apply` on a schedule and opens **one batched pull request**
   with advisory ids, before/after finding counts and the verified commands (the shape CVE Lite CLI
   uses, rather than one PR per package)
 
-## Phase 6 — integrations and prioritisation
+## Phase 6 — integrations and prioritisation *(mostly complete)*
 
 Features that [CVE Lite CLI](https://github.com/OWASP/cve-lite-cli) has proven useful for the
 JavaScript ecosystem and that transfer to Composer, in priority order.
 
-1. **SARIF output** (`--output=results.sarif`) for GitHub Code Scanning and GitLab's
-   dependency-scanning report (`--output=gl-dependency-scanning-report.json`): done.
-2. **CycloneDX 1.6 SBOM with vulnerabilities attached** (`--output=sbom.cdx.json`), using the
-   per-vulnerability `recommendation` field for the verified command: done.
-3. **`--fail-on <severity>`** gate threshold, combined with the existing exit codes: done.
-4. **EPSS and CISA KEV enrichment** in the advisory database build: exploit likelihood and
-   "exploited in the wild" flags, used to order findings by urgency rather than severity label alone.
-5. **Constraint drag** as an explicit finding (the root constraint that blocks every in-range fix is
-   named in the report and counted in the summary): done. Abandoned parents on the path, using
-   Packagist's abandoned marker: open.
-6. **Baseline / ratcheting mode** (`--baseline`, `--update-baseline`): done.
-7. **`--min-release-age <days>`** supply-chain cooldown: done.
-8. **Ignore hygiene**: stale `--ignore` / `config.audit.ignore` / `config.policy` entries are reported
-   as a warning: done.
+- [x] **SARIF output** (`--output=results.sarif`) for GitHub Code Scanning and GitLab's
+  dependency-scanning report (`--output=gl-dependency-scanning-report.json`)
+- [x] **CycloneDX 1.6 SBOM with vulnerabilities attached** (`--output=sbom.cdx.json`), using the
+  per-vulnerability `recommendation` field for the verified command
+- [x] **`--fail-on <severity>`** gate threshold, combined with the existing exit codes
+- [ ] **EPSS and CISA KEV enrichment** in the advisory database build: exploit likelihood and
+  "exploited in the wild" flags, used to order findings by urgency rather than severity label alone
+- [x] **Constraint drag** as an explicit finding: the root constraint that blocks every in-range fix is
+  named in the report and counted in the summary
+- [ ] **Abandoned parents** on the dependency path, using Packagist's abandoned marker
+- [x] **Baseline / ratcheting mode** (`--baseline`, `--update-baseline`)
+- [x] **`--min-release-age <days>`** supply-chain cooldown
+- [x] **Ignore hygiene**: stale `--ignore` / `config.audit.ignore` / `config.policy` entries are reported
+  as a warning
 
 Deliberately not adopted: license compliance and usage-based reachability (outside the remediation
 scope), npm-style override hygiene (no Composer equivalent), multi-lockfile monorepo scanning (rare

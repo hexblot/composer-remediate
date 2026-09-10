@@ -5,7 +5,8 @@
 - Every change that affects behaviour comes with a unit test or a fixture.
 - PHPStan level 8 must pass: `ddev composer phpstan`.
 - Documentation is part of the change. If a page in `docs/` describes the code you touched,
-  update it in the same commit; `mkdocs build --strict` runs in CI.
+  update it in the same commit; `mkdocs build --strict` runs in CI (locally:
+  `pipx run --spec mkdocs --pip-args=pymdown-extensions mkdocs build --strict`).
 - Design decisions and their reasons are recorded in `docs/design-decisions.md`. Add a section when you change one.
 - `docs/cli-reference.md` and `docs/case-studies.md` are generated: after changing a command, run
   `ddev composer cli-reference`; after adding or rebuilding a fixture, run `ddev composer case-studies`.

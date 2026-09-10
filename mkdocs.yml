@@ -20,6 +20,9 @@ markdown_extensions:
       guess_lang: false
   - toc:
       permalink: true
+  - pymdownx.tasklist:
+      custom_checkbox: false
+      clickable_checkbox: false
 
 nav:
   - Home: index.md

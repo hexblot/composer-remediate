@@ -76,7 +76,7 @@ ddev composer install
 ddev composer check      # phpstan + phpunit
 ```
 
-Documentation is built with MkDocs (`pipx run mkdocs serve`) and published from `main` to GitHub
+Documentation is built with MkDocs (`pipx run --spec mkdocs --pip-args=pymdown-extensions mkdocs serve`) and published from `main` to GitHub
 Pages. The CLI reference and case-studies pages are generated (`ddev composer cli-reference`,
 `ddev composer case-studies`) and checked in CI.
 

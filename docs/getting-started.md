@@ -80,5 +80,5 @@ ddev composer test:fixtures  # the historical fixture suite only
 Documentation:
 
 ```bash
-pipx run mkdocs serve
+pipx run --spec mkdocs --pip-args=pymdown-extensions mkdocs serve
 ```
