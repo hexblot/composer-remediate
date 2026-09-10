@@ -1,0 +1,12 @@
+{
+    "description": "Deptrac, kept out of the plugin's own dependencies because it needs PHP 8.2 or newer while the plugin supports 8.1. Install with `composer --working-dir=tools/deptrac install`; run with `composer deptrac` from the repository root.",
+    "require": {
+        "deptrac/deptrac": "^4.7"
+    },
+    "config": {
+        "platform": {
+            "php": "8.4.1"
+        },
+        "sort-packages": true
+    }
+}

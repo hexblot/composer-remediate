@@ -24,6 +24,17 @@ All notable changes to this project are documented here. The format follows
 
 ### Changed
 
+- **Structure.** The longest methods were split without behaviour change, after a reader pointed at
+  them: `RemediateCommand::execute` now delegates to methods for report targets, runtime checks, the
+  advisory source, the planner, gating and output; the global search's bookkeeping moved from the
+  planner into `Engine\Plan\CombinedSearch`, with `repair()` and `shrink()` as separate steps;
+  `TextRenderer` renders one report section per method; `CandidateGenerator` builds each candidate
+  family in its own method; `RangeNormalizer::fromOsv` and `DatabaseWriter::write` are split by stage.
+  Severity labels are an enum (`Engine\Advisory\Severity`) instead of a lookup table on `Plan`.
+- **Architecture rules.** `deptrac.yaml` states the layers (Plugin → Command → Output → Engine →
+  Advisory) and CI checks them on the PHP 8.4 job; `composer deptrac` runs them locally (Deptrac is
+  installed under `tools/deptrac`, since it needs PHP 8.2 or newer). The first run found one
+  violation, the advisory model reading the severity table from the plan class, which the enum fixes.
 - Fixture reports under `tests/Fixture/third-party/*/reports` record the sha256 of the committed
   `composer.fixture.json` rather than of the scratch copy, whose injected repository path differed on
   every run; regenerating a report now yields the same bytes.

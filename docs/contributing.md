@@ -8,6 +8,15 @@
   against a scratch copy of a fixture; add a case to `tests/Integration/RemediateCommandTest.php` or
   `DbCommandsTest.php` when you add or change an option.
 - PHPStan level 8 must pass: `ddev composer phpstan`.
+- The layer rules in `deptrac.yaml` must pass: `ddev composer deptrac`. Plugin → Command → Output →
+  Engine → Advisory, each layer depending only on those inside it; the advisory code (feed readers,
+  database, providers) never reaches into planning, so a database can be built and served without a
+  project. Deptrac needs PHP 8.2 or newer, so it is installed separately with
+  `ddev composer --working-dir=tools/deptrac install` (its lock is committed; the PHP 8.4 CI job runs
+  it). `ddev composer check` runs PHPStan, Deptrac and the tests together.
+- Methods stay short enough to read in one screen. Commands parse options, assemble collaborators and
+  emit the report in separate methods; the planner's search phases (candidates, expansion, descent,
+  global combination) are separate methods or classes; renderers have one method per report section.
 - Coverage: `ddev composer test:coverage` prints a summary and writes HTML and Clover reports to
   `build/coverage/` (gitignored). The DDEV web image installs PCOV (`.ddev/web-build/Dockerfile`,
   settings in `.ddev/php/custom.ini`), the same driver the PHP 8.4 CI job uses, so local figures match

@@ -49,7 +49,7 @@ final class Advisory
      */
     public function urgency(): array
     {
-        $severity = \Remediate\Engine\Plan\Plan::SEVERITIES[strtolower((string) $this->severity)] ?? 0;
+        $severity = Severity::fromLabel($this->severity)?->rank() ?? 0;
 
         return [$this->isKnownExploited() ? 0 : 1, $this->epss !== null ? -$this->epss : 1.0, -$severity];
     }

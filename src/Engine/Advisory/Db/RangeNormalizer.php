@@ -5,6 +5,8 @@ declare(strict_types=1);
 namespace Remediate\Engine\Advisory\Db;
 
 use Composer\Semver\Comparator;
+use Composer\Semver\Constraint\ConstraintInterface;
+use Composer\Semver\Constraint\Constraint;
 use Composer\Semver\Interval;
 use Composer\Semver\Intervals;
 use Composer\Semver\VersionParser;
@@ -44,71 +46,11 @@ final class RangeNormalizer
             if (!in_array($type, ['ECOSYSTEM', 'SEMVER'], true) || !is_array($range['events'] ?? null)) {
                 continue;
             }
-            /** @var list<array{kind: string, version: string, normalized: string}> $events */
-            $events = [];
-            $limit = null;
-            $unlimited = false;
-            foreach ($range['events'] as $event) {
-                if (!is_array($event)) {
-                    continue;
-                }
-                foreach (['introduced', 'fixed', 'last_affected', 'limit'] as $kind) {
-                    if (!isset($event[$kind]) || !is_string($event[$kind])) {
-                        continue;
-                    }
-                    $raw = $event[$kind];
-                    if ($kind === 'limit' && $raw === '*') {
-                        $unlimited = true;
-                        break;
-                    }
-                    $version = $kind === 'introduced' && $raw === '0' ? '0' : self::clean($raw);
-                    try {
-                        $normalized = $version === '0' ? '0.0.0.0' : $this->parser->normalize($version);
-                    } catch (\UnexpectedValueException) {
-                        return null; // a version the ecosystem cannot express: the record becomes a coverage gap
-                    }
-                    if ($kind === 'limit') {
-                        if ($limit === null || Comparator::greaterThan($normalized, $limit['normalized'])) {
-                            $limit = ['version' => $version, 'normalized' => $normalized];
-                        }
-                        break;
-                    }
-                    $events[] = ['kind' => $kind, 'version' => $version, 'normalized' => $normalized];
-                    break;
-                }
+            $pieces = $this->osvRangePieces($range['events']);
+            if ($pieces === null) {
+                return null; // a version the ecosystem cannot express: the record becomes a coverage gap
             }
-            if ($unlimited) {
-                $limit = null; // "below any limit" is always true once one limit is infinite
-            }
-            // Sort by version; at equal versions a closing event precedes the next opening one.
-            usort($events, static function (array $a, array $b): int {
-                if ($a['normalized'] === $b['normalized']) {
-                    return ($a['kind'] === 'introduced' ? 1 : 0) <=> ($b['kind'] === 'introduced' ? 1 : 0);
-                }
-
-                return Comparator::lessThan($a['normalized'], $b['normalized']) ? -1 : 1;
-            });
-            $introduced = null;
-            foreach ($events as $event) {
-                if ($event['kind'] === 'introduced') {
-                    $introduced ??= $event;
-                    continue;
-                }
-                if ($introduced === null) {
-                    continue; // a fix without an introduction closes nothing
-                }
-                $piece = self::osvPiece($introduced, $event['kind'] === 'fixed' ? '<' : '<=', $event, $limit);
-                if ($piece !== null) {
-                    $parts[] = $piece;
-                }
-                $introduced = null;
-            }
-            if ($introduced !== null) {
-                $piece = self::osvPiece($introduced, null, null, $limit);
-                if ($piece !== null) {
-                    $parts[] = $piece;
-                }
-            }
+            array_push($parts, ...$pieces);
         }
 
         $rangeExpression = implode('|', array_unique($parts));
@@ -120,6 +62,118 @@ final class RangeNormalizer
                 return null;
             }
         }
+        array_push($parts, ...$this->explicitVersionPieces($versions, $rangeConstraint));
+
+        return $this->validate(implode('|', array_unique($parts)));
+    }
+
+    /**
+     * The constraint pieces of one OSV range: its events sorted by version and paired up, introduced
+     * with the fixed or last_affected that closes it, bounded by the largest limit. Null when a version
+     * cannot be normalised.
+     *
+     * @param array<mixed> $rawEvents
+     *
+     * @return list<string>|null
+     */
+    private function osvRangePieces(array $rawEvents): ?array
+    {
+        $parsed = $this->osvEvents($rawEvents);
+        if ($parsed === null) {
+            return null;
+        }
+        [$events, $limit] = $parsed;
+        // Sort by version; at equal versions a closing event precedes the next opening one.
+        usort($events, static function (array $a, array $b): int {
+            if ($a['normalized'] === $b['normalized']) {
+                return ($a['kind'] === 'introduced' ? 1 : 0) <=> ($b['kind'] === 'introduced' ? 1 : 0);
+            }
+
+            return Comparator::lessThan($a['normalized'], $b['normalized']) ? -1 : 1;
+        });
+        $pieces = [];
+        $introduced = null;
+        foreach ($events as $event) {
+            if ($event['kind'] === 'introduced') {
+                $introduced ??= $event;
+                continue;
+            }
+            if ($introduced === null) {
+                continue; // a fix without an introduction closes nothing
+            }
+            $piece = self::osvPiece($introduced, $event['kind'] === 'fixed' ? '<' : '<=', $event, $limit);
+            if ($piece !== null) {
+                $pieces[] = $piece;
+            }
+            $introduced = null;
+        }
+        if ($introduced !== null) {
+            $piece = self::osvPiece($introduced, null, null, $limit);
+            if ($piece !== null) {
+                $pieces[] = $piece;
+            }
+        }
+
+        return $pieces;
+    }
+
+    /**
+     * Normalises the events of one OSV range. The limit is the largest one given, or none once a
+     * limit is `*`. Null when a version cannot be normalised.
+     *
+     * @param array<mixed> $rawEvents
+     *
+     * @return array{list<array{kind: string, version: string, normalized: string}>, array{version: string, normalized: string}|null}|null
+     */
+    private function osvEvents(array $rawEvents): ?array
+    {
+        $events = [];
+        $limit = null;
+        $unlimited = false;
+        foreach ($rawEvents as $event) {
+            if (!is_array($event)) {
+                continue;
+            }
+            foreach (['introduced', 'fixed', 'last_affected', 'limit'] as $kind) {
+                if (!isset($event[$kind]) || !is_string($event[$kind])) {
+                    continue;
+                }
+                $raw = $event[$kind];
+                if ($kind === 'limit' && $raw === '*') {
+                    $unlimited = true;
+                    break;
+                }
+                $version = $kind === 'introduced' && $raw === '0' ? '0' : self::clean($raw);
+                try {
+                    $normalized = $version === '0' ? '0.0.0.0' : $this->parser->normalize($version);
+                } catch (\UnexpectedValueException) {
+                    return null;
+                }
+                if ($kind === 'limit') {
+                    if ($limit === null || Comparator::greaterThan($normalized, $limit['normalized'])) {
+                        $limit = ['version' => $version, 'normalized' => $normalized];
+                    }
+                    break;
+                }
+                $events[] = ['kind' => $kind, 'version' => $version, 'normalized' => $normalized];
+                break;
+            }
+        }
+
+        return [$events, $unlimited ? null : $limit]; // "below any limit" is always true once one limit is infinite
+    }
+
+    /**
+     * Exact-version pieces for the OSV `versions` list, leaving out versions the ranges already cover
+     * and versions that do not normalise.
+     *
+     * @param list<string> $versions
+     *
+     * @return list<string>
+     */
+    private function explicitVersionPieces(array $versions, ?ConstraintInterface $covered): array
+    {
+        $pieces = [];
         foreach ($versions as $version) {
             $version = self::clean($version);
             try {
@@ -127,13 +181,13 @@ final class RangeNormalizer
             } catch (\UnexpectedValueException) {
                 continue;
             }
-            if ($rangeConstraint !== null && $rangeConstraint->matches(new \Composer\Semver\Constraint\Constraint('==', $normalized))) {
-                continue; // already covered by a range
+            if ($covered !== null && $covered->matches(new Constraint('==', $normalized))) {
+                continue;
             }
-            $parts[] = '==' . $version;
+            $pieces[] = '==' . $version;
         }
 
-        return $this->validate(implode('|', array_unique($parts)));
+        return $pieces;
     }
 
     /**

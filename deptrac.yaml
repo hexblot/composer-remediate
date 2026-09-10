@@ -1,0 +1,53 @@
+# Architecture rules, checked with `composer deptrac` (see docs/contributing.md).
+#
+# Layers, innermost first. The engine knows nothing about how it is invoked or rendered; the
+# renderers read the engine's plan; the commands wire the engine and pick a renderer; the plugin
+# registers the commands. Inside the engine, advisory handling (feed readers, the database, the
+# providers) stays independent of planning, so the database can be built and served without a project.
+deptrac:
+  paths:
+    - ./src
+  exclude_files:
+    - '#.*Test\.php$#'
+  layers:
+    - name: Plugin
+      collectors:
+        - type: classLike
+          value: ^Remediate\\Plugin$
+    - name: Command
+      collectors:
+        - type: classLike
+          value: ^Remediate\\Command\\.*
+    - name: Output
+      collectors:
+        - type: classLike
+          value: ^Remediate\\Output\\.*
+    - name: Advisory
+      collectors:
+        - type: classLike
+          value: ^Remediate\\Engine\\Advisory\\.*
+    - name: Engine
+      collectors:
+        - type: bool
+          must:
+            - type: classLike
+              value: ^Remediate\\Engine\\.*
+          must_not:
+            - type: classLike
+              value: ^Remediate\\Engine\\Advisory\\.*
+  ruleset:
+    Plugin:
+      - Command
+    Command:
+      - Output
+      - Engine
+      - Advisory
+    Output:
+      - Engine
+      - Advisory
+    Engine:
+      - Advisory
+    Advisory: ~
+  formatters:
+    graphviz:
+      hidden_layers: []

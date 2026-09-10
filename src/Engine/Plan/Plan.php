@@ -4,6 +4,7 @@ declare(strict_types=1);
 
 namespace Remediate\Engine\Plan;
 
+use Remediate\Engine\Advisory\Severity;
 use Remediate\Engine\Solver\SolveStatus;
 
 final class Plan
@@ -20,7 +21,6 @@ final class Plan
      * @param array<string, string> $metadata
      * @param list<string>          $warnings
      */
-    public const SEVERITIES = ['low' => 1, 'medium' => 2, 'moderate' => 2, 'high' => 3, 'critical' => 4];
 
     /**
      * @param list<FindingPlan>     $findings
@@ -57,8 +57,8 @@ final class Plan
 
     public function withFailOn(?string $severity): self
     {
-        if ($severity !== null && !isset(self::SEVERITIES[strtolower($severity)])) {
-            throw new \InvalidArgumentException(sprintf('Unknown severity "%s"; use one of %s.', $severity, implode(', ', array_keys(self::SEVERITIES))));
+        if ($severity !== null && Severity::fromLabel($severity) === null) {
+            throw new \InvalidArgumentException(sprintf('Unknown severity "%s"; use one of %s.', $severity, Severity::labels()));
         }
 
         return new self($this->findings, $this->metadata, $this->warnings, $this->combined, $severity !== null ? strtolower($severity) : null, $this->inventory, $this->baseline, $this->coverageGaps, $this->coverageGapsAccepted, $this->combinedAttempts);
@@ -123,11 +123,11 @@ final class Plan
         if ($this->failOn === null) {
             return true;
         }
-        $threshold = self::SEVERITIES[$this->failOn];
+        $threshold = Severity::fromLabel($this->failOn)?->rank() ?? 0;
         foreach ($plan->allFindings() as $finding) {
-            $severity = $finding->advisory->severity;
+            $rank = Severity::fromLabel($finding->advisory->severity)?->rank();
             // Missing or unrecognised severities are unknown, and unknown always counts.
-            if ($severity === null || !isset(self::SEVERITIES[strtolower($severity)]) || self::SEVERITIES[strtolower($severity)] >= $threshold) {
+            if ($rank === null || $rank >= $threshold) {
                 return true;
             }
         }

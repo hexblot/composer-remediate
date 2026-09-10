@@ -6,6 +6,7 @@ namespace Remediate\Command;
 
 use Composer\Command\BaseCommand;
 use Composer\Factory;
+use Composer\IO\IOInterface;
 use Composer\Util\Platform;
 use Remediate\Engine\Advisory\AdvisoryLookupFailed;
 use Remediate\Engine\Advisory\AdvisoryProvider;
@@ -87,25 +88,88 @@ HELP);
     protected function execute(InputInterface $input, OutputInterface $output): int
     {
         $io = $this->getIO();
+        $targets = $this->reportTargets($input, $io);
+        if (is_int($targets)) {
+            return $targets;
+        }
+        [$format, $files] = $targets;
+        $error = $this->checkRuntime($input, $io);
+        if ($error !== null) {
+            return $error;
+        }
+        $composer = $this->requireComposer();
+        $context = ProjectContext::fromComposer($composer);
+        if (!$context->isLocked()) {
+            $io->writeError('<error>No composer.lock found. Run composer install or composer update first.</error>');
+
+            return Plan::EXIT_ERROR;
+        }
+        $locator = $this->databaseLocator($input, $composer, $io);
+        if (is_int($locator)) {
+            return $locator;
+        }
+        $advisories = $this->advisoryProvider($input, $composer, $context, $locator, $io);
+        if (is_int($advisories)) {
+            return $advisories;
+        }
+        $platformArguments = self::platformArguments($input);
+        $solver = $this->buildSolver(strtolower((string) $input->getOption('solver')), $input, $platformArguments);
+
+        try {
+            $plan = $this->planner($input, $advisories, $solver, $platformArguments, $io)->plan($context, ScratchWorkspace::fromProject($context));
+        } catch (AdvisoryLookupFailed $e) {
+            $io->writeError('<error>Advisory data unavailable: ' . ConsoleText::safe($e->getMessage()) . '</error>');
+            if ((bool) $input->getOption('offline')) {
+                $io->writeError('<comment>Offline mode: pass --advisories-file=<json> or --database-location=<sqlite> (see remediate:db-build).</comment>');
+            }
+
+            return Plan::EXIT_ADVISORIES_UNAVAILABLE;
+        }
+        $plan = $plan->withWarnings([...$locator->warnings(), ...($advisories instanceof FallbackAdvisoryProvider ? $advisories->warnings() : [])]);
+        $plan = $this->gate($plan, $input, $io);
+        if (is_int($plan)) {
+            return $plan;
+        }
+
+        return $this->emit($plan, $format, $files, $solver->supportsMinimalChanges(), LockLineIndex::fromFile($context->lockPath()), $output, $io);
+    }
+
+    /**
+     * The --format choice and the --output files, or an exit code when either is malformed.
+     *
+     * @return array{ReportFormat, list<array{ReportFormat, ?string}>}|int
+     */
+    private function reportTargets(InputInterface $input, IOInterface $io): array|int
+    {
         $format = ReportFormat::tryFrom(strtolower((string) $input->getOption('format')));
         if ($format === null) {
             $io->writeError(sprintf('<error>Unknown format "%s"; use text, html, json, sarif, cyclonedx, gitlab or none.</error>', (string) $input->getOption('format')));
 
             return Plan::EXIT_ERROR;
         }
-        $outputs = [];
+        $files = [];
         foreach ((array) $input->getOption('output') as $spec) {
             if (!is_string($spec) || $spec === '') {
                 continue;
             }
             try {
-                $outputs[] = ReportFormat::parseOutputSpec($spec);
+                $files[] = ReportFormat::parseOutputSpec($spec);
             } catch (\InvalidArgumentException $e) {
                 $io->writeError('<error>' . ConsoleText::safe($e->getMessage()) . '</error>');
 
                 return Plan::EXIT_ERROR;
             }
         }
+
+        return [$format, $files];
+    }
+
+    /**
+     * Option and environment checks that need no project: solver choice, cooldown, Composer version,
+     * offline mode, PHP end of life. An exit code when the run cannot proceed.
+     */
+    private function checkRuntime(InputInterface $input, IOInterface $io): ?int
+    {
         $solverChoice = strtolower((string) $input->getOption('solver'));
         if (!in_array($solverChoice, self::SOLVERS, true)) {
             $io->writeError(sprintf('<error>Unknown solver "%s"; use auto, in-process or subprocess.</error>', $solverChoice));
@@ -133,80 +197,76 @@ HELP);
         if (PHP_VERSION_ID < 80200) {
             $io->writeError(sprintf('<warning>PHP %s is end of life and no longer receives security fixes; upgrade the runtime that executes Composer.</warning>', PHP_VERSION));
         }
-        $composer = $this->requireComposer();
-        $context = ProjectContext::fromComposer($composer);
 
-        if (!$context->isLocked()) {
-            $io->writeError('<error>No composer.lock found. Run composer install or composer update first.</error>');
+        return null;
+    }
 
-            return Plan::EXIT_ERROR;
-        }
-
-        $advisoriesFile = $input->getOption('advisories-file');
-        $dbOption = $input->getOption('database-location');
+    /** The locator for a shared advisory database, honouring --offline, --database-sha256 and --allow-unverified-database. */
+    private function databaseLocator(InputInterface $input, \Composer\Composer $composer, IOInterface $io): DatabaseLocator|int
+    {
         $expectedSha = $input->getOption('database-sha256');
         if (is_string($expectedSha) && $expectedSha !== '' && preg_match('{^[0-9a-f]{64}$}i', $expectedSha) !== 1) {
             $io->writeError('<error>--database-sha256 must be a 64-character hexadecimal sha256 digest.</error>');
 
             return Plan::EXIT_ERROR;
         }
-        $locator = new DatabaseLocator($composer, Factory::createHttpDownloader($io, $composer->getConfig()), (bool) $input->getOption('offline'), !(bool) $input->getOption('allow-unverified-database'), is_string($expectedSha) && $expectedSha !== '' ? strtolower($expectedSha) : null);
-        $dbLocation = $locator->configured(is_string($dbOption) ? $dbOption : null);
+
+        return new DatabaseLocator($composer, Factory::createHttpDownloader($io, $composer->getConfig()), (bool) $input->getOption('offline'), !(bool) $input->getOption('allow-unverified-database'), is_string($expectedSha) && $expectedSha !== '' ? strtolower($expectedSha) : null);
+    }
+
+    /**
+     * Where advisories come from, in order of preference: --advisories-file, a configured or given
+     * shared database, else Composer's own repositories. Exit 4 when a configured database is unusable.
+     */
+    private function advisoryProvider(InputInterface $input, \Composer\Composer $composer, ProjectContext $context, DatabaseLocator $locator, IOInterface $io): AdvisoryProvider|int
+    {
+        $advisoriesFile = $input->getOption('advisories-file');
         if (is_string($advisoriesFile) && $advisoriesFile !== '') {
-            $advisories = new JsonFileAdvisoryProvider($advisoriesFile);
-        } elseif ($dbLocation !== null) {
-            try {
-                $advisories = new SqliteAdvisoryProvider(Database::open($locator->resolve($dbLocation)));
-            } catch (AdvisoryLookupFailed $e) {
-                $io->writeError('<error>Advisory database unavailable: ' . ConsoleText::safe($e->getMessage()) . '</error>');
-
-                return Plan::EXIT_ADVISORIES_UNAVAILABLE;
-            }
-        } else {
-            $advisories = self::composerAdvisoryProvider($composer, $context);
+            return new JsonFileAdvisoryProvider($advisoriesFile);
         }
+        $dbOption = $input->getOption('database-location');
+        $dbLocation = $locator->configured(is_string($dbOption) ? $dbOption : null);
+        if ($dbLocation === null) {
+            return self::composerAdvisoryProvider($composer, $context);
+        }
+        try {
+            return new SqliteAdvisoryProvider(Database::open($locator->resolve($dbLocation)));
+        } catch (AdvisoryLookupFailed $e) {
+            $io->writeError('<error>Advisory database unavailable: ' . ConsoleText::safe($e->getMessage()) . '</error>');
 
-        $platformArguments = self::platformArguments($input);
-        $solver = $this->buildSolver($solverChoice, $input, $platformArguments);
-        $maxCandidates = max(1, (int) $input->getOption('max-candidates'));
-        $solveBudget = max(1, (int) $input->getOption('solve-budget'));
+            return Plan::EXIT_ADVISORIES_UNAVAILABLE;
+        }
+    }
+
+    /**
+     * @param list<string> $platformArguments
+     */
+    private function planner(InputInterface $input, AdvisoryProvider $advisories, SolverInterface $solver, array $platformArguments, IOInterface $io): Planner
+    {
+        $minAge = $input->getOption('min-release-age');
         $cliIgnores = array_values(array_filter(array_map('strval', (array) $input->getOption('ignore')), static fn (string $v): bool => $v !== ''));
-        $ignore = IgnorePolicy::fromComposerConfig($composer->getConfig())->withIds($cliIgnores);
-        $releaseAge = is_string($minAge) && $minAge !== '' ? new ReleaseAgeGuard((int) $minAge) : null;
-        $planner = new Planner(
+
+        return new Planner(
             $advisories,
             $solver,
             new CandidateGenerator(allowDirectRequire: (bool) $input->getOption('allow-direct-require'), extraArguments: $platformArguments),
             !(bool) $input->getOption('no-dev'),
-            $maxCandidates,
+            max(1, (int) $input->getOption('max-candidates')),
             static function (string $message) use ($io): void {
-                $io->writeError('<comment>' . ConsoleText::safe($message) . '</comment>', true, \Composer\IO\IOInterface::VERBOSE);
+                $io->writeError('<comment>' . ConsoleText::safe($message) . '</comment>', true, IOInterface::VERBOSE);
             },
-            $ignore,
-            $releaseAge,
-            $solveBudget,
+            IgnorePolicy::fromComposerConfig($this->requireComposer()->getConfig())->withIds($cliIgnores),
+            is_string($minAge) && $minAge !== '' ? new ReleaseAgeGuard((int) $minAge) : null,
+            max(1, (int) $input->getOption('solve-budget')),
         );
+    }
 
-        try {
-            $plan = $planner->plan($context, ScratchWorkspace::fromProject($context));
-        } catch (AdvisoryLookupFailed $e) {
-            $io->writeError('<error>Advisory data unavailable: ' . ConsoleText::safe($e->getMessage()) . '</error>');
-            if ((bool) $input->getOption('offline')) {
-                $io->writeError('<comment>Offline mode: pass --advisories-file=<json> or --database-location=<sqlite> (see remediate:db-build).</comment>');
-            }
-
-            return Plan::EXIT_ADVISORIES_UNAVAILABLE;
-        }
-        if ($locator->warnings() !== []) {
-            $plan = $plan->withWarnings($locator->warnings());
-        }
-        if ($advisories instanceof FallbackAdvisoryProvider && $advisories->warnings() !== []) {
-            $plan = $plan->withWarnings($advisories->warnings());
-        }
+    /** Applies --accept-coverage-gaps, --fail-on and the baseline options to the plan; an exit code when they are malformed. */
+    private function gate(Plan $plan, InputInterface $input, IOInterface $io): Plan|int
+    {
         if ((bool) $input->getOption('accept-coverage-gaps')) {
             $plan = $plan->withAcceptedCoverageGaps();
         }
-
         $failOn = $input->getOption('fail-on');
         if (is_string($failOn) && $failOn !== '') {
             try {
@@ -218,31 +278,41 @@ HELP);
             }
         }
         $baselinePath = $input->getOption('baseline');
-        if (is_string($baselinePath) && $baselinePath !== '') {
-            try {
-                if ((bool) $input->getOption('update-baseline')) {
-                    BaselineFile::write($baselinePath, $plan);
-                    $io->writeError(sprintf('Baseline written to %s (%d finding%s accepted).', $baselinePath, count($plan->findingKeys()), count($plan->findingKeys()) === 1 ? '' : 's'));
-                }
-                if (is_file($baselinePath)) {
-                    $plan = $plan->withBaseline(BaselineFile::read($baselinePath));
-                } else {
-                    $io->writeError(sprintf('<warning>Baseline %s does not exist; run with --update-baseline to create it.</warning>', $baselinePath));
-                }
-            } catch (\RuntimeException $e) {
-                $io->writeError('<error>' . ConsoleText::safe($e->getMessage()) . '</error>');
+        if (!is_string($baselinePath) || $baselinePath === '') {
+            if ((bool) $input->getOption('update-baseline')) {
+                $io->writeError('<error>--update-baseline needs --baseline=<file>.</error>');
 
                 return Plan::EXIT_ERROR;
             }
-        } elseif ((bool) $input->getOption('update-baseline')) {
-            $io->writeError('<error>--update-baseline needs --baseline=<file>.</error>');
+
+            return $plan;
+        }
+        try {
+            if ((bool) $input->getOption('update-baseline')) {
+                BaselineFile::write($baselinePath, $plan);
+                $io->writeError(sprintf('Baseline written to %s (%d finding%s accepted).', $baselinePath, count($plan->findingKeys()), count($plan->findingKeys()) === 1 ? '' : 's'));
+            }
+            if (is_file($baselinePath)) {
+                return $plan->withBaseline(BaselineFile::read($baselinePath));
+            }
+            $io->writeError(sprintf('<warning>Baseline %s does not exist; run with --update-baseline to create it.</warning>', $baselinePath));
+        } catch (\RuntimeException $e) {
+            $io->writeError('<error>' . ConsoleText::safe($e->getMessage()) . '</error>');
 
             return Plan::EXIT_ERROR;
         }
 
-        $minimal = $solver->supportsMinimalChanges();
-        $lockLines = LockLineIndex::fromFile($context->lockPath());
-        foreach ($outputs as [$fileFormat, $path]) {
+        return $plan;
+    }
+
+    /**
+     * Writes the --output files and the --format report to standard output; the exit code is the plan's.
+     *
+     * @param list<array{ReportFormat, ?string}> $files
+     */
+    private function emit(Plan $plan, ReportFormat $format, array $files, bool $minimal, LockLineIndex $lockLines, OutputInterface $output, IOInterface $io): int
+    {
+        foreach ($files as [$fileFormat, $path]) {
             if ($path === null || $fileFormat === ReportFormat::None) {
                 continue;
             }

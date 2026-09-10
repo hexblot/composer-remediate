@@ -4,8 +4,8 @@ declare(strict_types=1);
 
 namespace Remediate\Output;
 
-use Remediate\Engine\Plan\CombinedOutcome;
 use Remediate\Engine\Graph\DependencyPath;
+use Remediate\Engine\Plan\CombinedOutcome;
 use Remediate\Engine\Plan\EvaluatedCandidate;
 use Remediate\Engine\Plan\FindingPlan;
 use Remediate\Engine\Plan\Plan;

@@ -22,6 +22,7 @@ use Remediate\Engine\Matching\Matcher;
 use Remediate\Engine\Plan\CombinedAttempt;
 use Remediate\Engine\Plan\CombinedOutcome;
 use Remediate\Engine\Plan\CombinedRemediation;
+use Remediate\Engine\Plan\CombinedSearch;
 use Remediate\Engine\Plan\EvaluatedCandidate;
 use Remediate\Engine\Plan\FindingPlan;
 use Remediate\Engine\Plan\Plan;
@@ -340,15 +341,10 @@ final class Planner
      * Global planning: find one command that fixes every finding, with as little change as possible.
      *
      * The per-package winners are merged and verified with one solve. When that does not fix
-     * everything (the solver finds no solution, or one finding's fix undoes another's), the search
-     * swaps in the next-ranked candidate of a finding that is in the way and tries again, within a
-     * solve budget; among what resolves it keeps the combination fixing the most findings, then the
-     * smallest lock diff. A combination that fixes everything is then shrunk: the contribution of each
-     * finding whose package a sibling's fix already moves is dropped in turn and the rest re-verified,
-     * and the smaller command is kept when it still fixes everything (a parent update often covers a
-     * sibling's finding). Every step is recorded
-     * so the report can say why the recommended command is what it is. The acceptance rules for
-     * individual candidates apply throughout: no new advisories, no release younger than the cooldown.
+     * everything, repair() swaps in next-ranked candidates within a solve budget; a combination that
+     * fixes everything is then passed to shrink(). Every step is recorded so the report can say why the
+     * recommended command is what it is. The acceptance rules for individual candidates apply
+     * throughout: no new advisories, no release younger than the cooldown.
      *
      * @param list<FindingPlan>   $plans
      * @param array<string, true> $baseline
@@ -357,257 +353,146 @@ final class Planner
      */
     private function combine(array $plans, LockSnapshot $lock, array $baseline, Matcher $matcher, ScratchWorkspace $workspace): array
     {
-        $allKeys = [];
-        /** @var array<int, list<EvaluatedCandidate>> $ranked valid candidates per contributing plan, best first */
-        $ranked = [];
-        foreach ($plans as $index => $plan) {
-            foreach ($plan->allFindings() as $finding) {
-                $allKeys[$finding->key()] = true;
-            }
-            if ($plan->ranked !== []) {
-                $ranked[$index] = $plan->ranked;
-            }
-        }
-        if ($ranked === []) {
+        $search = CombinedSearch::over($plans);
+        if ($search === null) {
             return [null, []];
         }
-        if (count($ranked) === 1) {
-            $winner = $ranked[array_key_first($ranked)][0];
-            if ($winner->result->after !== null && $winner->diff !== null) {
-                $afterKeys = $matcher->findingKeys($winner->result->after);
-
-                return [new CombinedRemediation($winner->candidate, $winner->result, $winner->diff, array_keys(array_diff_key($allKeys, $afterKeys)), array_keys(array_intersect_key($allKeys, $afterKeys))), []];
-            }
-
-            return [null, []];
+        if ($search->contributorCount() === 1) {
+            return [self::soleContribution($search, $matcher), []];
         }
 
-        $attempts = [];
-        $seen = [];
         $this->findingSolves = 0;
         $this->budgetExhausted = false;
-        /** @var array<int, int> $choice contributing plan => index into its ranked candidates */
-        $choice = array_map(static fn (): int => 0, $ranked);
-        $try = function (array $choice, string $note) use (&$attempts, &$seen, $ranked, $lock, $baseline, $allKeys, $matcher, $workspace): ?CombinedRemediation {
-            $merged = self::mergeCandidates(array_map(static fn (int $plan, int $rank): Candidate => $ranked[$plan][$rank]->candidate, array_keys($choice), array_values($choice)));
-            if (isset($seen[$merged->signature()])) {
-                return null;
-            }
-            $seen[$merged->signature()] = true;
-            $this->report('combining: ' . $merged->commandLine($this->solver->supportsMinimalChanges()) . ' (' . $note . ')');
-            $outcome = $this->acceptCombined($merged, $lock, $baseline, $allKeys, $matcher, $workspace);
-            if ($outcome instanceof CombinedRemediation) {
-                $attempts[] = new CombinedAttempt($merged, $outcome->fixesAll() ? CombinedOutcome::Accepted : CombinedOutcome::Partial, $note, $outcome->fixedCount(), $outcome->totalCount(), $outcome->fixesAll() ? null : sprintf('leaves %s', implode(', ', $outcome->unfixedKeys)));
+        $verify = fn (Candidate $c): CombinedRemediation|array => $this->acceptCombined($c, $lock, $baseline, $search->allKeys, $matcher, $workspace);
 
-                return $outcome;
-            }
-            [$kind, $reason] = $outcome;
-            $attempts[] = new CombinedAttempt($merged, $kind, $note, 0, count($allKeys), $reason);
+        $search->adoptIfBetter($this->tryCombination($search, $search->bestChoice, 'per-package winners merged', $verify), $search->bestChoice);
+        $this->repair($search, $verify);
+        $this->shrink($search, $verify);
+        $search->markChosen();
 
+        $best = $search->best;
+        if ($best === null) {
+            return [null, $search->attempts];
+        }
+        // Prefer the simplest spelling that yields the identical lock; it is re-matched and re-diffed
+        // rather than inheriting the original's bookkeeping.
+        foreach (self::simplerVariants($best->candidate) as $variant) {
+            $simpler = $verify($variant);
+            if ($simpler instanceof CombinedRemediation && $best->result->after !== null && $simpler->result->after !== null && self::sameLock($simpler->result->after, $best->result->after)) {
+                return [$simpler, $search->attempts];
+            }
+        }
+
+        return [$best, $search->attempts];
+    }
+
+    /** With one contributing plan there is nothing to merge: its winner is the combined command. */
+    private static function soleContribution(CombinedSearch $search, Matcher $matcher): ?CombinedRemediation
+    {
+        $winner = $search->soleWinner();
+        if ($winner->result->after === null || $winner->diff === null) {
             return null;
-        };
-        $better = static fn (?CombinedRemediation $a, ?CombinedRemediation $b): bool => $a !== null && ($b === null || $a->fixedCount() > $b->fixedCount() || ($a->fixedCount() === $b->fixedCount() && $a->diff->count() < $b->diff->count()));
+        }
+        $afterKeys = $matcher->findingKeys($winner->result->after);
 
-        $best = $try($choice, 'per-package winners merged');
-        $bestChoice = $choice;
-        $lastReason = $best === null ? ($attempts[count($attempts) - 1]->reason ?? '') : '';
+        return new CombinedRemediation($winner->candidate, $winner->result, $winner->diff, array_keys(array_diff_key($search->allKeys, $afterKeys)), array_keys(array_intersect_key($search->allKeys, $afterKeys)));
+    }
 
-        // Repair: swap in the next candidate of a finding that stands in the way, one at a time.
-        while (($best === null || !$best->fixesAll()) && $this->globalBudgetLeft()) {
-            $targets = $this->plansInTheWay($ranked, $bestChoice, $plans, $best, $lastReason);
+    /**
+     * Solves one combination, records the attempt, and returns the remediation when it resolves and
+     * passes the acceptance rules. Null when it was already tried or the budget is spent.
+     *
+     * @param array<int, int>                                                              $choice
+     * @param callable(Candidate): (CombinedRemediation|array{CombinedOutcome, string}) $verify
+     */
+    private function tryCombination(CombinedSearch $search, array $choice, string $note, callable $verify): ?CombinedRemediation
+    {
+        if (!$this->globalBudgetLeft()) {
+            return null;
+        }
+        $merged = $search->merged($choice);
+        if ($merged === null) {
+            return null;
+        }
+        $this->report('combining: ' . $merged->commandLine($this->solver->supportsMinimalChanges()) . ' (' . $note . ')');
+        $outcome = $verify($merged);
+        if ($outcome instanceof CombinedRemediation) {
+            $search->record(new CombinedAttempt($merged, $outcome->fixesAll() ? CombinedOutcome::Accepted : CombinedOutcome::Partial, $note, $outcome->fixedCount(), $outcome->totalCount(), $outcome->fixesAll() ? null : sprintf('leaves %s', implode(', ', $outcome->unfixedKeys))));
+
+            return $outcome;
+        }
+        [$kind, $reason] = $outcome;
+        $search->record(new CombinedAttempt($merged, $kind, $note, 0, count($search->allKeys), $reason));
+
+        return null;
+    }
+
+    /**
+     * Repair: while the best combination does not fix everything, swap in the next-ranked candidate
+     * of a finding that stands in the way (named in the solver output, or left unfixed), one at a
+     * time, keeping any swap that fixes more or as much with a smaller diff.
+     *
+     * @param callable(Candidate): (CombinedRemediation|array{CombinedOutcome, string}) $verify
+     */
+    private function repair(CombinedSearch $search, callable $verify): void
+    {
+        while (!$search->fixesAll() && $this->globalBudgetLeft()) {
             $progress = false;
-            foreach ($targets as $index) {
-                if (!$this->globalBudgetLeft()) {
-                    break;
-                }
-                $next = $bestChoice[$index] + 1;
-                if (!isset($ranked[$index][$next])) {
+            foreach ($search->plansInTheWay() as $index) {
+                $current = $search->bestChoice[$index];
+                if (!isset($search->ranked[$index][$current + 1])) {
                     continue;
                 }
-                $candidateChoice = $bestChoice;
-                $candidateChoice[$index] = $next;
-                $result = $try($candidateChoice, sprintf('%s: candidate ranked %d instead of %d', $plans[$index]->finding->packageName, $next + 1, $bestChoice[$index] + 1));
-                if ($better($result, $best)) {
-                    $best = $result;
-                    $bestChoice = $candidateChoice;
+                $choice = $search->bestChoice;
+                $choice[$index] = $current + 1;
+                $result = $this->tryCombination($search, $choice, sprintf('%s: candidate ranked %d instead of %d', $search->packageOf($index), $current + 2, $current + 1), $verify);
+                if ($search->adoptIfBetter($result, $choice)) {
                     $progress = true;
                     break;
-                }
-                if ($result === null && $attempts !== []) {
-                    $lastReason = $attempts[count($attempts) - 1]->reason ?? '';
                 }
             }
             if (!$progress) {
                 break;
             }
         }
-
-        // Shrink: a command fixing everything may carry contributions another finding's fix already covers.
-        // Only contributions whose vulnerable package a sibling's own solve already moves are tried; dropping
-        // any other one would leave its finding in place, and every solve here costs a full dry run.
-        if ($best !== null && $best->fixesAll()) {
-            $active = $bestChoice;
-            $shrunk = true;
-            while ($shrunk && count($active) > 1 && $this->globalBudgetLeft()) {
-                $shrunk = false;
-                foreach (self::shrinkOrder($ranked, $active, $plans) as $index) {
-                    if (!$this->globalBudgetLeft()) {
-                        break;
-                    }
-                    $without = $active;
-                    unset($without[$index]);
-                    $result = $try($without, sprintf('without the command for %s', $plans[$index]->finding->packageName));
-                    if ($result !== null && $result->fixesAll() && $result->diff->count() <= $best->diff->count()) {
-                        $best = $result;
-                        $active = $without;
-                        $shrunk = true;
-                        break;
-                    }
-                }
-            }
-        }
-
-        if ($best === null) {
-            return [null, $attempts];
-        }
-        foreach ($attempts as $i => $attempt) {
-            if ($attempt->candidate->signature() === $best->candidate->signature()) {
-                $attempts[$i] = $attempt->withChosen(true);
-            }
-        }
-
-        // Prefer the simplest spelling that yields the identical lock; it is re-matched and re-diffed
-        // rather than inheriting the original's bookkeeping.
-        foreach (self::simplerVariants($best->candidate) as $variant) {
-            $simpler = $this->acceptCombined($variant, $lock, $baseline, $allKeys, $matcher, $workspace);
-            if ($simpler instanceof CombinedRemediation && $best->result->after !== null && $simpler->result->after !== null && self::sameLock($simpler->result->after, $best->result->after)) {
-                return [$simpler, $attempts];
-            }
-        }
-
-        return [$best, $attempts];
     }
 
     /**
-     * The active contributors the shrink step should try dropping: those whose vulnerable packages a
-     * sibling's own solve already moves.
+     * Shrink: a command fixing everything may carry contributions another finding's fix already
+     * covers. Each contribution whose vulnerable package a sibling's own solve moves is dropped in
+     * turn; the smaller command is kept when it still fixes everything with no larger a diff. Every
+     * solve here costs a full dry run, so contributions nothing else moves are not tried.
      *
-     * @param array<int, list<EvaluatedCandidate>> $ranked
-     * @param array<int, int>                      $active
-     * @param list<FindingPlan>                    $plans
-     *
-     * @return list<int>
+     * @param callable(Candidate): (CombinedRemediation|array{CombinedOutcome, string}) $verify
      */
-    private static function shrinkOrder(array $ranked, array $active, array $plans): array
+    private function shrink(CombinedSearch $search, callable $verify): void
     {
-        $movedBySiblings = [];
-        foreach ($active as $index => $rank) {
-            $diff = $ranked[$index][$rank]->diff;
-            $movedBySiblings[$index] = $diff === null ? [] : array_flip($diff->changedNames());
+        if (!$search->fixesAll()) {
+            return;
         }
-        $covered = [];
-        foreach (array_keys($active) as $index) {
-            $names = array_map(static fn (Finding $f): string => $f->packageName, $plans[$index]->allFindings());
-            $isCovered = false;
-            foreach ($movedBySiblings as $sibling => $moved) {
-                if ($sibling !== $index && array_intersect_key(array_flip($names), $moved) !== []) {
-                    $isCovered = true;
+        $active = $search->bestChoice;
+        $shrunk = true;
+        while ($shrunk && count($active) > 1 && $this->globalBudgetLeft()) {
+            $shrunk = false;
+            foreach ($search->droppable($active) as $index) {
+                $without = $active;
+                unset($without[$index]);
+                $result = $this->tryCombination($search, $without, sprintf('without the command for %s', $search->packageOf($index)), $verify);
+                if ($result !== null && $result->fixesAll() && $search->best !== null && $result->diff->count() <= $search->best->diff->count()) {
+                    $search->best = $result;
+                    $search->bestChoice = $without;
+                    $active = $without;
+                    $shrunk = true;
                     break;
                 }
             }
-            if ($isCovered) {
-                $covered[] = $index;
-            }
         }
-
-        return $covered;
     }
 
     /** Whether the global search may spend another solve: its own ceiling and the --solve-budget both apply. */
     private function globalBudgetLeft(): bool
     {
         return !$this->budgetExhausted && $this->findingSolves <= self::GLOBAL_SOLVE_BUDGET;
-    }
-
-    /**
-     * The contributing plans whose candidate should be swapped next: those whose findings the last
-     * combination left unfixed, or, when the solver found no solution, those whose command names a
-     * package the solver complained about; every contributor when nothing narrower can be told.
-     *
-     * @param array<int, list<EvaluatedCandidate>> $ranked
-     * @param array<int, int>                      $choice
-     * @param list<FindingPlan>                    $plans
-     *
-     * @return list<int>
-     */
-    private function plansInTheWay(array $ranked, array $choice, array $plans, ?CombinedRemediation $last, string $reason): array
-    {
-        $targets = [];
-        if ($last !== null) {
-            $unfixed = array_flip($last->unfixedKeys);
-            foreach (array_keys($choice) as $index) {
-                foreach ($plans[$index]->allFindings() as $finding) {
-                    if (isset($unfixed[$finding->key()])) {
-                        $targets[] = $index;
-                        break;
-                    }
-                }
-            }
-        } elseif ($reason !== '') {
-            foreach (array_keys($choice) as $index) {
-                $candidate = $ranked[$index][$choice[$index]]->candidate;
-                foreach ([...$candidate->allowList, ...array_keys($candidate->pins), ...array_keys($candidate->temporaryConstraints)] as $name) {
-                    if (str_contains($reason, (string) $name)) {
-                        $targets[] = $index;
-                        break;
-                    }
-                }
-            }
-        }
-        if ($targets === []) {
-            $targets = array_keys($choice);
-        }
-
-        return array_values(array_unique($targets));
-    }
-
-    /**
-     * One command carrying several candidates: the union of their allow lists, pins, temporary
-     * constraints and root changes, the widest transitive mode, -m when any of them used it. Components
-     * are sorted so the text does not depend on report order.
-     *
-     * @param list<Candidate> $candidates
-     */
-    private static function mergeCandidates(array $candidates): Candidate
-    {
-        $allow = [];
-        $pins = [];
-        $temporary = [];
-        $roots = [];
-        $extra = [];
-        $mode = Request::UPDATE_ONLY_LISTED;
-        $minimal = false;
-        $strategy = Strategy::LockRefresh;
-        foreach ($candidates as $c) {
-            foreach ($c->allowList as $name) {
-                $allow[$name] = true;
-            }
-            $pins += $c->pins;
-            $temporary += $c->temporaryConstraints;
-            $roots += $c->rootConstraintChanges;
-            array_push($extra, ...$c->extraArguments);
-            $mode = max($mode, $c->transitiveMode);
-            $minimal = $minimal || $c->minimalChanges;
-            if ($c->strategy->rank() > $strategy->rank()) {
-                $strategy = $c->strategy;
-            }
-        }
-        ksort($allow);
-        ksort($pins);
-        ksort($temporary);
-        ksort($roots);
-
-        return new Candidate($strategy, array_keys($allow), $mode, $temporary, $minimal, $roots, 'all per-package remediations in one command', $pins, array_values(array_unique($extra)));
     }
 
     /**

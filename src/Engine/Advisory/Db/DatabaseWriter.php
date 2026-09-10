@@ -33,6 +33,36 @@ final class DatabaseWriter
         $hash = self::datasetHash($advisories, array_keys(array_filter($exploits, static fn (Enrichment\ExploitRecord $r): bool => $r->kevAdded !== null)));
 
         $pdo = new \PDO('sqlite:' . $tmp, null, null, [\PDO::ATTR_ERRMODE => \PDO::ERRMODE_EXCEPTION]);
+        self::createSchema($pdo);
+        $pdo->beginTransaction();
+        $conflicts = self::insertAdvisories($pdo, $advisories);
+        self::insertGaps($pdo, $gaps);
+        $kev = self::insertExploits($pdo, $exploits);
+        self::insertMeta($pdo, [
+            'schema_version' => (string) Database::SCHEMA_VERSION,
+            'built_at' => gmdate(DATE_ATOM),
+            'dataset_hash' => $hash,
+            'advisory_count' => (string) count($advisories),
+            'conflict_count' => (string) $conflicts,
+            'gap_count' => (string) count($gaps),
+            'exploit_count' => (string) count($exploits),
+            'kev_count_matched' => (string) $kev,
+            'sources' => json_encode($sourceStats, JSON_THROW_ON_ERROR),
+        ] + $extraMeta);
+        $pdo->commit();
+        $pdo->exec('VACUUM');
+        $pdo = null;
+
+        if (!@rename($tmp, $path)) {
+            @unlink($tmp);
+            throw new \RuntimeException("Cannot write $path");
+        }
+
+        return ['path' => $path, 'hash' => $hash, 'advisories' => count($advisories), 'conflicts' => $conflicts, 'gaps' => count($gaps), 'exploits' => count($exploits), 'bytes' => (int) filesize($path)];
+    }
+
+    private static function createSchema(\PDO $pdo): void
+    {
         $pdo->exec('PRAGMA journal_mode = OFF');
         $pdo->exec('PRAGMA synchronous = OFF');
         $pdo->exec('CREATE TABLE meta (key TEXT PRIMARY KEY, value TEXT NOT NULL)');
@@ -45,8 +75,15 @@ final class DatabaseWriter
         $pdo->exec('CREATE TABLE gap (source TEXT NOT NULL, remote_id TEXT NOT NULL, package TEXT, reason TEXT NOT NULL, raw TEXT)');
         $pdo->exec('CREATE INDEX gap_package ON gap (package)');
         $pdo->exec('CREATE TABLE exploit (cve TEXT PRIMARY KEY, epss REAL, epss_percentile REAL, kev_added TEXT, kev_ransomware INTEGER NOT NULL DEFAULT 0)');
+    }
 
-        $pdo->beginTransaction();
+    /**
+     * @param list<NormalizedAdvisory> $advisories
+     *
+     * @return int how many advisories carry conflicting source data
+     */
+    private static function insertAdvisories(\PDO $pdo, array $advisories): int
+    {
         $insertAdvisory = $pdo->prepare('INSERT INTO advisory (canonical_id, title, link, severity, reported_at, withdrawn_at, has_conflict) VALUES (?, ?, ?, ?, ?, ?, ?)');
         $insertAlias = $pdo->prepare('INSERT OR IGNORE INTO alias (advisory_id, alias) VALUES (?, ?)');
         $insertAffected = $pdo->prepare('INSERT INTO affected (advisory_id, package, constraint_expr, source) VALUES (?, ?, ?, ?)');
@@ -76,43 +113,45 @@ final class DatabaseWriter
                 $insertSource->execute([$id, $source->name, $source->remoteId, $source->url, $source->modifiedAt?->format(DATE_ATOM)]);
             }
         }
-        $insertGap = $pdo->prepare('INSERT INTO gap (source, remote_id, package, reason, raw) VALUES (?, ?, ?, ?, ?)');
+
+        return $conflicts;
+    }
+
+    /** @param list<CoverageGap> $gaps */
+    private static function insertGaps(\PDO $pdo, array $gaps): void
+    {
+        $insert = $pdo->prepare('INSERT INTO gap (source, remote_id, package, reason, raw) VALUES (?, ?, ?, ?, ?)');
         foreach ($gaps as $gap) {
-            $insertGap->execute([$gap->source, $gap->remoteId, $gap->package !== null ? strtolower($gap->package) : null, $gap->reason, $gap->raw !== null ? substr($gap->raw, 0, 500) : null]);
+            $insert->execute([$gap->source, $gap->remoteId, $gap->package !== null ? strtolower($gap->package) : null, $gap->reason, $gap->raw !== null ? substr($gap->raw, 0, 500) : null]);
         }
-        $insertExploit = $pdo->prepare('INSERT OR REPLACE INTO exploit (cve, epss, epss_percentile, kev_added, kev_ransomware) VALUES (?, ?, ?, ?, ?)');
+    }
+
+    /**
+     * @param array<string, Enrichment\ExploitRecord> $exploits
+     *
+     * @return int how many records are in the KEV catalogue
+     */
+    private static function insertExploits(\PDO $pdo, array $exploits): int
+    {
+        $insert = $pdo->prepare('INSERT OR REPLACE INTO exploit (cve, epss, epss_percentile, kev_added, kev_ransomware) VALUES (?, ?, ?, ?, ?)');
         $kev = 0;
         foreach ($exploits as $record) {
-            $insertExploit->execute([strtoupper($record->cve), $record->epss, $record->epssPercentile, $record->kevAdded?->format('Y-m-d'), $record->kevRansomware ? 1 : 0]);
+            $insert->execute([strtoupper($record->cve), $record->epss, $record->epssPercentile, $record->kevAdded?->format('Y-m-d'), $record->kevRansomware ? 1 : 0]);
             if ($record->kevAdded !== null) {
                 ++$kev;
             }
         }
-        $meta = [
-            'schema_version' => (string) Database::SCHEMA_VERSION,
-            'built_at' => gmdate(DATE_ATOM),
-            'dataset_hash' => $hash,
-            'advisory_count' => (string) count($advisories),
-            'conflict_count' => (string) $conflicts,
-            'gap_count' => (string) count($gaps),
-            'exploit_count' => (string) count($exploits),
-            'kev_count_matched' => (string) $kev,
-            'sources' => json_encode($sourceStats, JSON_THROW_ON_ERROR),
-        ] + $extraMeta;
-        $insertMeta = $pdo->prepare('INSERT INTO meta (key, value) VALUES (?, ?)');
+
+        return $kev;
+    }
+
+    /** @param array<string, string> $meta */
+    private static function insertMeta(\PDO $pdo, array $meta): void
+    {
+        $insert = $pdo->prepare('INSERT INTO meta (key, value) VALUES (?, ?)');
         foreach ($meta as $key => $value) {
-            $insertMeta->execute([$key, $value]);
+            $insert->execute([$key, $value]);
         }
-        $pdo->commit();
-        $pdo->exec('VACUUM');
-        $pdo = null;
-
-        if (!@rename($tmp, $path)) {
-            @unlink($tmp);
-            throw new \RuntimeException("Cannot write $path");
-        }
-
-        return ['path' => $path, 'hash' => $hash, 'advisories' => count($advisories), 'conflicts' => $conflicts, 'gaps' => count($gaps), 'exploits' => count($exploits), 'bytes' => (int) filesize($path)];
     }
 
     /**

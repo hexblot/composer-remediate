@@ -52,6 +52,12 @@ jobs:
           tools: composer:v2
       - run: composer install --no-interaction --no-progress
       - run: composer phpstan
+      # Deptrac needs PHP 8.2+ and its own dependencies, so it lives in tools/deptrac with a pinned lock.
+      - name: Architecture rules (Deptrac)
+        if: matrix.php == '8.4'
+        run: |
+          composer --working-dir=tools/deptrac install --no-interaction --no-progress
+          composer deptrac
       - run: composer test
         if: matrix.php != '8.4'
       - name: Tests with coverage

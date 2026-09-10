@@ -4,10 +4,10 @@ declare(strict_types=1);
 
 namespace Remediate\Output;
 
-use Remediate\Engine\Plan\CombinedOutcome;
 use Remediate\Engine\Graph\DependencyPath;
-use Remediate\Engine\Plan\EvaluatedCandidate;
 use Remediate\Engine\Matching\Finding;
+use Remediate\Engine\Plan\CombinedOutcome;
+use Remediate\Engine\Plan\EvaluatedCandidate;
 use Remediate\Engine\Plan\FindingPlan;
 use Remediate\Engine\Plan\Plan;
 use Symfony\Component\Console\Formatter\OutputFormatter;
@@ -156,6 +156,20 @@ final class TextRenderer
     /** @return list<string> */
     private function renderFinding(FindingPlan $plan): array
     {
+        $recommended = $plan->recommended();
+
+        return [
+            ...$this->affectedSection($plan),
+            ...$this->pathsSection($plan->finding),
+            ...$this->stateSection($plan->finding),
+            ...($recommended === null || $recommended->diff === null ? $this->noRemediationSection($plan) : $this->remediationSection($plan->finding, $plan, $recommended)),
+            ...$this->otherCandidatesSection($plan, $recommended),
+        ];
+    }
+
+    /** @return list<string> */
+    private function affectedSection(FindingPlan $plan): array
+    {
         $f = $plan->finding;
         $out = [];
         $out[] = $this->tag(implode(', ', array_map(static fn ($finding): string => $finding->advisory->displayId(), $plan->allFindings())), 'fg=red;options=bold') . ($this->currentPlan?->isBaselined($plan) === true ? '  ' . $this->tag('[baselined]', 'fg=gray') : '');
@@ -175,7 +189,13 @@ final class TextRenderer
             }
         }
 
-        $out[] = $this->heading('Introduced by');
+        return $out;
+    }
+
+    /** @return list<string> */
+    private function pathsSection(Finding $f): array
+    {
+        $out = [$this->heading('Introduced by')];
         if ($f->paths === []) {
             $out[] = '  (no path to the root package found)';
         }
@@ -186,90 +206,112 @@ final class TextRenderer
             $out[] = sprintf('  … and %d more path%s', count($f->paths) - 5, count($f->paths) - 5 === 1 ? '' : 's');
         }
 
-        $out[] = $this->heading('Current state');
+        return $out;
+    }
+
+    /** @return list<string> */
+    private function stateSection(Finding $f): array
+    {
+        $out = [$this->heading('Current state')];
         $out[] = '  ' . ($f->isRootRequirement ? 'Direct dependency.' : 'Transitive dependency.') . ($f->isDev ? ' Development requirement only.' : '');
         if ($f->abandoned !== []) {
             $out[] = '  ' . $this->tag('Abandoned:', 'fg=yellow') . ' ' . $this->text(self::abandonedLine($f));
         }
 
-        $recommended = $plan->recommended();
-        if ($recommended === null || $recommended->diff === null) {
-            $out[] = $this->heading('Recommended remediation');
-            $out[] = $this->tag(sprintf('  No verified remediation found (%s).', $plan->outcome()), 'fg=red');
-            if ($plan->blocker !== null) {
-                $out[] = '  ' . $this->text($plan->blocker);
-            }
-        } else {
-            $diff = $recommended->diff;
-            $target = $diff->changeFor($f->packageName);
-            $out[] = $this->heading('Recommended remediation');
-            foreach ($recommended->candidate->allowList as $name) {
-                $change = $diff->changeFor($name);
-                if ($change !== null) {
-                    $out[] = '  ' . $change->describe();
-                }
-            }
-            if ($target !== null && !in_array($f->packageName, $recommended->candidate->allowList, true)) {
-                $out[] = '  ' . $target->describe();
-            }
-            foreach ($recommended->candidate->rootConstraintChanges as $change) {
-                $out[] = sprintf('  composer.json: %s %s -> %s', $change->packageName, $change->fromConstraint ?? '(new)', $change->toConstraint);
-            }
-            $drag = $plan->constraintDrag();
-            if ($drag !== null) {
-                $out[] = '  ' . $this->tag('Constraint drag:', 'fg=yellow') . ' ' . $drag;
-            }
-            if ($recommended->blockingRisk !== []) {
-                $out[] = '  ' . $this->tag('Blocking risk:', 'fg=yellow') . sprintf(' %s still carr%s another advisory after this update; Composer 2.10+ may refuse the command until that advisory is ignored in config.policy or blocking is disabled.', implode(', ', $recommended->blockingRisk), count($recommended->blockingRisk) === 1 ? 'ies' : 'y');
-            }
-            if ($diff->prereleaseTargets() !== []) {
-                $out[] = '  Note: installs pre-release versions (' . implode(', ', array_map(static fn ($c): string => $c->packageName . ' ' . $c->toPretty, $diff->prereleaseTargets())) . '); no stable release satisfies the constraints yet.';
-            }
-            $out[] = $this->heading('Composer validation');
-            $out[] = $this->tag('  PASS', 'fg=green;options=bold') . sprintf(
-                '  %d package%s changed, %d added, %d removed, %d root constraint%s changed%s',
-                count($diff->versionChanges()),
-                count($diff->versionChanges()) === 1 ? '' : 's',
-                count($diff->added()),
-                count($diff->removed()),
-                count($recommended->candidate->rootConstraintChanges),
-                count($recommended->candidate->rootConstraintChanges) === 1 ? '' : 's',
-                $diff->hasMajorChange() ? ', includes a major version change' : '',
-            );
-            $out[] = $this->heading('Expected changes');
-            foreach (array_slice($diff->changes, 0, 30) as $change) {
-                $out[] = '  ' . $change->describe();
-            }
-            if ($diff->count() > 30) {
-                $out[] = sprintf('  … and %d more', $diff->count() - 30);
-            }
-            $out[] = $this->heading('Recommended command');
-            $out[] = '  ' . $this->tag($recommended->candidate->commandLine($this->minimalChangesSupported), 'fg=cyan;options=bold');
+        return $out;
+    }
+
+    /** @return list<string> */
+    private function noRemediationSection(FindingPlan $plan): array
+    {
+        $out = [$this->heading('Recommended remediation')];
+        $out[] = $this->tag(sprintf('  No verified remediation found (%s).', $plan->outcome()), 'fg=red');
+        if ($plan->blocker !== null) {
+            $out[] = '  ' . $this->text($plan->blocker);
         }
 
+        return $out;
+    }
+
+    /** @return list<string> */
+    private function remediationSection(Finding $f, FindingPlan $plan, EvaluatedCandidate $recommended): array
+    {
+        $diff = $recommended->diff;
+        \assert($diff !== null);
+        $target = $diff->changeFor($f->packageName);
+        $out = [$this->heading('Recommended remediation')];
+        foreach ($recommended->candidate->allowList as $name) {
+            $change = $diff->changeFor($name);
+            if ($change !== null) {
+                $out[] = '  ' . $change->describe();
+            }
+        }
+        if ($target !== null && !in_array($f->packageName, $recommended->candidate->allowList, true)) {
+            $out[] = '  ' . $target->describe();
+        }
+        foreach ($recommended->candidate->rootConstraintChanges as $change) {
+            $out[] = sprintf('  composer.json: %s %s -> %s', $change->packageName, $change->fromConstraint ?? '(new)', $change->toConstraint);
+        }
+        $drag = $plan->constraintDrag();
+        if ($drag !== null) {
+            $out[] = '  ' . $this->tag('Constraint drag:', 'fg=yellow') . ' ' . $drag;
+        }
+        if ($recommended->blockingRisk !== []) {
+            $out[] = '  ' . $this->tag('Blocking risk:', 'fg=yellow') . sprintf(' %s still carr%s another advisory after this update; Composer 2.10+ may refuse the command until that advisory is ignored in config.policy or blocking is disabled.', implode(', ', $recommended->blockingRisk), count($recommended->blockingRisk) === 1 ? 'ies' : 'y');
+        }
+        if ($diff->prereleaseTargets() !== []) {
+            $out[] = '  Note: installs pre-release versions (' . implode(', ', array_map(static fn ($c): string => $c->packageName . ' ' . $c->toPretty, $diff->prereleaseTargets())) . '); no stable release satisfies the constraints yet.';
+        }
+        $out[] = $this->heading('Composer validation');
+        $out[] = $this->tag('  PASS', 'fg=green;options=bold') . sprintf(
+            '  %d package%s changed, %d added, %d removed, %d root constraint%s changed%s',
+            count($diff->versionChanges()),
+            count($diff->versionChanges()) === 1 ? '' : 's',
+            count($diff->added()),
+            count($diff->removed()),
+            count($recommended->candidate->rootConstraintChanges),
+            count($recommended->candidate->rootConstraintChanges) === 1 ? '' : 's',
+            $diff->hasMajorChange() ? ', includes a major version change' : '',
+        );
+        $out[] = $this->heading('Expected changes');
+        foreach (array_slice($diff->changes, 0, 30) as $change) {
+            $out[] = '  ' . $change->describe();
+        }
+        if ($diff->count() > 30) {
+            $out[] = sprintf('  … and %d more', $diff->count() - 30);
+        }
+        $out[] = $this->heading('Recommended command');
+        $out[] = '  ' . $this->tag($recommended->candidate->commandLine($this->minimalChangesSupported), 'fg=cyan;options=bold');
+
+        return $out;
+    }
+
+    /** @return list<string> */
+    private function otherCandidatesSection(FindingPlan $plan, ?EvaluatedCandidate $recommended): array
+    {
         $others = array_values(array_filter($plan->evaluated, static fn (EvaluatedCandidate $c): bool => $c !== $recommended));
-        if ($others !== [] || $plan->skipped !== []) {
-            $out[] = $this->heading('Other candidates');
-            $rank = 2;
-            foreach ($plan->ranked as $candidate) {
-                if ($candidate === $recommended) {
-                    continue;
-                }
-                $out[] = '  ' . $this->tag(sprintf('valid, rank %d:', $rank++), 'fg=green') . sprintf(' %s  (%d changes)', $candidate->candidate->commandLine($this->minimalChangesSupported), $candidate->diff?->count() ?? 0);
+        if ($others === [] && $plan->skipped === []) {
+            return [];
+        }
+        $out = [$this->heading('Other candidates')];
+        $rank = 2;
+        foreach ($plan->ranked as $candidate) {
+            if ($candidate === $recommended) {
+                continue;
             }
-            foreach ($others as $candidate) {
-                if ($candidate->valid) {
-                    continue;
-                }
-                $out[] = '  ' . $this->tag('rejected:', 'fg=yellow') . ' ' . $candidate->candidate->commandLine($this->minimalChangesSupported);
-                $reason = $candidate->rejectionReason ?? '';
-                foreach (array_slice(explode("\n", $reason), 0, 6) as $line) {
-                    $out[] = '      ' . $this->text($line);
-                }
+            $out[] = '  ' . $this->tag(sprintf('valid, rank %d:', $rank++), 'fg=green') . sprintf(' %s  (%d changes)', $candidate->candidate->commandLine($this->minimalChangesSupported), $candidate->diff?->count() ?? 0);
+        }
+        foreach ($others as $candidate) {
+            if ($candidate->valid) {
+                continue;
             }
-            foreach ($plan->skipped as $candidate) {
-                $out[] = '  ' . $this->tag('not tried (a better candidate already exists):', 'fg=gray') . ' ' . $candidate->commandLine($this->minimalChangesSupported);
+            $out[] = '  ' . $this->tag('rejected:', 'fg=yellow') . ' ' . $candidate->candidate->commandLine($this->minimalChangesSupported);
+            foreach (array_slice(explode("\n", $candidate->rejectionReason ?? ''), 0, 6) as $line) {
+                $out[] = '      ' . $this->text($line);
             }
+        }
+        foreach ($plan->skipped as $candidate) {
+            $out[] = '  ' . $this->tag('not tried (a better candidate already exists):', 'fg=gray') . ' ' . $candidate->commandLine($this->minimalChangesSupported);
         }
 
         return $out;

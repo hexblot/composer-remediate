@@ -43,40 +43,81 @@ final class CandidateGenerator
         if ($fixed === null) {
             return [];
         }
-        $v = $finding->packageName;
-        $with = [$v => $fixed->getPrettyString()];
-        $candidates = [];
-
-        $candidates[] = new Candidate(
-            Strategy::LockRefresh,
-            [$v],
-            Request::UPDATE_ONLY_LISTED,
-            [],
-            false,
-            [],
-            sprintf('update %s alone; works when the lock file is merely stale', $v),
-        );
-
-        $candidates[] = new Candidate(
-            Strategy::WithDependencies,
-            [$v],
-            Request::UPDATE_LISTED_WITH_TRANSITIVE_DEPS_NO_ROOT_REQUIRE,
-            $with,
-            true,
-            [],
-            sprintf('update %s and its own dependencies, forcing a fixed version', $v),
-        );
-
+        $with = [$finding->packageName => $fixed->getPrettyString()];
         $ancestors = $graph->nearestRootRequirements($finding->paths);
         if ($finding->isRootRequirement) {
-            $ancestors = array_values(array_unique([$v, ...$ancestors]));
+            $ancestors = array_values(array_unique([$finding->packageName, ...$ancestors]));
         }
 
-        $parentCount = 0;
-        foreach ($ancestors as $ancestor) {
-            if ($parentCount >= self::MAX_PARENT_CANDIDATES) {
-                break;
-            }
+        $candidates = [
+            ...self::ownCandidates($finding->packageName, $with),
+            ...self::parentCandidates($finding->packageName, $ancestors, $this->nearestPerPath($finding, $graph), $with),
+            ...$this->widenCandidates($ancestors, $rootRequirements, $with),
+        ];
+        if ($this->allowDirectRequire && !$finding->isRootRequirement) {
+            $candidates[] = new Candidate(
+                Strategy::DirectRequire,
+                [$finding->packageName],
+                Request::UPDATE_LISTED_WITH_TRANSITIVE_DEPS,
+                [],
+                true,
+                [$finding->packageName => new RootConstraintChange($finding->packageName, null, $fixed->getPrettyString(), $finding->isDev)],
+                sprintf('require %s %s directly to force the fixed version', $finding->packageName, $fixed->getPrettyString()),
+            );
+        }
+        if ($this->extraArguments !== []) {
+            $candidates = array_map(fn (Candidate $c): Candidate => $c->withExtraArguments($this->extraArguments), $candidates);
+        }
+
+        return $candidates;
+    }
+
+    /**
+     * Updating the vulnerable package itself: alone (a stale lock), then with its own dependencies
+     * and a constraint forcing a fixed version.
+     *
+     * @param array<string, string> $with
+     *
+     * @return list<Candidate>
+     */
+    private static function ownCandidates(string $package, array $with): array
+    {
+        return [
+            new Candidate(
+                Strategy::LockRefresh,
+                [$package],
+                Request::UPDATE_ONLY_LISTED,
+                [],
+                false,
+                [],
+                sprintf('update %s alone; works when the lock file is merely stale', $package),
+            ),
+            new Candidate(
+                Strategy::WithDependencies,
+                [$package],
+                Request::UPDATE_LISTED_WITH_TRANSITIVE_DEPS_NO_ROOT_REQUIRE,
+                $with,
+                true,
+                [],
+                sprintf('update %s and its own dependencies, forcing a fixed version', $package),
+            ),
+        ];
+    }
+
+    /**
+     * Updating the root requirements that lead to the vulnerable package, one at a time up to
+     * MAX_PARENT_CANDIDATES, then every nearest parent at once when several paths exist.
+     *
+     * @param list<string>          $ancestors
+     * @param list<string>          $nearestPerPath
+     * @param array<string, string> $with
+     *
+     * @return list<Candidate>
+     */
+    private static function parentCandidates(string $package, array $ancestors, array $nearestPerPath, array $with): array
+    {
+        $candidates = [];
+        foreach (array_slice($ancestors, 0, self::MAX_PARENT_CANDIDATES) as $ancestor) {
             $candidates[] = new Candidate(
                 Strategy::ParentUpdate,
                 [$ancestor],
@@ -84,12 +125,9 @@ final class CandidateGenerator
                 $with,
                 true,
                 [],
-                sprintf('update %s with all of its dependencies, forcing a fixed %s', $ancestor, $v),
+                sprintf('update %s with all of its dependencies, forcing a fixed %s', $ancestor, $package),
             );
-            ++$parentCount;
         }
-
-        $nearestPerPath = $this->nearestPerPath($finding, $graph);
         if (count($nearestPerPath) > 1) {
             $candidates[] = new Candidate(
                 Strategy::ParentUpdate,
@@ -98,10 +136,26 @@ final class CandidateGenerator
                 $with,
                 true,
                 [],
-                sprintf('update every parent that requires %s (%s)', $v, implode(', ', $nearestPerPath)),
+                sprintf('update every parent that requires %s (%s)', $package, implode(', ', $nearestPerPath)),
             );
         }
 
+        return $candidates;
+    }
+
+    /**
+     * Widening the composer.json constraint of up to three ancestors to their next major, then
+     * updating them with all dependencies.
+     *
+     * @param list<string>          $ancestors
+     * @param array<string, Link>   $rootRequirements
+     * @param array<string, string> $with
+     *
+     * @return list<Candidate>
+     */
+    private function widenCandidates(array $ancestors, array $rootRequirements, array $with): array
+    {
+        $candidates = [];
         foreach (array_slice($ancestors, 0, 3) as $ancestor) {
             $link = $rootRequirements[$ancestor] ?? null;
             if ($link === null) {
@@ -120,22 +174,6 @@ final class CandidateGenerator
                 [$ancestor => new RootConstraintChange($ancestor, $link->getPrettyConstraint(), $next, $this->isDevLink($link))],
                 sprintf('allow %s %s in composer.json, then update it with all dependencies', $ancestor, $next),
             );
-        }
-
-        if ($this->allowDirectRequire && !$finding->isRootRequirement) {
-            $candidates[] = new Candidate(
-                Strategy::DirectRequire,
-                [$v],
-                Request::UPDATE_LISTED_WITH_TRANSITIVE_DEPS,
-                [],
-                true,
-                [$v => new RootConstraintChange($v, null, $fixed->getPrettyString(), $finding->isDev)],
-                sprintf('require %s %s directly to force the fixed version', $v, $fixed->getPrettyString()),
-            );
-        }
-
-        if ($this->extraArguments !== []) {
-            $candidates = array_map(fn (Candidate $c): Candidate => $c->withExtraArguments($this->extraArguments), $candidates);
         }
 
         return $candidates;
