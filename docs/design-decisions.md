@@ -204,6 +204,14 @@ The same rule applies to any other `@internal` API the engine needs.
 - The adapter reads `SecurityAdvisory::$severity` only when the property exists (it does not in 2.4)
   and fails with "advisory data unavailable" when no configured repository provides advisories at
   all, rather than reporting a clean lock.
+- The fallback engages only on a PHP error from the in-process adapter (a method that no longer
+  exists, a changed signature): that is what an incompatible `@internal` API looks like at runtime.
+  A lookup failure (network down, no repository provides advisories) is not retried through
+  `composer audit`, which would face the same repositories; the run reports "advisory data
+  unavailable". When the fallback engages, the report's advisory source reads
+  `composer audit --locked` and a warning explains that only current-lock advisories are known, so
+  candidate locks could not be checked for other advisories. Composer older than 2.4 has neither
+  route and is rejected up front.
 
 ## The plugin boundary: `composer remediate` versus `composer-remediate`
 ### Context

@@ -51,6 +51,16 @@ final class SubprocessSolver implements SolverInterface
         return new self([$script]);
     }
 
+    /**
+     * The command prefix that runs Composer, for other subprocesses that must use the same Composer.
+     *
+     * @return list<string>
+     */
+    public function composerCommand(): array
+    {
+        return $this->composerCommand;
+    }
+
     public function supportsMinimalChanges(): bool
     {
         if ($this->minimalChanges === null) {

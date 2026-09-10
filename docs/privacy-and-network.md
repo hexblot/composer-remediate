@@ -15,7 +15,7 @@ package names to the repository, as any `composer update` does.
 
 | Data | Sent to | When |
 |---|---|---|
-| Package names in your lock file | Advisory source (Packagist by default) | Advisory lookup, Phase 0 and 1. Same request `composer audit` makes: a POST of up to 500 names per batch. Versions are not sent; matching happens locally. |
+| Package names in your lock file | Advisory source (Packagist by default) | Advisory lookup, Phase 0 and 1. Same request `composer audit` makes: a POST of up to 500 names per batch. Versions are not sent; matching happens locally. Should Composer's in-process advisory API be unusable, the same lookup runs as a `composer audit --locked` subprocess against the same repositories, with the same request. |
 | Package names being resolved | Your configured Composer repositories | Solver validation, identical to `composer update`. Served from the Composer cache when possible. |
 | Nothing else | | No telemetry, no accounts, no project files. |
 

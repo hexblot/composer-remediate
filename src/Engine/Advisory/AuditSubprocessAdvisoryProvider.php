@@ -16,12 +16,19 @@ final class AuditSubprocessAdvisoryProvider implements AdvisoryProvider
     /** @var array<string, list<Advisory>>|null */
     private ?array $advisories = null;
 
+    /** @var list<string> */
+    private readonly array $composerCommand;
+
+    /**
+     * @param list<string>|string $composer the Composer executable, or the command prefix that runs it (e.g. [php, composer.phar])
+     */
     public function __construct(
         private readonly string $projectDirectory,
-        private readonly string $composerBinary = 'composer',
+        array|string $composer = 'composer',
         private readonly PackagistAdvisoryJsonParser $parser = new PackagistAdvisoryJsonParser(),
         private readonly float $timeout = 120.0,
     ) {
+        $this->composerCommand = is_string($composer) ? [$composer] : $composer;
     }
 
     public function advisoriesFor(array $packageNames): array
@@ -37,7 +44,7 @@ final class AuditSubprocessAdvisoryProvider implements AdvisoryProvider
 
     public function describe(): string
     {
-        return sprintf('`%s audit --locked` (current-lock advisories only)', $this->composerBinary);
+        return sprintf('`%s audit --locked` (current-lock advisories only)', implode(' ', $this->composerCommand));
     }
 
     public function isComplete(): bool
@@ -52,7 +59,7 @@ final class AuditSubprocessAdvisoryProvider implements AdvisoryProvider
             return $this->advisories;
         }
         $process = new Process(
-            [$this->composerBinary, 'audit', '--locked', '--format=json', '--no-interaction'],
+            [...$this->composerCommand, 'audit', '--locked', '--format=json', '--no-interaction'],
             $this->projectDirectory,
             ['COMPOSER_NO_INTERACTION' => '1'],
             null,

@@ -249,6 +249,17 @@ final class RemediateCommandTest extends TestCase
         self::assertSame(Plan::EXIT_ADVISORIES_UNAVAILABLE, $result->exitCode, 'via extra.remediate.database: ' . $result->describe());
     }
 
+    public function testWithoutAnAdvisorySourceTheConfiguredRepositoriesAreAskedAndAnAbsenceIsAnError(): void
+    {
+        // The fixture disables packagist.org and its static repository carries no advisories: the
+        // in-process adapter reports that nothing can answer, and this is not retried through
+        // `composer audit`, which would face the same repositories.
+        $result = $this->runner->run(['command' => 'remediate'], $this->project);
+        self::assertSame(Plan::EXIT_ADVISORIES_UNAVAILABLE, $result->exitCode, $result->describe());
+        self::assertStringContainsString('None of the configured repositories provides security advisories', $result->stderr);
+        self::assertStringNotContainsString('composer audit', $result->stderr);
+    }
+
     public function testPlatformFlagsAreRepeatedInTheRecommendedCommand(): void
     {
         $result = $this->remediate(['--ignore-platform-reqs' => true, '--format' => 'json']);

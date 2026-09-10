@@ -34,6 +34,18 @@ All notable changes to this project are documented here. The format follows
   binary (leading noise before the JSON, one run per process, no JSON, undecodable JSON).
   `NormalizedAdvisory`, `Strategy` and `VersionStep` helpers.
 
+### Changed
+
+- The `composer audit --locked` fallback adapter, described in the design decisions since 0.1.0 but
+  never wired in, is now used when Composer's in-process advisory API fails with a PHP error (a
+  removed method or changed signature in Composer's `@internal` classes). The run switches once,
+  the report's advisory source shows the fallback, and a warning explains that only current-lock
+  advisories are known. Lookup failures are not retried through it: no repository providing
+  advisories, or a network failure, still exits with "advisory data unavailable" rather than a clean
+  result. Composer older than 2.4 is still rejected up front. Covered by unit tests of the switch
+  (PHP error switches and warns once, lookup failures and ordinary exceptions propagate, the primary
+  is not retried) and a command test that the default source with packagist.org disabled exits 4.
+
 ### Fixed
 
 - FriendsOfPHP advisories lost their report date: the upstream files write `time: 2024-05-01 10:00:00`

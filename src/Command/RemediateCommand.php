@@ -8,10 +8,13 @@ use Composer\Command\BaseCommand;
 use Composer\Factory;
 use Composer\Util\Platform;
 use Remediate\Engine\Advisory\AdvisoryLookupFailed;
+use Remediate\Engine\Advisory\AdvisoryProvider;
+use Remediate\Engine\Advisory\AuditSubprocessAdvisoryProvider;
 use Remediate\Engine\Advisory\ComposerRepositoryAdvisoryProvider;
 use Remediate\Engine\Advisory\Db\Database;
 use Remediate\Engine\Advisory\Db\DatabaseLocator;
 use Remediate\Engine\Advisory\Db\SqliteAdvisoryProvider;
+use Remediate\Engine\Advisory\FallbackAdvisoryProvider;
 use Remediate\Engine\Advisory\JsonFileAdvisoryProvider;
 use Remediate\Engine\Candidate\CandidateGenerator;
 use Remediate\Engine\Matching\IgnorePolicy;
@@ -149,7 +152,7 @@ HELP);
                 return Plan::EXIT_ADVISORIES_UNAVAILABLE;
             }
         } else {
-            $advisories = ComposerRepositoryAdvisoryProvider::fromRepositoryManager($composer->getRepositoryManager());
+            $advisories = self::composerAdvisoryProvider($composer, $context);
         }
 
         $platformArguments = self::platformArguments($input);
@@ -185,6 +188,9 @@ HELP);
         }
         if ($locator->warnings() !== []) {
             $plan = $plan->withWarnings($locator->warnings());
+        }
+        if ($advisories instanceof FallbackAdvisoryProvider && $advisories->warnings() !== []) {
+            $plan = $plan->withWarnings($advisories->warnings());
         }
 
         $failOn = $input->getOption('fail-on');
@@ -239,6 +245,22 @@ HELP);
         }
 
         return $plan->exitCode();
+    }
+
+    /**
+     * Advisories from the configured repositories through Composer's in-process advisory API, with
+     * `composer audit --locked` as the fallback when that @internal API is missing or breaks at
+     * runtime (see docs/design-decisions.md). Composer older than 2.4 has neither and is rejected
+     * before this point.
+     */
+    private static function composerAdvisoryProvider(\Composer\Composer $composer, ProjectContext $context): AdvisoryProvider
+    {
+        $audit = new AuditSubprocessAdvisoryProvider($context->directory, SubprocessSolver::forRunningComposer()->composerCommand());
+        if (!interface_exists(\Composer\Repository\AdvisoryProviderInterface::class)) {
+            return $audit;
+        }
+
+        return new FallbackAdvisoryProvider(ComposerRepositoryAdvisoryProvider::fromRepositoryManager($composer->getRepositoryManager()), $audit);
     }
 
     /**

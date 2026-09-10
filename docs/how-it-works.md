@@ -40,7 +40,9 @@ Root-controlled packages are those named in the project's `require` or `require-
 ## 2. Advisory matching
 
 Advisories arrive through an `AdvisoryProvider`. Phase 0 uses the same Packagist advisory API that
-`composer audit` uses, through Composer's own repository classes. Each advisory carries an
+`composer audit` uses, through Composer's own repository classes; if that `@internal` API breaks at
+runtime, the lookup falls back to a `composer audit --locked` subprocess and the report says so (see
+[design decisions](design-decisions.md#touch-composers-internal-classes-only-inside-adapters)). Each advisory carries an
 *affected versions* constraint; the locked version is tested against it with Composer's semver
 implementation, so dev branches and aliases behave exactly as they do in Composer.
 

@@ -79,6 +79,17 @@ final class AuditSubprocessAdvisoryProviderTest extends TestCase
         self::assertSame(sprintf('`%s audit --locked` (current-lock advisories only)', $binary), $provider->describe());
     }
 
+    public function testACommandPrefixRunsComposerThroughAnInterpreter(): void
+    {
+        $script = $this->dir . '/composer.phar';
+        file_put_contents($script, "<?php\nfile_put_contents(__DIR__ . '/calls', getcwd() . ' ' . implode(' ', array_slice(\$argv, 1)) . PHP_EOL, FILE_APPEND);\necho json_encode(['advisories' => []]);\n");
+        $provider = new AuditSubprocessAdvisoryProvider($this->dir, [PHP_BINARY, $script]);
+
+        self::assertSame([], $provider->advisoriesFor(['acme/lib']));
+        self::assertSame([realpath($this->dir) . ' audit --locked --format=json --no-interaction'], $this->calls());
+        self::assertSame(sprintf('`%s %s audit --locked` (current-lock advisories only)', PHP_BINARY, $script), $provider->describe());
+    }
+
     public function testNoJsonInTheOutputIsALookupFailureThatQuotesStderr(): void
     {
         $binary = $this->composer("echo 'boom' >&2\nexit 1");
