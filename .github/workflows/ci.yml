@@ -1,13 +1,28 @@
 name: ci
 
 on:
+  # Documentation-only changes are built and deployed by the docs workflow; the matrix does not run for them.
   push:
     branches: [main]
+    paths-ignore:
+      - 'docs/**'
+      - 'mkdocs.yml'
+      - '*.md'
+      - '.gitlab-ci.yml'
+      - '.github/workflows/docs.yml'
   pull_request:
+    paths-ignore:
+      - 'docs/**'
+      - 'mkdocs.yml'
+      - '*.md'
+      - '.gitlab-ci.yml'
+      - '.github/workflows/docs.yml'
 
 jobs:
   test:
     runs-on: ubuntu-latest
+    permissions:
+      contents: write   # the PHP 8.4 job publishes the coverage badge to the `badges` branch
     strategy:
       fail-fast: false
       matrix:
@@ -35,6 +50,25 @@ jobs:
           name: coverage
           path: build/coverage
           retention-days: 14
+      - name: Publish the coverage badge
+        if: matrix.php == '8.4' && github.event_name == 'push' && github.ref == 'refs/heads/main'
+        env:
+          GITHUB_TOKEN: ${{ github.token }}
+        run: |
+          php -r '
+            $m = simplexml_load_file("build/coverage/clover.xml")->project->metrics;
+            $pct = (int) $m["statements"] > 0 ? 100 * (int) $m["coveredstatements"] / (int) $m["statements"] : 0;
+            $color = $pct >= 90 ? "brightgreen" : ($pct >= 75 ? "green" : ($pct >= 60 ? "yellowgreen" : ($pct >= 45 ? "yellow" : "orange")));
+            file_put_contents("coverage.json", json_encode(["schemaVersion" => 1, "label" => "coverage", "message" => sprintf("%.1f%%", $pct), "color" => $color]));
+            echo file_get_contents("coverage.json"), PHP_EOL;
+          '
+          mkdir -p /tmp/badges && cp coverage.json /tmp/badges/ && cd /tmp/badges
+          git init -q -b badges
+          git config user.name "github-actions[bot]"
+          git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
+          git add coverage.json
+          git commit -q -m "Coverage badge for ${GITHUB_SHA}"
+          git push -q --force "https://x-access-token:${GITHUB_TOKEN}@github.com/${GITHUB_REPOSITORY}.git" badges
       - name: CLI reference is up to date
         if: matrix.php == '8.4'
         run: php bin/cli-reference.php | diff -u docs/cli-reference.md - || (echo "::error::docs/cli-reference.md is stale; run php bin/cli-reference.php > docs/cli-reference.md" && exit 1)
