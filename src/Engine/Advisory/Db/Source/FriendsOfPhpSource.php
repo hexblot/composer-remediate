@@ -131,12 +131,9 @@ final class FriendsOfPhpSource implements AdvisorySourceInterface
         $reportedAt = null;
         foreach ($branches as $branch) {
             if (is_array($branch) && isset($branch['time'])) {
-                try {
-                    $time = new \DateTimeImmutable((string) (is_scalar($branch['time']) ? $branch['time'] : ''), new \DateTimeZone('UTC'));
-                    if ($reportedAt === null || $time < $reportedAt) {
-                        $reportedAt = $time;
-                    }
-                } catch (\Exception) {
+                $time = self::time($branch['time']);
+                if ($time !== null && ($reportedAt === null || $time < $reportedAt)) {
+                    $reportedAt = $time;
                 }
             }
         }
@@ -152,5 +149,24 @@ final class FriendsOfPhpSource implements AdvisorySourceInterface
             [new AffectedRange($package, $expression, 'FriendsOfPHP')],
             [new SourceRecord('FriendsOfPHP/security-advisories', $path, 'https://github.com/FriendsOfPHP/security-advisories/blob/master/' . $path)],
         );
+    }
+
+    /**
+     * A branch's `time: 2024-05-01 10:00:00` is unquoted in the upstream files, so the YAML parser
+     * hands it over as a Unix timestamp (integer), not as text; quoted or unusual values arrive as strings.
+     */
+    private static function time(mixed $value): ?\DateTimeImmutable
+    {
+        if (is_int($value) || is_float($value)) {
+            return (new \DateTimeImmutable('@' . (int) $value))->setTimezone(new \DateTimeZone('UTC'));
+        }
+        if (!is_string($value) || trim($value) === '') {
+            return null;
+        }
+        try {
+            return new \DateTimeImmutable($value, new \DateTimeZone('UTC'));
+        } catch (\Exception) {
+            return null;
+        }
     }
 }

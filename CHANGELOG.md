@@ -18,9 +18,27 @@ All notable changes to this project are documented here. The format follows
   `--include`, the default build path, an unknown source; `remediate:db-status` on the result
   (metadata, sources, coverage gaps), on a missing file, via the environment variable, and on a
   database built before coverage gaps were recorded. Plugin capability and command registration.
+- Tests: the feed readers with a scripted HTTP layer and archives built in the test. `ZipArchiveReader`
+  (filtering, directory entries, a body that is not an archive, download failures, cleanup of the
+  download); `OsvDumpSource` (alias ranking, ADVISORY reference as link, "MODERATE" mapped to
+  medium, published/modified/withdrawn dates, several Packagist packages per document, other
+  ecosystems ignored, invalid JSON and unreadable versions as coverage gaps, gaps reset per fetch,
+  custom URL); `PackagistApiSource` (mapping, gaps, a body that is not an object, a document without
+  `advisories`, transport failures); `FriendsOfPhpSource` from the GitHub archive (aliases, earliest
+  branch time, non-Composer advisories skipped without a gap, scalar documents, empty ranges and
+  invalid YAML as gaps naming the package from the path). The default advisory adapter
+  `ComposerRepositoryAdvisoryProvider` with a fake Composer repository: conversion of full and partial
+  advisories, per-package caching and incremental queries, merging across repositories with
+  duplicate ids dropped, the failure when no repository provides advisories, transport failures,
+  construction from a `RepositoryManager`. The `composer audit` fallback provider with a stand-in
+  binary (leading noise before the JSON, one run per process, no JSON, undecodable JSON).
+  `NormalizedAdvisory`, `Strategy` and `VersionStep` helpers.
 
 ### Fixed
 
+- FriendsOfPHP advisories lost their report date: the upstream files write `time: 2024-05-01 10:00:00`
+  unquoted, which the YAML parser hands over as an integer timestamp, and the source only accepted
+  text. Integer timestamps are now read, so `reportedAt` is populated for FriendsOfPHP records.
 - Test bootstrap: Composer reads `$_SERVER` before `getenv()`, so the cache isolation was lost when
   the environment already exported `COMPOSER_CACHE_DIR` (DDEV does); tests now set both.
 
