@@ -1,0 +1,12 @@
+# Keeps the commit-pinned GitHub Actions in the workflows current (Dependabot updates the SHA and
+# the version comment together). Composer dependencies are deliberately not included: the test
+# suite's Composer matrix pins composer/composer on purpose, and dev-dependency bumps are done by hand.
+version: 2
+updates:
+  - package-ecosystem: github-actions
+    directory: /
+    schedule:
+      interval: weekly
+    groups:
+      actions:
+        patterns: ['*']
