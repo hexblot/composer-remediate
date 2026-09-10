@@ -17,11 +17,24 @@ jobs:
       - uses: shivammathur/setup-php@v2
         with:
           php-version: ${{ matrix.php }}
-          coverage: none
+          # PCOV adds little to the run time, unlike Xdebug; one job measures, the others run plain.
+          coverage: ${{ matrix.php == '8.4' && 'pcov' || 'none' }}
           tools: composer:v2
       - run: composer install --no-interaction --no-progress
       - run: composer phpstan
       - run: composer test
+        if: matrix.php != '8.4'
+      - name: Tests with coverage
+        if: matrix.php == '8.4'
+        run: |
+          vendor/bin/phpunit --coverage-text --coverage-clover build/coverage/clover.xml --coverage-html build/coverage/html | tee build/coverage/phpunit.txt
+          { echo '### Code coverage (PHP 8.4, PCOV)'; echo; echo '```'; grep -A3 'Code Coverage Report Summary' build/coverage/phpunit.txt; echo '```'; } >> "$GITHUB_STEP_SUMMARY"
+      - uses: actions/upload-artifact@v4
+        if: matrix.php == '8.4'
+        with:
+          name: coverage
+          path: build/coverage
+          retention-days: 14
       - name: CLI reference is up to date
         if: matrix.php == '8.4'
         run: php bin/cli-reference.php | diff -u docs/cli-reference.md - || (echo "::error::docs/cli-reference.md is stale; run php bin/cli-reference.php > docs/cli-reference.md" && exit 1)
