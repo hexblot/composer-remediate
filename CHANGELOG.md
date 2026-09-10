@@ -3,6 +3,29 @@
 All notable changes to this project are documented here. The format follows
 [Keep a Changelog](https://keepachangelog.com/en/1.1.0/); versions follow [Semantic Versioning](https://semver.org/).
 
+## [Unreleased]
+
+### Added
+
+- Tests: the command layer, driven through Composer's console application the way `composer
+  remediate` runs, against the synthetic fixture. `remediate`: option validation (format, report
+  spec, solver, release age), the lock-file check, the exit-code contract including a search budget
+  too small to reach the fix, every report file format next to the JSON on standard output,
+  `--format=none`, an unwritable report path, `--fail-on`, `--ignore`, the whole `--baseline` /
+  `--update-baseline` workflow, `--offline`, advisory-source selection (missing snapshot, missing
+  database via option, `REMEDIATE_DATABASE` and `extra.remediate.database`) and platform flags
+  repeated in the recommended command. `remediate:db-build` from a local FriendsOfPHP checkout plus
+  `--include`, the default build path, an unknown source; `remediate:db-status` on the result
+  (metadata, sources, coverage gaps), on a missing file, via the environment variable, and on a
+  database built before coverage gaps were recorded. Plugin capability and command registration.
+
+### Fixed
+
+- Test bootstrap: Composer reads `$_SERVER` before `getenv()`, so the cache isolation was lost when
+  the environment already exported `COMPOSER_CACHE_DIR` (DDEV does); tests now set both.
+
+[Unreleased]: https://github.com/hexblot/composer-remediate/compare/v0.4.0...HEAD
+
 ## [0.4.0] - 2026-09-10
 
 This release responds to an external architecture review of 0.3.0 (twenty findings, nine rated as

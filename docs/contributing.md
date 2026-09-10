@@ -3,6 +3,10 @@
 ## Ground rules
 
 - Every change that affects behaviour comes with a unit test or a fixture.
+- Command behaviour (options, exit codes, report files) is tested through
+  `tests/Support/CommandRunner`, which runs the plugin's commands via Composer's console application
+  against a scratch copy of a fixture; add a case to `tests/Integration/RemediateCommandTest.php` or
+  `DbCommandsTest.php` when you add or change an option.
 - PHPStan level 8 must pass: `ddev composer phpstan`.
 - Coverage: `ddev composer test:coverage` prints a summary and writes HTML and Clover reports to
   `build/coverage/` (gitignored). The DDEV web image installs PCOV (`.ddev/web-build/Dockerfile`,
