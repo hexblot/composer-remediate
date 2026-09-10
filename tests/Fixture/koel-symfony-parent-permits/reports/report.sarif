@@ -10,31 +10,6 @@
                     "informationUri": "https://hexblot.github.io/composer-remediate/",
                     "rules": [
                         {
-                            "id": "PKSA-b35n-565h-rs4q",
-                            "name": "CVE202450345",
-                            "shortDescription": {
-                                "text": "CVE-2024-50345: Open redirect via browser-sanitized URLs"
-                            },
-                            "fullDescription": {
-                                "text": "CVE-2024-50345: Open redirect via browser-sanitized URLs. Affected versions of symfony/http-foundation: >=2.0.0,<3.0.0|>=3.0.0,<4.0.0|>=4.0.0,<5.0.0|>=5.0.0,<5.1.0|>=5.1.0,<5.2.0|>=5.2.0,<5.3.0|>=5.3.0,<5.4.0|>=5.4.0,<5.4.46|>=6.0.0,<6.1.0|>=6.1.0,<6.2.0|>=6.2.0,<6.3.0|>=6.3.0,<6.4.0|>=6.4.0,<6.4.14|>=7.0.0,<7.1.0|>=7.1.0,<7.1.7."
-                            },
-                            "helpUri": "https://symfony.com/cve-2024-50345",
-                            "help": {
-                                "text": "Advisory PKSA-b35n-565h-rs4q (CVE-2024-50345) affects symfony/http-foundation >=2.0.0,<3.0.0|>=3.0.0,<4.0.0|>=4.0.0,<5.0.0|>=5.0.0,<5.1.0|>=5.1.0,<5.2.0|>=5.2.0,<5.3.0|>=5.3.0,<5.4.0|>=5.4.0,<5.4.46|>=6.0.0,<6.1.0|>=6.1.0,<6.2.0|>=6.2.0,<6.3.0|>=6.3.0,<6.4.0|>=6.4.0,<6.4.14|>=7.0.0,<7.1.0|>=7.1.0,<7.1.7. Run composer remediate for the smallest verified upgrade."
-                            },
-                            "defaultConfiguration": {
-                                "level": "note"
-                            },
-                            "properties": {
-                                "security-severity": "2.5",
-                                "tags": [
-                                    "security",
-                                    "vulnerability",
-                                    "low"
-                                ]
-                            }
-                        },
-                        {
                             "id": "PKSA-wws7-mr54-jsny",
                             "name": "CVE202451736",
                             "shortDescription": {
@@ -58,6 +33,31 @@
                                     "high"
                                 ]
                             }
+                        },
+                        {
+                            "id": "PKSA-b35n-565h-rs4q",
+                            "name": "CVE202450345",
+                            "shortDescription": {
+                                "text": "CVE-2024-50345: Open redirect via browser-sanitized URLs"
+                            },
+                            "fullDescription": {
+                                "text": "CVE-2024-50345: Open redirect via browser-sanitized URLs. Affected versions of symfony/http-foundation: >=2.0.0,<3.0.0|>=3.0.0,<4.0.0|>=4.0.0,<5.0.0|>=5.0.0,<5.1.0|>=5.1.0,<5.2.0|>=5.2.0,<5.3.0|>=5.3.0,<5.4.0|>=5.4.0,<5.4.46|>=6.0.0,<6.1.0|>=6.1.0,<6.2.0|>=6.2.0,<6.3.0|>=6.3.0,<6.4.0|>=6.4.0,<6.4.14|>=7.0.0,<7.1.0|>=7.1.0,<7.1.7."
+                            },
+                            "helpUri": "https://symfony.com/cve-2024-50345",
+                            "help": {
+                                "text": "Advisory PKSA-b35n-565h-rs4q (CVE-2024-50345) affects symfony/http-foundation >=2.0.0,<3.0.0|>=3.0.0,<4.0.0|>=4.0.0,<5.0.0|>=5.0.0,<5.1.0|>=5.1.0,<5.2.0|>=5.2.0,<5.3.0|>=5.3.0,<5.4.0|>=5.4.0,<5.4.46|>=6.0.0,<6.1.0|>=6.1.0,<6.2.0|>=6.2.0,<6.3.0|>=6.3.0,<6.4.0|>=6.4.0,<6.4.14|>=7.0.0,<7.1.0|>=7.1.0,<7.1.7. Run composer remediate for the smallest verified upgrade."
+                            },
+                            "defaultConfiguration": {
+                                "level": "note"
+                            },
+                            "properties": {
+                                "security-severity": "2.5",
+                                "tags": [
+                                    "security",
+                                    "vulnerability",
+                                    "low"
+                                ]
+                            }
                         }
                     ]
                 }
@@ -75,42 +75,8 @@
             ],
             "results": [
                 {
-                    "ruleId": "PKSA-b35n-565h-rs4q",
-                    "ruleIndex": 0,
-                    "level": "note",
-                    "message": {
-                        "text": "symfony/http-foundation v6.4.4 is affected by CVE-2024-50345: CVE-2024-50345: Open redirect via browser-sanitized URLs. Verified fix: composer update symfony/http-foundation"
-                    },
-                    "locations": [
-                        {
-                            "physicalLocation": {
-                                "artifactLocation": {
-                                    "uri": "composer.lock",
-                                    "uriBaseId": "%SRCROOT%"
-                                },
-                                "region": {
-                                    "startLine": 7522
-                                }
-                            }
-                        }
-                    ],
-                    "partialFingerprints": {
-                        "advisoryPackage/v1": "PKSA-b35n-565h-rs4q@symfony/http-foundation"
-                    },
-                    "properties": {
-                        "package": "symfony/http-foundation",
-                        "version": "v6.4.4",
-                        "direct": false,
-                        "dev": false,
-                        "cve": "CVE-2024-50345",
-                        "severity": "low",
-                        "remediation_status": "verified",
-                        "command": "composer update symfony/http-foundation"
-                    }
-                },
-                {
                     "ruleId": "PKSA-wws7-mr54-jsny",
-                    "ruleIndex": 1,
+                    "ruleIndex": 0,
                     "level": "error",
                     "message": {
                         "text": "symfony/process v6.4.4 is affected by CVE-2024-51736: CVE-2024-51736: Command execution hijack on Windows with Process class. Verified fix: composer update symfony/process"
@@ -140,6 +106,40 @@
                         "severity": "high",
                         "remediation_status": "verified",
                         "command": "composer update symfony/process"
+                    }
+                },
+                {
+                    "ruleId": "PKSA-b35n-565h-rs4q",
+                    "ruleIndex": 1,
+                    "level": "note",
+                    "message": {
+                        "text": "symfony/http-foundation v6.4.4 is affected by CVE-2024-50345: CVE-2024-50345: Open redirect via browser-sanitized URLs. Verified fix: composer update symfony/http-foundation"
+                    },
+                    "locations": [
+                        {
+                            "physicalLocation": {
+                                "artifactLocation": {
+                                    "uri": "composer.lock",
+                                    "uriBaseId": "%SRCROOT%"
+                                },
+                                "region": {
+                                    "startLine": 7522
+                                }
+                            }
+                        }
+                    ],
+                    "partialFingerprints": {
+                        "advisoryPackage/v1": "PKSA-b35n-565h-rs4q@symfony/http-foundation"
+                    },
+                    "properties": {
+                        "package": "symfony/http-foundation",
+                        "version": "v6.4.4",
+                        "direct": false,
+                        "dev": false,
+                        "cve": "CVE-2024-50345",
+                        "severity": "low",
+                        "remediation_status": "verified",
+                        "command": "composer update symfony/http-foundation"
                     }
                 }
             ]

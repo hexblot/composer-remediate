@@ -33,13 +33,14 @@ final class PlannerTest extends TestCase
     }
 
     /**
-     * @param array<string, string>                                  $require
-     * @param list<array{string, string, 2?: bool, 3?: string|null}> $packages
-     * @param array<string, string>                                  $requireDev
+     * @param array<string, string>                                                        $require
+     * @param list<array{string, string, 2?: bool, 3?: string|null, 4?: bool|string|null}> $packages
+     * @param array<string, string>                                                        $requireDev
+     * @param array<string, array<string, string>>                                         $requires
      */
-    private function project(array $require, array $packages, array $requireDev = []): ScriptedProject
+    private function project(array $require, array $packages, array $requireDev = [], array $requires = []): ScriptedProject
     {
-        return $this->projects[] = new ScriptedProject($require, $packages, $requireDev);
+        return $this->projects[] = new ScriptedProject($require, $packages, $requireDev, $requires);
     }
 
     public function testUnknownSeverityAlwaysCountsTowardsTheGate(): void
@@ -209,6 +210,71 @@ final class PlannerTest extends TestCase
         self::assertSame('none found within the search budget', $plan->findings[0]->outcome());
         self::assertSame('1', $plan->metadata['solver_runs']);
         self::assertNotEmpty($plan->findings[0]->skipped, 'candidates not tried because the budget ran out are listed');
+    }
+
+    public function testFindingsAreOrderedByUrgencyKnownExploitedFirstThenEpssThenSeverity(): void
+    {
+        $project = $this->project(['acme/a' => '^1.0', 'acme/b' => '^1.0', 'acme/c' => '^1.0', 'acme/d' => '^1.0'], [['acme/a', '1.0.0'], ['acme/b', '1.0.0'], ['acme/c', '1.0.0'], ['acme/d', '1.0.0']]);
+        $advisories = ScriptedProject::advisories([
+            ScriptedProject::advisory('A-1', 'acme/a', '<1.1', 'critical'),                                  // severity only
+            ScriptedProject::advisory('B-1', 'acme/b', '<1.1', 'low', 'CVE-2026-2', 0.2),                    // scored, low severity
+            ScriptedProject::advisory('C-1', 'acme/c', '<1.1', 'medium', 'CVE-2026-3', 0.05, '2026-01-01'),  // known exploited
+            ScriptedProject::advisory('D-1', 'acme/d', '<1.1', 'high', 'CVE-2026-4', 0.9),                   // highest probability, not in KEV
+        ]);
+        $plan = (new Planner($advisories, new FakeSolver()))->plan($project->context(), $project->workspace());
+        self::assertSame(['acme/c', 'acme/d', 'acme/b', 'acme/a'], array_map(static fn ($p): string => $p->finding->packageName, $plan->findings), 'KEV first, then by EPSS, unscored last');
+        self::assertTrue($plan->findings[0]->isKnownExploited());
+        self::assertSame(1, json_decode((new JsonRenderer())->render($plan), true)['summary']['packages_known_exploited'] ?? null);
+    }
+
+    public function testAPackagesUrgencyIsThatOfItsMostUrgentAdvisory(): void
+    {
+        $project = $this->project(['acme/a' => '^1.0', 'acme/b' => '^1.0'], [['acme/a', '1.0.0'], ['acme/b', '1.0.0']]);
+        $advisories = ScriptedProject::advisories([
+            ScriptedProject::advisory('A-1', 'acme/a', '<1.1', 'critical', 'CVE-2026-1', 0.5),
+            ScriptedProject::advisory('B-1', 'acme/b', '<1.1', 'low'),
+            ScriptedProject::advisory('B-2', 'acme/b', '<1.2', 'low', 'CVE-2026-9', 0.01, '2026-03-01'),
+        ]);
+        $plan = (new Planner($advisories, new FakeSolver()))->plan($project->context(), $project->workspace());
+        self::assertSame(['acme/b', 'acme/a'], array_map(static fn ($p): string => $p->finding->packageName, $plan->findings), 'one KEV-listed advisory lifts the whole package');
+        self::assertSame(['B-1', 'B-2'], array_map(static fn ($f): string => $f->advisory->id, $plan->findings[0]->allFindings()), 'advisories within the package keep their id order');
+    }
+
+    public function testDevelopmentFindingsStayAfterProductionOnesWhateverTheirUrgency(): void
+    {
+        $project = $this->project(['acme/a' => '^1.0'], [['acme/a', '1.0.0'], ['acme/dev', '1.0.0', true]], ['acme/dev' => '^1.0']);
+        $advisories = ScriptedProject::advisories([
+            ScriptedProject::advisory('A-1', 'acme/a', '<1.1', 'low'),
+            ScriptedProject::advisory('DEV-1', 'acme/dev', '<1.1', 'critical', 'CVE-2026-5', 0.99, '2026-01-01'),
+        ]);
+        $plan = (new Planner($advisories, new FakeSolver()))->plan($project->context(), $project->workspace());
+        self::assertSame(['acme/a', 'acme/dev'], array_map(static fn ($p): string => $p->finding->packageName, $plan->findings));
+    }
+
+    public function testAbandonedPackagesOnThePathAndTheVulnerablePackageItselfAreFlagged(): void
+    {
+        // root -> acme/parent (abandoned, replacement acme/parent-next) -> acme/lib (abandoned, no replacement); acme/free is fine.
+        $project = $this->project(
+            ['acme/parent' => '^1.0', 'acme/free' => '^1.0'],
+            [['acme/parent', '1.0.0', false, null, 'acme/parent-next'], ['acme/lib', '1.0.0', false, null, true], ['acme/free', '1.0.0']],
+            [],
+            ['acme/parent' => ['acme/lib' => '^1.0']],
+        );
+        $advisories = ScriptedProject::advisories([
+            ScriptedProject::advisory('L-1', 'acme/lib', '<1.1'),
+            ScriptedProject::advisory('F-1', 'acme/free', '<1.1'),
+        ]);
+        $plan = (new Planner($advisories, new FakeSolver()))->plan($project->context(), $project->workspace());
+        $byPackage = [];
+        foreach ($plan->findings as $fp) {
+            $byPackage[$fp->finding->packageName] = $fp->finding;
+        }
+        self::assertSame(['acme/lib' => null, 'acme/parent' => 'acme/parent-next'], $byPackage['acme/lib']->abandoned);
+        self::assertTrue($byPackage['acme/lib']->isAbandoned());
+        self::assertSame([], $byPackage['acme/free']->abandoned);
+        $json = json_decode((new JsonRenderer())->render($plan), true);
+        self::assertSame(1, $json['summary']['packages_with_abandoned_dependency'] ?? null);
+        self::assertStringContainsString('Abandoned:', (new \Remediate\Output\TextRenderer())->render($plan));
     }
 
     public function testIncompleteAdvisorySourceIsFlagged(): void

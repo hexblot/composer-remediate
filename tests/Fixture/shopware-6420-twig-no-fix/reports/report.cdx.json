@@ -29,7 +29,7 @@
             },
             {
                 "name": "composer-remediate:combined_command",
-                "value": "composer update aws/aws-sdk-php composer/composer symfony/twig-bridge shopware/core -W -m --with 'symfony/validator:>=5.4.43,<6.0.0 || >=6.4.11,<7.0.0 || >=7.1.4'"
+                "value": "composer update aws/aws-sdk-php composer/composer shopware/core symfony/twig-bridge -W -m --with 'symfony/validator:>=5.4.43,<6.0.0 || >=6.4.11,<7.0.0 || >=7.1.4'"
             },
             {
                 "name": "composer-remediate:exit_code",
@@ -1850,25 +1850,25 @@
     ],
     "vulnerabilities": [
         {
-            "bom-ref": "vuln:PKSA-n3s6-289w-qtqb@pkg:composer/aws/aws-sdk-php@3.269.6",
-            "id": "PKSA-n3s6-289w-qtqb",
+            "bom-ref": "vuln:PKSA-3dsp-r6t7-8xmz@pkg:composer/phenx/php-svg-lib@0.3.4",
+            "id": "PKSA-3dsp-r6t7-8xmz",
             "source": {
                 "name": "Packagist",
-                "url": "https://packagist.org/security-advisories/PKSA-n3s6-289w-qtqb"
+                "url": "https://packagist.org/security-advisories/PKSA-3dsp-r6t7-8xmz"
             },
             "references": [
                 {
-                    "id": "CVE-2023-51651",
+                    "id": "CVE-2024-25117",
                     "source": {
                         "name": "NVD",
-                        "url": "https://nvd.nist.gov/vuln/detail/CVE-2023-51651"
+                        "url": "https://nvd.nist.gov/vuln/detail/CVE-2024-25117"
                     }
                 },
                 {
-                    "id": "CVE-2023-51651",
+                    "id": "CVE-2024-25117",
                     "source": {
                         "name": "advisory",
-                        "url": "https://nvd.nist.gov/vuln/detail/CVE-2023-51651"
+                        "url": "https://github.com/advisories/GHSA-f3qr-qr4x-j273"
                     }
                 }
             ],
@@ -1878,26 +1878,22 @@
                     "method": "other",
                     "source": {
                         "name": "Packagist",
-                        "url": "https://packagist.org/security-advisories/PKSA-n3s6-289w-qtqb"
+                        "url": "https://packagist.org/security-advisories/PKSA-3dsp-r6t7-8xmz"
                     }
                 }
             ],
-            "description": "Potential URI resolution path traversal in the AWS SDK for PHP",
-            "detail": "Affected versions: >=3.0.0,<3.288.1",
-            "recommendation": "Run: composer update aws/aws-sdk-php -w -m",
+            "description": "php-svg-lib lacks path validation on font through SVG inline styles ",
+            "detail": "Affected versions: <0.5.2",
+            "recommendation": "No verified remediation found.",
             "affects": [
                 {
-                    "ref": "pkg:composer/aws/aws-sdk-php@3.269.6"
+                    "ref": "pkg:composer/phenx/php-svg-lib@0.3.4"
                 }
             ],
             "properties": [
                 {
                     "name": "composer-remediate:remediation_status",
-                    "value": "verified"
-                },
-                {
-                    "name": "composer-remediate:command",
-                    "value": "composer update aws/aws-sdk-php -w -m"
+                    "value": "none"
                 },
                 {
                     "name": "composer-remediate:direct",
@@ -1906,16 +1902,860 @@
                 {
                     "name": "composer-remediate:dev",
                     "value": "false"
+                },
+                {
+                    "name": "composer-remediate:abandoned",
+                    "value": "shopware/recovery"
                 }
             ],
-            "published": "2023-11-22T00:00:00+00:00",
-            "analysis": {
-                "state": "exploitable",
-                "response": [
-                    "update"
-                ],
-                "detail": "2 package change(s) verified by Composer's solver."
-            }
+            "published": "2024-02-21T18:04:16+00:00"
+        },
+        {
+            "bom-ref": "vuln:PKSA-cwpj-dtf9-6fg1@pkg:composer/phenx/php-svg-lib@0.3.4",
+            "id": "PKSA-cwpj-dtf9-6fg1",
+            "source": {
+                "name": "Packagist",
+                "url": "https://packagist.org/security-advisories/PKSA-cwpj-dtf9-6fg1"
+            },
+            "references": [
+                {
+                    "id": "CVE-2023-50251",
+                    "source": {
+                        "name": "NVD",
+                        "url": "https://nvd.nist.gov/vuln/detail/CVE-2023-50251"
+                    }
+                },
+                {
+                    "id": "CVE-2023-50251",
+                    "source": {
+                        "name": "advisory",
+                        "url": "https://github.com/advisories/GHSA-ff5x-7qg5-vwf2"
+                    }
+                }
+            ],
+            "ratings": [
+                {
+                    "severity": "medium",
+                    "method": "other",
+                    "source": {
+                        "name": "Packagist",
+                        "url": "https://packagist.org/security-advisories/PKSA-cwpj-dtf9-6fg1"
+                    }
+                }
+            ],
+            "description": "Denial of service caused by infinite recursion when parsing SVG document",
+            "detail": "Affected versions: <0.5.1",
+            "recommendation": "No verified remediation found.",
+            "affects": [
+                {
+                    "ref": "pkg:composer/phenx/php-svg-lib@0.3.4"
+                }
+            ],
+            "properties": [
+                {
+                    "name": "composer-remediate:remediation_status",
+                    "value": "none"
+                },
+                {
+                    "name": "composer-remediate:direct",
+                    "value": "false"
+                },
+                {
+                    "name": "composer-remediate:dev",
+                    "value": "false"
+                },
+                {
+                    "name": "composer-remediate:abandoned",
+                    "value": "shopware/recovery"
+                }
+            ],
+            "published": "2023-12-13T13:32:21+00:00"
+        },
+        {
+            "bom-ref": "vuln:PKSA-qsyb-3psh-f1t3@pkg:composer/phenx/php-svg-lib@0.3.4",
+            "id": "PKSA-qsyb-3psh-f1t3",
+            "source": {
+                "name": "Packagist",
+                "url": "https://packagist.org/security-advisories/PKSA-qsyb-3psh-f1t3"
+            },
+            "references": [
+                {
+                    "id": "PKSA-qsyb-3psh-f1t3",
+                    "source": {
+                        "name": "advisory",
+                        "url": "https://github.com/advisories/GHSA-97m3-52wr-xvv2"
+                    }
+                }
+            ],
+            "ratings": [
+                {
+                    "severity": "critical",
+                    "method": "other",
+                    "source": {
+                        "name": "Packagist",
+                        "url": "https://packagist.org/security-advisories/PKSA-qsyb-3psh-f1t3"
+                    }
+                }
+            ],
+            "description": "Dompdf's usage of vulnerable version of phenx/php-svg-lib leads to restriction bypass and potential RCE",
+            "detail": "Affected versions: <0.5.2",
+            "recommendation": "No verified remediation found.",
+            "affects": [
+                {
+                    "ref": "pkg:composer/phenx/php-svg-lib@0.3.4"
+                }
+            ],
+            "properties": [
+                {
+                    "name": "composer-remediate:remediation_status",
+                    "value": "none"
+                },
+                {
+                    "name": "composer-remediate:direct",
+                    "value": "false"
+                },
+                {
+                    "name": "composer-remediate:dev",
+                    "value": "false"
+                },
+                {
+                    "name": "composer-remediate:abandoned",
+                    "value": "shopware/recovery"
+                }
+            ],
+            "published": "2024-02-22T18:15:41+00:00"
+        },
+        {
+            "bom-ref": "vuln:PKSA-4spx-rq41-wk8h@pkg:composer/shopware/core@6.4.20.2",
+            "id": "PKSA-4spx-rq41-wk8h",
+            "source": {
+                "name": "Packagist",
+                "url": "https://packagist.org/security-advisories/PKSA-4spx-rq41-wk8h"
+            },
+            "references": [
+                {
+                    "id": "CVE-2024-42354",
+                    "source": {
+                        "name": "NVD",
+                        "url": "https://nvd.nist.gov/vuln/detail/CVE-2024-42354"
+                    }
+                },
+                {
+                    "id": "CVE-2024-42354",
+                    "source": {
+                        "name": "advisory",
+                        "url": "https://github.com/advisories/GHSA-hhcq-ph6w-494g"
+                    }
+                }
+            ],
+            "ratings": [
+                {
+                    "severity": "medium",
+                    "method": "other",
+                    "source": {
+                        "name": "Packagist",
+                        "url": "https://packagist.org/security-advisories/PKSA-4spx-rq41-wk8h"
+                    }
+                }
+            ],
+            "description": "Shopware vulnerable to Improper Access Control with ManyToMany associations in store-api",
+            "detail": "Affected versions: >=6.6.0.0,<=6.6.5.0|<=6.5.8.12",
+            "recommendation": "No verified remediation found: No verified fix within the search budget (13 candidates tried, 13 solver runs); a fix outside the bounded search may still exist.",
+            "affects": [
+                {
+                    "ref": "pkg:composer/shopware/core@6.4.20.2"
+                }
+            ],
+            "properties": [
+                {
+                    "name": "composer-remediate:remediation_status",
+                    "value": "none"
+                },
+                {
+                    "name": "composer-remediate:direct",
+                    "value": "true"
+                },
+                {
+                    "name": "composer-remediate:dev",
+                    "value": "false"
+                },
+                {
+                    "name": "composer-remediate:abandoned",
+                    "value": "shopware/recovery"
+                }
+            ],
+            "published": "2024-08-08T14:42:58+00:00"
+        },
+        {
+            "bom-ref": "vuln:PKSA-6stq-czfs-1nvv@pkg:composer/shopware/core@6.4.20.2",
+            "id": "PKSA-6stq-czfs-1nvv",
+            "source": {
+                "name": "Packagist",
+                "url": "https://packagist.org/security-advisories/PKSA-6stq-czfs-1nvv"
+            },
+            "references": [
+                {
+                    "id": "CVE-2024-42355",
+                    "source": {
+                        "name": "NVD",
+                        "url": "https://nvd.nist.gov/vuln/detail/CVE-2024-42355"
+                    }
+                },
+                {
+                    "id": "CVE-2024-42355",
+                    "source": {
+                        "name": "advisory",
+                        "url": "https://github.com/advisories/GHSA-27wp-jvhw-v4xp"
+                    }
+                }
+            ],
+            "ratings": [
+                {
+                    "severity": "high",
+                    "method": "other",
+                    "source": {
+                        "name": "Packagist",
+                        "url": "https://packagist.org/security-advisories/PKSA-6stq-czfs-1nvv"
+                    }
+                }
+            ],
+            "description": "Shopware vulnerable to Server Side Template Injection in Twig using deprecation silence tag",
+            "detail": "Affected versions: >=6.6.0.0,<=6.6.5.0|<=6.5.8.12",
+            "recommendation": "No verified remediation found: No verified fix within the search budget (13 candidates tried, 13 solver runs); a fix outside the bounded search may still exist.",
+            "affects": [
+                {
+                    "ref": "pkg:composer/shopware/core@6.4.20.2"
+                }
+            ],
+            "properties": [
+                {
+                    "name": "composer-remediate:remediation_status",
+                    "value": "none"
+                },
+                {
+                    "name": "composer-remediate:direct",
+                    "value": "true"
+                },
+                {
+                    "name": "composer-remediate:dev",
+                    "value": "false"
+                },
+                {
+                    "name": "composer-remediate:abandoned",
+                    "value": "shopware/recovery"
+                }
+            ],
+            "published": "2024-08-08T14:48:03+00:00"
+        },
+        {
+            "bom-ref": "vuln:PKSA-kt1g-n1g2-hzb4@pkg:composer/shopware/core@6.4.20.2",
+            "id": "PKSA-kt1g-n1g2-hzb4",
+            "source": {
+                "name": "Packagist",
+                "url": "https://packagist.org/security-advisories/PKSA-kt1g-n1g2-hzb4"
+            },
+            "references": [
+                {
+                    "id": "CVE-2024-42356",
+                    "source": {
+                        "name": "NVD",
+                        "url": "https://nvd.nist.gov/vuln/detail/CVE-2024-42356"
+                    }
+                },
+                {
+                    "id": "CVE-2024-42356",
+                    "source": {
+                        "name": "advisory",
+                        "url": "https://github.com/advisories/GHSA-35jp-8cgg-p4wj"
+                    }
+                }
+            ],
+            "ratings": [
+                {
+                    "severity": "high",
+                    "method": "other",
+                    "source": {
+                        "name": "Packagist",
+                        "url": "https://packagist.org/security-advisories/PKSA-kt1g-n1g2-hzb4"
+                    }
+                }
+            ],
+            "description": "Shopware vulnerable to Server Side Template Injection in Twig using Context functions",
+            "detail": "Affected versions: >=6.6.0.0,<=6.6.5.0|<=6.5.8.12",
+            "recommendation": "No verified remediation found: No verified fix within the search budget (13 candidates tried, 13 solver runs); a fix outside the bounded search may still exist.",
+            "affects": [
+                {
+                    "ref": "pkg:composer/shopware/core@6.4.20.2"
+                }
+            ],
+            "properties": [
+                {
+                    "name": "composer-remediate:remediation_status",
+                    "value": "none"
+                },
+                {
+                    "name": "composer-remediate:direct",
+                    "value": "true"
+                },
+                {
+                    "name": "composer-remediate:dev",
+                    "value": "false"
+                },
+                {
+                    "name": "composer-remediate:abandoned",
+                    "value": "shopware/recovery"
+                }
+            ],
+            "published": "2024-08-08T14:50:11+00:00"
+        },
+        {
+            "bom-ref": "vuln:PKSA-ktmn-6519-qrdp@pkg:composer/shopware/core@6.4.20.2",
+            "id": "PKSA-ktmn-6519-qrdp",
+            "source": {
+                "name": "Packagist",
+                "url": "https://packagist.org/security-advisories/PKSA-ktmn-6519-qrdp"
+            },
+            "references": [
+                {
+                    "id": "CVE-2024-22406",
+                    "source": {
+                        "name": "NVD",
+                        "url": "https://nvd.nist.gov/vuln/detail/CVE-2024-22406"
+                    }
+                },
+                {
+                    "id": "CVE-2024-22406",
+                    "source": {
+                        "name": "advisory",
+                        "url": "https://github.com/advisories/GHSA-qmp9-2xwj-m6m9"
+                    }
+                }
+            ],
+            "ratings": [
+                {
+                    "severity": "critical",
+                    "method": "other",
+                    "source": {
+                        "name": "Packagist",
+                        "url": "https://packagist.org/security-advisories/PKSA-ktmn-6519-qrdp"
+                    }
+                }
+            ],
+            "description": "Blind SQL injection in shopware",
+            "detail": "Affected versions: <=6.5.7.3",
+            "recommendation": "No verified remediation found: No verified fix within the search budget (13 candidates tried, 13 solver runs); a fix outside the bounded search may still exist.",
+            "affects": [
+                {
+                    "ref": "pkg:composer/shopware/core@6.4.20.2"
+                }
+            ],
+            "properties": [
+                {
+                    "name": "composer-remediate:remediation_status",
+                    "value": "none"
+                },
+                {
+                    "name": "composer-remediate:direct",
+                    "value": "true"
+                },
+                {
+                    "name": "composer-remediate:dev",
+                    "value": "false"
+                },
+                {
+                    "name": "composer-remediate:abandoned",
+                    "value": "shopware/recovery"
+                }
+            ],
+            "published": "2024-01-17T20:28:50+00:00"
+        },
+        {
+            "bom-ref": "vuln:PKSA-mm7q-gnjj-tttn@pkg:composer/shopware/core@6.4.20.2",
+            "id": "PKSA-mm7q-gnjj-tttn",
+            "source": {
+                "name": "Packagist",
+                "url": "https://packagist.org/security-advisories/PKSA-mm7q-gnjj-tttn"
+            },
+            "references": [
+                {
+                    "id": "CVE-2024-22407",
+                    "source": {
+                        "name": "NVD",
+                        "url": "https://nvd.nist.gov/vuln/detail/CVE-2024-22407"
+                    }
+                },
+                {
+                    "id": "CVE-2024-22407",
+                    "source": {
+                        "name": "advisory",
+                        "url": "https://github.com/advisories/GHSA-3867-jc5c-66qf"
+                    }
+                }
+            ],
+            "ratings": [
+                {
+                    "severity": "medium",
+                    "method": "other",
+                    "source": {
+                        "name": "Packagist",
+                        "url": "https://packagist.org/security-advisories/PKSA-mm7q-gnjj-tttn"
+                    }
+                }
+            ],
+            "description": "Broken Access Control order API in Shopware",
+            "detail": "Affected versions: <=6.5.7.3",
+            "recommendation": "No verified remediation found: No verified fix within the search budget (13 candidates tried, 13 solver runs); a fix outside the bounded search may still exist.",
+            "affects": [
+                {
+                    "ref": "pkg:composer/shopware/core@6.4.20.2"
+                }
+            ],
+            "properties": [
+                {
+                    "name": "composer-remediate:remediation_status",
+                    "value": "none"
+                },
+                {
+                    "name": "composer-remediate:direct",
+                    "value": "true"
+                },
+                {
+                    "name": "composer-remediate:dev",
+                    "value": "false"
+                },
+                {
+                    "name": "composer-remediate:abandoned",
+                    "value": "shopware/recovery"
+                }
+            ],
+            "published": "2024-01-17T20:29:33+00:00"
+        },
+        {
+            "bom-ref": "vuln:PKSA-s8vz-878v-gv1c@pkg:composer/shopware/core@6.4.20.2",
+            "id": "PKSA-s8vz-878v-gv1c",
+            "source": {
+                "name": "Packagist",
+                "url": "https://packagist.org/security-advisories/PKSA-s8vz-878v-gv1c"
+            },
+            "references": [
+                {
+                    "id": "CVE-2024-31447",
+                    "source": {
+                        "name": "NVD",
+                        "url": "https://nvd.nist.gov/vuln/detail/CVE-2024-31447"
+                    }
+                },
+                {
+                    "id": "CVE-2024-31447",
+                    "source": {
+                        "name": "advisory",
+                        "url": "https://github.com/advisories/GHSA-5297-wrrp-rcj7"
+                    }
+                }
+            ],
+            "ratings": [
+                {
+                    "severity": "medium",
+                    "method": "other",
+                    "source": {
+                        "name": "Packagist",
+                        "url": "https://packagist.org/security-advisories/PKSA-s8vz-878v-gv1c"
+                    }
+                }
+            ],
+            "description": "Shopware Improper Session Handling in store-api account logout",
+            "detail": "Affected versions: >=6.6.0.0-rc1,<6.6.1.0|>=6.3.5.0,<6.5.8.8",
+            "recommendation": "No verified remediation found: No verified fix within the search budget (13 candidates tried, 13 solver runs); a fix outside the bounded search may still exist.",
+            "affects": [
+                {
+                    "ref": "pkg:composer/shopware/core@6.4.20.2"
+                }
+            ],
+            "properties": [
+                {
+                    "name": "composer-remediate:remediation_status",
+                    "value": "none"
+                },
+                {
+                    "name": "composer-remediate:direct",
+                    "value": "true"
+                },
+                {
+                    "name": "composer-remediate:dev",
+                    "value": "false"
+                },
+                {
+                    "name": "composer-remediate:abandoned",
+                    "value": "shopware/recovery"
+                }
+            ],
+            "published": "2024-04-08T15:48:27+00:00"
+        },
+        {
+            "bom-ref": "vuln:PKSA-wp2c-7yp8-5fvs@pkg:composer/shopware/core@6.4.20.2",
+            "id": "PKSA-wp2c-7yp8-5fvs",
+            "source": {
+                "name": "Packagist",
+                "url": "https://packagist.org/security-advisories/PKSA-wp2c-7yp8-5fvs"
+            },
+            "references": [
+                {
+                    "id": "CVE-2024-42357",
+                    "source": {
+                        "name": "NVD",
+                        "url": "https://nvd.nist.gov/vuln/detail/CVE-2024-42357"
+                    }
+                },
+                {
+                    "id": "CVE-2024-42357",
+                    "source": {
+                        "name": "advisory",
+                        "url": "https://github.com/advisories/GHSA-p6w9-r443-r752"
+                    }
+                }
+            ],
+            "ratings": [
+                {
+                    "severity": "medium",
+                    "method": "other",
+                    "source": {
+                        "name": "Packagist",
+                        "url": "https://packagist.org/security-advisories/PKSA-wp2c-7yp8-5fvs"
+                    }
+                }
+            ],
+            "description": "Shopware vulnerable to blind SQL-injection in DAL aggregations",
+            "detail": "Affected versions: >=6.6.0.0,<=6.6.5.0|<=6.5.8.12",
+            "recommendation": "No verified remediation found: No verified fix within the search budget (13 candidates tried, 13 solver runs); a fix outside the bounded search may still exist.",
+            "affects": [
+                {
+                    "ref": "pkg:composer/shopware/core@6.4.20.2"
+                }
+            ],
+            "properties": [
+                {
+                    "name": "composer-remediate:remediation_status",
+                    "value": "none"
+                },
+                {
+                    "name": "composer-remediate:direct",
+                    "value": "true"
+                },
+                {
+                    "name": "composer-remediate:dev",
+                    "value": "false"
+                },
+                {
+                    "name": "composer-remediate:abandoned",
+                    "value": "shopware/recovery"
+                }
+            ],
+            "published": "2024-08-08T14:53:57+00:00"
+        },
+        {
+            "bom-ref": "vuln:PKSA-4jrs-y99s-q8j6@pkg:composer/shopwarelabs/dompdf@1.0.3",
+            "id": "PKSA-4jrs-y99s-q8j6",
+            "source": {
+                "name": "Packagist",
+                "url": "https://packagist.org/security-advisories/PKSA-4jrs-y99s-q8j6"
+            },
+            "references": [
+                {
+                    "id": "CVE-2023-23924",
+                    "source": {
+                        "name": "NVD",
+                        "url": "https://nvd.nist.gov/vuln/detail/CVE-2023-23924"
+                    }
+                },
+                {
+                    "id": "CVE-2023-23924",
+                    "source": {
+                        "name": "advisory",
+                        "url": "https://github.com/advisories/GHSA-3cw5-7cxw-v5qg"
+                    }
+                }
+            ],
+            "ratings": [
+                {
+                    "severity": "critical",
+                    "method": "other",
+                    "source": {
+                        "name": "Packagist",
+                        "url": "https://packagist.org/security-advisories/PKSA-4jrs-y99s-q8j6"
+                    }
+                }
+            ],
+            "description": "Dompdf vulnerable to URI validation failure on SVG parsing",
+            "detail": "Affected versions: <2.0.2",
+            "recommendation": "No verified remediation found.",
+            "affects": [
+                {
+                    "ref": "pkg:composer/shopwarelabs/dompdf@1.0.3"
+                }
+            ],
+            "properties": [
+                {
+                    "name": "composer-remediate:remediation_status",
+                    "value": "none"
+                },
+                {
+                    "name": "composer-remediate:direct",
+                    "value": "false"
+                },
+                {
+                    "name": "composer-remediate:dev",
+                    "value": "false"
+                },
+                {
+                    "name": "composer-remediate:abandoned",
+                    "value": "shopware/recovery"
+                }
+            ],
+            "published": "2023-01-31T14:30:00+00:00"
+        },
+        {
+            "bom-ref": "vuln:PKSA-7ztm-rpt3-qqzk@pkg:composer/shopwarelabs/dompdf@1.0.3",
+            "id": "PKSA-7ztm-rpt3-qqzk",
+            "source": {
+                "name": "Packagist",
+                "url": "https://packagist.org/security-advisories/PKSA-7ztm-rpt3-qqzk"
+            },
+            "references": [
+                {
+                    "id": "CVE-2023-50262",
+                    "source": {
+                        "name": "NVD",
+                        "url": "https://nvd.nist.gov/vuln/detail/CVE-2023-50262"
+                    }
+                },
+                {
+                    "id": "CVE-2023-50262",
+                    "source": {
+                        "name": "advisory",
+                        "url": "https://nvd.nist.gov/vuln/detail/CVE-2023-50262"
+                    }
+                }
+            ],
+            "ratings": [
+                {
+                    "severity": "medium",
+                    "method": "other",
+                    "source": {
+                        "name": "Packagist",
+                        "url": "https://packagist.org/security-advisories/PKSA-7ztm-rpt3-qqzk"
+                    }
+                }
+            ],
+            "description": "Denial of service caused by infinite recursion when parsing SVG images",
+            "detail": "Affected versions: <2.0.4",
+            "recommendation": "No verified remediation found.",
+            "affects": [
+                {
+                    "ref": "pkg:composer/shopwarelabs/dompdf@1.0.3"
+                }
+            ],
+            "properties": [
+                {
+                    "name": "composer-remediate:remediation_status",
+                    "value": "none"
+                },
+                {
+                    "name": "composer-remediate:direct",
+                    "value": "false"
+                },
+                {
+                    "name": "composer-remediate:dev",
+                    "value": "false"
+                },
+                {
+                    "name": "composer-remediate:abandoned",
+                    "value": "shopware/recovery"
+                }
+            ],
+            "published": "2023-12-12T09:17:00+00:00"
+        },
+        {
+            "bom-ref": "vuln:PKSA-872h-8556-2chm@pkg:composer/shopwarelabs/dompdf@1.0.3",
+            "id": "PKSA-872h-8556-2chm",
+            "source": {
+                "name": "Packagist",
+                "url": "https://packagist.org/security-advisories/PKSA-872h-8556-2chm"
+            },
+            "references": [
+                {
+                    "id": "CVE-2022-0085",
+                    "source": {
+                        "name": "NVD",
+                        "url": "https://nvd.nist.gov/vuln/detail/CVE-2022-0085"
+                    }
+                },
+                {
+                    "id": "CVE-2022-0085",
+                    "source": {
+                        "name": "advisory",
+                        "url": "https://github.com/advisories/GHSA-pf6p-25r2-fx45"
+                    }
+                }
+            ],
+            "ratings": [
+                {
+                    "severity": "medium",
+                    "method": "other",
+                    "source": {
+                        "name": "Packagist",
+                        "url": "https://packagist.org/security-advisories/PKSA-872h-8556-2chm"
+                    }
+                }
+            ],
+            "description": "Server-Side Request Forgery in dompdf/dompdf",
+            "detail": "Affected versions: <2.0.0",
+            "recommendation": "No verified remediation found.",
+            "affects": [
+                {
+                    "ref": "pkg:composer/shopwarelabs/dompdf@1.0.3"
+                }
+            ],
+            "properties": [
+                {
+                    "name": "composer-remediate:remediation_status",
+                    "value": "none"
+                },
+                {
+                    "name": "composer-remediate:direct",
+                    "value": "false"
+                },
+                {
+                    "name": "composer-remediate:dev",
+                    "value": "false"
+                },
+                {
+                    "name": "composer-remediate:abandoned",
+                    "value": "shopware/recovery"
+                }
+            ],
+            "published": "2022-06-23T13:55:00+00:00"
+        },
+        {
+            "bom-ref": "vuln:PKSA-hbk6-2vfz-8f8n@pkg:composer/shopwarelabs/dompdf@1.0.3",
+            "id": "PKSA-hbk6-2vfz-8f8n",
+            "source": {
+                "name": "Packagist",
+                "url": "https://packagist.org/security-advisories/PKSA-hbk6-2vfz-8f8n"
+            },
+            "references": [
+                {
+                    "id": "CVE-2022-41343",
+                    "source": {
+                        "name": "NVD",
+                        "url": "https://nvd.nist.gov/vuln/detail/CVE-2022-41343"
+                    }
+                },
+                {
+                    "id": "CVE-2022-41343",
+                    "source": {
+                        "name": "advisory",
+                        "url": "https://github.com/advisories/GHSA-6x28-7h8c-chx4"
+                    }
+                }
+            ],
+            "ratings": [
+                {
+                    "severity": "high",
+                    "method": "other",
+                    "source": {
+                        "name": "Packagist",
+                        "url": "https://packagist.org/security-advisories/PKSA-hbk6-2vfz-8f8n"
+                    }
+                }
+            ],
+            "description": "Remote file inclusion",
+            "detail": "Affected versions: <2.0.1",
+            "recommendation": "No verified remediation found.",
+            "affects": [
+                {
+                    "ref": "pkg:composer/shopwarelabs/dompdf@1.0.3"
+                }
+            ],
+            "properties": [
+                {
+                    "name": "composer-remediate:remediation_status",
+                    "value": "none"
+                },
+                {
+                    "name": "composer-remediate:direct",
+                    "value": "false"
+                },
+                {
+                    "name": "composer-remediate:dev",
+                    "value": "false"
+                },
+                {
+                    "name": "composer-remediate:abandoned",
+                    "value": "shopware/recovery"
+                }
+            ],
+            "published": "2022-09-22T13:54:00+00:00"
+        },
+        {
+            "bom-ref": "vuln:PKSA-kj9c-tr41-t8mj@pkg:composer/shopwarelabs/dompdf@1.0.3",
+            "id": "PKSA-kj9c-tr41-t8mj",
+            "source": {
+                "name": "Packagist",
+                "url": "https://packagist.org/security-advisories/PKSA-kj9c-tr41-t8mj"
+            },
+            "references": [
+                {
+                    "id": "CVE-2022-2400",
+                    "source": {
+                        "name": "NVD",
+                        "url": "https://nvd.nist.gov/vuln/detail/CVE-2022-2400"
+                    }
+                },
+                {
+                    "id": "CVE-2022-2400",
+                    "source": {
+                        "name": "advisory",
+                        "url": "https://github.com/advisories/GHSA-5qj8-6xxj-hp9h"
+                    }
+                }
+            ],
+            "ratings": [
+                {
+                    "severity": "medium",
+                    "method": "other",
+                    "source": {
+                        "name": "Packagist",
+                        "url": "https://packagist.org/security-advisories/PKSA-kj9c-tr41-t8mj"
+                    }
+                }
+            ],
+            "description": "Dompdf before v2.0.0 vulnerable to chroot check bypass",
+            "detail": "Affected versions: <2.0.0",
+            "recommendation": "No verified remediation found.",
+            "affects": [
+                {
+                    "ref": "pkg:composer/shopwarelabs/dompdf@1.0.3"
+                }
+            ],
+            "properties": [
+                {
+                    "name": "composer-remediate:remediation_status",
+                    "value": "none"
+                },
+                {
+                    "name": "composer-remediate:direct",
+                    "value": "false"
+                },
+                {
+                    "name": "composer-remediate:dev",
+                    "value": "false"
+                },
+                {
+                    "name": "composer-remediate:abandoned",
+                    "value": "shopware/recovery"
+                }
+            ],
+            "published": "2022-07-19T00:00:26+00:00"
         },
         {
             "bom-ref": "vuln:PKSA-b8f7-zn44-r4gz@pkg:composer/composer/composer@2.2.21",
@@ -1974,6 +2814,10 @@
                 {
                     "name": "composer-remediate:dev",
                     "value": "false"
+                },
+                {
+                    "name": "composer-remediate:abandoned",
+                    "value": "shopware/recovery"
                 }
             ],
             "published": "2024-06-10T21:36:25+00:00",
@@ -2042,6 +2886,10 @@
                 {
                     "name": "composer-remediate:dev",
                     "value": "false"
+                },
+                {
+                    "name": "composer-remediate:abandoned",
+                    "value": "shopware/recovery"
                 }
             ],
             "published": "2024-02-08T15:06:38+00:00",
@@ -2110,6 +2958,10 @@
                 {
                     "name": "composer-remediate:dev",
                     "value": "false"
+                },
+                {
+                    "name": "composer-remediate:abandoned",
+                    "value": "shopware/recovery"
                 }
             ],
             "published": "2023-09-29T20:39:21+00:00",
@@ -2178,6 +3030,10 @@
                 {
                     "name": "composer-remediate:dev",
                     "value": "false"
+                },
+                {
+                    "name": "composer-remediate:abandoned",
+                    "value": "shopware/recovery"
                 }
             ],
             "published": "2024-06-10T21:36:32+00:00",
@@ -2242,30 +3098,34 @@
                 {
                     "name": "composer-remediate:dev",
                     "value": "false"
+                },
+                {
+                    "name": "composer-remediate:abandoned",
+                    "value": "shopware/recovery"
                 }
             ],
             "published": "2023-07-06T21:07:27+00:00"
         },
         {
-            "bom-ref": "vuln:PKSA-3dsp-r6t7-8xmz@pkg:composer/phenx/php-svg-lib@0.3.4",
-            "id": "PKSA-3dsp-r6t7-8xmz",
+            "bom-ref": "vuln:PKSA-n3s6-289w-qtqb@pkg:composer/aws/aws-sdk-php@3.269.6",
+            "id": "PKSA-n3s6-289w-qtqb",
             "source": {
                 "name": "Packagist",
-                "url": "https://packagist.org/security-advisories/PKSA-3dsp-r6t7-8xmz"
+                "url": "https://packagist.org/security-advisories/PKSA-n3s6-289w-qtqb"
             },
             "references": [
                 {
-                    "id": "CVE-2024-25117",
+                    "id": "CVE-2023-51651",
                     "source": {
                         "name": "NVD",
-                        "url": "https://nvd.nist.gov/vuln/detail/CVE-2024-25117"
+                        "url": "https://nvd.nist.gov/vuln/detail/CVE-2023-51651"
                     }
                 },
                 {
-                    "id": "CVE-2024-25117",
+                    "id": "CVE-2023-51651",
                     "source": {
                         "name": "advisory",
-                        "url": "https://github.com/advisories/GHSA-f3qr-qr4x-j273"
+                        "url": "https://nvd.nist.gov/vuln/detail/CVE-2023-51651"
                     }
                 }
             ],
@@ -2275,22 +3135,26 @@
                     "method": "other",
                     "source": {
                         "name": "Packagist",
-                        "url": "https://packagist.org/security-advisories/PKSA-3dsp-r6t7-8xmz"
+                        "url": "https://packagist.org/security-advisories/PKSA-n3s6-289w-qtqb"
                     }
                 }
             ],
-            "description": "php-svg-lib lacks path validation on font through SVG inline styles ",
-            "detail": "Affected versions: <0.5.2",
-            "recommendation": "No verified remediation found.",
+            "description": "Potential URI resolution path traversal in the AWS SDK for PHP",
+            "detail": "Affected versions: >=3.0.0,<3.288.1",
+            "recommendation": "Run: composer update aws/aws-sdk-php -w -m",
             "affects": [
                 {
-                    "ref": "pkg:composer/phenx/php-svg-lib@0.3.4"
+                    "ref": "pkg:composer/aws/aws-sdk-php@3.269.6"
                 }
             ],
             "properties": [
                 {
                     "name": "composer-remediate:remediation_status",
-                    "value": "none"
+                    "value": "verified"
+                },
+                {
+                    "name": "composer-remediate:command",
+                    "value": "composer update aws/aws-sdk-php -w -m"
                 },
                 {
                     "name": "composer-remediate:direct",
@@ -2299,800 +3163,20 @@
                 {
                     "name": "composer-remediate:dev",
                     "value": "false"
-                }
-            ],
-            "published": "2024-02-21T18:04:16+00:00"
-        },
-        {
-            "bom-ref": "vuln:PKSA-cwpj-dtf9-6fg1@pkg:composer/phenx/php-svg-lib@0.3.4",
-            "id": "PKSA-cwpj-dtf9-6fg1",
-            "source": {
-                "name": "Packagist",
-                "url": "https://packagist.org/security-advisories/PKSA-cwpj-dtf9-6fg1"
-            },
-            "references": [
-                {
-                    "id": "CVE-2023-50251",
-                    "source": {
-                        "name": "NVD",
-                        "url": "https://nvd.nist.gov/vuln/detail/CVE-2023-50251"
-                    }
                 },
                 {
-                    "id": "CVE-2023-50251",
-                    "source": {
-                        "name": "advisory",
-                        "url": "https://github.com/advisories/GHSA-ff5x-7qg5-vwf2"
-                    }
+                    "name": "composer-remediate:abandoned",
+                    "value": "shopware/recovery"
                 }
             ],
-            "ratings": [
-                {
-                    "severity": "medium",
-                    "method": "other",
-                    "source": {
-                        "name": "Packagist",
-                        "url": "https://packagist.org/security-advisories/PKSA-cwpj-dtf9-6fg1"
-                    }
-                }
-            ],
-            "description": "Denial of service caused by infinite recursion when parsing SVG document",
-            "detail": "Affected versions: <0.5.1",
-            "recommendation": "No verified remediation found.",
-            "affects": [
-                {
-                    "ref": "pkg:composer/phenx/php-svg-lib@0.3.4"
-                }
-            ],
-            "properties": [
-                {
-                    "name": "composer-remediate:remediation_status",
-                    "value": "none"
-                },
-                {
-                    "name": "composer-remediate:direct",
-                    "value": "false"
-                },
-                {
-                    "name": "composer-remediate:dev",
-                    "value": "false"
-                }
-            ],
-            "published": "2023-12-13T13:32:21+00:00"
-        },
-        {
-            "bom-ref": "vuln:PKSA-qsyb-3psh-f1t3@pkg:composer/phenx/php-svg-lib@0.3.4",
-            "id": "PKSA-qsyb-3psh-f1t3",
-            "source": {
-                "name": "Packagist",
-                "url": "https://packagist.org/security-advisories/PKSA-qsyb-3psh-f1t3"
-            },
-            "references": [
-                {
-                    "id": "PKSA-qsyb-3psh-f1t3",
-                    "source": {
-                        "name": "advisory",
-                        "url": "https://github.com/advisories/GHSA-97m3-52wr-xvv2"
-                    }
-                }
-            ],
-            "ratings": [
-                {
-                    "severity": "critical",
-                    "method": "other",
-                    "source": {
-                        "name": "Packagist",
-                        "url": "https://packagist.org/security-advisories/PKSA-qsyb-3psh-f1t3"
-                    }
-                }
-            ],
-            "description": "Dompdf's usage of vulnerable version of phenx/php-svg-lib leads to restriction bypass and potential RCE",
-            "detail": "Affected versions: <0.5.2",
-            "recommendation": "No verified remediation found.",
-            "affects": [
-                {
-                    "ref": "pkg:composer/phenx/php-svg-lib@0.3.4"
-                }
-            ],
-            "properties": [
-                {
-                    "name": "composer-remediate:remediation_status",
-                    "value": "none"
-                },
-                {
-                    "name": "composer-remediate:direct",
-                    "value": "false"
-                },
-                {
-                    "name": "composer-remediate:dev",
-                    "value": "false"
-                }
-            ],
-            "published": "2024-02-22T18:15:41+00:00"
-        },
-        {
-            "bom-ref": "vuln:PKSA-4spx-rq41-wk8h@pkg:composer/shopware/core@6.4.20.2",
-            "id": "PKSA-4spx-rq41-wk8h",
-            "source": {
-                "name": "Packagist",
-                "url": "https://packagist.org/security-advisories/PKSA-4spx-rq41-wk8h"
-            },
-            "references": [
-                {
-                    "id": "CVE-2024-42354",
-                    "source": {
-                        "name": "NVD",
-                        "url": "https://nvd.nist.gov/vuln/detail/CVE-2024-42354"
-                    }
-                },
-                {
-                    "id": "CVE-2024-42354",
-                    "source": {
-                        "name": "advisory",
-                        "url": "https://github.com/advisories/GHSA-hhcq-ph6w-494g"
-                    }
-                }
-            ],
-            "ratings": [
-                {
-                    "severity": "medium",
-                    "method": "other",
-                    "source": {
-                        "name": "Packagist",
-                        "url": "https://packagist.org/security-advisories/PKSA-4spx-rq41-wk8h"
-                    }
-                }
-            ],
-            "description": "Shopware vulnerable to Improper Access Control with ManyToMany associations in store-api",
-            "detail": "Affected versions: >=6.6.0.0,<=6.6.5.0|<=6.5.8.12",
-            "recommendation": "No verified remediation found: No verified fix within the search budget (13 candidates tried, 13 solver runs); a fix outside the bounded search may still exist.",
-            "affects": [
-                {
-                    "ref": "pkg:composer/shopware/core@6.4.20.2"
-                }
-            ],
-            "properties": [
-                {
-                    "name": "composer-remediate:remediation_status",
-                    "value": "none"
-                },
-                {
-                    "name": "composer-remediate:direct",
-                    "value": "true"
-                },
-                {
-                    "name": "composer-remediate:dev",
-                    "value": "false"
-                }
-            ],
-            "published": "2024-08-08T14:42:58+00:00"
-        },
-        {
-            "bom-ref": "vuln:PKSA-6stq-czfs-1nvv@pkg:composer/shopware/core@6.4.20.2",
-            "id": "PKSA-6stq-czfs-1nvv",
-            "source": {
-                "name": "Packagist",
-                "url": "https://packagist.org/security-advisories/PKSA-6stq-czfs-1nvv"
-            },
-            "references": [
-                {
-                    "id": "CVE-2024-42355",
-                    "source": {
-                        "name": "NVD",
-                        "url": "https://nvd.nist.gov/vuln/detail/CVE-2024-42355"
-                    }
-                },
-                {
-                    "id": "CVE-2024-42355",
-                    "source": {
-                        "name": "advisory",
-                        "url": "https://github.com/advisories/GHSA-27wp-jvhw-v4xp"
-                    }
-                }
-            ],
-            "ratings": [
-                {
-                    "severity": "high",
-                    "method": "other",
-                    "source": {
-                        "name": "Packagist",
-                        "url": "https://packagist.org/security-advisories/PKSA-6stq-czfs-1nvv"
-                    }
-                }
-            ],
-            "description": "Shopware vulnerable to Server Side Template Injection in Twig using deprecation silence tag",
-            "detail": "Affected versions: >=6.6.0.0,<=6.6.5.0|<=6.5.8.12",
-            "recommendation": "No verified remediation found: No verified fix within the search budget (13 candidates tried, 13 solver runs); a fix outside the bounded search may still exist.",
-            "affects": [
-                {
-                    "ref": "pkg:composer/shopware/core@6.4.20.2"
-                }
-            ],
-            "properties": [
-                {
-                    "name": "composer-remediate:remediation_status",
-                    "value": "none"
-                },
-                {
-                    "name": "composer-remediate:direct",
-                    "value": "true"
-                },
-                {
-                    "name": "composer-remediate:dev",
-                    "value": "false"
-                }
-            ],
-            "published": "2024-08-08T14:48:03+00:00"
-        },
-        {
-            "bom-ref": "vuln:PKSA-kt1g-n1g2-hzb4@pkg:composer/shopware/core@6.4.20.2",
-            "id": "PKSA-kt1g-n1g2-hzb4",
-            "source": {
-                "name": "Packagist",
-                "url": "https://packagist.org/security-advisories/PKSA-kt1g-n1g2-hzb4"
-            },
-            "references": [
-                {
-                    "id": "CVE-2024-42356",
-                    "source": {
-                        "name": "NVD",
-                        "url": "https://nvd.nist.gov/vuln/detail/CVE-2024-42356"
-                    }
-                },
-                {
-                    "id": "CVE-2024-42356",
-                    "source": {
-                        "name": "advisory",
-                        "url": "https://github.com/advisories/GHSA-35jp-8cgg-p4wj"
-                    }
-                }
-            ],
-            "ratings": [
-                {
-                    "severity": "high",
-                    "method": "other",
-                    "source": {
-                        "name": "Packagist",
-                        "url": "https://packagist.org/security-advisories/PKSA-kt1g-n1g2-hzb4"
-                    }
-                }
-            ],
-            "description": "Shopware vulnerable to Server Side Template Injection in Twig using Context functions",
-            "detail": "Affected versions: >=6.6.0.0,<=6.6.5.0|<=6.5.8.12",
-            "recommendation": "No verified remediation found: No verified fix within the search budget (13 candidates tried, 13 solver runs); a fix outside the bounded search may still exist.",
-            "affects": [
-                {
-                    "ref": "pkg:composer/shopware/core@6.4.20.2"
-                }
-            ],
-            "properties": [
-                {
-                    "name": "composer-remediate:remediation_status",
-                    "value": "none"
-                },
-                {
-                    "name": "composer-remediate:direct",
-                    "value": "true"
-                },
-                {
-                    "name": "composer-remediate:dev",
-                    "value": "false"
-                }
-            ],
-            "published": "2024-08-08T14:50:11+00:00"
-        },
-        {
-            "bom-ref": "vuln:PKSA-ktmn-6519-qrdp@pkg:composer/shopware/core@6.4.20.2",
-            "id": "PKSA-ktmn-6519-qrdp",
-            "source": {
-                "name": "Packagist",
-                "url": "https://packagist.org/security-advisories/PKSA-ktmn-6519-qrdp"
-            },
-            "references": [
-                {
-                    "id": "CVE-2024-22406",
-                    "source": {
-                        "name": "NVD",
-                        "url": "https://nvd.nist.gov/vuln/detail/CVE-2024-22406"
-                    }
-                },
-                {
-                    "id": "CVE-2024-22406",
-                    "source": {
-                        "name": "advisory",
-                        "url": "https://github.com/advisories/GHSA-qmp9-2xwj-m6m9"
-                    }
-                }
-            ],
-            "ratings": [
-                {
-                    "severity": "critical",
-                    "method": "other",
-                    "source": {
-                        "name": "Packagist",
-                        "url": "https://packagist.org/security-advisories/PKSA-ktmn-6519-qrdp"
-                    }
-                }
-            ],
-            "description": "Blind SQL injection in shopware",
-            "detail": "Affected versions: <=6.5.7.3",
-            "recommendation": "No verified remediation found: No verified fix within the search budget (13 candidates tried, 13 solver runs); a fix outside the bounded search may still exist.",
-            "affects": [
-                {
-                    "ref": "pkg:composer/shopware/core@6.4.20.2"
-                }
-            ],
-            "properties": [
-                {
-                    "name": "composer-remediate:remediation_status",
-                    "value": "none"
-                },
-                {
-                    "name": "composer-remediate:direct",
-                    "value": "true"
-                },
-                {
-                    "name": "composer-remediate:dev",
-                    "value": "false"
-                }
-            ],
-            "published": "2024-01-17T20:28:50+00:00"
-        },
-        {
-            "bom-ref": "vuln:PKSA-mm7q-gnjj-tttn@pkg:composer/shopware/core@6.4.20.2",
-            "id": "PKSA-mm7q-gnjj-tttn",
-            "source": {
-                "name": "Packagist",
-                "url": "https://packagist.org/security-advisories/PKSA-mm7q-gnjj-tttn"
-            },
-            "references": [
-                {
-                    "id": "CVE-2024-22407",
-                    "source": {
-                        "name": "NVD",
-                        "url": "https://nvd.nist.gov/vuln/detail/CVE-2024-22407"
-                    }
-                },
-                {
-                    "id": "CVE-2024-22407",
-                    "source": {
-                        "name": "advisory",
-                        "url": "https://github.com/advisories/GHSA-3867-jc5c-66qf"
-                    }
-                }
-            ],
-            "ratings": [
-                {
-                    "severity": "medium",
-                    "method": "other",
-                    "source": {
-                        "name": "Packagist",
-                        "url": "https://packagist.org/security-advisories/PKSA-mm7q-gnjj-tttn"
-                    }
-                }
-            ],
-            "description": "Broken Access Control order API in Shopware",
-            "detail": "Affected versions: <=6.5.7.3",
-            "recommendation": "No verified remediation found: No verified fix within the search budget (13 candidates tried, 13 solver runs); a fix outside the bounded search may still exist.",
-            "affects": [
-                {
-                    "ref": "pkg:composer/shopware/core@6.4.20.2"
-                }
-            ],
-            "properties": [
-                {
-                    "name": "composer-remediate:remediation_status",
-                    "value": "none"
-                },
-                {
-                    "name": "composer-remediate:direct",
-                    "value": "true"
-                },
-                {
-                    "name": "composer-remediate:dev",
-                    "value": "false"
-                }
-            ],
-            "published": "2024-01-17T20:29:33+00:00"
-        },
-        {
-            "bom-ref": "vuln:PKSA-s8vz-878v-gv1c@pkg:composer/shopware/core@6.4.20.2",
-            "id": "PKSA-s8vz-878v-gv1c",
-            "source": {
-                "name": "Packagist",
-                "url": "https://packagist.org/security-advisories/PKSA-s8vz-878v-gv1c"
-            },
-            "references": [
-                {
-                    "id": "CVE-2024-31447",
-                    "source": {
-                        "name": "NVD",
-                        "url": "https://nvd.nist.gov/vuln/detail/CVE-2024-31447"
-                    }
-                },
-                {
-                    "id": "CVE-2024-31447",
-                    "source": {
-                        "name": "advisory",
-                        "url": "https://github.com/advisories/GHSA-5297-wrrp-rcj7"
-                    }
-                }
-            ],
-            "ratings": [
-                {
-                    "severity": "medium",
-                    "method": "other",
-                    "source": {
-                        "name": "Packagist",
-                        "url": "https://packagist.org/security-advisories/PKSA-s8vz-878v-gv1c"
-                    }
-                }
-            ],
-            "description": "Shopware Improper Session Handling in store-api account logout",
-            "detail": "Affected versions: >=6.6.0.0-rc1,<6.6.1.0|>=6.3.5.0,<6.5.8.8",
-            "recommendation": "No verified remediation found: No verified fix within the search budget (13 candidates tried, 13 solver runs); a fix outside the bounded search may still exist.",
-            "affects": [
-                {
-                    "ref": "pkg:composer/shopware/core@6.4.20.2"
-                }
-            ],
-            "properties": [
-                {
-                    "name": "composer-remediate:remediation_status",
-                    "value": "none"
-                },
-                {
-                    "name": "composer-remediate:direct",
-                    "value": "true"
-                },
-                {
-                    "name": "composer-remediate:dev",
-                    "value": "false"
-                }
-            ],
-            "published": "2024-04-08T15:48:27+00:00"
-        },
-        {
-            "bom-ref": "vuln:PKSA-wp2c-7yp8-5fvs@pkg:composer/shopware/core@6.4.20.2",
-            "id": "PKSA-wp2c-7yp8-5fvs",
-            "source": {
-                "name": "Packagist",
-                "url": "https://packagist.org/security-advisories/PKSA-wp2c-7yp8-5fvs"
-            },
-            "references": [
-                {
-                    "id": "CVE-2024-42357",
-                    "source": {
-                        "name": "NVD",
-                        "url": "https://nvd.nist.gov/vuln/detail/CVE-2024-42357"
-                    }
-                },
-                {
-                    "id": "CVE-2024-42357",
-                    "source": {
-                        "name": "advisory",
-                        "url": "https://github.com/advisories/GHSA-p6w9-r443-r752"
-                    }
-                }
-            ],
-            "ratings": [
-                {
-                    "severity": "medium",
-                    "method": "other",
-                    "source": {
-                        "name": "Packagist",
-                        "url": "https://packagist.org/security-advisories/PKSA-wp2c-7yp8-5fvs"
-                    }
-                }
-            ],
-            "description": "Shopware vulnerable to blind SQL-injection in DAL aggregations",
-            "detail": "Affected versions: >=6.6.0.0,<=6.6.5.0|<=6.5.8.12",
-            "recommendation": "No verified remediation found: No verified fix within the search budget (13 candidates tried, 13 solver runs); a fix outside the bounded search may still exist.",
-            "affects": [
-                {
-                    "ref": "pkg:composer/shopware/core@6.4.20.2"
-                }
-            ],
-            "properties": [
-                {
-                    "name": "composer-remediate:remediation_status",
-                    "value": "none"
-                },
-                {
-                    "name": "composer-remediate:direct",
-                    "value": "true"
-                },
-                {
-                    "name": "composer-remediate:dev",
-                    "value": "false"
-                }
-            ],
-            "published": "2024-08-08T14:53:57+00:00"
-        },
-        {
-            "bom-ref": "vuln:PKSA-4jrs-y99s-q8j6@pkg:composer/shopwarelabs/dompdf@1.0.3",
-            "id": "PKSA-4jrs-y99s-q8j6",
-            "source": {
-                "name": "Packagist",
-                "url": "https://packagist.org/security-advisories/PKSA-4jrs-y99s-q8j6"
-            },
-            "references": [
-                {
-                    "id": "CVE-2023-23924",
-                    "source": {
-                        "name": "NVD",
-                        "url": "https://nvd.nist.gov/vuln/detail/CVE-2023-23924"
-                    }
-                },
-                {
-                    "id": "CVE-2023-23924",
-                    "source": {
-                        "name": "advisory",
-                        "url": "https://github.com/advisories/GHSA-3cw5-7cxw-v5qg"
-                    }
-                }
-            ],
-            "ratings": [
-                {
-                    "severity": "critical",
-                    "method": "other",
-                    "source": {
-                        "name": "Packagist",
-                        "url": "https://packagist.org/security-advisories/PKSA-4jrs-y99s-q8j6"
-                    }
-                }
-            ],
-            "description": "Dompdf vulnerable to URI validation failure on SVG parsing",
-            "detail": "Affected versions: <2.0.2",
-            "recommendation": "No verified remediation found.",
-            "affects": [
-                {
-                    "ref": "pkg:composer/shopwarelabs/dompdf@1.0.3"
-                }
-            ],
-            "properties": [
-                {
-                    "name": "composer-remediate:remediation_status",
-                    "value": "none"
-                },
-                {
-                    "name": "composer-remediate:direct",
-                    "value": "false"
-                },
-                {
-                    "name": "composer-remediate:dev",
-                    "value": "false"
-                }
-            ],
-            "published": "2023-01-31T14:30:00+00:00"
-        },
-        {
-            "bom-ref": "vuln:PKSA-7ztm-rpt3-qqzk@pkg:composer/shopwarelabs/dompdf@1.0.3",
-            "id": "PKSA-7ztm-rpt3-qqzk",
-            "source": {
-                "name": "Packagist",
-                "url": "https://packagist.org/security-advisories/PKSA-7ztm-rpt3-qqzk"
-            },
-            "references": [
-                {
-                    "id": "CVE-2023-50262",
-                    "source": {
-                        "name": "NVD",
-                        "url": "https://nvd.nist.gov/vuln/detail/CVE-2023-50262"
-                    }
-                },
-                {
-                    "id": "CVE-2023-50262",
-                    "source": {
-                        "name": "advisory",
-                        "url": "https://nvd.nist.gov/vuln/detail/CVE-2023-50262"
-                    }
-                }
-            ],
-            "ratings": [
-                {
-                    "severity": "medium",
-                    "method": "other",
-                    "source": {
-                        "name": "Packagist",
-                        "url": "https://packagist.org/security-advisories/PKSA-7ztm-rpt3-qqzk"
-                    }
-                }
-            ],
-            "description": "Denial of service caused by infinite recursion when parsing SVG images",
-            "detail": "Affected versions: <2.0.4",
-            "recommendation": "No verified remediation found.",
-            "affects": [
-                {
-                    "ref": "pkg:composer/shopwarelabs/dompdf@1.0.3"
-                }
-            ],
-            "properties": [
-                {
-                    "name": "composer-remediate:remediation_status",
-                    "value": "none"
-                },
-                {
-                    "name": "composer-remediate:direct",
-                    "value": "false"
-                },
-                {
-                    "name": "composer-remediate:dev",
-                    "value": "false"
-                }
-            ],
-            "published": "2023-12-12T09:17:00+00:00"
-        },
-        {
-            "bom-ref": "vuln:PKSA-872h-8556-2chm@pkg:composer/shopwarelabs/dompdf@1.0.3",
-            "id": "PKSA-872h-8556-2chm",
-            "source": {
-                "name": "Packagist",
-                "url": "https://packagist.org/security-advisories/PKSA-872h-8556-2chm"
-            },
-            "references": [
-                {
-                    "id": "CVE-2022-0085",
-                    "source": {
-                        "name": "NVD",
-                        "url": "https://nvd.nist.gov/vuln/detail/CVE-2022-0085"
-                    }
-                },
-                {
-                    "id": "CVE-2022-0085",
-                    "source": {
-                        "name": "advisory",
-                        "url": "https://github.com/advisories/GHSA-pf6p-25r2-fx45"
-                    }
-                }
-            ],
-            "ratings": [
-                {
-                    "severity": "medium",
-                    "method": "other",
-                    "source": {
-                        "name": "Packagist",
-                        "url": "https://packagist.org/security-advisories/PKSA-872h-8556-2chm"
-                    }
-                }
-            ],
-            "description": "Server-Side Request Forgery in dompdf/dompdf",
-            "detail": "Affected versions: <2.0.0",
-            "recommendation": "No verified remediation found.",
-            "affects": [
-                {
-                    "ref": "pkg:composer/shopwarelabs/dompdf@1.0.3"
-                }
-            ],
-            "properties": [
-                {
-                    "name": "composer-remediate:remediation_status",
-                    "value": "none"
-                },
-                {
-                    "name": "composer-remediate:direct",
-                    "value": "false"
-                },
-                {
-                    "name": "composer-remediate:dev",
-                    "value": "false"
-                }
-            ],
-            "published": "2022-06-23T13:55:00+00:00"
-        },
-        {
-            "bom-ref": "vuln:PKSA-hbk6-2vfz-8f8n@pkg:composer/shopwarelabs/dompdf@1.0.3",
-            "id": "PKSA-hbk6-2vfz-8f8n",
-            "source": {
-                "name": "Packagist",
-                "url": "https://packagist.org/security-advisories/PKSA-hbk6-2vfz-8f8n"
-            },
-            "references": [
-                {
-                    "id": "CVE-2022-41343",
-                    "source": {
-                        "name": "NVD",
-                        "url": "https://nvd.nist.gov/vuln/detail/CVE-2022-41343"
-                    }
-                },
-                {
-                    "id": "CVE-2022-41343",
-                    "source": {
-                        "name": "advisory",
-                        "url": "https://github.com/advisories/GHSA-6x28-7h8c-chx4"
-                    }
-                }
-            ],
-            "ratings": [
-                {
-                    "severity": "high",
-                    "method": "other",
-                    "source": {
-                        "name": "Packagist",
-                        "url": "https://packagist.org/security-advisories/PKSA-hbk6-2vfz-8f8n"
-                    }
-                }
-            ],
-            "description": "Remote file inclusion",
-            "detail": "Affected versions: <2.0.1",
-            "recommendation": "No verified remediation found.",
-            "affects": [
-                {
-                    "ref": "pkg:composer/shopwarelabs/dompdf@1.0.3"
-                }
-            ],
-            "properties": [
-                {
-                    "name": "composer-remediate:remediation_status",
-                    "value": "none"
-                },
-                {
-                    "name": "composer-remediate:direct",
-                    "value": "false"
-                },
-                {
-                    "name": "composer-remediate:dev",
-                    "value": "false"
-                }
-            ],
-            "published": "2022-09-22T13:54:00+00:00"
-        },
-        {
-            "bom-ref": "vuln:PKSA-kj9c-tr41-t8mj@pkg:composer/shopwarelabs/dompdf@1.0.3",
-            "id": "PKSA-kj9c-tr41-t8mj",
-            "source": {
-                "name": "Packagist",
-                "url": "https://packagist.org/security-advisories/PKSA-kj9c-tr41-t8mj"
-            },
-            "references": [
-                {
-                    "id": "CVE-2022-2400",
-                    "source": {
-                        "name": "NVD",
-                        "url": "https://nvd.nist.gov/vuln/detail/CVE-2022-2400"
-                    }
-                },
-                {
-                    "id": "CVE-2022-2400",
-                    "source": {
-                        "name": "advisory",
-                        "url": "https://github.com/advisories/GHSA-5qj8-6xxj-hp9h"
-                    }
-                }
-            ],
-            "ratings": [
-                {
-                    "severity": "medium",
-                    "method": "other",
-                    "source": {
-                        "name": "Packagist",
-                        "url": "https://packagist.org/security-advisories/PKSA-kj9c-tr41-t8mj"
-                    }
-                }
-            ],
-            "description": "Dompdf before v2.0.0 vulnerable to chroot check bypass",
-            "detail": "Affected versions: <2.0.0",
-            "recommendation": "No verified remediation found.",
-            "affects": [
-                {
-                    "ref": "pkg:composer/shopwarelabs/dompdf@1.0.3"
-                }
-            ],
-            "properties": [
-                {
-                    "name": "composer-remediate:remediation_status",
-                    "value": "none"
-                },
-                {
-                    "name": "composer-remediate:direct",
-                    "value": "false"
-                },
-                {
-                    "name": "composer-remediate:dev",
-                    "value": "false"
-                }
-            ],
-            "published": "2022-07-19T00:00:26+00:00"
+            "published": "2023-11-22T00:00:00+00:00",
+            "analysis": {
+                "state": "exploitable",
+                "response": [
+                    "update"
+                ],
+                "detail": "2 package change(s) verified by Composer's solver."
+            }
         },
         {
             "bom-ref": "vuln:PKSA-ztgh-x9c8-k66g@pkg:composer/symfony/twig-bridge@5.4.22",
@@ -3151,6 +3235,10 @@
                 {
                     "name": "composer-remediate:dev",
                     "value": "false"
+                },
+                {
+                    "name": "composer-remediate:abandoned",
+                    "value": "shopware/recovery"
                 }
             ],
             "published": "2023-11-10T08:00:00+00:00",
@@ -3161,6 +3249,189 @@
                 ],
                 "detail": "1 package change(s) verified by Composer's solver."
             }
+        },
+        {
+            "bom-ref": "vuln:PKSA-d3g2-dzgm-n74r@pkg:composer/tecnickcom/tcpdf@6.4.4",
+            "id": "PKSA-d3g2-dzgm-n74r",
+            "source": {
+                "name": "Packagist",
+                "url": "https://packagist.org/security-advisories/PKSA-d3g2-dzgm-n74r"
+            },
+            "references": [
+                {
+                    "id": "CVE-2024-32489",
+                    "source": {
+                        "name": "NVD",
+                        "url": "https://nvd.nist.gov/vuln/detail/CVE-2024-32489"
+                    }
+                },
+                {
+                    "id": "CVE-2024-32489",
+                    "source": {
+                        "name": "advisory",
+                        "url": "https://github.com/advisories/GHSA-g9wg-98c2-qv3v"
+                    }
+                }
+            ],
+            "ratings": [
+                {
+                    "severity": "medium",
+                    "method": "other",
+                    "source": {
+                        "name": "Packagist",
+                        "url": "https://packagist.org/security-advisories/PKSA-d3g2-dzgm-n74r"
+                    }
+                }
+            ],
+            "description": "TCPDF Cross-site Scripting vulnerability",
+            "detail": "Affected versions: <6.7.4",
+            "recommendation": "No verified remediation found: No verified fix within the search budget (16 candidates tried, 16 solver runs); a fix outside the bounded search may still exist.",
+            "affects": [
+                {
+                    "ref": "pkg:composer/tecnickcom/tcpdf@6.4.4"
+                }
+            ],
+            "properties": [
+                {
+                    "name": "composer-remediate:remediation_status",
+                    "value": "none"
+                },
+                {
+                    "name": "composer-remediate:direct",
+                    "value": "false"
+                },
+                {
+                    "name": "composer-remediate:dev",
+                    "value": "false"
+                },
+                {
+                    "name": "composer-remediate:abandoned",
+                    "value": "shopware/recovery"
+                }
+            ],
+            "published": "2024-04-15T06:30:35+00:00"
+        },
+        {
+            "bom-ref": "vuln:PKSA-jwjn-w3mx-tq38@pkg:composer/tecnickcom/tcpdf@6.4.4",
+            "id": "PKSA-jwjn-w3mx-tq38",
+            "source": {
+                "name": "Packagist",
+                "url": "https://packagist.org/security-advisories/PKSA-jwjn-w3mx-tq38"
+            },
+            "references": [
+                {
+                    "id": "CVE-2024-22640",
+                    "source": {
+                        "name": "NVD",
+                        "url": "https://nvd.nist.gov/vuln/detail/CVE-2024-22640"
+                    }
+                },
+                {
+                    "id": "CVE-2024-22640",
+                    "source": {
+                        "name": "advisory",
+                        "url": "https://github.com/advisories/GHSA-mx3p-fhpw-x6rv"
+                    }
+                }
+            ],
+            "ratings": [
+                {
+                    "severity": "medium",
+                    "method": "other",
+                    "source": {
+                        "name": "Packagist",
+                        "url": "https://packagist.org/security-advisories/PKSA-jwjn-w3mx-tq38"
+                    }
+                }
+            ],
+            "description": "TCPDF vulnerable to Regular Expression Denial of Service",
+            "detail": "Affected versions: <=6.7.4",
+            "recommendation": "No verified remediation found: No verified fix within the search budget (16 candidates tried, 16 solver runs); a fix outside the bounded search may still exist.",
+            "affects": [
+                {
+                    "ref": "pkg:composer/tecnickcom/tcpdf@6.4.4"
+                }
+            ],
+            "properties": [
+                {
+                    "name": "composer-remediate:remediation_status",
+                    "value": "none"
+                },
+                {
+                    "name": "composer-remediate:direct",
+                    "value": "false"
+                },
+                {
+                    "name": "composer-remediate:dev",
+                    "value": "false"
+                },
+                {
+                    "name": "composer-remediate:abandoned",
+                    "value": "shopware/recovery"
+                }
+            ],
+            "published": "2024-04-19T18:31:11+00:00"
+        },
+        {
+            "bom-ref": "vuln:PKSA-6319-ffpf-gx66@pkg:composer/twig/twig@3.4.3",
+            "id": "PKSA-6319-ffpf-gx66",
+            "source": {
+                "name": "Packagist",
+                "url": "https://packagist.org/security-advisories/PKSA-6319-ffpf-gx66"
+            },
+            "references": [
+                {
+                    "id": "CVE-2024-45411",
+                    "source": {
+                        "name": "NVD",
+                        "url": "https://nvd.nist.gov/vuln/detail/CVE-2024-45411"
+                    }
+                },
+                {
+                    "id": "CVE-2024-45411",
+                    "source": {
+                        "name": "advisory",
+                        "url": "https://symfony.com/blog/twig-security-release-possible-sandbox-bypass"
+                    }
+                }
+            ],
+            "ratings": [
+                {
+                    "severity": "medium",
+                    "method": "other",
+                    "source": {
+                        "name": "Packagist",
+                        "url": "https://packagist.org/security-advisories/PKSA-6319-ffpf-gx66"
+                    }
+                }
+            ],
+            "description": "Possible sandbox bypass",
+            "detail": "Affected versions: >=1.0.0,<1.44.7|>=2.0.0,<2.16.0|>=3.0.0,<3.11.0|>=3.12.0,<3.14.0",
+            "recommendation": "No verified remediation found: No verified fix within the search budget (16 candidates tried, 16 solver runs); a fix outside the bounded search may still exist.",
+            "affects": [
+                {
+                    "ref": "pkg:composer/twig/twig@3.4.3"
+                }
+            ],
+            "properties": [
+                {
+                    "name": "composer-remediate:remediation_status",
+                    "value": "none"
+                },
+                {
+                    "name": "composer-remediate:direct",
+                    "value": "false"
+                },
+                {
+                    "name": "composer-remediate:dev",
+                    "value": "false"
+                },
+                {
+                    "name": "composer-remediate:abandoned",
+                    "value": "shopware/recovery"
+                }
+            ],
+            "published": "2024-09-09T08:51:06+00:00"
         },
         {
             "bom-ref": "vuln:PKSA-w2tw-kmfg-rt9s@pkg:composer/symfony/validator@5.4.23",
@@ -3219,6 +3490,10 @@
                 {
                     "name": "composer-remediate:dev",
                     "value": "false"
+                },
+                {
+                    "name": "composer-remediate:abandoned",
+                    "value": "shopware/recovery"
                 }
             ],
             "published": "2024-08-30T08:00:00+00:00",
@@ -3229,177 +3504,6 @@
                 ],
                 "detail": "2 package change(s) verified by Composer's solver."
             }
-        },
-        {
-            "bom-ref": "vuln:PKSA-d3g2-dzgm-n74r@pkg:composer/tecnickcom/tcpdf@6.4.4",
-            "id": "PKSA-d3g2-dzgm-n74r",
-            "source": {
-                "name": "Packagist",
-                "url": "https://packagist.org/security-advisories/PKSA-d3g2-dzgm-n74r"
-            },
-            "references": [
-                {
-                    "id": "CVE-2024-32489",
-                    "source": {
-                        "name": "NVD",
-                        "url": "https://nvd.nist.gov/vuln/detail/CVE-2024-32489"
-                    }
-                },
-                {
-                    "id": "CVE-2024-32489",
-                    "source": {
-                        "name": "advisory",
-                        "url": "https://github.com/advisories/GHSA-g9wg-98c2-qv3v"
-                    }
-                }
-            ],
-            "ratings": [
-                {
-                    "severity": "medium",
-                    "method": "other",
-                    "source": {
-                        "name": "Packagist",
-                        "url": "https://packagist.org/security-advisories/PKSA-d3g2-dzgm-n74r"
-                    }
-                }
-            ],
-            "description": "TCPDF Cross-site Scripting vulnerability",
-            "detail": "Affected versions: <6.7.4",
-            "recommendation": "No verified remediation found: No verified fix within the search budget (16 candidates tried, 16 solver runs); a fix outside the bounded search may still exist.",
-            "affects": [
-                {
-                    "ref": "pkg:composer/tecnickcom/tcpdf@6.4.4"
-                }
-            ],
-            "properties": [
-                {
-                    "name": "composer-remediate:remediation_status",
-                    "value": "none"
-                },
-                {
-                    "name": "composer-remediate:direct",
-                    "value": "false"
-                },
-                {
-                    "name": "composer-remediate:dev",
-                    "value": "false"
-                }
-            ],
-            "published": "2024-04-15T06:30:35+00:00"
-        },
-        {
-            "bom-ref": "vuln:PKSA-jwjn-w3mx-tq38@pkg:composer/tecnickcom/tcpdf@6.4.4",
-            "id": "PKSA-jwjn-w3mx-tq38",
-            "source": {
-                "name": "Packagist",
-                "url": "https://packagist.org/security-advisories/PKSA-jwjn-w3mx-tq38"
-            },
-            "references": [
-                {
-                    "id": "CVE-2024-22640",
-                    "source": {
-                        "name": "NVD",
-                        "url": "https://nvd.nist.gov/vuln/detail/CVE-2024-22640"
-                    }
-                },
-                {
-                    "id": "CVE-2024-22640",
-                    "source": {
-                        "name": "advisory",
-                        "url": "https://github.com/advisories/GHSA-mx3p-fhpw-x6rv"
-                    }
-                }
-            ],
-            "ratings": [
-                {
-                    "severity": "medium",
-                    "method": "other",
-                    "source": {
-                        "name": "Packagist",
-                        "url": "https://packagist.org/security-advisories/PKSA-jwjn-w3mx-tq38"
-                    }
-                }
-            ],
-            "description": "TCPDF vulnerable to Regular Expression Denial of Service",
-            "detail": "Affected versions: <=6.7.4",
-            "recommendation": "No verified remediation found: No verified fix within the search budget (16 candidates tried, 16 solver runs); a fix outside the bounded search may still exist.",
-            "affects": [
-                {
-                    "ref": "pkg:composer/tecnickcom/tcpdf@6.4.4"
-                }
-            ],
-            "properties": [
-                {
-                    "name": "composer-remediate:remediation_status",
-                    "value": "none"
-                },
-                {
-                    "name": "composer-remediate:direct",
-                    "value": "false"
-                },
-                {
-                    "name": "composer-remediate:dev",
-                    "value": "false"
-                }
-            ],
-            "published": "2024-04-19T18:31:11+00:00"
-        },
-        {
-            "bom-ref": "vuln:PKSA-6319-ffpf-gx66@pkg:composer/twig/twig@3.4.3",
-            "id": "PKSA-6319-ffpf-gx66",
-            "source": {
-                "name": "Packagist",
-                "url": "https://packagist.org/security-advisories/PKSA-6319-ffpf-gx66"
-            },
-            "references": [
-                {
-                    "id": "CVE-2024-45411",
-                    "source": {
-                        "name": "NVD",
-                        "url": "https://nvd.nist.gov/vuln/detail/CVE-2024-45411"
-                    }
-                },
-                {
-                    "id": "CVE-2024-45411",
-                    "source": {
-                        "name": "advisory",
-                        "url": "https://symfony.com/blog/twig-security-release-possible-sandbox-bypass"
-                    }
-                }
-            ],
-            "ratings": [
-                {
-                    "severity": "medium",
-                    "method": "other",
-                    "source": {
-                        "name": "Packagist",
-                        "url": "https://packagist.org/security-advisories/PKSA-6319-ffpf-gx66"
-                    }
-                }
-            ],
-            "description": "Possible sandbox bypass",
-            "detail": "Affected versions: >=1.0.0,<1.44.7|>=2.0.0,<2.16.0|>=3.0.0,<3.11.0|>=3.12.0,<3.14.0",
-            "recommendation": "No verified remediation found: No verified fix within the search budget (16 candidates tried, 16 solver runs); a fix outside the bounded search may still exist.",
-            "affects": [
-                {
-                    "ref": "pkg:composer/twig/twig@3.4.3"
-                }
-            ],
-            "properties": [
-                {
-                    "name": "composer-remediate:remediation_status",
-                    "value": "none"
-                },
-                {
-                    "name": "composer-remediate:direct",
-                    "value": "false"
-                },
-                {
-                    "name": "composer-remediate:dev",
-                    "value": "false"
-                }
-            ],
-            "published": "2024-09-09T08:51:06+00:00"
         }
     ]
 }

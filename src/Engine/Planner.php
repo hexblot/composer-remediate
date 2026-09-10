@@ -116,8 +116,15 @@ final class Planner
             $baseline[$finding->key()] = true;
         }
         $findings = $this->includeDev ? $allFindings : array_values(array_filter($allFindings, static fn (Finding $f): bool => !$f->isDev));
-        // Production findings first, development-only findings after them.
-        usort($findings, static fn (Finding $a, Finding $b): int => [$a->isDev ? 1 : 0, $a->packageName, $a->advisory->id] <=> [$b->isDev ? 1 : 0, $b->packageName, $b->advisory->id]);
+        // Production findings first, development-only findings after them; within each, the most urgent
+        // package first (known exploited, then exploit probability, then severity), so the top of the
+        // report is what to fix today. A package's urgency is that of its most urgent advisory.
+        $urgency = [];
+        foreach ($findings as $finding) {
+            $key = $finding->advisory->urgency();
+            $urgency[$finding->packageName] = isset($urgency[$finding->packageName]) ? min($urgency[$finding->packageName], $key) : $key;
+        }
+        usort($findings, static fn (Finding $a, Finding $b): int => [$a->isDev ? 1 : 0, $urgency[$a->packageName], $a->packageName, $a->advisory->id] <=> [$b->isDev ? 1 : 0, $urgency[$b->packageName], $b->packageName, $b->advisory->id]);
 
         // Several advisories on one package are remediated together: one command must escape all of them.
         $groups = [];
@@ -155,6 +162,35 @@ final class Planner
     }
 
     /**
+     * Packages Packagist marks abandoned among the vulnerable package and its dependency paths: an
+     * abandoned parent will not ship the release that lifts its pin, and an abandoned vulnerable
+     * package will not ship a fix.
+     *
+     * @return array<string, string|null> package => replacement package, or null when none is named
+     */
+    private static function abandonedOnPaths(Finding $finding, LockSnapshot $lock): array
+    {
+        $names = [$finding->packageName];
+        foreach ($finding->paths as $path) {
+            foreach ($path->segments as $segment) {
+                if (!$segment->isRoot) {
+                    $names[] = $segment->packageName;
+                }
+            }
+        }
+        $abandoned = [];
+        foreach (array_unique($names) as $name) {
+            $package = $lock->get($name);
+            if ($package instanceof \Composer\Package\CompletePackageInterface && $package->isAbandoned()) {
+                $abandoned[$package->getName()] = $package->getReplacementPackage();
+            }
+        }
+        ksort($abandoned);
+
+        return $abandoned;
+    }
+
+    /**
      * @param non-empty-list<Finding> $group
      * @param array<string, true>     $baseline
      */
@@ -163,6 +199,7 @@ final class Planner
         $this->findingSolves = 0;
         $this->budgetExhausted = false;
         $finding = $group[0]->withPaths($graph->pathsToRoot($group[0]->packageName));
+        $finding = $finding->withAbandoned(self::abandonedOnPaths($finding, $lock));
         $related = array_slice($group, 1);
         $groupKeys = [];
         foreach ($group as $member) {
@@ -337,6 +374,12 @@ final class Planner
                 $strategy = $c->strategy;
             }
         }
+        // Alphabetical, so the command text does not depend on the order findings are reported in
+        // (which follows urgency data that changes daily).
+        ksort($allow);
+        ksort($pins);
+        ksort($temporary);
+        ksort($roots);
         $merged = new Candidate($strategy, array_keys($allow), $mode, $temporary, $minimal, $roots, 'all per-package remediations in one command', $pins, array_values(array_unique($extra)));
 
         $this->report('combining: ' . $merged->commandLine($this->solver->supportsMinimalChanges()));

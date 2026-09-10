@@ -3,9 +3,40 @@
 All notable changes to this project are documented here. The format follows
 [Keep a Changelog](https://keepachangelog.com/en/1.1.0/); versions follow [Semantic Versioning](https://semver.org/).
 
+## [Unreleased]
+
+### Added
+
+- **Exploit data in the advisory database.** `remediate:db-build` enriches every CVE with its FIRST
+  EPSS probability and percentile and its CISA KEV listing date (`--enrich`, on by default;
+  `--epss-file` / `--kev-file` read local copies). Only the CVEs the database names are stored. A
+  feed that cannot be fetched is recorded in the metadata and the build continues without it;
+  `remediate:db-status` shows what the database carries. Reports order findings by urgency (known
+  exploited first, then EPSS, then severity; development-only findings last), print `EPSS 0.93 (97th
+  percentile); listed in CISA KEV since …` under each advisory, and count KEV-listed packages in the
+  summary. JSON gains `epss`, `epss_percentile` and `kev_added` per advisory and
+  `packages_known_exploited` in the summary; SARIF tags such rules `known-exploited`; CycloneDX and
+  GitLab reports carry the values. The dataset hash includes KEV membership (a new listing changes
+  what to fix first) but not EPSS scores. Databases built without the data still read; their reports
+  say `no exploit data`. Tests: both feeds with scripted downloads and local files, build-to-report
+  round trip, a failing feed, hash behaviour, an old database, ordering rules, every output format.
+- **Abandoned packages on the dependency path.** When Packagist marks the vulnerable package or a
+  parent on its path abandoned (the marker travels in `composer.lock`, so this needs no network), the
+  report says so with the replacement Packagist names, under the finding and in the summary; JSON
+  gains `abandoned` per finding and `packages_with_abandoned_dependency` in the summary; SARIF,
+  CycloneDX and GitLab reports carry the names. The lock snapshot now preserves the marker. Tests:
+  planner detection on a scripted lock, every output format.
+
+### Changed
+
+- Findings are ordered by urgency (see above); before, they were ordered by package name. The stored
+  fixture reports and the case-studies page are regenerated accordingly.
+
+[Unreleased]: https://github.com/hexblot/composer-remediate/compare/v0.4.2...HEAD
+
 ## [0.4.2] - 2026-09-10
 
-A correctness release answering the third external recheck. The recheck of 0.4.1 confirmed the six
+A correctness release answering the third adversarial recheck. The recheck of 0.4.1 confirmed the six
 earlier findings as fixed and reported three new ones, all rated P1; each is fixed here with a test
 that reproduces the reviewer's case, and the reviewer's closure pass on these fixes found nothing
 further.
@@ -92,7 +123,7 @@ below, and the `composer audit` fallback that the design had promised since 0.1.
 
 ## [0.4.0] - 2026-09-10
 
-This release responds to an external architecture review of 0.3.0 (twenty findings, nine rated as
+This release responds to an adversarial adoption review of 0.3.0 (twenty findings, nine rated as
 able to undermine a security decision) and to the reviewer's recheck of the first response (six
 remaining findings). Each item below names its change; the tests that establish it are listed in the
 "Tests" bullets, and where a boundary is documented rather than removed the text says so.

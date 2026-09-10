@@ -185,31 +185,6 @@
                             }
                         },
                         {
-                            "id": "PKSA-b35n-565h-rs4q",
-                            "name": "CVE202450345",
-                            "shortDescription": {
-                                "text": "CVE-2024-50345: Open redirect via browser-sanitized URLs"
-                            },
-                            "fullDescription": {
-                                "text": "CVE-2024-50345: Open redirect via browser-sanitized URLs. Affected versions of symfony/http-foundation: >=2.0.0,<3.0.0|>=3.0.0,<4.0.0|>=4.0.0,<5.0.0|>=5.0.0,<5.1.0|>=5.1.0,<5.2.0|>=5.2.0,<5.3.0|>=5.3.0,<5.4.0|>=5.4.0,<5.4.46|>=6.0.0,<6.1.0|>=6.1.0,<6.2.0|>=6.2.0,<6.3.0|>=6.3.0,<6.4.0|>=6.4.0,<6.4.14|>=7.0.0,<7.1.0|>=7.1.0,<7.1.7."
-                            },
-                            "helpUri": "https://symfony.com/cve-2024-50345",
-                            "help": {
-                                "text": "Advisory PKSA-b35n-565h-rs4q (CVE-2024-50345) affects symfony/http-foundation >=2.0.0,<3.0.0|>=3.0.0,<4.0.0|>=4.0.0,<5.0.0|>=5.0.0,<5.1.0|>=5.1.0,<5.2.0|>=5.2.0,<5.3.0|>=5.3.0,<5.4.0|>=5.4.0,<5.4.46|>=6.0.0,<6.1.0|>=6.1.0,<6.2.0|>=6.2.0,<6.3.0|>=6.3.0,<6.4.0|>=6.4.0,<6.4.14|>=7.0.0,<7.1.0|>=7.1.0,<7.1.7. Run composer remediate for the smallest verified upgrade."
-                            },
-                            "defaultConfiguration": {
-                                "level": "note"
-                            },
-                            "properties": {
-                                "security-severity": "2.5",
-                                "tags": [
-                                    "security",
-                                    "vulnerability",
-                                    "low"
-                                ]
-                            }
-                        },
-                        {
                             "id": "PKSA-ztgh-x9c8-k66g",
                             "name": "CVE202346734",
                             "shortDescription": {
@@ -231,31 +206,6 @@
                                     "security",
                                     "vulnerability",
                                     "medium"
-                                ]
-                            }
-                        },
-                        {
-                            "id": "PKSA-w2tw-kmfg-rt9s",
-                            "name": "CVE202450343",
-                            "shortDescription": {
-                                "text": "CVE-2024-50343: Incorrect response from Validator when input ends with `\n`"
-                            },
-                            "fullDescription": {
-                                "text": "CVE-2024-50343: Incorrect response from Validator when input ends with `\n`. Affected versions of symfony/validator: >=2.0.0,<3.0.0|>=3.0.0,<4.0.0|>=4.0.0,<5.0.0|>=5.0.0,<5.1.0|>=5.1.0,<5.2.0|>=5.2.0,<5.3.0|>=5.3.0,<5.4.0|>=5.4.0,<5.4.43|>=6.0.0,<6.1.0|>=6.1.0,<6.2.0|>=6.2.0,<6.3.0|>=6.3.0,<6.4.0|>=6.4.0,<6.4.11|>=7.0.0,<7.1.0|>=7.1.0,<7.1.4."
-                            },
-                            "helpUri": "https://symfony.com/cve-2024-50343",
-                            "help": {
-                                "text": "Advisory PKSA-w2tw-kmfg-rt9s (CVE-2024-50343) affects symfony/validator >=2.0.0,<3.0.0|>=3.0.0,<4.0.0|>=4.0.0,<5.0.0|>=5.0.0,<5.1.0|>=5.1.0,<5.2.0|>=5.2.0,<5.3.0|>=5.3.0,<5.4.0|>=5.4.0,<5.4.43|>=6.0.0,<6.1.0|>=6.1.0,<6.2.0|>=6.2.0,<6.3.0|>=6.3.0,<6.4.0|>=6.4.0,<6.4.11|>=7.0.0,<7.1.0|>=7.1.0,<7.1.4. Run composer remediate for the smallest verified upgrade."
-                            },
-                            "defaultConfiguration": {
-                                "level": "note"
-                            },
-                            "properties": {
-                                "security-severity": "2.5",
-                                "tags": [
-                                    "security",
-                                    "vulnerability",
-                                    "low"
                                 ]
                             }
                         },
@@ -335,6 +285,56 @@
                             }
                         },
                         {
+                            "id": "PKSA-b35n-565h-rs4q",
+                            "name": "CVE202450345",
+                            "shortDescription": {
+                                "text": "CVE-2024-50345: Open redirect via browser-sanitized URLs"
+                            },
+                            "fullDescription": {
+                                "text": "CVE-2024-50345: Open redirect via browser-sanitized URLs. Affected versions of symfony/http-foundation: >=2.0.0,<3.0.0|>=3.0.0,<4.0.0|>=4.0.0,<5.0.0|>=5.0.0,<5.1.0|>=5.1.0,<5.2.0|>=5.2.0,<5.3.0|>=5.3.0,<5.4.0|>=5.4.0,<5.4.46|>=6.0.0,<6.1.0|>=6.1.0,<6.2.0|>=6.2.0,<6.3.0|>=6.3.0,<6.4.0|>=6.4.0,<6.4.14|>=7.0.0,<7.1.0|>=7.1.0,<7.1.7."
+                            },
+                            "helpUri": "https://symfony.com/cve-2024-50345",
+                            "help": {
+                                "text": "Advisory PKSA-b35n-565h-rs4q (CVE-2024-50345) affects symfony/http-foundation >=2.0.0,<3.0.0|>=3.0.0,<4.0.0|>=4.0.0,<5.0.0|>=5.0.0,<5.1.0|>=5.1.0,<5.2.0|>=5.2.0,<5.3.0|>=5.3.0,<5.4.0|>=5.4.0,<5.4.46|>=6.0.0,<6.1.0|>=6.1.0,<6.2.0|>=6.2.0,<6.3.0|>=6.3.0,<6.4.0|>=6.4.0,<6.4.14|>=7.0.0,<7.1.0|>=7.1.0,<7.1.7. Run composer remediate for the smallest verified upgrade."
+                            },
+                            "defaultConfiguration": {
+                                "level": "note"
+                            },
+                            "properties": {
+                                "security-severity": "2.5",
+                                "tags": [
+                                    "security",
+                                    "vulnerability",
+                                    "low"
+                                ]
+                            }
+                        },
+                        {
+                            "id": "PKSA-w2tw-kmfg-rt9s",
+                            "name": "CVE202450343",
+                            "shortDescription": {
+                                "text": "CVE-2024-50343: Incorrect response from Validator when input ends with `\n`"
+                            },
+                            "fullDescription": {
+                                "text": "CVE-2024-50343: Incorrect response from Validator when input ends with `\n`. Affected versions of symfony/validator: >=2.0.0,<3.0.0|>=3.0.0,<4.0.0|>=4.0.0,<5.0.0|>=5.0.0,<5.1.0|>=5.1.0,<5.2.0|>=5.2.0,<5.3.0|>=5.3.0,<5.4.0|>=5.4.0,<5.4.43|>=6.0.0,<6.1.0|>=6.1.0,<6.2.0|>=6.2.0,<6.3.0|>=6.3.0,<6.4.0|>=6.4.0,<6.4.11|>=7.0.0,<7.1.0|>=7.1.0,<7.1.4."
+                            },
+                            "helpUri": "https://symfony.com/cve-2024-50343",
+                            "help": {
+                                "text": "Advisory PKSA-w2tw-kmfg-rt9s (CVE-2024-50343) affects symfony/validator >=2.0.0,<3.0.0|>=3.0.0,<4.0.0|>=4.0.0,<5.0.0|>=5.0.0,<5.1.0|>=5.1.0,<5.2.0|>=5.2.0,<5.3.0|>=5.3.0,<5.4.0|>=5.4.0,<5.4.43|>=6.0.0,<6.1.0|>=6.1.0,<6.2.0|>=6.2.0,<6.3.0|>=6.3.0,<6.4.0|>=6.4.0,<6.4.11|>=7.0.0,<7.1.0|>=7.1.0,<7.1.4. Run composer remediate for the smallest verified upgrade."
+                            },
+                            "defaultConfiguration": {
+                                "level": "note"
+                            },
+                            "properties": {
+                                "security-severity": "2.5",
+                                "tags": [
+                                    "security",
+                                    "vulnerability",
+                                    "low"
+                                ]
+                            }
+                        },
+                        {
                             "id": "PKSA-wws7-mr54-jsny",
                             "name": "CVE202451736",
                             "shortDescription": {
@@ -369,7 +369,7 @@
                     "properties": {
                         "composer_version": "(fixture)",
                         "advisory_source": "advisory snapshot advisories.json",
-                        "combined_command": "composer update symfony/http-foundation symfony/twig-bridge twig/twig symfony/process -w -m --with 'twig/twig:>=3.11.2,<3.12.0 || >=3.14.1'"
+                        "combined_command": "composer update symfony/http-foundation symfony/process symfony/twig-bridge twig/twig -w -m --with 'twig/twig:>=3.11.2,<3.12.0 || >=3.14.1'"
                     }
                 }
             ],
@@ -606,42 +606,8 @@
                     }
                 },
                 {
-                    "ruleId": "PKSA-b35n-565h-rs4q",
-                    "ruleIndex": 7,
-                    "level": "note",
-                    "message": {
-                        "text": "symfony/http-foundation v4.4.49 is affected by CVE-2024-50345: CVE-2024-50345: Open redirect via browser-sanitized URLs. Verified fix: composer update symfony/http-foundation"
-                    },
-                    "locations": [
-                        {
-                            "physicalLocation": {
-                                "artifactLocation": {
-                                    "uri": "composer.lock",
-                                    "uriBaseId": "%SRCROOT%"
-                                },
-                                "region": {
-                                    "startLine": 6713
-                                }
-                            }
-                        }
-                    ],
-                    "partialFingerprints": {
-                        "advisoryPackage/v1": "PKSA-b35n-565h-rs4q@symfony/http-foundation"
-                    },
-                    "properties": {
-                        "package": "symfony/http-foundation",
-                        "version": "v4.4.49",
-                        "direct": false,
-                        "dev": false,
-                        "cve": "CVE-2024-50345",
-                        "severity": "low",
-                        "remediation_status": "verified",
-                        "command": "composer update symfony/http-foundation"
-                    }
-                },
-                {
                     "ruleId": "PKSA-ztgh-x9c8-k66g",
-                    "ruleIndex": 8,
+                    "ruleIndex": 7,
                     "level": "warning",
                     "message": {
                         "text": "symfony/twig-bridge v4.4.49 is affected by CVE-2023-46734: CVE-2023-46734: Potential XSS vulnerabilities in CodeExtension filters. Verified fix: composer update symfony/twig-bridge"
@@ -674,41 +640,8 @@
                     }
                 },
                 {
-                    "ruleId": "PKSA-w2tw-kmfg-rt9s",
-                    "ruleIndex": 9,
-                    "level": "note",
-                    "message": {
-                        "text": "symfony/validator v4.4.48 is affected by CVE-2024-50343: CVE-2024-50343: Incorrect response from Validator when input ends with `\n`. No verified remediation found."
-                    },
-                    "locations": [
-                        {
-                            "physicalLocation": {
-                                "artifactLocation": {
-                                    "uri": "composer.lock",
-                                    "uriBaseId": "%SRCROOT%"
-                                },
-                                "region": {
-                                    "startLine": 9866
-                                }
-                            }
-                        }
-                    ],
-                    "partialFingerprints": {
-                        "advisoryPackage/v1": "PKSA-w2tw-kmfg-rt9s@symfony/validator"
-                    },
-                    "properties": {
-                        "package": "symfony/validator",
-                        "version": "v4.4.48",
-                        "direct": true,
-                        "dev": false,
-                        "cve": "CVE-2024-50343",
-                        "severity": "low",
-                        "remediation_status": "none"
-                    }
-                },
-                {
                     "ruleId": "PKSA-2wrf-1xmk-1pky",
-                    "ruleIndex": 10,
+                    "ruleIndex": 8,
                     "level": "note",
                     "message": {
                         "text": "twig/twig v3.5.1 is affected by CVE-2024-51755: Unguarded calls to __isset() and to array-accesses when the sandbox is enabled. Verified fix: composer update twig/twig -w -m --with 'twig/twig:>=3.11.2,<3.12.0 || >=3.14.1'"
@@ -742,7 +675,7 @@
                 },
                 {
                     "ruleId": "PKSA-6319-ffpf-gx66",
-                    "ruleIndex": 11,
+                    "ruleIndex": 9,
                     "level": "warning",
                     "message": {
                         "text": "twig/twig v3.5.1 is affected by CVE-2024-45411: Possible sandbox bypass. Verified fix: composer update twig/twig -w -m --with 'twig/twig:>=3.11.2,<3.12.0 || >=3.14.1'"
@@ -776,7 +709,7 @@
                 },
                 {
                     "ruleId": "PKSA-yhcn-xrg3-68b1",
-                    "ruleIndex": 12,
+                    "ruleIndex": 10,
                     "level": "note",
                     "message": {
                         "text": "twig/twig v3.5.1 is affected by CVE-2024-51754: Unguarded calls to __toString() when nesting an object into an array. Verified fix: composer update twig/twig -w -m --with 'twig/twig:>=3.11.2,<3.12.0 || >=3.14.1'"
@@ -806,6 +739,76 @@
                         "severity": "low",
                         "remediation_status": "verified",
                         "command": "composer update twig/twig -w -m --with 'twig/twig:>=3.11.2,<3.12.0 || >=3.14.1'"
+                    }
+                },
+                {
+                    "ruleId": "PKSA-b35n-565h-rs4q",
+                    "ruleIndex": 11,
+                    "level": "note",
+                    "message": {
+                        "text": "symfony/http-foundation v4.4.49 is affected by CVE-2024-50345: CVE-2024-50345: Open redirect via browser-sanitized URLs. Verified fix: composer update symfony/http-foundation"
+                    },
+                    "locations": [
+                        {
+                            "physicalLocation": {
+                                "artifactLocation": {
+                                    "uri": "composer.lock",
+                                    "uriBaseId": "%SRCROOT%"
+                                },
+                                "region": {
+                                    "startLine": 6713
+                                }
+                            }
+                        }
+                    ],
+                    "partialFingerprints": {
+                        "advisoryPackage/v1": "PKSA-b35n-565h-rs4q@symfony/http-foundation"
+                    },
+                    "properties": {
+                        "package": "symfony/http-foundation",
+                        "version": "v4.4.49",
+                        "direct": false,
+                        "dev": false,
+                        "cve": "CVE-2024-50345",
+                        "severity": "low",
+                        "remediation_status": "verified",
+                        "command": "composer update symfony/http-foundation",
+                        "abandoned": [
+                            "sensio/framework-extra-bundle"
+                        ]
+                    }
+                },
+                {
+                    "ruleId": "PKSA-w2tw-kmfg-rt9s",
+                    "ruleIndex": 12,
+                    "level": "note",
+                    "message": {
+                        "text": "symfony/validator v4.4.48 is affected by CVE-2024-50343: CVE-2024-50343: Incorrect response from Validator when input ends with `\n`. No verified remediation found."
+                    },
+                    "locations": [
+                        {
+                            "physicalLocation": {
+                                "artifactLocation": {
+                                    "uri": "composer.lock",
+                                    "uriBaseId": "%SRCROOT%"
+                                },
+                                "region": {
+                                    "startLine": 9866
+                                }
+                            }
+                        }
+                    ],
+                    "partialFingerprints": {
+                        "advisoryPackage/v1": "PKSA-w2tw-kmfg-rt9s@symfony/validator"
+                    },
+                    "properties": {
+                        "package": "symfony/validator",
+                        "version": "v4.4.48",
+                        "direct": true,
+                        "dev": false,
+                        "cve": "CVE-2024-50343",
+                        "severity": "low",
+                        "remediation_status": "none"
                     }
                 },
                 {

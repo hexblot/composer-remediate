@@ -18,6 +18,6 @@ requires PHP 8, and `symfony/validator 4.4.48` (direct, `^4.4`) has its fix only
 
 The summary's combined command fixes 6 of 14 findings:
 
-    composer update symfony/http-foundation symfony/twig-bridge twig/twig symfony/process -w -m --with 'twig/twig:>=3.11.2,<3.12.0 || >=3.14.1'
+    composer update symfony/http-foundation symfony/process symfony/twig-bridge twig/twig -w -m --with 'twig/twig:>=3.11.2,<3.12.0 || >=3.14.1'
 
 Built with `bin/build-fixture.php --as-of=2024-11-10`.

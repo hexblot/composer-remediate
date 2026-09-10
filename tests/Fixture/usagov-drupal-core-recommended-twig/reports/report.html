@@ -16,6 +16,7 @@ table{border-collapse:collapse;width:100%;font-size:.92rem}th,td{text-align:left
 .badge{display:inline-block;font-size:.75rem;font-weight:600;padding:.1rem .5rem;border-radius:999px;border:1px solid currentColor;white-space:nowrap}
 .badge.ok{color:var(--ok)}.badge.none,.badge.rejected{color:var(--bad)}.badge.skipped,.badge.dev{color:var(--muted)}
 .badge.sev-critical,.badge.sev-high{color:var(--bad)}.badge.sev-medium{color:var(--warn)}.badge.sev-low{color:var(--muted)}
+.badge.kev{color:#fff;background:var(--bad);border-color:var(--bad)}.badge.epss{color:var(--warn)}.abandoned{color:var(--warn)}
 .warning{border-left:4px solid var(--warn);padding:.5rem .8rem;background:rgba(212,167,44,.1)}.clean{color:var(--ok);font-weight:600}
 .none-box{border-left:4px solid var(--bad);padding:.5rem .8rem;background:rgba(180,35,24,.08)}
 .advisories{padding-left:1.2rem}.advisories li{margin:.4rem 0}
@@ -24,7 +25,7 @@ details summary{cursor:pointer;color:var(--accent);margin:.5rem 0}
 <header><h1>Composer Remediate</h1><p class="sub">Composer Remediate — 4 findings in <code>usagov-drupal-core-recommended-twig</code></p></header>
 <main>
 <p class="warning">twig/twig: the recommended command moves drupal/core, drupal/core-recommended to a version that still carries another advisory; Composer 2.10+ advisory blocking may refuse it until that advisory is ignored in config.policy or blocking is disabled.</p>
-<section><h2>Summary</h2><p>4 advisories on 4 packages.</p><p class="command"><span class="badge ok">fixes 2 of 4</span> <code>composer update symfony/validator drupal/core-recommended -W -m</code></p><table class="summary"><thead><tr><th>Package</th><th>Advisories</th><th>Status</th><th>Recommended command</th></tr></thead><tbody><tr><td><a href="#finding-1">drupal/core 10.2.7</a></td><td>CVE-2024-45440</td><td><span class="badge none">no verified fix</span></td><td>—</td></tr><tr><td><a href="#finding-2">drupal/core-recommended 10.2.7</a></td><td>CVE-2024-45440</td><td><span class="badge none">no verified fix</span></td><td>—</td></tr><tr><td><a href="#finding-3">symfony/validator v6.4.8</a></td><td>CVE-2024-50343</td><td><span class="badge ok">verified</span></td><td><code>composer update symfony/validator</code></td></tr><tr><td><a href="#finding-4">twig/twig v3.8.0</a></td><td>CVE-2024-45411</td><td><span class="badge ok">verified</span></td><td><code>composer update drupal/core-recommended -W -m</code></td></tr></tbody></table></section>
+<section><h2>Summary</h2><p>4 advisories on 4 packages.</p><p class="command"><span class="badge ok">fixes 2 of 4</span> <code>composer update drupal/core-recommended symfony/validator -W -m</code></p><table class="summary"><thead><tr><th>Package</th><th>Advisories</th><th>Status</th><th>Recommended command</th></tr></thead><tbody><tr><td><a href="#finding-1">drupal/core 10.2.7</a></td><td>CVE-2024-45440</td><td><span class="badge none">no verified fix</span></td><td>—</td></tr><tr><td><a href="#finding-2">drupal/core-recommended 10.2.7</a></td><td>CVE-2024-45440</td><td><span class="badge none">no verified fix</span></td><td>—</td></tr><tr><td><a href="#finding-3">twig/twig v3.8.0</a></td><td>CVE-2024-45411</td><td><span class="badge ok">verified</span></td><td><code>composer update drupal/core-recommended -W -m</code></td></tr><tr><td><a href="#finding-4">symfony/validator v6.4.8</a></td><td>CVE-2024-50343</td><td><span class="badge ok">verified</span></td><td><code>composer update symfony/validator</code></td></tr></tbody></table></section>
 <section class="finding" id="finding-1">
 <h2>drupal/core <span class="version">10.2.7</span></h2>
 <p class="state">Transitive dependency.</p>
@@ -357,58 +358,6 @@ root
 </tbody></table></details>
 </section>
 <section class="finding" id="finding-3">
-<h2>symfony/validator <span class="version">v6.4.8</span></h2>
-<p class="state">Transitive dependency.</p>
-<h3>Advisories</h3><ul class="advisories">
-<li><strong><a href="https://symfony.com/cve-2024-50343" rel="noopener noreferrer">CVE-2024-50343 <small>(PKSA-w2tw-kmfg-rt9s)</small></a></strong> <span class="badge sev-low">low</span><br>CVE-2024-50343: Incorrect response from Validator when input ends with `
-`<br><small>affected versions: <code>&gt;=2.0.0,&lt;3.0.0|&gt;=3.0.0,&lt;4.0.0|&gt;=4.0.0,&lt;5.0.0|&gt;=5.0.0,&lt;5.1.0|&gt;=5.1.0,&lt;5.2.0|&gt;=5.2.0,&lt;5.3.0|&gt;=5.3.0,&lt;5.4.0|&gt;=5.4.0,&lt;5.4.43|&gt;=6.0.0,&lt;6.1.0|&gt;=6.1.0,&lt;6.2.0|&gt;=6.2.0,&lt;6.3.0|&gt;=6.3.0,&lt;6.4.0|&gt;=6.4.0,&lt;6.4.11|&gt;=7.0.0,&lt;7.1.0|&gt;=7.1.0,&lt;7.1.4</code></small></li>
-</ul>
-<h3>Introduced by</h3>
-<pre class="tree">root
-└── drupal/address 1.12.0
-    └── drupal/core 10.2.7
-        └── symfony/validator v6.4.8  (requires ^6.4)
-
-root
-└── drupal/admin_toolbar 3.4.2
-    └── drupal/core 10.2.7
-        └── symfony/validator v6.4.8  (requires ^6.4)
-
-root
-└── drupal/allowed_formats 3.0.0
-    └── drupal/core 10.2.7
-        └── symfony/validator v6.4.8  (requires ^6.4)
-
-root
-└── drupal/autologout 2.0.0
-    └── drupal/core 10.2.7
-        └── symfony/validator v6.4.8  (requires ^6.4)
-
-root
-└── drupal/ckeditor_templates 1.4.0
-    └── drupal/ckeditor 1.0.2
-        └── drupal/core 10.2.7
-            └── symfony/validator v6.4.8  (requires ^6.4)</pre>
-<p><small>… and 73 more paths</small></p>
-<h3>Recommended remediation</h3>
-<p class="command"><code>composer update symfony/validator</code></p>
-<p class="validation"><span class="badge ok">Composer validation: PASS</span> 1 package changed, 0 added, 0 removed, 0 root constraints changed.</p>
-<details open><summary>Expected changes (1)</summary><table class="changes"><thead><tr><th>Package</th><th>From</th><th>To</th><th>Kind</th></tr></thead><tbody>
-<tr><td>symfony/validator</td><td>v6.4.8</td><td>v6.4.12</td><td>upgraded, patch</td></tr>
-</tbody></table></details>
-<details><summary>Other candidates (9)</summary><table class="candidates"><thead><tr><th>Outcome</th><th>Command</th><th>Detail</th></tr></thead><tbody>
-<tr><td><span class="badge ok">valid, rank 2</span></td><td><code>composer update symfony/validator -w -m --with &apos;symfony/validator:&gt;=6.4.11,&lt;7.0.0 || &gt;=7.1.4&apos;</code></td><td>1 changes</td></tr>
-<tr><td><span class="badge ok">valid, rank 3</span></td><td><code>composer update drupal/address -W -m --with &apos;symfony/validator:&gt;=6.4.11,&lt;7.0.0 || &gt;=7.1.4&apos;</code></td><td>1 changes</td></tr>
-<tr><td><span class="badge ok">valid, rank 4</span></td><td><code>composer update drupal/ckeditor_templates -W -m --with &apos;symfony/validator:&gt;=6.4.11,&lt;7.0.0 || &gt;=7.1.4&apos;</code></td><td>1 changes</td></tr>
-<tr><td><span class="badge ok">valid, rank 5</span></td><td><code>composer update drupal/allowed_formats -W -m --with &apos;symfony/validator:&gt;=6.4.11,&lt;7.0.0 || &gt;=7.1.4&apos;</code></td><td>2 changes</td></tr>
-<tr><td><span class="badge ok">valid, rank 6</span></td><td><code>composer update drupal/autologout -W -m --with &apos;symfony/validator:&gt;=6.4.11,&lt;7.0.0 || &gt;=7.1.4&apos;</code></td><td>2 changes</td></tr>
-<tr><td><span class="badge ok">valid, rank 7</span></td><td><code>composer update drupal/admin_toolbar -W -m --with &apos;symfony/validator:&gt;=6.4.11,&lt;7.0.0 || &gt;=7.1.4&apos;</code></td><td>2 changes</td></tr>
-<tr><td><span class="badge ok">valid, rank 8</span></td><td><code>composer update drupal/core-recommended -W -m --with &apos;symfony/validator:&gt;=6.4.11,&lt;7.0.0 || &gt;=7.1.4&apos;</code></td><td>4 changes</td></tr>
-<tr><td><span class="badge ok">valid, rank 9</span></td><td><code>composer update drupal/address drupal/admin_toolbar drupal/allowed_formats drupal/autologout drupal/ckeditor_templates drupal/uswds_ckeditor_integration drupal/ckeditor_media_resize drupal/ckeditor_templates_ui drupal/composer_deploy drupal/conditional_fields drupal/content_lock drupal/content_moderation_notifications drupal/core-recommended drupal/views_data_export drupal/ctools drupal/devel drupal/diff drupal/entity_embed drupal/paragraphs_entity_embed drupal/entity_reference_revisions drupal/externalauth drupal/faqfield drupal/feeds drupal/field_defaults drupal/uswds_paragraph_components drupal/field_permissions drupal/hierarchy_manager drupal/image_style_warmer drupal/jquery_ui_accordion drupal/language_switcher_extended drupal/log_stdout drupal/menu_block drupal/menu_breadcrumb drupal/menu_entity_index drupal/menu_item_fields drupal/new_relic_rpm drupal/node_menus drupal/pathauto drupal/redirect drupal/remove_http_headers drupal/s3fs drupal/samlauth drupal/simple_sitemap drupal/simplify_menu drupal/tome drupal/twig_tweak drupal/uswds_base drupal/views_menu_children_filter drupal/viewsreference -W -m --with &apos;symfony/validator:&gt;=6.4.11,&lt;7.0.0 || &gt;=7.1.4&apos;</code></td><td>56 changes</td></tr>
-<tr><td><span class="badge skipped">not tried</span></td><td><code>composer require --no-update drupal/core-recommended:^11.0 &amp;&amp; composer update drupal/core-recommended -W -m --with &apos;symfony/validator:&gt;=6.4.11,&lt;7.0.0 || &gt;=7.1.4&apos;</code></td><td>a better candidate already exists</td></tr>
-</tbody></table></details>
-</section>
-<section class="finding" id="finding-4">
 <h2>twig/twig <span class="version">v3.8.0</span></h2>
 <p class="state">Transitive dependency.</p>
 <h3>Advisories</h3><ul class="advisories">
@@ -524,6 +473,58 @@ Use the option --with-all-dependencies (-W) to allow upgrades, downgrades and re
 <tr><td><span class="badge skipped">not tried</span></td><td><code>composer require --no-update drupal/core-recommended:^11.0 &amp;&amp; composer update drupal/core-recommended -W -m --with &apos;twig/twig:&gt;=3.11.0,&lt;3.12.0 || &gt;=3.14.0&apos;</code></td><td>a better candidate already exists</td></tr>
 </tbody></table></details>
 </section>
+<section class="finding" id="finding-4">
+<h2>symfony/validator <span class="version">v6.4.8</span></h2>
+<p class="state">Transitive dependency.</p>
+<h3>Advisories</h3><ul class="advisories">
+<li><strong><a href="https://symfony.com/cve-2024-50343" rel="noopener noreferrer">CVE-2024-50343 <small>(PKSA-w2tw-kmfg-rt9s)</small></a></strong> <span class="badge sev-low">low</span><br>CVE-2024-50343: Incorrect response from Validator when input ends with `
+`<br><small>affected versions: <code>&gt;=2.0.0,&lt;3.0.0|&gt;=3.0.0,&lt;4.0.0|&gt;=4.0.0,&lt;5.0.0|&gt;=5.0.0,&lt;5.1.0|&gt;=5.1.0,&lt;5.2.0|&gt;=5.2.0,&lt;5.3.0|&gt;=5.3.0,&lt;5.4.0|&gt;=5.4.0,&lt;5.4.43|&gt;=6.0.0,&lt;6.1.0|&gt;=6.1.0,&lt;6.2.0|&gt;=6.2.0,&lt;6.3.0|&gt;=6.3.0,&lt;6.4.0|&gt;=6.4.0,&lt;6.4.11|&gt;=7.0.0,&lt;7.1.0|&gt;=7.1.0,&lt;7.1.4</code></small></li>
+</ul>
+<h3>Introduced by</h3>
+<pre class="tree">root
+└── drupal/address 1.12.0
+    └── drupal/core 10.2.7
+        └── symfony/validator v6.4.8  (requires ^6.4)
+
+root
+└── drupal/admin_toolbar 3.4.2
+    └── drupal/core 10.2.7
+        └── symfony/validator v6.4.8  (requires ^6.4)
+
+root
+└── drupal/allowed_formats 3.0.0
+    └── drupal/core 10.2.7
+        └── symfony/validator v6.4.8  (requires ^6.4)
+
+root
+└── drupal/autologout 2.0.0
+    └── drupal/core 10.2.7
+        └── symfony/validator v6.4.8  (requires ^6.4)
+
+root
+└── drupal/ckeditor_templates 1.4.0
+    └── drupal/ckeditor 1.0.2
+        └── drupal/core 10.2.7
+            └── symfony/validator v6.4.8  (requires ^6.4)</pre>
+<p><small>… and 73 more paths</small></p>
+<h3>Recommended remediation</h3>
+<p class="command"><code>composer update symfony/validator</code></p>
+<p class="validation"><span class="badge ok">Composer validation: PASS</span> 1 package changed, 0 added, 0 removed, 0 root constraints changed.</p>
+<details open><summary>Expected changes (1)</summary><table class="changes"><thead><tr><th>Package</th><th>From</th><th>To</th><th>Kind</th></tr></thead><tbody>
+<tr><td>symfony/validator</td><td>v6.4.8</td><td>v6.4.12</td><td>upgraded, patch</td></tr>
+</tbody></table></details>
+<details><summary>Other candidates (9)</summary><table class="candidates"><thead><tr><th>Outcome</th><th>Command</th><th>Detail</th></tr></thead><tbody>
+<tr><td><span class="badge ok">valid, rank 2</span></td><td><code>composer update symfony/validator -w -m --with &apos;symfony/validator:&gt;=6.4.11,&lt;7.0.0 || &gt;=7.1.4&apos;</code></td><td>1 changes</td></tr>
+<tr><td><span class="badge ok">valid, rank 3</span></td><td><code>composer update drupal/address -W -m --with &apos;symfony/validator:&gt;=6.4.11,&lt;7.0.0 || &gt;=7.1.4&apos;</code></td><td>1 changes</td></tr>
+<tr><td><span class="badge ok">valid, rank 4</span></td><td><code>composer update drupal/ckeditor_templates -W -m --with &apos;symfony/validator:&gt;=6.4.11,&lt;7.0.0 || &gt;=7.1.4&apos;</code></td><td>1 changes</td></tr>
+<tr><td><span class="badge ok">valid, rank 5</span></td><td><code>composer update drupal/allowed_formats -W -m --with &apos;symfony/validator:&gt;=6.4.11,&lt;7.0.0 || &gt;=7.1.4&apos;</code></td><td>2 changes</td></tr>
+<tr><td><span class="badge ok">valid, rank 6</span></td><td><code>composer update drupal/autologout -W -m --with &apos;symfony/validator:&gt;=6.4.11,&lt;7.0.0 || &gt;=7.1.4&apos;</code></td><td>2 changes</td></tr>
+<tr><td><span class="badge ok">valid, rank 7</span></td><td><code>composer update drupal/admin_toolbar -W -m --with &apos;symfony/validator:&gt;=6.4.11,&lt;7.0.0 || &gt;=7.1.4&apos;</code></td><td>2 changes</td></tr>
+<tr><td><span class="badge ok">valid, rank 8</span></td><td><code>composer update drupal/core-recommended -W -m --with &apos;symfony/validator:&gt;=6.4.11,&lt;7.0.0 || &gt;=7.1.4&apos;</code></td><td>4 changes</td></tr>
+<tr><td><span class="badge ok">valid, rank 9</span></td><td><code>composer update drupal/address drupal/admin_toolbar drupal/allowed_formats drupal/autologout drupal/ckeditor_templates drupal/uswds_ckeditor_integration drupal/ckeditor_media_resize drupal/ckeditor_templates_ui drupal/composer_deploy drupal/conditional_fields drupal/content_lock drupal/content_moderation_notifications drupal/core-recommended drupal/views_data_export drupal/ctools drupal/devel drupal/diff drupal/entity_embed drupal/paragraphs_entity_embed drupal/entity_reference_revisions drupal/externalauth drupal/faqfield drupal/feeds drupal/field_defaults drupal/uswds_paragraph_components drupal/field_permissions drupal/hierarchy_manager drupal/image_style_warmer drupal/jquery_ui_accordion drupal/language_switcher_extended drupal/log_stdout drupal/menu_block drupal/menu_breadcrumb drupal/menu_entity_index drupal/menu_item_fields drupal/new_relic_rpm drupal/node_menus drupal/pathauto drupal/redirect drupal/remove_http_headers drupal/s3fs drupal/samlauth drupal/simple_sitemap drupal/simplify_menu drupal/tome drupal/twig_tweak drupal/uswds_base drupal/views_menu_children_filter drupal/viewsreference -W -m --with &apos;symfony/validator:&gt;=6.4.11,&lt;7.0.0 || &gt;=7.1.4&apos;</code></td><td>56 changes</td></tr>
+<tr><td><span class="badge skipped">not tried</span></td><td><code>composer require --no-update drupal/core-recommended:^11.0 &amp;&amp; composer update drupal/core-recommended -W -m --with &apos;symfony/validator:&gt;=6.4.11,&lt;7.0.0 || &gt;=7.1.4&apos;</code></td><td>a better candidate already exists</td></tr>
+</tbody></table></details>
+</section>
 <section class="meta"><h2>Analysis metadata</h2><dl>
 <dt>project</dt><dd>usagov-drupal-core-recommended-twig</dd>
 <dt>engine version</dt><dd>dev-main</dd>
@@ -532,7 +533,7 @@ Use the option --with-all-dependencies (-W) to allow upgrades, downgrades and re
 <dt>advisory source</dt><dd>advisory snapshot advisories.json</dd>
 <dt>solver</dt><dd>in-process Composer dry-run</dd>
 <dt>solver runs</dt><dd>56</dd>
-<dt>composer json sha256</dt><dd>b0762c1fc20619619719f9f3fe768a9c027a0855b7df014f13f5cad2a5d11dae</dd>
+<dt>composer json sha256</dt><dd>8caaa1fb655c1133f9f36967a23d78510033b4ba81426152c02bbd874e013ab7</dd>
 <dt>composer lock sha256</dt><dd>b7f5a2dbf068b7d2c712b0b48b4ffebaa46cf09a360f1875741011455cea8c99</dd>
 <dt>analysis timestamp</dt><dd>(fixture)</dd>
 <dt>locked packages</dt><dd>168</dd>

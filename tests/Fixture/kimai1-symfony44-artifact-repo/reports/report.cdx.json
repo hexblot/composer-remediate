@@ -29,7 +29,7 @@
             },
             {
                 "name": "composer-remediate:combined_command",
-                "value": "composer update symfony/http-foundation symfony/twig-bridge twig/twig symfony/process -w -m --with 'twig/twig:>=3.11.2,<3.12.0 || >=3.14.1'"
+                "value": "composer update symfony/http-foundation symfony/process symfony/twig-bridge twig/twig -w -m --with 'twig/twig:>=3.11.2,<3.12.0 || >=3.14.1'"
             },
             {
                 "name": "composer-remediate:exit_code",
@@ -2168,74 +2168,6 @@
             "published": "2024-08-29T17:58:27+00:00"
         },
         {
-            "bom-ref": "vuln:PKSA-b35n-565h-rs4q@pkg:composer/symfony/http-foundation@4.4.49",
-            "id": "PKSA-b35n-565h-rs4q",
-            "source": {
-                "name": "Packagist",
-                "url": "https://packagist.org/security-advisories/PKSA-b35n-565h-rs4q"
-            },
-            "references": [
-                {
-                    "id": "CVE-2024-50345",
-                    "source": {
-                        "name": "NVD",
-                        "url": "https://nvd.nist.gov/vuln/detail/CVE-2024-50345"
-                    }
-                },
-                {
-                    "id": "CVE-2024-50345",
-                    "source": {
-                        "name": "advisory",
-                        "url": "https://symfony.com/cve-2024-50345"
-                    }
-                }
-            ],
-            "ratings": [
-                {
-                    "severity": "low",
-                    "method": "other",
-                    "source": {
-                        "name": "Packagist",
-                        "url": "https://packagist.org/security-advisories/PKSA-b35n-565h-rs4q"
-                    }
-                }
-            ],
-            "description": "CVE-2024-50345: Open redirect via browser-sanitized URLs",
-            "detail": "Affected versions: >=2.0.0,<3.0.0|>=3.0.0,<4.0.0|>=4.0.0,<5.0.0|>=5.0.0,<5.1.0|>=5.1.0,<5.2.0|>=5.2.0,<5.3.0|>=5.3.0,<5.4.0|>=5.4.0,<5.4.46|>=6.0.0,<6.1.0|>=6.1.0,<6.2.0|>=6.2.0,<6.3.0|>=6.3.0,<6.4.0|>=6.4.0,<6.4.14|>=7.0.0,<7.1.0|>=7.1.0,<7.1.7",
-            "recommendation": "Run: composer update symfony/http-foundation",
-            "affects": [
-                {
-                    "ref": "pkg:composer/symfony/http-foundation@4.4.49"
-                }
-            ],
-            "properties": [
-                {
-                    "name": "composer-remediate:remediation_status",
-                    "value": "verified"
-                },
-                {
-                    "name": "composer-remediate:command",
-                    "value": "composer update symfony/http-foundation"
-                },
-                {
-                    "name": "composer-remediate:direct",
-                    "value": "false"
-                },
-                {
-                    "name": "composer-remediate:dev",
-                    "value": "false"
-                }
-            ],
-            "published": "2024-11-05T08:00:00+00:00",
-            "analysis": {
-                "state": "exploitable",
-                "response": [
-                    "update"
-                ],
-                "detail": "1 package change(s) verified by Composer's solver."
-            }
-        },
-        {
             "bom-ref": "vuln:PKSA-ztgh-x9c8-k66g@pkg:composer/symfony/twig-bridge@4.4.49",
             "id": "PKSA-ztgh-x9c8-k66g",
             "source": {
@@ -2302,63 +2234,6 @@
                 ],
                 "detail": "1 package change(s) verified by Composer's solver."
             }
-        },
-        {
-            "bom-ref": "vuln:PKSA-w2tw-kmfg-rt9s@pkg:composer/symfony/validator@4.4.48",
-            "id": "PKSA-w2tw-kmfg-rt9s",
-            "source": {
-                "name": "Packagist",
-                "url": "https://packagist.org/security-advisories/PKSA-w2tw-kmfg-rt9s"
-            },
-            "references": [
-                {
-                    "id": "CVE-2024-50343",
-                    "source": {
-                        "name": "NVD",
-                        "url": "https://nvd.nist.gov/vuln/detail/CVE-2024-50343"
-                    }
-                },
-                {
-                    "id": "CVE-2024-50343",
-                    "source": {
-                        "name": "advisory",
-                        "url": "https://symfony.com/cve-2024-50343"
-                    }
-                }
-            ],
-            "ratings": [
-                {
-                    "severity": "low",
-                    "method": "other",
-                    "source": {
-                        "name": "Packagist",
-                        "url": "https://packagist.org/security-advisories/PKSA-w2tw-kmfg-rt9s"
-                    }
-                }
-            ],
-            "description": "CVE-2024-50343: Incorrect response from Validator when input ends with `\n`",
-            "detail": "Affected versions: >=2.0.0,<3.0.0|>=3.0.0,<4.0.0|>=4.0.0,<5.0.0|>=5.0.0,<5.1.0|>=5.1.0,<5.2.0|>=5.2.0,<5.3.0|>=5.3.0,<5.4.0|>=5.4.0,<5.4.43|>=6.0.0,<6.1.0|>=6.1.0,<6.2.0|>=6.2.0,<6.3.0|>=6.3.0,<6.4.0|>=6.4.0,<6.4.11|>=7.0.0,<7.1.0|>=7.1.0,<7.1.4",
-            "recommendation": "No verified remediation found.",
-            "affects": [
-                {
-                    "ref": "pkg:composer/symfony/validator@4.4.48"
-                }
-            ],
-            "properties": [
-                {
-                    "name": "composer-remediate:remediation_status",
-                    "value": "none"
-                },
-                {
-                    "name": "composer-remediate:direct",
-                    "value": "true"
-                },
-                {
-                    "name": "composer-remediate:dev",
-                    "value": "false"
-                }
-            ],
-            "published": "2024-08-30T08:00:00+00:00"
         },
         {
             "bom-ref": "vuln:PKSA-2wrf-1xmk-1pky@pkg:composer/twig/twig@3.5.1",
@@ -2563,6 +2438,135 @@
                 ],
                 "detail": "2 package change(s) verified by Composer's solver."
             }
+        },
+        {
+            "bom-ref": "vuln:PKSA-b35n-565h-rs4q@pkg:composer/symfony/http-foundation@4.4.49",
+            "id": "PKSA-b35n-565h-rs4q",
+            "source": {
+                "name": "Packagist",
+                "url": "https://packagist.org/security-advisories/PKSA-b35n-565h-rs4q"
+            },
+            "references": [
+                {
+                    "id": "CVE-2024-50345",
+                    "source": {
+                        "name": "NVD",
+                        "url": "https://nvd.nist.gov/vuln/detail/CVE-2024-50345"
+                    }
+                },
+                {
+                    "id": "CVE-2024-50345",
+                    "source": {
+                        "name": "advisory",
+                        "url": "https://symfony.com/cve-2024-50345"
+                    }
+                }
+            ],
+            "ratings": [
+                {
+                    "severity": "low",
+                    "method": "other",
+                    "source": {
+                        "name": "Packagist",
+                        "url": "https://packagist.org/security-advisories/PKSA-b35n-565h-rs4q"
+                    }
+                }
+            ],
+            "description": "CVE-2024-50345: Open redirect via browser-sanitized URLs",
+            "detail": "Affected versions: >=2.0.0,<3.0.0|>=3.0.0,<4.0.0|>=4.0.0,<5.0.0|>=5.0.0,<5.1.0|>=5.1.0,<5.2.0|>=5.2.0,<5.3.0|>=5.3.0,<5.4.0|>=5.4.0,<5.4.46|>=6.0.0,<6.1.0|>=6.1.0,<6.2.0|>=6.2.0,<6.3.0|>=6.3.0,<6.4.0|>=6.4.0,<6.4.14|>=7.0.0,<7.1.0|>=7.1.0,<7.1.7",
+            "recommendation": "Run: composer update symfony/http-foundation",
+            "affects": [
+                {
+                    "ref": "pkg:composer/symfony/http-foundation@4.4.49"
+                }
+            ],
+            "properties": [
+                {
+                    "name": "composer-remediate:remediation_status",
+                    "value": "verified"
+                },
+                {
+                    "name": "composer-remediate:command",
+                    "value": "composer update symfony/http-foundation"
+                },
+                {
+                    "name": "composer-remediate:direct",
+                    "value": "false"
+                },
+                {
+                    "name": "composer-remediate:dev",
+                    "value": "false"
+                },
+                {
+                    "name": "composer-remediate:abandoned",
+                    "value": "sensio/framework-extra-bundle"
+                }
+            ],
+            "published": "2024-11-05T08:00:00+00:00",
+            "analysis": {
+                "state": "exploitable",
+                "response": [
+                    "update"
+                ],
+                "detail": "1 package change(s) verified by Composer's solver."
+            }
+        },
+        {
+            "bom-ref": "vuln:PKSA-w2tw-kmfg-rt9s@pkg:composer/symfony/validator@4.4.48",
+            "id": "PKSA-w2tw-kmfg-rt9s",
+            "source": {
+                "name": "Packagist",
+                "url": "https://packagist.org/security-advisories/PKSA-w2tw-kmfg-rt9s"
+            },
+            "references": [
+                {
+                    "id": "CVE-2024-50343",
+                    "source": {
+                        "name": "NVD",
+                        "url": "https://nvd.nist.gov/vuln/detail/CVE-2024-50343"
+                    }
+                },
+                {
+                    "id": "CVE-2024-50343",
+                    "source": {
+                        "name": "advisory",
+                        "url": "https://symfony.com/cve-2024-50343"
+                    }
+                }
+            ],
+            "ratings": [
+                {
+                    "severity": "low",
+                    "method": "other",
+                    "source": {
+                        "name": "Packagist",
+                        "url": "https://packagist.org/security-advisories/PKSA-w2tw-kmfg-rt9s"
+                    }
+                }
+            ],
+            "description": "CVE-2024-50343: Incorrect response from Validator when input ends with `\n`",
+            "detail": "Affected versions: >=2.0.0,<3.0.0|>=3.0.0,<4.0.0|>=4.0.0,<5.0.0|>=5.0.0,<5.1.0|>=5.1.0,<5.2.0|>=5.2.0,<5.3.0|>=5.3.0,<5.4.0|>=5.4.0,<5.4.43|>=6.0.0,<6.1.0|>=6.1.0,<6.2.0|>=6.2.0,<6.3.0|>=6.3.0,<6.4.0|>=6.4.0,<6.4.11|>=7.0.0,<7.1.0|>=7.1.0,<7.1.4",
+            "recommendation": "No verified remediation found.",
+            "affects": [
+                {
+                    "ref": "pkg:composer/symfony/validator@4.4.48"
+                }
+            ],
+            "properties": [
+                {
+                    "name": "composer-remediate:remediation_status",
+                    "value": "none"
+                },
+                {
+                    "name": "composer-remediate:direct",
+                    "value": "true"
+                },
+                {
+                    "name": "composer-remediate:dev",
+                    "value": "false"
+                }
+            ],
+            "published": "2024-08-30T08:00:00+00:00"
         },
         {
             "bom-ref": "vuln:PKSA-wws7-mr54-jsny@pkg:composer/symfony/process@4.4.44",

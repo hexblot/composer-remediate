@@ -24,6 +24,6 @@ Eleven further advisories in the same lock (laravel/framework, symfony/http-foun
 nesbot/carbon, league/commonmark, aws/aws-sdk-php, robrichards/xmlseclibs via onelogin/php-saml) are
 all fixable by partial updates, so the summary offers one combined command:
 
-    composer update aws/aws-sdk-php laravel/socialite:v5.24.1 laravel/framework league/commonmark nesbot/carbon onelogin/php-saml robrichards/xmlseclibs symfony/http-foundation symfony/process -W -m --with 'firebase/php-jwt:>=7.0.0'
+    composer update aws/aws-sdk-php laravel/framework laravel/socialite:v5.24.1 league/commonmark nesbot/carbon onelogin/php-saml robrichards/xmlseclibs symfony/http-foundation symfony/process -W -m --with 'firebase/php-jwt:>=7.0.0'
 
 Built with `bin/build-fixture.php --as-of=2026-01-10`.

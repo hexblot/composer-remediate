@@ -76,7 +76,11 @@ final class LockSnapshot
      */
     private static function detach(PackageInterface $package): PackageInterface
     {
-        $copy = new Package($package->getName(), $package->getVersion(), $package->getPrettyVersion());
+        $copy = new \Composer\Package\CompletePackage($package->getName(), $package->getVersion(), $package->getPrettyVersion());
+        if ($package instanceof \Composer\Package\CompletePackageInterface && $package->isAbandoned()) {
+            // Packagist's abandoned marker travels in the lock file; a replacement name is kept when given.
+            $copy->setAbandoned($package->getReplacementPackage() ?? true);
+        }
         $copy->setReplaces($package->getReplaces());
         $copy->setProvides($package->getProvides());
         $copy->setRequires($package->getRequires());

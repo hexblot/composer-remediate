@@ -15,10 +15,11 @@ final class DatabaseWriter
      * @param list<array{name: string, fetched_at: string, records: int, gaps?: int}>  $sourceStats
      * @param array<string, string>                                                 $extraMeta
      * @param list<CoverageGap>                                                     $gaps       upstream records left out because they could not be read
+     * @param array<string, Enrichment\ExploitRecord>                                $exploits   EPSS / KEV data for the CVEs of these advisories, keyed by CVE
      *
-     * @return array{path: string, hash: string, advisories: int, conflicts: int, gaps: int, bytes: int}
+     * @return array{path: string, hash: string, advisories: int, conflicts: int, gaps: int, exploits: int, bytes: int}
      */
-    public function write(array $advisories, array $sourceStats, string $path, array $extraMeta = [], array $gaps = []): array
+    public function write(array $advisories, array $sourceStats, string $path, array $extraMeta = [], array $gaps = [], array $exploits = []): array
     {
         if (!extension_loaded('pdo_sqlite')) {
             throw new \RuntimeException('The pdo_sqlite PHP extension is required to build an advisory database.');
@@ -29,7 +30,7 @@ final class DatabaseWriter
         }
         $tmp = $path . '.tmp-' . bin2hex(random_bytes(4));
         @unlink($tmp);
-        $hash = self::datasetHash($advisories);
+        $hash = self::datasetHash($advisories, array_keys(array_filter($exploits, static fn (Enrichment\ExploitRecord $r): bool => $r->kevAdded !== null)));
 
         $pdo = new \PDO('sqlite:' . $tmp, null, null, [\PDO::ATTR_ERRMODE => \PDO::ERRMODE_EXCEPTION]);
         $pdo->exec('PRAGMA journal_mode = OFF');
@@ -43,6 +44,7 @@ final class DatabaseWriter
         $pdo->exec('CREATE TABLE source (advisory_id INTEGER NOT NULL, name TEXT NOT NULL, remote_id TEXT NOT NULL, url TEXT, modified_at TEXT)');
         $pdo->exec('CREATE TABLE gap (source TEXT NOT NULL, remote_id TEXT NOT NULL, package TEXT, reason TEXT NOT NULL, raw TEXT)');
         $pdo->exec('CREATE INDEX gap_package ON gap (package)');
+        $pdo->exec('CREATE TABLE exploit (cve TEXT PRIMARY KEY, epss REAL, epss_percentile REAL, kev_added TEXT, kev_ransomware INTEGER NOT NULL DEFAULT 0)');
 
         $pdo->beginTransaction();
         $insertAdvisory = $pdo->prepare('INSERT INTO advisory (canonical_id, title, link, severity, reported_at, withdrawn_at, has_conflict) VALUES (?, ?, ?, ?, ?, ?, ?)');
@@ -78,6 +80,14 @@ final class DatabaseWriter
         foreach ($gaps as $gap) {
             $insertGap->execute([$gap->source, $gap->remoteId, $gap->package !== null ? strtolower($gap->package) : null, $gap->reason, $gap->raw !== null ? substr($gap->raw, 0, 500) : null]);
         }
+        $insertExploit = $pdo->prepare('INSERT OR REPLACE INTO exploit (cve, epss, epss_percentile, kev_added, kev_ransomware) VALUES (?, ?, ?, ?, ?)');
+        $kev = 0;
+        foreach ($exploits as $record) {
+            $insertExploit->execute([strtoupper($record->cve), $record->epss, $record->epssPercentile, $record->kevAdded?->format('Y-m-d'), $record->kevRansomware ? 1 : 0]);
+            if ($record->kevAdded !== null) {
+                ++$kev;
+            }
+        }
         $meta = [
             'schema_version' => (string) Database::SCHEMA_VERSION,
             'built_at' => gmdate(DATE_ATOM),
@@ -85,6 +95,8 @@ final class DatabaseWriter
             'advisory_count' => (string) count($advisories),
             'conflict_count' => (string) $conflicts,
             'gap_count' => (string) count($gaps),
+            'exploit_count' => (string) count($exploits),
+            'kev_count_matched' => (string) $kev,
             'sources' => json_encode($sourceStats, JSON_THROW_ON_ERROR),
         ] + $extraMeta;
         $insertMeta = $pdo->prepare('INSERT INTO meta (key, value) VALUES (?, ?)');
@@ -100,16 +112,18 @@ final class DatabaseWriter
             throw new \RuntimeException("Cannot write $path");
         }
 
-        return ['path' => $path, 'hash' => $hash, 'advisories' => count($advisories), 'conflicts' => $conflicts, 'gaps' => count($gaps), 'bytes' => (int) filesize($path)];
+        return ['path' => $path, 'hash' => $hash, 'advisories' => count($advisories), 'conflicts' => $conflicts, 'gaps' => count($gaps), 'exploits' => count($exploits), 'bytes' => (int) filesize($path)];
     }
 
     /**
-     * Hash of the canonical security dataset: ids, aliases, ranges, withdrawal. Retrieval timestamps and
-     * source metadata are excluded so an unchanged dataset hashes identically across builds.
+     * Hash of the canonical security dataset: ids, aliases, ranges, withdrawal, severity, and which of
+     * these CVEs CISA lists as exploited. Retrieval timestamps, source metadata and EPSS scores (which
+     * move daily for most CVEs) are excluded so an unchanged dataset hashes identically across builds.
      *
      * @param list<NormalizedAdvisory> $advisories
+     * @param list<string>             $kevCves    CVEs of these advisories that appear in the KEV catalogue
      */
-    public static function datasetHash(array $advisories): string
+    public static function datasetHash(array $advisories, array $kevCves = []): string
     {
         $canonical = [];
         foreach ($advisories as $advisory) {
@@ -120,7 +134,9 @@ final class DatabaseWriter
             $canonical[$advisory->canonicalId] = [$aliases, $ranges, $advisory->withdrawnAt?->format(DATE_ATOM), $advisory->severity];
         }
         ksort($canonical);
+        $kev = array_values(array_unique(array_map('strtoupper', $kevCves)));
+        sort($kev);
 
-        return hash('sha256', json_encode($canonical, JSON_THROW_ON_ERROR));
+        return hash('sha256', json_encode($kev === [] ? $canonical : ['advisories' => $canonical, 'kev' => $kev], JSON_THROW_ON_ERROR));
     }
 }

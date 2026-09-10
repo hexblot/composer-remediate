@@ -62,11 +62,18 @@ Other candidates
 
 - **Affected**: the locked package and every advisory on it. Several advisories on one package are
   always handled together; the command must escape all of them. `(replaces x/y)` after the package
-  means the advisory is about a package this one replaces or provides.
+  means the advisory is about a package this one replaces or provides. With an
+  [advisory database](advisory-database.md#exploit-data-epss-and-cisa-kev) carrying exploit data, an
+  advisory line is followed by `EPSS 0.93 (97th percentile)` and, when CISA lists the CVE as exploited
+  in the wild, `listed in CISA KEV since 2026-02-01`; findings are ordered by that urgency, so the
+  first finding in the report is the one to fix today.
 - **Introduced by**: the dependency paths from the root package down to the vulnerable one, with
   the constraint each link places on the next. Up to five paths are printed; the JSON report has up
   to ten and the total count.
-- **Current state**: direct or transitive, and whether it is a development requirement only.
+- **Current state**: direct or transitive, and whether it is a development requirement only. An
+  **Abandoned** line follows when Packagist marks the vulnerable package or a package on its
+  dependency path abandoned, with the replacement Packagist names: an abandoned parent will not ship
+  the release that lifts its pin, and an abandoned vulnerable package will not ship a fix.
 - **Recommended remediation**: what moves. For a transitive package this names the parent that is
   updated and the version the vulnerable package lands on.
 - **Composer validation**: `PASS` means Composer's own solver resolved the command in a dry run and

@@ -16,6 +16,7 @@ table{border-collapse:collapse;width:100%;font-size:.92rem}th,td{text-align:left
 .badge{display:inline-block;font-size:.75rem;font-weight:600;padding:.1rem .5rem;border-radius:999px;border:1px solid currentColor;white-space:nowrap}
 .badge.ok{color:var(--ok)}.badge.none,.badge.rejected{color:var(--bad)}.badge.skipped,.badge.dev{color:var(--muted)}
 .badge.sev-critical,.badge.sev-high{color:var(--bad)}.badge.sev-medium{color:var(--warn)}.badge.sev-low{color:var(--muted)}
+.badge.kev{color:#fff;background:var(--bad);border-color:var(--bad)}.badge.epss{color:var(--warn)}.abandoned{color:var(--warn)}
 .warning{border-left:4px solid var(--warn);padding:.5rem .8rem;background:rgba(212,167,44,.1)}.clean{color:var(--ok);font-weight:600}
 .none-box{border-left:4px solid var(--bad);padding:.5rem .8rem;background:rgba(180,35,24,.08)}
 .advisories{padding-left:1.2rem}.advisories li{margin:.4rem 0}
@@ -23,290 +24,11 @@ details summary{cursor:pointer;color:var(--accent);margin:.5rem 0}
 .meta dl{display:grid;grid-template-columns:max-content 1fr;gap:.2rem 1rem;font-size:.85rem;color:var(--muted)}.meta dt{font-weight:600}.meta dd{margin:0;word-break:break-all}</style></head><body>
 <header><h1>Composer Remediate</h1><p class="sub">Composer Remediate — 10 findings in <code>shopware-6420-twig-no-fix</code></p></header>
 <main>
-<section><h2>Summary</h2><p>26 advisories on 10 packages.</p><p class="command"><span class="badge ok">fixes 7 of 26</span> <code>composer update aws/aws-sdk-php composer/composer symfony/twig-bridge shopware/core -W -m --with &apos;symfony/validator:&gt;=5.4.43,&lt;6.0.0 || &gt;=6.4.11,&lt;7.0.0 || &gt;=7.1.4&apos;</code></p><table class="summary"><thead><tr><th>Package</th><th>Advisories</th><th>Status</th><th>Recommended command</th></tr></thead><tbody><tr><td><a href="#finding-1">aws/aws-sdk-php 3.269.6</a></td><td>CVE-2023-51651</td><td><span class="badge ok">verified</span></td><td><code>composer update aws/aws-sdk-php -w -m</code></td></tr><tr><td><a href="#finding-2">composer/composer 2.2.21</a></td><td>CVE-2024-35242, CVE-2024-24821, CVE-2023-43655, CVE-2024-35241</td><td><span class="badge ok">verified</span></td><td><code>composer update composer/composer</code></td></tr><tr><td><a href="#finding-3">league/oauth2-server 8.3.6</a></td><td>CVE-2023-37260</td><td><span class="badge none">no verified fix</span></td><td>—</td></tr><tr><td><a href="#finding-4">phenx/php-svg-lib 0.3.4</a></td><td>CVE-2024-25117, CVE-2023-50251, PKSA-qsyb-3psh-f1t3</td><td><span class="badge none">no verified fix</span></td><td>—</td></tr><tr><td><a href="#finding-5">shopware/core 6.4.20.2</a></td><td>CVE-2024-42354, CVE-2024-42355, CVE-2024-42356, CVE-2024-22406, CVE-2024-22407, CVE-2024-31447, CVE-2024-42357</td><td><span class="badge none">no verified fix</span></td><td>—</td></tr><tr><td><a href="#finding-6">shopwarelabs/dompdf v1.0.3</a></td><td>CVE-2023-23924, CVE-2023-50262, CVE-2022-0085, CVE-2022-41343, CVE-2022-2400</td><td><span class="badge none">no verified fix</span></td><td>—</td></tr><tr><td><a href="#finding-7">symfony/twig-bridge v5.4.22</a></td><td>CVE-2023-46734</td><td><span class="badge ok">verified</span></td><td><code>composer update symfony/twig-bridge</code></td></tr><tr><td><a href="#finding-8">symfony/validator v5.4.23</a></td><td>CVE-2024-50343</td><td><span class="badge ok">verified</span></td><td><code>composer update shopware/core -W -m --with &apos;symfony/validator:&gt;=5.4.43,&lt;6.0.0 || &gt;=6.4.11,&lt;7.0.0 || &gt;=7.1.4&apos;</code></td></tr><tr><td><a href="#finding-9">tecnickcom/tcpdf 6.4.4</a></td><td>CVE-2024-32489, CVE-2024-22640</td><td><span class="badge none">no verified fix</span></td><td>—</td></tr><tr><td><a href="#finding-10">twig/twig v3.4.3</a></td><td>CVE-2024-45411</td><td><span class="badge none">no verified fix</span></td><td>—</td></tr></tbody></table></section>
+<section><h2>Summary</h2><p>26 advisories on 10 packages.</p><p class="command"><span class="badge ok">fixes 7 of 26</span> <code>composer update aws/aws-sdk-php composer/composer shopware/core symfony/twig-bridge -W -m --with &apos;symfony/validator:&gt;=5.4.43,&lt;6.0.0 || &gt;=6.4.11,&lt;7.0.0 || &gt;=7.1.4&apos;</code></p><table class="summary"><thead><tr><th>Package</th><th>Advisories</th><th>Status</th><th>Recommended command</th></tr></thead><tbody><tr><td><a href="#finding-1">phenx/php-svg-lib 0.3.4</a></td><td>CVE-2024-25117, CVE-2023-50251, PKSA-qsyb-3psh-f1t3</td><td><span class="badge none">no verified fix</span></td><td>—</td></tr><tr><td><a href="#finding-2">shopware/core 6.4.20.2</a></td><td>CVE-2024-42354, CVE-2024-42355, CVE-2024-42356, CVE-2024-22406, CVE-2024-22407, CVE-2024-31447, CVE-2024-42357</td><td><span class="badge none">no verified fix</span></td><td>—</td></tr><tr><td><a href="#finding-3">shopwarelabs/dompdf v1.0.3</a></td><td>CVE-2023-23924, CVE-2023-50262, CVE-2022-0085, CVE-2022-41343, CVE-2022-2400</td><td><span class="badge none">no verified fix</span></td><td>—</td></tr><tr><td><a href="#finding-4">composer/composer 2.2.21</a></td><td>CVE-2024-35242, CVE-2024-24821, CVE-2023-43655, CVE-2024-35241</td><td><span class="badge ok">verified</span></td><td><code>composer update composer/composer</code></td></tr><tr><td><a href="#finding-5">league/oauth2-server 8.3.6</a></td><td>CVE-2023-37260</td><td><span class="badge none">no verified fix</span></td><td>—</td></tr><tr><td><a href="#finding-6">aws/aws-sdk-php 3.269.6</a></td><td>CVE-2023-51651</td><td><span class="badge ok">verified</span></td><td><code>composer update aws/aws-sdk-php -w -m</code></td></tr><tr><td><a href="#finding-7">symfony/twig-bridge v5.4.22</a></td><td>CVE-2023-46734</td><td><span class="badge ok">verified</span></td><td><code>composer update symfony/twig-bridge</code></td></tr><tr><td><a href="#finding-8">tecnickcom/tcpdf 6.4.4</a></td><td>CVE-2024-32489, CVE-2024-22640</td><td><span class="badge none">no verified fix</span></td><td>—</td></tr><tr><td><a href="#finding-9">twig/twig v3.4.3</a></td><td>CVE-2024-45411</td><td><span class="badge none">no verified fix</span></td><td>—</td></tr><tr><td><a href="#finding-10">symfony/validator v5.4.23</a></td><td>CVE-2024-50343</td><td><span class="badge ok">verified</span></td><td><code>composer update shopware/core -W -m --with &apos;symfony/validator:&gt;=5.4.43,&lt;6.0.0 || &gt;=6.4.11,&lt;7.0.0 || &gt;=7.1.4&apos;</code></td></tr></tbody></table></section>
 <section class="finding" id="finding-1">
-<h2>aws/aws-sdk-php <span class="version">3.269.6</span></h2>
-<p class="state">Transitive dependency.</p>
-<h3>Advisories</h3><ul class="advisories">
-<li><strong><a href="https://nvd.nist.gov/vuln/detail/CVE-2023-51651" rel="noopener noreferrer">CVE-2023-51651 <small>(PKSA-n3s6-289w-qtqb)</small></a></strong> <span class="badge sev-medium">medium</span><br>Potential URI resolution path traversal in the AWS SDK for PHP<br><small>affected versions: <code>&gt;=3.0.0,&lt;3.288.1</code></small></li>
-</ul>
-<h3>Introduced by</h3>
-<pre class="tree">root
-└── shopware/core 6.4.20.2
-    └── league/flysystem-aws-s3-v3 1.0.30
-        └── aws/aws-sdk-php 3.269.6  (requires ^3.20.0)
-
-root
-└── shopware/administration 6.4.20.2
-    └── shopware/core 6.4.20.2
-        └── league/flysystem-aws-s3-v3 1.0.30
-            └── aws/aws-sdk-php 3.269.6  (requires ^3.20.0)
-
-root
-└── shopware/elasticsearch 6.4.20.2
-    └── shopware/core 6.4.20.2
-        └── league/flysystem-aws-s3-v3 1.0.30
-            └── aws/aws-sdk-php 3.269.6  (requires ^3.20.0)
-
-root
-└── shopware/recovery 6.4.20.2
-    └── shopware/core 6.4.20.2
-        └── league/flysystem-aws-s3-v3 1.0.30
-            └── aws/aws-sdk-php 3.269.6  (requires ^3.20.0)
-
-root
-└── shopware/storefront 6.4.20.2
-    └── shopware/core 6.4.20.2
-        └── league/flysystem-aws-s3-v3 1.0.30
-            └── aws/aws-sdk-php 3.269.6  (requires ^3.20.0)</pre>
-<p><small>… and 5 more paths</small></p>
-<h3>Recommended remediation</h3>
-<p class="command"><code>composer update aws/aws-sdk-php -w -m</code></p>
-<p class="validation"><span class="badge ok">Composer validation: PASS</span> 2 packages changed, 0 added, 0 removed, 0 root constraints changed.</p>
-<details open><summary>Expected changes (2)</summary><table class="changes"><thead><tr><th>Package</th><th>From</th><th>To</th><th>Kind</th></tr></thead><tbody>
-<tr><td>aws/aws-crt-php</td><td>v1.2.1</td><td>v1.2.6</td><td>upgraded, patch</td></tr>
-<tr><td>aws/aws-sdk-php</td><td>3.269.6</td><td>3.321.11</td><td>upgraded, minor</td></tr>
-</tbody></table></details>
-<details><summary>Other candidates (10)</summary><table class="candidates"><thead><tr><th>Outcome</th><th>Command</th><th>Detail</th></tr></thead><tbody>
-<tr><td><span class="badge ok">valid, rank 2</span></td><td><code>composer update shopware/core -W -m --with &apos;aws/aws-sdk-php:&gt;=3.288.1&apos;</code></td><td>2 changes</td></tr>
-<tr><td><span class="badge ok">valid, rank 3</span></td><td><code>composer update shopware/administration -W -m --with &apos;aws/aws-sdk-php:&gt;=3.288.1&apos;</code></td><td>2 changes</td></tr>
-<tr><td><span class="badge ok">valid, rank 4</span></td><td><code>composer update shopware/elasticsearch -W -m --with &apos;aws/aws-sdk-php:&gt;=3.288.1&apos;</code></td><td>2 changes</td></tr>
-<tr><td><span class="badge ok">valid, rank 5</span></td><td><code>composer update shopware/recovery -W -m --with &apos;aws/aws-sdk-php:&gt;=3.288.1&apos;</code></td><td>2 changes</td></tr>
-<tr><td><span class="badge ok">valid, rank 6</span></td><td><code>composer update shopware/storefront -W -m --with &apos;aws/aws-sdk-php:&gt;=3.288.1&apos;</code></td><td>2 changes</td></tr>
-<tr><td><span class="badge rejected">rejected</span></td><td><code>composer update aws/aws-sdk-php</code></td><td><pre class="reason">resolves, but aws/aws-sdk-php ends at 3.283.10 which is still affected by PKSA-n3s6-289w-qtqb</pre></td></tr>
-<tr><td><span class="badge skipped">not tried</span></td><td><code>composer require --no-update shopware/core:^6.5 &amp;&amp; composer update shopware/core -W -m --with &apos;aws/aws-sdk-php:&gt;=3.288.1&apos;</code></td><td>a better candidate already exists</td></tr>
-<tr><td><span class="badge skipped">not tried</span></td><td><code>composer require --no-update shopware/administration:^6.5 &amp;&amp; composer update shopware/administration -W -m --with &apos;aws/aws-sdk-php:&gt;=3.288.1&apos;</code></td><td>a better candidate already exists</td></tr>
-<tr><td><span class="badge skipped">not tried</span></td><td><code>composer require --no-update shopware/elasticsearch:^6.5 &amp;&amp; composer update shopware/elasticsearch -W -m --with &apos;aws/aws-sdk-php:&gt;=3.288.1&apos;</code></td><td>a better candidate already exists</td></tr>
-</tbody></table></details>
-</section>
-<section class="finding" id="finding-2">
-<h2>composer/composer <span class="version">2.2.21</span></h2>
-<p class="state">Transitive dependency.</p>
-<h3>Advisories</h3><ul class="advisories">
-<li><strong><a href="https://github.com/advisories/GHSA-v9qv-c7wm-wgmf" rel="noopener noreferrer">CVE-2024-35242 <small>(PKSA-b8f7-zn44-r4gz)</small></a></strong> <span class="badge sev-high">high</span><br>Composer has multiple command injections via malicious git/hg branch names<br><small>affected versions: <code>&gt;=2.3,&lt;2.7.7|&gt;=2.0,&lt;2.2.24</code></small></li>
-<li><strong><a href="https://github.com/advisories/GHSA-7c6p-848j-wh5h" rel="noopener noreferrer">CVE-2024-24821 <small>(PKSA-jn72-4kr8-gj3h)</small></a></strong> <span class="badge sev-high">high</span><br>Composer code execution and possible privilege escalation via compromised InstalledVersions.php or installed.php<br><small>affected versions: <code>&gt;=2.3.0-rc1,&lt;2.7.0|&gt;=2.0.0-alpha1,&lt;2.2.23</code></small></li>
-<li><strong><a href="https://github.com/advisories/GHSA-jm6m-4632-36hf" rel="noopener noreferrer">CVE-2023-43655 <small>(PKSA-m1ph-vmbx-2xd3)</small></a></strong> <span class="badge sev-high">high</span><br>Composer Remote Code Execution vulnerability via web-accessible composer.phar<br><small>affected versions: <code>&gt;=2.3.0,&lt;2.6.4|&gt;=2.0.0,&lt;2.2.22|&lt;1.10.27</code></small></li>
-<li><strong><a href="https://github.com/advisories/GHSA-47f6-5gq3-vx9c" rel="noopener noreferrer">CVE-2024-35241 <small>(PKSA-s25b-vbmp-jvhh)</small></a></strong> <span class="badge sev-high">high</span><br>Composer has a command injection via malicious git branch name<br><small>affected versions: <code>&gt;=2.3,&lt;2.7.7|&gt;=2.0,&lt;2.2.24</code></small></li>
-</ul>
-<h3>Introduced by</h3>
-<pre class="tree">root
-└── shopware/core 6.4.20.2
-    └── composer/composer 2.2.21  (requires ^2.2.17)
-
-root
-└── shopware/administration 6.4.20.2
-    └── shopware/core 6.4.20.2
-        └── composer/composer 2.2.21  (requires ^2.2.17)
-
-root
-└── shopware/elasticsearch 6.4.20.2
-    └── shopware/core 6.4.20.2
-        └── composer/composer 2.2.21  (requires ^2.2.17)
-
-root
-└── shopware/recovery 6.4.20.2
-    └── shopware/core 6.4.20.2
-        └── composer/composer 2.2.21  (requires ^2.2.17)
-
-root
-└── shopware/storefront 6.4.20.2
-    └── shopware/core 6.4.20.2
-        └── composer/composer 2.2.21  (requires ^2.2.17)</pre>
-<h3>Recommended remediation</h3>
-<p class="command"><code>composer update composer/composer</code></p>
-<p class="validation"><span class="badge ok">Composer validation: PASS</span> 1 package changed, 0 added, 0 removed, 0 root constraints changed.</p>
-<details open><summary>Expected changes (1)</summary><table class="changes"><thead><tr><th>Package</th><th>From</th><th>To</th><th>Kind</th></tr></thead><tbody>
-<tr><td>composer/composer</td><td>2.2.21</td><td>2.2.24</td><td>upgraded, patch</td></tr>
-</tbody></table></details>
-<details><summary>Other candidates (9)</summary><table class="candidates"><thead><tr><th>Outcome</th><th>Command</th><th>Detail</th></tr></thead><tbody>
-<tr><td><span class="badge ok">valid, rank 2</span></td><td><code>composer update composer/composer -w -m --with &apos;composer/composer:&gt;=2.2.24,&lt;2.3.0 || &gt;=2.7.7&apos;</code></td><td>1 changes</td></tr>
-<tr><td><span class="badge ok">valid, rank 3</span></td><td><code>composer update shopware/core -W -m --with &apos;composer/composer:&gt;=2.2.24,&lt;2.3.0 || &gt;=2.7.7&apos;</code></td><td>1 changes</td></tr>
-<tr><td><span class="badge ok">valid, rank 4</span></td><td><code>composer update shopware/administration -W -m --with &apos;composer/composer:&gt;=2.2.24,&lt;2.3.0 || &gt;=2.7.7&apos;</code></td><td>1 changes</td></tr>
-<tr><td><span class="badge ok">valid, rank 5</span></td><td><code>composer update shopware/elasticsearch -W -m --with &apos;composer/composer:&gt;=2.2.24,&lt;2.3.0 || &gt;=2.7.7&apos;</code></td><td>1 changes</td></tr>
-<tr><td><span class="badge ok">valid, rank 6</span></td><td><code>composer update shopware/recovery -W -m --with &apos;composer/composer:&gt;=2.2.24,&lt;2.3.0 || &gt;=2.7.7&apos;</code></td><td>1 changes</td></tr>
-<tr><td><span class="badge ok">valid, rank 7</span></td><td><code>composer update shopware/storefront -W -m --with &apos;composer/composer:&gt;=2.2.24,&lt;2.3.0 || &gt;=2.7.7&apos;</code></td><td>1 changes</td></tr>
-<tr><td><span class="badge skipped">not tried</span></td><td><code>composer require --no-update shopware/core:^6.5 &amp;&amp; composer update shopware/core -W -m --with &apos;composer/composer:&gt;=2.2.24,&lt;2.3.0 || &gt;=2.7.7&apos;</code></td><td>a better candidate already exists</td></tr>
-<tr><td><span class="badge skipped">not tried</span></td><td><code>composer require --no-update shopware/administration:^6.5 &amp;&amp; composer update shopware/administration -W -m --with &apos;composer/composer:&gt;=2.2.24,&lt;2.3.0 || &gt;=2.7.7&apos;</code></td><td>a better candidate already exists</td></tr>
-<tr><td><span class="badge skipped">not tried</span></td><td><code>composer require --no-update shopware/elasticsearch:^6.5 &amp;&amp; composer update shopware/elasticsearch -W -m --with &apos;composer/composer:&gt;=2.2.24,&lt;2.3.0 || &gt;=2.7.7&apos;</code></td><td>a better candidate already exists</td></tr>
-</tbody></table></details>
-</section>
-<section class="finding" id="finding-3">
-<h2>league/oauth2-server <span class="version">8.3.6</span></h2>
-<p class="state">Transitive dependency.</p>
-<h3>Advisories</h3><ul class="advisories">
-<li><strong><a href="https://github.com/advisories/GHSA-wj7q-gjg8-3cpm" rel="noopener noreferrer">CVE-2023-37260 <small>(PKSA-pc52-dbxt-c1w6)</small></a></strong> <span class="badge sev-high">high</span><br>league/oauth2-server key exposed in exception message when passing as a string and providing an invalid pass phrase<br><small>affected versions: <code>&gt;=8.5.0,&lt;8.5.3|&gt;=8.3.2,&lt;8.4.2</code></small></li>
-</ul>
-<h3>Introduced by</h3>
-<pre class="tree">root
-└── shopware/core 6.4.20.2
-    └── league/oauth2-server 8.3.6  (requires ~8.3.2)
-
-root
-└── shopware/administration 6.4.20.2
-    └── shopware/core 6.4.20.2
-        └── league/oauth2-server 8.3.6  (requires ~8.3.2)
-
-root
-└── shopware/elasticsearch 6.4.20.2
-    └── shopware/core 6.4.20.2
-        └── league/oauth2-server 8.3.6  (requires ~8.3.2)
-
-root
-└── shopware/recovery 6.4.20.2
-    └── shopware/core 6.4.20.2
-        └── league/oauth2-server 8.3.6  (requires ~8.3.2)
-
-root
-└── shopware/storefront 6.4.20.2
-    └── shopware/core 6.4.20.2
-        └── league/oauth2-server 8.3.6  (requires ~8.3.2)</pre>
-<h3>Recommended remediation</h3><p class="none-box">No verified remediation found (none).</p>
-<details><summary>Other candidates (16)</summary><table class="candidates"><thead><tr><th>Outcome</th><th>Command</th><th>Detail</th></tr></thead><tbody>
-<tr><td><span class="badge rejected">rejected</span></td><td><code>composer update league/oauth2-server</code></td><td><pre class="reason">resolves, but league/oauth2-server ends at 8.3.6 which is still affected by PKSA-pc52-dbxt-c1w6</pre></td></tr>
-<tr><td><span class="badge rejected">rejected</span></td><td><code>composer update league/oauth2-server -w -m --with &apos;league/oauth2-server:&gt;=8.4.2,&lt;8.5.0 || &gt;=8.5.3&apos;</code></td><td><pre class="reason">Composer could not resolve the dependencies: Your requirements could not be resolved to an installable set of packages.
-  Problem 1
-    - shopware/core is locked to version 6.4.20.2 and an update of this package was not requested.
-    - shopware/core 6.4.20.2 requires league/oauth2-server ~8.3.2 -&gt; found league/oauth2-server[8.3.6] but it conflicts with your temporary update constraint (league/oauth2-server:&gt;=8.4.2,&lt;8.5.0 || &gt;=8.5.3).
-  Problem 2
-    - shopware/storefront is locked to version 6.4.20.2 and an update of this package was not requested.
-    - shopware/core 6.4.20.2 requires league/oauth2-server ~8.3.2 -&gt; found league/oauth2-server[8.3.6] but it conflicts with your temporary update constraint (league/oauth2-server:&gt;=8.4.2,&lt;8.5.0 || &gt;=8.5.3).
-    - shopware/storefront 6.4.20.2 requires shopware/core v6.4.20.2 -&gt; satisfiable by shopware/core[6.4.20.2].
-Use the option --with-all-dependencies (-W) to allow upgrades, downgrades and removals for packages currently locked to specific versions.</pre></td></tr>
-<tr><td><span class="badge rejected">rejected</span></td><td><code>composer update shopware/core -W -m --with &apos;league/oauth2-server:&gt;=8.4.2,&lt;8.5.0 || &gt;=8.5.3&apos;</code></td><td><pre class="reason">Composer could not resolve the dependencies: Your requirements could not be resolved to an installable set of packages.
-  Problem 1
-    - Root composer.json requires shopware/core ~v6.4.0 -&gt; satisfiable by shopware/core[6.4.20.2].
-    - shopware/core 6.4.20.2 requires league/oauth2-server ~8.3.2 -&gt; found league/oauth2-server[8.3.6] but it conflicts with your temporary update constraint (league/oauth2-server:&gt;=8.4.2,&lt;8.5.0 || &gt;=8.5.3).
-  Problem 2
-    - shopware/storefront is locked to version 6.4.20.2 and an update of this package was not requested.
-    - shopware/core 6.4.20.2 requires league/oauth2-server ~8.3.2 -&gt; found league/oauth2-server[8.3.6] but it conflicts with your temporary update constraint (league/oauth2-server:&gt;=8.4.2,&lt;8.5.0 || &gt;=8.5.3).
-    - shopware/storefront 6.4.20.2 requires shopware/core v6.4.20.2 -&gt; satisfiable by shopware/core[6.4.20.2].</pre></td></tr>
-<tr><td><span class="badge rejected">rejected</span></td><td><code>composer update shopware/core shopware/storefront -W -m --with &apos;league/oauth2-server:&gt;=8.4.2,&lt;8.5.0 || &gt;=8.5.3&apos;</code></td><td><pre class="reason">Composer could not resolve the dependencies: Your requirements could not be resolved to an installable set of packages.
-  Problem 1
-    - Root composer.json requires shopware/core ~v6.4.0 -&gt; satisfiable by shopware/core[6.4.20.2].
-    - shopware/core 6.4.20.2 requires league/oauth2-server ~8.3.2 -&gt; found league/oauth2-server[8.3.6] but it conflicts with your temporary update constraint (league/oauth2-server:&gt;=8.4.2,&lt;8.5.0 || &gt;=8.5.3).
-  Problem 2
-    - Root composer.json requires shopware/storefront ~v6.4.0 -&gt; satisfiable by shopware/storefront[6.4.20.2].
-    - shopware/core 6.4.20.2 requires league/oauth2-server ~8.3.2 -&gt; found league/oauth2-server[8.3.6] but it conflicts with your temporary update constraint (league/oauth2-server:&gt;=8.4.2,&lt;8.5.0 || &gt;=8.5.3).
-    - shopware/storefront 6.4.20.2 requires shopware/core v6.4.20.2 -&gt; satisfiable by shopware/core[6.4.20.2].</pre></td></tr>
-<tr><td><span class="badge rejected">rejected</span></td><td><code>composer update shopware/administration -W -m --with &apos;league/oauth2-server:&gt;=8.4.2,&lt;8.5.0 || &gt;=8.5.3&apos;</code></td><td><pre class="reason">Composer could not resolve the dependencies: Your requirements could not be resolved to an installable set of packages.
-  Problem 1
-    - Root composer.json requires shopware/core ~v6.4.0 -&gt; satisfiable by shopware/core[6.4.20.2].
-    - shopware/core 6.4.20.2 requires league/oauth2-server ~8.3.2 -&gt; found league/oauth2-server[8.3.6] but it conflicts with your temporary update constraint (league/oauth2-server:&gt;=8.4.2,&lt;8.5.0 || &gt;=8.5.3).
-  Problem 2
-    - shopware/storefront is locked to version 6.4.20.2 and an update of this package was not requested.
-    - shopware/core 6.4.20.2 requires league/oauth2-server ~8.3.2 -&gt; found league/oauth2-server[8.3.6] but it conflicts with your temporary update constraint (league/oauth2-server:&gt;=8.4.2,&lt;8.5.0 || &gt;=8.5.3).
-    - shopware/storefront 6.4.20.2 requires shopware/core v6.4.20.2 -&gt; satisfiable by shopware/core[6.4.20.2].</pre></td></tr>
-<tr><td><span class="badge rejected">rejected</span></td><td><code>composer update shopware/administration shopware/storefront -W -m --with &apos;league/oauth2-server:&gt;=8.4.2,&lt;8.5.0 || &gt;=8.5.3&apos;</code></td><td><pre class="reason">Composer could not resolve the dependencies: Your requirements could not be resolved to an installable set of packages.
-  Problem 1
-    - Root composer.json requires shopware/core ~v6.4.0 -&gt; satisfiable by shopware/core[6.4.20.2].
-    - shopware/core 6.4.20.2 requires league/oauth2-server ~8.3.2 -&gt; found league/oauth2-server[8.3.6] but it conflicts with your temporary update constraint (league/oauth2-server:&gt;=8.4.2,&lt;8.5.0 || &gt;=8.5.3).
-  Problem 2
-    - Root composer.json requires shopware/storefront ~v6.4.0 -&gt; satisfiable by shopware/storefront[6.4.20.2].
-    - shopware/core 6.4.20.2 requires league/oauth2-server ~8.3.2 -&gt; found league/oauth2-server[8.3.6] but it conflicts with your temporary update constraint (league/oauth2-server:&gt;=8.4.2,&lt;8.5.0 || &gt;=8.5.3).
-    - shopware/storefront 6.4.20.2 requires shopware/core v6.4.20.2 -&gt; satisfiable by shopware/core[6.4.20.2].</pre></td></tr>
-<tr><td><span class="badge rejected">rejected</span></td><td><code>composer update shopware/elasticsearch -W -m --with &apos;league/oauth2-server:&gt;=8.4.2,&lt;8.5.0 || &gt;=8.5.3&apos;</code></td><td><pre class="reason">Composer could not resolve the dependencies: Your requirements could not be resolved to an installable set of packages.
-  Problem 1
-    - Root composer.json requires shopware/core ~v6.4.0 -&gt; satisfiable by shopware/core[6.4.20.2].
-    - shopware/core 6.4.20.2 requires league/oauth2-server ~8.3.2 -&gt; found league/oauth2-server[8.3.6] but it conflicts with your temporary update constraint (league/oauth2-server:&gt;=8.4.2,&lt;8.5.0 || &gt;=8.5.3).
-  Problem 2
-    - shopware/storefront is locked to version 6.4.20.2 and an update of this package was not requested.
-    - shopware/core 6.4.20.2 requires league/oauth2-server ~8.3.2 -&gt; found league/oauth2-server[8.3.6] but it conflicts with your temporary update constraint (league/oauth2-server:&gt;=8.4.2,&lt;8.5.0 || &gt;=8.5.3).
-    - shopware/storefront 6.4.20.2 requires shopware/core v6.4.20.2 -&gt; satisfiable by shopware/core[6.4.20.2].</pre></td></tr>
-<tr><td><span class="badge rejected">rejected</span></td><td><code>composer update shopware/elasticsearch shopware/storefront -W -m --with &apos;league/oauth2-server:&gt;=8.4.2,&lt;8.5.0 || &gt;=8.5.3&apos;</code></td><td><pre class="reason">Composer could not resolve the dependencies: Your requirements could not be resolved to an installable set of packages.
-  Problem 1
-    - Root composer.json requires shopware/core ~v6.4.0 -&gt; satisfiable by shopware/core[6.4.20.2].
-    - shopware/core 6.4.20.2 requires league/oauth2-server ~8.3.2 -&gt; found league/oauth2-server[8.3.6] but it conflicts with your temporary update constraint (league/oauth2-server:&gt;=8.4.2,&lt;8.5.0 || &gt;=8.5.3).
-  Problem 2
-    - Root composer.json requires shopware/storefront ~v6.4.0 -&gt; satisfiable by shopware/storefront[6.4.20.2].
-    - shopware/core 6.4.20.2 requires league/oauth2-server ~8.3.2 -&gt; found league/oauth2-server[8.3.6] but it conflicts with your temporary update constraint (league/oauth2-server:&gt;=8.4.2,&lt;8.5.0 || &gt;=8.5.3).
-    - shopware/storefront 6.4.20.2 requires shopware/core v6.4.20.2 -&gt; satisfiable by shopware/core[6.4.20.2].</pre></td></tr>
-<tr><td><span class="badge rejected">rejected</span></td><td><code>composer update shopware/recovery -W -m --with &apos;league/oauth2-server:&gt;=8.4.2,&lt;8.5.0 || &gt;=8.5.3&apos;</code></td><td><pre class="reason">Composer could not resolve the dependencies: Your requirements could not be resolved to an installable set of packages.
-  Problem 1
-    - Root composer.json requires shopware/core ~v6.4.0 -&gt; satisfiable by shopware/core[6.4.20.2].
-    - shopware/core 6.4.20.2 requires league/oauth2-server ~8.3.2 -&gt; found league/oauth2-server[8.3.6] but it conflicts with your temporary update constraint (league/oauth2-server:&gt;=8.4.2,&lt;8.5.0 || &gt;=8.5.3).
-  Problem 2
-    - shopware/storefront is locked to version 6.4.20.2 and an update of this package was not requested.
-    - shopware/core 6.4.20.2 requires league/oauth2-server ~8.3.2 -&gt; found league/oauth2-server[8.3.6] but it conflicts with your temporary update constraint (league/oauth2-server:&gt;=8.4.2,&lt;8.5.0 || &gt;=8.5.3).
-    - shopware/storefront 6.4.20.2 requires shopware/core v6.4.20.2 -&gt; satisfiable by shopware/core[6.4.20.2].</pre></td></tr>
-<tr><td><span class="badge rejected">rejected</span></td><td><code>composer update shopware/recovery shopware/storefront -W -m --with &apos;league/oauth2-server:&gt;=8.4.2,&lt;8.5.0 || &gt;=8.5.3&apos;</code></td><td><pre class="reason">Composer could not resolve the dependencies: Your requirements could not be resolved to an installable set of packages.
-  Problem 1
-    - Root composer.json requires shopware/core ~v6.4.0 -&gt; satisfiable by shopware/core[6.4.20.2].
-    - shopware/core 6.4.20.2 requires league/oauth2-server ~8.3.2 -&gt; found league/oauth2-server[8.3.6] but it conflicts with your temporary update constraint (league/oauth2-server:&gt;=8.4.2,&lt;8.5.0 || &gt;=8.5.3).
-  Problem 2
-    - Root composer.json requires shopware/storefront ~v6.4.0 -&gt; satisfiable by shopware/storefront[6.4.20.2].
-    - shopware/core 6.4.20.2 requires league/oauth2-server ~8.3.2 -&gt; found league/oauth2-server[8.3.6] but it conflicts with your temporary update constraint (league/oauth2-server:&gt;=8.4.2,&lt;8.5.0 || &gt;=8.5.3).
-    - shopware/storefront 6.4.20.2 requires shopware/core v6.4.20.2 -&gt; satisfiable by shopware/core[6.4.20.2].</pre></td></tr>
-<tr><td><span class="badge rejected">rejected</span></td><td><code>composer update shopware/storefront -W -m --with &apos;league/oauth2-server:&gt;=8.4.2,&lt;8.5.0 || &gt;=8.5.3&apos;</code></td><td><pre class="reason">Composer could not resolve the dependencies: Your requirements could not be resolved to an installable set of packages.
-  Problem 1
-    - Root composer.json requires shopware/core ~v6.4.0 -&gt; satisfiable by shopware/core[6.4.20.2].
-    - shopware/core 6.4.20.2 requires league/oauth2-server ~8.3.2 -&gt; found league/oauth2-server[8.3.6] but it conflicts with your temporary update constraint (league/oauth2-server:&gt;=8.4.2,&lt;8.5.0 || &gt;=8.5.3).
-  Problem 2
-    - Root composer.json requires shopware/storefront ~v6.4.0 -&gt; satisfiable by shopware/storefront[6.4.20.2].
-    - shopware/core 6.4.20.2 requires league/oauth2-server ~8.3.2 -&gt; found league/oauth2-server[8.3.6] but it conflicts with your temporary update constraint (league/oauth2-server:&gt;=8.4.2,&lt;8.5.0 || &gt;=8.5.3).
-    - shopware/storefront 6.4.20.2 requires shopware/core v6.4.20.2 -&gt; satisfiable by shopware/core[6.4.20.2].</pre></td></tr>
-<tr><td><span class="badge rejected">rejected</span></td><td><code>composer require --no-update shopware/core:^6.5 &amp;&amp; composer update shopware/core -W -m --with &apos;league/oauth2-server:&gt;=8.4.2,&lt;8.5.0 || &gt;=8.5.3&apos;</code></td><td><pre class="reason">Composer could not resolve the dependencies: Your requirements could not be resolved to an installable set of packages.
-  Problem 1
-    - Root composer.json requires shopware/core ^6.5, found shopware/core[6.5.0.0, ..., v6.6.6.0] but these were not loaded, likely because it conflicts with another require.
-  Problem 2
-    - shopware/administration is locked to version 6.4.20.2 and an update of this package was not requested.
-    - shopware/administration 6.4.20.2 requires shopware/core v6.4.20.2 -&gt; found shopware/core[6.4.20.2] but it conflicts with your root composer.json require (^6.5).
-  Problem 3
-    - shopware/elasticsearch is locked to version 6.4.20.2 and an update of this package was not requested.
-    - shopware/elasticsearch 6.4.20.2 requires shopware/core v6.4.20.2 -&gt; found shopware/core[6.4.20.2] but it conflicts with your root composer.json require (^6.5).
-  Problem 4
-    - shopware/recovery is locked to version 6.4.20.2 and an update of this package was not requested.
-    - shopware/recovery 6.4.20.2 requires shopware/core v6.4.20.2 -&gt; found shopware/core[6.4.20.2] but it conflicts with your root composer.json require (^6.5).
-  Problem 5
-    - shopware/storefront is locked to version 6.4.20.2 and an update of this package was not requested.
-    - shopware/storefront 6.4.20.2 requires shopware/core v6.4.20.2 -&gt; found shopware/core[6.4.20.2] but it conflicts with your root composer.json require (^6.5).</pre></td></tr>
-<tr><td><span class="badge rejected">rejected</span></td><td><code>composer require --no-update shopware/core:^6.5 &amp;&amp; composer update shopware/core shopware/administration shopware/elasticsearch shopware/recovery shopware/storefront -W -m --with &apos;league/oauth2-server:&gt;=8.4.2,&lt;8.5.0 || &gt;=8.5.3&apos;</code></td><td><pre class="reason">Composer could not resolve the dependencies: Your requirements could not be resolved to an installable set of packages.
-  Problem 1
-    - Root composer.json requires shopware/administration ~v6.4.0 -&gt; satisfiable by shopware/administration[6.4.20.2].
-    - shopware/administration 6.4.20.2 requires shopware/core v6.4.20.2 -&gt; found shopware/core[6.4.20.2] but it conflicts with your root composer.json require (^6.5).
-  Problem 2
-    - Root composer.json requires shopware/elasticsearch ~v6.4.0 -&gt; satisfiable by shopware/elasticsearch[6.4.20.2].
-    - shopware/elasticsearch 6.4.20.2 requires shopware/core v6.4.20.2 -&gt; found shopware/core[6.4.20.2] but it conflicts with your root composer.json require (^6.5).
-  Problem 3
-    - Root composer.json requires shopware/recovery ~v6.4.0 -&gt; satisfiable by shopware/recovery[6.4.20.2].
-    - shopware/recovery 6.4.20.2 requires shopware/core v6.4.20.2 -&gt; found shopware/core[6.4.20.2] but it conflicts with your root composer.json require (^6.5).
-  Problem 4
-    - Root composer.json requires shopware/storefront ~v6.4.0 -&gt; satisfiable by shopware/storefront[6.4.20.2].
-    - shopware/storefront 6.4.20.2 requires shopware/core v6.4.20.2 -&gt; found shopware/core[6.4.20.2] but it conflicts with your root composer.json require (^6.5).
-  Problem 5
-    - Root composer.json requires shopware/core ^6.5 -&gt; satisfiable by shopware/core[6.5.0.0, ..., v6.6.6.0].
-    - shopware/core[6.5.0.0, ..., v6.5.7.4] require php ~8.1.0 || ~8.2.0 -&gt; your php version (7.4.3; overridden via config.platform, actual: 8.5.5) does not satisfy that requirement.
-    - shopware/core[v6.5.8.0, ..., v6.5.8.14] require php ~8.1.0 || ~8.2.0 || ~8.3.0 -&gt; your php version (7.4.3; overridden via config.platform, actual: 8.5.5) does not satisfy that requirement.
-    - shopware/core[v6.6.0.0, ..., v6.6.6.0] require php ~8.2.0 || ~8.3.0 -&gt; your php version (7.4.3; overridden via config.platform, actual: 8.5.5) does not satisfy that requirement.</pre></td></tr>
-<tr><td><span class="badge rejected">rejected</span></td><td><code>composer require --no-update shopware/administration:^6.5 &amp;&amp; composer update shopware/administration -W -m --with &apos;league/oauth2-server:&gt;=8.4.2,&lt;8.5.0 || &gt;=8.5.3&apos;</code></td><td><pre class="reason">Composer could not resolve the dependencies: Your requirements could not be resolved to an installable set of packages.
-  Problem 1
-    - Root composer.json requires shopware/core ~v6.4.0 -&gt; satisfiable by shopware/core[6.4.20.2].
-    - shopware/core 6.4.20.2 requires league/oauth2-server ~8.3.2 -&gt; found league/oauth2-server[8.3.6] but it conflicts with your temporary update constraint (league/oauth2-server:&gt;=8.4.2,&lt;8.5.0 || &gt;=8.5.3).
-  Problem 2
-    - Root composer.json requires shopware/administration ^6.5 -&gt; satisfiable by shopware/administration[6.5.0.0, ..., v6.6.6.0].
-    - shopware/administration[6.5.0.0, ..., v6.5.7.4] require php ~8.1.0 || ~8.2.0 -&gt; your php version (7.4.3; overridden via config.platform, actual: 8.5.5) does not satisfy that requirement.
-    - shopware/administration[v6.5.8.0, ..., v6.5.8.14] require php ~8.1.0 || ~8.2.0 || ~8.3.0 -&gt; your php version (7.4.3; overridden via config.platform, actual: 8.5.5) does not satisfy that requirement.
-    - shopware/administration[v6.6.0.0, ..., v6.6.6.0] require php ~8.2.0 || ~8.3.0 -&gt; your php version (7.4.3; overridden via config.platform, actual: 8.5.5) does not satisfy that requirement.</pre></td></tr>
-<tr><td><span class="badge rejected">rejected</span></td><td><code>composer require --no-update shopware/elasticsearch:^6.5 &amp;&amp; composer update shopware/elasticsearch -W -m --with &apos;league/oauth2-server:&gt;=8.4.2,&lt;8.5.0 || &gt;=8.5.3&apos;</code></td><td><pre class="reason">Composer could not resolve the dependencies: Your requirements could not be resolved to an installable set of packages.
-  Problem 1
-    - Root composer.json requires shopware/core ~v6.4.0 -&gt; satisfiable by shopware/core[6.4.20.2].
-    - shopware/core 6.4.20.2 requires league/oauth2-server ~8.3.2 -&gt; found league/oauth2-server[8.3.6] but it conflicts with your temporary update constraint (league/oauth2-server:&gt;=8.4.2,&lt;8.5.0 || &gt;=8.5.3).
-  Problem 2
-    - shopware/storefront is locked to version 6.4.20.2 and an update of this package was not requested.
-    - shopware/core 6.4.20.2 requires league/oauth2-server ~8.3.2 -&gt; found league/oauth2-server[8.3.6] but it conflicts with your temporary update constraint (league/oauth2-server:&gt;=8.4.2,&lt;8.5.0 || &gt;=8.5.3).
-    - shopware/storefront 6.4.20.2 requires shopware/core v6.4.20.2 -&gt; satisfiable by shopware/core[6.4.20.2].</pre></td></tr>
-<tr><td><span class="badge rejected">rejected</span></td><td><code>composer require --no-update shopware/elasticsearch:^6.5 &amp;&amp; composer update shopware/elasticsearch shopware/storefront -W -m --with &apos;league/oauth2-server:&gt;=8.4.2,&lt;8.5.0 || &gt;=8.5.3&apos;</code></td><td><pre class="reason">Composer could not resolve the dependencies: Your requirements could not be resolved to an installable set of packages.
-  Problem 1
-    - Root composer.json requires shopware/core ~v6.4.0 -&gt; satisfiable by shopware/core[6.4.20.2].
-    - shopware/core 6.4.20.2 requires league/oauth2-server ~8.3.2 -&gt; found league/oauth2-server[8.3.6] but it conflicts with your temporary update constraint (league/oauth2-server:&gt;=8.4.2,&lt;8.5.0 || &gt;=8.5.3).
-  Problem 2
-    - Root composer.json requires shopware/storefront ~v6.4.0 -&gt; satisfiable by shopware/storefront[6.4.20.2].
-    - shopware/core 6.4.20.2 requires league/oauth2-server ~8.3.2 -&gt; found league/oauth2-server[8.3.6] but it conflicts with your temporary update constraint (league/oauth2-server:&gt;=8.4.2,&lt;8.5.0 || &gt;=8.5.3).
-    - shopware/storefront 6.4.20.2 requires shopware/core v6.4.20.2 -&gt; satisfiable by shopware/core[6.4.20.2].</pre></td></tr>
-</tbody></table></details>
-</section>
-<section class="finding" id="finding-4">
 <h2>phenx/php-svg-lib <span class="version">0.3.4</span></h2>
 <p class="state">Transitive dependency.</p>
+<p class="abandoned"><strong>Abandoned:</strong> shopware/recovery (on the dependency path, no replacement named). An abandoned parent will not ship a release that lifts its pin.</p>
 <h3>Advisories</h3><ul class="advisories">
 <li><strong><a href="https://github.com/advisories/GHSA-f3qr-qr4x-j273" rel="noopener noreferrer">CVE-2024-25117 <small>(PKSA-3dsp-r6t7-8xmz)</small></a></strong> <span class="badge sev-medium">medium</span><br>php-svg-lib lacks path validation on font through SVG inline styles <br><small>affected versions: <code>&lt;0.5.2</code></small></li>
 <li><strong><a href="https://github.com/advisories/GHSA-ff5x-7qg5-vwf2" rel="noopener noreferrer">CVE-2023-50251 <small>(PKSA-cwpj-dtf9-6fg1)</small></a></strong> <span class="badge sev-medium">medium</span><br>Denial of service caused by infinite recursion when parsing SVG document<br><small>affected versions: <code>&lt;0.5.1</code></small></li>
@@ -421,9 +143,10 @@ Use the option --with-all-dependencies (-W) to allow upgrades, downgrades and re
     - shopwarelabs/dompdf v1.0.3 requires phenx/php-svg-lib ^0.3.3 -&gt; found phenx/php-svg-lib[0.3.4] but it conflicts with your temporary update constraint (phenx/php-svg-lib:&gt;=0.5.2).</pre></td></tr>
 </tbody></table></details>
 </section>
-<section class="finding" id="finding-5">
+<section class="finding" id="finding-2">
 <h2>shopware/core <span class="version">6.4.20.2</span></h2>
 <p class="state">Direct dependency.</p>
+<p class="abandoned"><strong>Abandoned:</strong> shopware/recovery (on the dependency path, no replacement named). An abandoned parent will not ship a release that lifts its pin.</p>
 <h3>Advisories</h3><ul class="advisories">
 <li><strong><a href="https://github.com/advisories/GHSA-hhcq-ph6w-494g" rel="noopener noreferrer">CVE-2024-42354 <small>(PKSA-4spx-rq41-wk8h)</small></a></strong> <span class="badge sev-medium">medium</span><br>Shopware vulnerable to Improper Access Control with ManyToMany associations in store-api<br><small>affected versions: <code>&gt;=6.6.0.0,&lt;=6.6.5.0|&lt;=6.5.8.12</code></small></li>
 <li><strong><a href="https://github.com/advisories/GHSA-27wp-jvhw-v4xp" rel="noopener noreferrer">CVE-2024-42355 <small>(PKSA-6stq-czfs-1nvv)</small></a></strong> <span class="badge sev-high">high</span><br>Shopware vulnerable to Server Side Template Injection in Twig using deprecation silence tag<br><small>affected versions: <code>&gt;=6.6.0.0,&lt;=6.6.5.0|&lt;=6.5.8.12</code></small></li>
@@ -644,9 +367,10 @@ Use the option --with-all-dependencies (-W) to allow upgrades, downgrades and re
     - shopware/administration[v6.6.0.0, ..., v6.6.6.0] require php ~8.2.0 || ~8.3.0 -&gt; your php version (7.4.3; overridden via config.platform, actual: 8.5.5) does not satisfy that requirement.</pre></td></tr>
 </tbody></table></details>
 </section>
-<section class="finding" id="finding-6">
+<section class="finding" id="finding-3">
 <h2>shopwarelabs/dompdf <span class="version">v1.0.3</span> <small>replaces dompdf/dompdf</small></h2>
 <p class="state">Transitive dependency.</p>
+<p class="abandoned"><strong>Abandoned:</strong> shopware/recovery (on the dependency path, no replacement named). An abandoned parent will not ship a release that lifts its pin.</p>
 <h3>Advisories</h3><ul class="advisories">
 <li><strong><a href="https://github.com/advisories/GHSA-3cw5-7cxw-v5qg" rel="noopener noreferrer">CVE-2023-23924 <small>(PKSA-4jrs-y99s-q8j6)</small></a></strong> <span class="badge sev-critical">critical</span><br>Dompdf vulnerable to URI validation failure on SVG parsing<br><small>affected versions: <code>&lt;2.0.2</code></small></li>
 <li><strong><a href="https://nvd.nist.gov/vuln/detail/CVE-2023-50262" rel="noopener noreferrer">CVE-2023-50262 <small>(PKSA-7ztm-rpt3-qqzk)</small></a></strong> <span class="badge sev-medium">medium</span><br>Denial of service caused by infinite recursion when parsing SVG images<br><small>affected versions: <code>&lt;2.0.4</code></small></li>
@@ -822,9 +546,293 @@ Use the option --with-all-dependencies (-W) to allow upgrades, downgrades and re
     - shopware/storefront 6.4.20.2 requires shopware/core v6.4.20.2 -&gt; satisfiable by shopware/core[6.4.20.2].</pre></td></tr>
 </tbody></table></details>
 </section>
+<section class="finding" id="finding-4">
+<h2>composer/composer <span class="version">2.2.21</span></h2>
+<p class="state">Transitive dependency.</p>
+<p class="abandoned"><strong>Abandoned:</strong> shopware/recovery (on the dependency path, no replacement named). An abandoned parent will not ship a release that lifts its pin.</p>
+<h3>Advisories</h3><ul class="advisories">
+<li><strong><a href="https://github.com/advisories/GHSA-v9qv-c7wm-wgmf" rel="noopener noreferrer">CVE-2024-35242 <small>(PKSA-b8f7-zn44-r4gz)</small></a></strong> <span class="badge sev-high">high</span><br>Composer has multiple command injections via malicious git/hg branch names<br><small>affected versions: <code>&gt;=2.3,&lt;2.7.7|&gt;=2.0,&lt;2.2.24</code></small></li>
+<li><strong><a href="https://github.com/advisories/GHSA-7c6p-848j-wh5h" rel="noopener noreferrer">CVE-2024-24821 <small>(PKSA-jn72-4kr8-gj3h)</small></a></strong> <span class="badge sev-high">high</span><br>Composer code execution and possible privilege escalation via compromised InstalledVersions.php or installed.php<br><small>affected versions: <code>&gt;=2.3.0-rc1,&lt;2.7.0|&gt;=2.0.0-alpha1,&lt;2.2.23</code></small></li>
+<li><strong><a href="https://github.com/advisories/GHSA-jm6m-4632-36hf" rel="noopener noreferrer">CVE-2023-43655 <small>(PKSA-m1ph-vmbx-2xd3)</small></a></strong> <span class="badge sev-high">high</span><br>Composer Remote Code Execution vulnerability via web-accessible composer.phar<br><small>affected versions: <code>&gt;=2.3.0,&lt;2.6.4|&gt;=2.0.0,&lt;2.2.22|&lt;1.10.27</code></small></li>
+<li><strong><a href="https://github.com/advisories/GHSA-47f6-5gq3-vx9c" rel="noopener noreferrer">CVE-2024-35241 <small>(PKSA-s25b-vbmp-jvhh)</small></a></strong> <span class="badge sev-high">high</span><br>Composer has a command injection via malicious git branch name<br><small>affected versions: <code>&gt;=2.3,&lt;2.7.7|&gt;=2.0,&lt;2.2.24</code></small></li>
+</ul>
+<h3>Introduced by</h3>
+<pre class="tree">root
+└── shopware/core 6.4.20.2
+    └── composer/composer 2.2.21  (requires ^2.2.17)
+
+root
+└── shopware/administration 6.4.20.2
+    └── shopware/core 6.4.20.2
+        └── composer/composer 2.2.21  (requires ^2.2.17)
+
+root
+└── shopware/elasticsearch 6.4.20.2
+    └── shopware/core 6.4.20.2
+        └── composer/composer 2.2.21  (requires ^2.2.17)
+
+root
+└── shopware/recovery 6.4.20.2
+    └── shopware/core 6.4.20.2
+        └── composer/composer 2.2.21  (requires ^2.2.17)
+
+root
+└── shopware/storefront 6.4.20.2
+    └── shopware/core 6.4.20.2
+        └── composer/composer 2.2.21  (requires ^2.2.17)</pre>
+<h3>Recommended remediation</h3>
+<p class="command"><code>composer update composer/composer</code></p>
+<p class="validation"><span class="badge ok">Composer validation: PASS</span> 1 package changed, 0 added, 0 removed, 0 root constraints changed.</p>
+<details open><summary>Expected changes (1)</summary><table class="changes"><thead><tr><th>Package</th><th>From</th><th>To</th><th>Kind</th></tr></thead><tbody>
+<tr><td>composer/composer</td><td>2.2.21</td><td>2.2.24</td><td>upgraded, patch</td></tr>
+</tbody></table></details>
+<details><summary>Other candidates (9)</summary><table class="candidates"><thead><tr><th>Outcome</th><th>Command</th><th>Detail</th></tr></thead><tbody>
+<tr><td><span class="badge ok">valid, rank 2</span></td><td><code>composer update composer/composer -w -m --with &apos;composer/composer:&gt;=2.2.24,&lt;2.3.0 || &gt;=2.7.7&apos;</code></td><td>1 changes</td></tr>
+<tr><td><span class="badge ok">valid, rank 3</span></td><td><code>composer update shopware/core -W -m --with &apos;composer/composer:&gt;=2.2.24,&lt;2.3.0 || &gt;=2.7.7&apos;</code></td><td>1 changes</td></tr>
+<tr><td><span class="badge ok">valid, rank 4</span></td><td><code>composer update shopware/administration -W -m --with &apos;composer/composer:&gt;=2.2.24,&lt;2.3.0 || &gt;=2.7.7&apos;</code></td><td>1 changes</td></tr>
+<tr><td><span class="badge ok">valid, rank 5</span></td><td><code>composer update shopware/elasticsearch -W -m --with &apos;composer/composer:&gt;=2.2.24,&lt;2.3.0 || &gt;=2.7.7&apos;</code></td><td>1 changes</td></tr>
+<tr><td><span class="badge ok">valid, rank 6</span></td><td><code>composer update shopware/recovery -W -m --with &apos;composer/composer:&gt;=2.2.24,&lt;2.3.0 || &gt;=2.7.7&apos;</code></td><td>1 changes</td></tr>
+<tr><td><span class="badge ok">valid, rank 7</span></td><td><code>composer update shopware/storefront -W -m --with &apos;composer/composer:&gt;=2.2.24,&lt;2.3.0 || &gt;=2.7.7&apos;</code></td><td>1 changes</td></tr>
+<tr><td><span class="badge skipped">not tried</span></td><td><code>composer require --no-update shopware/core:^6.5 &amp;&amp; composer update shopware/core -W -m --with &apos;composer/composer:&gt;=2.2.24,&lt;2.3.0 || &gt;=2.7.7&apos;</code></td><td>a better candidate already exists</td></tr>
+<tr><td><span class="badge skipped">not tried</span></td><td><code>composer require --no-update shopware/administration:^6.5 &amp;&amp; composer update shopware/administration -W -m --with &apos;composer/composer:&gt;=2.2.24,&lt;2.3.0 || &gt;=2.7.7&apos;</code></td><td>a better candidate already exists</td></tr>
+<tr><td><span class="badge skipped">not tried</span></td><td><code>composer require --no-update shopware/elasticsearch:^6.5 &amp;&amp; composer update shopware/elasticsearch -W -m --with &apos;composer/composer:&gt;=2.2.24,&lt;2.3.0 || &gt;=2.7.7&apos;</code></td><td>a better candidate already exists</td></tr>
+</tbody></table></details>
+</section>
+<section class="finding" id="finding-5">
+<h2>league/oauth2-server <span class="version">8.3.6</span></h2>
+<p class="state">Transitive dependency.</p>
+<p class="abandoned"><strong>Abandoned:</strong> shopware/recovery (on the dependency path, no replacement named). An abandoned parent will not ship a release that lifts its pin.</p>
+<h3>Advisories</h3><ul class="advisories">
+<li><strong><a href="https://github.com/advisories/GHSA-wj7q-gjg8-3cpm" rel="noopener noreferrer">CVE-2023-37260 <small>(PKSA-pc52-dbxt-c1w6)</small></a></strong> <span class="badge sev-high">high</span><br>league/oauth2-server key exposed in exception message when passing as a string and providing an invalid pass phrase<br><small>affected versions: <code>&gt;=8.5.0,&lt;8.5.3|&gt;=8.3.2,&lt;8.4.2</code></small></li>
+</ul>
+<h3>Introduced by</h3>
+<pre class="tree">root
+└── shopware/core 6.4.20.2
+    └── league/oauth2-server 8.3.6  (requires ~8.3.2)
+
+root
+└── shopware/administration 6.4.20.2
+    └── shopware/core 6.4.20.2
+        └── league/oauth2-server 8.3.6  (requires ~8.3.2)
+
+root
+└── shopware/elasticsearch 6.4.20.2
+    └── shopware/core 6.4.20.2
+        └── league/oauth2-server 8.3.6  (requires ~8.3.2)
+
+root
+└── shopware/recovery 6.4.20.2
+    └── shopware/core 6.4.20.2
+        └── league/oauth2-server 8.3.6  (requires ~8.3.2)
+
+root
+└── shopware/storefront 6.4.20.2
+    └── shopware/core 6.4.20.2
+        └── league/oauth2-server 8.3.6  (requires ~8.3.2)</pre>
+<h3>Recommended remediation</h3><p class="none-box">No verified remediation found (none).</p>
+<details><summary>Other candidates (16)</summary><table class="candidates"><thead><tr><th>Outcome</th><th>Command</th><th>Detail</th></tr></thead><tbody>
+<tr><td><span class="badge rejected">rejected</span></td><td><code>composer update league/oauth2-server</code></td><td><pre class="reason">resolves, but league/oauth2-server ends at 8.3.6 which is still affected by PKSA-pc52-dbxt-c1w6</pre></td></tr>
+<tr><td><span class="badge rejected">rejected</span></td><td><code>composer update league/oauth2-server -w -m --with &apos;league/oauth2-server:&gt;=8.4.2,&lt;8.5.0 || &gt;=8.5.3&apos;</code></td><td><pre class="reason">Composer could not resolve the dependencies: Your requirements could not be resolved to an installable set of packages.
+  Problem 1
+    - shopware/core is locked to version 6.4.20.2 and an update of this package was not requested.
+    - shopware/core 6.4.20.2 requires league/oauth2-server ~8.3.2 -&gt; found league/oauth2-server[8.3.6] but it conflicts with your temporary update constraint (league/oauth2-server:&gt;=8.4.2,&lt;8.5.0 || &gt;=8.5.3).
+  Problem 2
+    - shopware/storefront is locked to version 6.4.20.2 and an update of this package was not requested.
+    - shopware/core 6.4.20.2 requires league/oauth2-server ~8.3.2 -&gt; found league/oauth2-server[8.3.6] but it conflicts with your temporary update constraint (league/oauth2-server:&gt;=8.4.2,&lt;8.5.0 || &gt;=8.5.3).
+    - shopware/storefront 6.4.20.2 requires shopware/core v6.4.20.2 -&gt; satisfiable by shopware/core[6.4.20.2].
+Use the option --with-all-dependencies (-W) to allow upgrades, downgrades and removals for packages currently locked to specific versions.</pre></td></tr>
+<tr><td><span class="badge rejected">rejected</span></td><td><code>composer update shopware/core -W -m --with &apos;league/oauth2-server:&gt;=8.4.2,&lt;8.5.0 || &gt;=8.5.3&apos;</code></td><td><pre class="reason">Composer could not resolve the dependencies: Your requirements could not be resolved to an installable set of packages.
+  Problem 1
+    - Root composer.json requires shopware/core ~v6.4.0 -&gt; satisfiable by shopware/core[6.4.20.2].
+    - shopware/core 6.4.20.2 requires league/oauth2-server ~8.3.2 -&gt; found league/oauth2-server[8.3.6] but it conflicts with your temporary update constraint (league/oauth2-server:&gt;=8.4.2,&lt;8.5.0 || &gt;=8.5.3).
+  Problem 2
+    - shopware/storefront is locked to version 6.4.20.2 and an update of this package was not requested.
+    - shopware/core 6.4.20.2 requires league/oauth2-server ~8.3.2 -&gt; found league/oauth2-server[8.3.6] but it conflicts with your temporary update constraint (league/oauth2-server:&gt;=8.4.2,&lt;8.5.0 || &gt;=8.5.3).
+    - shopware/storefront 6.4.20.2 requires shopware/core v6.4.20.2 -&gt; satisfiable by shopware/core[6.4.20.2].</pre></td></tr>
+<tr><td><span class="badge rejected">rejected</span></td><td><code>composer update shopware/core shopware/storefront -W -m --with &apos;league/oauth2-server:&gt;=8.4.2,&lt;8.5.0 || &gt;=8.5.3&apos;</code></td><td><pre class="reason">Composer could not resolve the dependencies: Your requirements could not be resolved to an installable set of packages.
+  Problem 1
+    - Root composer.json requires shopware/core ~v6.4.0 -&gt; satisfiable by shopware/core[6.4.20.2].
+    - shopware/core 6.4.20.2 requires league/oauth2-server ~8.3.2 -&gt; found league/oauth2-server[8.3.6] but it conflicts with your temporary update constraint (league/oauth2-server:&gt;=8.4.2,&lt;8.5.0 || &gt;=8.5.3).
+  Problem 2
+    - Root composer.json requires shopware/storefront ~v6.4.0 -&gt; satisfiable by shopware/storefront[6.4.20.2].
+    - shopware/core 6.4.20.2 requires league/oauth2-server ~8.3.2 -&gt; found league/oauth2-server[8.3.6] but it conflicts with your temporary update constraint (league/oauth2-server:&gt;=8.4.2,&lt;8.5.0 || &gt;=8.5.3).
+    - shopware/storefront 6.4.20.2 requires shopware/core v6.4.20.2 -&gt; satisfiable by shopware/core[6.4.20.2].</pre></td></tr>
+<tr><td><span class="badge rejected">rejected</span></td><td><code>composer update shopware/administration -W -m --with &apos;league/oauth2-server:&gt;=8.4.2,&lt;8.5.0 || &gt;=8.5.3&apos;</code></td><td><pre class="reason">Composer could not resolve the dependencies: Your requirements could not be resolved to an installable set of packages.
+  Problem 1
+    - Root composer.json requires shopware/core ~v6.4.0 -&gt; satisfiable by shopware/core[6.4.20.2].
+    - shopware/core 6.4.20.2 requires league/oauth2-server ~8.3.2 -&gt; found league/oauth2-server[8.3.6] but it conflicts with your temporary update constraint (league/oauth2-server:&gt;=8.4.2,&lt;8.5.0 || &gt;=8.5.3).
+  Problem 2
+    - shopware/storefront is locked to version 6.4.20.2 and an update of this package was not requested.
+    - shopware/core 6.4.20.2 requires league/oauth2-server ~8.3.2 -&gt; found league/oauth2-server[8.3.6] but it conflicts with your temporary update constraint (league/oauth2-server:&gt;=8.4.2,&lt;8.5.0 || &gt;=8.5.3).
+    - shopware/storefront 6.4.20.2 requires shopware/core v6.4.20.2 -&gt; satisfiable by shopware/core[6.4.20.2].</pre></td></tr>
+<tr><td><span class="badge rejected">rejected</span></td><td><code>composer update shopware/administration shopware/storefront -W -m --with &apos;league/oauth2-server:&gt;=8.4.2,&lt;8.5.0 || &gt;=8.5.3&apos;</code></td><td><pre class="reason">Composer could not resolve the dependencies: Your requirements could not be resolved to an installable set of packages.
+  Problem 1
+    - Root composer.json requires shopware/core ~v6.4.0 -&gt; satisfiable by shopware/core[6.4.20.2].
+    - shopware/core 6.4.20.2 requires league/oauth2-server ~8.3.2 -&gt; found league/oauth2-server[8.3.6] but it conflicts with your temporary update constraint (league/oauth2-server:&gt;=8.4.2,&lt;8.5.0 || &gt;=8.5.3).
+  Problem 2
+    - Root composer.json requires shopware/storefront ~v6.4.0 -&gt; satisfiable by shopware/storefront[6.4.20.2].
+    - shopware/core 6.4.20.2 requires league/oauth2-server ~8.3.2 -&gt; found league/oauth2-server[8.3.6] but it conflicts with your temporary update constraint (league/oauth2-server:&gt;=8.4.2,&lt;8.5.0 || &gt;=8.5.3).
+    - shopware/storefront 6.4.20.2 requires shopware/core v6.4.20.2 -&gt; satisfiable by shopware/core[6.4.20.2].</pre></td></tr>
+<tr><td><span class="badge rejected">rejected</span></td><td><code>composer update shopware/elasticsearch -W -m --with &apos;league/oauth2-server:&gt;=8.4.2,&lt;8.5.0 || &gt;=8.5.3&apos;</code></td><td><pre class="reason">Composer could not resolve the dependencies: Your requirements could not be resolved to an installable set of packages.
+  Problem 1
+    - Root composer.json requires shopware/core ~v6.4.0 -&gt; satisfiable by shopware/core[6.4.20.2].
+    - shopware/core 6.4.20.2 requires league/oauth2-server ~8.3.2 -&gt; found league/oauth2-server[8.3.6] but it conflicts with your temporary update constraint (league/oauth2-server:&gt;=8.4.2,&lt;8.5.0 || &gt;=8.5.3).
+  Problem 2
+    - shopware/storefront is locked to version 6.4.20.2 and an update of this package was not requested.
+    - shopware/core 6.4.20.2 requires league/oauth2-server ~8.3.2 -&gt; found league/oauth2-server[8.3.6] but it conflicts with your temporary update constraint (league/oauth2-server:&gt;=8.4.2,&lt;8.5.0 || &gt;=8.5.3).
+    - shopware/storefront 6.4.20.2 requires shopware/core v6.4.20.2 -&gt; satisfiable by shopware/core[6.4.20.2].</pre></td></tr>
+<tr><td><span class="badge rejected">rejected</span></td><td><code>composer update shopware/elasticsearch shopware/storefront -W -m --with &apos;league/oauth2-server:&gt;=8.4.2,&lt;8.5.0 || &gt;=8.5.3&apos;</code></td><td><pre class="reason">Composer could not resolve the dependencies: Your requirements could not be resolved to an installable set of packages.
+  Problem 1
+    - Root composer.json requires shopware/core ~v6.4.0 -&gt; satisfiable by shopware/core[6.4.20.2].
+    - shopware/core 6.4.20.2 requires league/oauth2-server ~8.3.2 -&gt; found league/oauth2-server[8.3.6] but it conflicts with your temporary update constraint (league/oauth2-server:&gt;=8.4.2,&lt;8.5.0 || &gt;=8.5.3).
+  Problem 2
+    - Root composer.json requires shopware/storefront ~v6.4.0 -&gt; satisfiable by shopware/storefront[6.4.20.2].
+    - shopware/core 6.4.20.2 requires league/oauth2-server ~8.3.2 -&gt; found league/oauth2-server[8.3.6] but it conflicts with your temporary update constraint (league/oauth2-server:&gt;=8.4.2,&lt;8.5.0 || &gt;=8.5.3).
+    - shopware/storefront 6.4.20.2 requires shopware/core v6.4.20.2 -&gt; satisfiable by shopware/core[6.4.20.2].</pre></td></tr>
+<tr><td><span class="badge rejected">rejected</span></td><td><code>composer update shopware/recovery -W -m --with &apos;league/oauth2-server:&gt;=8.4.2,&lt;8.5.0 || &gt;=8.5.3&apos;</code></td><td><pre class="reason">Composer could not resolve the dependencies: Your requirements could not be resolved to an installable set of packages.
+  Problem 1
+    - Root composer.json requires shopware/core ~v6.4.0 -&gt; satisfiable by shopware/core[6.4.20.2].
+    - shopware/core 6.4.20.2 requires league/oauth2-server ~8.3.2 -&gt; found league/oauth2-server[8.3.6] but it conflicts with your temporary update constraint (league/oauth2-server:&gt;=8.4.2,&lt;8.5.0 || &gt;=8.5.3).
+  Problem 2
+    - shopware/storefront is locked to version 6.4.20.2 and an update of this package was not requested.
+    - shopware/core 6.4.20.2 requires league/oauth2-server ~8.3.2 -&gt; found league/oauth2-server[8.3.6] but it conflicts with your temporary update constraint (league/oauth2-server:&gt;=8.4.2,&lt;8.5.0 || &gt;=8.5.3).
+    - shopware/storefront 6.4.20.2 requires shopware/core v6.4.20.2 -&gt; satisfiable by shopware/core[6.4.20.2].</pre></td></tr>
+<tr><td><span class="badge rejected">rejected</span></td><td><code>composer update shopware/recovery shopware/storefront -W -m --with &apos;league/oauth2-server:&gt;=8.4.2,&lt;8.5.0 || &gt;=8.5.3&apos;</code></td><td><pre class="reason">Composer could not resolve the dependencies: Your requirements could not be resolved to an installable set of packages.
+  Problem 1
+    - Root composer.json requires shopware/core ~v6.4.0 -&gt; satisfiable by shopware/core[6.4.20.2].
+    - shopware/core 6.4.20.2 requires league/oauth2-server ~8.3.2 -&gt; found league/oauth2-server[8.3.6] but it conflicts with your temporary update constraint (league/oauth2-server:&gt;=8.4.2,&lt;8.5.0 || &gt;=8.5.3).
+  Problem 2
+    - Root composer.json requires shopware/storefront ~v6.4.0 -&gt; satisfiable by shopware/storefront[6.4.20.2].
+    - shopware/core 6.4.20.2 requires league/oauth2-server ~8.3.2 -&gt; found league/oauth2-server[8.3.6] but it conflicts with your temporary update constraint (league/oauth2-server:&gt;=8.4.2,&lt;8.5.0 || &gt;=8.5.3).
+    - shopware/storefront 6.4.20.2 requires shopware/core v6.4.20.2 -&gt; satisfiable by shopware/core[6.4.20.2].</pre></td></tr>
+<tr><td><span class="badge rejected">rejected</span></td><td><code>composer update shopware/storefront -W -m --with &apos;league/oauth2-server:&gt;=8.4.2,&lt;8.5.0 || &gt;=8.5.3&apos;</code></td><td><pre class="reason">Composer could not resolve the dependencies: Your requirements could not be resolved to an installable set of packages.
+  Problem 1
+    - Root composer.json requires shopware/core ~v6.4.0 -&gt; satisfiable by shopware/core[6.4.20.2].
+    - shopware/core 6.4.20.2 requires league/oauth2-server ~8.3.2 -&gt; found league/oauth2-server[8.3.6] but it conflicts with your temporary update constraint (league/oauth2-server:&gt;=8.4.2,&lt;8.5.0 || &gt;=8.5.3).
+  Problem 2
+    - Root composer.json requires shopware/storefront ~v6.4.0 -&gt; satisfiable by shopware/storefront[6.4.20.2].
+    - shopware/core 6.4.20.2 requires league/oauth2-server ~8.3.2 -&gt; found league/oauth2-server[8.3.6] but it conflicts with your temporary update constraint (league/oauth2-server:&gt;=8.4.2,&lt;8.5.0 || &gt;=8.5.3).
+    - shopware/storefront 6.4.20.2 requires shopware/core v6.4.20.2 -&gt; satisfiable by shopware/core[6.4.20.2].</pre></td></tr>
+<tr><td><span class="badge rejected">rejected</span></td><td><code>composer require --no-update shopware/core:^6.5 &amp;&amp; composer update shopware/core -W -m --with &apos;league/oauth2-server:&gt;=8.4.2,&lt;8.5.0 || &gt;=8.5.3&apos;</code></td><td><pre class="reason">Composer could not resolve the dependencies: Your requirements could not be resolved to an installable set of packages.
+  Problem 1
+    - Root composer.json requires shopware/core ^6.5, found shopware/core[6.5.0.0, ..., v6.6.6.0] but these were not loaded, likely because it conflicts with another require.
+  Problem 2
+    - shopware/administration is locked to version 6.4.20.2 and an update of this package was not requested.
+    - shopware/administration 6.4.20.2 requires shopware/core v6.4.20.2 -&gt; found shopware/core[6.4.20.2] but it conflicts with your root composer.json require (^6.5).
+  Problem 3
+    - shopware/elasticsearch is locked to version 6.4.20.2 and an update of this package was not requested.
+    - shopware/elasticsearch 6.4.20.2 requires shopware/core v6.4.20.2 -&gt; found shopware/core[6.4.20.2] but it conflicts with your root composer.json require (^6.5).
+  Problem 4
+    - shopware/recovery is locked to version 6.4.20.2 and an update of this package was not requested.
+    - shopware/recovery 6.4.20.2 requires shopware/core v6.4.20.2 -&gt; found shopware/core[6.4.20.2] but it conflicts with your root composer.json require (^6.5).
+  Problem 5
+    - shopware/storefront is locked to version 6.4.20.2 and an update of this package was not requested.
+    - shopware/storefront 6.4.20.2 requires shopware/core v6.4.20.2 -&gt; found shopware/core[6.4.20.2] but it conflicts with your root composer.json require (^6.5).</pre></td></tr>
+<tr><td><span class="badge rejected">rejected</span></td><td><code>composer require --no-update shopware/core:^6.5 &amp;&amp; composer update shopware/core shopware/administration shopware/elasticsearch shopware/recovery shopware/storefront -W -m --with &apos;league/oauth2-server:&gt;=8.4.2,&lt;8.5.0 || &gt;=8.5.3&apos;</code></td><td><pre class="reason">Composer could not resolve the dependencies: Your requirements could not be resolved to an installable set of packages.
+  Problem 1
+    - Root composer.json requires shopware/administration ~v6.4.0 -&gt; satisfiable by shopware/administration[6.4.20.2].
+    - shopware/administration 6.4.20.2 requires shopware/core v6.4.20.2 -&gt; found shopware/core[6.4.20.2] but it conflicts with your root composer.json require (^6.5).
+  Problem 2
+    - Root composer.json requires shopware/elasticsearch ~v6.4.0 -&gt; satisfiable by shopware/elasticsearch[6.4.20.2].
+    - shopware/elasticsearch 6.4.20.2 requires shopware/core v6.4.20.2 -&gt; found shopware/core[6.4.20.2] but it conflicts with your root composer.json require (^6.5).
+  Problem 3
+    - Root composer.json requires shopware/recovery ~v6.4.0 -&gt; satisfiable by shopware/recovery[6.4.20.2].
+    - shopware/recovery 6.4.20.2 requires shopware/core v6.4.20.2 -&gt; found shopware/core[6.4.20.2] but it conflicts with your root composer.json require (^6.5).
+  Problem 4
+    - Root composer.json requires shopware/storefront ~v6.4.0 -&gt; satisfiable by shopware/storefront[6.4.20.2].
+    - shopware/storefront 6.4.20.2 requires shopware/core v6.4.20.2 -&gt; found shopware/core[6.4.20.2] but it conflicts with your root composer.json require (^6.5).
+  Problem 5
+    - Root composer.json requires shopware/core ^6.5 -&gt; satisfiable by shopware/core[6.5.0.0, ..., v6.6.6.0].
+    - shopware/core[6.5.0.0, ..., v6.5.7.4] require php ~8.1.0 || ~8.2.0 -&gt; your php version (7.4.3; overridden via config.platform, actual: 8.5.5) does not satisfy that requirement.
+    - shopware/core[v6.5.8.0, ..., v6.5.8.14] require php ~8.1.0 || ~8.2.0 || ~8.3.0 -&gt; your php version (7.4.3; overridden via config.platform, actual: 8.5.5) does not satisfy that requirement.
+    - shopware/core[v6.6.0.0, ..., v6.6.6.0] require php ~8.2.0 || ~8.3.0 -&gt; your php version (7.4.3; overridden via config.platform, actual: 8.5.5) does not satisfy that requirement.</pre></td></tr>
+<tr><td><span class="badge rejected">rejected</span></td><td><code>composer require --no-update shopware/administration:^6.5 &amp;&amp; composer update shopware/administration -W -m --with &apos;league/oauth2-server:&gt;=8.4.2,&lt;8.5.0 || &gt;=8.5.3&apos;</code></td><td><pre class="reason">Composer could not resolve the dependencies: Your requirements could not be resolved to an installable set of packages.
+  Problem 1
+    - Root composer.json requires shopware/core ~v6.4.0 -&gt; satisfiable by shopware/core[6.4.20.2].
+    - shopware/core 6.4.20.2 requires league/oauth2-server ~8.3.2 -&gt; found league/oauth2-server[8.3.6] but it conflicts with your temporary update constraint (league/oauth2-server:&gt;=8.4.2,&lt;8.5.0 || &gt;=8.5.3).
+  Problem 2
+    - Root composer.json requires shopware/administration ^6.5 -&gt; satisfiable by shopware/administration[6.5.0.0, ..., v6.6.6.0].
+    - shopware/administration[6.5.0.0, ..., v6.5.7.4] require php ~8.1.0 || ~8.2.0 -&gt; your php version (7.4.3; overridden via config.platform, actual: 8.5.5) does not satisfy that requirement.
+    - shopware/administration[v6.5.8.0, ..., v6.5.8.14] require php ~8.1.0 || ~8.2.0 || ~8.3.0 -&gt; your php version (7.4.3; overridden via config.platform, actual: 8.5.5) does not satisfy that requirement.
+    - shopware/administration[v6.6.0.0, ..., v6.6.6.0] require php ~8.2.0 || ~8.3.0 -&gt; your php version (7.4.3; overridden via config.platform, actual: 8.5.5) does not satisfy that requirement.</pre></td></tr>
+<tr><td><span class="badge rejected">rejected</span></td><td><code>composer require --no-update shopware/elasticsearch:^6.5 &amp;&amp; composer update shopware/elasticsearch -W -m --with &apos;league/oauth2-server:&gt;=8.4.2,&lt;8.5.0 || &gt;=8.5.3&apos;</code></td><td><pre class="reason">Composer could not resolve the dependencies: Your requirements could not be resolved to an installable set of packages.
+  Problem 1
+    - Root composer.json requires shopware/core ~v6.4.0 -&gt; satisfiable by shopware/core[6.4.20.2].
+    - shopware/core 6.4.20.2 requires league/oauth2-server ~8.3.2 -&gt; found league/oauth2-server[8.3.6] but it conflicts with your temporary update constraint (league/oauth2-server:&gt;=8.4.2,&lt;8.5.0 || &gt;=8.5.3).
+  Problem 2
+    - shopware/storefront is locked to version 6.4.20.2 and an update of this package was not requested.
+    - shopware/core 6.4.20.2 requires league/oauth2-server ~8.3.2 -&gt; found league/oauth2-server[8.3.6] but it conflicts with your temporary update constraint (league/oauth2-server:&gt;=8.4.2,&lt;8.5.0 || &gt;=8.5.3).
+    - shopware/storefront 6.4.20.2 requires shopware/core v6.4.20.2 -&gt; satisfiable by shopware/core[6.4.20.2].</pre></td></tr>
+<tr><td><span class="badge rejected">rejected</span></td><td><code>composer require --no-update shopware/elasticsearch:^6.5 &amp;&amp; composer update shopware/elasticsearch shopware/storefront -W -m --with &apos;league/oauth2-server:&gt;=8.4.2,&lt;8.5.0 || &gt;=8.5.3&apos;</code></td><td><pre class="reason">Composer could not resolve the dependencies: Your requirements could not be resolved to an installable set of packages.
+  Problem 1
+    - Root composer.json requires shopware/core ~v6.4.0 -&gt; satisfiable by shopware/core[6.4.20.2].
+    - shopware/core 6.4.20.2 requires league/oauth2-server ~8.3.2 -&gt; found league/oauth2-server[8.3.6] but it conflicts with your temporary update constraint (league/oauth2-server:&gt;=8.4.2,&lt;8.5.0 || &gt;=8.5.3).
+  Problem 2
+    - Root composer.json requires shopware/storefront ~v6.4.0 -&gt; satisfiable by shopware/storefront[6.4.20.2].
+    - shopware/core 6.4.20.2 requires league/oauth2-server ~8.3.2 -&gt; found league/oauth2-server[8.3.6] but it conflicts with your temporary update constraint (league/oauth2-server:&gt;=8.4.2,&lt;8.5.0 || &gt;=8.5.3).
+    - shopware/storefront 6.4.20.2 requires shopware/core v6.4.20.2 -&gt; satisfiable by shopware/core[6.4.20.2].</pre></td></tr>
+</tbody></table></details>
+</section>
+<section class="finding" id="finding-6">
+<h2>aws/aws-sdk-php <span class="version">3.269.6</span></h2>
+<p class="state">Transitive dependency.</p>
+<p class="abandoned"><strong>Abandoned:</strong> shopware/recovery (on the dependency path, no replacement named). An abandoned parent will not ship a release that lifts its pin.</p>
+<h3>Advisories</h3><ul class="advisories">
+<li><strong><a href="https://nvd.nist.gov/vuln/detail/CVE-2023-51651" rel="noopener noreferrer">CVE-2023-51651 <small>(PKSA-n3s6-289w-qtqb)</small></a></strong> <span class="badge sev-medium">medium</span><br>Potential URI resolution path traversal in the AWS SDK for PHP<br><small>affected versions: <code>&gt;=3.0.0,&lt;3.288.1</code></small></li>
+</ul>
+<h3>Introduced by</h3>
+<pre class="tree">root
+└── shopware/core 6.4.20.2
+    └── league/flysystem-aws-s3-v3 1.0.30
+        └── aws/aws-sdk-php 3.269.6  (requires ^3.20.0)
+
+root
+└── shopware/administration 6.4.20.2
+    └── shopware/core 6.4.20.2
+        └── league/flysystem-aws-s3-v3 1.0.30
+            └── aws/aws-sdk-php 3.269.6  (requires ^3.20.0)
+
+root
+└── shopware/elasticsearch 6.4.20.2
+    └── shopware/core 6.4.20.2
+        └── league/flysystem-aws-s3-v3 1.0.30
+            └── aws/aws-sdk-php 3.269.6  (requires ^3.20.0)
+
+root
+└── shopware/recovery 6.4.20.2
+    └── shopware/core 6.4.20.2
+        └── league/flysystem-aws-s3-v3 1.0.30
+            └── aws/aws-sdk-php 3.269.6  (requires ^3.20.0)
+
+root
+└── shopware/storefront 6.4.20.2
+    └── shopware/core 6.4.20.2
+        └── league/flysystem-aws-s3-v3 1.0.30
+            └── aws/aws-sdk-php 3.269.6  (requires ^3.20.0)</pre>
+<p><small>… and 5 more paths</small></p>
+<h3>Recommended remediation</h3>
+<p class="command"><code>composer update aws/aws-sdk-php -w -m</code></p>
+<p class="validation"><span class="badge ok">Composer validation: PASS</span> 2 packages changed, 0 added, 0 removed, 0 root constraints changed.</p>
+<details open><summary>Expected changes (2)</summary><table class="changes"><thead><tr><th>Package</th><th>From</th><th>To</th><th>Kind</th></tr></thead><tbody>
+<tr><td>aws/aws-crt-php</td><td>v1.2.1</td><td>v1.2.6</td><td>upgraded, patch</td></tr>
+<tr><td>aws/aws-sdk-php</td><td>3.269.6</td><td>3.321.11</td><td>upgraded, minor</td></tr>
+</tbody></table></details>
+<details><summary>Other candidates (10)</summary><table class="candidates"><thead><tr><th>Outcome</th><th>Command</th><th>Detail</th></tr></thead><tbody>
+<tr><td><span class="badge ok">valid, rank 2</span></td><td><code>composer update shopware/core -W -m --with &apos;aws/aws-sdk-php:&gt;=3.288.1&apos;</code></td><td>2 changes</td></tr>
+<tr><td><span class="badge ok">valid, rank 3</span></td><td><code>composer update shopware/administration -W -m --with &apos;aws/aws-sdk-php:&gt;=3.288.1&apos;</code></td><td>2 changes</td></tr>
+<tr><td><span class="badge ok">valid, rank 4</span></td><td><code>composer update shopware/elasticsearch -W -m --with &apos;aws/aws-sdk-php:&gt;=3.288.1&apos;</code></td><td>2 changes</td></tr>
+<tr><td><span class="badge ok">valid, rank 5</span></td><td><code>composer update shopware/recovery -W -m --with &apos;aws/aws-sdk-php:&gt;=3.288.1&apos;</code></td><td>2 changes</td></tr>
+<tr><td><span class="badge ok">valid, rank 6</span></td><td><code>composer update shopware/storefront -W -m --with &apos;aws/aws-sdk-php:&gt;=3.288.1&apos;</code></td><td>2 changes</td></tr>
+<tr><td><span class="badge rejected">rejected</span></td><td><code>composer update aws/aws-sdk-php</code></td><td><pre class="reason">resolves, but aws/aws-sdk-php ends at 3.283.10 which is still affected by PKSA-n3s6-289w-qtqb</pre></td></tr>
+<tr><td><span class="badge skipped">not tried</span></td><td><code>composer require --no-update shopware/core:^6.5 &amp;&amp; composer update shopware/core -W -m --with &apos;aws/aws-sdk-php:&gt;=3.288.1&apos;</code></td><td>a better candidate already exists</td></tr>
+<tr><td><span class="badge skipped">not tried</span></td><td><code>composer require --no-update shopware/administration:^6.5 &amp;&amp; composer update shopware/administration -W -m --with &apos;aws/aws-sdk-php:&gt;=3.288.1&apos;</code></td><td>a better candidate already exists</td></tr>
+<tr><td><span class="badge skipped">not tried</span></td><td><code>composer require --no-update shopware/elasticsearch:^6.5 &amp;&amp; composer update shopware/elasticsearch -W -m --with &apos;aws/aws-sdk-php:&gt;=3.288.1&apos;</code></td><td>a better candidate already exists</td></tr>
+</tbody></table></details>
+</section>
 <section class="finding" id="finding-7">
 <h2>symfony/twig-bridge <span class="version">v5.4.22</span></h2>
 <p class="state">Transitive dependency.</p>
+<p class="abandoned"><strong>Abandoned:</strong> shopware/recovery (on the dependency path, no replacement named). An abandoned parent will not ship a release that lifts its pin.</p>
 <h3>Advisories</h3><ul class="advisories">
 <li><strong><a href="https://symfony.com/cve-2023-46734" rel="noopener noreferrer">CVE-2023-46734 <small>(PKSA-ztgh-x9c8-k66g)</small></a></strong> <span class="badge sev-medium">medium</span><br>CVE-2023-46734: Potential XSS vulnerabilities in CodeExtension filters<br><small>affected versions: <code>&gt;=2.0.0,&lt;2.1.0|&gt;=2.1.0,&lt;2.2.0|&gt;=2.2.0,&lt;2.3.0|&gt;=2.3.0,&lt;2.4.0|&gt;=2.4.0,&lt;2.5.0|&gt;=2.5.0,&lt;2.6.0|&gt;=2.6.0,&lt;2.7.0|&gt;=2.7.0,&lt;2.8.0|&gt;=2.8.0,&lt;3.0.0|&gt;=3.0.0,&lt;3.1.0|&gt;=3.1.0,&lt;3.2.0|&gt;=3.2.0,&lt;3.3.0|&gt;=3.3.0,&lt;3.4.0|&gt;=3.4.0,&lt;4.0.0|&gt;=4.0.0,&lt;4.1.0|&gt;=4.1.0,&lt;4.2.0|&gt;=4.2.0,&lt;4.3.0|&gt;=4.3.0,&lt;4.4.0|&gt;=4.4.0,&lt;4.4.51|&gt;=5.0.0,&lt;5.1.0|&gt;=5.1.0,&lt;5.2.0|&gt;=5.2.0,&lt;5.3.0|&gt;=5.3.0,&lt;5.4.0|&gt;=5.4.0,&lt;5.4.31|&gt;=6.0.0,&lt;6.1.0|&gt;=6.1.0,&lt;6.2.0|&gt;=6.2.0,&lt;6.3.0|&gt;=6.3.0,&lt;6.3.8</code></small></li>
 </ul>
@@ -872,65 +880,9 @@ root
 </tbody></table></details>
 </section>
 <section class="finding" id="finding-8">
-<h2>symfony/validator <span class="version">v5.4.23</span></h2>
-<p class="state">Transitive dependency.</p>
-<h3>Advisories</h3><ul class="advisories">
-<li><strong><a href="https://symfony.com/cve-2024-50343" rel="noopener noreferrer">CVE-2024-50343 <small>(PKSA-w2tw-kmfg-rt9s)</small></a></strong> <span class="badge sev-low">low</span><br>CVE-2024-50343: Incorrect response from Validator when input ends with `
-`<br><small>affected versions: <code>&gt;=2.0.0,&lt;3.0.0|&gt;=3.0.0,&lt;4.0.0|&gt;=4.0.0,&lt;5.0.0|&gt;=5.0.0,&lt;5.1.0|&gt;=5.1.0,&lt;5.2.0|&gt;=5.2.0,&lt;5.3.0|&gt;=5.3.0,&lt;5.4.0|&gt;=5.4.0,&lt;5.4.43|&gt;=6.0.0,&lt;6.1.0|&gt;=6.1.0,&lt;6.2.0|&gt;=6.2.0,&lt;6.3.0|&gt;=6.3.0,&lt;6.4.0|&gt;=6.4.0,&lt;6.4.11|&gt;=7.0.0,&lt;7.1.0|&gt;=7.1.0,&lt;7.1.4</code></small></li>
-</ul>
-<h3>Introduced by</h3>
-<pre class="tree">root
-└── shopware/core 6.4.20.2
-    └── symfony/validator v5.4.23  (requires ~5.4.1)
-
-root
-└── shopware/administration 6.4.20.2
-    └── shopware/core 6.4.20.2
-        └── symfony/validator v5.4.23  (requires ~5.4.1)
-
-root
-└── shopware/elasticsearch 6.4.20.2
-    └── shopware/core 6.4.20.2
-        └── symfony/validator v5.4.23  (requires ~5.4.1)
-
-root
-└── shopware/recovery 6.4.20.2
-    └── shopware/core 6.4.20.2
-        └── symfony/validator v5.4.23  (requires ~5.4.1)
-
-root
-└── shopware/storefront 6.4.20.2
-    └── shopware/core 6.4.20.2
-        └── symfony/validator v5.4.23  (requires ~5.4.1)</pre>
-<p><small>… and 1 more path</small></p>
-<h3>Recommended remediation</h3>
-<p class="command"><code>composer update shopware/core -W -m --with &apos;symfony/validator:&gt;=5.4.43,&lt;6.0.0 || &gt;=6.4.11,&lt;7.0.0 || &gt;=7.1.4&apos;</code></p>
-<p class="validation"><span class="badge ok">Composer validation: PASS</span> 2 packages changed, 0 added, 0 removed, 0 root constraints changed.</p>
-<details open><summary>Expected changes (2)</summary><table class="changes"><thead><tr><th>Package</th><th>From</th><th>To</th><th>Kind</th></tr></thead><tbody>
-<tr><td>symfony/translation</td><td>v5.4.22</td><td>v5.4.44</td><td>upgraded, patch</td></tr>
-<tr><td>symfony/validator</td><td>v5.4.23</td><td>v5.4.43</td><td>upgraded, patch</td></tr>
-</tbody></table></details>
-<details><summary>Other candidates (9)</summary><table class="candidates"><thead><tr><th>Outcome</th><th>Command</th><th>Detail</th></tr></thead><tbody>
-<tr><td><span class="badge ok">valid, rank 2</span></td><td><code>composer update shopware/storefront -W -m --with &apos;symfony/validator:&gt;=5.4.43,&lt;6.0.0 || &gt;=6.4.11,&lt;7.0.0 || &gt;=7.1.4&apos;</code></td><td>2 changes</td></tr>
-<tr><td><span class="badge ok">valid, rank 3</span></td><td><code>composer update shopware/administration -W -m --with &apos;symfony/validator:&gt;=5.4.43,&lt;6.0.0 || &gt;=6.4.11,&lt;7.0.0 || &gt;=7.1.4&apos;</code></td><td>2 changes</td></tr>
-<tr><td><span class="badge ok">valid, rank 4</span></td><td><code>composer update shopware/elasticsearch -W -m --with &apos;symfony/validator:&gt;=5.4.43,&lt;6.0.0 || &gt;=6.4.11,&lt;7.0.0 || &gt;=7.1.4&apos;</code></td><td>2 changes</td></tr>
-<tr><td><span class="badge ok">valid, rank 5</span></td><td><code>composer update shopware/recovery -W -m --with &apos;symfony/validator:&gt;=5.4.43,&lt;6.0.0 || &gt;=6.4.11,&lt;7.0.0 || &gt;=7.1.4&apos;</code></td><td>2 changes</td></tr>
-<tr><td><span class="badge ok">valid, rank 6</span></td><td><code>composer update shopware/core shopware/storefront -W -m --with &apos;symfony/validator:&gt;=5.4.43,&lt;6.0.0 || &gt;=6.4.11,&lt;7.0.0 || &gt;=7.1.4&apos;</code></td><td>2 changes</td></tr>
-<tr><td><span class="badge rejected">rejected</span></td><td><code>composer update symfony/validator</code></td><td><pre class="reason">resolves, but symfony/validator ends at v5.4.34 which is still affected by PKSA-w2tw-kmfg-rt9s</pre></td></tr>
-<tr><td><span class="badge rejected">rejected</span></td><td><code>composer update symfony/validator -w -m --with &apos;symfony/validator:&gt;=5.4.43,&lt;6.0.0 || &gt;=6.4.11,&lt;7.0.0 || &gt;=7.1.4&apos;</code></td><td><pre class="reason">Composer could not resolve the dependencies: Your requirements could not be resolved to an installable set of packages.
-  Problem 1
-    - shopware/core is locked to version 6.4.20.2 and an update of this package was not requested.
-    - shopware/core 6.4.20.2 requires symfony/translation ~5.4.1 -&gt; satisfiable by symfony/translation[v5.4.22].
-    - shopware/core 6.4.20.2 requires symfony/validator ~5.4.1 -&gt; satisfiable by symfony/validator[v5.4.43].
-    - symfony/validator v5.4.43 conflicts with symfony/translation &lt;5.4.35|&gt;=6.0,&lt;6.3.12|&gt;=6.4,&lt;6.4.3.
-Use the option --with-all-dependencies (-W) to allow upgrades, downgrades and removals for packages currently locked to specific versions.</pre></td></tr>
-<tr><td><span class="badge skipped">not tried</span></td><td><code>composer require --no-update shopware/core:^6.5 &amp;&amp; composer update shopware/core -W -m --with &apos;symfony/validator:&gt;=5.4.43,&lt;6.0.0 || &gt;=6.4.11,&lt;7.0.0 || &gt;=7.1.4&apos;</code></td><td>a better candidate already exists</td></tr>
-<tr><td><span class="badge skipped">not tried</span></td><td><code>composer require --no-update shopware/storefront:^6.5 &amp;&amp; composer update shopware/storefront -W -m --with &apos;symfony/validator:&gt;=5.4.43,&lt;6.0.0 || &gt;=6.4.11,&lt;7.0.0 || &gt;=7.1.4&apos;</code></td><td>a better candidate already exists</td></tr>
-</tbody></table></details>
-</section>
-<section class="finding" id="finding-9">
 <h2>tecnickcom/tcpdf <span class="version">6.4.4</span></h2>
 <p class="state">Transitive dependency.</p>
+<p class="abandoned"><strong>Abandoned:</strong> shopware/recovery (on the dependency path, no replacement named). An abandoned parent will not ship a release that lifts its pin.</p>
 <h3>Advisories</h3><ul class="advisories">
 <li><strong><a href="https://github.com/advisories/GHSA-g9wg-98c2-qv3v" rel="noopener noreferrer">CVE-2024-32489 <small>(PKSA-d3g2-dzgm-n74r)</small></a></strong> <span class="badge sev-medium">medium</span><br>TCPDF Cross-site Scripting vulnerability<br><small>affected versions: <code>&lt;6.7.4</code></small></li>
 <li><strong><a href="https://github.com/advisories/GHSA-mx3p-fhpw-x6rv" rel="noopener noreferrer">CVE-2024-22640 <small>(PKSA-jwjn-w3mx-tq38)</small></a></strong> <span class="badge sev-medium">medium</span><br>TCPDF vulnerable to Regular Expression Denial of Service<br><small>affected versions: <code>&lt;=6.7.4</code></small></li>
@@ -1109,9 +1061,10 @@ Use the option --with-all-dependencies (-W) to allow upgrades, downgrades and re
     - shopware/core[v6.6.0.0, ..., v6.6.6.0] require php ~8.2.0 || ~8.3.0 -&gt; your php version (7.4.3; overridden via config.platform, actual: 8.5.5) does not satisfy that requirement.</pre></td></tr>
 </tbody></table></details>
 </section>
-<section class="finding" id="finding-10">
+<section class="finding" id="finding-9">
 <h2>twig/twig <span class="version">v3.4.3</span></h2>
 <p class="state">Transitive dependency.</p>
+<p class="abandoned"><strong>Abandoned:</strong> shopware/recovery (on the dependency path, no replacement named). An abandoned parent will not ship a release that lifts its pin.</p>
 <h3>Advisories</h3><ul class="advisories">
 <li><strong><a href="https://symfony.com/blog/twig-security-release-possible-sandbox-bypass" rel="noopener noreferrer">CVE-2024-45411 <small>(PKSA-6319-ffpf-gx66)</small></a></strong> <span class="badge sev-medium">medium</span><br>Possible sandbox bypass<br><small>affected versions: <code>&gt;=1.0.0,&lt;1.44.7|&gt;=2.0.0,&lt;2.16.0|&gt;=3.0.0,&lt;3.11.0|&gt;=3.12.0,&lt;3.14.0</code></small></li>
 </ul>
@@ -1340,6 +1293,64 @@ Use the option --with-all-dependencies (-W) to allow upgrades, downgrades and re
     - shopware/core[v6.6.0.0, ..., v6.6.6.0] require php ~8.2.0 || ~8.3.0 -&gt; your php version (7.4.3; overridden via config.platform, actual: 8.5.5) does not satisfy that requirement.</pre></td></tr>
 </tbody></table></details>
 </section>
+<section class="finding" id="finding-10">
+<h2>symfony/validator <span class="version">v5.4.23</span></h2>
+<p class="state">Transitive dependency.</p>
+<p class="abandoned"><strong>Abandoned:</strong> shopware/recovery (on the dependency path, no replacement named). An abandoned parent will not ship a release that lifts its pin.</p>
+<h3>Advisories</h3><ul class="advisories">
+<li><strong><a href="https://symfony.com/cve-2024-50343" rel="noopener noreferrer">CVE-2024-50343 <small>(PKSA-w2tw-kmfg-rt9s)</small></a></strong> <span class="badge sev-low">low</span><br>CVE-2024-50343: Incorrect response from Validator when input ends with `
+`<br><small>affected versions: <code>&gt;=2.0.0,&lt;3.0.0|&gt;=3.0.0,&lt;4.0.0|&gt;=4.0.0,&lt;5.0.0|&gt;=5.0.0,&lt;5.1.0|&gt;=5.1.0,&lt;5.2.0|&gt;=5.2.0,&lt;5.3.0|&gt;=5.3.0,&lt;5.4.0|&gt;=5.4.0,&lt;5.4.43|&gt;=6.0.0,&lt;6.1.0|&gt;=6.1.0,&lt;6.2.0|&gt;=6.2.0,&lt;6.3.0|&gt;=6.3.0,&lt;6.4.0|&gt;=6.4.0,&lt;6.4.11|&gt;=7.0.0,&lt;7.1.0|&gt;=7.1.0,&lt;7.1.4</code></small></li>
+</ul>
+<h3>Introduced by</h3>
+<pre class="tree">root
+└── shopware/core 6.4.20.2
+    └── symfony/validator v5.4.23  (requires ~5.4.1)
+
+root
+└── shopware/administration 6.4.20.2
+    └── shopware/core 6.4.20.2
+        └── symfony/validator v5.4.23  (requires ~5.4.1)
+
+root
+└── shopware/elasticsearch 6.4.20.2
+    └── shopware/core 6.4.20.2
+        └── symfony/validator v5.4.23  (requires ~5.4.1)
+
+root
+└── shopware/recovery 6.4.20.2
+    └── shopware/core 6.4.20.2
+        └── symfony/validator v5.4.23  (requires ~5.4.1)
+
+root
+└── shopware/storefront 6.4.20.2
+    └── shopware/core 6.4.20.2
+        └── symfony/validator v5.4.23  (requires ~5.4.1)</pre>
+<p><small>… and 1 more path</small></p>
+<h3>Recommended remediation</h3>
+<p class="command"><code>composer update shopware/core -W -m --with &apos;symfony/validator:&gt;=5.4.43,&lt;6.0.0 || &gt;=6.4.11,&lt;7.0.0 || &gt;=7.1.4&apos;</code></p>
+<p class="validation"><span class="badge ok">Composer validation: PASS</span> 2 packages changed, 0 added, 0 removed, 0 root constraints changed.</p>
+<details open><summary>Expected changes (2)</summary><table class="changes"><thead><tr><th>Package</th><th>From</th><th>To</th><th>Kind</th></tr></thead><tbody>
+<tr><td>symfony/translation</td><td>v5.4.22</td><td>v5.4.44</td><td>upgraded, patch</td></tr>
+<tr><td>symfony/validator</td><td>v5.4.23</td><td>v5.4.43</td><td>upgraded, patch</td></tr>
+</tbody></table></details>
+<details><summary>Other candidates (9)</summary><table class="candidates"><thead><tr><th>Outcome</th><th>Command</th><th>Detail</th></tr></thead><tbody>
+<tr><td><span class="badge ok">valid, rank 2</span></td><td><code>composer update shopware/storefront -W -m --with &apos;symfony/validator:&gt;=5.4.43,&lt;6.0.0 || &gt;=6.4.11,&lt;7.0.0 || &gt;=7.1.4&apos;</code></td><td>2 changes</td></tr>
+<tr><td><span class="badge ok">valid, rank 3</span></td><td><code>composer update shopware/administration -W -m --with &apos;symfony/validator:&gt;=5.4.43,&lt;6.0.0 || &gt;=6.4.11,&lt;7.0.0 || &gt;=7.1.4&apos;</code></td><td>2 changes</td></tr>
+<tr><td><span class="badge ok">valid, rank 4</span></td><td><code>composer update shopware/elasticsearch -W -m --with &apos;symfony/validator:&gt;=5.4.43,&lt;6.0.0 || &gt;=6.4.11,&lt;7.0.0 || &gt;=7.1.4&apos;</code></td><td>2 changes</td></tr>
+<tr><td><span class="badge ok">valid, rank 5</span></td><td><code>composer update shopware/recovery -W -m --with &apos;symfony/validator:&gt;=5.4.43,&lt;6.0.0 || &gt;=6.4.11,&lt;7.0.0 || &gt;=7.1.4&apos;</code></td><td>2 changes</td></tr>
+<tr><td><span class="badge ok">valid, rank 6</span></td><td><code>composer update shopware/core shopware/storefront -W -m --with &apos;symfony/validator:&gt;=5.4.43,&lt;6.0.0 || &gt;=6.4.11,&lt;7.0.0 || &gt;=7.1.4&apos;</code></td><td>2 changes</td></tr>
+<tr><td><span class="badge rejected">rejected</span></td><td><code>composer update symfony/validator</code></td><td><pre class="reason">resolves, but symfony/validator ends at v5.4.34 which is still affected by PKSA-w2tw-kmfg-rt9s</pre></td></tr>
+<tr><td><span class="badge rejected">rejected</span></td><td><code>composer update symfony/validator -w -m --with &apos;symfony/validator:&gt;=5.4.43,&lt;6.0.0 || &gt;=6.4.11,&lt;7.0.0 || &gt;=7.1.4&apos;</code></td><td><pre class="reason">Composer could not resolve the dependencies: Your requirements could not be resolved to an installable set of packages.
+  Problem 1
+    - shopware/core is locked to version 6.4.20.2 and an update of this package was not requested.
+    - shopware/core 6.4.20.2 requires symfony/translation ~5.4.1 -&gt; satisfiable by symfony/translation[v5.4.22].
+    - shopware/core 6.4.20.2 requires symfony/validator ~5.4.1 -&gt; satisfiable by symfony/validator[v5.4.43].
+    - symfony/validator v5.4.43 conflicts with symfony/translation &lt;5.4.35|&gt;=6.0,&lt;6.3.12|&gt;=6.4,&lt;6.4.3.
+Use the option --with-all-dependencies (-W) to allow upgrades, downgrades and removals for packages currently locked to specific versions.</pre></td></tr>
+<tr><td><span class="badge skipped">not tried</span></td><td><code>composer require --no-update shopware/core:^6.5 &amp;&amp; composer update shopware/core -W -m --with &apos;symfony/validator:&gt;=5.4.43,&lt;6.0.0 || &gt;=6.4.11,&lt;7.0.0 || &gt;=7.1.4&apos;</code></td><td>a better candidate already exists</td></tr>
+<tr><td><span class="badge skipped">not tried</span></td><td><code>composer require --no-update shopware/storefront:^6.5 &amp;&amp; composer update shopware/storefront -W -m --with &apos;symfony/validator:&gt;=5.4.43,&lt;6.0.0 || &gt;=6.4.11,&lt;7.0.0 || &gt;=7.1.4&apos;</code></td><td>a better candidate already exists</td></tr>
+</tbody></table></details>
+</section>
 <section class="meta"><h2>Analysis metadata</h2><dl>
 <dt>project</dt><dd>shopware-6420-twig-no-fix</dd>
 <dt>engine version</dt><dd>dev-main</dd>
@@ -1348,7 +1359,7 @@ Use the option --with-all-dependencies (-W) to allow upgrades, downgrades and re
 <dt>advisory source</dt><dd>advisory snapshot advisories.json</dd>
 <dt>solver</dt><dd>in-process Composer dry-run</dd>
 <dt>solver runs</dt><dd>139</dd>
-<dt>composer json sha256</dt><dd>36dc8b030a51fe5252780bc5d74249b516cee85de9e93a274b0842f25cc27526</dd>
+<dt>composer json sha256</dt><dd>868f4a89531092811c3320c039bfc23e3351d5ab12ccb93c69ca191fad5cb5a1</dd>
 <dt>composer lock sha256</dt><dd>45cb39a5300625dd42fa86f3fdce23fc30203b96a16ccc3ec0c4afbc2bec7455</dd>
 <dt>analysis timestamp</dt><dd>(fixture)</dd>
 <dt>locked packages</dt><dd>201</dd>

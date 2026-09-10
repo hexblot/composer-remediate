@@ -8,7 +8,7 @@
         "advisory_source": "advisory snapshot advisories.json",
         "solver": "in-process Composer dry-run",
         "solver_runs": "56",
-        "composer_json_sha256": "b0762c1fc20619619719f9f3fe768a9c027a0855b7df014f13f5cad2a5d11dae",
+        "composer_json_sha256": "8caaa1fb655c1133f9f36967a23d78510033b4ba81426152c02bbd874e013ab7",
         "composer_lock_sha256": "b7f5a2dbf068b7d2c712b0b48b4ffebaa46cf09a360f1875741011455cea8c99",
         "analysis_timestamp": "(fixture)",
         "locked_packages": "168"
@@ -25,7 +25,9 @@
         "packages_gated": 4,
         "packages_baselined": 0,
         "packages_with_constraint_drag": 0,
-        "combined_command": "composer update symfony/validator drupal/core-recommended -W -m",
+        "packages_known_exploited": 0,
+        "packages_with_abandoned_dependency": 0,
+        "combined_command": "composer update drupal/core-recommended symfony/validator -W -m",
         "combined_fixes": 2,
         "combined_total": 4,
         "combined_fixes_all": false,
@@ -63,9 +65,13 @@
                             "name": "GitHub",
                             "remoteId": "GHSA-mg8j-w93w-xjgc"
                         }
-                    ]
+                    ],
+                    "epss": null,
+                    "epss_percentile": null,
+                    "kev_added": null
                 }
             ],
+            "abandoned": [],
             "paths_total": 77,
             "paths": [
                 {
@@ -410,9 +416,13 @@
                             "name": "GitHub",
                             "remoteId": "GHSA-mg8j-w93w-xjgc"
                         }
-                    ]
+                    ],
+                    "epss": null,
+                    "epss_percentile": null,
+                    "kev_added": null
                 }
             ],
+            "abandoned": [],
             "paths_total": 1,
             "paths": [
                 {
@@ -478,485 +488,6 @@
             ]
         },
         {
-            "package": "symfony/validator",
-            "version": "v6.4.8",
-            "version_normalized": "6.4.8.0",
-            "direct": false,
-            "dev": false,
-            "baselined": false,
-            "counts_for_exit": true,
-            "via_replaced_package": null,
-            "advisories": [
-                {
-                    "id": "PKSA-w2tw-kmfg-rt9s",
-                    "cve": "CVE-2024-50343",
-                    "title": "CVE-2024-50343: Incorrect response from Validator when input ends with `\n`",
-                    "link": "https://symfony.com/cve-2024-50343",
-                    "severity": "low",
-                    "reported_at": "2024-08-30T08:00:00+00:00",
-                    "affected_versions": ">=2.0.0,<3.0.0|>=3.0.0,<4.0.0|>=4.0.0,<5.0.0|>=5.0.0,<5.1.0|>=5.1.0,<5.2.0|>=5.2.0,<5.3.0|>=5.3.0,<5.4.0|>=5.4.0,<5.4.43|>=6.0.0,<6.1.0|>=6.1.0,<6.2.0|>=6.2.0,<6.3.0|>=6.3.0,<6.4.0|>=6.4.0,<6.4.11|>=7.0.0,<7.1.0|>=7.1.0,<7.1.4",
-                    "sources": [
-                        {
-                            "name": "GitHub",
-                            "remoteId": "GHSA-g3rh-rrhp-jhh9"
-                        },
-                        {
-                            "name": "FriendsOfPHP/security-advisories",
-                            "remoteId": "symfony/validator/CVE-2024-50343.yaml"
-                        }
-                    ]
-                }
-            ],
-            "paths_total": 78,
-            "paths": [
-                {
-                    "cyclic": false,
-                    "chain": [
-                        {
-                            "package": "root",
-                            "version": null,
-                            "requires": "^1.9"
-                        },
-                        {
-                            "package": "drupal/address",
-                            "version": "1.12.0",
-                            "requires": "^9.2 || ^10"
-                        },
-                        {
-                            "package": "drupal/core",
-                            "version": "10.2.7",
-                            "requires": "^6.4"
-                        }
-                    ],
-                    "target": {
-                        "package": "symfony/validator",
-                        "version": "v6.4.8"
-                    }
-                },
-                {
-                    "cyclic": false,
-                    "chain": [
-                        {
-                            "package": "root",
-                            "version": null,
-                            "requires": "^3.4"
-                        },
-                        {
-                            "package": "drupal/admin_toolbar",
-                            "version": "3.4.2",
-                            "requires": "^9.2 || ^10"
-                        },
-                        {
-                            "package": "drupal/core",
-                            "version": "10.2.7",
-                            "requires": "^6.4"
-                        }
-                    ],
-                    "target": {
-                        "package": "symfony/validator",
-                        "version": "v6.4.8"
-                    }
-                },
-                {
-                    "cyclic": false,
-                    "chain": [
-                        {
-                            "package": "root",
-                            "version": null,
-                            "requires": "^3.0"
-                        },
-                        {
-                            "package": "drupal/allowed_formats",
-                            "version": "3.0.0",
-                            "requires": "^10.1"
-                        },
-                        {
-                            "package": "drupal/core",
-                            "version": "10.2.7",
-                            "requires": "^6.4"
-                        }
-                    ],
-                    "target": {
-                        "package": "symfony/validator",
-                        "version": "v6.4.8"
-                    }
-                },
-                {
-                    "cyclic": false,
-                    "chain": [
-                        {
-                            "package": "root",
-                            "version": null,
-                            "requires": "^2.0"
-                        },
-                        {
-                            "package": "drupal/autologout",
-                            "version": "2.0.0",
-                            "requires": "^9.2 || ^10 || ^11"
-                        },
-                        {
-                            "package": "drupal/core",
-                            "version": "10.2.7",
-                            "requires": "^6.4"
-                        }
-                    ],
-                    "target": {
-                        "package": "symfony/validator",
-                        "version": "v6.4.8"
-                    }
-                },
-                {
-                    "cyclic": false,
-                    "chain": [
-                        {
-                            "package": "root",
-                            "version": null,
-                            "requires": "^1.3"
-                        },
-                        {
-                            "package": "drupal/ckeditor_templates",
-                            "version": "1.4.0",
-                            "requires": "*"
-                        },
-                        {
-                            "package": "drupal/ckeditor",
-                            "version": "1.0.2",
-                            "requires": "^9.4 || ^10"
-                        },
-                        {
-                            "package": "drupal/core",
-                            "version": "10.2.7",
-                            "requires": "^6.4"
-                        }
-                    ],
-                    "target": {
-                        "package": "symfony/validator",
-                        "version": "v6.4.8"
-                    }
-                },
-                {
-                    "cyclic": false,
-                    "chain": [
-                        {
-                            "package": "root",
-                            "version": null,
-                            "requires": "^1.5"
-                        },
-                        {
-                            "package": "drupal/ckeditor_templates_ui",
-                            "version": "1.5.0",
-                            "requires": "*"
-                        },
-                        {
-                            "package": "drupal/ckeditor_templates",
-                            "version": "1.4.0",
-                            "requires": "*"
-                        },
-                        {
-                            "package": "drupal/ckeditor",
-                            "version": "1.0.2",
-                            "requires": "^9.4 || ^10"
-                        },
-                        {
-                            "package": "drupal/core",
-                            "version": "10.2.7",
-                            "requires": "^6.4"
-                        }
-                    ],
-                    "target": {
-                        "package": "symfony/validator",
-                        "version": "v6.4.8"
-                    }
-                },
-                {
-                    "cyclic": false,
-                    "chain": [
-                        {
-                            "package": "root",
-                            "version": null,
-                            "requires": "^2.0"
-                        },
-                        {
-                            "package": "drupal/uswds_ckeditor_integration",
-                            "version": "2.0.3",
-                            "requires": "^1.0"
-                        },
-                        {
-                            "package": "drupal/ckeditor5_embedded_content",
-                            "version": "1.0.1",
-                            "requires": "^9 || ^10"
-                        },
-                        {
-                            "package": "drupal/core",
-                            "version": "10.2.7",
-                            "requires": "^6.4"
-                        }
-                    ],
-                    "target": {
-                        "package": "symfony/validator",
-                        "version": "v6.4.8"
-                    }
-                },
-                {
-                    "cyclic": false,
-                    "chain": [
-                        {
-                            "package": "root",
-                            "version": null,
-                            "requires": "^1.0@beta"
-                        },
-                        {
-                            "package": "drupal/ckeditor_media_resize",
-                            "version": "1.0.0-beta1",
-                            "requires": "^9.4 || ^10"
-                        },
-                        {
-                            "package": "drupal/core",
-                            "version": "10.2.7",
-                            "requires": "^6.4"
-                        }
-                    ],
-                    "target": {
-                        "package": "symfony/validator",
-                        "version": "v6.4.8"
-                    }
-                },
-                {
-                    "cyclic": false,
-                    "chain": [
-                        {
-                            "package": "root",
-                            "version": null,
-                            "requires": "^1.3"
-                        },
-                        {
-                            "package": "drupal/ckeditor_templates",
-                            "version": "1.4.0",
-                            "requires": "^8 || ^9 || ^10 || ^11"
-                        },
-                        {
-                            "package": "drupal/core",
-                            "version": "10.2.7",
-                            "requires": "^6.4"
-                        }
-                    ],
-                    "target": {
-                        "package": "symfony/validator",
-                        "version": "v6.4.8"
-                    }
-                },
-                {
-                    "cyclic": false,
-                    "chain": [
-                        {
-                            "package": "root",
-                            "version": null,
-                            "requires": "^1.5"
-                        },
-                        {
-                            "package": "drupal/ckeditor_templates_ui",
-                            "version": "1.5.0",
-                            "requires": "*"
-                        },
-                        {
-                            "package": "drupal/ckeditor_templates",
-                            "version": "1.4.0",
-                            "requires": "^8 || ^9 || ^10 || ^11"
-                        },
-                        {
-                            "package": "drupal/core",
-                            "version": "10.2.7",
-                            "requires": "^6.4"
-                        }
-                    ],
-                    "target": {
-                        "package": "symfony/validator",
-                        "version": "v6.4.8"
-                    }
-                }
-            ],
-            "solver_runs": 9,
-            "search_exhausted": true,
-            "remediation": {
-                "status": "verified",
-                "command": "composer update symfony/validator",
-                "strategy": "lock-refresh",
-                "root_constraint_changes": [],
-                "constraint_drag": null,
-                "blocking_risk": [],
-                "summary": {
-                    "changed": 1,
-                    "added": 0,
-                    "removed": 0,
-                    "total": 1,
-                    "major_change": false,
-                    "downgrade": false,
-                    "prerelease": false
-                },
-                "changes": [
-                    {
-                        "package": "symfony/validator",
-                        "kind": "upgraded",
-                        "step": "patch",
-                        "from": "v6.4.8",
-                        "to": "v6.4.12"
-                    }
-                ]
-            },
-            "candidates": [
-                {
-                    "command": "composer update symfony/validator",
-                    "strategy": "lock-refresh",
-                    "outcome": "valid",
-                    "rank": 1,
-                    "summary": {
-                        "changed": 1,
-                        "added": 0,
-                        "removed": 0,
-                        "total": 1,
-                        "major_change": false,
-                        "downgrade": false,
-                        "prerelease": false
-                    },
-                    "solver_status": "resolved"
-                },
-                {
-                    "command": "composer update symfony/validator -w -m --with 'symfony/validator:>=6.4.11,<7.0.0 || >=7.1.4'",
-                    "strategy": "with-dependencies",
-                    "outcome": "valid",
-                    "rank": 2,
-                    "summary": {
-                        "changed": 1,
-                        "added": 0,
-                        "removed": 0,
-                        "total": 1,
-                        "major_change": false,
-                        "downgrade": false,
-                        "prerelease": false
-                    },
-                    "solver_status": "resolved"
-                },
-                {
-                    "command": "composer update drupal/address -W -m --with 'symfony/validator:>=6.4.11,<7.0.0 || >=7.1.4'",
-                    "strategy": "parent-update",
-                    "outcome": "valid",
-                    "rank": 3,
-                    "summary": {
-                        "changed": 1,
-                        "added": 0,
-                        "removed": 0,
-                        "total": 1,
-                        "major_change": false,
-                        "downgrade": false,
-                        "prerelease": false
-                    },
-                    "solver_status": "resolved"
-                },
-                {
-                    "command": "composer update drupal/ckeditor_templates -W -m --with 'symfony/validator:>=6.4.11,<7.0.0 || >=7.1.4'",
-                    "strategy": "parent-update",
-                    "outcome": "valid",
-                    "rank": 4,
-                    "summary": {
-                        "changed": 1,
-                        "added": 0,
-                        "removed": 0,
-                        "total": 1,
-                        "major_change": false,
-                        "downgrade": false,
-                        "prerelease": false
-                    },
-                    "solver_status": "resolved"
-                },
-                {
-                    "command": "composer update drupal/allowed_formats -W -m --with 'symfony/validator:>=6.4.11,<7.0.0 || >=7.1.4'",
-                    "strategy": "parent-update",
-                    "outcome": "valid",
-                    "rank": 5,
-                    "summary": {
-                        "changed": 2,
-                        "added": 0,
-                        "removed": 0,
-                        "total": 2,
-                        "major_change": false,
-                        "downgrade": false,
-                        "prerelease": false
-                    },
-                    "solver_status": "resolved"
-                },
-                {
-                    "command": "composer update drupal/autologout -W -m --with 'symfony/validator:>=6.4.11,<7.0.0 || >=7.1.4'",
-                    "strategy": "parent-update",
-                    "outcome": "valid",
-                    "rank": 6,
-                    "summary": {
-                        "changed": 2,
-                        "added": 0,
-                        "removed": 0,
-                        "total": 2,
-                        "major_change": false,
-                        "downgrade": false,
-                        "prerelease": false
-                    },
-                    "solver_status": "resolved"
-                },
-                {
-                    "command": "composer update drupal/admin_toolbar -W -m --with 'symfony/validator:>=6.4.11,<7.0.0 || >=7.1.4'",
-                    "strategy": "parent-update",
-                    "outcome": "valid",
-                    "rank": 7,
-                    "summary": {
-                        "changed": 2,
-                        "added": 0,
-                        "removed": 0,
-                        "total": 2,
-                        "major_change": false,
-                        "downgrade": false,
-                        "prerelease": false
-                    },
-                    "solver_status": "resolved"
-                },
-                {
-                    "command": "composer update drupal/core-recommended -W -m --with 'symfony/validator:>=6.4.11,<7.0.0 || >=7.1.4'",
-                    "strategy": "parent-update",
-                    "outcome": "valid",
-                    "rank": 8,
-                    "summary": {
-                        "changed": 4,
-                        "added": 0,
-                        "removed": 0,
-                        "total": 4,
-                        "major_change": false,
-                        "downgrade": false,
-                        "prerelease": false
-                    },
-                    "solver_status": "resolved"
-                },
-                {
-                    "command": "composer update drupal/address drupal/admin_toolbar drupal/allowed_formats drupal/autologout drupal/ckeditor_templates drupal/uswds_ckeditor_integration drupal/ckeditor_media_resize drupal/ckeditor_templates_ui drupal/composer_deploy drupal/conditional_fields drupal/content_lock drupal/content_moderation_notifications drupal/core-recommended drupal/views_data_export drupal/ctools drupal/devel drupal/diff drupal/entity_embed drupal/paragraphs_entity_embed drupal/entity_reference_revisions drupal/externalauth drupal/faqfield drupal/feeds drupal/field_defaults drupal/uswds_paragraph_components drupal/field_permissions drupal/hierarchy_manager drupal/image_style_warmer drupal/jquery_ui_accordion drupal/language_switcher_extended drupal/log_stdout drupal/menu_block drupal/menu_breadcrumb drupal/menu_entity_index drupal/menu_item_fields drupal/new_relic_rpm drupal/node_menus drupal/pathauto drupal/redirect drupal/remove_http_headers drupal/s3fs drupal/samlauth drupal/simple_sitemap drupal/simplify_menu drupal/tome drupal/twig_tweak drupal/uswds_base drupal/views_menu_children_filter drupal/viewsreference -W -m --with 'symfony/validator:>=6.4.11,<7.0.0 || >=7.1.4'",
-                    "strategy": "parent-update",
-                    "outcome": "valid",
-                    "rank": 9,
-                    "summary": {
-                        "changed": 56,
-                        "added": 0,
-                        "removed": 0,
-                        "total": 56,
-                        "major_change": false,
-                        "downgrade": false,
-                        "prerelease": true
-                    },
-                    "solver_status": "resolved"
-                },
-                {
-                    "command": "composer require --no-update drupal/core-recommended:^11.0 && composer update drupal/core-recommended -W -m --with 'symfony/validator:>=6.4.11,<7.0.0 || >=7.1.4'",
-                    "strategy": "root-constraint-widen",
-                    "outcome": "skipped",
-                    "reason": "a better candidate already exists"
-                }
-            ]
-        },
-        {
             "package": "twig/twig",
             "version": "v3.8.0",
             "version_normalized": "3.8.0.0",
@@ -983,9 +514,13 @@
                             "name": "FriendsOfPHP/security-advisories",
                             "remoteId": "twig/twig/CVE-2024-45411.yaml"
                         }
-                    ]
+                    ],
+                    "epss": null,
+                    "epss_percentile": null,
+                    "kev_added": null
                 }
             ],
+            "abandoned": [],
             "paths_total": 81,
             "paths": [
                 {
@@ -1483,6 +1018,489 @@
                 },
                 {
                     "command": "composer require --no-update drupal/core-recommended:^11.0 && composer update drupal/core-recommended -W -m --with 'twig/twig:>=3.11.0,<3.12.0 || >=3.14.0'",
+                    "strategy": "root-constraint-widen",
+                    "outcome": "skipped",
+                    "reason": "a better candidate already exists"
+                }
+            ]
+        },
+        {
+            "package": "symfony/validator",
+            "version": "v6.4.8",
+            "version_normalized": "6.4.8.0",
+            "direct": false,
+            "dev": false,
+            "baselined": false,
+            "counts_for_exit": true,
+            "via_replaced_package": null,
+            "advisories": [
+                {
+                    "id": "PKSA-w2tw-kmfg-rt9s",
+                    "cve": "CVE-2024-50343",
+                    "title": "CVE-2024-50343: Incorrect response from Validator when input ends with `\n`",
+                    "link": "https://symfony.com/cve-2024-50343",
+                    "severity": "low",
+                    "reported_at": "2024-08-30T08:00:00+00:00",
+                    "affected_versions": ">=2.0.0,<3.0.0|>=3.0.0,<4.0.0|>=4.0.0,<5.0.0|>=5.0.0,<5.1.0|>=5.1.0,<5.2.0|>=5.2.0,<5.3.0|>=5.3.0,<5.4.0|>=5.4.0,<5.4.43|>=6.0.0,<6.1.0|>=6.1.0,<6.2.0|>=6.2.0,<6.3.0|>=6.3.0,<6.4.0|>=6.4.0,<6.4.11|>=7.0.0,<7.1.0|>=7.1.0,<7.1.4",
+                    "sources": [
+                        {
+                            "name": "GitHub",
+                            "remoteId": "GHSA-g3rh-rrhp-jhh9"
+                        },
+                        {
+                            "name": "FriendsOfPHP/security-advisories",
+                            "remoteId": "symfony/validator/CVE-2024-50343.yaml"
+                        }
+                    ],
+                    "epss": null,
+                    "epss_percentile": null,
+                    "kev_added": null
+                }
+            ],
+            "abandoned": [],
+            "paths_total": 78,
+            "paths": [
+                {
+                    "cyclic": false,
+                    "chain": [
+                        {
+                            "package": "root",
+                            "version": null,
+                            "requires": "^1.9"
+                        },
+                        {
+                            "package": "drupal/address",
+                            "version": "1.12.0",
+                            "requires": "^9.2 || ^10"
+                        },
+                        {
+                            "package": "drupal/core",
+                            "version": "10.2.7",
+                            "requires": "^6.4"
+                        }
+                    ],
+                    "target": {
+                        "package": "symfony/validator",
+                        "version": "v6.4.8"
+                    }
+                },
+                {
+                    "cyclic": false,
+                    "chain": [
+                        {
+                            "package": "root",
+                            "version": null,
+                            "requires": "^3.4"
+                        },
+                        {
+                            "package": "drupal/admin_toolbar",
+                            "version": "3.4.2",
+                            "requires": "^9.2 || ^10"
+                        },
+                        {
+                            "package": "drupal/core",
+                            "version": "10.2.7",
+                            "requires": "^6.4"
+                        }
+                    ],
+                    "target": {
+                        "package": "symfony/validator",
+                        "version": "v6.4.8"
+                    }
+                },
+                {
+                    "cyclic": false,
+                    "chain": [
+                        {
+                            "package": "root",
+                            "version": null,
+                            "requires": "^3.0"
+                        },
+                        {
+                            "package": "drupal/allowed_formats",
+                            "version": "3.0.0",
+                            "requires": "^10.1"
+                        },
+                        {
+                            "package": "drupal/core",
+                            "version": "10.2.7",
+                            "requires": "^6.4"
+                        }
+                    ],
+                    "target": {
+                        "package": "symfony/validator",
+                        "version": "v6.4.8"
+                    }
+                },
+                {
+                    "cyclic": false,
+                    "chain": [
+                        {
+                            "package": "root",
+                            "version": null,
+                            "requires": "^2.0"
+                        },
+                        {
+                            "package": "drupal/autologout",
+                            "version": "2.0.0",
+                            "requires": "^9.2 || ^10 || ^11"
+                        },
+                        {
+                            "package": "drupal/core",
+                            "version": "10.2.7",
+                            "requires": "^6.4"
+                        }
+                    ],
+                    "target": {
+                        "package": "symfony/validator",
+                        "version": "v6.4.8"
+                    }
+                },
+                {
+                    "cyclic": false,
+                    "chain": [
+                        {
+                            "package": "root",
+                            "version": null,
+                            "requires": "^1.3"
+                        },
+                        {
+                            "package": "drupal/ckeditor_templates",
+                            "version": "1.4.0",
+                            "requires": "*"
+                        },
+                        {
+                            "package": "drupal/ckeditor",
+                            "version": "1.0.2",
+                            "requires": "^9.4 || ^10"
+                        },
+                        {
+                            "package": "drupal/core",
+                            "version": "10.2.7",
+                            "requires": "^6.4"
+                        }
+                    ],
+                    "target": {
+                        "package": "symfony/validator",
+                        "version": "v6.4.8"
+                    }
+                },
+                {
+                    "cyclic": false,
+                    "chain": [
+                        {
+                            "package": "root",
+                            "version": null,
+                            "requires": "^1.5"
+                        },
+                        {
+                            "package": "drupal/ckeditor_templates_ui",
+                            "version": "1.5.0",
+                            "requires": "*"
+                        },
+                        {
+                            "package": "drupal/ckeditor_templates",
+                            "version": "1.4.0",
+                            "requires": "*"
+                        },
+                        {
+                            "package": "drupal/ckeditor",
+                            "version": "1.0.2",
+                            "requires": "^9.4 || ^10"
+                        },
+                        {
+                            "package": "drupal/core",
+                            "version": "10.2.7",
+                            "requires": "^6.4"
+                        }
+                    ],
+                    "target": {
+                        "package": "symfony/validator",
+                        "version": "v6.4.8"
+                    }
+                },
+                {
+                    "cyclic": false,
+                    "chain": [
+                        {
+                            "package": "root",
+                            "version": null,
+                            "requires": "^2.0"
+                        },
+                        {
+                            "package": "drupal/uswds_ckeditor_integration",
+                            "version": "2.0.3",
+                            "requires": "^1.0"
+                        },
+                        {
+                            "package": "drupal/ckeditor5_embedded_content",
+                            "version": "1.0.1",
+                            "requires": "^9 || ^10"
+                        },
+                        {
+                            "package": "drupal/core",
+                            "version": "10.2.7",
+                            "requires": "^6.4"
+                        }
+                    ],
+                    "target": {
+                        "package": "symfony/validator",
+                        "version": "v6.4.8"
+                    }
+                },
+                {
+                    "cyclic": false,
+                    "chain": [
+                        {
+                            "package": "root",
+                            "version": null,
+                            "requires": "^1.0@beta"
+                        },
+                        {
+                            "package": "drupal/ckeditor_media_resize",
+                            "version": "1.0.0-beta1",
+                            "requires": "^9.4 || ^10"
+                        },
+                        {
+                            "package": "drupal/core",
+                            "version": "10.2.7",
+                            "requires": "^6.4"
+                        }
+                    ],
+                    "target": {
+                        "package": "symfony/validator",
+                        "version": "v6.4.8"
+                    }
+                },
+                {
+                    "cyclic": false,
+                    "chain": [
+                        {
+                            "package": "root",
+                            "version": null,
+                            "requires": "^1.3"
+                        },
+                        {
+                            "package": "drupal/ckeditor_templates",
+                            "version": "1.4.0",
+                            "requires": "^8 || ^9 || ^10 || ^11"
+                        },
+                        {
+                            "package": "drupal/core",
+                            "version": "10.2.7",
+                            "requires": "^6.4"
+                        }
+                    ],
+                    "target": {
+                        "package": "symfony/validator",
+                        "version": "v6.4.8"
+                    }
+                },
+                {
+                    "cyclic": false,
+                    "chain": [
+                        {
+                            "package": "root",
+                            "version": null,
+                            "requires": "^1.5"
+                        },
+                        {
+                            "package": "drupal/ckeditor_templates_ui",
+                            "version": "1.5.0",
+                            "requires": "*"
+                        },
+                        {
+                            "package": "drupal/ckeditor_templates",
+                            "version": "1.4.0",
+                            "requires": "^8 || ^9 || ^10 || ^11"
+                        },
+                        {
+                            "package": "drupal/core",
+                            "version": "10.2.7",
+                            "requires": "^6.4"
+                        }
+                    ],
+                    "target": {
+                        "package": "symfony/validator",
+                        "version": "v6.4.8"
+                    }
+                }
+            ],
+            "solver_runs": 9,
+            "search_exhausted": true,
+            "remediation": {
+                "status": "verified",
+                "command": "composer update symfony/validator",
+                "strategy": "lock-refresh",
+                "root_constraint_changes": [],
+                "constraint_drag": null,
+                "blocking_risk": [],
+                "summary": {
+                    "changed": 1,
+                    "added": 0,
+                    "removed": 0,
+                    "total": 1,
+                    "major_change": false,
+                    "downgrade": false,
+                    "prerelease": false
+                },
+                "changes": [
+                    {
+                        "package": "symfony/validator",
+                        "kind": "upgraded",
+                        "step": "patch",
+                        "from": "v6.4.8",
+                        "to": "v6.4.12"
+                    }
+                ]
+            },
+            "candidates": [
+                {
+                    "command": "composer update symfony/validator",
+                    "strategy": "lock-refresh",
+                    "outcome": "valid",
+                    "rank": 1,
+                    "summary": {
+                        "changed": 1,
+                        "added": 0,
+                        "removed": 0,
+                        "total": 1,
+                        "major_change": false,
+                        "downgrade": false,
+                        "prerelease": false
+                    },
+                    "solver_status": "resolved"
+                },
+                {
+                    "command": "composer update symfony/validator -w -m --with 'symfony/validator:>=6.4.11,<7.0.0 || >=7.1.4'",
+                    "strategy": "with-dependencies",
+                    "outcome": "valid",
+                    "rank": 2,
+                    "summary": {
+                        "changed": 1,
+                        "added": 0,
+                        "removed": 0,
+                        "total": 1,
+                        "major_change": false,
+                        "downgrade": false,
+                        "prerelease": false
+                    },
+                    "solver_status": "resolved"
+                },
+                {
+                    "command": "composer update drupal/address -W -m --with 'symfony/validator:>=6.4.11,<7.0.0 || >=7.1.4'",
+                    "strategy": "parent-update",
+                    "outcome": "valid",
+                    "rank": 3,
+                    "summary": {
+                        "changed": 1,
+                        "added": 0,
+                        "removed": 0,
+                        "total": 1,
+                        "major_change": false,
+                        "downgrade": false,
+                        "prerelease": false
+                    },
+                    "solver_status": "resolved"
+                },
+                {
+                    "command": "composer update drupal/ckeditor_templates -W -m --with 'symfony/validator:>=6.4.11,<7.0.0 || >=7.1.4'",
+                    "strategy": "parent-update",
+                    "outcome": "valid",
+                    "rank": 4,
+                    "summary": {
+                        "changed": 1,
+                        "added": 0,
+                        "removed": 0,
+                        "total": 1,
+                        "major_change": false,
+                        "downgrade": false,
+                        "prerelease": false
+                    },
+                    "solver_status": "resolved"
+                },
+                {
+                    "command": "composer update drupal/allowed_formats -W -m --with 'symfony/validator:>=6.4.11,<7.0.0 || >=7.1.4'",
+                    "strategy": "parent-update",
+                    "outcome": "valid",
+                    "rank": 5,
+                    "summary": {
+                        "changed": 2,
+                        "added": 0,
+                        "removed": 0,
+                        "total": 2,
+                        "major_change": false,
+                        "downgrade": false,
+                        "prerelease": false
+                    },
+                    "solver_status": "resolved"
+                },
+                {
+                    "command": "composer update drupal/autologout -W -m --with 'symfony/validator:>=6.4.11,<7.0.0 || >=7.1.4'",
+                    "strategy": "parent-update",
+                    "outcome": "valid",
+                    "rank": 6,
+                    "summary": {
+                        "changed": 2,
+                        "added": 0,
+                        "removed": 0,
+                        "total": 2,
+                        "major_change": false,
+                        "downgrade": false,
+                        "prerelease": false
+                    },
+                    "solver_status": "resolved"
+                },
+                {
+                    "command": "composer update drupal/admin_toolbar -W -m --with 'symfony/validator:>=6.4.11,<7.0.0 || >=7.1.4'",
+                    "strategy": "parent-update",
+                    "outcome": "valid",
+                    "rank": 7,
+                    "summary": {
+                        "changed": 2,
+                        "added": 0,
+                        "removed": 0,
+                        "total": 2,
+                        "major_change": false,
+                        "downgrade": false,
+                        "prerelease": false
+                    },
+                    "solver_status": "resolved"
+                },
+                {
+                    "command": "composer update drupal/core-recommended -W -m --with 'symfony/validator:>=6.4.11,<7.0.0 || >=7.1.4'",
+                    "strategy": "parent-update",
+                    "outcome": "valid",
+                    "rank": 8,
+                    "summary": {
+                        "changed": 4,
+                        "added": 0,
+                        "removed": 0,
+                        "total": 4,
+                        "major_change": false,
+                        "downgrade": false,
+                        "prerelease": false
+                    },
+                    "solver_status": "resolved"
+                },
+                {
+                    "command": "composer update drupal/address drupal/admin_toolbar drupal/allowed_formats drupal/autologout drupal/ckeditor_templates drupal/uswds_ckeditor_integration drupal/ckeditor_media_resize drupal/ckeditor_templates_ui drupal/composer_deploy drupal/conditional_fields drupal/content_lock drupal/content_moderation_notifications drupal/core-recommended drupal/views_data_export drupal/ctools drupal/devel drupal/diff drupal/entity_embed drupal/paragraphs_entity_embed drupal/entity_reference_revisions drupal/externalauth drupal/faqfield drupal/feeds drupal/field_defaults drupal/uswds_paragraph_components drupal/field_permissions drupal/hierarchy_manager drupal/image_style_warmer drupal/jquery_ui_accordion drupal/language_switcher_extended drupal/log_stdout drupal/menu_block drupal/menu_breadcrumb drupal/menu_entity_index drupal/menu_item_fields drupal/new_relic_rpm drupal/node_menus drupal/pathauto drupal/redirect drupal/remove_http_headers drupal/s3fs drupal/samlauth drupal/simple_sitemap drupal/simplify_menu drupal/tome drupal/twig_tweak drupal/uswds_base drupal/views_menu_children_filter drupal/viewsreference -W -m --with 'symfony/validator:>=6.4.11,<7.0.0 || >=7.1.4'",
+                    "strategy": "parent-update",
+                    "outcome": "valid",
+                    "rank": 9,
+                    "summary": {
+                        "changed": 56,
+                        "added": 0,
+                        "removed": 0,
+                        "total": 56,
+                        "major_change": false,
+                        "downgrade": false,
+                        "prerelease": true
+                    },
+                    "solver_status": "resolved"
+                },
+                {
+                    "command": "composer require --no-update drupal/core-recommended:^11.0 && composer update drupal/core-recommended -W -m --with 'symfony/validator:>=6.4.11,<7.0.0 || >=7.1.4'",
                     "strategy": "root-constraint-widen",
                     "outcome": "skipped",
                     "reason": "a better candidate already exists"

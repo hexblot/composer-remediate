@@ -29,7 +29,7 @@
             },
             {
                 "name": "composer-remediate:combined_command",
-                "value": "composer update symfony/validator drupal/core-recommended:10.3.4 -W -m"
+                "value": "composer update drupal/core-recommended:10.3.4 symfony/validator -W -m"
             },
             {
                 "name": "composer-remediate:exit_code",
@@ -1793,74 +1793,6 @@
             "published": "2024-08-29T12:31:05+00:00"
         },
         {
-            "bom-ref": "vuln:PKSA-w2tw-kmfg-rt9s@pkg:composer/symfony/validator@6.4.9",
-            "id": "PKSA-w2tw-kmfg-rt9s",
-            "source": {
-                "name": "Packagist",
-                "url": "https://packagist.org/security-advisories/PKSA-w2tw-kmfg-rt9s"
-            },
-            "references": [
-                {
-                    "id": "CVE-2024-50343",
-                    "source": {
-                        "name": "NVD",
-                        "url": "https://nvd.nist.gov/vuln/detail/CVE-2024-50343"
-                    }
-                },
-                {
-                    "id": "CVE-2024-50343",
-                    "source": {
-                        "name": "advisory",
-                        "url": "https://symfony.com/cve-2024-50343"
-                    }
-                }
-            ],
-            "ratings": [
-                {
-                    "severity": "low",
-                    "method": "other",
-                    "source": {
-                        "name": "Packagist",
-                        "url": "https://packagist.org/security-advisories/PKSA-w2tw-kmfg-rt9s"
-                    }
-                }
-            ],
-            "description": "CVE-2024-50343: Incorrect response from Validator when input ends with `\n`",
-            "detail": "Affected versions: >=2.0.0,<3.0.0|>=3.0.0,<4.0.0|>=4.0.0,<5.0.0|>=5.0.0,<5.1.0|>=5.1.0,<5.2.0|>=5.2.0,<5.3.0|>=5.3.0,<5.4.0|>=5.4.0,<5.4.43|>=6.0.0,<6.1.0|>=6.1.0,<6.2.0|>=6.2.0,<6.3.0|>=6.3.0,<6.4.0|>=6.4.0,<6.4.11|>=7.0.0,<7.1.0|>=7.1.0,<7.1.4",
-            "recommendation": "Run: composer update symfony/validator",
-            "affects": [
-                {
-                    "ref": "pkg:composer/symfony/validator@6.4.9"
-                }
-            ],
-            "properties": [
-                {
-                    "name": "composer-remediate:remediation_status",
-                    "value": "verified"
-                },
-                {
-                    "name": "composer-remediate:command",
-                    "value": "composer update symfony/validator"
-                },
-                {
-                    "name": "composer-remediate:direct",
-                    "value": "false"
-                },
-                {
-                    "name": "composer-remediate:dev",
-                    "value": "false"
-                }
-            ],
-            "published": "2024-08-30T08:00:00+00:00",
-            "analysis": {
-                "state": "exploitable",
-                "response": [
-                    "update"
-                ],
-                "detail": "1 package change(s) verified by Composer's solver."
-            }
-        },
-        {
             "bom-ref": "vuln:PKSA-6319-ffpf-gx66@pkg:composer/twig/twig@3.10.3",
             "id": "PKSA-6319-ffpf-gx66",
             "source": {
@@ -1926,6 +1858,74 @@
                     "update"
                 ],
                 "detail": "3 package change(s) verified by Composer's solver."
+            }
+        },
+        {
+            "bom-ref": "vuln:PKSA-w2tw-kmfg-rt9s@pkg:composer/symfony/validator@6.4.9",
+            "id": "PKSA-w2tw-kmfg-rt9s",
+            "source": {
+                "name": "Packagist",
+                "url": "https://packagist.org/security-advisories/PKSA-w2tw-kmfg-rt9s"
+            },
+            "references": [
+                {
+                    "id": "CVE-2024-50343",
+                    "source": {
+                        "name": "NVD",
+                        "url": "https://nvd.nist.gov/vuln/detail/CVE-2024-50343"
+                    }
+                },
+                {
+                    "id": "CVE-2024-50343",
+                    "source": {
+                        "name": "advisory",
+                        "url": "https://symfony.com/cve-2024-50343"
+                    }
+                }
+            ],
+            "ratings": [
+                {
+                    "severity": "low",
+                    "method": "other",
+                    "source": {
+                        "name": "Packagist",
+                        "url": "https://packagist.org/security-advisories/PKSA-w2tw-kmfg-rt9s"
+                    }
+                }
+            ],
+            "description": "CVE-2024-50343: Incorrect response from Validator when input ends with `\n`",
+            "detail": "Affected versions: >=2.0.0,<3.0.0|>=3.0.0,<4.0.0|>=4.0.0,<5.0.0|>=5.0.0,<5.1.0|>=5.1.0,<5.2.0|>=5.2.0,<5.3.0|>=5.3.0,<5.4.0|>=5.4.0,<5.4.43|>=6.0.0,<6.1.0|>=6.1.0,<6.2.0|>=6.2.0,<6.3.0|>=6.3.0,<6.4.0|>=6.4.0,<6.4.11|>=7.0.0,<7.1.0|>=7.1.0,<7.1.4",
+            "recommendation": "Run: composer update symfony/validator",
+            "affects": [
+                {
+                    "ref": "pkg:composer/symfony/validator@6.4.9"
+                }
+            ],
+            "properties": [
+                {
+                    "name": "composer-remediate:remediation_status",
+                    "value": "verified"
+                },
+                {
+                    "name": "composer-remediate:command",
+                    "value": "composer update symfony/validator"
+                },
+                {
+                    "name": "composer-remediate:direct",
+                    "value": "false"
+                },
+                {
+                    "name": "composer-remediate:dev",
+                    "value": "false"
+                }
+            ],
+            "published": "2024-08-30T08:00:00+00:00",
+            "analysis": {
+                "state": "exploitable",
+                "response": [
+                    "update"
+                ],
+                "detail": "1 package change(s) verified by Composer's solver."
             }
         }
     ]

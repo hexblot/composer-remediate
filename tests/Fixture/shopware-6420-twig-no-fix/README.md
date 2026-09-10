@@ -19,7 +19,7 @@ for the packages shopware/core pins exactly (shopwarelabs/dompdf, tecnickcom/tcp
 Still fixable by partial updates: `composer/composer`, `symfony/twig-bridge`, `aws/aws-sdk-php` (with
 its dependencies) and `symfony/validator`. The summary's combined command fixes 7 of 26 findings:
 
-    composer update aws/aws-sdk-php composer/composer symfony/twig-bridge shopware/core -W -m --with 'symfony/validator:>=5.4.43,<6.0.0 || >=6.4.11,<7.0.0 || >=7.1.4'
+    composer update aws/aws-sdk-php composer/composer shopware/core symfony/twig-bridge -W -m --with 'symfony/validator:>=5.4.43,<6.0.0 || >=6.4.11,<7.0.0 || >=7.1.4'
 
 The honest answer for this project is a Shopware 6.5/6.6 migration; the report says so by listing
 what cannot be fixed in place.

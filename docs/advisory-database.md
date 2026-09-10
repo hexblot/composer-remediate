@@ -61,6 +61,34 @@ A private record that carries a public identifier (a `cve` field, or a GHSA id i
 with the public record for that advisory; otherwise it stays separate. The `source` table records it
 as `local:<file name>`.
 
+### Exploit data: EPSS and CISA KEV
+
+Every CVE in the database is enriched at build time with two facts that say how urgent it is, not
+how severe it is labelled:
+
+| Feed | What it says | Source |
+|---|---|---|
+| `epss` | [EPSS](https://www.first.org/epss/): the probability (0 to 1) that the CVE is exploited in the next thirty days, and its percentile among all scored CVEs | FIRST, refreshed daily (`epss_scores-current.csv.gz`) |
+| `kev` | [CISA KEV](https://www.cisa.gov/known-exploited-vulnerabilities-catalog): the CVE is confirmed exploited in the wild, since the listed date | CISA's JSON catalogue |
+
+Both are on by default; `--enrich=none` skips them, `--enrich=epss` or `--enrich=kev` keeps one, and
+`--epss-file` / `--kev-file` read a downloaded copy instead of fetching. Only the CVEs that the
+database's advisories name are stored, so the file grows by a few kilobytes. A feed that cannot be
+fetched does not fail the build: the database is written without it, the reason is stored in its
+metadata (`enrichment_errors`) and `remediate:db-status` shows it.
+
+Reports use the data in three ways: findings are **ordered by urgency** (known exploited first, then
+by EPSS, then by severity label; development-only findings stay last), each advisory line shows
+`EPSS 0.93 (97th percentile); listed in CISA KEV since …`, and the summary counts the packages with a
+KEV-listed advisory. The JSON report carries `epss`, `epss_percentile` and `kev_added` per advisory,
+SARIF tags KEV-listed rules `known-exploited`, and the CycloneDX SBOM attaches the values as
+properties. A database built without exploit data (or before this feature) still works; findings
+are then ordered by severity alone and the report's advisory source says `no exploit data`.
+
+The dataset hash that decides whether the [reference instance](#the-reference-instance) republishes
+includes which CVEs are KEV-listed (a new listing changes what to fix first) but not EPSS scores,
+which drift daily for most CVEs. Build locally when you need today's scores.
+
 ## Use it
 
 ```bash
@@ -86,7 +114,8 @@ is downloaded into Composer's cache directory and refreshed when the copy is old
 with `--offline` the cached copy is used as is.
 
 `composer remediate:db-status` shows where the database comes from, when it was built, which
-sources contributed how many records, the dataset hash, and the coverage gaps.
+sources contributed how many records, the dataset hash, the exploit data it carries, and the
+coverage gaps.
 
 ### Coverage gaps
 

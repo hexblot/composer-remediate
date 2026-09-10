@@ -167,62 +167,6 @@ Other candidates
         Problem 1
           - Root composer.json requires drupal/core-recommended ^11.0, found drupal/core-recommended[11.0.0-alpha1, ..., 11.0.4] but it conflicts with your temporary update constraint (drupal/core-recommended:>=10.3.6,<11.0.0 || >=11.0.5).
 
-CVE-2024-50343
-────────────────────────────────────────────────────────────
-Affected
-  symfony/validator v6.4.9
-  CVE-2024-50343 (PKSA-w2tw-kmfg-rt9s): CVE-2024-50343: Incorrect response from Validator when input ends with `
-`
-    https://symfony.com/cve-2024-50343
-    affected versions: >=2.0.0,<3.0.0|>=3.0.0,<4.0.0|>=4.0.0,<5.0.0|>=5.0.0,<5.1.0|>=5.1.0,<5.2.0|>=5.2.0,<5.3.0|>=5.3.0,<5.4.0|>=5.4.0,<5.4.43|>=6.0.0,<6.1.0|>=6.1.0,<6.2.0|>=6.2.0,<6.3.0|>=6.3.0,<6.4.0|>=6.4.0,<6.4.11|>=7.0.0,<7.1.0|>=7.1.0,<7.1.4
-Introduced by
-  root
-  └── drupal/core 10.3.1
-      └── symfony/validator v6.4.9  (requires ^6.4)
-  root
-  └── drupal/islandora 2.12.3
-      └── drupal/action 0.2.1
-          └── drupal/core 10.3.1
-              └── symfony/validator v6.4.9  (requires ^6.4)
-  root
-  └── drupal/islandora_mirador 2.3.7
-      └── drupal/islandora_iiif 2.12.3
-          └── drupal/islandora 2.12.3
-              └── drupal/action 0.2.1
-                  └── drupal/core 10.3.1
-                      └── symfony/validator v6.4.9  (requires ^6.4)
-  root
-  └── drupal/islandora_mirador 2.3.7
-      └── drupal/islandora 2.12.3
-          └── drupal/action 0.2.1
-              └── drupal/core 10.3.1
-                  └── symfony/validator v6.4.9  (requires ^6.4)
-  root
-  └── drupal/admin_toolbar 3.4.2
-      └── drupal/core 10.3.1
-          └── symfony/validator v6.4.9  (requires ^6.4)
-  … and 116 more paths
-Current state
-  Transitive dependency.
-Recommended remediation
-  symfony/validator v6.4.9 -> v6.4.12
-Composer validation
-  PASS  1 package changed, 0 added, 0 removed, 0 root constraints changed
-Expected changes
-  symfony/validator v6.4.9 -> v6.4.12
-Recommended command
-  composer update symfony/validator
-Other candidates
-  valid, rank 2: composer update symfony/validator -w -m --with 'symfony/validator:>=6.4.11,<7.0.0 || >=7.1.4'  (1 changes)
-  valid, rank 3: composer update drupal/better_exposed_filters -W -m --with 'symfony/validator:>=6.4.11,<7.0.0 || >=7.1.4'  (1 changes)
-  valid, rank 4: composer update drupal/islandora_mirador -W -m --with 'symfony/validator:>=6.4.11,<7.0.0 || >=7.1.4'  (2 changes)
-  valid, rank 5: composer update drupal/admin_toolbar -W -m --with 'symfony/validator:>=6.4.11,<7.0.0 || >=7.1.4'  (2 changes)
-  valid, rank 6: composer update drupal/islandora -W -m --with 'symfony/validator:>=6.4.11,<7.0.0 || >=7.1.4'  (3 changes)
-  valid, rank 7: composer update drupal/advanced_search -W -m --with 'symfony/validator:>=6.4.11,<7.0.0 || >=7.1.4'  (3 changes)
-  valid, rank 8: composer update drupal/core-recommended -W -m --with 'symfony/validator:>=6.4.11,<7.0.0 || >=7.1.4'  (4 changes)
-  valid, rank 9: composer update drupal/islandora drupal/admin_toolbar drupal/advanced_search drupal/better_exposed_filters drupal/citation_select drupal/coi drupal/config_update drupal/context drupal/controlled_access_terms drupal/core-recommended drupal/views_data_export drupal/pathauto drupal/facets drupal/field_group drupal/field_permissions drupal/field_report drupal/flysystem drupal/fpa drupal/hal drupal/islandora_mirador drupal/taxonomy_manager drupal/openseadragon drupal/pdf drupal/rest_oai_pmh discoverygarden/dgi_image_discovery drupal/search_api_solr drupal/term_merge drupal/twig_tweak drupal/views_field_view drupal/config_inspector drupal/devel drupal/restui -W -m --with 'symfony/validator:>=6.4.11,<7.0.0 || >=7.1.4'  (39 changes)
-  not tried (a better candidate already exists): composer require --no-update drupal/core-recommended:^11.0 && composer update drupal/core-recommended -W -m --with 'symfony/validator:>=6.4.11,<7.0.0 || >=7.1.4'
-
 CVE-2024-45411
 ────────────────────────────────────────────────────────────
 Affected
@@ -331,9 +275,65 @@ Other candidates
           - drupal/twig_tweak is locked to version 3.3.0 and an update of this package was not requested.
   not tried (a better candidate already exists): composer require --no-update drupal/core-recommended:^11.0 && composer update drupal/core-recommended -W -m --with 'twig/twig:>=3.11.0,<3.12.0 || >=3.14.0'
 
+CVE-2024-50343
+────────────────────────────────────────────────────────────
+Affected
+  symfony/validator v6.4.9
+  CVE-2024-50343 (PKSA-w2tw-kmfg-rt9s): CVE-2024-50343: Incorrect response from Validator when input ends with `
+`
+    https://symfony.com/cve-2024-50343
+    affected versions: >=2.0.0,<3.0.0|>=3.0.0,<4.0.0|>=4.0.0,<5.0.0|>=5.0.0,<5.1.0|>=5.1.0,<5.2.0|>=5.2.0,<5.3.0|>=5.3.0,<5.4.0|>=5.4.0,<5.4.43|>=6.0.0,<6.1.0|>=6.1.0,<6.2.0|>=6.2.0,<6.3.0|>=6.3.0,<6.4.0|>=6.4.0,<6.4.11|>=7.0.0,<7.1.0|>=7.1.0,<7.1.4
+Introduced by
+  root
+  └── drupal/core 10.3.1
+      └── symfony/validator v6.4.9  (requires ^6.4)
+  root
+  └── drupal/islandora 2.12.3
+      └── drupal/action 0.2.1
+          └── drupal/core 10.3.1
+              └── symfony/validator v6.4.9  (requires ^6.4)
+  root
+  └── drupal/islandora_mirador 2.3.7
+      └── drupal/islandora_iiif 2.12.3
+          └── drupal/islandora 2.12.3
+              └── drupal/action 0.2.1
+                  └── drupal/core 10.3.1
+                      └── symfony/validator v6.4.9  (requires ^6.4)
+  root
+  └── drupal/islandora_mirador 2.3.7
+      └── drupal/islandora 2.12.3
+          └── drupal/action 0.2.1
+              └── drupal/core 10.3.1
+                  └── symfony/validator v6.4.9  (requires ^6.4)
+  root
+  └── drupal/admin_toolbar 3.4.2
+      └── drupal/core 10.3.1
+          └── symfony/validator v6.4.9  (requires ^6.4)
+  … and 116 more paths
+Current state
+  Transitive dependency.
+Recommended remediation
+  symfony/validator v6.4.9 -> v6.4.12
+Composer validation
+  PASS  1 package changed, 0 added, 0 removed, 0 root constraints changed
+Expected changes
+  symfony/validator v6.4.9 -> v6.4.12
+Recommended command
+  composer update symfony/validator
+Other candidates
+  valid, rank 2: composer update symfony/validator -w -m --with 'symfony/validator:>=6.4.11,<7.0.0 || >=7.1.4'  (1 changes)
+  valid, rank 3: composer update drupal/better_exposed_filters -W -m --with 'symfony/validator:>=6.4.11,<7.0.0 || >=7.1.4'  (1 changes)
+  valid, rank 4: composer update drupal/islandora_mirador -W -m --with 'symfony/validator:>=6.4.11,<7.0.0 || >=7.1.4'  (2 changes)
+  valid, rank 5: composer update drupal/admin_toolbar -W -m --with 'symfony/validator:>=6.4.11,<7.0.0 || >=7.1.4'  (2 changes)
+  valid, rank 6: composer update drupal/islandora -W -m --with 'symfony/validator:>=6.4.11,<7.0.0 || >=7.1.4'  (3 changes)
+  valid, rank 7: composer update drupal/advanced_search -W -m --with 'symfony/validator:>=6.4.11,<7.0.0 || >=7.1.4'  (3 changes)
+  valid, rank 8: composer update drupal/core-recommended -W -m --with 'symfony/validator:>=6.4.11,<7.0.0 || >=7.1.4'  (4 changes)
+  valid, rank 9: composer update drupal/islandora drupal/admin_toolbar drupal/advanced_search drupal/better_exposed_filters drupal/citation_select drupal/coi drupal/config_update drupal/context drupal/controlled_access_terms drupal/core-recommended drupal/views_data_export drupal/pathauto drupal/facets drupal/field_group drupal/field_permissions drupal/field_report drupal/flysystem drupal/fpa drupal/hal drupal/islandora_mirador drupal/taxonomy_manager drupal/openseadragon drupal/pdf drupal/rest_oai_pmh discoverygarden/dgi_image_discovery drupal/search_api_solr drupal/term_merge drupal/twig_tweak drupal/views_field_view drupal/config_inspector drupal/devel drupal/restui -W -m --with 'symfony/validator:>=6.4.11,<7.0.0 || >=7.1.4'  (39 changes)
+  not tried (a better candidate already exists): composer require --no-update drupal/core-recommended:^11.0 && composer update drupal/core-recommended -W -m --with 'symfony/validator:>=6.4.11,<7.0.0 || >=7.1.4'
+
 Summary
   Findings: 4 advisories on 4 packages, 2 packages with a verified fix
-  composer update symfony/validator drupal/core-recommended:10.3.4 -W -m fixes 2 of 4 findings
+  composer update drupal/core-recommended:10.3.4 symfony/validator -W -m fixes 2 of 4 findings
     (4 packages changed, verified by Composer)
   No verified fix: CVE-2024-45440 on drupal/core; CVE-2024-45440 on drupal/core-recommended
 ```

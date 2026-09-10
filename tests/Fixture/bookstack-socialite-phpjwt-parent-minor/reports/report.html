@@ -16,6 +16,7 @@ table{border-collapse:collapse;width:100%;font-size:.92rem}th,td{text-align:left
 .badge{display:inline-block;font-size:.75rem;font-weight:600;padding:.1rem .5rem;border-radius:999px;border:1px solid currentColor;white-space:nowrap}
 .badge.ok{color:var(--ok)}.badge.none,.badge.rejected{color:var(--bad)}.badge.skipped,.badge.dev{color:var(--muted)}
 .badge.sev-critical,.badge.sev-high{color:var(--bad)}.badge.sev-medium{color:var(--warn)}.badge.sev-low{color:var(--muted)}
+.badge.kev{color:#fff;background:var(--bad);border-color:var(--bad)}.badge.epss{color:var(--warn)}.abandoned{color:var(--warn)}
 .warning{border-left:4px solid var(--warn);padding:.5rem .8rem;background:rgba(212,167,44,.1)}.clean{color:var(--ok);font-weight:600}
 .none-box{border-left:4px solid var(--bad);padding:.5rem .8rem;background:rgba(180,35,24,.08)}
 .advisories{padding-left:1.2rem}.advisories li{margin:.4rem 0}
@@ -23,8 +24,244 @@ details summary{cursor:pointer;color:var(--accent);margin:.5rem 0}
 .meta dl{display:grid;grid-template-columns:max-content 1fr;gap:.2rem 1rem;font-size:.85rem;color:var(--muted)}.meta dt{font-weight:600}.meta dd{margin:0;word-break:break-all}</style></head><body>
 <header><h1>Composer Remediate</h1><p class="sub">Composer Remediate — 9 findings in <code>bookstack-socialite-phpjwt-parent-minor</code></p></header>
 <main>
-<section><h2>Summary</h2><p>12 advisories on 9 packages.</p><p class="command"><span class="badge ok">fixes all 12</span> <code>composer update aws/aws-sdk-php laravel/socialite:v5.24.1 laravel/framework league/commonmark nesbot/carbon onelogin/php-saml robrichards/xmlseclibs symfony/http-foundation symfony/process -W -m --with &apos;firebase/php-jwt:&gt;=7.0.0&apos;</code></p><table class="summary"><thead><tr><th>Package</th><th>Advisories</th><th>Status</th><th>Recommended command</th></tr></thead><tbody><tr><td><a href="#finding-1">aws/aws-sdk-php 3.322.6</a></td><td>CVE-2025-14761</td><td><span class="badge ok">verified</span></td><td><code>composer update aws/aws-sdk-php</code></td></tr><tr><td><a href="#finding-2">firebase/php-jwt v6.10.1</a></td><td>CVE-2025-45769</td><td><span class="badge ok">verified</span></td><td><code>composer update laravel/socialite:v5.24.1 -W -m --with &apos;firebase/php-jwt:&gt;=7.0.0&apos;</code></td></tr><tr><td><a href="#finding-3">laravel/framework v10.48.22</a></td><td>CVE-2025-27515, CVE-2024-52301</td><td><span class="badge ok">verified</span></td><td><code>composer update laravel/framework</code></td></tr><tr><td><a href="#finding-4">league/commonmark 2.5.3</a></td><td>PKSA-fndg-qryc-dyc9, CVE-2025-46734</td><td><span class="badge ok">verified</span></td><td><code>composer update league/commonmark</code></td></tr><tr><td><a href="#finding-5">nesbot/carbon 2.72.5</a></td><td>CVE-2025-22145</td><td><span class="badge ok">verified</span></td><td><code>composer update nesbot/carbon</code></td></tr><tr><td><a href="#finding-6">onelogin/php-saml 4.2.0</a></td><td>PKSA-67d7-mg8j-87zx</td><td><span class="badge ok">verified</span></td><td><code>composer update onelogin/php-saml -w</code></td></tr><tr><td><a href="#finding-7">robrichards/xmlseclibs 3.1.1</a></td><td>CVE-2025-66578</td><td><span class="badge ok">verified</span></td><td><code>composer update robrichards/xmlseclibs</code></td></tr><tr><td><a href="#finding-8">symfony/http-foundation v6.4.12</a></td><td>CVE-2025-64500, CVE-2024-50345</td><td><span class="badge ok">verified</span></td><td><code>composer update symfony/http-foundation</code></td></tr><tr><td><a href="#finding-9">symfony/process v6.4.12</a></td><td>CVE-2024-51736</td><td><span class="badge ok">verified</span></td><td><code>composer update symfony/process</code></td></tr></tbody></table></section>
+<section><h2>Summary</h2><p>12 advisories on 9 packages.</p><p class="command"><span class="badge ok">fixes all 12</span> <code>composer update aws/aws-sdk-php laravel/framework laravel/socialite:v5.24.1 league/commonmark nesbot/carbon onelogin/php-saml robrichards/xmlseclibs symfony/http-foundation symfony/process -W -m --with &apos;firebase/php-jwt:&gt;=7.0.0&apos;</code></p><table class="summary"><thead><tr><th>Package</th><th>Advisories</th><th>Status</th><th>Recommended command</th></tr></thead><tbody><tr><td><a href="#finding-1">onelogin/php-saml 4.2.0</a></td><td>PKSA-67d7-mg8j-87zx</td><td><span class="badge ok">verified</span></td><td><code>composer update onelogin/php-saml -w</code></td></tr><tr><td><a href="#finding-2">laravel/framework v10.48.22</a></td><td>CVE-2025-27515, CVE-2024-52301</td><td><span class="badge ok">verified</span></td><td><code>composer update laravel/framework</code></td></tr><tr><td><a href="#finding-3">league/commonmark 2.5.3</a></td><td>PKSA-fndg-qryc-dyc9, CVE-2025-46734</td><td><span class="badge ok">verified</span></td><td><code>composer update league/commonmark</code></td></tr><tr><td><a href="#finding-4">symfony/http-foundation v6.4.12</a></td><td>CVE-2025-64500, CVE-2024-50345</td><td><span class="badge ok">verified</span></td><td><code>composer update symfony/http-foundation</code></td></tr><tr><td><a href="#finding-5">symfony/process v6.4.12</a></td><td>CVE-2024-51736</td><td><span class="badge ok">verified</span></td><td><code>composer update symfony/process</code></td></tr><tr><td><a href="#finding-6">aws/aws-sdk-php 3.322.6</a></td><td>CVE-2025-14761</td><td><span class="badge ok">verified</span></td><td><code>composer update aws/aws-sdk-php</code></td></tr><tr><td><a href="#finding-7">nesbot/carbon 2.72.5</a></td><td>CVE-2025-22145</td><td><span class="badge ok">verified</span></td><td><code>composer update nesbot/carbon</code></td></tr><tr><td><a href="#finding-8">robrichards/xmlseclibs 3.1.1</a></td><td>CVE-2025-66578</td><td><span class="badge ok">verified</span></td><td><code>composer update robrichards/xmlseclibs</code></td></tr><tr><td><a href="#finding-9">firebase/php-jwt v6.10.1</a></td><td>CVE-2025-45769</td><td><span class="badge ok">verified</span></td><td><code>composer update laravel/socialite:v5.24.1 -W -m --with &apos;firebase/php-jwt:&gt;=7.0.0&apos;</code></td></tr></tbody></table></section>
 <section class="finding" id="finding-1">
+<h2>onelogin/php-saml <span class="version">4.2.0</span></h2>
+<p class="state">Direct dependency.</p>
+<h3>Advisories</h3><ul class="advisories">
+<li><strong><a href="https://github.com/advisories/GHSA-5j8p-438x-rgg5" rel="noopener noreferrer">PKSA-67d7-mg8j-87zx</a></strong> <span class="badge sev-critical">critical</span><br> SAML PHP Toolkit Vulnerability on xmlseclibs CVE-2025-66475 <br><small>affected versions: <code>&gt;=4.0.0,&lt;4.3.1|&gt;=3.0.0,&lt;3.8.1|&lt;2.21.1</code></small></li>
+</ul>
+<h3>Introduced by</h3>
+<pre class="tree">root
+└── onelogin/php-saml 4.2.0  (requires ^4.0)</pre>
+<h3>Recommended remediation</h3>
+<p class="command"><code>composer update onelogin/php-saml -w</code></p>
+<p class="validation"><span class="badge ok">Composer validation: PASS</span> 2 packages changed, 0 added, 0 removed, 0 root constraints changed.</p>
+<details open><summary>Expected changes (2)</summary><table class="changes"><thead><tr><th>Package</th><th>From</th><th>To</th><th>Kind</th></tr></thead><tbody>
+<tr><td>onelogin/php-saml</td><td>4.2.0</td><td>4.3.1</td><td>upgraded, minor</td></tr>
+<tr><td>robrichards/xmlseclibs</td><td>3.1.1</td><td>3.1.4</td><td>upgraded, patch</td></tr>
+</tbody></table></details>
+<details><summary>Other candidates (4)</summary><table class="candidates"><thead><tr><th>Outcome</th><th>Command</th><th>Detail</th></tr></thead><tbody>
+<tr><td><span class="badge ok">valid, rank 2</span></td><td><code>composer update onelogin/php-saml -W -m --with &apos;onelogin/php-saml:&gt;=4.3.1&apos;</code></td><td>2 changes</td></tr>
+<tr><td><span class="badge rejected">rejected</span></td><td><code>composer update onelogin/php-saml</code></td><td><pre class="reason">resolves, but onelogin/php-saml ends at 4.3.0 which is still affected by PKSA-67d7-mg8j-87zx</pre></td></tr>
+<tr><td><span class="badge skipped">not tried</span></td><td><code>composer require --no-update onelogin/php-saml:^5.0 &amp;&amp; composer update onelogin/php-saml -W -m --with &apos;onelogin/php-saml:&gt;=4.3.1&apos;</code></td><td>a better candidate already exists</td></tr>
+</tbody></table></details>
+</section>
+<section class="finding" id="finding-2">
+<h2>laravel/framework <span class="version">v10.48.22</span></h2>
+<p class="state">Direct dependency.</p>
+<h3>Advisories</h3><ul class="advisories">
+<li><strong><a href="https://github.com/advisories/GHSA-78fx-h6xr-vch4" rel="noopener noreferrer">CVE-2025-27515 <small>(PKSA-8qx3-n5y5-vvnd)</small></a></strong> <span class="badge sev-medium">medium</span><br>Laravel has a File Validation Bypass<br><small>affected versions: <code>&lt;10.48.29|&gt;=11.0.0,&lt;11.44.1|&gt;=12.0.0,&lt;12.1.1</code></small></li>
+<li><strong><a href="https://github.com/advisories/GHSA-gv7v-rgg6-548h" rel="noopener noreferrer">CVE-2024-52301 <small>(PKSA-w7xr-vk7n-rstm)</small></a></strong> <span class="badge sev-high">high</span><br>Laravel environment manipulation via query string<br><small>affected versions: <code>&lt;6.20.45|&gt;=7.0.0,&lt;7.30.7|&gt;=8.0.0,&lt;8.83.28|&gt;=9.0.0,&lt;9.52.17|&gt;=10.0.0,&lt;10.48.23|&gt;=11.0.0,&lt;11.31.0</code></small></li>
+</ul>
+<h3>Introduced by</h3>
+<pre class="tree">root
+└── laravel/framework v10.48.22  (requires ^10.10)
+
+root
+└── laravel/tinker v2.10.0
+    └── laravel/framework v10.48.22
+        └── laravel/framework v10.48.22  (requires self.version)
+
+root
+└── larastan/larastan v2.9.8
+    └── laravel/framework v10.48.22
+        └── laravel/framework v10.48.22  (requires self.version)
+
+root
+└── larastan/larastan v2.9.8
+    └── laravel/framework v10.48.22
+        └── laravel/framework v10.48.22  (requires self.version)
+
+root
+└── laravel/socialite v5.16.0
+    └── laravel/framework v10.48.22
+        └── laravel/framework v10.48.22  (requires self.version)</pre>
+<p><small>… and 42 more paths</small></p>
+<h3>Recommended remediation</h3>
+<p class="command"><code>composer update laravel/framework</code></p>
+<p class="validation"><span class="badge ok">Composer validation: PASS</span> 1 package changed, 0 added, 0 removed, 0 root constraints changed.</p>
+<details open><summary>Expected changes (1)</summary><table class="changes"><thead><tr><th>Package</th><th>From</th><th>To</th><th>Kind</th></tr></thead><tbody>
+<tr><td>laravel/framework</td><td>v10.48.22</td><td>v10.50.0</td><td>upgraded, minor</td></tr>
+</tbody></table></details>
+<details><summary>Other candidates (9)</summary><table class="candidates"><thead><tr><th>Outcome</th><th>Command</th><th>Detail</th></tr></thead><tbody>
+<tr><td><span class="badge ok">valid, rank 2</span></td><td><code>composer update laravel/framework -w -m --with &apos;laravel/framework:&gt;=10.48.29,&lt;11.0.0 || &gt;=11.44.1,&lt;12.0.0 || &gt;=12.1.1&apos;</code></td><td>1 changes</td></tr>
+<tr><td><span class="badge ok">valid, rank 3</span></td><td><code>composer update laravel/framework -W -m --with &apos;laravel/framework:&gt;=10.48.29,&lt;11.0.0 || &gt;=11.44.1,&lt;12.0.0 || &gt;=12.1.1&apos;</code></td><td>1 changes</td></tr>
+<tr><td><span class="badge ok">valid, rank 4</span></td><td><code>composer update socialiteproviders/discord -W -m --with &apos;laravel/framework:&gt;=10.48.29,&lt;11.0.0 || &gt;=11.44.1,&lt;12.0.0 || &gt;=12.1.1&apos;</code></td><td>1 changes</td></tr>
+<tr><td><span class="badge ok">valid, rank 5</span></td><td><code>composer update socialiteproviders/gitlab -W -m --with &apos;laravel/framework:&gt;=10.48.29,&lt;11.0.0 || &gt;=11.44.1,&lt;12.0.0 || &gt;=12.1.1&apos;</code></td><td>1 changes</td></tr>
+<tr><td><span class="badge ok">valid, rank 6</span></td><td><code>composer update laravel/tinker -W -m --with &apos;laravel/framework:&gt;=10.48.29,&lt;11.0.0 || &gt;=11.44.1,&lt;12.0.0 || &gt;=12.1.1&apos;</code></td><td>2 changes</td></tr>
+<tr><td><span class="badge ok">valid, rank 7</span></td><td><code>composer update laravel/socialite -W -m --with &apos;laravel/framework:&gt;=10.48.29,&lt;11.0.0 || &gt;=11.44.1,&lt;12.0.0 || &gt;=12.1.1&apos;</code></td><td>3 changes</td></tr>
+<tr><td><span class="badge ok">valid, rank 8</span></td><td><code>composer update larastan/larastan -W -m --with &apos;laravel/framework:&gt;=10.48.29,&lt;11.0.0 || &gt;=11.44.1,&lt;12.0.0 || &gt;=12.1.1&apos;</code></td><td>5 changes</td></tr>
+<tr><td><span class="badge ok">valid, rank 9</span></td><td><code>composer update laravel/framework laravel/socialite laravel/tinker socialiteproviders/discord socialiteproviders/gitlab socialiteproviders/microsoft-azure socialiteproviders/okta socialiteproviders/twitch larastan/larastan -W -m --with &apos;laravel/framework:&gt;=10.48.29,&lt;11.0.0 || &gt;=11.44.1,&lt;12.0.0 || &gt;=12.1.1&apos;</code></td><td>9 changes</td></tr>
+<tr><td><span class="badge skipped">not tried</span></td><td><code>composer require --no-update laravel/framework:^11.0 &amp;&amp; composer update laravel/framework -W -m --with &apos;laravel/framework:&gt;=10.48.29,&lt;11.0.0 || &gt;=11.44.1,&lt;12.0.0 || &gt;=12.1.1&apos;</code></td><td>a better candidate already exists</td></tr>
+</tbody></table></details>
+</section>
+<section class="finding" id="finding-3">
+<h2>league/commonmark <span class="version">2.5.3</span></h2>
+<p class="state">Direct dependency.</p>
+<h3>Advisories</h3><ul class="advisories">
+<li><strong><a href="https://github.com/advisories/GHSA-c2pc-g5qf-rfrf" rel="noopener noreferrer">PKSA-fndg-qryc-dyc9</a></strong> <span class="badge sev-high">high</span><br>league/commonmark&apos;s quadratic complexity bugs may lead to a denial of service<br><small>affected versions: <code>&lt;2.6.0</code></small></li>
+<li><strong><a href="https://github.com/advisories/GHSA-3527-qv2q-pfvx" rel="noopener noreferrer">CVE-2025-46734 <small>(PKSA-rqc2-tcc6-nc79)</small></a></strong> <span class="badge sev-medium">medium</span><br>league/commonmark contains a XSS vulnerability in Attributes extension<br><small>affected versions: <code>&gt;=1.5.0,&lt;2.7.0</code></small></li>
+</ul>
+<h3>Introduced by</h3>
+<pre class="tree">root
+└── league/commonmark 2.5.3  (requires ^2.3)
+
+root
+└── laravel/framework v10.48.22
+    └── league/commonmark 2.5.3  (requires ^2.2.1)
+
+root
+└── laravel/socialite v5.16.0
+    └── laravel/framework v10.48.22
+        └── league/commonmark 2.5.3  (requires ^2.2.1)
+
+root
+└── socialiteproviders/discord 4.2.0
+    └── socialiteproviders/manager v4.6.0
+        └── laravel/socialite v5.16.0
+            └── laravel/framework v10.48.22
+                └── league/commonmark 2.5.3  (requires ^2.2.1)
+
+root
+└── socialiteproviders/gitlab 4.1.0
+    └── socialiteproviders/manager v4.6.0
+        └── laravel/socialite v5.16.0
+            └── laravel/framework v10.48.22
+                └── league/commonmark 2.5.3  (requires ^2.2.1)</pre>
+<p><small>… and 10 more paths</small></p>
+<h3>Recommended remediation</h3>
+<p class="command"><code>composer update league/commonmark</code></p>
+<p class="validation"><span class="badge ok">Composer validation: PASS</span> 1 package changed, 0 added, 0 removed, 0 root constraints changed.</p>
+<details open><summary>Expected changes (1)</summary><table class="changes"><thead><tr><th>Package</th><th>From</th><th>To</th><th>Kind</th></tr></thead><tbody>
+<tr><td>league/commonmark</td><td>2.5.3</td><td>2.8.0</td><td>upgraded, minor</td></tr>
+</tbody></table></details>
+<details><summary>Other candidates (9)</summary><table class="candidates"><thead><tr><th>Outcome</th><th>Command</th><th>Detail</th></tr></thead><tbody>
+<tr><td><span class="badge ok">valid, rank 2</span></td><td><code>composer update league/commonmark -w -m --with &apos;league/commonmark:&gt;=2.7.0&apos;</code></td><td>1 changes</td></tr>
+<tr><td><span class="badge ok">valid, rank 3</span></td><td><code>composer update league/commonmark -W -m --with &apos;league/commonmark:&gt;=2.7.0&apos;</code></td><td>1 changes</td></tr>
+<tr><td><span class="badge ok">valid, rank 4</span></td><td><code>composer update socialiteproviders/discord -W -m --with &apos;league/commonmark:&gt;=2.7.0&apos;</code></td><td>1 changes</td></tr>
+<tr><td><span class="badge ok">valid, rank 5</span></td><td><code>composer update laravel/tinker -W -m --with &apos;league/commonmark:&gt;=2.7.0&apos;</code></td><td>2 changes</td></tr>
+<tr><td><span class="badge ok">valid, rank 6</span></td><td><code>composer update laravel/framework -W -m --with &apos;league/commonmark:&gt;=2.7.0&apos;</code></td><td>2 changes</td></tr>
+<tr><td><span class="badge ok">valid, rank 7</span></td><td><code>composer update laravel/framework league/commonmark -W -m --with &apos;league/commonmark:&gt;=2.7.0&apos;</code></td><td>2 changes</td></tr>
+<tr><td><span class="badge ok">valid, rank 8</span></td><td><code>composer update larastan/larastan -W -m --with &apos;league/commonmark:&gt;=2.7.0&apos;</code></td><td>3 changes</td></tr>
+<tr><td><span class="badge ok">valid, rank 9</span></td><td><code>composer update laravel/socialite -W -m --with &apos;league/commonmark:&gt;=2.7.0&apos;</code></td><td>3 changes</td></tr>
+<tr><td><span class="badge skipped">not tried</span></td><td><code>composer require --no-update league/commonmark:^3.0 &amp;&amp; composer update league/commonmark -W -m --with &apos;league/commonmark:&gt;=2.7.0&apos;</code></td><td>a better candidate already exists</td></tr>
+</tbody></table></details>
+</section>
+<section class="finding" id="finding-4">
+<h2>symfony/http-foundation <span class="version">v6.4.12</span></h2>
+<p class="state">Transitive dependency.</p>
+<h3>Advisories</h3><ul class="advisories">
+<li><strong><a href="https://symfony.com/blog/cve-2025-64500-incorrect-parsing-of-path-info-can-lead-to-limited-authorization-bypass" rel="noopener noreferrer">CVE-2025-64500 <small>(PKSA-365x-2zjk-pt47)</small></a></strong> <span class="badge sev-high">high</span><br>CVE-2025-64500: Incorrect parsing of PATH_INFO can lead to limited authorization bypass<br><small>affected versions: <code>&gt;=2.0.0,&lt;3.0.0|&gt;=3.0.0,&lt;4.0.0|&gt;=4.0.0,&lt;5.0.0|&gt;=5.0.0,&lt;5.1.0|&gt;=5.1.0,&lt;5.2.0|&gt;=5.2.0,&lt;5.3.0|&gt;=5.3.0,&lt;5.4.0|&gt;=5.4.0,&lt;5.4.50|&gt;=6.0.0,&lt;6.1.0|&gt;=6.1.0,&lt;6.2.0|&gt;=6.2.0,&lt;6.3.0|&gt;=6.3.0,&lt;6.4.0|&gt;=6.4.0,&lt;6.4.29|&gt;=7.0.0,&lt;7.1.0|&gt;=7.1.0,&lt;7.2.0|&gt;=7.2.0,&lt;7.3.0|&gt;=7.3.0,&lt;7.3.7</code></small></li>
+<li><strong><a href="https://symfony.com/cve-2024-50345" rel="noopener noreferrer">CVE-2024-50345 <small>(PKSA-b35n-565h-rs4q)</small></a></strong> <span class="badge sev-low">low</span><br>CVE-2024-50345: Open redirect via browser-sanitized URLs<br><small>affected versions: <code>&gt;=2.0.0,&lt;3.0.0|&gt;=3.0.0,&lt;4.0.0|&gt;=4.0.0,&lt;5.0.0|&gt;=5.0.0,&lt;5.1.0|&gt;=5.1.0,&lt;5.2.0|&gt;=5.2.0,&lt;5.3.0|&gt;=5.3.0,&lt;5.4.0|&gt;=5.4.0,&lt;5.4.46|&gt;=6.0.0,&lt;6.1.0|&gt;=6.1.0,&lt;6.2.0|&gt;=6.2.0,&lt;6.3.0|&gt;=6.3.0,&lt;6.4.0|&gt;=6.4.0,&lt;6.4.14|&gt;=7.0.0,&lt;7.1.0|&gt;=7.1.0,&lt;7.1.7</code></small></li>
+</ul>
+<h3>Introduced by</h3>
+<pre class="tree">root
+└── laravel/framework v10.48.22
+    └── fruitcake/php-cors v1.3.0
+        └── symfony/http-foundation v6.4.12  (requires ^4.4|^5.4|^6|^7)
+
+root
+└── laravel/socialite v5.16.0
+    └── laravel/framework v10.48.22
+        └── fruitcake/php-cors v1.3.0
+            └── symfony/http-foundation v6.4.12  (requires ^4.4|^5.4|^6|^7)
+
+root
+└── socialiteproviders/discord 4.2.0
+    └── socialiteproviders/manager v4.6.0
+        └── laravel/socialite v5.16.0
+            └── laravel/framework v10.48.22
+                └── fruitcake/php-cors v1.3.0
+                    └── symfony/http-foundation v6.4.12  (requires ^4.4|^5.4|^6|^7)
+
+root
+└── socialiteproviders/gitlab 4.1.0
+    └── socialiteproviders/manager v4.6.0
+        └── laravel/socialite v5.16.0
+            └── laravel/framework v10.48.22
+                └── fruitcake/php-cors v1.3.0
+                    └── symfony/http-foundation v6.4.12  (requires ^4.4|^5.4|^6|^7)
+
+root
+└── socialiteproviders/microsoft-azure 5.2.0
+    └── socialiteproviders/manager v4.6.0
+        └── laravel/socialite v5.16.0
+            └── laravel/framework v10.48.22
+                └── fruitcake/php-cors v1.3.0
+                    └── symfony/http-foundation v6.4.12  (requires ^4.4|^5.4|^6|^7)</pre>
+<p><small>… and 37 more paths</small></p>
+<h3>Recommended remediation</h3>
+<p class="command"><code>composer update symfony/http-foundation</code></p>
+<p class="validation"><span class="badge ok">Composer validation: PASS</span> 1 package changed, 0 added, 0 removed, 0 root constraints changed.</p>
+<details open><summary>Expected changes (1)</summary><table class="changes"><thead><tr><th>Package</th><th>From</th><th>To</th><th>Kind</th></tr></thead><tbody>
+<tr><td>symfony/http-foundation</td><td>v6.4.12</td><td>v6.4.32</td><td>upgraded, patch</td></tr>
+</tbody></table></details>
+<details><summary>Other candidates (9)</summary><table class="candidates"><thead><tr><th>Outcome</th><th>Command</th><th>Detail</th></tr></thead><tbody>
+<tr><td><span class="badge ok">valid, rank 2</span></td><td><code>composer update symfony/http-foundation -w -m --with &apos;symfony/http-foundation:&gt;=6.4.29,&lt;7.0.0 || &gt;=7.3.7&apos;</code></td><td>1 changes</td></tr>
+<tr><td><span class="badge ok">valid, rank 3</span></td><td><code>composer update socialiteproviders/discord -W -m --with &apos;symfony/http-foundation:&gt;=6.4.29,&lt;7.0.0 || &gt;=7.3.7&apos;</code></td><td>1 changes</td></tr>
+<tr><td><span class="badge ok">valid, rank 4</span></td><td><code>composer update socialiteproviders/gitlab -W -m --with &apos;symfony/http-foundation:&gt;=6.4.29,&lt;7.0.0 || &gt;=7.3.7&apos;</code></td><td>1 changes</td></tr>
+<tr><td><span class="badge ok">valid, rank 5</span></td><td><code>composer update laravel/tinker -W -m --with &apos;symfony/http-foundation:&gt;=6.4.29,&lt;7.0.0 || &gt;=7.3.7&apos;</code></td><td>2 changes</td></tr>
+<tr><td><span class="badge ok">valid, rank 6</span></td><td><code>composer update laravel/framework -W -m --with &apos;symfony/http-foundation:&gt;=6.4.29,&lt;7.0.0 || &gt;=7.3.7&apos;</code></td><td>2 changes</td></tr>
+<tr><td><span class="badge ok">valid, rank 7</span></td><td><code>composer update larastan/larastan -W -m --with &apos;symfony/http-foundation:&gt;=6.4.29,&lt;7.0.0 || &gt;=7.3.7&apos;</code></td><td>3 changes</td></tr>
+<tr><td><span class="badge ok">valid, rank 8</span></td><td><code>composer update laravel/socialite -W -m --with &apos;symfony/http-foundation:&gt;=6.4.29,&lt;7.0.0 || &gt;=7.3.7&apos;</code></td><td>3 changes</td></tr>
+<tr><td><span class="badge skipped">not tried</span></td><td><code>composer require --no-update laravel/framework:^11.0 &amp;&amp; composer update laravel/framework -W -m --with &apos;symfony/http-foundation:&gt;=6.4.29,&lt;7.0.0 || &gt;=7.3.7&apos;</code></td><td>a better candidate already exists</td></tr>
+<tr><td><span class="badge skipped">not tried</span></td><td><code>composer require --no-update laravel/socialite:^6.0 &amp;&amp; composer update laravel/socialite -W -m --with &apos;symfony/http-foundation:&gt;=6.4.29,&lt;7.0.0 || &gt;=7.3.7&apos;</code></td><td>a better candidate already exists</td></tr>
+</tbody></table></details>
+</section>
+<section class="finding" id="finding-5">
+<h2>symfony/process <span class="version">v6.4.12</span></h2>
+<p class="state">Transitive dependency.</p>
+<h3>Advisories</h3><ul class="advisories">
+<li><strong><a href="https://symfony.com/cve-2024-51736" rel="noopener noreferrer">CVE-2024-51736 <small>(PKSA-wws7-mr54-jsny)</small></a></strong> <span class="badge sev-high">high</span><br>CVE-2024-51736: Command execution hijack on Windows with Process class<br><small>affected versions: <code>&gt;=2.0.0,&lt;3.0.0|&gt;=3.0.0,&lt;4.0.0|&gt;=4.0.0,&lt;5.0.0|&gt;=5.0.0,&lt;5.1.0|&gt;=5.1.0,&lt;5.2.0|&gt;=5.2.0,&lt;5.3.0|&gt;=5.3.0,&lt;5.4.0|&gt;=5.4.0,&lt;5.4.46|&gt;=6.0.0,&lt;6.1.0|&gt;=6.1.0,&lt;6.2.0|&gt;=6.2.0,&lt;6.3.0|&gt;=6.3.0,&lt;6.4.0|&gt;=6.4.0,&lt;6.4.14|&gt;=7.0.0,&lt;7.1.0|&gt;=7.1.0,&lt;7.1.7</code></small></li>
+</ul>
+<h3>Introduced by</h3>
+<pre class="tree">root
+└── knplabs/knp-snappy v1.5.0
+    └── symfony/process v6.4.12  (requires ^5.0||^6.0||^7.0)
+
+root
+└── laravel/framework v10.48.22
+    └── symfony/process v6.4.12  (requires ^6.2)
+
+root
+└── laravel/socialite v5.16.0
+    └── laravel/framework v10.48.22
+        └── symfony/process v6.4.12  (requires ^6.2)
+
+root
+└── socialiteproviders/discord 4.2.0
+    └── socialiteproviders/manager v4.6.0
+        └── laravel/socialite v5.16.0
+            └── laravel/framework v10.48.22
+                └── symfony/process v6.4.12  (requires ^6.2)
+
+root
+└── socialiteproviders/gitlab 4.1.0
+    └── socialiteproviders/manager v4.6.0
+        └── laravel/socialite v5.16.0
+            └── laravel/framework v10.48.22
+                └── symfony/process v6.4.12  (requires ^6.2)</pre>
+<p><small>… and 10 more paths</small></p>
+<h3>Recommended remediation</h3>
+<p class="command"><code>composer update symfony/process</code></p>
+<p class="validation"><span class="badge ok">Composer validation: PASS</span> 1 package changed, 0 added, 0 removed, 0 root constraints changed.</p>
+<details open><summary>Expected changes (1)</summary><table class="changes"><thead><tr><th>Package</th><th>From</th><th>To</th><th>Kind</th></tr></thead><tbody>
+<tr><td>symfony/process</td><td>v6.4.12</td><td>v6.4.31</td><td>upgraded, patch</td></tr>
+</tbody></table></details>
+<details><summary>Other candidates (9)</summary><table class="candidates"><thead><tr><th>Outcome</th><th>Command</th><th>Detail</th></tr></thead><tbody>
+<tr><td><span class="badge ok">valid, rank 2</span></td><td><code>composer update symfony/process -w -m --with &apos;symfony/process:&gt;=6.4.14,&lt;7.0.0 || &gt;=7.1.7&apos;</code></td><td>1 changes</td></tr>
+<tr><td><span class="badge ok">valid, rank 3</span></td><td><code>composer update socialiteproviders/discord -W -m --with &apos;symfony/process:&gt;=6.4.14,&lt;7.0.0 || &gt;=7.1.7&apos;</code></td><td>1 changes</td></tr>
+<tr><td><span class="badge ok">valid, rank 4</span></td><td><code>composer update knplabs/knp-snappy -W -m --with &apos;symfony/process:&gt;=6.4.14,&lt;7.0.0 || &gt;=7.1.7&apos;</code></td><td>2 changes</td></tr>
+<tr><td><span class="badge ok">valid, rank 5</span></td><td><code>composer update laravel/tinker -W -m --with &apos;symfony/process:&gt;=6.4.14,&lt;7.0.0 || &gt;=7.1.7&apos;</code></td><td>2 changes</td></tr>
+<tr><td><span class="badge ok">valid, rank 6</span></td><td><code>composer update laravel/framework -W -m --with &apos;symfony/process:&gt;=6.4.14,&lt;7.0.0 || &gt;=7.1.7&apos;</code></td><td>2 changes</td></tr>
+<tr><td><span class="badge ok">valid, rank 7</span></td><td><code>composer update larastan/larastan -W -m --with &apos;symfony/process:&gt;=6.4.14,&lt;7.0.0 || &gt;=7.1.7&apos;</code></td><td>3 changes</td></tr>
+<tr><td><span class="badge ok">valid, rank 8</span></td><td><code>composer update laravel/socialite -W -m --with &apos;symfony/process:&gt;=6.4.14,&lt;7.0.0 || &gt;=7.1.7&apos;</code></td><td>3 changes</td></tr>
+<tr><td><span class="badge ok">valid, rank 9</span></td><td><code>composer update knplabs/knp-snappy laravel/framework -W -m --with &apos;symfony/process:&gt;=6.4.14,&lt;7.0.0 || &gt;=7.1.7&apos;</code></td><td>3 changes</td></tr>
+<tr><td><span class="badge skipped">not tried</span></td><td><code>composer require --no-update knplabs/knp-snappy:^2.0 &amp;&amp; composer update knplabs/knp-snappy -W -m --with &apos;symfony/process:&gt;=6.4.14,&lt;7.0.0 || &gt;=7.1.7&apos;</code></td><td>a better candidate already exists</td></tr>
+</tbody></table></details>
+</section>
+<section class="finding" id="finding-6">
 <h2>aws/aws-sdk-php <span class="version">3.322.6</span></h2>
 <p class="state">Transitive dependency.</p>
 <h3>Advisories</h3><ul class="advisories">
@@ -48,7 +285,84 @@ details summary{cursor:pointer;color:var(--accent);margin:.5rem 0}
 <tr><td><span class="badge skipped">not tried</span></td><td><code>composer require --no-update league/flysystem-aws-s3-v3:^4.0 &amp;&amp; composer update league/flysystem-aws-s3-v3 -W -m --with &apos;aws/aws-sdk-php:&gt;=3.368.0&apos;</code></td><td>a better candidate already exists</td></tr>
 </tbody></table></details>
 </section>
-<section class="finding" id="finding-2">
+<section class="finding" id="finding-7">
+<h2>nesbot/carbon <span class="version">2.72.5</span></h2>
+<p class="state">Transitive dependency.</p>
+<h3>Advisories</h3><ul class="advisories">
+<li><strong><a href="https://github.com/advisories/GHSA-j3f9-p6hm-5w6q" rel="noopener noreferrer">CVE-2025-22145 <small>(PKSA-csyb-yc4p-mnbs)</small></a></strong> <span class="badge sev-medium">medium</span><br>Carbon has an arbitrary file include via unvalidated input passed to Carbon::setLocale<br><small>affected versions: <code>&lt;2.72.6|&gt;=3.0.0,&lt;3.8.4</code></small></li>
+</ul>
+<h3>Introduced by</h3>
+<pre class="tree">root
+└── laravel/framework v10.48.22
+    └── nesbot/carbon 2.72.5  (requires ^2.67)
+
+root
+└── laravel/socialite v5.16.0
+    └── laravel/framework v10.48.22
+        └── nesbot/carbon 2.72.5  (requires ^2.67)
+
+root
+└── socialiteproviders/discord 4.2.0
+    └── socialiteproviders/manager v4.6.0
+        └── laravel/socialite v5.16.0
+            └── laravel/framework v10.48.22
+                └── nesbot/carbon 2.72.5  (requires ^2.67)
+
+root
+└── socialiteproviders/gitlab 4.1.0
+    └── socialiteproviders/manager v4.6.0
+        └── laravel/socialite v5.16.0
+            └── laravel/framework v10.48.22
+                └── nesbot/carbon 2.72.5  (requires ^2.67)
+
+root
+└── socialiteproviders/microsoft-azure 5.2.0
+    └── socialiteproviders/manager v4.6.0
+        └── laravel/socialite v5.16.0
+            └── laravel/framework v10.48.22
+                └── nesbot/carbon 2.72.5  (requires ^2.67)</pre>
+<p><small>… and 9 more paths</small></p>
+<h3>Recommended remediation</h3>
+<p class="command"><code>composer update nesbot/carbon</code></p>
+<p class="validation"><span class="badge ok">Composer validation: PASS</span> 1 package changed, 0 added, 0 removed, 0 root constraints changed.</p>
+<details open><summary>Expected changes (1)</summary><table class="changes"><thead><tr><th>Package</th><th>From</th><th>To</th><th>Kind</th></tr></thead><tbody>
+<tr><td>nesbot/carbon</td><td>2.72.5</td><td>2.73.0</td><td>upgraded, minor</td></tr>
+</tbody></table></details>
+<details><summary>Other candidates (9)</summary><table class="candidates"><thead><tr><th>Outcome</th><th>Command</th><th>Detail</th></tr></thead><tbody>
+<tr><td><span class="badge ok">valid, rank 2</span></td><td><code>composer update nesbot/carbon -w -m --with &apos;nesbot/carbon:&gt;=2.72.6,&lt;3.0.0 || &gt;=3.8.4&apos;</code></td><td>1 changes</td></tr>
+<tr><td><span class="badge ok">valid, rank 3</span></td><td><code>composer update socialiteproviders/discord -W -m --with &apos;nesbot/carbon:&gt;=2.72.6,&lt;3.0.0 || &gt;=3.8.4&apos;</code></td><td>1 changes</td></tr>
+<tr><td><span class="badge ok">valid, rank 4</span></td><td><code>composer update socialiteproviders/gitlab -W -m --with &apos;nesbot/carbon:&gt;=2.72.6,&lt;3.0.0 || &gt;=3.8.4&apos;</code></td><td>1 changes</td></tr>
+<tr><td><span class="badge ok">valid, rank 5</span></td><td><code>composer update laravel/tinker -W -m --with &apos;nesbot/carbon:&gt;=2.72.6,&lt;3.0.0 || &gt;=3.8.4&apos;</code></td><td>2 changes</td></tr>
+<tr><td><span class="badge ok">valid, rank 6</span></td><td><code>composer update laravel/framework -W -m --with &apos;nesbot/carbon:&gt;=2.72.6,&lt;3.0.0 || &gt;=3.8.4&apos;</code></td><td>2 changes</td></tr>
+<tr><td><span class="badge ok">valid, rank 7</span></td><td><code>composer update larastan/larastan -W -m --with &apos;nesbot/carbon:&gt;=2.72.6,&lt;3.0.0 || &gt;=3.8.4&apos;</code></td><td>3 changes</td></tr>
+<tr><td><span class="badge ok">valid, rank 8</span></td><td><code>composer update laravel/socialite -W -m --with &apos;nesbot/carbon:&gt;=2.72.6,&lt;3.0.0 || &gt;=3.8.4&apos;</code></td><td>3 changes</td></tr>
+<tr><td><span class="badge skipped">not tried</span></td><td><code>composer require --no-update laravel/framework:^11.0 &amp;&amp; composer update laravel/framework -W -m --with &apos;nesbot/carbon:&gt;=2.72.6,&lt;3.0.0 || &gt;=3.8.4&apos;</code></td><td>a better candidate already exists</td></tr>
+<tr><td><span class="badge skipped">not tried</span></td><td><code>composer require --no-update laravel/socialite:^6.0 &amp;&amp; composer update laravel/socialite -W -m --with &apos;nesbot/carbon:&gt;=2.72.6,&lt;3.0.0 || &gt;=3.8.4&apos;</code></td><td>a better candidate already exists</td></tr>
+</tbody></table></details>
+</section>
+<section class="finding" id="finding-8">
+<h2>robrichards/xmlseclibs <span class="version">3.1.1</span></h2>
+<p class="state">Transitive dependency.</p>
+<h3>Advisories</h3><ul class="advisories">
+<li><strong><a href="https://github.com/advisories/GHSA-c4cc-x928-vjw9" rel="noopener noreferrer">CVE-2025-66578 <small>(PKSA-pcdf-qvqm-w4tv)</small></a></strong> <span class="badge sev-medium">medium</span><br>robrichards/xmlseclibs has an Libxml2 Canonicalization error which can bypass Digest/Signature validation<br><small>affected versions: <code>&lt;=3.1.3</code></small></li>
+</ul>
+<h3>Introduced by</h3>
+<pre class="tree">root
+└── onelogin/php-saml 4.2.0
+    └── robrichards/xmlseclibs 3.1.1  (requires ^3.1)</pre>
+<h3>Recommended remediation</h3>
+<p class="command"><code>composer update robrichards/xmlseclibs</code></p>
+<p class="validation"><span class="badge ok">Composer validation: PASS</span> 1 package changed, 0 added, 0 removed, 0 root constraints changed.</p>
+<details open><summary>Expected changes (1)</summary><table class="changes"><thead><tr><th>Package</th><th>From</th><th>To</th><th>Kind</th></tr></thead><tbody>
+<tr><td>robrichards/xmlseclibs</td><td>3.1.1</td><td>3.1.4</td><td>upgraded, patch</td></tr>
+</tbody></table></details>
+<details><summary>Other candidates (3)</summary><table class="candidates"><thead><tr><th>Outcome</th><th>Command</th><th>Detail</th></tr></thead><tbody>
+<tr><td><span class="badge ok">valid, rank 2</span></td><td><code>composer update robrichards/xmlseclibs -w -m --with &apos;robrichards/xmlseclibs:&gt;3.1.3&apos;</code></td><td>1 changes</td></tr>
+<tr><td><span class="badge ok">valid, rank 3</span></td><td><code>composer update onelogin/php-saml -W -m --with &apos;robrichards/xmlseclibs:&gt;3.1.3&apos;</code></td><td>2 changes</td></tr>
+<tr><td><span class="badge skipped">not tried</span></td><td><code>composer require --no-update onelogin/php-saml:^5.0 &amp;&amp; composer update onelogin/php-saml -W -m --with &apos;robrichards/xmlseclibs:&gt;3.1.3&apos;</code></td><td>a better candidate already exists</td></tr>
+</tbody></table></details>
+</section>
+<section class="finding" id="finding-9">
 <h2>firebase/php-jwt <span class="version">v6.10.1</span></h2>
 <p class="state">Transitive dependency.</p>
 <h3>Advisories</h3><ul class="advisories">
@@ -113,319 +427,6 @@ Use the option --with-all-dependencies (-W) to allow upgrades, downgrades and re
 <tr><td><span class="badge skipped">not tried</span></td><td><code>composer require --no-update socialiteproviders/discord:^5.0 &amp;&amp; composer update socialiteproviders/discord -W -m --with &apos;firebase/php-jwt:&gt;=7.0.0&apos;</code></td><td>a better candidate already exists</td></tr>
 </tbody></table></details>
 </section>
-<section class="finding" id="finding-3">
-<h2>laravel/framework <span class="version">v10.48.22</span></h2>
-<p class="state">Direct dependency.</p>
-<h3>Advisories</h3><ul class="advisories">
-<li><strong><a href="https://github.com/advisories/GHSA-78fx-h6xr-vch4" rel="noopener noreferrer">CVE-2025-27515 <small>(PKSA-8qx3-n5y5-vvnd)</small></a></strong> <span class="badge sev-medium">medium</span><br>Laravel has a File Validation Bypass<br><small>affected versions: <code>&lt;10.48.29|&gt;=11.0.0,&lt;11.44.1|&gt;=12.0.0,&lt;12.1.1</code></small></li>
-<li><strong><a href="https://github.com/advisories/GHSA-gv7v-rgg6-548h" rel="noopener noreferrer">CVE-2024-52301 <small>(PKSA-w7xr-vk7n-rstm)</small></a></strong> <span class="badge sev-high">high</span><br>Laravel environment manipulation via query string<br><small>affected versions: <code>&lt;6.20.45|&gt;=7.0.0,&lt;7.30.7|&gt;=8.0.0,&lt;8.83.28|&gt;=9.0.0,&lt;9.52.17|&gt;=10.0.0,&lt;10.48.23|&gt;=11.0.0,&lt;11.31.0</code></small></li>
-</ul>
-<h3>Introduced by</h3>
-<pre class="tree">root
-└── laravel/framework v10.48.22  (requires ^10.10)
-
-root
-└── laravel/tinker v2.10.0
-    └── laravel/framework v10.48.22
-        └── laravel/framework v10.48.22  (requires self.version)
-
-root
-└── larastan/larastan v2.9.8
-    └── laravel/framework v10.48.22
-        └── laravel/framework v10.48.22  (requires self.version)
-
-root
-└── larastan/larastan v2.9.8
-    └── laravel/framework v10.48.22
-        └── laravel/framework v10.48.22  (requires self.version)
-
-root
-└── laravel/socialite v5.16.0
-    └── laravel/framework v10.48.22
-        └── laravel/framework v10.48.22  (requires self.version)</pre>
-<p><small>… and 42 more paths</small></p>
-<h3>Recommended remediation</h3>
-<p class="command"><code>composer update laravel/framework</code></p>
-<p class="validation"><span class="badge ok">Composer validation: PASS</span> 1 package changed, 0 added, 0 removed, 0 root constraints changed.</p>
-<details open><summary>Expected changes (1)</summary><table class="changes"><thead><tr><th>Package</th><th>From</th><th>To</th><th>Kind</th></tr></thead><tbody>
-<tr><td>laravel/framework</td><td>v10.48.22</td><td>v10.50.0</td><td>upgraded, minor</td></tr>
-</tbody></table></details>
-<details><summary>Other candidates (9)</summary><table class="candidates"><thead><tr><th>Outcome</th><th>Command</th><th>Detail</th></tr></thead><tbody>
-<tr><td><span class="badge ok">valid, rank 2</span></td><td><code>composer update laravel/framework -w -m --with &apos;laravel/framework:&gt;=10.48.29,&lt;11.0.0 || &gt;=11.44.1,&lt;12.0.0 || &gt;=12.1.1&apos;</code></td><td>1 changes</td></tr>
-<tr><td><span class="badge ok">valid, rank 3</span></td><td><code>composer update laravel/framework -W -m --with &apos;laravel/framework:&gt;=10.48.29,&lt;11.0.0 || &gt;=11.44.1,&lt;12.0.0 || &gt;=12.1.1&apos;</code></td><td>1 changes</td></tr>
-<tr><td><span class="badge ok">valid, rank 4</span></td><td><code>composer update socialiteproviders/discord -W -m --with &apos;laravel/framework:&gt;=10.48.29,&lt;11.0.0 || &gt;=11.44.1,&lt;12.0.0 || &gt;=12.1.1&apos;</code></td><td>1 changes</td></tr>
-<tr><td><span class="badge ok">valid, rank 5</span></td><td><code>composer update socialiteproviders/gitlab -W -m --with &apos;laravel/framework:&gt;=10.48.29,&lt;11.0.0 || &gt;=11.44.1,&lt;12.0.0 || &gt;=12.1.1&apos;</code></td><td>1 changes</td></tr>
-<tr><td><span class="badge ok">valid, rank 6</span></td><td><code>composer update laravel/tinker -W -m --with &apos;laravel/framework:&gt;=10.48.29,&lt;11.0.0 || &gt;=11.44.1,&lt;12.0.0 || &gt;=12.1.1&apos;</code></td><td>2 changes</td></tr>
-<tr><td><span class="badge ok">valid, rank 7</span></td><td><code>composer update laravel/socialite -W -m --with &apos;laravel/framework:&gt;=10.48.29,&lt;11.0.0 || &gt;=11.44.1,&lt;12.0.0 || &gt;=12.1.1&apos;</code></td><td>3 changes</td></tr>
-<tr><td><span class="badge ok">valid, rank 8</span></td><td><code>composer update larastan/larastan -W -m --with &apos;laravel/framework:&gt;=10.48.29,&lt;11.0.0 || &gt;=11.44.1,&lt;12.0.0 || &gt;=12.1.1&apos;</code></td><td>5 changes</td></tr>
-<tr><td><span class="badge ok">valid, rank 9</span></td><td><code>composer update laravel/framework laravel/socialite laravel/tinker socialiteproviders/discord socialiteproviders/gitlab socialiteproviders/microsoft-azure socialiteproviders/okta socialiteproviders/twitch larastan/larastan -W -m --with &apos;laravel/framework:&gt;=10.48.29,&lt;11.0.0 || &gt;=11.44.1,&lt;12.0.0 || &gt;=12.1.1&apos;</code></td><td>9 changes</td></tr>
-<tr><td><span class="badge skipped">not tried</span></td><td><code>composer require --no-update laravel/framework:^11.0 &amp;&amp; composer update laravel/framework -W -m --with &apos;laravel/framework:&gt;=10.48.29,&lt;11.0.0 || &gt;=11.44.1,&lt;12.0.0 || &gt;=12.1.1&apos;</code></td><td>a better candidate already exists</td></tr>
-</tbody></table></details>
-</section>
-<section class="finding" id="finding-4">
-<h2>league/commonmark <span class="version">2.5.3</span></h2>
-<p class="state">Direct dependency.</p>
-<h3>Advisories</h3><ul class="advisories">
-<li><strong><a href="https://github.com/advisories/GHSA-c2pc-g5qf-rfrf" rel="noopener noreferrer">PKSA-fndg-qryc-dyc9</a></strong> <span class="badge sev-high">high</span><br>league/commonmark&apos;s quadratic complexity bugs may lead to a denial of service<br><small>affected versions: <code>&lt;2.6.0</code></small></li>
-<li><strong><a href="https://github.com/advisories/GHSA-3527-qv2q-pfvx" rel="noopener noreferrer">CVE-2025-46734 <small>(PKSA-rqc2-tcc6-nc79)</small></a></strong> <span class="badge sev-medium">medium</span><br>league/commonmark contains a XSS vulnerability in Attributes extension<br><small>affected versions: <code>&gt;=1.5.0,&lt;2.7.0</code></small></li>
-</ul>
-<h3>Introduced by</h3>
-<pre class="tree">root
-└── league/commonmark 2.5.3  (requires ^2.3)
-
-root
-└── laravel/framework v10.48.22
-    └── league/commonmark 2.5.3  (requires ^2.2.1)
-
-root
-└── laravel/socialite v5.16.0
-    └── laravel/framework v10.48.22
-        └── league/commonmark 2.5.3  (requires ^2.2.1)
-
-root
-└── socialiteproviders/discord 4.2.0
-    └── socialiteproviders/manager v4.6.0
-        └── laravel/socialite v5.16.0
-            └── laravel/framework v10.48.22
-                └── league/commonmark 2.5.3  (requires ^2.2.1)
-
-root
-└── socialiteproviders/gitlab 4.1.0
-    └── socialiteproviders/manager v4.6.0
-        └── laravel/socialite v5.16.0
-            └── laravel/framework v10.48.22
-                └── league/commonmark 2.5.3  (requires ^2.2.1)</pre>
-<p><small>… and 10 more paths</small></p>
-<h3>Recommended remediation</h3>
-<p class="command"><code>composer update league/commonmark</code></p>
-<p class="validation"><span class="badge ok">Composer validation: PASS</span> 1 package changed, 0 added, 0 removed, 0 root constraints changed.</p>
-<details open><summary>Expected changes (1)</summary><table class="changes"><thead><tr><th>Package</th><th>From</th><th>To</th><th>Kind</th></tr></thead><tbody>
-<tr><td>league/commonmark</td><td>2.5.3</td><td>2.8.0</td><td>upgraded, minor</td></tr>
-</tbody></table></details>
-<details><summary>Other candidates (9)</summary><table class="candidates"><thead><tr><th>Outcome</th><th>Command</th><th>Detail</th></tr></thead><tbody>
-<tr><td><span class="badge ok">valid, rank 2</span></td><td><code>composer update league/commonmark -w -m --with &apos;league/commonmark:&gt;=2.7.0&apos;</code></td><td>1 changes</td></tr>
-<tr><td><span class="badge ok">valid, rank 3</span></td><td><code>composer update league/commonmark -W -m --with &apos;league/commonmark:&gt;=2.7.0&apos;</code></td><td>1 changes</td></tr>
-<tr><td><span class="badge ok">valid, rank 4</span></td><td><code>composer update socialiteproviders/discord -W -m --with &apos;league/commonmark:&gt;=2.7.0&apos;</code></td><td>1 changes</td></tr>
-<tr><td><span class="badge ok">valid, rank 5</span></td><td><code>composer update laravel/tinker -W -m --with &apos;league/commonmark:&gt;=2.7.0&apos;</code></td><td>2 changes</td></tr>
-<tr><td><span class="badge ok">valid, rank 6</span></td><td><code>composer update laravel/framework -W -m --with &apos;league/commonmark:&gt;=2.7.0&apos;</code></td><td>2 changes</td></tr>
-<tr><td><span class="badge ok">valid, rank 7</span></td><td><code>composer update laravel/framework league/commonmark -W -m --with &apos;league/commonmark:&gt;=2.7.0&apos;</code></td><td>2 changes</td></tr>
-<tr><td><span class="badge ok">valid, rank 8</span></td><td><code>composer update larastan/larastan -W -m --with &apos;league/commonmark:&gt;=2.7.0&apos;</code></td><td>3 changes</td></tr>
-<tr><td><span class="badge ok">valid, rank 9</span></td><td><code>composer update laravel/socialite -W -m --with &apos;league/commonmark:&gt;=2.7.0&apos;</code></td><td>3 changes</td></tr>
-<tr><td><span class="badge skipped">not tried</span></td><td><code>composer require --no-update league/commonmark:^3.0 &amp;&amp; composer update league/commonmark -W -m --with &apos;league/commonmark:&gt;=2.7.0&apos;</code></td><td>a better candidate already exists</td></tr>
-</tbody></table></details>
-</section>
-<section class="finding" id="finding-5">
-<h2>nesbot/carbon <span class="version">2.72.5</span></h2>
-<p class="state">Transitive dependency.</p>
-<h3>Advisories</h3><ul class="advisories">
-<li><strong><a href="https://github.com/advisories/GHSA-j3f9-p6hm-5w6q" rel="noopener noreferrer">CVE-2025-22145 <small>(PKSA-csyb-yc4p-mnbs)</small></a></strong> <span class="badge sev-medium">medium</span><br>Carbon has an arbitrary file include via unvalidated input passed to Carbon::setLocale<br><small>affected versions: <code>&lt;2.72.6|&gt;=3.0.0,&lt;3.8.4</code></small></li>
-</ul>
-<h3>Introduced by</h3>
-<pre class="tree">root
-└── laravel/framework v10.48.22
-    └── nesbot/carbon 2.72.5  (requires ^2.67)
-
-root
-└── laravel/socialite v5.16.0
-    └── laravel/framework v10.48.22
-        └── nesbot/carbon 2.72.5  (requires ^2.67)
-
-root
-└── socialiteproviders/discord 4.2.0
-    └── socialiteproviders/manager v4.6.0
-        └── laravel/socialite v5.16.0
-            └── laravel/framework v10.48.22
-                └── nesbot/carbon 2.72.5  (requires ^2.67)
-
-root
-└── socialiteproviders/gitlab 4.1.0
-    └── socialiteproviders/manager v4.6.0
-        └── laravel/socialite v5.16.0
-            └── laravel/framework v10.48.22
-                └── nesbot/carbon 2.72.5  (requires ^2.67)
-
-root
-└── socialiteproviders/microsoft-azure 5.2.0
-    └── socialiteproviders/manager v4.6.0
-        └── laravel/socialite v5.16.0
-            └── laravel/framework v10.48.22
-                └── nesbot/carbon 2.72.5  (requires ^2.67)</pre>
-<p><small>… and 9 more paths</small></p>
-<h3>Recommended remediation</h3>
-<p class="command"><code>composer update nesbot/carbon</code></p>
-<p class="validation"><span class="badge ok">Composer validation: PASS</span> 1 package changed, 0 added, 0 removed, 0 root constraints changed.</p>
-<details open><summary>Expected changes (1)</summary><table class="changes"><thead><tr><th>Package</th><th>From</th><th>To</th><th>Kind</th></tr></thead><tbody>
-<tr><td>nesbot/carbon</td><td>2.72.5</td><td>2.73.0</td><td>upgraded, minor</td></tr>
-</tbody></table></details>
-<details><summary>Other candidates (9)</summary><table class="candidates"><thead><tr><th>Outcome</th><th>Command</th><th>Detail</th></tr></thead><tbody>
-<tr><td><span class="badge ok">valid, rank 2</span></td><td><code>composer update nesbot/carbon -w -m --with &apos;nesbot/carbon:&gt;=2.72.6,&lt;3.0.0 || &gt;=3.8.4&apos;</code></td><td>1 changes</td></tr>
-<tr><td><span class="badge ok">valid, rank 3</span></td><td><code>composer update socialiteproviders/discord -W -m --with &apos;nesbot/carbon:&gt;=2.72.6,&lt;3.0.0 || &gt;=3.8.4&apos;</code></td><td>1 changes</td></tr>
-<tr><td><span class="badge ok">valid, rank 4</span></td><td><code>composer update socialiteproviders/gitlab -W -m --with &apos;nesbot/carbon:&gt;=2.72.6,&lt;3.0.0 || &gt;=3.8.4&apos;</code></td><td>1 changes</td></tr>
-<tr><td><span class="badge ok">valid, rank 5</span></td><td><code>composer update laravel/tinker -W -m --with &apos;nesbot/carbon:&gt;=2.72.6,&lt;3.0.0 || &gt;=3.8.4&apos;</code></td><td>2 changes</td></tr>
-<tr><td><span class="badge ok">valid, rank 6</span></td><td><code>composer update laravel/framework -W -m --with &apos;nesbot/carbon:&gt;=2.72.6,&lt;3.0.0 || &gt;=3.8.4&apos;</code></td><td>2 changes</td></tr>
-<tr><td><span class="badge ok">valid, rank 7</span></td><td><code>composer update larastan/larastan -W -m --with &apos;nesbot/carbon:&gt;=2.72.6,&lt;3.0.0 || &gt;=3.8.4&apos;</code></td><td>3 changes</td></tr>
-<tr><td><span class="badge ok">valid, rank 8</span></td><td><code>composer update laravel/socialite -W -m --with &apos;nesbot/carbon:&gt;=2.72.6,&lt;3.0.0 || &gt;=3.8.4&apos;</code></td><td>3 changes</td></tr>
-<tr><td><span class="badge skipped">not tried</span></td><td><code>composer require --no-update laravel/framework:^11.0 &amp;&amp; composer update laravel/framework -W -m --with &apos;nesbot/carbon:&gt;=2.72.6,&lt;3.0.0 || &gt;=3.8.4&apos;</code></td><td>a better candidate already exists</td></tr>
-<tr><td><span class="badge skipped">not tried</span></td><td><code>composer require --no-update laravel/socialite:^6.0 &amp;&amp; composer update laravel/socialite -W -m --with &apos;nesbot/carbon:&gt;=2.72.6,&lt;3.0.0 || &gt;=3.8.4&apos;</code></td><td>a better candidate already exists</td></tr>
-</tbody></table></details>
-</section>
-<section class="finding" id="finding-6">
-<h2>onelogin/php-saml <span class="version">4.2.0</span></h2>
-<p class="state">Direct dependency.</p>
-<h3>Advisories</h3><ul class="advisories">
-<li><strong><a href="https://github.com/advisories/GHSA-5j8p-438x-rgg5" rel="noopener noreferrer">PKSA-67d7-mg8j-87zx</a></strong> <span class="badge sev-critical">critical</span><br> SAML PHP Toolkit Vulnerability on xmlseclibs CVE-2025-66475 <br><small>affected versions: <code>&gt;=4.0.0,&lt;4.3.1|&gt;=3.0.0,&lt;3.8.1|&lt;2.21.1</code></small></li>
-</ul>
-<h3>Introduced by</h3>
-<pre class="tree">root
-└── onelogin/php-saml 4.2.0  (requires ^4.0)</pre>
-<h3>Recommended remediation</h3>
-<p class="command"><code>composer update onelogin/php-saml -w</code></p>
-<p class="validation"><span class="badge ok">Composer validation: PASS</span> 2 packages changed, 0 added, 0 removed, 0 root constraints changed.</p>
-<details open><summary>Expected changes (2)</summary><table class="changes"><thead><tr><th>Package</th><th>From</th><th>To</th><th>Kind</th></tr></thead><tbody>
-<tr><td>onelogin/php-saml</td><td>4.2.0</td><td>4.3.1</td><td>upgraded, minor</td></tr>
-<tr><td>robrichards/xmlseclibs</td><td>3.1.1</td><td>3.1.4</td><td>upgraded, patch</td></tr>
-</tbody></table></details>
-<details><summary>Other candidates (4)</summary><table class="candidates"><thead><tr><th>Outcome</th><th>Command</th><th>Detail</th></tr></thead><tbody>
-<tr><td><span class="badge ok">valid, rank 2</span></td><td><code>composer update onelogin/php-saml -W -m --with &apos;onelogin/php-saml:&gt;=4.3.1&apos;</code></td><td>2 changes</td></tr>
-<tr><td><span class="badge rejected">rejected</span></td><td><code>composer update onelogin/php-saml</code></td><td><pre class="reason">resolves, but onelogin/php-saml ends at 4.3.0 which is still affected by PKSA-67d7-mg8j-87zx</pre></td></tr>
-<tr><td><span class="badge skipped">not tried</span></td><td><code>composer require --no-update onelogin/php-saml:^5.0 &amp;&amp; composer update onelogin/php-saml -W -m --with &apos;onelogin/php-saml:&gt;=4.3.1&apos;</code></td><td>a better candidate already exists</td></tr>
-</tbody></table></details>
-</section>
-<section class="finding" id="finding-7">
-<h2>robrichards/xmlseclibs <span class="version">3.1.1</span></h2>
-<p class="state">Transitive dependency.</p>
-<h3>Advisories</h3><ul class="advisories">
-<li><strong><a href="https://github.com/advisories/GHSA-c4cc-x928-vjw9" rel="noopener noreferrer">CVE-2025-66578 <small>(PKSA-pcdf-qvqm-w4tv)</small></a></strong> <span class="badge sev-medium">medium</span><br>robrichards/xmlseclibs has an Libxml2 Canonicalization error which can bypass Digest/Signature validation<br><small>affected versions: <code>&lt;=3.1.3</code></small></li>
-</ul>
-<h3>Introduced by</h3>
-<pre class="tree">root
-└── onelogin/php-saml 4.2.0
-    └── robrichards/xmlseclibs 3.1.1  (requires ^3.1)</pre>
-<h3>Recommended remediation</h3>
-<p class="command"><code>composer update robrichards/xmlseclibs</code></p>
-<p class="validation"><span class="badge ok">Composer validation: PASS</span> 1 package changed, 0 added, 0 removed, 0 root constraints changed.</p>
-<details open><summary>Expected changes (1)</summary><table class="changes"><thead><tr><th>Package</th><th>From</th><th>To</th><th>Kind</th></tr></thead><tbody>
-<tr><td>robrichards/xmlseclibs</td><td>3.1.1</td><td>3.1.4</td><td>upgraded, patch</td></tr>
-</tbody></table></details>
-<details><summary>Other candidates (3)</summary><table class="candidates"><thead><tr><th>Outcome</th><th>Command</th><th>Detail</th></tr></thead><tbody>
-<tr><td><span class="badge ok">valid, rank 2</span></td><td><code>composer update robrichards/xmlseclibs -w -m --with &apos;robrichards/xmlseclibs:&gt;3.1.3&apos;</code></td><td>1 changes</td></tr>
-<tr><td><span class="badge ok">valid, rank 3</span></td><td><code>composer update onelogin/php-saml -W -m --with &apos;robrichards/xmlseclibs:&gt;3.1.3&apos;</code></td><td>2 changes</td></tr>
-<tr><td><span class="badge skipped">not tried</span></td><td><code>composer require --no-update onelogin/php-saml:^5.0 &amp;&amp; composer update onelogin/php-saml -W -m --with &apos;robrichards/xmlseclibs:&gt;3.1.3&apos;</code></td><td>a better candidate already exists</td></tr>
-</tbody></table></details>
-</section>
-<section class="finding" id="finding-8">
-<h2>symfony/http-foundation <span class="version">v6.4.12</span></h2>
-<p class="state">Transitive dependency.</p>
-<h3>Advisories</h3><ul class="advisories">
-<li><strong><a href="https://symfony.com/blog/cve-2025-64500-incorrect-parsing-of-path-info-can-lead-to-limited-authorization-bypass" rel="noopener noreferrer">CVE-2025-64500 <small>(PKSA-365x-2zjk-pt47)</small></a></strong> <span class="badge sev-high">high</span><br>CVE-2025-64500: Incorrect parsing of PATH_INFO can lead to limited authorization bypass<br><small>affected versions: <code>&gt;=2.0.0,&lt;3.0.0|&gt;=3.0.0,&lt;4.0.0|&gt;=4.0.0,&lt;5.0.0|&gt;=5.0.0,&lt;5.1.0|&gt;=5.1.0,&lt;5.2.0|&gt;=5.2.0,&lt;5.3.0|&gt;=5.3.0,&lt;5.4.0|&gt;=5.4.0,&lt;5.4.50|&gt;=6.0.0,&lt;6.1.0|&gt;=6.1.0,&lt;6.2.0|&gt;=6.2.0,&lt;6.3.0|&gt;=6.3.0,&lt;6.4.0|&gt;=6.4.0,&lt;6.4.29|&gt;=7.0.0,&lt;7.1.0|&gt;=7.1.0,&lt;7.2.0|&gt;=7.2.0,&lt;7.3.0|&gt;=7.3.0,&lt;7.3.7</code></small></li>
-<li><strong><a href="https://symfony.com/cve-2024-50345" rel="noopener noreferrer">CVE-2024-50345 <small>(PKSA-b35n-565h-rs4q)</small></a></strong> <span class="badge sev-low">low</span><br>CVE-2024-50345: Open redirect via browser-sanitized URLs<br><small>affected versions: <code>&gt;=2.0.0,&lt;3.0.0|&gt;=3.0.0,&lt;4.0.0|&gt;=4.0.0,&lt;5.0.0|&gt;=5.0.0,&lt;5.1.0|&gt;=5.1.0,&lt;5.2.0|&gt;=5.2.0,&lt;5.3.0|&gt;=5.3.0,&lt;5.4.0|&gt;=5.4.0,&lt;5.4.46|&gt;=6.0.0,&lt;6.1.0|&gt;=6.1.0,&lt;6.2.0|&gt;=6.2.0,&lt;6.3.0|&gt;=6.3.0,&lt;6.4.0|&gt;=6.4.0,&lt;6.4.14|&gt;=7.0.0,&lt;7.1.0|&gt;=7.1.0,&lt;7.1.7</code></small></li>
-</ul>
-<h3>Introduced by</h3>
-<pre class="tree">root
-└── laravel/framework v10.48.22
-    └── fruitcake/php-cors v1.3.0
-        └── symfony/http-foundation v6.4.12  (requires ^4.4|^5.4|^6|^7)
-
-root
-└── laravel/socialite v5.16.0
-    └── laravel/framework v10.48.22
-        └── fruitcake/php-cors v1.3.0
-            └── symfony/http-foundation v6.4.12  (requires ^4.4|^5.4|^6|^7)
-
-root
-└── socialiteproviders/discord 4.2.0
-    └── socialiteproviders/manager v4.6.0
-        └── laravel/socialite v5.16.0
-            └── laravel/framework v10.48.22
-                └── fruitcake/php-cors v1.3.0
-                    └── symfony/http-foundation v6.4.12  (requires ^4.4|^5.4|^6|^7)
-
-root
-└── socialiteproviders/gitlab 4.1.0
-    └── socialiteproviders/manager v4.6.0
-        └── laravel/socialite v5.16.0
-            └── laravel/framework v10.48.22
-                └── fruitcake/php-cors v1.3.0
-                    └── symfony/http-foundation v6.4.12  (requires ^4.4|^5.4|^6|^7)
-
-root
-└── socialiteproviders/microsoft-azure 5.2.0
-    └── socialiteproviders/manager v4.6.0
-        └── laravel/socialite v5.16.0
-            └── laravel/framework v10.48.22
-                └── fruitcake/php-cors v1.3.0
-                    └── symfony/http-foundation v6.4.12  (requires ^4.4|^5.4|^6|^7)</pre>
-<p><small>… and 37 more paths</small></p>
-<h3>Recommended remediation</h3>
-<p class="command"><code>composer update symfony/http-foundation</code></p>
-<p class="validation"><span class="badge ok">Composer validation: PASS</span> 1 package changed, 0 added, 0 removed, 0 root constraints changed.</p>
-<details open><summary>Expected changes (1)</summary><table class="changes"><thead><tr><th>Package</th><th>From</th><th>To</th><th>Kind</th></tr></thead><tbody>
-<tr><td>symfony/http-foundation</td><td>v6.4.12</td><td>v6.4.32</td><td>upgraded, patch</td></tr>
-</tbody></table></details>
-<details><summary>Other candidates (9)</summary><table class="candidates"><thead><tr><th>Outcome</th><th>Command</th><th>Detail</th></tr></thead><tbody>
-<tr><td><span class="badge ok">valid, rank 2</span></td><td><code>composer update symfony/http-foundation -w -m --with &apos;symfony/http-foundation:&gt;=6.4.29,&lt;7.0.0 || &gt;=7.3.7&apos;</code></td><td>1 changes</td></tr>
-<tr><td><span class="badge ok">valid, rank 3</span></td><td><code>composer update socialiteproviders/discord -W -m --with &apos;symfony/http-foundation:&gt;=6.4.29,&lt;7.0.0 || &gt;=7.3.7&apos;</code></td><td>1 changes</td></tr>
-<tr><td><span class="badge ok">valid, rank 4</span></td><td><code>composer update socialiteproviders/gitlab -W -m --with &apos;symfony/http-foundation:&gt;=6.4.29,&lt;7.0.0 || &gt;=7.3.7&apos;</code></td><td>1 changes</td></tr>
-<tr><td><span class="badge ok">valid, rank 5</span></td><td><code>composer update laravel/tinker -W -m --with &apos;symfony/http-foundation:&gt;=6.4.29,&lt;7.0.0 || &gt;=7.3.7&apos;</code></td><td>2 changes</td></tr>
-<tr><td><span class="badge ok">valid, rank 6</span></td><td><code>composer update laravel/framework -W -m --with &apos;symfony/http-foundation:&gt;=6.4.29,&lt;7.0.0 || &gt;=7.3.7&apos;</code></td><td>2 changes</td></tr>
-<tr><td><span class="badge ok">valid, rank 7</span></td><td><code>composer update larastan/larastan -W -m --with &apos;symfony/http-foundation:&gt;=6.4.29,&lt;7.0.0 || &gt;=7.3.7&apos;</code></td><td>3 changes</td></tr>
-<tr><td><span class="badge ok">valid, rank 8</span></td><td><code>composer update laravel/socialite -W -m --with &apos;symfony/http-foundation:&gt;=6.4.29,&lt;7.0.0 || &gt;=7.3.7&apos;</code></td><td>3 changes</td></tr>
-<tr><td><span class="badge skipped">not tried</span></td><td><code>composer require --no-update laravel/framework:^11.0 &amp;&amp; composer update laravel/framework -W -m --with &apos;symfony/http-foundation:&gt;=6.4.29,&lt;7.0.0 || &gt;=7.3.7&apos;</code></td><td>a better candidate already exists</td></tr>
-<tr><td><span class="badge skipped">not tried</span></td><td><code>composer require --no-update laravel/socialite:^6.0 &amp;&amp; composer update laravel/socialite -W -m --with &apos;symfony/http-foundation:&gt;=6.4.29,&lt;7.0.0 || &gt;=7.3.7&apos;</code></td><td>a better candidate already exists</td></tr>
-</tbody></table></details>
-</section>
-<section class="finding" id="finding-9">
-<h2>symfony/process <span class="version">v6.4.12</span></h2>
-<p class="state">Transitive dependency.</p>
-<h3>Advisories</h3><ul class="advisories">
-<li><strong><a href="https://symfony.com/cve-2024-51736" rel="noopener noreferrer">CVE-2024-51736 <small>(PKSA-wws7-mr54-jsny)</small></a></strong> <span class="badge sev-high">high</span><br>CVE-2024-51736: Command execution hijack on Windows with Process class<br><small>affected versions: <code>&gt;=2.0.0,&lt;3.0.0|&gt;=3.0.0,&lt;4.0.0|&gt;=4.0.0,&lt;5.0.0|&gt;=5.0.0,&lt;5.1.0|&gt;=5.1.0,&lt;5.2.0|&gt;=5.2.0,&lt;5.3.0|&gt;=5.3.0,&lt;5.4.0|&gt;=5.4.0,&lt;5.4.46|&gt;=6.0.0,&lt;6.1.0|&gt;=6.1.0,&lt;6.2.0|&gt;=6.2.0,&lt;6.3.0|&gt;=6.3.0,&lt;6.4.0|&gt;=6.4.0,&lt;6.4.14|&gt;=7.0.0,&lt;7.1.0|&gt;=7.1.0,&lt;7.1.7</code></small></li>
-</ul>
-<h3>Introduced by</h3>
-<pre class="tree">root
-└── knplabs/knp-snappy v1.5.0
-    └── symfony/process v6.4.12  (requires ^5.0||^6.0||^7.0)
-
-root
-└── laravel/framework v10.48.22
-    └── symfony/process v6.4.12  (requires ^6.2)
-
-root
-└── laravel/socialite v5.16.0
-    └── laravel/framework v10.48.22
-        └── symfony/process v6.4.12  (requires ^6.2)
-
-root
-└── socialiteproviders/discord 4.2.0
-    └── socialiteproviders/manager v4.6.0
-        └── laravel/socialite v5.16.0
-            └── laravel/framework v10.48.22
-                └── symfony/process v6.4.12  (requires ^6.2)
-
-root
-└── socialiteproviders/gitlab 4.1.0
-    └── socialiteproviders/manager v4.6.0
-        └── laravel/socialite v5.16.0
-            └── laravel/framework v10.48.22
-                └── symfony/process v6.4.12  (requires ^6.2)</pre>
-<p><small>… and 10 more paths</small></p>
-<h3>Recommended remediation</h3>
-<p class="command"><code>composer update symfony/process</code></p>
-<p class="validation"><span class="badge ok">Composer validation: PASS</span> 1 package changed, 0 added, 0 removed, 0 root constraints changed.</p>
-<details open><summary>Expected changes (1)</summary><table class="changes"><thead><tr><th>Package</th><th>From</th><th>To</th><th>Kind</th></tr></thead><tbody>
-<tr><td>symfony/process</td><td>v6.4.12</td><td>v6.4.31</td><td>upgraded, patch</td></tr>
-</tbody></table></details>
-<details><summary>Other candidates (9)</summary><table class="candidates"><thead><tr><th>Outcome</th><th>Command</th><th>Detail</th></tr></thead><tbody>
-<tr><td><span class="badge ok">valid, rank 2</span></td><td><code>composer update symfony/process -w -m --with &apos;symfony/process:&gt;=6.4.14,&lt;7.0.0 || &gt;=7.1.7&apos;</code></td><td>1 changes</td></tr>
-<tr><td><span class="badge ok">valid, rank 3</span></td><td><code>composer update socialiteproviders/discord -W -m --with &apos;symfony/process:&gt;=6.4.14,&lt;7.0.0 || &gt;=7.1.7&apos;</code></td><td>1 changes</td></tr>
-<tr><td><span class="badge ok">valid, rank 4</span></td><td><code>composer update knplabs/knp-snappy -W -m --with &apos;symfony/process:&gt;=6.4.14,&lt;7.0.0 || &gt;=7.1.7&apos;</code></td><td>2 changes</td></tr>
-<tr><td><span class="badge ok">valid, rank 5</span></td><td><code>composer update laravel/tinker -W -m --with &apos;symfony/process:&gt;=6.4.14,&lt;7.0.0 || &gt;=7.1.7&apos;</code></td><td>2 changes</td></tr>
-<tr><td><span class="badge ok">valid, rank 6</span></td><td><code>composer update laravel/framework -W -m --with &apos;symfony/process:&gt;=6.4.14,&lt;7.0.0 || &gt;=7.1.7&apos;</code></td><td>2 changes</td></tr>
-<tr><td><span class="badge ok">valid, rank 7</span></td><td><code>composer update larastan/larastan -W -m --with &apos;symfony/process:&gt;=6.4.14,&lt;7.0.0 || &gt;=7.1.7&apos;</code></td><td>3 changes</td></tr>
-<tr><td><span class="badge ok">valid, rank 8</span></td><td><code>composer update laravel/socialite -W -m --with &apos;symfony/process:&gt;=6.4.14,&lt;7.0.0 || &gt;=7.1.7&apos;</code></td><td>3 changes</td></tr>
-<tr><td><span class="badge ok">valid, rank 9</span></td><td><code>composer update knplabs/knp-snappy laravel/framework -W -m --with &apos;symfony/process:&gt;=6.4.14,&lt;7.0.0 || &gt;=7.1.7&apos;</code></td><td>3 changes</td></tr>
-<tr><td><span class="badge skipped">not tried</span></td><td><code>composer require --no-update knplabs/knp-snappy:^2.0 &amp;&amp; composer update knplabs/knp-snappy -W -m --with &apos;symfony/process:&gt;=6.4.14,&lt;7.0.0 || &gt;=7.1.7&apos;</code></td><td>a better candidate already exists</td></tr>
-</tbody></table></details>
-</section>
 <section class="meta"><h2>Analysis metadata</h2><dl>
 <dt>project</dt><dd>bookstack-socialite-phpjwt-parent-minor</dd>
 <dt>engine version</dt><dd>dev-main</dd>
@@ -434,7 +435,7 @@ root
 <dt>advisory source</dt><dd>advisory snapshot advisories.json</dd>
 <dt>solver</dt><dd>in-process Composer dry-run</dd>
 <dt>solver runs</dt><dd>79</dd>
-<dt>composer json sha256</dt><dd>db50ee47067a0cafb0a3c9b6b57f1b520add00ce89cf71e5f2f462a59f8474cd</dd>
+<dt>composer json sha256</dt><dd>bce26b86a0879dac59e3c5678ffcb49c3ddf01cc806ff294810ae9b68eb6291d</dd>
 <dt>composer lock sha256</dt><dd>a08d622ce079c4260dc4c0e941d5d0bde0544f15efc984d8da29abd2e07e5152</dd>
 <dt>analysis timestamp</dt><dd>(fixture)</dd>
 <dt>locked packages</dt><dd>147</dd>

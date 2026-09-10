@@ -2,49 +2,6 @@
     "version": "15.2.1",
     "vulnerabilities": [
         {
-            "id": "c5958abc-9a83-5a61-9b40-0fed8aafa4f6",
-            "category": "dependency_scanning",
-            "name": "CVE-2022-0085: Server-Side Request Forgery in dompdf/dompdf",
-            "description": "dompdf/dompdf v1.2.2 is affected by CVE-2022-0085 (affected versions <2.0.0).",
-            "severity": "Medium",
-            "solution": "Run `composer require --no-update barryvdh/laravel-dompdf:^2.0 && composer update barryvdh/laravel-dompdf -W -m` (verified with Composer's solver, 3 package change(s)).",
-            "identifiers": [
-                {
-                    "type": "cve",
-                    "name": "CVE-2022-0085",
-                    "value": "CVE-2022-0085",
-                    "url": "https://nvd.nist.gov/vuln/detail/CVE-2022-0085"
-                },
-                {
-                    "type": "ghsa",
-                    "name": "GHSA-pf6p-25r2-fx45",
-                    "value": "GHSA-pf6p-25r2-fx45",
-                    "url": "https://github.com/advisories/GHSA-pf6p-25r2-fx45"
-                },
-                {
-                    "type": "packagist_advisory",
-                    "name": "PKSA-872h-8556-2chm",
-                    "value": "PKSA-872h-8556-2chm",
-                    "url": "https://packagist.org/security-advisories/PKSA-872h-8556-2chm"
-                }
-            ],
-            "links": [
-                {
-                    "url": "https://github.com/advisories/GHSA-pf6p-25r2-fx45"
-                }
-            ],
-            "location": {
-                "file": "composer.lock",
-                "dependency": {
-                    "package": {
-                        "name": "dompdf/dompdf"
-                    },
-                    "version": "v1.2.2",
-                    "direct": false
-                }
-            }
-        },
-        {
             "id": "9aca07a3-1ab5-5f8b-b337-43c6f6605de7",
             "category": "dependency_scanning",
             "name": "CVE-2022-31043: Fix failure to strip Authorization header on HTTP downgrade",
@@ -256,6 +213,49 @@
                     },
                     "version": "7.4.2",
                     "direct": true
+                }
+            }
+        },
+        {
+            "id": "c5958abc-9a83-5a61-9b40-0fed8aafa4f6",
+            "category": "dependency_scanning",
+            "name": "CVE-2022-0085: Server-Side Request Forgery in dompdf/dompdf",
+            "description": "dompdf/dompdf v1.2.2 is affected by CVE-2022-0085 (affected versions <2.0.0).",
+            "severity": "Medium",
+            "solution": "Run `composer require --no-update barryvdh/laravel-dompdf:^2.0 && composer update barryvdh/laravel-dompdf -W -m` (verified with Composer's solver, 3 package change(s)).",
+            "identifiers": [
+                {
+                    "type": "cve",
+                    "name": "CVE-2022-0085",
+                    "value": "CVE-2022-0085",
+                    "url": "https://nvd.nist.gov/vuln/detail/CVE-2022-0085"
+                },
+                {
+                    "type": "ghsa",
+                    "name": "GHSA-pf6p-25r2-fx45",
+                    "value": "GHSA-pf6p-25r2-fx45",
+                    "url": "https://github.com/advisories/GHSA-pf6p-25r2-fx45"
+                },
+                {
+                    "type": "packagist_advisory",
+                    "name": "PKSA-872h-8556-2chm",
+                    "value": "PKSA-872h-8556-2chm",
+                    "url": "https://packagist.org/security-advisories/PKSA-872h-8556-2chm"
+                }
+            ],
+            "links": [
+                {
+                    "url": "https://github.com/advisories/GHSA-pf6p-25r2-fx45"
+                }
+            ],
+            "location": {
+                "file": "composer.lock",
+                "dependency": {
+                    "package": {
+                        "name": "dompdf/dompdf"
+                    },
+                    "version": "v1.2.2",
+                    "direct": false
                 }
             }
         }

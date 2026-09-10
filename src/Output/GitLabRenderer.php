@@ -91,7 +91,9 @@ final class GitLabRenderer
             'id' => self::uuid($advisory->id . '@' . $finding->packageName),
             'category' => 'dependency_scanning',
             'name' => sprintf('%s: %s', $advisory->displayId(), $advisory->title ?? $finding->packageName),
-            'description' => sprintf('%s %s is affected by %s (affected versions %s).', $finding->packageName, $finding->prettyVersion, $advisory->displayId(), $advisory->affectedVersions->getPrettyString()),
+            'description' => sprintf('%s %s is affected by %s (affected versions %s).', $finding->packageName, $finding->prettyVersion, $advisory->displayId(), $advisory->affectedVersions->getPrettyString())
+                . (TextRenderer::exploitLine($advisory) !== null ? ' ' . ucfirst((string) TextRenderer::exploitLine($advisory)) . '.' : '')
+                . ($finding->abandoned !== [] ? ' Abandoned: ' . TextRenderer::abandonedLine($finding) : ''),
             'severity' => self::severity($advisory->severity),
             'solution' => $command !== null
                 ? sprintf('Run `%s` (verified with Composer\'s solver%s).', $command, $recommended?->diff !== null ? sprintf(', %d package change(s)', $recommended->diff->count()) : '')

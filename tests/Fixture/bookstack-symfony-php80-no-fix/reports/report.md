@@ -65,6 +65,101 @@ Other candidates
   valid, rank 3: composer update phpseclib/phpseclib -W -m --with 'phpseclib/phpseclib:>=3.0.36'  (1 changes)
   not tried (a better candidate already exists): composer require --no-update phpseclib/phpseclib:^4.0 && composer update phpseclib/phpseclib -W -m --with 'phpseclib/phpseclib:>=3.0.36'
 
+CVE-2024-51736
+────────────────────────────────────────────────────────────
+Affected
+  symfony/process v6.0.19
+  CVE-2024-51736 (PKSA-wws7-mr54-jsny): CVE-2024-51736: Command execution hijack on Windows with Process class
+    https://symfony.com/cve-2024-51736
+    affected versions: >=2.0.0,<3.0.0|>=3.0.0,<4.0.0|>=4.0.0,<5.0.0|>=5.0.0,<5.1.0|>=5.1.0,<5.2.0|>=5.2.0,<5.3.0|>=5.3.0,<5.4.0|>=5.4.0,<5.4.46|>=6.0.0,<6.1.0|>=6.1.0,<6.2.0|>=6.2.0,<6.3.0|>=6.3.0,<6.4.0|>=6.4.0,<6.4.14|>=7.0.0,<7.1.0|>=7.1.0,<7.1.7
+Introduced by
+  root
+  └── barryvdh/laravel-snappy v1.0.2
+      └── knplabs/knp-snappy v1.4.4
+          └── symfony/process v6.0.19  (requires ~3.4||~4.3||~5.0||~6.0)
+  root
+  └── laravel/framework v9.52.16
+      └── symfony/process v6.0.19  (requires ^6.0)
+  root
+  └── laravel/socialite v5.11.0
+      └── laravel/framework v9.52.16
+          └── symfony/process v6.0.19  (requires ^6.0)
+  root
+  └── socialiteproviders/discord 4.2.0
+      └── socialiteproviders/manager v4.4.0
+          └── laravel/socialite v5.11.0
+              └── laravel/framework v9.52.16
+                  └── symfony/process v6.0.19  (requires ^6.0)
+  root
+  └── socialiteproviders/gitlab 4.1.0
+      └── socialiteproviders/manager v4.4.0
+          └── laravel/socialite v5.11.0
+              └── laravel/framework v9.52.16
+                  └── symfony/process v6.0.19  (requires ^6.0)
+  … and 10 more paths
+Current state
+  Transitive dependency.
+Recommended remediation
+  No verified remediation found (none found within the search budget).
+  No verified fix within the search budget (10 candidates tried, 10 solver runs); a fix outside the bounded search may still exist.
+Other candidates
+  rejected: composer update symfony/process
+      resolves, but symfony/process ends at v6.0.19 which is still affected by PKSA-wws7-mr54-jsny
+  rejected: composer update symfony/process -w -m --with 'symfony/process:>=6.4.14,<7.0.0 || >=7.1.7'
+      Composer could not resolve the dependencies: Your requirements could not be resolved to an installable set of packages.
+        Problem 1
+          - laravel/framework is locked to version v9.52.16 and an update of this package was not requested.
+          - laravel/framework v9.52.16 requires symfony/process ^6.0 -> satisfiable by symfony/process[v6.4.14, v6.4.15].
+          - symfony/process[v6.4.14, ..., v6.4.15] require php >=8.1 -> your php version (8.0.2; overridden via config.platform, actual: 8.5.5) does not satisfy that requirement.
+      Use the option --with-all-dependencies (-W) to allow upgrades, downgrades and removals for packages currently locked to specific versions.
+  rejected: composer update laravel/framework -W -m --with 'symfony/process:>=6.4.14,<7.0.0 || >=7.1.7'
+      Composer could not resolve the dependencies: Your requirements could not be resolved to an installable set of packages.
+        Problem 1
+          - Root composer.json requires laravel/framework ^9.0 -> satisfiable by laravel/framework[v9.52.16].
+          - laravel/framework v9.52.16 requires symfony/process ^6.0 -> satisfiable by symfony/process[v6.4.14, v6.4.15].
+          - symfony/process[v6.4.14, ..., v6.4.15] require php >=8.1 -> your php version (8.0.2; overridden via config.platform, actual: 8.5.5) does not satisfy that requirement.
+  rejected: composer update barryvdh/laravel-snappy -W -m --with 'symfony/process:>=6.4.14,<7.0.0 || >=7.1.7'
+      Composer could not resolve the dependencies: Your requirements could not be resolved to an installable set of packages.
+        Problem 1
+          - Root composer.json requires laravel/framework ^9.0 -> satisfiable by laravel/framework[v9.52.16].
+          - laravel/framework v9.52.16 requires symfony/process ^6.0 -> satisfiable by symfony/process[v6.4.14, v6.4.15].
+          - symfony/process[v6.4.14, ..., v6.4.15] require php >=8.1 -> your php version (8.0.2; overridden via config.platform, actual: 8.5.5) does not satisfy that requirement.
+  rejected: composer update laravel/socialite -W -m --with 'symfony/process:>=6.4.14,<7.0.0 || >=7.1.7'
+      Composer could not resolve the dependencies: Your requirements could not be resolved to an installable set of packages.
+        Problem 1
+          - Root composer.json requires laravel/framework ^9.0 -> satisfiable by laravel/framework[v9.52.16].
+          - laravel/framework v9.52.16 requires symfony/process ^6.0 -> satisfiable by symfony/process[v6.4.14, v6.4.15].
+          - symfony/process[v6.4.14, ..., v6.4.15] require php >=8.1 -> your php version (8.0.2; overridden via config.platform, actual: 8.5.5) does not satisfy that requirement.
+  rejected: composer update laravel/tinker -W -m --with 'symfony/process:>=6.4.14,<7.0.0 || >=7.1.7'
+      Composer could not resolve the dependencies: Your requirements could not be resolved to an installable set of packages.
+        Problem 1
+          - Root composer.json requires laravel/framework ^9.0 -> satisfiable by laravel/framework[v9.52.16].
+          - laravel/framework v9.52.16 requires symfony/process ^6.0 -> satisfiable by symfony/process[v6.4.14, v6.4.15].
+          - symfony/process[v6.4.14, ..., v6.4.15] require php >=8.1 -> your php version (8.0.2; overridden via config.platform, actual: 8.5.5) does not satisfy that requirement.
+  rejected: composer update larastan/larastan -W -m --with 'symfony/process:>=6.4.14,<7.0.0 || >=7.1.7'
+      Composer could not resolve the dependencies: Your requirements could not be resolved to an installable set of packages.
+        Problem 1
+          - Root composer.json requires laravel/framework ^9.0 -> satisfiable by laravel/framework[v9.52.16].
+          - laravel/framework v9.52.16 requires symfony/process ^6.0 -> satisfiable by symfony/process[v6.4.14, v6.4.15].
+          - symfony/process[v6.4.14, ..., v6.4.15] require php >=8.1 -> your php version (8.0.2; overridden via config.platform, actual: 8.5.5) does not satisfy that requirement.
+  rejected: composer update socialiteproviders/discord -W -m --with 'symfony/process:>=6.4.14,<7.0.0 || >=7.1.7'
+      Composer could not resolve the dependencies: Your requirements could not be resolved to an installable set of packages.
+        Problem 1
+          - Root composer.json requires laravel/framework ^9.0 -> satisfiable by laravel/framework[v9.52.16].
+          - laravel/framework v9.52.16 requires symfony/process ^6.0 -> satisfiable by symfony/process[v6.4.14, v6.4.15].
+          - symfony/process[v6.4.14, ..., v6.4.15] require php >=8.1 -> your php version (8.0.2; overridden via config.platform, actual: 8.5.5) does not satisfy that requirement.
+  rejected: composer update barryvdh/laravel-snappy laravel/framework -W -m --with 'symfony/process:>=6.4.14,<7.0.0 || >=7.1.7'
+      Composer could not resolve the dependencies: Your requirements could not be resolved to an installable set of packages.
+        Problem 1
+          - Root composer.json requires laravel/framework ^9.0 -> satisfiable by laravel/framework[v9.52.16].
+          - laravel/framework v9.52.16 requires symfony/process ^6.0 -> satisfiable by symfony/process[v6.4.14, v6.4.15].
+          - symfony/process[v6.4.14, ..., v6.4.15] require php >=8.1 -> your php version (8.0.2; overridden via config.platform, actual: 8.5.5) does not satisfy that requirement.
+  rejected: composer require --no-update laravel/framework:^10.0 && composer update laravel/framework -W -m --with 'symfony/process:>=6.4.14,<7.0.0 || >=7.1.7'
+      Composer could not resolve the dependencies: Your requirements could not be resolved to an installable set of packages.
+        Problem 1
+          - Root composer.json requires laravel/framework ^10.0 -> satisfiable by laravel/framework[v10.0.0, ..., v10.48.22].
+          - laravel/framework[v10.0.0, ..., v10.48.22] require php ^8.1 -> your php version (8.0.2; overridden via config.platform, actual: 8.5.5) does not satisfy that requirement.
+
 CVE-2024-50345
 ────────────────────────────────────────────────────────────
 Affected
@@ -175,104 +270,9 @@ Other candidates
           - Root composer.json requires laravel/framework ^9.0 -> satisfiable by laravel/framework[v9.52.16].
           - laravel/framework v9.52.16 requires symfony/http-foundation ^6.0 -> satisfiable by symfony/http-foundation[v6.4.14, v6.4.15].
 
-CVE-2024-51736
-────────────────────────────────────────────────────────────
-Affected
-  symfony/process v6.0.19
-  CVE-2024-51736 (PKSA-wws7-mr54-jsny): CVE-2024-51736: Command execution hijack on Windows with Process class
-    https://symfony.com/cve-2024-51736
-    affected versions: >=2.0.0,<3.0.0|>=3.0.0,<4.0.0|>=4.0.0,<5.0.0|>=5.0.0,<5.1.0|>=5.1.0,<5.2.0|>=5.2.0,<5.3.0|>=5.3.0,<5.4.0|>=5.4.0,<5.4.46|>=6.0.0,<6.1.0|>=6.1.0,<6.2.0|>=6.2.0,<6.3.0|>=6.3.0,<6.4.0|>=6.4.0,<6.4.14|>=7.0.0,<7.1.0|>=7.1.0,<7.1.7
-Introduced by
-  root
-  └── barryvdh/laravel-snappy v1.0.2
-      └── knplabs/knp-snappy v1.4.4
-          └── symfony/process v6.0.19  (requires ~3.4||~4.3||~5.0||~6.0)
-  root
-  └── laravel/framework v9.52.16
-      └── symfony/process v6.0.19  (requires ^6.0)
-  root
-  └── laravel/socialite v5.11.0
-      └── laravel/framework v9.52.16
-          └── symfony/process v6.0.19  (requires ^6.0)
-  root
-  └── socialiteproviders/discord 4.2.0
-      └── socialiteproviders/manager v4.4.0
-          └── laravel/socialite v5.11.0
-              └── laravel/framework v9.52.16
-                  └── symfony/process v6.0.19  (requires ^6.0)
-  root
-  └── socialiteproviders/gitlab 4.1.0
-      └── socialiteproviders/manager v4.4.0
-          └── laravel/socialite v5.11.0
-              └── laravel/framework v9.52.16
-                  └── symfony/process v6.0.19  (requires ^6.0)
-  … and 10 more paths
-Current state
-  Transitive dependency.
-Recommended remediation
-  No verified remediation found (none found within the search budget).
-  No verified fix within the search budget (10 candidates tried, 10 solver runs); a fix outside the bounded search may still exist.
-Other candidates
-  rejected: composer update symfony/process
-      resolves, but symfony/process ends at v6.0.19 which is still affected by PKSA-wws7-mr54-jsny
-  rejected: composer update symfony/process -w -m --with 'symfony/process:>=6.4.14,<7.0.0 || >=7.1.7'
-      Composer could not resolve the dependencies: Your requirements could not be resolved to an installable set of packages.
-        Problem 1
-          - laravel/framework is locked to version v9.52.16 and an update of this package was not requested.
-          - laravel/framework v9.52.16 requires symfony/process ^6.0 -> satisfiable by symfony/process[v6.4.14, v6.4.15].
-          - symfony/process[v6.4.14, ..., v6.4.15] require php >=8.1 -> your php version (8.0.2; overridden via config.platform, actual: 8.5.5) does not satisfy that requirement.
-      Use the option --with-all-dependencies (-W) to allow upgrades, downgrades and removals for packages currently locked to specific versions.
-  rejected: composer update laravel/framework -W -m --with 'symfony/process:>=6.4.14,<7.0.0 || >=7.1.7'
-      Composer could not resolve the dependencies: Your requirements could not be resolved to an installable set of packages.
-        Problem 1
-          - Root composer.json requires laravel/framework ^9.0 -> satisfiable by laravel/framework[v9.52.16].
-          - laravel/framework v9.52.16 requires symfony/process ^6.0 -> satisfiable by symfony/process[v6.4.14, v6.4.15].
-          - symfony/process[v6.4.14, ..., v6.4.15] require php >=8.1 -> your php version (8.0.2; overridden via config.platform, actual: 8.5.5) does not satisfy that requirement.
-  rejected: composer update barryvdh/laravel-snappy -W -m --with 'symfony/process:>=6.4.14,<7.0.0 || >=7.1.7'
-      Composer could not resolve the dependencies: Your requirements could not be resolved to an installable set of packages.
-        Problem 1
-          - Root composer.json requires laravel/framework ^9.0 -> satisfiable by laravel/framework[v9.52.16].
-          - laravel/framework v9.52.16 requires symfony/process ^6.0 -> satisfiable by symfony/process[v6.4.14, v6.4.15].
-          - symfony/process[v6.4.14, ..., v6.4.15] require php >=8.1 -> your php version (8.0.2; overridden via config.platform, actual: 8.5.5) does not satisfy that requirement.
-  rejected: composer update laravel/socialite -W -m --with 'symfony/process:>=6.4.14,<7.0.0 || >=7.1.7'
-      Composer could not resolve the dependencies: Your requirements could not be resolved to an installable set of packages.
-        Problem 1
-          - Root composer.json requires laravel/framework ^9.0 -> satisfiable by laravel/framework[v9.52.16].
-          - laravel/framework v9.52.16 requires symfony/process ^6.0 -> satisfiable by symfony/process[v6.4.14, v6.4.15].
-          - symfony/process[v6.4.14, ..., v6.4.15] require php >=8.1 -> your php version (8.0.2; overridden via config.platform, actual: 8.5.5) does not satisfy that requirement.
-  rejected: composer update laravel/tinker -W -m --with 'symfony/process:>=6.4.14,<7.0.0 || >=7.1.7'
-      Composer could not resolve the dependencies: Your requirements could not be resolved to an installable set of packages.
-        Problem 1
-          - Root composer.json requires laravel/framework ^9.0 -> satisfiable by laravel/framework[v9.52.16].
-          - laravel/framework v9.52.16 requires symfony/process ^6.0 -> satisfiable by symfony/process[v6.4.14, v6.4.15].
-          - symfony/process[v6.4.14, ..., v6.4.15] require php >=8.1 -> your php version (8.0.2; overridden via config.platform, actual: 8.5.5) does not satisfy that requirement.
-  rejected: composer update larastan/larastan -W -m --with 'symfony/process:>=6.4.14,<7.0.0 || >=7.1.7'
-      Composer could not resolve the dependencies: Your requirements could not be resolved to an installable set of packages.
-        Problem 1
-          - Root composer.json requires laravel/framework ^9.0 -> satisfiable by laravel/framework[v9.52.16].
-          - laravel/framework v9.52.16 requires symfony/process ^6.0 -> satisfiable by symfony/process[v6.4.14, v6.4.15].
-          - symfony/process[v6.4.14, ..., v6.4.15] require php >=8.1 -> your php version (8.0.2; overridden via config.platform, actual: 8.5.5) does not satisfy that requirement.
-  rejected: composer update socialiteproviders/discord -W -m --with 'symfony/process:>=6.4.14,<7.0.0 || >=7.1.7'
-      Composer could not resolve the dependencies: Your requirements could not be resolved to an installable set of packages.
-        Problem 1
-          - Root composer.json requires laravel/framework ^9.0 -> satisfiable by laravel/framework[v9.52.16].
-          - laravel/framework v9.52.16 requires symfony/process ^6.0 -> satisfiable by symfony/process[v6.4.14, v6.4.15].
-          - symfony/process[v6.4.14, ..., v6.4.15] require php >=8.1 -> your php version (8.0.2; overridden via config.platform, actual: 8.5.5) does not satisfy that requirement.
-  rejected: composer update barryvdh/laravel-snappy laravel/framework -W -m --with 'symfony/process:>=6.4.14,<7.0.0 || >=7.1.7'
-      Composer could not resolve the dependencies: Your requirements could not be resolved to an installable set of packages.
-        Problem 1
-          - Root composer.json requires laravel/framework ^9.0 -> satisfiable by laravel/framework[v9.52.16].
-          - laravel/framework v9.52.16 requires symfony/process ^6.0 -> satisfiable by symfony/process[v6.4.14, v6.4.15].
-          - symfony/process[v6.4.14, ..., v6.4.15] require php >=8.1 -> your php version (8.0.2; overridden via config.platform, actual: 8.5.5) does not satisfy that requirement.
-  rejected: composer require --no-update laravel/framework:^10.0 && composer update laravel/framework -W -m --with 'symfony/process:>=6.4.14,<7.0.0 || >=7.1.7'
-      Composer could not resolve the dependencies: Your requirements could not be resolved to an installable set of packages.
-        Problem 1
-          - Root composer.json requires laravel/framework ^10.0 -> satisfiable by laravel/framework[v10.0.0, ..., v10.48.22].
-          - laravel/framework[v10.0.0, ..., v10.48.22] require php ^8.1 -> your php version (8.0.2; overridden via config.platform, actual: 8.5.5) does not satisfy that requirement.
-
 Summary
   Findings: 6 advisories on 4 packages, 2 packages with a verified fix
   composer update phenx/php-svg-lib phpseclib/phpseclib fixes 4 of 6 findings
     (2 packages changed, verified by Composer)
-  No verified fix: CVE-2024-50345 on symfony/http-foundation; CVE-2024-51736 on symfony/process
+  No verified fix: CVE-2024-51736 on symfony/process; CVE-2024-50345 on symfony/http-foundation
 ```

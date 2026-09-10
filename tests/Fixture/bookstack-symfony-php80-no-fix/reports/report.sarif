@@ -110,31 +110,6 @@
                             }
                         },
                         {
-                            "id": "PKSA-b35n-565h-rs4q",
-                            "name": "CVE202450345",
-                            "shortDescription": {
-                                "text": "CVE-2024-50345: Open redirect via browser-sanitized URLs"
-                            },
-                            "fullDescription": {
-                                "text": "CVE-2024-50345: Open redirect via browser-sanitized URLs. Affected versions of symfony/http-foundation: >=2.0.0,<3.0.0|>=3.0.0,<4.0.0|>=4.0.0,<5.0.0|>=5.0.0,<5.1.0|>=5.1.0,<5.2.0|>=5.2.0,<5.3.0|>=5.3.0,<5.4.0|>=5.4.0,<5.4.46|>=6.0.0,<6.1.0|>=6.1.0,<6.2.0|>=6.2.0,<6.3.0|>=6.3.0,<6.4.0|>=6.4.0,<6.4.14|>=7.0.0,<7.1.0|>=7.1.0,<7.1.7."
-                            },
-                            "helpUri": "https://symfony.com/cve-2024-50345",
-                            "help": {
-                                "text": "Advisory PKSA-b35n-565h-rs4q (CVE-2024-50345) affects symfony/http-foundation >=2.0.0,<3.0.0|>=3.0.0,<4.0.0|>=4.0.0,<5.0.0|>=5.0.0,<5.1.0|>=5.1.0,<5.2.0|>=5.2.0,<5.3.0|>=5.3.0,<5.4.0|>=5.4.0,<5.4.46|>=6.0.0,<6.1.0|>=6.1.0,<6.2.0|>=6.2.0,<6.3.0|>=6.3.0,<6.4.0|>=6.4.0,<6.4.14|>=7.0.0,<7.1.0|>=7.1.0,<7.1.7. Run composer remediate for the smallest verified upgrade."
-                            },
-                            "defaultConfiguration": {
-                                "level": "note"
-                            },
-                            "properties": {
-                                "security-severity": "2.5",
-                                "tags": [
-                                    "security",
-                                    "vulnerability",
-                                    "low"
-                                ]
-                            }
-                        },
-                        {
                             "id": "PKSA-wws7-mr54-jsny",
                             "name": "CVE202451736",
                             "shortDescription": {
@@ -156,6 +131,31 @@
                                     "security",
                                     "vulnerability",
                                     "high"
+                                ]
+                            }
+                        },
+                        {
+                            "id": "PKSA-b35n-565h-rs4q",
+                            "name": "CVE202450345",
+                            "shortDescription": {
+                                "text": "CVE-2024-50345: Open redirect via browser-sanitized URLs"
+                            },
+                            "fullDescription": {
+                                "text": "CVE-2024-50345: Open redirect via browser-sanitized URLs. Affected versions of symfony/http-foundation: >=2.0.0,<3.0.0|>=3.0.0,<4.0.0|>=4.0.0,<5.0.0|>=5.0.0,<5.1.0|>=5.1.0,<5.2.0|>=5.2.0,<5.3.0|>=5.3.0,<5.4.0|>=5.4.0,<5.4.46|>=6.0.0,<6.1.0|>=6.1.0,<6.2.0|>=6.2.0,<6.3.0|>=6.3.0,<6.4.0|>=6.4.0,<6.4.14|>=7.0.0,<7.1.0|>=7.1.0,<7.1.7."
+                            },
+                            "helpUri": "https://symfony.com/cve-2024-50345",
+                            "help": {
+                                "text": "Advisory PKSA-b35n-565h-rs4q (CVE-2024-50345) affects symfony/http-foundation >=2.0.0,<3.0.0|>=3.0.0,<4.0.0|>=4.0.0,<5.0.0|>=5.0.0,<5.1.0|>=5.1.0,<5.2.0|>=5.2.0,<5.3.0|>=5.3.0,<5.4.0|>=5.4.0,<5.4.46|>=6.0.0,<6.1.0|>=6.1.0,<6.2.0|>=6.2.0,<6.3.0|>=6.3.0,<6.4.0|>=6.4.0,<6.4.14|>=7.0.0,<7.1.0|>=7.1.0,<7.1.7. Run composer remediate for the smallest verified upgrade."
+                            },
+                            "defaultConfiguration": {
+                                "level": "note"
+                            },
+                            "properties": {
+                                "security-severity": "2.5",
+                                "tags": [
+                                    "security",
+                                    "vulnerability",
+                                    "low"
                                 ]
                             }
                         }
@@ -310,41 +310,8 @@
                     }
                 },
                 {
-                    "ruleId": "PKSA-b35n-565h-rs4q",
-                    "ruleIndex": 4,
-                    "level": "note",
-                    "message": {
-                        "text": "symfony/http-foundation v6.0.20 is affected by CVE-2024-50345: CVE-2024-50345: Open redirect via browser-sanitized URLs. No verified remediation found (No verified fix within the search budget (11 candidates tried, 11 solver runs); a fix outside the bounded search may still exist.)."
-                    },
-                    "locations": [
-                        {
-                            "physicalLocation": {
-                                "artifactLocation": {
-                                    "uri": "composer.lock",
-                                    "uriBaseId": "%SRCROOT%"
-                                },
-                                "region": {
-                                    "startLine": 6119
-                                }
-                            }
-                        }
-                    ],
-                    "partialFingerprints": {
-                        "advisoryPackage/v1": "PKSA-b35n-565h-rs4q@symfony/http-foundation"
-                    },
-                    "properties": {
-                        "package": "symfony/http-foundation",
-                        "version": "v6.0.20",
-                        "direct": false,
-                        "dev": false,
-                        "cve": "CVE-2024-50345",
-                        "severity": "low",
-                        "remediation_status": "none"
-                    }
-                },
-                {
                     "ruleId": "PKSA-wws7-mr54-jsny",
-                    "ruleIndex": 5,
+                    "ruleIndex": 4,
                     "level": "error",
                     "message": {
                         "text": "symfony/process v6.0.19 is affected by CVE-2024-51736: CVE-2024-51736: Command execution hijack on Windows with Process class. No verified remediation found (No verified fix within the search budget (10 candidates tried, 10 solver runs); a fix outside the bounded search may still exist.)."
@@ -372,6 +339,39 @@
                         "dev": false,
                         "cve": "CVE-2024-51736",
                         "severity": "high",
+                        "remediation_status": "none"
+                    }
+                },
+                {
+                    "ruleId": "PKSA-b35n-565h-rs4q",
+                    "ruleIndex": 5,
+                    "level": "note",
+                    "message": {
+                        "text": "symfony/http-foundation v6.0.20 is affected by CVE-2024-50345: CVE-2024-50345: Open redirect via browser-sanitized URLs. No verified remediation found (No verified fix within the search budget (11 candidates tried, 11 solver runs); a fix outside the bounded search may still exist.)."
+                    },
+                    "locations": [
+                        {
+                            "physicalLocation": {
+                                "artifactLocation": {
+                                    "uri": "composer.lock",
+                                    "uriBaseId": "%SRCROOT%"
+                                },
+                                "region": {
+                                    "startLine": 6119
+                                }
+                            }
+                        }
+                    ],
+                    "partialFingerprints": {
+                        "advisoryPackage/v1": "PKSA-b35n-565h-rs4q@symfony/http-foundation"
+                    },
+                    "properties": {
+                        "package": "symfony/http-foundation",
+                        "version": "v6.0.20",
+                        "direct": false,
+                        "dev": false,
+                        "cve": "CVE-2024-50345",
+                        "severity": "low",
                         "remediation_status": "none"
                     }
                 }

@@ -35,6 +35,18 @@ final class FindingPlan
     ) {
     }
 
+    /** Whether any advisory of this package is in CISA's Known Exploited Vulnerabilities catalogue. */
+    public function isKnownExploited(): bool
+    {
+        foreach ($this->allFindings() as $finding) {
+            if ($finding->advisory->isKnownExploited()) {
+                return true;
+            }
+        }
+
+        return false;
+    }
+
     /** @return list<Finding> the primary finding followed by the related ones */
     public function allFindings(): array
     {

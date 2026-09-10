@@ -2,268 +2,10 @@
     "version": "15.2.1",
     "vulnerabilities": [
         {
-            "id": "0a79ab39-4dd9-5498-8987-a5fa84cc4236",
-            "category": "dependency_scanning",
-            "name": "CVE-2023-51651: Potential URI resolution path traversal in the AWS SDK for PHP",
-            "description": "aws/aws-sdk-php 3.269.6 is affected by CVE-2023-51651 (affected versions >=3.0.0,<3.288.1).",
-            "severity": "Medium",
-            "solution": "Run `composer update aws/aws-sdk-php -w -m` (verified with Composer's solver, 2 package change(s)).",
-            "identifiers": [
-                {
-                    "type": "cve",
-                    "name": "CVE-2023-51651",
-                    "value": "CVE-2023-51651",
-                    "url": "https://nvd.nist.gov/vuln/detail/CVE-2023-51651"
-                },
-                {
-                    "type": "ghsa",
-                    "name": "GHSA-557v-xcg6-rm5m",
-                    "value": "GHSA-557v-xcg6-rm5m",
-                    "url": "https://github.com/advisories/GHSA-557v-xcg6-rm5m"
-                },
-                {
-                    "type": "packagist_advisory",
-                    "name": "PKSA-n3s6-289w-qtqb",
-                    "value": "PKSA-n3s6-289w-qtqb",
-                    "url": "https://packagist.org/security-advisories/PKSA-n3s6-289w-qtqb"
-                }
-            ],
-            "links": [
-                {
-                    "url": "https://nvd.nist.gov/vuln/detail/CVE-2023-51651"
-                }
-            ],
-            "location": {
-                "file": "composer.lock",
-                "dependency": {
-                    "package": {
-                        "name": "aws/aws-sdk-php"
-                    },
-                    "version": "3.269.6",
-                    "direct": false
-                }
-            }
-        },
-        {
-            "id": "7414babd-b1c2-54b5-a65e-72bdb671f26b",
-            "category": "dependency_scanning",
-            "name": "CVE-2024-35242: Composer has multiple command injections via malicious git/hg branch names",
-            "description": "composer/composer 2.2.21 is affected by CVE-2024-35242 (affected versions >=2.3,<2.7.7|>=2.0,<2.2.24).",
-            "severity": "High",
-            "solution": "Run `composer update composer/composer` (verified with Composer's solver, 1 package change(s)).",
-            "identifiers": [
-                {
-                    "type": "cve",
-                    "name": "CVE-2024-35242",
-                    "value": "CVE-2024-35242",
-                    "url": "https://nvd.nist.gov/vuln/detail/CVE-2024-35242"
-                },
-                {
-                    "type": "ghsa",
-                    "name": "GHSA-v9qv-c7wm-wgmf",
-                    "value": "GHSA-v9qv-c7wm-wgmf",
-                    "url": "https://github.com/advisories/GHSA-v9qv-c7wm-wgmf"
-                },
-                {
-                    "type": "packagist_advisory",
-                    "name": "PKSA-b8f7-zn44-r4gz",
-                    "value": "PKSA-b8f7-zn44-r4gz",
-                    "url": "https://packagist.org/security-advisories/PKSA-b8f7-zn44-r4gz"
-                }
-            ],
-            "links": [
-                {
-                    "url": "https://github.com/advisories/GHSA-v9qv-c7wm-wgmf"
-                }
-            ],
-            "location": {
-                "file": "composer.lock",
-                "dependency": {
-                    "package": {
-                        "name": "composer/composer"
-                    },
-                    "version": "2.2.21",
-                    "direct": false
-                }
-            }
-        },
-        {
-            "id": "3844f15a-fb71-5e8c-a8ac-ed62aee25eec",
-            "category": "dependency_scanning",
-            "name": "CVE-2024-24821: Composer code execution and possible privilege escalation via compromised InstalledVersions.php or installed.php",
-            "description": "composer/composer 2.2.21 is affected by CVE-2024-24821 (affected versions >=2.3.0-rc1,<2.7.0|>=2.0.0-alpha1,<2.2.23).",
-            "severity": "High",
-            "solution": "Run `composer update composer/composer` (verified with Composer's solver, 1 package change(s)).",
-            "identifiers": [
-                {
-                    "type": "cve",
-                    "name": "CVE-2024-24821",
-                    "value": "CVE-2024-24821",
-                    "url": "https://nvd.nist.gov/vuln/detail/CVE-2024-24821"
-                },
-                {
-                    "type": "ghsa",
-                    "name": "GHSA-7c6p-848j-wh5h",
-                    "value": "GHSA-7c6p-848j-wh5h",
-                    "url": "https://github.com/advisories/GHSA-7c6p-848j-wh5h"
-                },
-                {
-                    "type": "packagist_advisory",
-                    "name": "PKSA-jn72-4kr8-gj3h",
-                    "value": "PKSA-jn72-4kr8-gj3h",
-                    "url": "https://packagist.org/security-advisories/PKSA-jn72-4kr8-gj3h"
-                }
-            ],
-            "links": [
-                {
-                    "url": "https://github.com/advisories/GHSA-7c6p-848j-wh5h"
-                }
-            ],
-            "location": {
-                "file": "composer.lock",
-                "dependency": {
-                    "package": {
-                        "name": "composer/composer"
-                    },
-                    "version": "2.2.21",
-                    "direct": false
-                }
-            }
-        },
-        {
-            "id": "cfc55f1d-333c-59ec-981d-0df0ea756439",
-            "category": "dependency_scanning",
-            "name": "CVE-2023-43655: Composer Remote Code Execution vulnerability via web-accessible composer.phar",
-            "description": "composer/composer 2.2.21 is affected by CVE-2023-43655 (affected versions >=2.3.0,<2.6.4|>=2.0.0,<2.2.22|<1.10.27).",
-            "severity": "High",
-            "solution": "Run `composer update composer/composer` (verified with Composer's solver, 1 package change(s)).",
-            "identifiers": [
-                {
-                    "type": "cve",
-                    "name": "CVE-2023-43655",
-                    "value": "CVE-2023-43655",
-                    "url": "https://nvd.nist.gov/vuln/detail/CVE-2023-43655"
-                },
-                {
-                    "type": "ghsa",
-                    "name": "GHSA-jm6m-4632-36hf",
-                    "value": "GHSA-jm6m-4632-36hf",
-                    "url": "https://github.com/advisories/GHSA-jm6m-4632-36hf"
-                },
-                {
-                    "type": "packagist_advisory",
-                    "name": "PKSA-m1ph-vmbx-2xd3",
-                    "value": "PKSA-m1ph-vmbx-2xd3",
-                    "url": "https://packagist.org/security-advisories/PKSA-m1ph-vmbx-2xd3"
-                }
-            ],
-            "links": [
-                {
-                    "url": "https://github.com/advisories/GHSA-jm6m-4632-36hf"
-                }
-            ],
-            "location": {
-                "file": "composer.lock",
-                "dependency": {
-                    "package": {
-                        "name": "composer/composer"
-                    },
-                    "version": "2.2.21",
-                    "direct": false
-                }
-            }
-        },
-        {
-            "id": "637808d0-5283-5719-806e-009d7b6f898c",
-            "category": "dependency_scanning",
-            "name": "CVE-2024-35241: Composer has a command injection via malicious git branch name",
-            "description": "composer/composer 2.2.21 is affected by CVE-2024-35241 (affected versions >=2.3,<2.7.7|>=2.0,<2.2.24).",
-            "severity": "High",
-            "solution": "Run `composer update composer/composer` (verified with Composer's solver, 1 package change(s)).",
-            "identifiers": [
-                {
-                    "type": "cve",
-                    "name": "CVE-2024-35241",
-                    "value": "CVE-2024-35241",
-                    "url": "https://nvd.nist.gov/vuln/detail/CVE-2024-35241"
-                },
-                {
-                    "type": "ghsa",
-                    "name": "GHSA-47f6-5gq3-vx9c",
-                    "value": "GHSA-47f6-5gq3-vx9c",
-                    "url": "https://github.com/advisories/GHSA-47f6-5gq3-vx9c"
-                },
-                {
-                    "type": "packagist_advisory",
-                    "name": "PKSA-s25b-vbmp-jvhh",
-                    "value": "PKSA-s25b-vbmp-jvhh",
-                    "url": "https://packagist.org/security-advisories/PKSA-s25b-vbmp-jvhh"
-                }
-            ],
-            "links": [
-                {
-                    "url": "https://github.com/advisories/GHSA-47f6-5gq3-vx9c"
-                }
-            ],
-            "location": {
-                "file": "composer.lock",
-                "dependency": {
-                    "package": {
-                        "name": "composer/composer"
-                    },
-                    "version": "2.2.21",
-                    "direct": false
-                }
-            }
-        },
-        {
-            "id": "67fce061-5c04-5731-b341-089be00c6e0d",
-            "category": "dependency_scanning",
-            "name": "CVE-2023-37260: league/oauth2-server key exposed in exception message when passing as a string and providing an invalid pass phrase",
-            "description": "league/oauth2-server 8.3.6 is affected by CVE-2023-37260 (affected versions >=8.5.0,<8.5.3|>=8.3.2,<8.4.2).",
-            "severity": "High",
-            "solution": "No verified remediation found.",
-            "identifiers": [
-                {
-                    "type": "cve",
-                    "name": "CVE-2023-37260",
-                    "value": "CVE-2023-37260",
-                    "url": "https://nvd.nist.gov/vuln/detail/CVE-2023-37260"
-                },
-                {
-                    "type": "ghsa",
-                    "name": "GHSA-wj7q-gjg8-3cpm",
-                    "value": "GHSA-wj7q-gjg8-3cpm",
-                    "url": "https://github.com/advisories/GHSA-wj7q-gjg8-3cpm"
-                },
-                {
-                    "type": "packagist_advisory",
-                    "name": "PKSA-pc52-dbxt-c1w6",
-                    "value": "PKSA-pc52-dbxt-c1w6",
-                    "url": "https://packagist.org/security-advisories/PKSA-pc52-dbxt-c1w6"
-                }
-            ],
-            "links": [
-                {
-                    "url": "https://github.com/advisories/GHSA-wj7q-gjg8-3cpm"
-                }
-            ],
-            "location": {
-                "file": "composer.lock",
-                "dependency": {
-                    "package": {
-                        "name": "league/oauth2-server"
-                    },
-                    "version": "8.3.6",
-                    "direct": false
-                }
-            }
-        },
-        {
             "id": "b8ca0dc1-e696-56d0-a667-de850cd2d003",
             "category": "dependency_scanning",
             "name": "CVE-2024-25117: php-svg-lib lacks path validation on font through SVG inline styles ",
-            "description": "phenx/php-svg-lib 0.3.4 is affected by CVE-2024-25117 (affected versions <0.5.2).",
+            "description": "phenx/php-svg-lib 0.3.4 is affected by CVE-2024-25117 (affected versions <0.5.2). Abandoned: shopware/recovery (on the dependency path, no replacement named). An abandoned parent will not ship a release that lifts its pin.",
             "severity": "Medium",
             "solution": "No verified remediation found.",
             "identifiers": [
@@ -386,7 +128,7 @@
             "id": "6266c880-a9d4-58e6-8fcd-e8a5ee7a1b84",
             "category": "dependency_scanning",
             "name": "CVE-2024-42354: Shopware vulnerable to Improper Access Control with ManyToMany associations in store-api",
-            "description": "shopware/core 6.4.20.2 is affected by CVE-2024-42354 (affected versions >=6.6.0.0,<=6.6.5.0|<=6.5.8.12).",
+            "description": "shopware/core 6.4.20.2 is affected by CVE-2024-42354 (affected versions >=6.6.0.0,<=6.6.5.0|<=6.5.8.12). Abandoned: shopware/recovery (on the dependency path, no replacement named). An abandoned parent will not ship a release that lifts its pin.",
             "severity": "Medium",
             "solution": "No verified remediation found: No verified fix within the search budget (13 candidates tried, 13 solver runs); a fix outside the bounded search may still exist.",
             "identifiers": [
@@ -687,7 +429,7 @@
             "id": "e4fba531-930a-5683-8b37-7691205a6292",
             "category": "dependency_scanning",
             "name": "CVE-2023-23924: Dompdf vulnerable to URI validation failure on SVG parsing",
-            "description": "shopwarelabs/dompdf v1.0.3 is affected by CVE-2023-23924 (affected versions <2.0.2).",
+            "description": "shopwarelabs/dompdf v1.0.3 is affected by CVE-2023-23924 (affected versions <2.0.2). Abandoned: shopware/recovery (on the dependency path, no replacement named). An abandoned parent will not ship a release that lifts its pin.",
             "severity": "Critical",
             "solution": "No verified remediation found.",
             "identifiers": [
@@ -899,10 +641,268 @@
             }
         },
         {
+            "id": "7414babd-b1c2-54b5-a65e-72bdb671f26b",
+            "category": "dependency_scanning",
+            "name": "CVE-2024-35242: Composer has multiple command injections via malicious git/hg branch names",
+            "description": "composer/composer 2.2.21 is affected by CVE-2024-35242 (affected versions >=2.3,<2.7.7|>=2.0,<2.2.24). Abandoned: shopware/recovery (on the dependency path, no replacement named). An abandoned parent will not ship a release that lifts its pin.",
+            "severity": "High",
+            "solution": "Run `composer update composer/composer` (verified with Composer's solver, 1 package change(s)).",
+            "identifiers": [
+                {
+                    "type": "cve",
+                    "name": "CVE-2024-35242",
+                    "value": "CVE-2024-35242",
+                    "url": "https://nvd.nist.gov/vuln/detail/CVE-2024-35242"
+                },
+                {
+                    "type": "ghsa",
+                    "name": "GHSA-v9qv-c7wm-wgmf",
+                    "value": "GHSA-v9qv-c7wm-wgmf",
+                    "url": "https://github.com/advisories/GHSA-v9qv-c7wm-wgmf"
+                },
+                {
+                    "type": "packagist_advisory",
+                    "name": "PKSA-b8f7-zn44-r4gz",
+                    "value": "PKSA-b8f7-zn44-r4gz",
+                    "url": "https://packagist.org/security-advisories/PKSA-b8f7-zn44-r4gz"
+                }
+            ],
+            "links": [
+                {
+                    "url": "https://github.com/advisories/GHSA-v9qv-c7wm-wgmf"
+                }
+            ],
+            "location": {
+                "file": "composer.lock",
+                "dependency": {
+                    "package": {
+                        "name": "composer/composer"
+                    },
+                    "version": "2.2.21",
+                    "direct": false
+                }
+            }
+        },
+        {
+            "id": "3844f15a-fb71-5e8c-a8ac-ed62aee25eec",
+            "category": "dependency_scanning",
+            "name": "CVE-2024-24821: Composer code execution and possible privilege escalation via compromised InstalledVersions.php or installed.php",
+            "description": "composer/composer 2.2.21 is affected by CVE-2024-24821 (affected versions >=2.3.0-rc1,<2.7.0|>=2.0.0-alpha1,<2.2.23).",
+            "severity": "High",
+            "solution": "Run `composer update composer/composer` (verified with Composer's solver, 1 package change(s)).",
+            "identifiers": [
+                {
+                    "type": "cve",
+                    "name": "CVE-2024-24821",
+                    "value": "CVE-2024-24821",
+                    "url": "https://nvd.nist.gov/vuln/detail/CVE-2024-24821"
+                },
+                {
+                    "type": "ghsa",
+                    "name": "GHSA-7c6p-848j-wh5h",
+                    "value": "GHSA-7c6p-848j-wh5h",
+                    "url": "https://github.com/advisories/GHSA-7c6p-848j-wh5h"
+                },
+                {
+                    "type": "packagist_advisory",
+                    "name": "PKSA-jn72-4kr8-gj3h",
+                    "value": "PKSA-jn72-4kr8-gj3h",
+                    "url": "https://packagist.org/security-advisories/PKSA-jn72-4kr8-gj3h"
+                }
+            ],
+            "links": [
+                {
+                    "url": "https://github.com/advisories/GHSA-7c6p-848j-wh5h"
+                }
+            ],
+            "location": {
+                "file": "composer.lock",
+                "dependency": {
+                    "package": {
+                        "name": "composer/composer"
+                    },
+                    "version": "2.2.21",
+                    "direct": false
+                }
+            }
+        },
+        {
+            "id": "cfc55f1d-333c-59ec-981d-0df0ea756439",
+            "category": "dependency_scanning",
+            "name": "CVE-2023-43655: Composer Remote Code Execution vulnerability via web-accessible composer.phar",
+            "description": "composer/composer 2.2.21 is affected by CVE-2023-43655 (affected versions >=2.3.0,<2.6.4|>=2.0.0,<2.2.22|<1.10.27).",
+            "severity": "High",
+            "solution": "Run `composer update composer/composer` (verified with Composer's solver, 1 package change(s)).",
+            "identifiers": [
+                {
+                    "type": "cve",
+                    "name": "CVE-2023-43655",
+                    "value": "CVE-2023-43655",
+                    "url": "https://nvd.nist.gov/vuln/detail/CVE-2023-43655"
+                },
+                {
+                    "type": "ghsa",
+                    "name": "GHSA-jm6m-4632-36hf",
+                    "value": "GHSA-jm6m-4632-36hf",
+                    "url": "https://github.com/advisories/GHSA-jm6m-4632-36hf"
+                },
+                {
+                    "type": "packagist_advisory",
+                    "name": "PKSA-m1ph-vmbx-2xd3",
+                    "value": "PKSA-m1ph-vmbx-2xd3",
+                    "url": "https://packagist.org/security-advisories/PKSA-m1ph-vmbx-2xd3"
+                }
+            ],
+            "links": [
+                {
+                    "url": "https://github.com/advisories/GHSA-jm6m-4632-36hf"
+                }
+            ],
+            "location": {
+                "file": "composer.lock",
+                "dependency": {
+                    "package": {
+                        "name": "composer/composer"
+                    },
+                    "version": "2.2.21",
+                    "direct": false
+                }
+            }
+        },
+        {
+            "id": "637808d0-5283-5719-806e-009d7b6f898c",
+            "category": "dependency_scanning",
+            "name": "CVE-2024-35241: Composer has a command injection via malicious git branch name",
+            "description": "composer/composer 2.2.21 is affected by CVE-2024-35241 (affected versions >=2.3,<2.7.7|>=2.0,<2.2.24).",
+            "severity": "High",
+            "solution": "Run `composer update composer/composer` (verified with Composer's solver, 1 package change(s)).",
+            "identifiers": [
+                {
+                    "type": "cve",
+                    "name": "CVE-2024-35241",
+                    "value": "CVE-2024-35241",
+                    "url": "https://nvd.nist.gov/vuln/detail/CVE-2024-35241"
+                },
+                {
+                    "type": "ghsa",
+                    "name": "GHSA-47f6-5gq3-vx9c",
+                    "value": "GHSA-47f6-5gq3-vx9c",
+                    "url": "https://github.com/advisories/GHSA-47f6-5gq3-vx9c"
+                },
+                {
+                    "type": "packagist_advisory",
+                    "name": "PKSA-s25b-vbmp-jvhh",
+                    "value": "PKSA-s25b-vbmp-jvhh",
+                    "url": "https://packagist.org/security-advisories/PKSA-s25b-vbmp-jvhh"
+                }
+            ],
+            "links": [
+                {
+                    "url": "https://github.com/advisories/GHSA-47f6-5gq3-vx9c"
+                }
+            ],
+            "location": {
+                "file": "composer.lock",
+                "dependency": {
+                    "package": {
+                        "name": "composer/composer"
+                    },
+                    "version": "2.2.21",
+                    "direct": false
+                }
+            }
+        },
+        {
+            "id": "67fce061-5c04-5731-b341-089be00c6e0d",
+            "category": "dependency_scanning",
+            "name": "CVE-2023-37260: league/oauth2-server key exposed in exception message when passing as a string and providing an invalid pass phrase",
+            "description": "league/oauth2-server 8.3.6 is affected by CVE-2023-37260 (affected versions >=8.5.0,<8.5.3|>=8.3.2,<8.4.2). Abandoned: shopware/recovery (on the dependency path, no replacement named). An abandoned parent will not ship a release that lifts its pin.",
+            "severity": "High",
+            "solution": "No verified remediation found.",
+            "identifiers": [
+                {
+                    "type": "cve",
+                    "name": "CVE-2023-37260",
+                    "value": "CVE-2023-37260",
+                    "url": "https://nvd.nist.gov/vuln/detail/CVE-2023-37260"
+                },
+                {
+                    "type": "ghsa",
+                    "name": "GHSA-wj7q-gjg8-3cpm",
+                    "value": "GHSA-wj7q-gjg8-3cpm",
+                    "url": "https://github.com/advisories/GHSA-wj7q-gjg8-3cpm"
+                },
+                {
+                    "type": "packagist_advisory",
+                    "name": "PKSA-pc52-dbxt-c1w6",
+                    "value": "PKSA-pc52-dbxt-c1w6",
+                    "url": "https://packagist.org/security-advisories/PKSA-pc52-dbxt-c1w6"
+                }
+            ],
+            "links": [
+                {
+                    "url": "https://github.com/advisories/GHSA-wj7q-gjg8-3cpm"
+                }
+            ],
+            "location": {
+                "file": "composer.lock",
+                "dependency": {
+                    "package": {
+                        "name": "league/oauth2-server"
+                    },
+                    "version": "8.3.6",
+                    "direct": false
+                }
+            }
+        },
+        {
+            "id": "0a79ab39-4dd9-5498-8987-a5fa84cc4236",
+            "category": "dependency_scanning",
+            "name": "CVE-2023-51651: Potential URI resolution path traversal in the AWS SDK for PHP",
+            "description": "aws/aws-sdk-php 3.269.6 is affected by CVE-2023-51651 (affected versions >=3.0.0,<3.288.1). Abandoned: shopware/recovery (on the dependency path, no replacement named). An abandoned parent will not ship a release that lifts its pin.",
+            "severity": "Medium",
+            "solution": "Run `composer update aws/aws-sdk-php -w -m` (verified with Composer's solver, 2 package change(s)).",
+            "identifiers": [
+                {
+                    "type": "cve",
+                    "name": "CVE-2023-51651",
+                    "value": "CVE-2023-51651",
+                    "url": "https://nvd.nist.gov/vuln/detail/CVE-2023-51651"
+                },
+                {
+                    "type": "ghsa",
+                    "name": "GHSA-557v-xcg6-rm5m",
+                    "value": "GHSA-557v-xcg6-rm5m",
+                    "url": "https://github.com/advisories/GHSA-557v-xcg6-rm5m"
+                },
+                {
+                    "type": "packagist_advisory",
+                    "name": "PKSA-n3s6-289w-qtqb",
+                    "value": "PKSA-n3s6-289w-qtqb",
+                    "url": "https://packagist.org/security-advisories/PKSA-n3s6-289w-qtqb"
+                }
+            ],
+            "links": [
+                {
+                    "url": "https://nvd.nist.gov/vuln/detail/CVE-2023-51651"
+                }
+            ],
+            "location": {
+                "file": "composer.lock",
+                "dependency": {
+                    "package": {
+                        "name": "aws/aws-sdk-php"
+                    },
+                    "version": "3.269.6",
+                    "direct": false
+                }
+            }
+        },
+        {
             "id": "564eae88-1791-5f27-8ae6-f66ddef99be1",
             "category": "dependency_scanning",
             "name": "CVE-2023-46734: CVE-2023-46734: Potential XSS vulnerabilities in CodeExtension filters",
-            "description": "symfony/twig-bridge v5.4.22 is affected by CVE-2023-46734 (affected versions >=2.0.0,<2.1.0|>=2.1.0,<2.2.0|>=2.2.0,<2.3.0|>=2.3.0,<2.4.0|>=2.4.0,<2.5.0|>=2.5.0,<2.6.0|>=2.6.0,<2.7.0|>=2.7.0,<2.8.0|>=2.8.0,<3.0.0|>=3.0.0,<3.1.0|>=3.1.0,<3.2.0|>=3.2.0,<3.3.0|>=3.3.0,<3.4.0|>=3.4.0,<4.0.0|>=4.0.0,<4.1.0|>=4.1.0,<4.2.0|>=4.2.0,<4.3.0|>=4.3.0,<4.4.0|>=4.4.0,<4.4.51|>=5.0.0,<5.1.0|>=5.1.0,<5.2.0|>=5.2.0,<5.3.0|>=5.3.0,<5.4.0|>=5.4.0,<5.4.31|>=6.0.0,<6.1.0|>=6.1.0,<6.2.0|>=6.2.0,<6.3.0|>=6.3.0,<6.3.8).",
+            "description": "symfony/twig-bridge v5.4.22 is affected by CVE-2023-46734 (affected versions >=2.0.0,<2.1.0|>=2.1.0,<2.2.0|>=2.2.0,<2.3.0|>=2.3.0,<2.4.0|>=2.4.0,<2.5.0|>=2.5.0,<2.6.0|>=2.6.0,<2.7.0|>=2.7.0,<2.8.0|>=2.8.0,<3.0.0|>=3.0.0,<3.1.0|>=3.1.0,<3.2.0|>=3.2.0,<3.3.0|>=3.3.0,<3.4.0|>=3.4.0,<4.0.0|>=4.0.0,<4.1.0|>=4.1.0,<4.2.0|>=4.2.0,<4.3.0|>=4.3.0,<4.4.0|>=4.4.0,<4.4.51|>=5.0.0,<5.1.0|>=5.1.0,<5.2.0|>=5.2.0,<5.3.0|>=5.3.0,<5.4.0|>=5.4.0,<5.4.31|>=6.0.0,<6.1.0|>=6.1.0,<6.2.0|>=6.2.0,<6.3.0|>=6.3.0,<6.3.8). Abandoned: shopware/recovery (on the dependency path, no replacement named). An abandoned parent will not ship a release that lifts its pin.",
             "severity": "Medium",
             "solution": "Run `composer update symfony/twig-bridge` (verified with Composer's solver, 1 package change(s)).",
             "identifiers": [
@@ -942,53 +942,10 @@
             }
         },
         {
-            "id": "4174fe95-c768-5650-9894-ffb8ad5ebb48",
-            "category": "dependency_scanning",
-            "name": "CVE-2024-50343: CVE-2024-50343: Incorrect response from Validator when input ends with `\n`",
-            "description": "symfony/validator v5.4.23 is affected by CVE-2024-50343 (affected versions >=2.0.0,<3.0.0|>=3.0.0,<4.0.0|>=4.0.0,<5.0.0|>=5.0.0,<5.1.0|>=5.1.0,<5.2.0|>=5.2.0,<5.3.0|>=5.3.0,<5.4.0|>=5.4.0,<5.4.43|>=6.0.0,<6.1.0|>=6.1.0,<6.2.0|>=6.2.0,<6.3.0|>=6.3.0,<6.4.0|>=6.4.0,<6.4.11|>=7.0.0,<7.1.0|>=7.1.0,<7.1.4).",
-            "severity": "Low",
-            "solution": "Run `composer update shopware/core -W -m --with 'symfony/validator:>=5.4.43,<6.0.0 || >=6.4.11,<7.0.0 || >=7.1.4'` (verified with Composer's solver, 2 package change(s)).",
-            "identifiers": [
-                {
-                    "type": "cve",
-                    "name": "CVE-2024-50343",
-                    "value": "CVE-2024-50343",
-                    "url": "https://nvd.nist.gov/vuln/detail/CVE-2024-50343"
-                },
-                {
-                    "type": "ghsa",
-                    "name": "GHSA-g3rh-rrhp-jhh9",
-                    "value": "GHSA-g3rh-rrhp-jhh9",
-                    "url": "https://github.com/advisories/GHSA-g3rh-rrhp-jhh9"
-                },
-                {
-                    "type": "packagist_advisory",
-                    "name": "PKSA-w2tw-kmfg-rt9s",
-                    "value": "PKSA-w2tw-kmfg-rt9s",
-                    "url": "https://packagist.org/security-advisories/PKSA-w2tw-kmfg-rt9s"
-                }
-            ],
-            "links": [
-                {
-                    "url": "https://symfony.com/cve-2024-50343"
-                }
-            ],
-            "location": {
-                "file": "composer.lock",
-                "dependency": {
-                    "package": {
-                        "name": "symfony/validator"
-                    },
-                    "version": "v5.4.23",
-                    "direct": false
-                }
-            }
-        },
-        {
             "id": "bf265e6c-4061-5bc7-9345-22025b3109d4",
             "category": "dependency_scanning",
             "name": "CVE-2024-32489: TCPDF Cross-site Scripting vulnerability",
-            "description": "tecnickcom/tcpdf 6.4.4 is affected by CVE-2024-32489 (affected versions <6.7.4).",
+            "description": "tecnickcom/tcpdf 6.4.4 is affected by CVE-2024-32489 (affected versions <6.7.4). Abandoned: shopware/recovery (on the dependency path, no replacement named). An abandoned parent will not ship a release that lifts its pin.",
             "severity": "Medium",
             "solution": "No verified remediation found: No verified fix within the search budget (16 candidates tried, 16 solver runs); a fix outside the bounded search may still exist.",
             "identifiers": [
@@ -1074,7 +1031,7 @@
             "id": "a2b73ed9-ad56-59fe-b232-f222ee7c811a",
             "category": "dependency_scanning",
             "name": "CVE-2024-45411: Possible sandbox bypass",
-            "description": "twig/twig v3.4.3 is affected by CVE-2024-45411 (affected versions >=1.0.0,<1.44.7|>=2.0.0,<2.16.0|>=3.0.0,<3.11.0|>=3.12.0,<3.14.0).",
+            "description": "twig/twig v3.4.3 is affected by CVE-2024-45411 (affected versions >=1.0.0,<1.44.7|>=2.0.0,<2.16.0|>=3.0.0,<3.11.0|>=3.12.0,<3.14.0). Abandoned: shopware/recovery (on the dependency path, no replacement named). An abandoned parent will not ship a release that lifts its pin.",
             "severity": "Medium",
             "solution": "No verified remediation found: No verified fix within the search budget (16 candidates tried, 16 solver runs); a fix outside the bounded search may still exist.",
             "identifiers": [
@@ -1109,6 +1066,49 @@
                         "name": "twig/twig"
                     },
                     "version": "v3.4.3",
+                    "direct": false
+                }
+            }
+        },
+        {
+            "id": "4174fe95-c768-5650-9894-ffb8ad5ebb48",
+            "category": "dependency_scanning",
+            "name": "CVE-2024-50343: CVE-2024-50343: Incorrect response from Validator when input ends with `\n`",
+            "description": "symfony/validator v5.4.23 is affected by CVE-2024-50343 (affected versions >=2.0.0,<3.0.0|>=3.0.0,<4.0.0|>=4.0.0,<5.0.0|>=5.0.0,<5.1.0|>=5.1.0,<5.2.0|>=5.2.0,<5.3.0|>=5.3.0,<5.4.0|>=5.4.0,<5.4.43|>=6.0.0,<6.1.0|>=6.1.0,<6.2.0|>=6.2.0,<6.3.0|>=6.3.0,<6.4.0|>=6.4.0,<6.4.11|>=7.0.0,<7.1.0|>=7.1.0,<7.1.4). Abandoned: shopware/recovery (on the dependency path, no replacement named). An abandoned parent will not ship a release that lifts its pin.",
+            "severity": "Low",
+            "solution": "Run `composer update shopware/core -W -m --with 'symfony/validator:>=5.4.43,<6.0.0 || >=6.4.11,<7.0.0 || >=7.1.4'` (verified with Composer's solver, 2 package change(s)).",
+            "identifiers": [
+                {
+                    "type": "cve",
+                    "name": "CVE-2024-50343",
+                    "value": "CVE-2024-50343",
+                    "url": "https://nvd.nist.gov/vuln/detail/CVE-2024-50343"
+                },
+                {
+                    "type": "ghsa",
+                    "name": "GHSA-g3rh-rrhp-jhh9",
+                    "value": "GHSA-g3rh-rrhp-jhh9",
+                    "url": "https://github.com/advisories/GHSA-g3rh-rrhp-jhh9"
+                },
+                {
+                    "type": "packagist_advisory",
+                    "name": "PKSA-w2tw-kmfg-rt9s",
+                    "value": "PKSA-w2tw-kmfg-rt9s",
+                    "url": "https://packagist.org/security-advisories/PKSA-w2tw-kmfg-rt9s"
+                }
+            ],
+            "links": [
+                {
+                    "url": "https://symfony.com/cve-2024-50343"
+                }
+            ],
+            "location": {
+                "file": "composer.lock",
+                "dependency": {
+                    "package": {
+                        "name": "symfony/validator"
+                    },
+                    "version": "v5.4.23",
                     "direct": false
                 }
             }

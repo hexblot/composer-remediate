@@ -8,7 +8,7 @@
         "advisory_source": "advisory snapshot advisories.json",
         "solver": "in-process Composer dry-run",
         "solver_runs": "17",
-        "composer_json_sha256": "284dc9de0bc815143436ed3b2d9bc171a68c7851ed15229500734c0fa22d1974",
+        "composer_json_sha256": "c50e26f834a9e425185d1e031dc65359075da3080328dfe79051c17300918aab",
         "composer_lock_sha256": "920a682f7d00cc3136de9c274c03cb9980e591ed30164b6328601b79faa6c5a0",
         "analysis_timestamp": "(fixture)",
         "locked_packages": "180"
@@ -23,6 +23,8 @@
         "packages_gated": 2,
         "packages_baselined": 0,
         "packages_with_constraint_drag": 0,
+        "packages_known_exploited": 0,
+        "packages_with_abandoned_dependency": 0,
         "combined_command": "composer update symfony/http-foundation symfony/process",
         "combined_fixes": 2,
         "combined_total": 2,
@@ -38,6 +40,454 @@
         }
     },
     "findings": [
+        {
+            "package": "symfony/process",
+            "version": "v6.4.4",
+            "version_normalized": "6.4.4.0",
+            "direct": false,
+            "dev": false,
+            "baselined": false,
+            "counts_for_exit": true,
+            "via_replaced_package": null,
+            "advisories": [
+                {
+                    "id": "PKSA-wws7-mr54-jsny",
+                    "cve": "CVE-2024-51736",
+                    "title": "CVE-2024-51736: Command execution hijack on Windows with Process class",
+                    "link": "https://symfony.com/cve-2024-51736",
+                    "severity": "high",
+                    "reported_at": "2024-11-05T08:00:00+00:00",
+                    "affected_versions": ">=2.0.0,<3.0.0|>=3.0.0,<4.0.0|>=4.0.0,<5.0.0|>=5.0.0,<5.1.0|>=5.1.0,<5.2.0|>=5.2.0,<5.3.0|>=5.3.0,<5.4.0|>=5.4.0,<5.4.46|>=6.0.0,<6.1.0|>=6.1.0,<6.2.0|>=6.2.0,<6.3.0|>=6.3.0,<6.4.0|>=6.4.0,<6.4.14|>=7.0.0,<7.1.0|>=7.1.0,<7.1.7",
+                    "sources": [
+                        {
+                            "name": "GitHub",
+                            "remoteId": "GHSA-qq5c-677p-737q"
+                        },
+                        {
+                            "name": "FriendsOfPHP/security-advisories",
+                            "remoteId": "symfony/process/CVE-2024-51736.yaml"
+                        }
+                    ],
+                    "epss": null,
+                    "epss_percentile": null,
+                    "kev_added": null
+                }
+            ],
+            "abandoned": [],
+            "paths_total": 14,
+            "paths": [
+                {
+                    "cyclic": false,
+                    "chain": [
+                        {
+                            "package": "root",
+                            "version": null,
+                            "requires": "^10.0"
+                        },
+                        {
+                            "package": "laravel/framework",
+                            "version": "v10.48.8",
+                            "requires": "^6.2"
+                        }
+                    ],
+                    "target": {
+                        "package": "symfony/process",
+                        "version": "v6.4.4"
+                    }
+                },
+                {
+                    "cyclic": false,
+                    "chain": [
+                        {
+                            "package": "root",
+                            "version": null,
+                            "requires": "^1.7"
+                        },
+                        {
+                            "package": "laravel/helpers",
+                            "version": "v1.7.0",
+                            "requires": "~5.8.0|^6.0|^7.0|^8.0|^9.0|^10.0|^11.0"
+                        },
+                        {
+                            "package": "laravel/framework",
+                            "version": "v10.48.8",
+                            "requires": "^6.2"
+                        }
+                    ],
+                    "target": {
+                        "package": "symfony/process",
+                        "version": "v6.4.4"
+                    }
+                },
+                {
+                    "cyclic": false,
+                    "chain": [
+                        {
+                            "package": "root",
+                            "version": null,
+                            "requires": "^0.1.25"
+                        },
+                        {
+                            "package": "laravel/prompts",
+                            "version": "v0.1.25",
+                            "requires": "^10.0|^11.0"
+                        },
+                        {
+                            "package": "laravel/framework",
+                            "version": "v10.48.8",
+                            "requires": "^6.2"
+                        }
+                    ],
+                    "target": {
+                        "package": "symfony/process",
+                        "version": "v6.4.4"
+                    }
+                },
+                {
+                    "cyclic": false,
+                    "chain": [
+                        {
+                            "package": "root",
+                            "version": null,
+                            "requires": "^3.3"
+                        },
+                        {
+                            "package": "laravel/sanctum",
+                            "version": "v3.3.3",
+                            "requires": "^9.21|^10.0"
+                        },
+                        {
+                            "package": "laravel/framework",
+                            "version": "v10.48.8",
+                            "requires": "^6.2"
+                        }
+                    ],
+                    "target": {
+                        "package": "symfony/process",
+                        "version": "v6.4.4"
+                    }
+                },
+                {
+                    "cyclic": false,
+                    "chain": [
+                        {
+                            "package": "root",
+                            "version": null,
+                            "requires": "^10.0"
+                        },
+                        {
+                            "package": "laravel/scout",
+                            "version": "v10.8.6",
+                            "requires": "^9.0|^10.0|^11.0"
+                        },
+                        {
+                            "package": "laravel/framework",
+                            "version": "v10.48.8",
+                            "requires": "^6.2"
+                        }
+                    ],
+                    "target": {
+                        "package": "symfony/process",
+                        "version": "v6.4.4"
+                    }
+                },
+                {
+                    "cyclic": false,
+                    "chain": [
+                        {
+                            "package": "root",
+                            "version": null,
+                            "requires": "^14.0"
+                        },
+                        {
+                            "package": "teamtnt/laravel-scout-tntsearch-driver",
+                            "version": "v14.0.0",
+                            "requires": "7.*|^8.0|^8.3|^9.0|^10"
+                        },
+                        {
+                            "package": "laravel/scout",
+                            "version": "v10.8.6",
+                            "requires": "^9.0|^10.0|^11.0"
+                        },
+                        {
+                            "package": "laravel/framework",
+                            "version": "v10.48.8",
+                            "requires": "^6.2"
+                        }
+                    ],
+                    "target": {
+                        "package": "symfony/process",
+                        "version": "v6.4.4"
+                    }
+                },
+                {
+                    "cyclic": false,
+                    "chain": [
+                        {
+                            "package": "root",
+                            "version": null,
+                            "requires": "^5.12"
+                        },
+                        {
+                            "package": "laravel/socialite",
+                            "version": "v5.13.0",
+                            "requires": "^6.0|^7.0|^8.0|^9.0|^10.0|^11.0"
+                        },
+                        {
+                            "package": "laravel/framework",
+                            "version": "v10.48.8",
+                            "requires": "^6.2"
+                        }
+                    ],
+                    "target": {
+                        "package": "symfony/process",
+                        "version": "v6.4.4"
+                    }
+                },
+                {
+                    "cyclic": false,
+                    "chain": [
+                        {
+                            "package": "root",
+                            "version": null,
+                            "requires": "^4.5"
+                        },
+                        {
+                            "package": "laravel/ui",
+                            "version": "v4.5.1",
+                            "requires": "^9.21|^10.0|^11.0"
+                        },
+                        {
+                            "package": "laravel/framework",
+                            "version": "v10.48.8",
+                            "requires": "^6.2"
+                        }
+                    ],
+                    "target": {
+                        "package": "symfony/process",
+                        "version": "v6.4.4"
+                    }
+                },
+                {
+                    "cyclic": false,
+                    "chain": [
+                        {
+                            "package": "root",
+                            "version": null,
+                            "requires": "^1.0"
+                        },
+                        {
+                            "package": "phanan/poddle",
+                            "version": "v1.2.0",
+                            "requires": "^10.48|^11.23"
+                        },
+                        {
+                            "package": "laravel/framework",
+                            "version": "v10.48.8",
+                            "requires": "^6.2"
+                        }
+                    ],
+                    "target": {
+                        "package": "symfony/process",
+                        "version": "v6.4.4"
+                    }
+                },
+                {
+                    "cyclic": false,
+                    "chain": [
+                        {
+                            "package": "root",
+                            "version": null,
+                            "requires": "^3.0"
+                        },
+                        {
+                            "package": "saloonphp/laravel-plugin",
+                            "version": "v3.5.0",
+                            "requires": "^10.0 || ^11.0"
+                        },
+                        {
+                            "package": "laravel/framework",
+                            "version": "v10.48.8",
+                            "requires": "^6.2"
+                        }
+                    ],
+                    "target": {
+                        "package": "symfony/process",
+                        "version": "v6.4.4"
+                    }
+                }
+            ],
+            "solver_runs": 8,
+            "search_exhausted": true,
+            "remediation": {
+                "status": "verified",
+                "command": "composer update symfony/process",
+                "strategy": "lock-refresh",
+                "root_constraint_changes": [],
+                "constraint_drag": null,
+                "blocking_risk": [],
+                "summary": {
+                    "changed": 1,
+                    "added": 0,
+                    "removed": 0,
+                    "total": 1,
+                    "major_change": false,
+                    "downgrade": false,
+                    "prerelease": false
+                },
+                "changes": [
+                    {
+                        "package": "symfony/process",
+                        "kind": "upgraded",
+                        "step": "patch",
+                        "from": "v6.4.4",
+                        "to": "v6.4.15"
+                    }
+                ]
+            },
+            "candidates": [
+                {
+                    "command": "composer update symfony/process",
+                    "strategy": "lock-refresh",
+                    "outcome": "valid",
+                    "rank": 1,
+                    "summary": {
+                        "changed": 1,
+                        "added": 0,
+                        "removed": 0,
+                        "total": 1,
+                        "major_change": false,
+                        "downgrade": false,
+                        "prerelease": false
+                    },
+                    "solver_status": "resolved"
+                },
+                {
+                    "command": "composer update symfony/process -w -m --with 'symfony/process:>=6.4.14,<7.0.0 || >=7.1.7'",
+                    "strategy": "with-dependencies",
+                    "outcome": "valid",
+                    "rank": 2,
+                    "summary": {
+                        "changed": 1,
+                        "added": 0,
+                        "removed": 0,
+                        "total": 1,
+                        "major_change": false,
+                        "downgrade": false,
+                        "prerelease": false
+                    },
+                    "solver_status": "resolved"
+                },
+                {
+                    "command": "composer update laravel/helpers -W -m --with 'symfony/process:>=6.4.14,<7.0.0 || >=7.1.7'",
+                    "strategy": "parent-update",
+                    "outcome": "valid",
+                    "rank": 3,
+                    "summary": {
+                        "changed": 1,
+                        "added": 0,
+                        "removed": 0,
+                        "total": 1,
+                        "major_change": false,
+                        "downgrade": false,
+                        "prerelease": false
+                    },
+                    "solver_status": "resolved"
+                },
+                {
+                    "command": "composer update laravel/prompts -W -m --with 'symfony/process:>=6.4.14,<7.0.0 || >=7.1.7'",
+                    "strategy": "parent-update",
+                    "outcome": "valid",
+                    "rank": 4,
+                    "summary": {
+                        "changed": 1,
+                        "added": 0,
+                        "removed": 0,
+                        "total": 1,
+                        "major_change": false,
+                        "downgrade": false,
+                        "prerelease": false
+                    },
+                    "solver_status": "resolved"
+                },
+                {
+                    "command": "composer update laravel/sanctum -W -m --with 'symfony/process:>=6.4.14,<7.0.0 || >=7.1.7'",
+                    "strategy": "parent-update",
+                    "outcome": "valid",
+                    "rank": 5,
+                    "summary": {
+                        "changed": 1,
+                        "added": 0,
+                        "removed": 0,
+                        "total": 1,
+                        "major_change": false,
+                        "downgrade": false,
+                        "prerelease": false
+                    },
+                    "solver_status": "resolved"
+                },
+                {
+                    "command": "composer update teamtnt/laravel-scout-tntsearch-driver -W -m --with 'symfony/process:>=6.4.14,<7.0.0 || >=7.1.7'",
+                    "strategy": "parent-update",
+                    "outcome": "valid",
+                    "rank": 6,
+                    "summary": {
+                        "changed": 1,
+                        "added": 0,
+                        "removed": 0,
+                        "total": 1,
+                        "major_change": false,
+                        "downgrade": false,
+                        "prerelease": false
+                    },
+                    "solver_status": "resolved"
+                },
+                {
+                    "command": "composer update laravel/framework -W -m --with 'symfony/process:>=6.4.14,<7.0.0 || >=7.1.7'",
+                    "strategy": "parent-update",
+                    "outcome": "valid",
+                    "rank": 7,
+                    "summary": {
+                        "changed": 2,
+                        "added": 0,
+                        "removed": 0,
+                        "total": 2,
+                        "major_change": false,
+                        "downgrade": false,
+                        "prerelease": false
+                    },
+                    "solver_status": "resolved"
+                },
+                {
+                    "command": "composer update laravel/scout -W -m --with 'symfony/process:>=6.4.14,<7.0.0 || >=7.1.7'",
+                    "strategy": "parent-update",
+                    "outcome": "valid",
+                    "rank": 8,
+                    "summary": {
+                        "changed": 2,
+                        "added": 0,
+                        "removed": 0,
+                        "total": 2,
+                        "major_change": false,
+                        "downgrade": false,
+                        "prerelease": false
+                    },
+                    "solver_status": "resolved"
+                },
+                {
+                    "command": "composer require --no-update laravel/framework:^11.0 && composer update laravel/framework -W -m --with 'symfony/process:>=6.4.14,<7.0.0 || >=7.1.7'",
+                    "strategy": "root-constraint-widen",
+                    "outcome": "skipped",
+                    "reason": "a better candidate already exists"
+                },
+                {
+                    "command": "composer require --no-update laravel/helpers:^2.0 && composer update laravel/helpers -W -m --with 'symfony/process:>=6.4.14,<7.0.0 || >=7.1.7'",
+                    "strategy": "root-constraint-widen",
+                    "outcome": "skipped",
+                    "reason": "a better candidate already exists"
+                }
+            ]
+        },
         {
             "package": "symfony/http-foundation",
             "version": "v6.4.4",
@@ -65,9 +515,13 @@
                             "name": "FriendsOfPHP/security-advisories",
                             "remoteId": "symfony/http-foundation/CVE-2024-50345.yaml"
                         }
-                    ]
+                    ],
+                    "epss": null,
+                    "epss_percentile": null,
+                    "kev_added": null
                 }
             ],
+            "abandoned": [],
             "paths_total": 42,
             "paths": [
                 {
@@ -526,450 +980,6 @@
                 },
                 {
                     "command": "composer require --no-update laravel/helpers:^2.0 && composer update laravel/helpers -W -m --with 'symfony/http-foundation:>=6.4.14,<7.0.0 || >=7.1.7'",
-                    "strategy": "root-constraint-widen",
-                    "outcome": "skipped",
-                    "reason": "a better candidate already exists"
-                }
-            ]
-        },
-        {
-            "package": "symfony/process",
-            "version": "v6.4.4",
-            "version_normalized": "6.4.4.0",
-            "direct": false,
-            "dev": false,
-            "baselined": false,
-            "counts_for_exit": true,
-            "via_replaced_package": null,
-            "advisories": [
-                {
-                    "id": "PKSA-wws7-mr54-jsny",
-                    "cve": "CVE-2024-51736",
-                    "title": "CVE-2024-51736: Command execution hijack on Windows with Process class",
-                    "link": "https://symfony.com/cve-2024-51736",
-                    "severity": "high",
-                    "reported_at": "2024-11-05T08:00:00+00:00",
-                    "affected_versions": ">=2.0.0,<3.0.0|>=3.0.0,<4.0.0|>=4.0.0,<5.0.0|>=5.0.0,<5.1.0|>=5.1.0,<5.2.0|>=5.2.0,<5.3.0|>=5.3.0,<5.4.0|>=5.4.0,<5.4.46|>=6.0.0,<6.1.0|>=6.1.0,<6.2.0|>=6.2.0,<6.3.0|>=6.3.0,<6.4.0|>=6.4.0,<6.4.14|>=7.0.0,<7.1.0|>=7.1.0,<7.1.7",
-                    "sources": [
-                        {
-                            "name": "GitHub",
-                            "remoteId": "GHSA-qq5c-677p-737q"
-                        },
-                        {
-                            "name": "FriendsOfPHP/security-advisories",
-                            "remoteId": "symfony/process/CVE-2024-51736.yaml"
-                        }
-                    ]
-                }
-            ],
-            "paths_total": 14,
-            "paths": [
-                {
-                    "cyclic": false,
-                    "chain": [
-                        {
-                            "package": "root",
-                            "version": null,
-                            "requires": "^10.0"
-                        },
-                        {
-                            "package": "laravel/framework",
-                            "version": "v10.48.8",
-                            "requires": "^6.2"
-                        }
-                    ],
-                    "target": {
-                        "package": "symfony/process",
-                        "version": "v6.4.4"
-                    }
-                },
-                {
-                    "cyclic": false,
-                    "chain": [
-                        {
-                            "package": "root",
-                            "version": null,
-                            "requires": "^1.7"
-                        },
-                        {
-                            "package": "laravel/helpers",
-                            "version": "v1.7.0",
-                            "requires": "~5.8.0|^6.0|^7.0|^8.0|^9.0|^10.0|^11.0"
-                        },
-                        {
-                            "package": "laravel/framework",
-                            "version": "v10.48.8",
-                            "requires": "^6.2"
-                        }
-                    ],
-                    "target": {
-                        "package": "symfony/process",
-                        "version": "v6.4.4"
-                    }
-                },
-                {
-                    "cyclic": false,
-                    "chain": [
-                        {
-                            "package": "root",
-                            "version": null,
-                            "requires": "^0.1.25"
-                        },
-                        {
-                            "package": "laravel/prompts",
-                            "version": "v0.1.25",
-                            "requires": "^10.0|^11.0"
-                        },
-                        {
-                            "package": "laravel/framework",
-                            "version": "v10.48.8",
-                            "requires": "^6.2"
-                        }
-                    ],
-                    "target": {
-                        "package": "symfony/process",
-                        "version": "v6.4.4"
-                    }
-                },
-                {
-                    "cyclic": false,
-                    "chain": [
-                        {
-                            "package": "root",
-                            "version": null,
-                            "requires": "^3.3"
-                        },
-                        {
-                            "package": "laravel/sanctum",
-                            "version": "v3.3.3",
-                            "requires": "^9.21|^10.0"
-                        },
-                        {
-                            "package": "laravel/framework",
-                            "version": "v10.48.8",
-                            "requires": "^6.2"
-                        }
-                    ],
-                    "target": {
-                        "package": "symfony/process",
-                        "version": "v6.4.4"
-                    }
-                },
-                {
-                    "cyclic": false,
-                    "chain": [
-                        {
-                            "package": "root",
-                            "version": null,
-                            "requires": "^10.0"
-                        },
-                        {
-                            "package": "laravel/scout",
-                            "version": "v10.8.6",
-                            "requires": "^9.0|^10.0|^11.0"
-                        },
-                        {
-                            "package": "laravel/framework",
-                            "version": "v10.48.8",
-                            "requires": "^6.2"
-                        }
-                    ],
-                    "target": {
-                        "package": "symfony/process",
-                        "version": "v6.4.4"
-                    }
-                },
-                {
-                    "cyclic": false,
-                    "chain": [
-                        {
-                            "package": "root",
-                            "version": null,
-                            "requires": "^14.0"
-                        },
-                        {
-                            "package": "teamtnt/laravel-scout-tntsearch-driver",
-                            "version": "v14.0.0",
-                            "requires": "7.*|^8.0|^8.3|^9.0|^10"
-                        },
-                        {
-                            "package": "laravel/scout",
-                            "version": "v10.8.6",
-                            "requires": "^9.0|^10.0|^11.0"
-                        },
-                        {
-                            "package": "laravel/framework",
-                            "version": "v10.48.8",
-                            "requires": "^6.2"
-                        }
-                    ],
-                    "target": {
-                        "package": "symfony/process",
-                        "version": "v6.4.4"
-                    }
-                },
-                {
-                    "cyclic": false,
-                    "chain": [
-                        {
-                            "package": "root",
-                            "version": null,
-                            "requires": "^5.12"
-                        },
-                        {
-                            "package": "laravel/socialite",
-                            "version": "v5.13.0",
-                            "requires": "^6.0|^7.0|^8.0|^9.0|^10.0|^11.0"
-                        },
-                        {
-                            "package": "laravel/framework",
-                            "version": "v10.48.8",
-                            "requires": "^6.2"
-                        }
-                    ],
-                    "target": {
-                        "package": "symfony/process",
-                        "version": "v6.4.4"
-                    }
-                },
-                {
-                    "cyclic": false,
-                    "chain": [
-                        {
-                            "package": "root",
-                            "version": null,
-                            "requires": "^4.5"
-                        },
-                        {
-                            "package": "laravel/ui",
-                            "version": "v4.5.1",
-                            "requires": "^9.21|^10.0|^11.0"
-                        },
-                        {
-                            "package": "laravel/framework",
-                            "version": "v10.48.8",
-                            "requires": "^6.2"
-                        }
-                    ],
-                    "target": {
-                        "package": "symfony/process",
-                        "version": "v6.4.4"
-                    }
-                },
-                {
-                    "cyclic": false,
-                    "chain": [
-                        {
-                            "package": "root",
-                            "version": null,
-                            "requires": "^1.0"
-                        },
-                        {
-                            "package": "phanan/poddle",
-                            "version": "v1.2.0",
-                            "requires": "^10.48|^11.23"
-                        },
-                        {
-                            "package": "laravel/framework",
-                            "version": "v10.48.8",
-                            "requires": "^6.2"
-                        }
-                    ],
-                    "target": {
-                        "package": "symfony/process",
-                        "version": "v6.4.4"
-                    }
-                },
-                {
-                    "cyclic": false,
-                    "chain": [
-                        {
-                            "package": "root",
-                            "version": null,
-                            "requires": "^3.0"
-                        },
-                        {
-                            "package": "saloonphp/laravel-plugin",
-                            "version": "v3.5.0",
-                            "requires": "^10.0 || ^11.0"
-                        },
-                        {
-                            "package": "laravel/framework",
-                            "version": "v10.48.8",
-                            "requires": "^6.2"
-                        }
-                    ],
-                    "target": {
-                        "package": "symfony/process",
-                        "version": "v6.4.4"
-                    }
-                }
-            ],
-            "solver_runs": 8,
-            "search_exhausted": true,
-            "remediation": {
-                "status": "verified",
-                "command": "composer update symfony/process",
-                "strategy": "lock-refresh",
-                "root_constraint_changes": [],
-                "constraint_drag": null,
-                "blocking_risk": [],
-                "summary": {
-                    "changed": 1,
-                    "added": 0,
-                    "removed": 0,
-                    "total": 1,
-                    "major_change": false,
-                    "downgrade": false,
-                    "prerelease": false
-                },
-                "changes": [
-                    {
-                        "package": "symfony/process",
-                        "kind": "upgraded",
-                        "step": "patch",
-                        "from": "v6.4.4",
-                        "to": "v6.4.15"
-                    }
-                ]
-            },
-            "candidates": [
-                {
-                    "command": "composer update symfony/process",
-                    "strategy": "lock-refresh",
-                    "outcome": "valid",
-                    "rank": 1,
-                    "summary": {
-                        "changed": 1,
-                        "added": 0,
-                        "removed": 0,
-                        "total": 1,
-                        "major_change": false,
-                        "downgrade": false,
-                        "prerelease": false
-                    },
-                    "solver_status": "resolved"
-                },
-                {
-                    "command": "composer update symfony/process -w -m --with 'symfony/process:>=6.4.14,<7.0.0 || >=7.1.7'",
-                    "strategy": "with-dependencies",
-                    "outcome": "valid",
-                    "rank": 2,
-                    "summary": {
-                        "changed": 1,
-                        "added": 0,
-                        "removed": 0,
-                        "total": 1,
-                        "major_change": false,
-                        "downgrade": false,
-                        "prerelease": false
-                    },
-                    "solver_status": "resolved"
-                },
-                {
-                    "command": "composer update laravel/helpers -W -m --with 'symfony/process:>=6.4.14,<7.0.0 || >=7.1.7'",
-                    "strategy": "parent-update",
-                    "outcome": "valid",
-                    "rank": 3,
-                    "summary": {
-                        "changed": 1,
-                        "added": 0,
-                        "removed": 0,
-                        "total": 1,
-                        "major_change": false,
-                        "downgrade": false,
-                        "prerelease": false
-                    },
-                    "solver_status": "resolved"
-                },
-                {
-                    "command": "composer update laravel/prompts -W -m --with 'symfony/process:>=6.4.14,<7.0.0 || >=7.1.7'",
-                    "strategy": "parent-update",
-                    "outcome": "valid",
-                    "rank": 4,
-                    "summary": {
-                        "changed": 1,
-                        "added": 0,
-                        "removed": 0,
-                        "total": 1,
-                        "major_change": false,
-                        "downgrade": false,
-                        "prerelease": false
-                    },
-                    "solver_status": "resolved"
-                },
-                {
-                    "command": "composer update laravel/sanctum -W -m --with 'symfony/process:>=6.4.14,<7.0.0 || >=7.1.7'",
-                    "strategy": "parent-update",
-                    "outcome": "valid",
-                    "rank": 5,
-                    "summary": {
-                        "changed": 1,
-                        "added": 0,
-                        "removed": 0,
-                        "total": 1,
-                        "major_change": false,
-                        "downgrade": false,
-                        "prerelease": false
-                    },
-                    "solver_status": "resolved"
-                },
-                {
-                    "command": "composer update teamtnt/laravel-scout-tntsearch-driver -W -m --with 'symfony/process:>=6.4.14,<7.0.0 || >=7.1.7'",
-                    "strategy": "parent-update",
-                    "outcome": "valid",
-                    "rank": 6,
-                    "summary": {
-                        "changed": 1,
-                        "added": 0,
-                        "removed": 0,
-                        "total": 1,
-                        "major_change": false,
-                        "downgrade": false,
-                        "prerelease": false
-                    },
-                    "solver_status": "resolved"
-                },
-                {
-                    "command": "composer update laravel/framework -W -m --with 'symfony/process:>=6.4.14,<7.0.0 || >=7.1.7'",
-                    "strategy": "parent-update",
-                    "outcome": "valid",
-                    "rank": 7,
-                    "summary": {
-                        "changed": 2,
-                        "added": 0,
-                        "removed": 0,
-                        "total": 2,
-                        "major_change": false,
-                        "downgrade": false,
-                        "prerelease": false
-                    },
-                    "solver_status": "resolved"
-                },
-                {
-                    "command": "composer update laravel/scout -W -m --with 'symfony/process:>=6.4.14,<7.0.0 || >=7.1.7'",
-                    "strategy": "parent-update",
-                    "outcome": "valid",
-                    "rank": 8,
-                    "summary": {
-                        "changed": 2,
-                        "added": 0,
-                        "removed": 0,
-                        "total": 2,
-                        "major_change": false,
-                        "downgrade": false,
-                        "prerelease": false
-                    },
-                    "solver_status": "resolved"
-                },
-                {
-                    "command": "composer require --no-update laravel/framework:^11.0 && composer update laravel/framework -W -m --with 'symfony/process:>=6.4.14,<7.0.0 || >=7.1.7'",
-                    "strategy": "root-constraint-widen",
-                    "outcome": "skipped",
-                    "reason": "a better candidate already exists"
-                },
-                {
-                    "command": "composer require --no-update laravel/helpers:^2.0 && composer update laravel/helpers -W -m --with 'symfony/process:>=6.4.14,<7.0.0 || >=7.1.7'",
                     "strategy": "root-constraint-widen",
                     "outcome": "skipped",
                     "reason": "a better candidate already exists"

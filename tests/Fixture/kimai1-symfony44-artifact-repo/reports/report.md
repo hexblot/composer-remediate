@@ -59,55 +59,6 @@ Other candidates
           - phpoffice/phpspreadsheet[2.1.1, ..., 2.1.3] require php ^8.0 -> your php version (7.3; overridden via config.platform, actual: 8.5.5) does not satisfy that requirement.
           - phpoffice/phpspreadsheet[2.3.0, ..., 2.3.2] require php ^8.1 -> your php version (7.3; overridden via config.platform, actual: 8.5.5) does not satisfy that requirement.
 
-CVE-2024-50345
-────────────────────────────────────────────────────────────
-Affected
-  symfony/http-foundation v4.4.49
-  CVE-2024-50345 (PKSA-b35n-565h-rs4q): CVE-2024-50345: Open redirect via browser-sanitized URLs
-    https://symfony.com/cve-2024-50345
-    affected versions: >=2.0.0,<3.0.0|>=3.0.0,<4.0.0|>=4.0.0,<5.0.0|>=5.0.0,<5.1.0|>=5.1.0,<5.2.0|>=5.2.0,<5.3.0|>=5.3.0,<5.4.0|>=5.4.0,<5.4.46|>=6.0.0,<6.1.0|>=6.1.0,<6.2.0|>=6.2.0,<6.3.0|>=6.3.0,<6.4.0|>=6.4.0,<6.4.14|>=7.0.0,<7.1.0|>=7.1.0,<7.1.7
-Introduced by
-  root
-  └── friendsofsymfony/rest-bundle 3.5.0
-      └── symfony/http-foundation v4.4.49  (requires ^4.4|^5.3|^6.0)
-  root
-  └── kevinpapst/adminlte-bundle 3.6.1
-      └── symfony/http-foundation v4.4.49  (requires >4.3)
-  root
-  └── symfony/framework-bundle v4.4.49
-      └── symfony/http-foundation v4.4.49  (requires ^4.4|^5.0)
-  root
-  └── doctrine/doctrine-bundle 2.7.2
-      └── symfony/framework-bundle v4.4.49
-          └── symfony/http-foundation v4.4.49  (requires ^4.4|^5.0)
-  root
-  └── doctrine/doctrine-migrations-bundle 3.2.2
-      └── doctrine/doctrine-bundle 2.7.2
-          └── symfony/framework-bundle v4.4.49
-              └── symfony/http-foundation v4.4.49  (requires ^4.4|^5.0)
-  … and 51 more paths
-Current state
-  Transitive dependency.
-Recommended remediation
-  symfony/http-foundation v4.4.49 -> v5.4.46
-Composer validation
-  PASS  1 package changed, 0 added, 0 removed, 0 root constraints changed, includes a major version change
-Expected changes
-  symfony/http-foundation v4.4.49 -> v5.4.46
-Recommended command
-  composer update symfony/http-foundation
-Other candidates
-  valid, rank 2: composer update symfony/http-foundation -w -m --with 'symfony/http-foundation:>=5.4.46,<6.0.0 || >=6.4.14,<7.0.0 || >=7.1.7'  (1 changes)
-  valid, rank 3: composer update friendsofsymfony/rest-bundle -W -m --with 'symfony/http-foundation:>=5.4.46,<6.0.0 || >=6.4.14,<7.0.0 || >=7.1.7'  (1 changes)
-  valid, rank 4: composer update kevinpapst/adminlte-bundle -W -m --with 'symfony/http-foundation:>=5.4.46,<6.0.0 || >=6.4.14,<7.0.0 || >=7.1.7'  (1 changes)
-  valid, rank 5: composer update symfony/twig-bundle -W -m --with 'symfony/http-foundation:>=5.4.46,<6.0.0 || >=6.4.14,<7.0.0 || >=7.1.7'  (1 changes)
-  valid, rank 6: composer update doctrine/doctrine-bundle -W -m --with 'symfony/http-foundation:>=5.4.46,<6.0.0 || >=6.4.14,<7.0.0 || >=7.1.7'  (1 changes)
-  valid, rank 7: composer update doctrine/doctrine-migrations-bundle:3.2.3 -W -m --with 'symfony/http-foundation:>=5.4.46,<6.0.0 || >=6.4.14,<7.0.0 || >=7.1.7'  (2 changes)
-  valid, rank 8: composer update symfony/framework-bundle -W -m --with 'symfony/http-foundation:>=5.4.46,<6.0.0 || >=6.4.14,<7.0.0 || >=7.1.7'  (2 changes)
-  valid, rank 9: composer update doctrine/doctrine-migrations-bundle -W -m --with 'symfony/http-foundation:>=5.4.46,<6.0.0 || >=6.4.14,<7.0.0 || >=7.1.7'  (2 changes)
-  valid, rank 10: composer update friendsofsymfony/rest-bundle kevinpapst/adminlte-bundle symfony/framework-bundle handcraftedinthealps/rest-routing-bundle sensio/framework-extra-bundle symfony/monolog-bundle symfony/security-bundle symfony/twig-bundle symfony/webpack-encore-bundle doctrine/doctrine-fixtures-bundle symfony/debug-bundle symfony/maker-bundle symfony/web-profiler-bundle -W -m --with 'symfony/http-foundation:>=5.4.46,<6.0.0 || >=6.4.14,<7.0.0 || >=7.1.7'  (6 changes)
-  not tried (a better candidate already exists): composer require --no-update friendsofsymfony/rest-bundle:^4.0 && composer update friendsofsymfony/rest-bundle -W -m --with 'symfony/http-foundation:>=5.4.46,<6.0.0 || >=6.4.14,<7.0.0 || >=7.1.7'
-
 CVE-2023-46734
 ────────────────────────────────────────────────────────────
 Affected
@@ -153,45 +104,6 @@ Other candidates
   valid, rank 8: composer update twig/extra-bundle -W -m --with 'symfony/twig-bridge:>=4.4.51,<5.0.0 || >=5.4.31,<6.0.0 || >=6.3.8'  (2 changes)
   not tried (a better candidate already exists): composer require --no-update kevinpapst/adminlte-bundle:^4.0 && composer update kevinpapst/adminlte-bundle -W -m --with 'symfony/twig-bridge:>=4.4.51,<5.0.0 || >=5.4.31,<6.0.0 || >=6.3.8'
   not tried (a better candidate already exists): composer require --no-update symfony/twig-bundle:^5.0 && composer update symfony/twig-bundle -W -m --with 'symfony/twig-bridge:>=4.4.51,<5.0.0 || >=5.4.31,<6.0.0 || >=6.3.8'
-
-CVE-2024-50343
-────────────────────────────────────────────────────────────
-Affected
-  symfony/validator v4.4.48
-  CVE-2024-50343 (PKSA-w2tw-kmfg-rt9s): CVE-2024-50343: Incorrect response from Validator when input ends with `
-`
-    https://symfony.com/cve-2024-50343
-    affected versions: >=2.0.0,<3.0.0|>=3.0.0,<4.0.0|>=4.0.0,<5.0.0|>=5.0.0,<5.1.0|>=5.1.0,<5.2.0|>=5.2.0,<5.3.0|>=5.3.0,<5.4.0|>=5.4.0,<5.4.43|>=6.0.0,<6.1.0|>=6.1.0,<6.2.0|>=6.2.0,<6.3.0|>=6.3.0,<6.4.0|>=6.4.0,<6.4.11|>=7.0.0,<7.1.0|>=7.1.0,<7.1.4
-Introduced by
-  root
-  └── symfony/validator v4.4.48  (requires ^4.4)
-Current state
-  Direct dependency.
-Recommended remediation
-  No verified remediation found (none).
-Other candidates
-  rejected: composer update symfony/validator
-      resolves, but symfony/validator ends at v4.4.48 which is still affected by PKSA-w2tw-kmfg-rt9s
-  rejected: composer update symfony/validator -w -m --with 'symfony/validator:>=5.4.43,<6.0.0 || >=6.4.11,<7.0.0 || >=7.1.4'
-      Composer could not resolve the dependencies: Your requirements could not be resolved to an installable set of packages.
-        Problem 1
-          - Root composer.json requires symfony/validator ^4.4, found symfony/validator[v4.4.48] but it conflicts with your temporary update constraint (symfony/validator:>=5.4.43,<6.0.0 || >=6.4.11,<7.0.0 || >=7.1.4).
-  rejected: composer update symfony/validator -W -m --with 'symfony/validator:>=5.4.43,<6.0.0 || >=6.4.11,<7.0.0 || >=7.1.4'
-      Composer could not resolve the dependencies: Your requirements could not be resolved to an installable set of packages.
-        Problem 1
-          - Root composer.json requires symfony/validator ^4.4, found symfony/validator[v4.4.48] but it conflicts with your temporary update constraint (symfony/validator:>=5.4.43,<6.0.0 || >=6.4.11,<7.0.0 || >=7.1.4).
-  rejected: composer require --no-update symfony/validator:^5.0 && composer update symfony/validator -W -m --with 'symfony/validator:>=5.4.43,<6.0.0 || >=6.4.11,<7.0.0 || >=7.1.4'
-      Composer could not resolve the dependencies: Your requirements could not be resolved to an installable set of packages.
-        Problem 1
-          - symfony/expression-language is locked to version v4.4.47 and an update of this package was not requested.
-          - Root composer.json requires symfony/validator ^5.0 -> satisfiable by symfony/validator[v5.4.43, ..., v5.4.47].
-          - symfony/validator[v5.4.43, ..., v5.4.47] conflict with symfony/expression-language <5.1.
-  rejected: composer require --no-update symfony/validator:^5.0 && composer update symfony/validator symfony/expression-language -W -m --with 'symfony/validator:>=5.4.43,<6.0.0 || >=6.4.11,<7.0.0 || >=7.1.4'
-      Composer could not resolve the dependencies: Your requirements could not be resolved to an installable set of packages.
-        Problem 1
-          - Root composer.json requires symfony/expression-language ^4.4 -> satisfiable by symfony/expression-language[v4.4.47].
-          - Root composer.json requires symfony/validator ^5.0 -> satisfiable by symfony/validator[v5.4.43, ..., v5.4.47].
-          - symfony/validator[v5.4.43, ..., v5.4.47] conflict with symfony/expression-language <5.1.
 
 CVE-2024-51755, CVE-2024-45411, CVE-2024-51754
 ────────────────────────────────────────────────────────────
@@ -255,6 +167,95 @@ Other candidates
       resolves, but twig/twig ends at v3.10.3 which is still affected by PKSA-2wrf-1xmk-1pky, PKSA-6319-ffpf-gx66, PKSA-yhcn-xrg3-68b1
   not tried (a better candidate already exists): composer require --no-update kevinpapst/adminlte-bundle:^4.0 && composer update kevinpapst/adminlte-bundle -W -m --with 'twig/twig:>=3.11.2,<3.12.0 || >=3.14.1'
 
+CVE-2024-50345
+────────────────────────────────────────────────────────────
+Affected
+  symfony/http-foundation v4.4.49
+  CVE-2024-50345 (PKSA-b35n-565h-rs4q): CVE-2024-50345: Open redirect via browser-sanitized URLs
+    https://symfony.com/cve-2024-50345
+    affected versions: >=2.0.0,<3.0.0|>=3.0.0,<4.0.0|>=4.0.0,<5.0.0|>=5.0.0,<5.1.0|>=5.1.0,<5.2.0|>=5.2.0,<5.3.0|>=5.3.0,<5.4.0|>=5.4.0,<5.4.46|>=6.0.0,<6.1.0|>=6.1.0,<6.2.0|>=6.2.0,<6.3.0|>=6.3.0,<6.4.0|>=6.4.0,<6.4.14|>=7.0.0,<7.1.0|>=7.1.0,<7.1.7
+Introduced by
+  root
+  └── friendsofsymfony/rest-bundle 3.5.0
+      └── symfony/http-foundation v4.4.49  (requires ^4.4|^5.3|^6.0)
+  root
+  └── kevinpapst/adminlte-bundle 3.6.1
+      └── symfony/http-foundation v4.4.49  (requires >4.3)
+  root
+  └── symfony/framework-bundle v4.4.49
+      └── symfony/http-foundation v4.4.49  (requires ^4.4|^5.0)
+  root
+  └── doctrine/doctrine-bundle 2.7.2
+      └── symfony/framework-bundle v4.4.49
+          └── symfony/http-foundation v4.4.49  (requires ^4.4|^5.0)
+  root
+  └── doctrine/doctrine-migrations-bundle 3.2.2
+      └── doctrine/doctrine-bundle 2.7.2
+          └── symfony/framework-bundle v4.4.49
+              └── symfony/http-foundation v4.4.49  (requires ^4.4|^5.0)
+  … and 51 more paths
+Current state
+  Transitive dependency.
+  Abandoned: sensio/framework-extra-bundle (on the dependency path, replacement: Symfony). An abandoned parent will not ship a release that lifts its pin.
+Recommended remediation
+  symfony/http-foundation v4.4.49 -> v5.4.46
+Composer validation
+  PASS  1 package changed, 0 added, 0 removed, 0 root constraints changed, includes a major version change
+Expected changes
+  symfony/http-foundation v4.4.49 -> v5.4.46
+Recommended command
+  composer update symfony/http-foundation
+Other candidates
+  valid, rank 2: composer update symfony/http-foundation -w -m --with 'symfony/http-foundation:>=5.4.46,<6.0.0 || >=6.4.14,<7.0.0 || >=7.1.7'  (1 changes)
+  valid, rank 3: composer update friendsofsymfony/rest-bundle -W -m --with 'symfony/http-foundation:>=5.4.46,<6.0.0 || >=6.4.14,<7.0.0 || >=7.1.7'  (1 changes)
+  valid, rank 4: composer update kevinpapst/adminlte-bundle -W -m --with 'symfony/http-foundation:>=5.4.46,<6.0.0 || >=6.4.14,<7.0.0 || >=7.1.7'  (1 changes)
+  valid, rank 5: composer update symfony/twig-bundle -W -m --with 'symfony/http-foundation:>=5.4.46,<6.0.0 || >=6.4.14,<7.0.0 || >=7.1.7'  (1 changes)
+  valid, rank 6: composer update doctrine/doctrine-bundle -W -m --with 'symfony/http-foundation:>=5.4.46,<6.0.0 || >=6.4.14,<7.0.0 || >=7.1.7'  (1 changes)
+  valid, rank 7: composer update doctrine/doctrine-migrations-bundle:3.2.3 -W -m --with 'symfony/http-foundation:>=5.4.46,<6.0.0 || >=6.4.14,<7.0.0 || >=7.1.7'  (2 changes)
+  valid, rank 8: composer update symfony/framework-bundle -W -m --with 'symfony/http-foundation:>=5.4.46,<6.0.0 || >=6.4.14,<7.0.0 || >=7.1.7'  (2 changes)
+  valid, rank 9: composer update doctrine/doctrine-migrations-bundle -W -m --with 'symfony/http-foundation:>=5.4.46,<6.0.0 || >=6.4.14,<7.0.0 || >=7.1.7'  (2 changes)
+  valid, rank 10: composer update friendsofsymfony/rest-bundle kevinpapst/adminlte-bundle symfony/framework-bundle handcraftedinthealps/rest-routing-bundle sensio/framework-extra-bundle symfony/monolog-bundle symfony/security-bundle symfony/twig-bundle symfony/webpack-encore-bundle doctrine/doctrine-fixtures-bundle symfony/debug-bundle symfony/maker-bundle symfony/web-profiler-bundle -W -m --with 'symfony/http-foundation:>=5.4.46,<6.0.0 || >=6.4.14,<7.0.0 || >=7.1.7'  (6 changes)
+  not tried (a better candidate already exists): composer require --no-update friendsofsymfony/rest-bundle:^4.0 && composer update friendsofsymfony/rest-bundle -W -m --with 'symfony/http-foundation:>=5.4.46,<6.0.0 || >=6.4.14,<7.0.0 || >=7.1.7'
+
+CVE-2024-50343
+────────────────────────────────────────────────────────────
+Affected
+  symfony/validator v4.4.48
+  CVE-2024-50343 (PKSA-w2tw-kmfg-rt9s): CVE-2024-50343: Incorrect response from Validator when input ends with `
+`
+    https://symfony.com/cve-2024-50343
+    affected versions: >=2.0.0,<3.0.0|>=3.0.0,<4.0.0|>=4.0.0,<5.0.0|>=5.0.0,<5.1.0|>=5.1.0,<5.2.0|>=5.2.0,<5.3.0|>=5.3.0,<5.4.0|>=5.4.0,<5.4.43|>=6.0.0,<6.1.0|>=6.1.0,<6.2.0|>=6.2.0,<6.3.0|>=6.3.0,<6.4.0|>=6.4.0,<6.4.11|>=7.0.0,<7.1.0|>=7.1.0,<7.1.4
+Introduced by
+  root
+  └── symfony/validator v4.4.48  (requires ^4.4)
+Current state
+  Direct dependency.
+Recommended remediation
+  No verified remediation found (none).
+Other candidates
+  rejected: composer update symfony/validator
+      resolves, but symfony/validator ends at v4.4.48 which is still affected by PKSA-w2tw-kmfg-rt9s
+  rejected: composer update symfony/validator -w -m --with 'symfony/validator:>=5.4.43,<6.0.0 || >=6.4.11,<7.0.0 || >=7.1.4'
+      Composer could not resolve the dependencies: Your requirements could not be resolved to an installable set of packages.
+        Problem 1
+          - Root composer.json requires symfony/validator ^4.4, found symfony/validator[v4.4.48] but it conflicts with your temporary update constraint (symfony/validator:>=5.4.43,<6.0.0 || >=6.4.11,<7.0.0 || >=7.1.4).
+  rejected: composer update symfony/validator -W -m --with 'symfony/validator:>=5.4.43,<6.0.0 || >=6.4.11,<7.0.0 || >=7.1.4'
+      Composer could not resolve the dependencies: Your requirements could not be resolved to an installable set of packages.
+        Problem 1
+          - Root composer.json requires symfony/validator ^4.4, found symfony/validator[v4.4.48] but it conflicts with your temporary update constraint (symfony/validator:>=5.4.43,<6.0.0 || >=6.4.11,<7.0.0 || >=7.1.4).
+  rejected: composer require --no-update symfony/validator:^5.0 && composer update symfony/validator -W -m --with 'symfony/validator:>=5.4.43,<6.0.0 || >=6.4.11,<7.0.0 || >=7.1.4'
+      Composer could not resolve the dependencies: Your requirements could not be resolved to an installable set of packages.
+        Problem 1
+          - symfony/expression-language is locked to version v4.4.47 and an update of this package was not requested.
+          - Root composer.json requires symfony/validator ^5.0 -> satisfiable by symfony/validator[v5.4.43, ..., v5.4.47].
+          - symfony/validator[v5.4.43, ..., v5.4.47] conflict with symfony/expression-language <5.1.
+  rejected: composer require --no-update symfony/validator:^5.0 && composer update symfony/validator symfony/expression-language -W -m --with 'symfony/validator:>=5.4.43,<6.0.0 || >=6.4.11,<7.0.0 || >=7.1.4'
+      Composer could not resolve the dependencies: Your requirements could not be resolved to an installable set of packages.
+        Problem 1
+          - Root composer.json requires symfony/expression-language ^4.4 -> satisfiable by symfony/expression-language[v4.4.47].
+          - Root composer.json requires symfony/validator ^5.0 -> satisfiable by symfony/validator[v5.4.43, ..., v5.4.47].
+          - symfony/validator[v5.4.43, ..., v5.4.47] conflict with symfony/expression-language <5.1.
+
 CVE-2024-51736
 ────────────────────────────────────────────────────────────
 Affected
@@ -283,7 +284,8 @@ Other candidates
 
 Summary
   Findings: 14 advisories on 6 packages, 4 packages with a verified fix
-  composer update symfony/http-foundation symfony/twig-bridge twig/twig symfony/process -w -m --with 'twig/twig:>=3.11.2,<3.12.0 || >=3.14.1' fixes 6 of 14 findings
+  composer update symfony/http-foundation symfony/process symfony/twig-bridge twig/twig -w -m --with 'twig/twig:>=3.11.2,<3.12.0 || >=3.14.1' fixes 6 of 14 findings
     (5 packages changed, verified by Composer)
   No verified fix: CVE-2024-45291, CVE-2024-45060, CVE-2024-45046, CVE-2024-45293, CVE-2024-45292, CVE-2024-45290, CVE-2024-45048 on phpoffice/phpspreadsheet; CVE-2024-50343 on symfony/validator
+  Abandoned: 1 finding involves a package Packagist marks abandoned (sensio/framework-extra-bundle).
 ```

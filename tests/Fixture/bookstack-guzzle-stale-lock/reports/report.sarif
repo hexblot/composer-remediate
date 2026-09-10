@@ -10,31 +10,6 @@
                     "informationUri": "https://hexblot.github.io/composer-remediate/",
                     "rules": [
                         {
-                            "id": "PKSA-872h-8556-2chm",
-                            "name": "CVE20220085",
-                            "shortDescription": {
-                                "text": "Server-Side Request Forgery in dompdf/dompdf"
-                            },
-                            "fullDescription": {
-                                "text": "Server-Side Request Forgery in dompdf/dompdf. Affected versions of dompdf/dompdf: <2.0.0."
-                            },
-                            "helpUri": "https://github.com/advisories/GHSA-pf6p-25r2-fx45",
-                            "help": {
-                                "text": "Advisory PKSA-872h-8556-2chm (CVE-2022-0085) affects dompdf/dompdf <2.0.0. Run composer remediate for the smallest verified upgrade."
-                            },
-                            "defaultConfiguration": {
-                                "level": "warning"
-                            },
-                            "properties": {
-                                "security-severity": "5.0",
-                                "tags": [
-                                    "security",
-                                    "vulnerability",
-                                    "medium"
-                                ]
-                            }
-                        },
-                        {
                             "id": "PKSA-2z36-j4q9-rsfy",
                             "name": "CVE202231043",
                             "shortDescription": {
@@ -158,6 +133,31 @@
                                     "high"
                                 ]
                             }
+                        },
+                        {
+                            "id": "PKSA-872h-8556-2chm",
+                            "name": "CVE20220085",
+                            "shortDescription": {
+                                "text": "Server-Side Request Forgery in dompdf/dompdf"
+                            },
+                            "fullDescription": {
+                                "text": "Server-Side Request Forgery in dompdf/dompdf. Affected versions of dompdf/dompdf: <2.0.0."
+                            },
+                            "helpUri": "https://github.com/advisories/GHSA-pf6p-25r2-fx45",
+                            "help": {
+                                "text": "Advisory PKSA-872h-8556-2chm (CVE-2022-0085) affects dompdf/dompdf <2.0.0. Run composer remediate for the smallest verified upgrade."
+                            },
+                            "defaultConfiguration": {
+                                "level": "warning"
+                            },
+                            "properties": {
+                                "security-severity": "5.0",
+                                "tags": [
+                                    "security",
+                                    "vulnerability",
+                                    "medium"
+                                ]
+                            }
                         }
                     ]
                 }
@@ -175,42 +175,8 @@
             ],
             "results": [
                 {
-                    "ruleId": "PKSA-872h-8556-2chm",
-                    "ruleIndex": 0,
-                    "level": "warning",
-                    "message": {
-                        "text": "dompdf/dompdf v1.2.2 is affected by CVE-2022-0085: Server-Side Request Forgery in dompdf/dompdf. Verified fix: composer require --no-update barryvdh/laravel-dompdf:^2.0 && composer update barryvdh/laravel-dompdf -W -m"
-                    },
-                    "locations": [
-                        {
-                            "physicalLocation": {
-                                "artifactLocation": {
-                                    "uri": "composer.lock",
-                                    "uriBaseId": "%SRCROOT%"
-                                },
-                                "region": {
-                                    "startLine": 980
-                                }
-                            }
-                        }
-                    ],
-                    "partialFingerprints": {
-                        "advisoryPackage/v1": "PKSA-872h-8556-2chm@dompdf/dompdf"
-                    },
-                    "properties": {
-                        "package": "dompdf/dompdf",
-                        "version": "v1.2.2",
-                        "direct": false,
-                        "dev": false,
-                        "cve": "CVE-2022-0085",
-                        "severity": "medium",
-                        "remediation_status": "verified",
-                        "command": "composer require --no-update barryvdh/laravel-dompdf:^2.0 && composer update barryvdh/laravel-dompdf -W -m"
-                    }
-                },
-                {
                     "ruleId": "PKSA-2z36-j4q9-rsfy",
-                    "ruleIndex": 1,
+                    "ruleIndex": 0,
                     "level": "error",
                     "message": {
                         "text": "guzzlehttp/guzzle 7.4.2 is affected by CVE-2022-31043: Fix failure to strip Authorization header on HTTP downgrade. Verified fix: composer update guzzlehttp/guzzle -w -m"
@@ -244,7 +210,7 @@
                 },
                 {
                     "ruleId": "PKSA-6d8m-6kgw-18zr",
-                    "ruleIndex": 2,
+                    "ruleIndex": 1,
                     "level": "error",
                     "message": {
                         "text": "guzzlehttp/guzzle 7.4.2 is affected by CVE-2022-29248: Cross-domain cookie leakage. Verified fix: composer update guzzlehttp/guzzle -w -m"
@@ -278,7 +244,7 @@
                 },
                 {
                     "ruleId": "PKSA-fvw5-9t6n-nwvr",
-                    "ruleIndex": 3,
+                    "ruleIndex": 2,
                     "level": "error",
                     "message": {
                         "text": "guzzlehttp/guzzle 7.4.2 is affected by CVE-2022-31042: Failure to strip the Cookie header on change in host or HTTP downgrade. Verified fix: composer update guzzlehttp/guzzle -w -m"
@@ -312,7 +278,7 @@
                 },
                 {
                     "ruleId": "PKSA-k1b4-kshy-xgbh",
-                    "ruleIndex": 4,
+                    "ruleIndex": 3,
                     "level": "error",
                     "message": {
                         "text": "guzzlehttp/guzzle 7.4.2 is affected by CVE-2022-31090: CURLOPT_HTTPAUTH option not cleared on change of origin. Verified fix: composer update guzzlehttp/guzzle -w -m"
@@ -346,7 +312,7 @@
                 },
                 {
                     "ruleId": "PKSA-yfw5-9gnj-n2c7",
-                    "ruleIndex": 5,
+                    "ruleIndex": 4,
                     "level": "error",
                     "message": {
                         "text": "guzzlehttp/guzzle 7.4.2 is affected by CVE-2022-31091: Change in port should be considered a change in origin. Verified fix: composer update guzzlehttp/guzzle -w -m"
@@ -376,6 +342,40 @@
                         "severity": "high",
                         "remediation_status": "verified",
                         "command": "composer update guzzlehttp/guzzle -w -m"
+                    }
+                },
+                {
+                    "ruleId": "PKSA-872h-8556-2chm",
+                    "ruleIndex": 5,
+                    "level": "warning",
+                    "message": {
+                        "text": "dompdf/dompdf v1.2.2 is affected by CVE-2022-0085: Server-Side Request Forgery in dompdf/dompdf. Verified fix: composer require --no-update barryvdh/laravel-dompdf:^2.0 && composer update barryvdh/laravel-dompdf -W -m"
+                    },
+                    "locations": [
+                        {
+                            "physicalLocation": {
+                                "artifactLocation": {
+                                    "uri": "composer.lock",
+                                    "uriBaseId": "%SRCROOT%"
+                                },
+                                "region": {
+                                    "startLine": 980
+                                }
+                            }
+                        }
+                    ],
+                    "partialFingerprints": {
+                        "advisoryPackage/v1": "PKSA-872h-8556-2chm@dompdf/dompdf"
+                    },
+                    "properties": {
+                        "package": "dompdf/dompdf",
+                        "version": "v1.2.2",
+                        "direct": false,
+                        "dev": false,
+                        "cve": "CVE-2022-0085",
+                        "severity": "medium",
+                        "remediation_status": "verified",
+                        "command": "composer require --no-update barryvdh/laravel-dompdf:^2.0 && composer update barryvdh/laravel-dompdf -W -m"
                     }
                 }
             ]

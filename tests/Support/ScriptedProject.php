@@ -21,11 +21,12 @@ final class ScriptedProject
     public readonly string $directory;
 
     /**
-     * @param array<string, string>                                      $require  root requirements
-     * @param list<array{string, string, 2?: bool, 3?: string|null}>     $packages [name, version, dev?, releaseDate?]
-     * @param array<string, string>                                      $requireDev
+     * @param array<string, string>                                                        $require    root requirements
+     * @param list<array{string, string, 2?: bool, 3?: string|null, 4?: bool|string|null}> $packages   [name, version, dev?, releaseDate?, abandoned? (true or the replacement name)]
+     * @param array<string, string>                                                        $requireDev
+     * @param array<string, array<string, string>>                                         $requires   package => its own requirements, to give the lock a dependency graph
      */
-    public function __construct(array $require, array $packages, array $requireDev = [])
+    public function __construct(array $require, array $packages, array $requireDev = [], array $requires = [])
     {
         $this->directory = sys_get_temp_dir() . '/composer-remediate-scripted-' . bin2hex(random_bytes(5));
         mkdir($this->directory, 0700, true);
@@ -37,7 +38,10 @@ final class ScriptedProject
         $prod = [];
         $dev = [];
         foreach ($packages as $spec) {
-            $entry = ['name' => $spec[0], 'version' => $spec[1], 'type' => 'library', 'require' => []];
+            $entry = ['name' => $spec[0], 'version' => $spec[1], 'type' => 'library', 'require' => $requires[$spec[0]] ?? []];
+            if (isset($spec[4]) && $spec[4] !== false) {
+                $entry['abandoned'] = $spec[4];
+            }
             if ($spec[2] ?? false) {
                 $dev[] = $entry;
             } else {
@@ -139,8 +143,8 @@ final class ScriptedProject
         };
     }
 
-    public static function advisory(string $id, string $package, string $affected, ?string $severity = 'high', ?string $cve = null): Advisory
+    public static function advisory(string $id, string $package, string $affected, ?string $severity = 'high', ?string $cve = null, ?float $epss = null, ?string $kevAdded = null): Advisory
     {
-        return new Advisory($id, $package, (new \Composer\Semver\VersionParser())->parseConstraints($affected), 'title ' . $id, $cve, 'https://example.test/' . $id, $severity);
+        return new Advisory($id, $package, (new \Composer\Semver\VersionParser())->parseConstraints($affected), 'title ' . $id, $cve, 'https://example.test/' . $id, $severity, null, [], $epss, $epss !== null ? round($epss, 2) : null, $kevAdded !== null ? new \DateTimeImmutable($kevAdded, new \DateTimeZone('UTC')) : null);
     }
 }

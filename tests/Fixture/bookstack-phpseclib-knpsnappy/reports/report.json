@@ -8,7 +8,7 @@
         "advisory_source": "advisory snapshot advisories.json",
         "solver": "in-process Composer dry-run",
         "solver_runs": "7",
-        "composer_json_sha256": "c4b29ac7e9ad098d2d33f919e201dc2098ae74909af8b678066a68ae3de6faa3",
+        "composer_json_sha256": "bcb1a35cf9dcd70c3cdcbddad851b1dcc0d7438e5cde3b37ab6da6adc3a9344c",
         "composer_lock_sha256": "b83ee5639d273303f1750c177fe3725eb939c5ef5780f423934677d0ee152feb",
         "analysis_timestamp": "(fixture)",
         "locked_packages": "147"
@@ -23,6 +23,8 @@
         "packages_gated": 2,
         "packages_baselined": 0,
         "packages_with_constraint_drag": 0,
+        "packages_known_exploited": 0,
+        "packages_with_abandoned_dependency": 0,
         "combined_command": "composer update knplabs/knp-snappy phpseclib/phpseclib",
         "combined_fixes": 2,
         "combined_total": 2,
@@ -65,9 +67,13 @@
                             "name": "FriendsOfPHP/security-advisories",
                             "remoteId": "knplabs/knp-snappy/CVE-2023-28115.yaml"
                         }
-                    ]
+                    ],
+                    "epss": null,
+                    "epss_percentile": null,
+                    "kev_added": null
                 }
             ],
+            "abandoned": [],
             "paths_total": 1,
             "paths": [
                 {
@@ -202,9 +208,13 @@
                             "name": "FriendsOfPHP/security-advisories",
                             "remoteId": "phpseclib/phpseclib/CVE-2023-27560.yaml"
                         }
-                    ]
+                    ],
+                    "epss": null,
+                    "epss_percentile": null,
+                    "kev_added": null
                 }
             ],
+            "abandoned": [],
             "paths_total": 1,
             "paths": [
                 {

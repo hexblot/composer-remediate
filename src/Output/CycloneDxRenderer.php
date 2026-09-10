@@ -118,6 +118,10 @@ final class CycloneDxRenderer
                 self::property('composer-remediate:command', $command),
                 self::property('composer-remediate:direct', $plan->finding->isRootRequirement ? 'true' : 'false'),
                 self::property('composer-remediate:dev', $plan->finding->isDev ? 'true' : 'false'),
+                self::property('composer-remediate:epss', $advisory->epss !== null ? sprintf('%.5f', $advisory->epss) : null),
+                self::property('composer-remediate:epss_percentile', $advisory->epssPercentile !== null ? sprintf('%.5f', $advisory->epssPercentile) : null),
+                self::property('composer-remediate:kev_added', $advisory->kevAdded?->format('Y-m-d')),
+                self::property('composer-remediate:abandoned', $plan->finding->abandoned !== [] ? implode(',', array_keys($plan->finding->abandoned)) : null),
             ])),
         ];
         if ($advisory->reportedAt !== null) {

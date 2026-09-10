@@ -8,7 +8,7 @@
         "advisory_source": "advisory snapshot advisories.json",
         "solver": "in-process Composer dry-run",
         "solver_runs": "56",
-        "composer_json_sha256": "5a80431adc7f081587e2bcce81ef6bd69dd7d7d72c13239c531d06a39b460039",
+        "composer_json_sha256": "aa056dbe0bb6742ce84a97d429e7c7c68bd9cfb23c5dc9a36c2a33ea1a405a2c",
         "composer_lock_sha256": "0166a25c8ee830ae631dad4fee40c7826c06f7cd18e413ab36c454440d37c811",
         "analysis_timestamp": "(fixture)",
         "locked_packages": "202"
@@ -23,6 +23,8 @@
         "packages_gated": 2,
         "packages_baselined": 0,
         "packages_with_constraint_drag": 0,
+        "packages_known_exploited": 0,
+        "packages_with_abandoned_dependency": 0,
         "combined_command": "composer update shopware/storefront:6.4.15.2 shopware/recovery shopware/elasticsearch shopware/administration -W -m",
         "combined_fixes": 1,
         "combined_total": 4,
@@ -65,7 +67,10 @@
                             "name": "GitHub",
                             "remoteId": "GHSA-pf6p-25r2-fx45"
                         }
-                    ]
+                    ],
+                    "epss": null,
+                    "epss_percentile": null,
+                    "kev_added": null
                 },
                 {
                     "id": "PKSA-hbk6-2vfz-8f8n",
@@ -84,7 +89,10 @@
                             "name": "GitHub",
                             "remoteId": "GHSA-6x28-7h8c-chx4"
                         }
-                    ]
+                    ],
+                    "epss": null,
+                    "epss_percentile": null,
+                    "kev_added": null
                 },
                 {
                     "id": "PKSA-kj9c-tr41-t8mj",
@@ -99,9 +107,13 @@
                             "name": "GitHub",
                             "remoteId": "GHSA-5qj8-6xxj-hp9h"
                         }
-                    ]
+                    ],
+                    "epss": null,
+                    "epss_percentile": null,
+                    "kev_added": null
                 }
             ],
+            "abandoned": [],
             "paths_total": 5,
             "paths": [
                 {
@@ -455,9 +467,13 @@
                             "name": "FriendsOfPHP/security-advisories",
                             "remoteId": "twig/twig/CVE-2022-39261.yaml"
                         }
-                    ]
+                    ],
+                    "epss": null,
+                    "epss_percentile": null,
+                    "kev_added": null
                 }
             ],
+            "abandoned": [],
             "paths_total": 46,
             "paths": [
                 {

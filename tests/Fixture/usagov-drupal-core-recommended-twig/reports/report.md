@@ -149,58 +149,6 @@ Other candidates
         Problem 1
           - Root composer.json requires drupal/core-recommended ^11.0, found drupal/core-recommended[11.0.0-alpha1, ..., 11.0.4] but it conflicts with your temporary update constraint (drupal/core-recommended:>=10.2.9,<10.3.0 || >=10.3.6,<11.0.0 || >=11.0.5).
 
-CVE-2024-50343
-────────────────────────────────────────────────────────────
-Affected
-  symfony/validator v6.4.8
-  CVE-2024-50343 (PKSA-w2tw-kmfg-rt9s): CVE-2024-50343: Incorrect response from Validator when input ends with `
-`
-    https://symfony.com/cve-2024-50343
-    affected versions: >=2.0.0,<3.0.0|>=3.0.0,<4.0.0|>=4.0.0,<5.0.0|>=5.0.0,<5.1.0|>=5.1.0,<5.2.0|>=5.2.0,<5.3.0|>=5.3.0,<5.4.0|>=5.4.0,<5.4.43|>=6.0.0,<6.1.0|>=6.1.0,<6.2.0|>=6.2.0,<6.3.0|>=6.3.0,<6.4.0|>=6.4.0,<6.4.11|>=7.0.0,<7.1.0|>=7.1.0,<7.1.4
-Introduced by
-  root
-  └── drupal/address 1.12.0
-      └── drupal/core 10.2.7
-          └── symfony/validator v6.4.8  (requires ^6.4)
-  root
-  └── drupal/admin_toolbar 3.4.2
-      └── drupal/core 10.2.7
-          └── symfony/validator v6.4.8  (requires ^6.4)
-  root
-  └── drupal/allowed_formats 3.0.0
-      └── drupal/core 10.2.7
-          └── symfony/validator v6.4.8  (requires ^6.4)
-  root
-  └── drupal/autologout 2.0.0
-      └── drupal/core 10.2.7
-          └── symfony/validator v6.4.8  (requires ^6.4)
-  root
-  └── drupal/ckeditor_templates 1.4.0
-      └── drupal/ckeditor 1.0.2
-          └── drupal/core 10.2.7
-              └── symfony/validator v6.4.8  (requires ^6.4)
-  … and 73 more paths
-Current state
-  Transitive dependency.
-Recommended remediation
-  symfony/validator v6.4.8 -> v6.4.12
-Composer validation
-  PASS  1 package changed, 0 added, 0 removed, 0 root constraints changed
-Expected changes
-  symfony/validator v6.4.8 -> v6.4.12
-Recommended command
-  composer update symfony/validator
-Other candidates
-  valid, rank 2: composer update symfony/validator -w -m --with 'symfony/validator:>=6.4.11,<7.0.0 || >=7.1.4'  (1 changes)
-  valid, rank 3: composer update drupal/address -W -m --with 'symfony/validator:>=6.4.11,<7.0.0 || >=7.1.4'  (1 changes)
-  valid, rank 4: composer update drupal/ckeditor_templates -W -m --with 'symfony/validator:>=6.4.11,<7.0.0 || >=7.1.4'  (1 changes)
-  valid, rank 5: composer update drupal/allowed_formats -W -m --with 'symfony/validator:>=6.4.11,<7.0.0 || >=7.1.4'  (2 changes)
-  valid, rank 6: composer update drupal/autologout -W -m --with 'symfony/validator:>=6.4.11,<7.0.0 || >=7.1.4'  (2 changes)
-  valid, rank 7: composer update drupal/admin_toolbar -W -m --with 'symfony/validator:>=6.4.11,<7.0.0 || >=7.1.4'  (2 changes)
-  valid, rank 8: composer update drupal/core-recommended -W -m --with 'symfony/validator:>=6.4.11,<7.0.0 || >=7.1.4'  (4 changes)
-  valid, rank 9: composer update drupal/address drupal/admin_toolbar drupal/allowed_formats drupal/autologout drupal/ckeditor_templates drupal/uswds_ckeditor_integration drupal/ckeditor_media_resize drupal/ckeditor_templates_ui drupal/composer_deploy drupal/conditional_fields drupal/content_lock drupal/content_moderation_notifications drupal/core-recommended drupal/views_data_export drupal/ctools drupal/devel drupal/diff drupal/entity_embed drupal/paragraphs_entity_embed drupal/entity_reference_revisions drupal/externalauth drupal/faqfield drupal/feeds drupal/field_defaults drupal/uswds_paragraph_components drupal/field_permissions drupal/hierarchy_manager drupal/image_style_warmer drupal/jquery_ui_accordion drupal/language_switcher_extended drupal/log_stdout drupal/menu_block drupal/menu_breadcrumb drupal/menu_entity_index drupal/menu_item_fields drupal/new_relic_rpm drupal/node_menus drupal/pathauto drupal/redirect drupal/remove_http_headers drupal/s3fs drupal/samlauth drupal/simple_sitemap drupal/simplify_menu drupal/tome drupal/twig_tweak drupal/uswds_base drupal/views_menu_children_filter drupal/viewsreference -W -m --with 'symfony/validator:>=6.4.11,<7.0.0 || >=7.1.4'  (56 changes)
-  not tried (a better candidate already exists): composer require --no-update drupal/core-recommended:^11.0 && composer update drupal/core-recommended -W -m --with 'symfony/validator:>=6.4.11,<7.0.0 || >=7.1.4'
-
 CVE-2024-45411
 ────────────────────────────────────────────────────────────
 Affected
@@ -298,9 +246,61 @@ Other candidates
           - drupal/twig_tweak is locked to version 3.3.0 and an update of this package was not requested.
   not tried (a better candidate already exists): composer require --no-update drupal/core-recommended:^11.0 && composer update drupal/core-recommended -W -m --with 'twig/twig:>=3.11.0,<3.12.0 || >=3.14.0'
 
+CVE-2024-50343
+────────────────────────────────────────────────────────────
+Affected
+  symfony/validator v6.4.8
+  CVE-2024-50343 (PKSA-w2tw-kmfg-rt9s): CVE-2024-50343: Incorrect response from Validator when input ends with `
+`
+    https://symfony.com/cve-2024-50343
+    affected versions: >=2.0.0,<3.0.0|>=3.0.0,<4.0.0|>=4.0.0,<5.0.0|>=5.0.0,<5.1.0|>=5.1.0,<5.2.0|>=5.2.0,<5.3.0|>=5.3.0,<5.4.0|>=5.4.0,<5.4.43|>=6.0.0,<6.1.0|>=6.1.0,<6.2.0|>=6.2.0,<6.3.0|>=6.3.0,<6.4.0|>=6.4.0,<6.4.11|>=7.0.0,<7.1.0|>=7.1.0,<7.1.4
+Introduced by
+  root
+  └── drupal/address 1.12.0
+      └── drupal/core 10.2.7
+          └── symfony/validator v6.4.8  (requires ^6.4)
+  root
+  └── drupal/admin_toolbar 3.4.2
+      └── drupal/core 10.2.7
+          └── symfony/validator v6.4.8  (requires ^6.4)
+  root
+  └── drupal/allowed_formats 3.0.0
+      └── drupal/core 10.2.7
+          └── symfony/validator v6.4.8  (requires ^6.4)
+  root
+  └── drupal/autologout 2.0.0
+      └── drupal/core 10.2.7
+          └── symfony/validator v6.4.8  (requires ^6.4)
+  root
+  └── drupal/ckeditor_templates 1.4.0
+      └── drupal/ckeditor 1.0.2
+          └── drupal/core 10.2.7
+              └── symfony/validator v6.4.8  (requires ^6.4)
+  … and 73 more paths
+Current state
+  Transitive dependency.
+Recommended remediation
+  symfony/validator v6.4.8 -> v6.4.12
+Composer validation
+  PASS  1 package changed, 0 added, 0 removed, 0 root constraints changed
+Expected changes
+  symfony/validator v6.4.8 -> v6.4.12
+Recommended command
+  composer update symfony/validator
+Other candidates
+  valid, rank 2: composer update symfony/validator -w -m --with 'symfony/validator:>=6.4.11,<7.0.0 || >=7.1.4'  (1 changes)
+  valid, rank 3: composer update drupal/address -W -m --with 'symfony/validator:>=6.4.11,<7.0.0 || >=7.1.4'  (1 changes)
+  valid, rank 4: composer update drupal/ckeditor_templates -W -m --with 'symfony/validator:>=6.4.11,<7.0.0 || >=7.1.4'  (1 changes)
+  valid, rank 5: composer update drupal/allowed_formats -W -m --with 'symfony/validator:>=6.4.11,<7.0.0 || >=7.1.4'  (2 changes)
+  valid, rank 6: composer update drupal/autologout -W -m --with 'symfony/validator:>=6.4.11,<7.0.0 || >=7.1.4'  (2 changes)
+  valid, rank 7: composer update drupal/admin_toolbar -W -m --with 'symfony/validator:>=6.4.11,<7.0.0 || >=7.1.4'  (2 changes)
+  valid, rank 8: composer update drupal/core-recommended -W -m --with 'symfony/validator:>=6.4.11,<7.0.0 || >=7.1.4'  (4 changes)
+  valid, rank 9: composer update drupal/address drupal/admin_toolbar drupal/allowed_formats drupal/autologout drupal/ckeditor_templates drupal/uswds_ckeditor_integration drupal/ckeditor_media_resize drupal/ckeditor_templates_ui drupal/composer_deploy drupal/conditional_fields drupal/content_lock drupal/content_moderation_notifications drupal/core-recommended drupal/views_data_export drupal/ctools drupal/devel drupal/diff drupal/entity_embed drupal/paragraphs_entity_embed drupal/entity_reference_revisions drupal/externalauth drupal/faqfield drupal/feeds drupal/field_defaults drupal/uswds_paragraph_components drupal/field_permissions drupal/hierarchy_manager drupal/image_style_warmer drupal/jquery_ui_accordion drupal/language_switcher_extended drupal/log_stdout drupal/menu_block drupal/menu_breadcrumb drupal/menu_entity_index drupal/menu_item_fields drupal/new_relic_rpm drupal/node_menus drupal/pathauto drupal/redirect drupal/remove_http_headers drupal/s3fs drupal/samlauth drupal/simple_sitemap drupal/simplify_menu drupal/tome drupal/twig_tweak drupal/uswds_base drupal/views_menu_children_filter drupal/viewsreference -W -m --with 'symfony/validator:>=6.4.11,<7.0.0 || >=7.1.4'  (56 changes)
+  not tried (a better candidate already exists): composer require --no-update drupal/core-recommended:^11.0 && composer update drupal/core-recommended -W -m --with 'symfony/validator:>=6.4.11,<7.0.0 || >=7.1.4'
+
 Summary
   Findings: 4 advisories on 4 packages, 2 packages with a verified fix
-  composer update symfony/validator drupal/core-recommended -W -m fixes 2 of 4 findings
+  composer update drupal/core-recommended symfony/validator -W -m fixes 2 of 4 findings
     (4 packages changed, verified by Composer)
   No verified fix: CVE-2024-45440 on drupal/core; CVE-2024-45440 on drupal/core-recommended
 ```

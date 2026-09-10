@@ -81,6 +81,50 @@ final class Database
         return $this->tracksGaps() ? (int) $this->query('SELECT COUNT(*) FROM gap')->fetchColumn() : 0;
     }
 
+    /** Databases built before EPSS / KEV enrichment have no exploit table. */
+    public function tracksExploits(): bool
+    {
+        return (int) $this->query("SELECT COUNT(*) FROM sqlite_master WHERE type = 'table' AND name = 'exploit'")->fetchColumn() === 1;
+    }
+
+    public function exploitCount(): int
+    {
+        return $this->tracksExploits() ? (int) $this->query('SELECT COUNT(*) FROM exploit')->fetchColumn() : 0;
+    }
+
+    /**
+     * Exploit data for the given CVEs (upper-cased keys); CVEs without a row are absent.
+     *
+     * @param list<string> $cves
+     *
+     * @return array<string, Enrichment\ExploitRecord>
+     */
+    public function exploitsFor(array $cves): array
+    {
+        $cves = array_values(array_unique(array_map('strtoupper', $cves)));
+        if ($cves === [] || !$this->tracksExploits()) {
+            return [];
+        }
+        $records = [];
+        foreach (array_chunk($cves, 400) as $chunk) {
+            $placeholders = implode(',', array_fill(0, count($chunk), '?'));
+            $statement = $this->pdo->prepare("SELECT cve, epss, epss_percentile, kev_added, kev_ransomware FROM exploit WHERE cve IN ($placeholders)");
+            $statement->execute($chunk);
+            foreach ($statement->fetchAll(\PDO::FETCH_ASSOC) as $row) {
+                /** @var array{cve: string, epss: mixed, epss_percentile: mixed, kev_added: ?string, kev_ransomware: mixed} $row */
+                $records[$row['cve']] = new Enrichment\ExploitRecord(
+                    $row['cve'],
+                    is_numeric($row['epss']) ? (float) $row['epss'] : null,
+                    is_numeric($row['epss_percentile']) ? (float) $row['epss_percentile'] : null,
+                    is_string($row['kev_added']) && $row['kev_added'] !== '' ? new \DateTimeImmutable($row['kev_added'], new \DateTimeZone('UTC')) : null,
+                    (int) $row['kev_ransomware'] === 1,
+                );
+            }
+        }
+
+        return $records;
+    }
+
     /**
      * Upstream records about the given packages that the build could not interpret.
      *
@@ -170,18 +214,30 @@ final class Database
                 ];
                 $grouped[$package][$advisoryId]['expressions'][(string) ($row['constraint_expr'] ?? '')] = true;
             }
+            $cves = [];
             foreach ($grouped as $package => $advisories) {
                 foreach ($advisories as $advisoryId => $data) {
+                    $cves[$package][$advisoryId] = $this->cve($advisoryId, $data['canonical_id']);
+                }
+            }
+            $exploits = $this->exploitsFor(array_values(array_filter(array_merge(...array_values(array_map('array_values', $cves)) ?: [[]]))));
+            foreach ($grouped as $package => $advisories) {
+                foreach ($advisories as $advisoryId => $data) {
+                    $cve = $cves[$package][$advisoryId];
+                    $exploit = $cve !== null ? ($exploits[strtoupper($cve)] ?? null) : null;
                     $result[$package][] = new Advisory(
                         $data['canonical_id'],
                         $package,
                         self::union(array_keys($data['expressions']), $parser, $data['canonical_id']),
                         $data['title'],
-                        $this->cve($advisoryId, $data['canonical_id']),
+                        $cve,
                         $data['link'],
                         $data['severity'],
                         $data['reported_at'] !== null ? new \DateTimeImmutable($data['reported_at'], new \DateTimeZone('UTC')) : null,
                         $this->sources($advisoryId),
+                        $exploit?->epss,
+                        $exploit?->epssPercentile,
+                        $exploit?->kevAdded,
                     );
                 }
             }

@@ -16,6 +16,7 @@ table{border-collapse:collapse;width:100%;font-size:.92rem}th,td{text-align:left
 .badge{display:inline-block;font-size:.75rem;font-weight:600;padding:.1rem .5rem;border-radius:999px;border:1px solid currentColor;white-space:nowrap}
 .badge.ok{color:var(--ok)}.badge.none,.badge.rejected{color:var(--bad)}.badge.skipped,.badge.dev{color:var(--muted)}
 .badge.sev-critical,.badge.sev-high{color:var(--bad)}.badge.sev-medium{color:var(--warn)}.badge.sev-low{color:var(--muted)}
+.badge.kev{color:#fff;background:var(--bad);border-color:var(--bad)}.badge.epss{color:var(--warn)}.abandoned{color:var(--warn)}
 .warning{border-left:4px solid var(--warn);padding:.5rem .8rem;background:rgba(212,167,44,.1)}.clean{color:var(--ok);font-weight:600}
 .none-box{border-left:4px solid var(--bad);padding:.5rem .8rem;background:rgba(180,35,24,.08)}
 .advisories{padding-left:1.2rem}.advisories li{margin:.4rem 0}
@@ -23,43 +24,8 @@ details summary{cursor:pointer;color:var(--accent);margin:.5rem 0}
 .meta dl{display:grid;grid-template-columns:max-content 1fr;gap:.2rem 1rem;font-size:.85rem;color:var(--muted)}.meta dt{font-weight:600}.meta dd{margin:0;word-break:break-all}</style></head><body>
 <header><h1>Composer Remediate</h1><p class="sub">Composer Remediate — 2 findings in <code>bookstack-guzzle-stale-lock</code></p></header>
 <main>
-<section><h2>Summary</h2><p>6 advisories on 2 packages.</p><p class="command"><span class="badge ok">fixes all 6</span> <code>composer require --no-update barryvdh/laravel-dompdf:^2.0 &amp;&amp; composer update barryvdh/laravel-dompdf guzzlehttp/guzzle -W -m</code></p><table class="summary"><thead><tr><th>Package</th><th>Advisories</th><th>Status</th><th>Recommended command</th></tr></thead><tbody><tr><td><a href="#finding-1">dompdf/dompdf v1.2.2</a></td><td>CVE-2022-0085</td><td><span class="badge ok">verified</span></td><td><code>composer require --no-update barryvdh/laravel-dompdf:^2.0 &amp;&amp; composer update barryvdh/laravel-dompdf -W -m</code></td></tr><tr><td><a href="#finding-2">guzzlehttp/guzzle 7.4.2</a></td><td>CVE-2022-31043, CVE-2022-29248, CVE-2022-31042, CVE-2022-31090, CVE-2022-31091</td><td><span class="badge ok">verified</span></td><td><code>composer update guzzlehttp/guzzle -w -m</code></td></tr></tbody></table></section>
+<section><h2>Summary</h2><p>6 advisories on 2 packages.</p><p class="command"><span class="badge ok">fixes all 6</span> <code>composer require --no-update barryvdh/laravel-dompdf:^2.0 &amp;&amp; composer update barryvdh/laravel-dompdf guzzlehttp/guzzle -W -m</code></p><table class="summary"><thead><tr><th>Package</th><th>Advisories</th><th>Status</th><th>Recommended command</th></tr></thead><tbody><tr><td><a href="#finding-1">guzzlehttp/guzzle 7.4.2</a></td><td>CVE-2022-31043, CVE-2022-29248, CVE-2022-31042, CVE-2022-31090, CVE-2022-31091</td><td><span class="badge ok">verified</span></td><td><code>composer update guzzlehttp/guzzle -w -m</code></td></tr><tr><td><a href="#finding-2">dompdf/dompdf v1.2.2</a></td><td>CVE-2022-0085</td><td><span class="badge ok">verified</span></td><td><code>composer require --no-update barryvdh/laravel-dompdf:^2.0 &amp;&amp; composer update barryvdh/laravel-dompdf -W -m</code></td></tr></tbody></table></section>
 <section class="finding" id="finding-1">
-<h2>dompdf/dompdf <span class="version">v1.2.2</span></h2>
-<p class="state">Transitive dependency.</p>
-<h3>Advisories</h3><ul class="advisories">
-<li><strong><a href="https://github.com/advisories/GHSA-pf6p-25r2-fx45" rel="noopener noreferrer">CVE-2022-0085 <small>(PKSA-872h-8556-2chm)</small></a></strong> <span class="badge sev-medium">medium</span><br>Server-Side Request Forgery in dompdf/dompdf<br><small>affected versions: <code>&lt;2.0.0</code></small></li>
-</ul>
-<h3>Introduced by</h3>
-<pre class="tree">root
-└── barryvdh/laravel-dompdf v1.0.0
-    └── dompdf/dompdf v1.2.2  (requires ^1)</pre>
-<h3>Recommended remediation</h3>
-<p class="command"><code>composer require --no-update barryvdh/laravel-dompdf:^2.0 &amp;&amp; composer update barryvdh/laravel-dompdf -W -m</code></p>
-<p class="validation"><span class="badge ok">Composer validation: PASS</span> 2 packages changed, 1 added, 0 removed, 1 root constraint changed, <strong>includes a major version change</strong>.</p>
-<p>composer.json: <code>barryvdh/laravel-dompdf</code> ^1.0 → <code>^2.0</code></p>
-<p class="warning">Installs pre-release versions: barryvdh/laravel-dompdf v2.0.0-beta2. No stable release satisfies the constraints yet.</p>
-<details open><summary>Expected changes (3)</summary><table class="changes"><thead><tr><th>Package</th><th>From</th><th>To</th><th>Kind</th></tr></thead><tbody>
-<tr><td>barryvdh/laravel-dompdf</td><td>v1.0.0</td><td>v2.0.0-beta2</td><td>upgraded, major</td></tr>
-<tr><td>dompdf/dompdf</td><td>v1.2.2</td><td>v2.0.0</td><td>upgraded, major</td></tr>
-<tr><td>masterminds/html5</td><td>—</td><td>2.7.5</td><td>added</td></tr>
-</tbody></table></details>
-<details><summary>Other candidates (5)</summary><table class="candidates"><thead><tr><th>Outcome</th><th>Command</th><th>Detail</th></tr></thead><tbody>
-<tr><td><span class="badge ok">valid, rank 2</span></td><td><code>composer require --no-update barryvdh/laravel-dompdf:^2.0 &amp;&amp; composer update barryvdh/laravel-dompdf:v2.0.0-beta1 -W -m --with &apos;dompdf/dompdf:&gt;=2.0.0&apos;</code></td><td>3 changes</td></tr>
-<tr><td><span class="badge rejected">rejected</span></td><td><code>composer update dompdf/dompdf</code></td><td><pre class="reason">resolves, but dompdf/dompdf ends at v1.2.2 which is still affected by PKSA-872h-8556-2chm</pre></td></tr>
-<tr><td><span class="badge rejected">rejected</span></td><td><code>composer update dompdf/dompdf -w -m --with &apos;dompdf/dompdf:&gt;=2.0.0&apos;</code></td><td><pre class="reason">Composer could not resolve the dependencies: Your requirements could not be resolved to an installable set of packages.
-  Problem 1
-    - barryvdh/laravel-dompdf is locked to version v1.0.0 and an update of this package was not requested.
-    - barryvdh/laravel-dompdf v1.0.0 requires dompdf/dompdf ^1 -&gt; found dompdf/dompdf[v1.2.2] but it conflicts with your temporary update constraint (dompdf/dompdf:&gt;=2.0.0).
-Use the option --with-all-dependencies (-W) to allow upgrades, downgrades and removals for packages currently locked to specific versions.</pre></td></tr>
-<tr><td><span class="badge rejected">rejected</span></td><td><code>composer update barryvdh/laravel-dompdf -W -m --with &apos;dompdf/dompdf:&gt;=2.0.0&apos;</code></td><td><pre class="reason">Composer could not resolve the dependencies: Your requirements could not be resolved to an installable set of packages.
-  Problem 1
-    - Root composer.json requires barryvdh/laravel-dompdf ^1.0 -&gt; satisfiable by barryvdh/laravel-dompdf[v1.0.0, v1.0.1, v1.0.2].
-    - barryvdh/laravel-dompdf v1.0.0 requires dompdf/dompdf ^1 -&gt; found dompdf/dompdf[v1.2.2] but it conflicts with your temporary update constraint (dompdf/dompdf:&gt;=2.0.0).
-    - barryvdh/laravel-dompdf[v1.0.1, ..., v1.0.2] require dompdf/dompdf ^1.2.1 -&gt; found dompdf/dompdf[v1.2.2] but it conflicts with your temporary update constraint (dompdf/dompdf:&gt;=2.0.0).</pre></td></tr>
-</tbody></table></details>
-</section>
-<section class="finding" id="finding-2">
 <h2>guzzlehttp/guzzle <span class="version">7.4.2</span></h2>
 <p class="state">Direct dependency.</p>
 <h3>Advisories</h3><ul class="advisories">
@@ -113,6 +79,41 @@ root
 <tr><td><span class="badge skipped">not tried</span></td><td><code>composer require --no-update guzzlehttp/guzzle:^8.0 &amp;&amp; composer update guzzlehttp/guzzle -W -m --with &apos;guzzlehttp/guzzle:&gt;=7.4.5&apos;</code></td><td>a better candidate already exists</td></tr>
 </tbody></table></details>
 </section>
+<section class="finding" id="finding-2">
+<h2>dompdf/dompdf <span class="version">v1.2.2</span></h2>
+<p class="state">Transitive dependency.</p>
+<h3>Advisories</h3><ul class="advisories">
+<li><strong><a href="https://github.com/advisories/GHSA-pf6p-25r2-fx45" rel="noopener noreferrer">CVE-2022-0085 <small>(PKSA-872h-8556-2chm)</small></a></strong> <span class="badge sev-medium">medium</span><br>Server-Side Request Forgery in dompdf/dompdf<br><small>affected versions: <code>&lt;2.0.0</code></small></li>
+</ul>
+<h3>Introduced by</h3>
+<pre class="tree">root
+└── barryvdh/laravel-dompdf v1.0.0
+    └── dompdf/dompdf v1.2.2  (requires ^1)</pre>
+<h3>Recommended remediation</h3>
+<p class="command"><code>composer require --no-update barryvdh/laravel-dompdf:^2.0 &amp;&amp; composer update barryvdh/laravel-dompdf -W -m</code></p>
+<p class="validation"><span class="badge ok">Composer validation: PASS</span> 2 packages changed, 1 added, 0 removed, 1 root constraint changed, <strong>includes a major version change</strong>.</p>
+<p>composer.json: <code>barryvdh/laravel-dompdf</code> ^1.0 → <code>^2.0</code></p>
+<p class="warning">Installs pre-release versions: barryvdh/laravel-dompdf v2.0.0-beta2. No stable release satisfies the constraints yet.</p>
+<details open><summary>Expected changes (3)</summary><table class="changes"><thead><tr><th>Package</th><th>From</th><th>To</th><th>Kind</th></tr></thead><tbody>
+<tr><td>barryvdh/laravel-dompdf</td><td>v1.0.0</td><td>v2.0.0-beta2</td><td>upgraded, major</td></tr>
+<tr><td>dompdf/dompdf</td><td>v1.2.2</td><td>v2.0.0</td><td>upgraded, major</td></tr>
+<tr><td>masterminds/html5</td><td>—</td><td>2.7.5</td><td>added</td></tr>
+</tbody></table></details>
+<details><summary>Other candidates (5)</summary><table class="candidates"><thead><tr><th>Outcome</th><th>Command</th><th>Detail</th></tr></thead><tbody>
+<tr><td><span class="badge ok">valid, rank 2</span></td><td><code>composer require --no-update barryvdh/laravel-dompdf:^2.0 &amp;&amp; composer update barryvdh/laravel-dompdf:v2.0.0-beta1 -W -m --with &apos;dompdf/dompdf:&gt;=2.0.0&apos;</code></td><td>3 changes</td></tr>
+<tr><td><span class="badge rejected">rejected</span></td><td><code>composer update dompdf/dompdf</code></td><td><pre class="reason">resolves, but dompdf/dompdf ends at v1.2.2 which is still affected by PKSA-872h-8556-2chm</pre></td></tr>
+<tr><td><span class="badge rejected">rejected</span></td><td><code>composer update dompdf/dompdf -w -m --with &apos;dompdf/dompdf:&gt;=2.0.0&apos;</code></td><td><pre class="reason">Composer could not resolve the dependencies: Your requirements could not be resolved to an installable set of packages.
+  Problem 1
+    - barryvdh/laravel-dompdf is locked to version v1.0.0 and an update of this package was not requested.
+    - barryvdh/laravel-dompdf v1.0.0 requires dompdf/dompdf ^1 -&gt; found dompdf/dompdf[v1.2.2] but it conflicts with your temporary update constraint (dompdf/dompdf:&gt;=2.0.0).
+Use the option --with-all-dependencies (-W) to allow upgrades, downgrades and removals for packages currently locked to specific versions.</pre></td></tr>
+<tr><td><span class="badge rejected">rejected</span></td><td><code>composer update barryvdh/laravel-dompdf -W -m --with &apos;dompdf/dompdf:&gt;=2.0.0&apos;</code></td><td><pre class="reason">Composer could not resolve the dependencies: Your requirements could not be resolved to an installable set of packages.
+  Problem 1
+    - Root composer.json requires barryvdh/laravel-dompdf ^1.0 -&gt; satisfiable by barryvdh/laravel-dompdf[v1.0.0, v1.0.1, v1.0.2].
+    - barryvdh/laravel-dompdf v1.0.0 requires dompdf/dompdf ^1 -&gt; found dompdf/dompdf[v1.2.2] but it conflicts with your temporary update constraint (dompdf/dompdf:&gt;=2.0.0).
+    - barryvdh/laravel-dompdf[v1.0.1, ..., v1.0.2] require dompdf/dompdf ^1.2.1 -&gt; found dompdf/dompdf[v1.2.2] but it conflicts with your temporary update constraint (dompdf/dompdf:&gt;=2.0.0).</pre></td></tr>
+</tbody></table></details>
+</section>
 <section class="meta"><h2>Analysis metadata</h2><dl>
 <dt>project</dt><dd>bookstack-guzzle-stale-lock</dd>
 <dt>engine version</dt><dd>dev-main</dd>
@@ -121,7 +122,7 @@ root
 <dt>advisory source</dt><dd>advisory snapshot advisories.json</dd>
 <dt>solver</dt><dd>in-process Composer dry-run</dd>
 <dt>solver runs</dt><dd>28</dd>
-<dt>composer json sha256</dt><dd>c47bcec51846043fff1d4c1bdd7fd2c0044512eeeaf70a5f33666162dbca209e</dd>
+<dt>composer json sha256</dt><dd>52aa11453783b8e77af6f7e81e64ae7cee2a4c58a69d82f3edab3964499de8ce</dd>
 <dt>composer lock sha256</dt><dd>344de0dd32e1d22719c6e0c717527e601702e8ed4d57664dd0770e606102f7af</dd>
 <dt>analysis timestamp</dt><dd>(fixture)</dd>
 <dt>locked packages</dt><dd>155</dd>

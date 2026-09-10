@@ -12,16 +12,16 @@ same fixtures the test suite asserts on, so a case study that stopped being true
 |---|---|---|---|---|
 | [bookstack-guzzle-stale-lock](#bookstack-guzzle-stale-lock) | 6 | 2 | all fixable | <code>composer require --no-update barryvdh/laravel-dompdf:^2.0 &amp;&amp; composer update barryvdh/laravel-dompdf guzzlehttp/guzzle -W -m</code> |
 | [bookstack-phpseclib-knpsnappy](#bookstack-phpseclib-knpsnappy) | 2 | 2 | all fixable | <code>composer update knplabs/knp-snappy phpseclib/phpseclib</code> |
-| [bookstack-socialite-phpjwt-parent-minor](#bookstack-socialite-phpjwt-parent-minor) | 12 | 9 | all fixable | <code>composer update aws/aws-sdk-php laravel/socialite:v5.24.1 laravel/framework league/commonmark nesbot/carbon onelogin/php-saml robrichards/xmlseclibs symfony/http-foundation symfony/process -W -m --with &apos;firebase/php-jwt:&gt;=7.0.0&apos;</code> |
+| [bookstack-socialite-phpjwt-parent-minor](#bookstack-socialite-phpjwt-parent-minor) | 12 | 9 | all fixable | <code>composer update aws/aws-sdk-php laravel/framework laravel/socialite:v5.24.1 league/commonmark nesbot/carbon onelogin/php-saml robrichards/xmlseclibs symfony/http-foundation symfony/process -W -m --with &apos;firebase/php-jwt:&gt;=7.0.0&apos;</code> |
 | [bookstack-symfony-php80-no-fix](#bookstack-symfony-php80-no-fix) | 6 | 4 | 2 of 4 packages fixable | <code>composer update phenx/php-svg-lib phpseclib/phpseclib</code> |
 | [invoiceninja-phpjwt-two-level](#invoiceninja-phpjwt-two-level) | 3 | 2 | 1 of 2 packages fixable | <code>composer update google/apiclient:v2.12.2 -W -m --with &apos;firebase/php-jwt:&gt;=6.0.0&apos;</code> |
-| [islandora-drupal-twig-meta-package](#islandora-drupal-twig-meta-package) | 4 | 4 | 2 of 4 packages fixable | <code>composer update symfony/validator drupal/core-recommended:10.3.4 -W -m</code> |
-| [kimai1-symfony44-artifact-repo](#kimai1-symfony44-artifact-repo) | 14 | 6 | 4 of 6 packages fixable | <code>composer update symfony/http-foundation symfony/twig-bridge twig/twig symfony/process -w -m --with &apos;twig/twig:&gt;=3.11.2,&lt;3.12.0 &#124;&#124; &gt;=3.14.1&apos;</code> |
+| [islandora-drupal-twig-meta-package](#islandora-drupal-twig-meta-package) | 4 | 4 | 2 of 4 packages fixable | <code>composer update drupal/core-recommended:10.3.4 symfony/validator -W -m</code> |
+| [kimai1-symfony44-artifact-repo](#kimai1-symfony44-artifact-repo) | 14 | 6 | 4 of 6 packages fixable | <code>composer update symfony/http-foundation symfony/process symfony/twig-bridge twig/twig -w -m --with &apos;twig/twig:&gt;=3.11.2,&lt;3.12.0 &#124;&#124; &gt;=3.14.1&apos;</code> |
 | [koel-symfony-parent-permits](#koel-symfony-parent-permits) | 2 | 2 | all fixable | <code>composer update symfony/http-foundation symfony/process</code> |
 | [pixelfed-laravel11-symfony](#pixelfed-laravel11-symfony) | 2 | 2 | all fixable | <code>composer update symfony/http-foundation symfony/process</code> |
-| [shopware-6420-twig-no-fix](#shopware-6420-twig-no-fix) | 26 | 10 | 4 of 10 packages fixable | <code>composer update aws/aws-sdk-php composer/composer symfony/twig-bridge shopware/core -W -m --with &apos;symfony/validator:&gt;=5.4.43,&lt;6.0.0 &#124;&#124; &gt;=6.4.11,&lt;7.0.0 &#124;&#124; &gt;=7.1.4&apos;</code> |
+| [shopware-6420-twig-no-fix](#shopware-6420-twig-no-fix) | 26 | 10 | 4 of 10 packages fixable | <code>composer update aws/aws-sdk-php composer/composer shopware/core symfony/twig-bridge -W -m --with &apos;symfony/validator:&gt;=5.4.43,&lt;6.0.0 &#124;&#124; &gt;=6.4.11,&lt;7.0.0 &#124;&#124; &gt;=7.1.4&apos;</code> |
 | [shopware-twig-parent-pin](#shopware-twig-parent-pin) | 4 | 2 | 1 of 2 packages fixable | <code>composer update shopware/storefront:6.4.15.2 shopware/recovery shopware/elasticsearch shopware/administration -W -m</code> |
-| [usagov-drupal-core-recommended-twig](#usagov-drupal-core-recommended-twig) | 4 | 4 | 2 of 4 packages fixable | <code>composer update symfony/validator drupal/core-recommended -W -m</code> |
+| [usagov-drupal-core-recommended-twig](#usagov-drupal-core-recommended-twig) | 4 | 4 | 2 of 4 packages fixable | <code>composer update drupal/core-recommended symfony/validator -W -m</code> |
 
 ## bookstack-guzzle-stale-lock
 
@@ -59,8 +59,8 @@ Built with `bin/build-fixture.php --as-of=2022-07-01`.
 
 | Package | Advisories | Recommended command | Changes | Outcome |
 |---|---|---|---|---|
-| dompdf/dompdf v1.2.2 | CVE-2022-0085 | <code>composer require --no-update barryvdh/laravel-dompdf:^2.0 &amp;&amp; composer update barryvdh/laravel-dompdf -W -m</code> | 3 | verified |
 | guzzlehttp/guzzle 7.4.2 | CVE-2022-31043, CVE-2022-29248, CVE-2022-31042, CVE-2022-31090, CVE-2022-31091 | <code>composer update guzzlehttp/guzzle -w -m</code> | 2 | verified |
+| dompdf/dompdf v1.2.2 | CVE-2022-0085 | <code>composer require --no-update barryvdh/laravel-dompdf:^2.0 &amp;&amp; composer update barryvdh/laravel-dompdf -W -m</code> | 3 | verified |
 
 Combined command (6 of 6 findings): `composer require --no-update barryvdh/laravel-dompdf:^2.0 && composer update barryvdh/laravel-dompdf guzzlehttp/guzzle -W -m`
 
@@ -129,7 +129,7 @@ Eleven further advisories in the same lock (laravel/framework, symfony/http-foun
 nesbot/carbon, league/commonmark, aws/aws-sdk-php, robrichards/xmlseclibs via onelogin/php-saml) are
 all fixable by partial updates, so the summary offers one combined command:
 
-    composer update aws/aws-sdk-php laravel/socialite:v5.24.1 laravel/framework league/commonmark nesbot/carbon onelogin/php-saml robrichards/xmlseclibs symfony/http-foundation symfony/process -W -m --with 'firebase/php-jwt:>=7.0.0'
+    composer update aws/aws-sdk-php laravel/framework laravel/socialite:v5.24.1 league/commonmark nesbot/carbon onelogin/php-saml robrichards/xmlseclibs symfony/http-foundation symfony/process -W -m --with 'firebase/php-jwt:>=7.0.0'
 
 Built with `bin/build-fixture.php --as-of=2026-01-10`.
 
@@ -139,17 +139,17 @@ Built with `bin/build-fixture.php --as-of=2026-01-10`.
 
 | Package | Advisories | Recommended command | Changes | Outcome |
 |---|---|---|---|---|
-| aws/aws-sdk-php 3.322.6 | CVE-2025-14761 | <code>composer update aws/aws-sdk-php</code> | 2 | verified |
-| firebase/php-jwt v6.10.1 | CVE-2025-45769 | <code>composer update laravel/socialite:v5.24.1 -W -m --with &apos;firebase/php-jwt:&gt;=7.0.0&apos;</code> | 3 | verified |
+| onelogin/php-saml 4.2.0 | PKSA-67d7-mg8j-87zx | <code>composer update onelogin/php-saml -w</code> | 2 | verified |
 | laravel/framework v10.48.22 | CVE-2025-27515, CVE-2024-52301 | <code>composer update laravel/framework</code> | 1 | verified |
 | league/commonmark 2.5.3 | PKSA-fndg-qryc-dyc9, CVE-2025-46734 | <code>composer update league/commonmark</code> | 1 | verified |
-| nesbot/carbon 2.72.5 | CVE-2025-22145 | <code>composer update nesbot/carbon</code> | 1 | verified |
-| onelogin/php-saml 4.2.0 | PKSA-67d7-mg8j-87zx | <code>composer update onelogin/php-saml -w</code> | 2 | verified |
-| robrichards/xmlseclibs 3.1.1 | CVE-2025-66578 | <code>composer update robrichards/xmlseclibs</code> | 1 | verified |
 | symfony/http-foundation v6.4.12 | CVE-2025-64500, CVE-2024-50345 | <code>composer update symfony/http-foundation</code> | 1 | verified |
 | symfony/process v6.4.12 | CVE-2024-51736 | <code>composer update symfony/process</code> | 1 | verified |
+| aws/aws-sdk-php 3.322.6 | CVE-2025-14761 | <code>composer update aws/aws-sdk-php</code> | 2 | verified |
+| nesbot/carbon 2.72.5 | CVE-2025-22145 | <code>composer update nesbot/carbon</code> | 1 | verified |
+| robrichards/xmlseclibs 3.1.1 | CVE-2025-66578 | <code>composer update robrichards/xmlseclibs</code> | 1 | verified |
+| firebase/php-jwt v6.10.1 | CVE-2025-45769 | <code>composer update laravel/socialite:v5.24.1 -W -m --with &apos;firebase/php-jwt:&gt;=7.0.0&apos;</code> | 3 | verified |
 
-Combined command (12 of 12 findings): `composer update aws/aws-sdk-php laravel/socialite:v5.24.1 laravel/framework league/commonmark nesbot/carbon onelogin/php-saml robrichards/xmlseclibs symfony/http-foundation symfony/process -W -m --with 'firebase/php-jwt:>=7.0.0'`
+Combined command (12 of 12 findings): `composer update aws/aws-sdk-php laravel/framework laravel/socialite:v5.24.1 league/commonmark nesbot/carbon onelogin/php-saml robrichards/xmlseclibs symfony/http-foundation symfony/process -W -m --with 'firebase/php-jwt:>=7.0.0'`
 
 Stored reports: [console](https://github.com/hexblot/composer-remediate/blob/main/tests/Fixture/bookstack-socialite-phpjwt-parent-minor/reports/report.md), [JSON](https://github.com/hexblot/composer-remediate/blob/main/tests/Fixture/bookstack-socialite-phpjwt-parent-minor/reports/report.json), [HTML](https://github.com/hexblot/composer-remediate/blob/main/tests/Fixture/bookstack-socialite-phpjwt-parent-minor/reports/report.html), [SARIF](https://github.com/hexblot/composer-remediate/blob/main/tests/Fixture/bookstack-socialite-phpjwt-parent-minor/reports/report.sarif), [CycloneDX](https://github.com/hexblot/composer-remediate/blob/main/tests/Fixture/bookstack-socialite-phpjwt-parent-minor/reports/report.cdx.json), [GitLab](https://github.com/hexblot/composer-remediate/blob/main/tests/Fixture/bookstack-socialite-phpjwt-parent-minor/reports/gl-dependency-scanning-report.json). Fixture: [bookstack-socialite-phpjwt-parent-minor](https://github.com/hexblot/composer-remediate/blob/main/tests/Fixture/bookstack-socialite-phpjwt-parent-minor).
 
@@ -188,8 +188,8 @@ Built with `bin/build-fixture.php --as-of=2024-11-10`.
 |---|---|---|---|---|
 | phenx/php-svg-lib 0.5.1 | CVE-2024-25117, PKSA-qsyb-3psh-f1t3 | <code>composer update phenx/php-svg-lib</code> | 1 | verified |
 | phpseclib/phpseclib 3.0.34 | CVE-2024-27355, CVE-2024-27354 | <code>composer update phpseclib/phpseclib</code> | 1 | verified |
-| symfony/http-foundation v6.0.20 | CVE-2024-50345 |  |  | none found within the search budget |
 | symfony/process v6.0.19 | CVE-2024-51736 |  |  | none found within the search budget |
+| symfony/http-foundation v6.0.20 | CVE-2024-50345 |  |  | none found within the search budget |
 
 Combined command (4 of 6 findings): `composer update phenx/php-svg-lib phpseclib/phpseclib`
 
@@ -273,10 +273,10 @@ Built with `bin/build-fixture.php --as-of=2024-09-20 --platform-php=8.3.0`.
 |---|---|---|---|---|
 | drupal/core 10.3.1 | CVE-2024-45440 |  |  | none found within the search budget |
 | drupal/core-recommended 10.3.1 | CVE-2024-45440 |  |  | none |
-| symfony/validator v6.4.9 | CVE-2024-50343 | <code>composer update symfony/validator</code> | 1 | verified |
 | twig/twig v3.10.3 | CVE-2024-45411 | <code>composer update drupal/core-recommended:10.3.4 -W -m</code> | 3 | verified |
+| symfony/validator v6.4.9 | CVE-2024-50343 | <code>composer update symfony/validator</code> | 1 | verified |
 
-Combined command (2 of 4 findings): `composer update symfony/validator drupal/core-recommended:10.3.4 -W -m`
+Combined command (2 of 4 findings): `composer update drupal/core-recommended:10.3.4 symfony/validator -W -m`
 
 Stored reports: [console](https://github.com/hexblot/composer-remediate/blob/main/tests/Fixture/islandora-drupal-twig-meta-package/reports/report.md), [JSON](https://github.com/hexblot/composer-remediate/blob/main/tests/Fixture/islandora-drupal-twig-meta-package/reports/report.json), [HTML](https://github.com/hexblot/composer-remediate/blob/main/tests/Fixture/islandora-drupal-twig-meta-package/reports/report.html), [SARIF](https://github.com/hexblot/composer-remediate/blob/main/tests/Fixture/islandora-drupal-twig-meta-package/reports/report.sarif), [CycloneDX](https://github.com/hexblot/composer-remediate/blob/main/tests/Fixture/islandora-drupal-twig-meta-package/reports/report.cdx.json), [GitLab](https://github.com/hexblot/composer-remediate/blob/main/tests/Fixture/islandora-drupal-twig-meta-package/reports/gl-dependency-scanning-report.json). Fixture: [islandora-drupal-twig-meta-package](https://github.com/hexblot/composer-remediate/blob/main/tests/Fixture/islandora-drupal-twig-meta-package).
 
@@ -302,7 +302,7 @@ requires PHP 8, and `symfony/validator 4.4.48` (direct, `^4.4`) has its fix only
 
 The summary's combined command fixes 6 of 14 findings:
 
-    composer update symfony/http-foundation symfony/twig-bridge twig/twig symfony/process -w -m --with 'twig/twig:>=3.11.2,<3.12.0 || >=3.14.1'
+    composer update symfony/http-foundation symfony/process symfony/twig-bridge twig/twig -w -m --with 'twig/twig:>=3.11.2,<3.12.0 || >=3.14.1'
 
 Built with `bin/build-fixture.php --as-of=2024-11-10`.
 
@@ -313,13 +313,13 @@ Built with `bin/build-fixture.php --as-of=2024-11-10`.
 | Package | Advisories | Recommended command | Changes | Outcome |
 |---|---|---|---|---|
 | phpoffice/phpspreadsheet 1.25.2 | CVE-2024-45291, CVE-2024-45060, CVE-2024-45046, CVE-2024-45293, CVE-2024-45292, CVE-2024-45290, CVE-2024-45048 |  |  | none |
-| symfony/http-foundation v4.4.49 | CVE-2024-50345 | <code>composer update symfony/http-foundation</code> | 1 | verified |
 | symfony/twig-bridge v4.4.49 | CVE-2023-46734 | <code>composer update symfony/twig-bridge</code> | 1 | verified |
-| symfony/validator v4.4.48 | CVE-2024-50343 |  |  | none |
 | twig/twig v3.5.1 | CVE-2024-51755, CVE-2024-45411, CVE-2024-51754 | <code>composer update twig/twig -w -m --with &apos;twig/twig:&gt;=3.11.2,&lt;3.12.0 &#124;&#124; &gt;=3.14.1&apos;</code> | 2 | verified |
+| symfony/http-foundation v4.4.49 | CVE-2024-50345 | <code>composer update symfony/http-foundation</code> | 1 | verified |
+| symfony/validator v4.4.48 | CVE-2024-50343 |  |  | none |
 | symfony/process v4.4.44 (dev) | CVE-2024-51736 | <code>composer update symfony/process</code> | 1 | verified |
 
-Combined command (6 of 14 findings): `composer update symfony/http-foundation symfony/twig-bridge twig/twig symfony/process -w -m --with 'twig/twig:>=3.11.2,<3.12.0 || >=3.14.1'`
+Combined command (6 of 14 findings): `composer update symfony/http-foundation symfony/process symfony/twig-bridge twig/twig -w -m --with 'twig/twig:>=3.11.2,<3.12.0 || >=3.14.1'`
 
 Stored reports: [console](https://github.com/hexblot/composer-remediate/blob/main/tests/Fixture/kimai1-symfony44-artifact-repo/reports/report.md), [JSON](https://github.com/hexblot/composer-remediate/blob/main/tests/Fixture/kimai1-symfony44-artifact-repo/reports/report.json), [HTML](https://github.com/hexblot/composer-remediate/blob/main/tests/Fixture/kimai1-symfony44-artifact-repo/reports/report.html), [SARIF](https://github.com/hexblot/composer-remediate/blob/main/tests/Fixture/kimai1-symfony44-artifact-repo/reports/report.sarif), [CycloneDX](https://github.com/hexblot/composer-remediate/blob/main/tests/Fixture/kimai1-symfony44-artifact-repo/reports/report.cdx.json), [GitLab](https://github.com/hexblot/composer-remediate/blob/main/tests/Fixture/kimai1-symfony44-artifact-repo/reports/gl-dependency-scanning-report.json). Fixture: [kimai1-symfony44-artifact-repo](https://github.com/hexblot/composer-remediate/blob/main/tests/Fixture/kimai1-symfony44-artifact-repo).
 
@@ -357,8 +357,8 @@ Built with `bin/build-fixture.php --as-of=2024-11-10 --platform-php=8.3.0`.
 
 | Package | Advisories | Recommended command | Changes | Outcome |
 |---|---|---|---|---|
-| symfony/http-foundation v6.4.4 | CVE-2024-50345 | <code>composer update symfony/http-foundation</code> | 1 | verified |
 | symfony/process v6.4.4 | CVE-2024-51736 | <code>composer update symfony/process</code> | 1 | verified |
+| symfony/http-foundation v6.4.4 | CVE-2024-50345 | <code>composer update symfony/http-foundation</code> | 1 | verified |
 
 Combined command (2 of 2 findings): `composer update symfony/http-foundation symfony/process`
 
@@ -392,8 +392,8 @@ Built with `bin/build-fixture.php --as-of=2024-11-10 --platform-php=8.3.0`.
 
 | Package | Advisories | Recommended command | Changes | Outcome |
 |---|---|---|---|---|
-| symfony/http-foundation v7.1.5 | CVE-2024-50345 | <code>composer update symfony/http-foundation</code> | 1 | verified |
 | symfony/process v7.1.5 | CVE-2024-51736 | <code>composer update symfony/process</code> | 1 | verified |
+| symfony/http-foundation v7.1.5 | CVE-2024-50345 | <code>composer update symfony/http-foundation</code> | 1 | verified |
 
 Combined command (2 of 2 findings): `composer update symfony/http-foundation symfony/process`
 
@@ -422,7 +422,7 @@ for the packages shopware/core pins exactly (shopwarelabs/dompdf, tecnickcom/tcp
 Still fixable by partial updates: `composer/composer`, `symfony/twig-bridge`, `aws/aws-sdk-php` (with
 its dependencies) and `symfony/validator`. The summary's combined command fixes 7 of 26 findings:
 
-    composer update aws/aws-sdk-php composer/composer symfony/twig-bridge shopware/core -W -m --with 'symfony/validator:>=5.4.43,<6.0.0 || >=6.4.11,<7.0.0 || >=7.1.4'
+    composer update aws/aws-sdk-php composer/composer shopware/core symfony/twig-bridge -W -m --with 'symfony/validator:>=5.4.43,<6.0.0 || >=6.4.11,<7.0.0 || >=7.1.4'
 
 The honest answer for this project is a Shopware 6.5/6.6 migration; the report says so by listing
 what cannot be fixed in place.
@@ -435,18 +435,18 @@ Built with `bin/build-fixture.php --as-of=2024-09-15`.
 
 | Package | Advisories | Recommended command | Changes | Outcome |
 |---|---|---|---|---|
-| aws/aws-sdk-php 3.269.6 | CVE-2023-51651 | <code>composer update aws/aws-sdk-php -w -m</code> | 2 | verified |
-| composer/composer 2.2.21 | CVE-2024-35242, CVE-2024-24821, CVE-2023-43655, CVE-2024-35241 | <code>composer update composer/composer</code> | 1 | verified |
-| league/oauth2-server 8.3.6 | CVE-2023-37260 |  |  | none |
 | phenx/php-svg-lib 0.3.4 | CVE-2024-25117, CVE-2023-50251, PKSA-qsyb-3psh-f1t3 |  |  | none |
 | shopware/core 6.4.20.2 | CVE-2024-42354, CVE-2024-42355, CVE-2024-42356, CVE-2024-22406, CVE-2024-22407, CVE-2024-31447, CVE-2024-42357 |  |  | none found within the search budget |
 | shopwarelabs/dompdf v1.0.3 | CVE-2023-23924, CVE-2023-50262, CVE-2022-0085, CVE-2022-41343, CVE-2022-2400 |  |  | none |
+| composer/composer 2.2.21 | CVE-2024-35242, CVE-2024-24821, CVE-2023-43655, CVE-2024-35241 | <code>composer update composer/composer</code> | 1 | verified |
+| league/oauth2-server 8.3.6 | CVE-2023-37260 |  |  | none |
+| aws/aws-sdk-php 3.269.6 | CVE-2023-51651 | <code>composer update aws/aws-sdk-php -w -m</code> | 2 | verified |
 | symfony/twig-bridge v5.4.22 | CVE-2023-46734 | <code>composer update symfony/twig-bridge</code> | 1 | verified |
-| symfony/validator v5.4.23 | CVE-2024-50343 | <code>composer update shopware/core -W -m --with &apos;symfony/validator:&gt;=5.4.43,&lt;6.0.0 &#124;&#124; &gt;=6.4.11,&lt;7.0.0 &#124;&#124; &gt;=7.1.4&apos;</code> | 2 | verified |
 | tecnickcom/tcpdf 6.4.4 | CVE-2024-32489, CVE-2024-22640 |  |  | none found within the search budget |
 | twig/twig v3.4.3 | CVE-2024-45411 |  |  | none found within the search budget |
+| symfony/validator v5.4.23 | CVE-2024-50343 | <code>composer update shopware/core -W -m --with &apos;symfony/validator:&gt;=5.4.43,&lt;6.0.0 &#124;&#124; &gt;=6.4.11,&lt;7.0.0 &#124;&#124; &gt;=7.1.4&apos;</code> | 2 | verified |
 
-Combined command (7 of 26 findings): `composer update aws/aws-sdk-php composer/composer symfony/twig-bridge shopware/core -W -m --with 'symfony/validator:>=5.4.43,<6.0.0 || >=6.4.11,<7.0.0 || >=7.1.4'`
+Combined command (7 of 26 findings): `composer update aws/aws-sdk-php composer/composer shopware/core symfony/twig-bridge -W -m --with 'symfony/validator:>=5.4.43,<6.0.0 || >=6.4.11,<7.0.0 || >=7.1.4'`
 
 Stored reports: [console](https://github.com/hexblot/composer-remediate/blob/main/tests/Fixture/shopware-6420-twig-no-fix/reports/report.md), [JSON](https://github.com/hexblot/composer-remediate/blob/main/tests/Fixture/shopware-6420-twig-no-fix/reports/report.json), [HTML](https://github.com/hexblot/composer-remediate/blob/main/tests/Fixture/shopware-6420-twig-no-fix/reports/report.html), [SARIF](https://github.com/hexblot/composer-remediate/blob/main/tests/Fixture/shopware-6420-twig-no-fix/reports/report.sarif), [CycloneDX](https://github.com/hexblot/composer-remediate/blob/main/tests/Fixture/shopware-6420-twig-no-fix/reports/report.cdx.json), [GitLab](https://github.com/hexblot/composer-remediate/blob/main/tests/Fixture/shopware-6420-twig-no-fix/reports/gl-dependency-scanning-report.json). Fixture: [shopware-6420-twig-no-fix](https://github.com/hexblot/composer-remediate/blob/main/tests/Fixture/shopware-6420-twig-no-fix).
 
@@ -531,10 +531,10 @@ Built with `bin/build-fixture.php --as-of=2024-09-20 --platform-php=8.3.0`.
 |---|---|---|---|---|
 | drupal/core 10.2.7 | CVE-2024-45440 |  |  | none found within the search budget |
 | drupal/core-recommended 10.2.7 | CVE-2024-45440 |  |  | none |
-| symfony/validator v6.4.8 | CVE-2024-50343 | <code>composer update symfony/validator</code> | 1 | verified |
 | twig/twig v3.8.0 | CVE-2024-45411 | <code>composer update drupal/core-recommended -W -m</code> | 3 | verified |
+| symfony/validator v6.4.8 | CVE-2024-50343 | <code>composer update symfony/validator</code> | 1 | verified |
 
-Combined command (2 of 4 findings): `composer update symfony/validator drupal/core-recommended -W -m`
+Combined command (2 of 4 findings): `composer update drupal/core-recommended symfony/validator -W -m`
 
 Stored reports: [console](https://github.com/hexblot/composer-remediate/blob/main/tests/Fixture/usagov-drupal-core-recommended-twig/reports/report.md), [JSON](https://github.com/hexblot/composer-remediate/blob/main/tests/Fixture/usagov-drupal-core-recommended-twig/reports/report.json), [HTML](https://github.com/hexblot/composer-remediate/blob/main/tests/Fixture/usagov-drupal-core-recommended-twig/reports/report.html), [SARIF](https://github.com/hexblot/composer-remediate/blob/main/tests/Fixture/usagov-drupal-core-recommended-twig/reports/report.sarif), [CycloneDX](https://github.com/hexblot/composer-remediate/blob/main/tests/Fixture/usagov-drupal-core-recommended-twig/reports/report.cdx.json), [GitLab](https://github.com/hexblot/composer-remediate/blob/main/tests/Fixture/usagov-drupal-core-recommended-twig/reports/gl-dependency-scanning-report.json). Fixture: [usagov-drupal-core-recommended-twig](https://github.com/hexblot/composer-remediate/blob/main/tests/Fixture/usagov-drupal-core-recommended-twig).
 

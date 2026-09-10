@@ -7,50 +7,6 @@ Composer Remediate — 2 findings in bookstack-guzzle-stale-lock
 Advisories: advisory snapshot advisories.json
 Solver: in-process Composer dry-run
 
-CVE-2022-0085
-────────────────────────────────────────────────────────────
-Affected
-  dompdf/dompdf v1.2.2
-  CVE-2022-0085 (PKSA-872h-8556-2chm): Server-Side Request Forgery in dompdf/dompdf
-    https://github.com/advisories/GHSA-pf6p-25r2-fx45
-    affected versions: <2.0.0
-Introduced by
-  root
-  └── barryvdh/laravel-dompdf v1.0.0
-      └── dompdf/dompdf v1.2.2  (requires ^1)
-Current state
-  Transitive dependency.
-Recommended remediation
-  barryvdh/laravel-dompdf v1.0.0 -> v2.0.0-beta2
-  dompdf/dompdf v1.2.2 -> v2.0.0
-  composer.json: barryvdh/laravel-dompdf ^1.0 -> ^2.0
-  Constraint drag: composer.json requires barryvdh/laravel-dompdf ^1.0, which blocks every fix within the current constraints; the recommendation widens it to ^2.0.
-  Note: installs pre-release versions (barryvdh/laravel-dompdf v2.0.0-beta2); no stable release satisfies the constraints yet.
-Composer validation
-  PASS  2 packages changed, 1 added, 0 removed, 1 root constraint changed, includes a major version change
-Expected changes
-  barryvdh/laravel-dompdf v1.0.0 -> v2.0.0-beta2
-  dompdf/dompdf v1.2.2 -> v2.0.0
-  masterminds/html5 added (2.7.5)
-Recommended command
-  composer require --no-update barryvdh/laravel-dompdf:^2.0 && composer update barryvdh/laravel-dompdf -W -m
-Other candidates
-  valid, rank 2: composer require --no-update barryvdh/laravel-dompdf:^2.0 && composer update barryvdh/laravel-dompdf:v2.0.0-beta1 -W -m --with 'dompdf/dompdf:>=2.0.0'  (3 changes)
-  rejected: composer update dompdf/dompdf
-      resolves, but dompdf/dompdf ends at v1.2.2 which is still affected by PKSA-872h-8556-2chm
-  rejected: composer update dompdf/dompdf -w -m --with 'dompdf/dompdf:>=2.0.0'
-      Composer could not resolve the dependencies: Your requirements could not be resolved to an installable set of packages.
-        Problem 1
-          - barryvdh/laravel-dompdf is locked to version v1.0.0 and an update of this package was not requested.
-          - barryvdh/laravel-dompdf v1.0.0 requires dompdf/dompdf ^1 -> found dompdf/dompdf[v1.2.2] but it conflicts with your temporary update constraint (dompdf/dompdf:>=2.0.0).
-      Use the option --with-all-dependencies (-W) to allow upgrades, downgrades and removals for packages currently locked to specific versions.
-  rejected: composer update barryvdh/laravel-dompdf -W -m --with 'dompdf/dompdf:>=2.0.0'
-      Composer could not resolve the dependencies: Your requirements could not be resolved to an installable set of packages.
-        Problem 1
-          - Root composer.json requires barryvdh/laravel-dompdf ^1.0 -> satisfiable by barryvdh/laravel-dompdf[v1.0.0, v1.0.1, v1.0.2].
-          - barryvdh/laravel-dompdf v1.0.0 requires dompdf/dompdf ^1 -> found dompdf/dompdf[v1.2.2] but it conflicts with your temporary update constraint (dompdf/dompdf:>=2.0.0).
-          - barryvdh/laravel-dompdf[v1.0.1, ..., v1.0.2] require dompdf/dompdf ^1.2.1 -> found dompdf/dompdf[v1.2.2] but it conflicts with your temporary update constraint (dompdf/dompdf:>=2.0.0).
-
 CVE-2022-31043, CVE-2022-29248, CVE-2022-31042, CVE-2022-31090, CVE-2022-31091
 ────────────────────────────────────────────────────────────
 Affected
@@ -113,6 +69,50 @@ Other candidates
   rejected: composer update guzzlehttp/guzzle
       resolves, but guzzlehttp/guzzle ends at 7.4.4 which is still affected by PKSA-k1b4-kshy-xgbh, PKSA-yfw5-9gnj-n2c7
   not tried (a better candidate already exists): composer require --no-update guzzlehttp/guzzle:^8.0 && composer update guzzlehttp/guzzle -W -m --with 'guzzlehttp/guzzle:>=7.4.5'
+
+CVE-2022-0085
+────────────────────────────────────────────────────────────
+Affected
+  dompdf/dompdf v1.2.2
+  CVE-2022-0085 (PKSA-872h-8556-2chm): Server-Side Request Forgery in dompdf/dompdf
+    https://github.com/advisories/GHSA-pf6p-25r2-fx45
+    affected versions: <2.0.0
+Introduced by
+  root
+  └── barryvdh/laravel-dompdf v1.0.0
+      └── dompdf/dompdf v1.2.2  (requires ^1)
+Current state
+  Transitive dependency.
+Recommended remediation
+  barryvdh/laravel-dompdf v1.0.0 -> v2.0.0-beta2
+  dompdf/dompdf v1.2.2 -> v2.0.0
+  composer.json: barryvdh/laravel-dompdf ^1.0 -> ^2.0
+  Constraint drag: composer.json requires barryvdh/laravel-dompdf ^1.0, which blocks every fix within the current constraints; the recommendation widens it to ^2.0.
+  Note: installs pre-release versions (barryvdh/laravel-dompdf v2.0.0-beta2); no stable release satisfies the constraints yet.
+Composer validation
+  PASS  2 packages changed, 1 added, 0 removed, 1 root constraint changed, includes a major version change
+Expected changes
+  barryvdh/laravel-dompdf v1.0.0 -> v2.0.0-beta2
+  dompdf/dompdf v1.2.2 -> v2.0.0
+  masterminds/html5 added (2.7.5)
+Recommended command
+  composer require --no-update barryvdh/laravel-dompdf:^2.0 && composer update barryvdh/laravel-dompdf -W -m
+Other candidates
+  valid, rank 2: composer require --no-update barryvdh/laravel-dompdf:^2.0 && composer update barryvdh/laravel-dompdf:v2.0.0-beta1 -W -m --with 'dompdf/dompdf:>=2.0.0'  (3 changes)
+  rejected: composer update dompdf/dompdf
+      resolves, but dompdf/dompdf ends at v1.2.2 which is still affected by PKSA-872h-8556-2chm
+  rejected: composer update dompdf/dompdf -w -m --with 'dompdf/dompdf:>=2.0.0'
+      Composer could not resolve the dependencies: Your requirements could not be resolved to an installable set of packages.
+        Problem 1
+          - barryvdh/laravel-dompdf is locked to version v1.0.0 and an update of this package was not requested.
+          - barryvdh/laravel-dompdf v1.0.0 requires dompdf/dompdf ^1 -> found dompdf/dompdf[v1.2.2] but it conflicts with your temporary update constraint (dompdf/dompdf:>=2.0.0).
+      Use the option --with-all-dependencies (-W) to allow upgrades, downgrades and removals for packages currently locked to specific versions.
+  rejected: composer update barryvdh/laravel-dompdf -W -m --with 'dompdf/dompdf:>=2.0.0'
+      Composer could not resolve the dependencies: Your requirements could not be resolved to an installable set of packages.
+        Problem 1
+          - Root composer.json requires barryvdh/laravel-dompdf ^1.0 -> satisfiable by barryvdh/laravel-dompdf[v1.0.0, v1.0.1, v1.0.2].
+          - barryvdh/laravel-dompdf v1.0.0 requires dompdf/dompdf ^1 -> found dompdf/dompdf[v1.2.2] but it conflicts with your temporary update constraint (dompdf/dompdf:>=2.0.0).
+          - barryvdh/laravel-dompdf[v1.0.1, ..., v1.0.2] require dompdf/dompdf ^1.2.1 -> found dompdf/dompdf[v1.2.2] but it conflicts with your temporary update constraint (dompdf/dompdf:>=2.0.0).
 
 Summary
   Findings: 6 advisories on 2 packages, 2 packages with a verified fix

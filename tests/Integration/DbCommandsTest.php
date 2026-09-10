@@ -60,7 +60,54 @@ YAML);
     /** @param array<string, mixed> $options */
     private function build(array $options): \Remediate\Tests\Support\CommandResult
     {
-        return $this->runner->run($options + ['command' => 'remediate:db-build', '--source' => ['friendsofphp'], '--friendsofphp-path' => $this->checkout, '--include' => [self::FIXTURE . '/advisories.json']], $this->project);
+        return $this->runner->run($options + ['command' => 'remediate:db-build', '--source' => ['friendsofphp'], '--friendsofphp-path' => $this->checkout, '--include' => [self::FIXTURE . '/advisories.json'], '--enrich' => ['none']], $this->project);
+    }
+
+    public function testBuildRejectsAnUnknownEnrichment(): void
+    {
+        $result = $this->build(['--enrich' => ['nvd']]);
+        self::assertSame(Plan::EXIT_ERROR, $result->exitCode, $result->describe());
+        self::assertStringContainsString('Unknown enrichment(s) nvd; choose from epss, kev or none', $result->stderr);
+    }
+
+    public function testLocalExploitFeedsEnrichTheDatabaseAndTheReport(): void
+    {
+        $epss = $this->project . '/epss.csv';
+        $kev = $this->project . '/kev.json';
+        file_put_contents($epss, "#model_version:v2025.03.14,score_date:2026-09-09T00:00:00+0000\ncve,epss,percentile\nCVE-2026-00001,0.93412,0.99871\nCVE-2026-00002,0.5,0.5\n");
+        file_put_contents($kev, json_encode(['catalogVersion' => '2026.09.09', 'dateReleased' => '2026-09-09T14:00:00Z', 'vulnerabilities' => [['cveID' => 'CVE-2026-00001', 'dateAdded' => '2026-02-01', 'knownRansomwareCampaignUse' => 'Known']]], JSON_THROW_ON_ERROR));
+        $db = $this->project . '/enriched.sqlite';
+
+        $result = $this->build(['--output' => $db, '--enrich' => ['epss', 'kev'], '--epss-file' => $epss, '--kev-file' => $kev]);
+        self::assertSame(0, $result->exitCode, $result->describe());
+        self::assertStringContainsString('exploit data (EPSS / CISA KEV) for 2 CVEs', $result->stdout, 'CVE-2026-00001 (include file) and CVE-2026-00002 (FriendsOfPHP) are in this database');
+        self::assertStringContainsString('EPSS: reading ' . $epss, $result->stderr);
+        self::assertStringContainsString('KEV: reading ' . $kev, $result->stderr);
+
+        $status = $this->runner->run(['command' => 'remediate:db-status', '--database-location' => $db], $this->project);
+        self::assertSame(0, $status->exitCode, $status->describe());
+        self::assertStringContainsString('Exploit data: 2 CVEs, EPSS scored 2026-09-09T00:00:00+0000, KEV catalogue 2026-09-09T14:00:00Z (1 listed here)', $status->stdout);
+        self::assertStringNotContainsString('Built before exploit data', $status->stdout);
+
+        $remediate = $this->runner->run(['command' => 'remediate', '--database-location' => $db, '--format' => 'json'], $this->project);
+        self::assertSame(Plan::EXIT_REMEDIATION_AVAILABLE, $remediate->exitCode, $remediate->describe());
+        $report = $remediate->json();
+        $advisory = $report['findings'][0]['advisories'][0];
+        self::assertSame('CVE-2026-00001', $advisory['cve']);
+        self::assertSame(0.93412, $advisory['epss']);
+        self::assertSame('2026-02-01', $advisory['kev_added']);
+        self::assertSame(1, $report['summary']['packages_known_exploited']);
+        self::assertStringContainsString('EPSS scored 2026-09-09, KEV catalogue 2026-09-09', $report['analysis_metadata']['advisory_source']);
+    }
+
+    public function testADatabaseBuiltWithoutEnrichmentSaysSoInStatus(): void
+    {
+        $db = $this->project . '/plain.sqlite';
+        self::assertSame(0, $this->build(['--output' => $db])->exitCode);
+        (new \PDO('sqlite:' . $db))->exec('DROP TABLE exploit');
+        $status = $this->runner->run(['command' => 'remediate:db-status', '--database-location' => $db], $this->project);
+        self::assertSame(0, $status->exitCode, $status->describe());
+        self::assertStringContainsString('Built before exploit data (EPSS, CISA KEV) was recorded', $status->stdout);
     }
 
     public function testBuildRejectsAnUnknownSource(): void

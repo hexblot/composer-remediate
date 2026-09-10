@@ -2,88 +2,39 @@
     "version": "15.2.1",
     "vulnerabilities": [
         {
-            "id": "461166b5-dbf0-5bcb-bac8-8fab702010eb",
+            "id": "fdd935d4-0c1f-5054-a992-e730c2de137a",
             "category": "dependency_scanning",
-            "name": "CVE-2025-14761: Key Commitment Issues in S3 Encryption Clients",
-            "description": "aws/aws-sdk-php 3.322.6 is affected by CVE-2025-14761 (affected versions >=3.0.0,<3.368.0).",
-            "severity": "Medium",
-            "solution": "Run `composer update aws/aws-sdk-php` (verified with Composer's solver, 2 package change(s)).",
+            "name": "PKSA-67d7-mg8j-87zx:  SAML PHP Toolkit Vulnerability on xmlseclibs CVE-2025-66475 ",
+            "description": "onelogin/php-saml 4.2.0 is affected by PKSA-67d7-mg8j-87zx (affected versions >=4.0.0,<4.3.1|>=3.0.0,<3.8.1|<2.21.1).",
+            "severity": "Critical",
+            "solution": "Run `composer update onelogin/php-saml -w` (verified with Composer's solver, 2 package change(s)).",
             "identifiers": [
                 {
-                    "type": "cve",
-                    "name": "CVE-2025-14761",
-                    "value": "CVE-2025-14761",
-                    "url": "https://nvd.nist.gov/vuln/detail/CVE-2025-14761"
-                },
-                {
                     "type": "ghsa",
-                    "name": "GHSA-x8cp-jf6f-r4xh",
-                    "value": "GHSA-x8cp-jf6f-r4xh",
-                    "url": "https://github.com/advisories/GHSA-x8cp-jf6f-r4xh"
+                    "name": "GHSA-5j8p-438x-rgg5",
+                    "value": "GHSA-5j8p-438x-rgg5",
+                    "url": "https://github.com/advisories/GHSA-5j8p-438x-rgg5"
                 },
                 {
                     "type": "packagist_advisory",
-                    "name": "PKSA-dxyf-6n16-t87m",
-                    "value": "PKSA-dxyf-6n16-t87m",
-                    "url": "https://packagist.org/security-advisories/PKSA-dxyf-6n16-t87m"
+                    "name": "PKSA-67d7-mg8j-87zx",
+                    "value": "PKSA-67d7-mg8j-87zx",
+                    "url": "https://packagist.org/security-advisories/PKSA-67d7-mg8j-87zx"
                 }
             ],
             "links": [
                 {
-                    "url": "https://aws.amazon.com/security/security-bulletins/AWS-2025-032/"
+                    "url": "https://github.com/advisories/GHSA-5j8p-438x-rgg5"
                 }
             ],
             "location": {
                 "file": "composer.lock",
                 "dependency": {
                     "package": {
-                        "name": "aws/aws-sdk-php"
+                        "name": "onelogin/php-saml"
                     },
-                    "version": "3.322.6",
-                    "direct": false
-                }
-            }
-        },
-        {
-            "id": "4357f3be-f81f-51ca-853e-a2859e380deb",
-            "category": "dependency_scanning",
-            "name": "CVE-2025-45769: php-jwt contains weak encryption",
-            "description": "firebase/php-jwt v6.10.1 is affected by CVE-2025-45769 (affected versions <7.0.0).",
-            "severity": "Low",
-            "solution": "Run `composer update laravel/socialite:v5.24.1 -W -m --with 'firebase/php-jwt:>=7.0.0'` (verified with Composer's solver, 3 package change(s)).",
-            "identifiers": [
-                {
-                    "type": "cve",
-                    "name": "CVE-2025-45769",
-                    "value": "CVE-2025-45769",
-                    "url": "https://nvd.nist.gov/vuln/detail/CVE-2025-45769"
-                },
-                {
-                    "type": "ghsa",
-                    "name": "GHSA-2x45-7fc3-mxwq",
-                    "value": "GHSA-2x45-7fc3-mxwq",
-                    "url": "https://github.com/advisories/GHSA-2x45-7fc3-mxwq"
-                },
-                {
-                    "type": "packagist_advisory",
-                    "name": "PKSA-y2cr-5h3j-g3ys",
-                    "value": "PKSA-y2cr-5h3j-g3ys",
-                    "url": "https://packagist.org/security-advisories/PKSA-y2cr-5h3j-g3ys"
-                }
-            ],
-            "links": [
-                {
-                    "url": "https://github.com/advisories/GHSA-2x45-7fc3-mxwq"
-                }
-            ],
-            "location": {
-                "file": "composer.lock",
-                "dependency": {
-                    "package": {
-                        "name": "firebase/php-jwt"
-                    },
-                    "version": "v6.10.1",
-                    "direct": false
+                    "version": "4.2.0",
+                    "direct": true
                 }
             }
         },
@@ -254,129 +205,6 @@
             }
         },
         {
-            "id": "016e56fc-3fe0-5bb2-8a41-81fe24e17df4",
-            "category": "dependency_scanning",
-            "name": "CVE-2025-22145: Carbon has an arbitrary file include via unvalidated input passed to Carbon::setLocale",
-            "description": "nesbot/carbon 2.72.5 is affected by CVE-2025-22145 (affected versions <2.72.6|>=3.0.0,<3.8.4).",
-            "severity": "Medium",
-            "solution": "Run `composer update nesbot/carbon` (verified with Composer's solver, 1 package change(s)).",
-            "identifiers": [
-                {
-                    "type": "cve",
-                    "name": "CVE-2025-22145",
-                    "value": "CVE-2025-22145",
-                    "url": "https://nvd.nist.gov/vuln/detail/CVE-2025-22145"
-                },
-                {
-                    "type": "ghsa",
-                    "name": "GHSA-j3f9-p6hm-5w6q",
-                    "value": "GHSA-j3f9-p6hm-5w6q",
-                    "url": "https://github.com/advisories/GHSA-j3f9-p6hm-5w6q"
-                },
-                {
-                    "type": "packagist_advisory",
-                    "name": "PKSA-csyb-yc4p-mnbs",
-                    "value": "PKSA-csyb-yc4p-mnbs",
-                    "url": "https://packagist.org/security-advisories/PKSA-csyb-yc4p-mnbs"
-                }
-            ],
-            "links": [
-                {
-                    "url": "https://github.com/advisories/GHSA-j3f9-p6hm-5w6q"
-                }
-            ],
-            "location": {
-                "file": "composer.lock",
-                "dependency": {
-                    "package": {
-                        "name": "nesbot/carbon"
-                    },
-                    "version": "2.72.5",
-                    "direct": false
-                }
-            }
-        },
-        {
-            "id": "fdd935d4-0c1f-5054-a992-e730c2de137a",
-            "category": "dependency_scanning",
-            "name": "PKSA-67d7-mg8j-87zx:  SAML PHP Toolkit Vulnerability on xmlseclibs CVE-2025-66475 ",
-            "description": "onelogin/php-saml 4.2.0 is affected by PKSA-67d7-mg8j-87zx (affected versions >=4.0.0,<4.3.1|>=3.0.0,<3.8.1|<2.21.1).",
-            "severity": "Critical",
-            "solution": "Run `composer update onelogin/php-saml -w` (verified with Composer's solver, 2 package change(s)).",
-            "identifiers": [
-                {
-                    "type": "ghsa",
-                    "name": "GHSA-5j8p-438x-rgg5",
-                    "value": "GHSA-5j8p-438x-rgg5",
-                    "url": "https://github.com/advisories/GHSA-5j8p-438x-rgg5"
-                },
-                {
-                    "type": "packagist_advisory",
-                    "name": "PKSA-67d7-mg8j-87zx",
-                    "value": "PKSA-67d7-mg8j-87zx",
-                    "url": "https://packagist.org/security-advisories/PKSA-67d7-mg8j-87zx"
-                }
-            ],
-            "links": [
-                {
-                    "url": "https://github.com/advisories/GHSA-5j8p-438x-rgg5"
-                }
-            ],
-            "location": {
-                "file": "composer.lock",
-                "dependency": {
-                    "package": {
-                        "name": "onelogin/php-saml"
-                    },
-                    "version": "4.2.0",
-                    "direct": true
-                }
-            }
-        },
-        {
-            "id": "fffca173-0fc6-5e10-98de-713cf0839678",
-            "category": "dependency_scanning",
-            "name": "CVE-2025-66578: robrichards/xmlseclibs has an Libxml2 Canonicalization error which can bypass Digest/Signature validation",
-            "description": "robrichards/xmlseclibs 3.1.1 is affected by CVE-2025-66578 (affected versions <=3.1.3).",
-            "severity": "Medium",
-            "solution": "Run `composer update robrichards/xmlseclibs` (verified with Composer's solver, 1 package change(s)).",
-            "identifiers": [
-                {
-                    "type": "cve",
-                    "name": "CVE-2025-66578",
-                    "value": "CVE-2025-66578",
-                    "url": "https://nvd.nist.gov/vuln/detail/CVE-2025-66578"
-                },
-                {
-                    "type": "ghsa",
-                    "name": "GHSA-c4cc-x928-vjw9",
-                    "value": "GHSA-c4cc-x928-vjw9",
-                    "url": "https://github.com/advisories/GHSA-c4cc-x928-vjw9"
-                },
-                {
-                    "type": "packagist_advisory",
-                    "name": "PKSA-pcdf-qvqm-w4tv",
-                    "value": "PKSA-pcdf-qvqm-w4tv",
-                    "url": "https://packagist.org/security-advisories/PKSA-pcdf-qvqm-w4tv"
-                }
-            ],
-            "links": [
-                {
-                    "url": "https://github.com/advisories/GHSA-c4cc-x928-vjw9"
-                }
-            ],
-            "location": {
-                "file": "composer.lock",
-                "dependency": {
-                    "package": {
-                        "name": "robrichards/xmlseclibs"
-                    },
-                    "version": "3.1.1",
-                    "direct": false
-                }
-            }
-        },
-        {
             "id": "a7433de1-21a2-5931-98b1-930c05b94502",
             "category": "dependency_scanning",
             "name": "CVE-2025-64500: CVE-2025-64500: Incorrect parsing of PATH_INFO can lead to limited authorization bypass",
@@ -501,6 +329,178 @@
                         "name": "symfony/process"
                     },
                     "version": "v6.4.12",
+                    "direct": false
+                }
+            }
+        },
+        {
+            "id": "461166b5-dbf0-5bcb-bac8-8fab702010eb",
+            "category": "dependency_scanning",
+            "name": "CVE-2025-14761: Key Commitment Issues in S3 Encryption Clients",
+            "description": "aws/aws-sdk-php 3.322.6 is affected by CVE-2025-14761 (affected versions >=3.0.0,<3.368.0).",
+            "severity": "Medium",
+            "solution": "Run `composer update aws/aws-sdk-php` (verified with Composer's solver, 2 package change(s)).",
+            "identifiers": [
+                {
+                    "type": "cve",
+                    "name": "CVE-2025-14761",
+                    "value": "CVE-2025-14761",
+                    "url": "https://nvd.nist.gov/vuln/detail/CVE-2025-14761"
+                },
+                {
+                    "type": "ghsa",
+                    "name": "GHSA-x8cp-jf6f-r4xh",
+                    "value": "GHSA-x8cp-jf6f-r4xh",
+                    "url": "https://github.com/advisories/GHSA-x8cp-jf6f-r4xh"
+                },
+                {
+                    "type": "packagist_advisory",
+                    "name": "PKSA-dxyf-6n16-t87m",
+                    "value": "PKSA-dxyf-6n16-t87m",
+                    "url": "https://packagist.org/security-advisories/PKSA-dxyf-6n16-t87m"
+                }
+            ],
+            "links": [
+                {
+                    "url": "https://aws.amazon.com/security/security-bulletins/AWS-2025-032/"
+                }
+            ],
+            "location": {
+                "file": "composer.lock",
+                "dependency": {
+                    "package": {
+                        "name": "aws/aws-sdk-php"
+                    },
+                    "version": "3.322.6",
+                    "direct": false
+                }
+            }
+        },
+        {
+            "id": "016e56fc-3fe0-5bb2-8a41-81fe24e17df4",
+            "category": "dependency_scanning",
+            "name": "CVE-2025-22145: Carbon has an arbitrary file include via unvalidated input passed to Carbon::setLocale",
+            "description": "nesbot/carbon 2.72.5 is affected by CVE-2025-22145 (affected versions <2.72.6|>=3.0.0,<3.8.4).",
+            "severity": "Medium",
+            "solution": "Run `composer update nesbot/carbon` (verified with Composer's solver, 1 package change(s)).",
+            "identifiers": [
+                {
+                    "type": "cve",
+                    "name": "CVE-2025-22145",
+                    "value": "CVE-2025-22145",
+                    "url": "https://nvd.nist.gov/vuln/detail/CVE-2025-22145"
+                },
+                {
+                    "type": "ghsa",
+                    "name": "GHSA-j3f9-p6hm-5w6q",
+                    "value": "GHSA-j3f9-p6hm-5w6q",
+                    "url": "https://github.com/advisories/GHSA-j3f9-p6hm-5w6q"
+                },
+                {
+                    "type": "packagist_advisory",
+                    "name": "PKSA-csyb-yc4p-mnbs",
+                    "value": "PKSA-csyb-yc4p-mnbs",
+                    "url": "https://packagist.org/security-advisories/PKSA-csyb-yc4p-mnbs"
+                }
+            ],
+            "links": [
+                {
+                    "url": "https://github.com/advisories/GHSA-j3f9-p6hm-5w6q"
+                }
+            ],
+            "location": {
+                "file": "composer.lock",
+                "dependency": {
+                    "package": {
+                        "name": "nesbot/carbon"
+                    },
+                    "version": "2.72.5",
+                    "direct": false
+                }
+            }
+        },
+        {
+            "id": "fffca173-0fc6-5e10-98de-713cf0839678",
+            "category": "dependency_scanning",
+            "name": "CVE-2025-66578: robrichards/xmlseclibs has an Libxml2 Canonicalization error which can bypass Digest/Signature validation",
+            "description": "robrichards/xmlseclibs 3.1.1 is affected by CVE-2025-66578 (affected versions <=3.1.3).",
+            "severity": "Medium",
+            "solution": "Run `composer update robrichards/xmlseclibs` (verified with Composer's solver, 1 package change(s)).",
+            "identifiers": [
+                {
+                    "type": "cve",
+                    "name": "CVE-2025-66578",
+                    "value": "CVE-2025-66578",
+                    "url": "https://nvd.nist.gov/vuln/detail/CVE-2025-66578"
+                },
+                {
+                    "type": "ghsa",
+                    "name": "GHSA-c4cc-x928-vjw9",
+                    "value": "GHSA-c4cc-x928-vjw9",
+                    "url": "https://github.com/advisories/GHSA-c4cc-x928-vjw9"
+                },
+                {
+                    "type": "packagist_advisory",
+                    "name": "PKSA-pcdf-qvqm-w4tv",
+                    "value": "PKSA-pcdf-qvqm-w4tv",
+                    "url": "https://packagist.org/security-advisories/PKSA-pcdf-qvqm-w4tv"
+                }
+            ],
+            "links": [
+                {
+                    "url": "https://github.com/advisories/GHSA-c4cc-x928-vjw9"
+                }
+            ],
+            "location": {
+                "file": "composer.lock",
+                "dependency": {
+                    "package": {
+                        "name": "robrichards/xmlseclibs"
+                    },
+                    "version": "3.1.1",
+                    "direct": false
+                }
+            }
+        },
+        {
+            "id": "4357f3be-f81f-51ca-853e-a2859e380deb",
+            "category": "dependency_scanning",
+            "name": "CVE-2025-45769: php-jwt contains weak encryption",
+            "description": "firebase/php-jwt v6.10.1 is affected by CVE-2025-45769 (affected versions <7.0.0).",
+            "severity": "Low",
+            "solution": "Run `composer update laravel/socialite:v5.24.1 -W -m --with 'firebase/php-jwt:>=7.0.0'` (verified with Composer's solver, 3 package change(s)).",
+            "identifiers": [
+                {
+                    "type": "cve",
+                    "name": "CVE-2025-45769",
+                    "value": "CVE-2025-45769",
+                    "url": "https://nvd.nist.gov/vuln/detail/CVE-2025-45769"
+                },
+                {
+                    "type": "ghsa",
+                    "name": "GHSA-2x45-7fc3-mxwq",
+                    "value": "GHSA-2x45-7fc3-mxwq",
+                    "url": "https://github.com/advisories/GHSA-2x45-7fc3-mxwq"
+                },
+                {
+                    "type": "packagist_advisory",
+                    "name": "PKSA-y2cr-5h3j-g3ys",
+                    "value": "PKSA-y2cr-5h3j-g3ys",
+                    "url": "https://packagist.org/security-advisories/PKSA-y2cr-5h3j-g3ys"
+                }
+            ],
+            "links": [
+                {
+                    "url": "https://github.com/advisories/GHSA-2x45-7fc3-mxwq"
+                }
+            ],
+            "location": {
+                "file": "composer.lock",
+                "dependency": {
+                    "package": {
+                        "name": "firebase/php-jwt"
+                    },
+                    "version": "v6.10.1",
                     "direct": false
                 }
             }

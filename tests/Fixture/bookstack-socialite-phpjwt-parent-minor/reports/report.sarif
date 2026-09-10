@@ -10,52 +10,27 @@
                     "informationUri": "https://hexblot.github.io/composer-remediate/",
                     "rules": [
                         {
-                            "id": "PKSA-dxyf-6n16-t87m",
-                            "name": "CVE202514761",
+                            "id": "PKSA-67d7-mg8j-87zx",
+                            "name": "PKSA67d7mg8j87zx",
                             "shortDescription": {
-                                "text": "Key Commitment Issues in S3 Encryption Clients"
+                                "text": " SAML PHP Toolkit Vulnerability on xmlseclibs CVE-2025-66475 "
                             },
                             "fullDescription": {
-                                "text": "Key Commitment Issues in S3 Encryption Clients. Affected versions of aws/aws-sdk-php: >=3.0.0,<3.368.0."
+                                "text": " SAML PHP Toolkit Vulnerability on xmlseclibs CVE-2025-66475 . Affected versions of onelogin/php-saml: >=4.0.0,<4.3.1|>=3.0.0,<3.8.1|<2.21.1."
                             },
-                            "helpUri": "https://aws.amazon.com/security/security-bulletins/AWS-2025-032/",
+                            "helpUri": "https://github.com/advisories/GHSA-5j8p-438x-rgg5",
                             "help": {
-                                "text": "Advisory PKSA-dxyf-6n16-t87m (CVE-2025-14761) affects aws/aws-sdk-php >=3.0.0,<3.368.0. Run composer remediate for the smallest verified upgrade."
+                                "text": "Advisory PKSA-67d7-mg8j-87zx affects onelogin/php-saml >=4.0.0,<4.3.1|>=3.0.0,<3.8.1|<2.21.1. Run composer remediate for the smallest verified upgrade."
                             },
                             "defaultConfiguration": {
-                                "level": "warning"
+                                "level": "error"
                             },
                             "properties": {
-                                "security-severity": "5.0",
+                                "security-severity": "9.5",
                                 "tags": [
                                     "security",
                                     "vulnerability",
-                                    "medium"
-                                ]
-                            }
-                        },
-                        {
-                            "id": "PKSA-y2cr-5h3j-g3ys",
-                            "name": "CVE202545769",
-                            "shortDescription": {
-                                "text": "php-jwt contains weak encryption"
-                            },
-                            "fullDescription": {
-                                "text": "php-jwt contains weak encryption. Affected versions of firebase/php-jwt: <7.0.0."
-                            },
-                            "helpUri": "https://github.com/advisories/GHSA-2x45-7fc3-mxwq",
-                            "help": {
-                                "text": "Advisory PKSA-y2cr-5h3j-g3ys (CVE-2025-45769) affects firebase/php-jwt <7.0.0. Run composer remediate for the smallest verified upgrade."
-                            },
-                            "defaultConfiguration": {
-                                "level": "note"
-                            },
-                            "properties": {
-                                "security-severity": "2.5",
-                                "tags": [
-                                    "security",
-                                    "vulnerability",
-                                    "low"
+                                    "critical"
                                 ]
                             }
                         },
@@ -160,81 +135,6 @@
                             }
                         },
                         {
-                            "id": "PKSA-csyb-yc4p-mnbs",
-                            "name": "CVE202522145",
-                            "shortDescription": {
-                                "text": "Carbon has an arbitrary file include via unvalidated input passed to Carbon::setLocale"
-                            },
-                            "fullDescription": {
-                                "text": "Carbon has an arbitrary file include via unvalidated input passed to Carbon::setLocale. Affected versions of nesbot/carbon: <2.72.6|>=3.0.0,<3.8.4."
-                            },
-                            "helpUri": "https://github.com/advisories/GHSA-j3f9-p6hm-5w6q",
-                            "help": {
-                                "text": "Advisory PKSA-csyb-yc4p-mnbs (CVE-2025-22145) affects nesbot/carbon <2.72.6|>=3.0.0,<3.8.4. Run composer remediate for the smallest verified upgrade."
-                            },
-                            "defaultConfiguration": {
-                                "level": "warning"
-                            },
-                            "properties": {
-                                "security-severity": "5.0",
-                                "tags": [
-                                    "security",
-                                    "vulnerability",
-                                    "medium"
-                                ]
-                            }
-                        },
-                        {
-                            "id": "PKSA-67d7-mg8j-87zx",
-                            "name": "PKSA67d7mg8j87zx",
-                            "shortDescription": {
-                                "text": " SAML PHP Toolkit Vulnerability on xmlseclibs CVE-2025-66475 "
-                            },
-                            "fullDescription": {
-                                "text": " SAML PHP Toolkit Vulnerability on xmlseclibs CVE-2025-66475 . Affected versions of onelogin/php-saml: >=4.0.0,<4.3.1|>=3.0.0,<3.8.1|<2.21.1."
-                            },
-                            "helpUri": "https://github.com/advisories/GHSA-5j8p-438x-rgg5",
-                            "help": {
-                                "text": "Advisory PKSA-67d7-mg8j-87zx affects onelogin/php-saml >=4.0.0,<4.3.1|>=3.0.0,<3.8.1|<2.21.1. Run composer remediate for the smallest verified upgrade."
-                            },
-                            "defaultConfiguration": {
-                                "level": "error"
-                            },
-                            "properties": {
-                                "security-severity": "9.5",
-                                "tags": [
-                                    "security",
-                                    "vulnerability",
-                                    "critical"
-                                ]
-                            }
-                        },
-                        {
-                            "id": "PKSA-pcdf-qvqm-w4tv",
-                            "name": "CVE202566578",
-                            "shortDescription": {
-                                "text": "robrichards/xmlseclibs has an Libxml2 Canonicalization error which can bypass Digest/Signature validation"
-                            },
-                            "fullDescription": {
-                                "text": "robrichards/xmlseclibs has an Libxml2 Canonicalization error which can bypass Digest/Signature validation. Affected versions of robrichards/xmlseclibs: <=3.1.3."
-                            },
-                            "helpUri": "https://github.com/advisories/GHSA-c4cc-x928-vjw9",
-                            "help": {
-                                "text": "Advisory PKSA-pcdf-qvqm-w4tv (CVE-2025-66578) affects robrichards/xmlseclibs <=3.1.3. Run composer remediate for the smallest verified upgrade."
-                            },
-                            "defaultConfiguration": {
-                                "level": "warning"
-                            },
-                            "properties": {
-                                "security-severity": "5.0",
-                                "tags": [
-                                    "security",
-                                    "vulnerability",
-                                    "medium"
-                                ]
-                            }
-                        },
-                        {
                             "id": "PKSA-365x-2zjk-pt47",
                             "name": "CVE202564500",
                             "shortDescription": {
@@ -308,6 +208,106 @@
                                     "high"
                                 ]
                             }
+                        },
+                        {
+                            "id": "PKSA-dxyf-6n16-t87m",
+                            "name": "CVE202514761",
+                            "shortDescription": {
+                                "text": "Key Commitment Issues in S3 Encryption Clients"
+                            },
+                            "fullDescription": {
+                                "text": "Key Commitment Issues in S3 Encryption Clients. Affected versions of aws/aws-sdk-php: >=3.0.0,<3.368.0."
+                            },
+                            "helpUri": "https://aws.amazon.com/security/security-bulletins/AWS-2025-032/",
+                            "help": {
+                                "text": "Advisory PKSA-dxyf-6n16-t87m (CVE-2025-14761) affects aws/aws-sdk-php >=3.0.0,<3.368.0. Run composer remediate for the smallest verified upgrade."
+                            },
+                            "defaultConfiguration": {
+                                "level": "warning"
+                            },
+                            "properties": {
+                                "security-severity": "5.0",
+                                "tags": [
+                                    "security",
+                                    "vulnerability",
+                                    "medium"
+                                ]
+                            }
+                        },
+                        {
+                            "id": "PKSA-csyb-yc4p-mnbs",
+                            "name": "CVE202522145",
+                            "shortDescription": {
+                                "text": "Carbon has an arbitrary file include via unvalidated input passed to Carbon::setLocale"
+                            },
+                            "fullDescription": {
+                                "text": "Carbon has an arbitrary file include via unvalidated input passed to Carbon::setLocale. Affected versions of nesbot/carbon: <2.72.6|>=3.0.0,<3.8.4."
+                            },
+                            "helpUri": "https://github.com/advisories/GHSA-j3f9-p6hm-5w6q",
+                            "help": {
+                                "text": "Advisory PKSA-csyb-yc4p-mnbs (CVE-2025-22145) affects nesbot/carbon <2.72.6|>=3.0.0,<3.8.4. Run composer remediate for the smallest verified upgrade."
+                            },
+                            "defaultConfiguration": {
+                                "level": "warning"
+                            },
+                            "properties": {
+                                "security-severity": "5.0",
+                                "tags": [
+                                    "security",
+                                    "vulnerability",
+                                    "medium"
+                                ]
+                            }
+                        },
+                        {
+                            "id": "PKSA-pcdf-qvqm-w4tv",
+                            "name": "CVE202566578",
+                            "shortDescription": {
+                                "text": "robrichards/xmlseclibs has an Libxml2 Canonicalization error which can bypass Digest/Signature validation"
+                            },
+                            "fullDescription": {
+                                "text": "robrichards/xmlseclibs has an Libxml2 Canonicalization error which can bypass Digest/Signature validation. Affected versions of robrichards/xmlseclibs: <=3.1.3."
+                            },
+                            "helpUri": "https://github.com/advisories/GHSA-c4cc-x928-vjw9",
+                            "help": {
+                                "text": "Advisory PKSA-pcdf-qvqm-w4tv (CVE-2025-66578) affects robrichards/xmlseclibs <=3.1.3. Run composer remediate for the smallest verified upgrade."
+                            },
+                            "defaultConfiguration": {
+                                "level": "warning"
+                            },
+                            "properties": {
+                                "security-severity": "5.0",
+                                "tags": [
+                                    "security",
+                                    "vulnerability",
+                                    "medium"
+                                ]
+                            }
+                        },
+                        {
+                            "id": "PKSA-y2cr-5h3j-g3ys",
+                            "name": "CVE202545769",
+                            "shortDescription": {
+                                "text": "php-jwt contains weak encryption"
+                            },
+                            "fullDescription": {
+                                "text": "php-jwt contains weak encryption. Affected versions of firebase/php-jwt: <7.0.0."
+                            },
+                            "helpUri": "https://github.com/advisories/GHSA-2x45-7fc3-mxwq",
+                            "help": {
+                                "text": "Advisory PKSA-y2cr-5h3j-g3ys (CVE-2025-45769) affects firebase/php-jwt <7.0.0. Run composer remediate for the smallest verified upgrade."
+                            },
+                            "defaultConfiguration": {
+                                "level": "note"
+                            },
+                            "properties": {
+                                "security-severity": "2.5",
+                                "tags": [
+                                    "security",
+                                    "vulnerability",
+                                    "low"
+                                ]
+                            }
                         }
                     ]
                 }
@@ -319,17 +319,17 @@
                     "properties": {
                         "composer_version": "(fixture)",
                         "advisory_source": "advisory snapshot advisories.json",
-                        "combined_command": "composer update aws/aws-sdk-php laravel/socialite:v5.24.1 laravel/framework league/commonmark nesbot/carbon onelogin/php-saml robrichards/xmlseclibs symfony/http-foundation symfony/process -W -m --with 'firebase/php-jwt:>=7.0.0'"
+                        "combined_command": "composer update aws/aws-sdk-php laravel/framework laravel/socialite:v5.24.1 league/commonmark nesbot/carbon onelogin/php-saml robrichards/xmlseclibs symfony/http-foundation symfony/process -W -m --with 'firebase/php-jwt:>=7.0.0'"
                     }
                 }
             ],
             "results": [
                 {
-                    "ruleId": "PKSA-dxyf-6n16-t87m",
+                    "ruleId": "PKSA-67d7-mg8j-87zx",
                     "ruleIndex": 0,
-                    "level": "warning",
+                    "level": "error",
                     "message": {
-                        "text": "aws/aws-sdk-php 3.322.6 is affected by CVE-2025-14761: Key Commitment Issues in S3 Encryption Clients. Verified fix: composer update aws/aws-sdk-php"
+                        "text": "onelogin/php-saml 4.2.0 is affected by PKSA-67d7-mg8j-87zx:  SAML PHP Toolkit Vulnerability on xmlseclibs CVE-2025-66475 . Verified fix: composer update onelogin/php-saml -w"
                     },
                     "locations": [
                         {
@@ -339,62 +339,27 @@
                                     "uriBaseId": "%SRCROOT%"
                                 },
                                 "region": {
-                                    "startLine": 64
+                                    "startLine": 3846
                                 }
                             }
                         }
                     ],
                     "partialFingerprints": {
-                        "advisoryPackage/v1": "PKSA-dxyf-6n16-t87m@aws/aws-sdk-php"
+                        "advisoryPackage/v1": "PKSA-67d7-mg8j-87zx@onelogin/php-saml"
                     },
                     "properties": {
-                        "package": "aws/aws-sdk-php",
-                        "version": "3.322.6",
-                        "direct": false,
+                        "package": "onelogin/php-saml",
+                        "version": "4.2.0",
+                        "direct": true,
                         "dev": false,
-                        "cve": "CVE-2025-14761",
-                        "severity": "medium",
+                        "severity": "critical",
                         "remediation_status": "verified",
-                        "command": "composer update aws/aws-sdk-php"
-                    }
-                },
-                {
-                    "ruleId": "PKSA-y2cr-5h3j-g3ys",
-                    "ruleIndex": 1,
-                    "level": "note",
-                    "message": {
-                        "text": "firebase/php-jwt v6.10.1 is affected by CVE-2025-45769: php-jwt contains weak encryption. Verified fix: composer update laravel/socialite:v5.24.1 -W -m --with 'firebase/php-jwt:>=7.0.0'"
-                    },
-                    "locations": [
-                        {
-                            "physicalLocation": {
-                                "artifactLocation": {
-                                    "uri": "composer.lock",
-                                    "uriBaseId": "%SRCROOT%"
-                                },
-                                "region": {
-                                    "startLine": 1265
-                                }
-                            }
-                        }
-                    ],
-                    "partialFingerprints": {
-                        "advisoryPackage/v1": "PKSA-y2cr-5h3j-g3ys@firebase/php-jwt"
-                    },
-                    "properties": {
-                        "package": "firebase/php-jwt",
-                        "version": "v6.10.1",
-                        "direct": false,
-                        "dev": false,
-                        "cve": "CVE-2025-45769",
-                        "severity": "low",
-                        "remediation_status": "verified",
-                        "command": "composer update laravel/socialite:v5.24.1 -W -m --with 'firebase/php-jwt:>=7.0.0'"
+                        "command": "composer update onelogin/php-saml -w"
                     }
                 },
                 {
                     "ruleId": "PKSA-8qx3-n5y5-vvnd",
-                    "ruleIndex": 2,
+                    "ruleIndex": 1,
                     "level": "warning",
                     "message": {
                         "text": "laravel/framework v10.48.22 is affected by CVE-2025-27515: Laravel has a File Validation Bypass. Verified fix: composer update laravel/framework"
@@ -428,7 +393,7 @@
                 },
                 {
                     "ruleId": "PKSA-w7xr-vk7n-rstm",
-                    "ruleIndex": 3,
+                    "ruleIndex": 2,
                     "level": "error",
                     "message": {
                         "text": "laravel/framework v10.48.22 is affected by CVE-2024-52301: Laravel environment manipulation via query string. Verified fix: composer update laravel/framework"
@@ -462,7 +427,7 @@
                 },
                 {
                     "ruleId": "PKSA-fndg-qryc-dyc9",
-                    "ruleIndex": 4,
+                    "ruleIndex": 3,
                     "level": "error",
                     "message": {
                         "text": "league/commonmark 2.5.3 is affected by PKSA-fndg-qryc-dyc9: league/commonmark's quadratic complexity bugs may lead to a denial of service. Verified fix: composer update league/commonmark"
@@ -495,7 +460,7 @@
                 },
                 {
                     "ruleId": "PKSA-rqc2-tcc6-nc79",
-                    "ruleIndex": 5,
+                    "ruleIndex": 4,
                     "level": "warning",
                     "message": {
                         "text": "league/commonmark 2.5.3 is affected by CVE-2025-46734: league/commonmark contains a XSS vulnerability in Attributes extension. Verified fix: composer update league/commonmark"
@@ -528,109 +493,8 @@
                     }
                 },
                 {
-                    "ruleId": "PKSA-csyb-yc4p-mnbs",
-                    "ruleIndex": 6,
-                    "level": "warning",
-                    "message": {
-                        "text": "nesbot/carbon 2.72.5 is affected by CVE-2025-22145: Carbon has an arbitrary file include via unvalidated input passed to Carbon::setLocale. Verified fix: composer update nesbot/carbon"
-                    },
-                    "locations": [
-                        {
-                            "physicalLocation": {
-                                "artifactLocation": {
-                                    "uri": "composer.lock",
-                                    "uriBaseId": "%SRCROOT%"
-                                },
-                                "region": {
-                                    "startLine": 3447
-                                }
-                            }
-                        }
-                    ],
-                    "partialFingerprints": {
-                        "advisoryPackage/v1": "PKSA-csyb-yc4p-mnbs@nesbot/carbon"
-                    },
-                    "properties": {
-                        "package": "nesbot/carbon",
-                        "version": "2.72.5",
-                        "direct": false,
-                        "dev": false,
-                        "cve": "CVE-2025-22145",
-                        "severity": "medium",
-                        "remediation_status": "verified",
-                        "command": "composer update nesbot/carbon"
-                    }
-                },
-                {
-                    "ruleId": "PKSA-67d7-mg8j-87zx",
-                    "ruleIndex": 7,
-                    "level": "error",
-                    "message": {
-                        "text": "onelogin/php-saml 4.2.0 is affected by PKSA-67d7-mg8j-87zx:  SAML PHP Toolkit Vulnerability on xmlseclibs CVE-2025-66475 . Verified fix: composer update onelogin/php-saml -w"
-                    },
-                    "locations": [
-                        {
-                            "physicalLocation": {
-                                "artifactLocation": {
-                                    "uri": "composer.lock",
-                                    "uriBaseId": "%SRCROOT%"
-                                },
-                                "region": {
-                                    "startLine": 3846
-                                }
-                            }
-                        }
-                    ],
-                    "partialFingerprints": {
-                        "advisoryPackage/v1": "PKSA-67d7-mg8j-87zx@onelogin/php-saml"
-                    },
-                    "properties": {
-                        "package": "onelogin/php-saml",
-                        "version": "4.2.0",
-                        "direct": true,
-                        "dev": false,
-                        "severity": "critical",
-                        "remediation_status": "verified",
-                        "command": "composer update onelogin/php-saml -w"
-                    }
-                },
-                {
-                    "ruleId": "PKSA-pcdf-qvqm-w4tv",
-                    "ruleIndex": 8,
-                    "level": "warning",
-                    "message": {
-                        "text": "robrichards/xmlseclibs 3.1.1 is affected by CVE-2025-66578: robrichards/xmlseclibs has an Libxml2 Canonicalization error which can bypass Digest/Signature validation. Verified fix: composer update robrichards/xmlseclibs"
-                    },
-                    "locations": [
-                        {
-                            "physicalLocation": {
-                                "artifactLocation": {
-                                    "uri": "composer.lock",
-                                    "uriBaseId": "%SRCROOT%"
-                                },
-                                "region": {
-                                    "startLine": 5090
-                                }
-                            }
-                        }
-                    ],
-                    "partialFingerprints": {
-                        "advisoryPackage/v1": "PKSA-pcdf-qvqm-w4tv@robrichards/xmlseclibs"
-                    },
-                    "properties": {
-                        "package": "robrichards/xmlseclibs",
-                        "version": "3.1.1",
-                        "direct": false,
-                        "dev": false,
-                        "cve": "CVE-2025-66578",
-                        "severity": "medium",
-                        "remediation_status": "verified",
-                        "command": "composer update robrichards/xmlseclibs"
-                    }
-                },
-                {
                     "ruleId": "PKSA-365x-2zjk-pt47",
-                    "ruleIndex": 9,
+                    "ruleIndex": 5,
                     "level": "error",
                     "message": {
                         "text": "symfony/http-foundation v6.4.12 is affected by CVE-2025-64500: CVE-2025-64500: Incorrect parsing of PATH_INFO can lead to limited authorization bypass. Verified fix: composer update symfony/http-foundation"
@@ -664,7 +528,7 @@
                 },
                 {
                     "ruleId": "PKSA-b35n-565h-rs4q",
-                    "ruleIndex": 10,
+                    "ruleIndex": 6,
                     "level": "note",
                     "message": {
                         "text": "symfony/http-foundation v6.4.12 is affected by CVE-2024-50345: CVE-2024-50345: Open redirect via browser-sanitized URLs. Verified fix: composer update symfony/http-foundation"
@@ -698,7 +562,7 @@
                 },
                 {
                     "ruleId": "PKSA-wws7-mr54-jsny",
-                    "ruleIndex": 11,
+                    "ruleIndex": 7,
                     "level": "error",
                     "message": {
                         "text": "symfony/process v6.4.12 is affected by CVE-2024-51736: CVE-2024-51736: Command execution hijack on Windows with Process class. Verified fix: composer update symfony/process"
@@ -728,6 +592,142 @@
                         "severity": "high",
                         "remediation_status": "verified",
                         "command": "composer update symfony/process"
+                    }
+                },
+                {
+                    "ruleId": "PKSA-dxyf-6n16-t87m",
+                    "ruleIndex": 8,
+                    "level": "warning",
+                    "message": {
+                        "text": "aws/aws-sdk-php 3.322.6 is affected by CVE-2025-14761: Key Commitment Issues in S3 Encryption Clients. Verified fix: composer update aws/aws-sdk-php"
+                    },
+                    "locations": [
+                        {
+                            "physicalLocation": {
+                                "artifactLocation": {
+                                    "uri": "composer.lock",
+                                    "uriBaseId": "%SRCROOT%"
+                                },
+                                "region": {
+                                    "startLine": 64
+                                }
+                            }
+                        }
+                    ],
+                    "partialFingerprints": {
+                        "advisoryPackage/v1": "PKSA-dxyf-6n16-t87m@aws/aws-sdk-php"
+                    },
+                    "properties": {
+                        "package": "aws/aws-sdk-php",
+                        "version": "3.322.6",
+                        "direct": false,
+                        "dev": false,
+                        "cve": "CVE-2025-14761",
+                        "severity": "medium",
+                        "remediation_status": "verified",
+                        "command": "composer update aws/aws-sdk-php"
+                    }
+                },
+                {
+                    "ruleId": "PKSA-csyb-yc4p-mnbs",
+                    "ruleIndex": 9,
+                    "level": "warning",
+                    "message": {
+                        "text": "nesbot/carbon 2.72.5 is affected by CVE-2025-22145: Carbon has an arbitrary file include via unvalidated input passed to Carbon::setLocale. Verified fix: composer update nesbot/carbon"
+                    },
+                    "locations": [
+                        {
+                            "physicalLocation": {
+                                "artifactLocation": {
+                                    "uri": "composer.lock",
+                                    "uriBaseId": "%SRCROOT%"
+                                },
+                                "region": {
+                                    "startLine": 3447
+                                }
+                            }
+                        }
+                    ],
+                    "partialFingerprints": {
+                        "advisoryPackage/v1": "PKSA-csyb-yc4p-mnbs@nesbot/carbon"
+                    },
+                    "properties": {
+                        "package": "nesbot/carbon",
+                        "version": "2.72.5",
+                        "direct": false,
+                        "dev": false,
+                        "cve": "CVE-2025-22145",
+                        "severity": "medium",
+                        "remediation_status": "verified",
+                        "command": "composer update nesbot/carbon"
+                    }
+                },
+                {
+                    "ruleId": "PKSA-pcdf-qvqm-w4tv",
+                    "ruleIndex": 10,
+                    "level": "warning",
+                    "message": {
+                        "text": "robrichards/xmlseclibs 3.1.1 is affected by CVE-2025-66578: robrichards/xmlseclibs has an Libxml2 Canonicalization error which can bypass Digest/Signature validation. Verified fix: composer update robrichards/xmlseclibs"
+                    },
+                    "locations": [
+                        {
+                            "physicalLocation": {
+                                "artifactLocation": {
+                                    "uri": "composer.lock",
+                                    "uriBaseId": "%SRCROOT%"
+                                },
+                                "region": {
+                                    "startLine": 5090
+                                }
+                            }
+                        }
+                    ],
+                    "partialFingerprints": {
+                        "advisoryPackage/v1": "PKSA-pcdf-qvqm-w4tv@robrichards/xmlseclibs"
+                    },
+                    "properties": {
+                        "package": "robrichards/xmlseclibs",
+                        "version": "3.1.1",
+                        "direct": false,
+                        "dev": false,
+                        "cve": "CVE-2025-66578",
+                        "severity": "medium",
+                        "remediation_status": "verified",
+                        "command": "composer update robrichards/xmlseclibs"
+                    }
+                },
+                {
+                    "ruleId": "PKSA-y2cr-5h3j-g3ys",
+                    "ruleIndex": 11,
+                    "level": "note",
+                    "message": {
+                        "text": "firebase/php-jwt v6.10.1 is affected by CVE-2025-45769: php-jwt contains weak encryption. Verified fix: composer update laravel/socialite:v5.24.1 -W -m --with 'firebase/php-jwt:>=7.0.0'"
+                    },
+                    "locations": [
+                        {
+                            "physicalLocation": {
+                                "artifactLocation": {
+                                    "uri": "composer.lock",
+                                    "uriBaseId": "%SRCROOT%"
+                                },
+                                "region": {
+                                    "startLine": 1265
+                                }
+                            }
+                        }
+                    ],
+                    "partialFingerprints": {
+                        "advisoryPackage/v1": "PKSA-y2cr-5h3j-g3ys@firebase/php-jwt"
+                    },
+                    "properties": {
+                        "package": "firebase/php-jwt",
+                        "version": "v6.10.1",
+                        "direct": false,
+                        "dev": false,
+                        "cve": "CVE-2025-45769",
+                        "severity": "low",
+                        "remediation_status": "verified",
+                        "command": "composer update laravel/socialite:v5.24.1 -W -m --with 'firebase/php-jwt:>=7.0.0'"
                     }
                 }
             ]

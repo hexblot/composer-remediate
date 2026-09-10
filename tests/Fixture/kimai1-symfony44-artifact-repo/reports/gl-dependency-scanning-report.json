@@ -303,49 +303,6 @@
             }
         },
         {
-            "id": "80ab050a-023d-593d-b474-90144420798c",
-            "category": "dependency_scanning",
-            "name": "CVE-2024-50345: CVE-2024-50345: Open redirect via browser-sanitized URLs",
-            "description": "symfony/http-foundation v4.4.49 is affected by CVE-2024-50345 (affected versions >=2.0.0,<3.0.0|>=3.0.0,<4.0.0|>=4.0.0,<5.0.0|>=5.0.0,<5.1.0|>=5.1.0,<5.2.0|>=5.2.0,<5.3.0|>=5.3.0,<5.4.0|>=5.4.0,<5.4.46|>=6.0.0,<6.1.0|>=6.1.0,<6.2.0|>=6.2.0,<6.3.0|>=6.3.0,<6.4.0|>=6.4.0,<6.4.14|>=7.0.0,<7.1.0|>=7.1.0,<7.1.7).",
-            "severity": "Low",
-            "solution": "Run `composer update symfony/http-foundation` (verified with Composer's solver, 1 package change(s)).",
-            "identifiers": [
-                {
-                    "type": "cve",
-                    "name": "CVE-2024-50345",
-                    "value": "CVE-2024-50345",
-                    "url": "https://nvd.nist.gov/vuln/detail/CVE-2024-50345"
-                },
-                {
-                    "type": "ghsa",
-                    "name": "GHSA-mrqx-rp3w-jpjp",
-                    "value": "GHSA-mrqx-rp3w-jpjp",
-                    "url": "https://github.com/advisories/GHSA-mrqx-rp3w-jpjp"
-                },
-                {
-                    "type": "packagist_advisory",
-                    "name": "PKSA-b35n-565h-rs4q",
-                    "value": "PKSA-b35n-565h-rs4q",
-                    "url": "https://packagist.org/security-advisories/PKSA-b35n-565h-rs4q"
-                }
-            ],
-            "links": [
-                {
-                    "url": "https://symfony.com/cve-2024-50345"
-                }
-            ],
-            "location": {
-                "file": "composer.lock",
-                "dependency": {
-                    "package": {
-                        "name": "symfony/http-foundation"
-                    },
-                    "version": "v4.4.49",
-                    "direct": false
-                }
-            }
-        },
-        {
             "id": "564eae88-1791-5f27-8ae6-f66ddef99be1",
             "category": "dependency_scanning",
             "name": "CVE-2023-46734: CVE-2023-46734: Potential XSS vulnerabilities in CodeExtension filters",
@@ -385,49 +342,6 @@
                     },
                     "version": "v4.4.49",
                     "direct": false
-                }
-            }
-        },
-        {
-            "id": "4174fe95-c768-5650-9894-ffb8ad5ebb48",
-            "category": "dependency_scanning",
-            "name": "CVE-2024-50343: CVE-2024-50343: Incorrect response from Validator when input ends with `\n`",
-            "description": "symfony/validator v4.4.48 is affected by CVE-2024-50343 (affected versions >=2.0.0,<3.0.0|>=3.0.0,<4.0.0|>=4.0.0,<5.0.0|>=5.0.0,<5.1.0|>=5.1.0,<5.2.0|>=5.2.0,<5.3.0|>=5.3.0,<5.4.0|>=5.4.0,<5.4.43|>=6.0.0,<6.1.0|>=6.1.0,<6.2.0|>=6.2.0,<6.3.0|>=6.3.0,<6.4.0|>=6.4.0,<6.4.11|>=7.0.0,<7.1.0|>=7.1.0,<7.1.4).",
-            "severity": "Low",
-            "solution": "No verified remediation found.",
-            "identifiers": [
-                {
-                    "type": "cve",
-                    "name": "CVE-2024-50343",
-                    "value": "CVE-2024-50343",
-                    "url": "https://nvd.nist.gov/vuln/detail/CVE-2024-50343"
-                },
-                {
-                    "type": "ghsa",
-                    "name": "GHSA-g3rh-rrhp-jhh9",
-                    "value": "GHSA-g3rh-rrhp-jhh9",
-                    "url": "https://github.com/advisories/GHSA-g3rh-rrhp-jhh9"
-                },
-                {
-                    "type": "packagist_advisory",
-                    "name": "PKSA-w2tw-kmfg-rt9s",
-                    "value": "PKSA-w2tw-kmfg-rt9s",
-                    "url": "https://packagist.org/security-advisories/PKSA-w2tw-kmfg-rt9s"
-                }
-            ],
-            "links": [
-                {
-                    "url": "https://symfony.com/cve-2024-50343"
-                }
-            ],
-            "location": {
-                "file": "composer.lock",
-                "dependency": {
-                    "package": {
-                        "name": "symfony/validator"
-                    },
-                    "version": "v4.4.48",
-                    "direct": true
                 }
             }
         },
@@ -557,6 +471,92 @@
                     },
                     "version": "v3.5.1",
                     "direct": false
+                }
+            }
+        },
+        {
+            "id": "80ab050a-023d-593d-b474-90144420798c",
+            "category": "dependency_scanning",
+            "name": "CVE-2024-50345: CVE-2024-50345: Open redirect via browser-sanitized URLs",
+            "description": "symfony/http-foundation v4.4.49 is affected by CVE-2024-50345 (affected versions >=2.0.0,<3.0.0|>=3.0.0,<4.0.0|>=4.0.0,<5.0.0|>=5.0.0,<5.1.0|>=5.1.0,<5.2.0|>=5.2.0,<5.3.0|>=5.3.0,<5.4.0|>=5.4.0,<5.4.46|>=6.0.0,<6.1.0|>=6.1.0,<6.2.0|>=6.2.0,<6.3.0|>=6.3.0,<6.4.0|>=6.4.0,<6.4.14|>=7.0.0,<7.1.0|>=7.1.0,<7.1.7). Abandoned: sensio/framework-extra-bundle (on the dependency path, replacement: Symfony). An abandoned parent will not ship a release that lifts its pin.",
+            "severity": "Low",
+            "solution": "Run `composer update symfony/http-foundation` (verified with Composer's solver, 1 package change(s)).",
+            "identifiers": [
+                {
+                    "type": "cve",
+                    "name": "CVE-2024-50345",
+                    "value": "CVE-2024-50345",
+                    "url": "https://nvd.nist.gov/vuln/detail/CVE-2024-50345"
+                },
+                {
+                    "type": "ghsa",
+                    "name": "GHSA-mrqx-rp3w-jpjp",
+                    "value": "GHSA-mrqx-rp3w-jpjp",
+                    "url": "https://github.com/advisories/GHSA-mrqx-rp3w-jpjp"
+                },
+                {
+                    "type": "packagist_advisory",
+                    "name": "PKSA-b35n-565h-rs4q",
+                    "value": "PKSA-b35n-565h-rs4q",
+                    "url": "https://packagist.org/security-advisories/PKSA-b35n-565h-rs4q"
+                }
+            ],
+            "links": [
+                {
+                    "url": "https://symfony.com/cve-2024-50345"
+                }
+            ],
+            "location": {
+                "file": "composer.lock",
+                "dependency": {
+                    "package": {
+                        "name": "symfony/http-foundation"
+                    },
+                    "version": "v4.4.49",
+                    "direct": false
+                }
+            }
+        },
+        {
+            "id": "4174fe95-c768-5650-9894-ffb8ad5ebb48",
+            "category": "dependency_scanning",
+            "name": "CVE-2024-50343: CVE-2024-50343: Incorrect response from Validator when input ends with `\n`",
+            "description": "symfony/validator v4.4.48 is affected by CVE-2024-50343 (affected versions >=2.0.0,<3.0.0|>=3.0.0,<4.0.0|>=4.0.0,<5.0.0|>=5.0.0,<5.1.0|>=5.1.0,<5.2.0|>=5.2.0,<5.3.0|>=5.3.0,<5.4.0|>=5.4.0,<5.4.43|>=6.0.0,<6.1.0|>=6.1.0,<6.2.0|>=6.2.0,<6.3.0|>=6.3.0,<6.4.0|>=6.4.0,<6.4.11|>=7.0.0,<7.1.0|>=7.1.0,<7.1.4).",
+            "severity": "Low",
+            "solution": "No verified remediation found.",
+            "identifiers": [
+                {
+                    "type": "cve",
+                    "name": "CVE-2024-50343",
+                    "value": "CVE-2024-50343",
+                    "url": "https://nvd.nist.gov/vuln/detail/CVE-2024-50343"
+                },
+                {
+                    "type": "ghsa",
+                    "name": "GHSA-g3rh-rrhp-jhh9",
+                    "value": "GHSA-g3rh-rrhp-jhh9",
+                    "url": "https://github.com/advisories/GHSA-g3rh-rrhp-jhh9"
+                },
+                {
+                    "type": "packagist_advisory",
+                    "name": "PKSA-w2tw-kmfg-rt9s",
+                    "value": "PKSA-w2tw-kmfg-rt9s",
+                    "url": "https://packagist.org/security-advisories/PKSA-w2tw-kmfg-rt9s"
+                }
+            ],
+            "links": [
+                {
+                    "url": "https://symfony.com/cve-2024-50343"
+                }
+            ],
+            "location": {
+                "file": "composer.lock",
+                "dependency": {
+                    "package": {
+                        "name": "symfony/validator"
+                    },
+                    "version": "v4.4.48",
+                    "direct": true
                 }
             }
         },

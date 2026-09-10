@@ -52,6 +52,10 @@ with private advisories), normalises the version
 ranges to Composer constraints, merges records that share an identifier (CVE, GHSA, PKSA, FriendsOfPHP
 file), keeps every source's range and flags disagreements, and writes a single SQLite file.
 
+Every CVE in the database is enriched with its EPSS exploit probability and its CISA KEV listing when
+present (`--enrich`); reports order findings by that urgency. A feed that cannot be fetched
+is recorded in the database's metadata and the build continues without it.
+
 Use the file with `composer remediate --database-location=PATH`, the REMEDIATE_DATABASE
 environment variable, or `extra.remediate.database` in composer.json. The file is portable:
 publish it on a web server or as a release asset and point other machines at the URL.
@@ -62,6 +66,9 @@ publish it on a web server or as a release asset and point other machines at the
 | `--source`, `-s` | repeatable | Source to include: packagist, osv, friendsofphp (repeatable; default all) |
 | `--friendsofphp-path` | required | Local checkout of FriendsOfPHP/security-advisories to read instead of downloading |
 | `--include` | repeatable | Additional JSON file in the Packagist API shape with private or organisational advisories (repeatable) |
+| `--enrich` | repeatable | Exploit data to attach to the CVEs: epss (FIRST exploit probability), kev (CISA Known Exploited Vulnerabilities), or none (repeatable; default both) |
+| `--epss-file` | required | Local copy of the EPSS scores CSV (plain or .gz) to read instead of downloading |
+| `--kev-file` | required | Local copy of the CISA KEV catalogue JSON to read instead of downloading |
 
 ## `composer remediate:db-status`
 

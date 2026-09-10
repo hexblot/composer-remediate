@@ -29,7 +29,7 @@
             },
             {
                 "name": "composer-remediate:combined_command",
-                "value": "composer update aws/aws-sdk-php laravel/socialite:v5.24.1 laravel/framework league/commonmark nesbot/carbon onelogin/php-saml robrichards/xmlseclibs symfony/http-foundation symfony/process -W -m --with 'firebase/php-jwt:>=7.0.0'"
+                "value": "composer update aws/aws-sdk-php laravel/framework laravel/socialite:v5.24.1 league/commonmark nesbot/carbon onelogin/php-saml robrichards/xmlseclibs symfony/http-foundation symfony/process -W -m --with 'firebase/php-jwt:>=7.0.0'"
             },
             {
                 "name": "composer-remediate:exit_code",
@@ -1364,44 +1364,37 @@
     ],
     "vulnerabilities": [
         {
-            "bom-ref": "vuln:PKSA-dxyf-6n16-t87m@pkg:composer/aws/aws-sdk-php@3.322.6",
-            "id": "PKSA-dxyf-6n16-t87m",
+            "bom-ref": "vuln:PKSA-67d7-mg8j-87zx@pkg:composer/onelogin/php-saml@4.2.0",
+            "id": "PKSA-67d7-mg8j-87zx",
             "source": {
                 "name": "Packagist",
-                "url": "https://packagist.org/security-advisories/PKSA-dxyf-6n16-t87m"
+                "url": "https://packagist.org/security-advisories/PKSA-67d7-mg8j-87zx"
             },
             "references": [
                 {
-                    "id": "CVE-2025-14761",
-                    "source": {
-                        "name": "NVD",
-                        "url": "https://nvd.nist.gov/vuln/detail/CVE-2025-14761"
-                    }
-                },
-                {
-                    "id": "CVE-2025-14761",
+                    "id": "PKSA-67d7-mg8j-87zx",
                     "source": {
                         "name": "advisory",
-                        "url": "https://aws.amazon.com/security/security-bulletins/AWS-2025-032/"
+                        "url": "https://github.com/advisories/GHSA-5j8p-438x-rgg5"
                     }
                 }
             ],
             "ratings": [
                 {
-                    "severity": "medium",
+                    "severity": "critical",
                     "method": "other",
                     "source": {
                         "name": "Packagist",
-                        "url": "https://packagist.org/security-advisories/PKSA-dxyf-6n16-t87m"
+                        "url": "https://packagist.org/security-advisories/PKSA-67d7-mg8j-87zx"
                     }
                 }
             ],
-            "description": "Key Commitment Issues in S3 Encryption Clients",
-            "detail": "Affected versions: >=3.0.0,<3.368.0",
-            "recommendation": "Run: composer update aws/aws-sdk-php",
+            "description": " SAML PHP Toolkit Vulnerability on xmlseclibs CVE-2025-66475 ",
+            "detail": "Affected versions: >=4.0.0,<4.3.1|>=3.0.0,<3.8.1|<2.21.1",
+            "recommendation": "Run: composer update onelogin/php-saml -w",
             "affects": [
                 {
-                    "ref": "pkg:composer/aws/aws-sdk-php@3.322.6"
+                    "ref": "pkg:composer/onelogin/php-saml@4.2.0"
                 }
             ],
             "properties": [
@@ -1411,92 +1404,24 @@
                 },
                 {
                     "name": "composer-remediate:command",
-                    "value": "composer update aws/aws-sdk-php"
+                    "value": "composer update onelogin/php-saml -w"
                 },
                 {
                     "name": "composer-remediate:direct",
-                    "value": "false"
+                    "value": "true"
                 },
                 {
                     "name": "composer-remediate:dev",
                     "value": "false"
                 }
             ],
-            "published": "2025-12-17T20:15:00+00:00",
+            "published": "2025-12-09T17:24:09+00:00",
             "analysis": {
                 "state": "exploitable",
                 "response": [
                     "update"
                 ],
                 "detail": "2 package change(s) verified by Composer's solver."
-            }
-        },
-        {
-            "bom-ref": "vuln:PKSA-y2cr-5h3j-g3ys@pkg:composer/firebase/php-jwt@6.10.1",
-            "id": "PKSA-y2cr-5h3j-g3ys",
-            "source": {
-                "name": "Packagist",
-                "url": "https://packagist.org/security-advisories/PKSA-y2cr-5h3j-g3ys"
-            },
-            "references": [
-                {
-                    "id": "CVE-2025-45769",
-                    "source": {
-                        "name": "NVD",
-                        "url": "https://nvd.nist.gov/vuln/detail/CVE-2025-45769"
-                    }
-                },
-                {
-                    "id": "CVE-2025-45769",
-                    "source": {
-                        "name": "advisory",
-                        "url": "https://github.com/advisories/GHSA-2x45-7fc3-mxwq"
-                    }
-                }
-            ],
-            "ratings": [
-                {
-                    "severity": "low",
-                    "method": "other",
-                    "source": {
-                        "name": "Packagist",
-                        "url": "https://packagist.org/security-advisories/PKSA-y2cr-5h3j-g3ys"
-                    }
-                }
-            ],
-            "description": "php-jwt contains weak encryption",
-            "detail": "Affected versions: <7.0.0",
-            "recommendation": "Run: composer update laravel/socialite:v5.24.1 -W -m --with 'firebase/php-jwt:>=7.0.0'",
-            "affects": [
-                {
-                    "ref": "pkg:composer/firebase/php-jwt@6.10.1"
-                }
-            ],
-            "properties": [
-                {
-                    "name": "composer-remediate:remediation_status",
-                    "value": "verified"
-                },
-                {
-                    "name": "composer-remediate:command",
-                    "value": "composer update laravel/socialite:v5.24.1 -W -m --with 'firebase/php-jwt:>=7.0.0'"
-                },
-                {
-                    "name": "composer-remediate:direct",
-                    "value": "false"
-                },
-                {
-                    "name": "composer-remediate:dev",
-                    "value": "false"
-                }
-            ],
-            "published": "2025-07-31T21:31:53+00:00",
-            "analysis": {
-                "state": "exploitable",
-                "response": [
-                    "update"
-                ],
-                "detail": "3 package change(s) verified by Composer's solver."
             }
         },
         {
@@ -1765,203 +1690,6 @@
             }
         },
         {
-            "bom-ref": "vuln:PKSA-csyb-yc4p-mnbs@pkg:composer/nesbot/carbon@2.72.5",
-            "id": "PKSA-csyb-yc4p-mnbs",
-            "source": {
-                "name": "Packagist",
-                "url": "https://packagist.org/security-advisories/PKSA-csyb-yc4p-mnbs"
-            },
-            "references": [
-                {
-                    "id": "CVE-2025-22145",
-                    "source": {
-                        "name": "NVD",
-                        "url": "https://nvd.nist.gov/vuln/detail/CVE-2025-22145"
-                    }
-                },
-                {
-                    "id": "CVE-2025-22145",
-                    "source": {
-                        "name": "advisory",
-                        "url": "https://github.com/advisories/GHSA-j3f9-p6hm-5w6q"
-                    }
-                }
-            ],
-            "ratings": [
-                {
-                    "severity": "medium",
-                    "method": "other",
-                    "source": {
-                        "name": "Packagist",
-                        "url": "https://packagist.org/security-advisories/PKSA-csyb-yc4p-mnbs"
-                    }
-                }
-            ],
-            "description": "Carbon has an arbitrary file include via unvalidated input passed to Carbon::setLocale",
-            "detail": "Affected versions: <2.72.6|>=3.0.0,<3.8.4",
-            "recommendation": "Run: composer update nesbot/carbon",
-            "affects": [
-                {
-                    "ref": "pkg:composer/nesbot/carbon@2.72.5"
-                }
-            ],
-            "properties": [
-                {
-                    "name": "composer-remediate:remediation_status",
-                    "value": "verified"
-                },
-                {
-                    "name": "composer-remediate:command",
-                    "value": "composer update nesbot/carbon"
-                },
-                {
-                    "name": "composer-remediate:direct",
-                    "value": "false"
-                },
-                {
-                    "name": "composer-remediate:dev",
-                    "value": "false"
-                }
-            ],
-            "published": "2025-01-08T21:03:28+00:00",
-            "analysis": {
-                "state": "exploitable",
-                "response": [
-                    "update"
-                ],
-                "detail": "1 package change(s) verified by Composer's solver."
-            }
-        },
-        {
-            "bom-ref": "vuln:PKSA-67d7-mg8j-87zx@pkg:composer/onelogin/php-saml@4.2.0",
-            "id": "PKSA-67d7-mg8j-87zx",
-            "source": {
-                "name": "Packagist",
-                "url": "https://packagist.org/security-advisories/PKSA-67d7-mg8j-87zx"
-            },
-            "references": [
-                {
-                    "id": "PKSA-67d7-mg8j-87zx",
-                    "source": {
-                        "name": "advisory",
-                        "url": "https://github.com/advisories/GHSA-5j8p-438x-rgg5"
-                    }
-                }
-            ],
-            "ratings": [
-                {
-                    "severity": "critical",
-                    "method": "other",
-                    "source": {
-                        "name": "Packagist",
-                        "url": "https://packagist.org/security-advisories/PKSA-67d7-mg8j-87zx"
-                    }
-                }
-            ],
-            "description": " SAML PHP Toolkit Vulnerability on xmlseclibs CVE-2025-66475 ",
-            "detail": "Affected versions: >=4.0.0,<4.3.1|>=3.0.0,<3.8.1|<2.21.1",
-            "recommendation": "Run: composer update onelogin/php-saml -w",
-            "affects": [
-                {
-                    "ref": "pkg:composer/onelogin/php-saml@4.2.0"
-                }
-            ],
-            "properties": [
-                {
-                    "name": "composer-remediate:remediation_status",
-                    "value": "verified"
-                },
-                {
-                    "name": "composer-remediate:command",
-                    "value": "composer update onelogin/php-saml -w"
-                },
-                {
-                    "name": "composer-remediate:direct",
-                    "value": "true"
-                },
-                {
-                    "name": "composer-remediate:dev",
-                    "value": "false"
-                }
-            ],
-            "published": "2025-12-09T17:24:09+00:00",
-            "analysis": {
-                "state": "exploitable",
-                "response": [
-                    "update"
-                ],
-                "detail": "2 package change(s) verified by Composer's solver."
-            }
-        },
-        {
-            "bom-ref": "vuln:PKSA-pcdf-qvqm-w4tv@pkg:composer/robrichards/xmlseclibs@3.1.1",
-            "id": "PKSA-pcdf-qvqm-w4tv",
-            "source": {
-                "name": "Packagist",
-                "url": "https://packagist.org/security-advisories/PKSA-pcdf-qvqm-w4tv"
-            },
-            "references": [
-                {
-                    "id": "CVE-2025-66578",
-                    "source": {
-                        "name": "NVD",
-                        "url": "https://nvd.nist.gov/vuln/detail/CVE-2025-66578"
-                    }
-                },
-                {
-                    "id": "CVE-2025-66578",
-                    "source": {
-                        "name": "advisory",
-                        "url": "https://github.com/advisories/GHSA-c4cc-x928-vjw9"
-                    }
-                }
-            ],
-            "ratings": [
-                {
-                    "severity": "medium",
-                    "method": "other",
-                    "source": {
-                        "name": "Packagist",
-                        "url": "https://packagist.org/security-advisories/PKSA-pcdf-qvqm-w4tv"
-                    }
-                }
-            ],
-            "description": "robrichards/xmlseclibs has an Libxml2 Canonicalization error which can bypass Digest/Signature validation",
-            "detail": "Affected versions: <=3.1.3",
-            "recommendation": "Run: composer update robrichards/xmlseclibs",
-            "affects": [
-                {
-                    "ref": "pkg:composer/robrichards/xmlseclibs@3.1.1"
-                }
-            ],
-            "properties": [
-                {
-                    "name": "composer-remediate:remediation_status",
-                    "value": "verified"
-                },
-                {
-                    "name": "composer-remediate:command",
-                    "value": "composer update robrichards/xmlseclibs"
-                },
-                {
-                    "name": "composer-remediate:direct",
-                    "value": "false"
-                },
-                {
-                    "name": "composer-remediate:dev",
-                    "value": "false"
-                }
-            ],
-            "published": "2025-12-08T17:57:33+00:00",
-            "analysis": {
-                "state": "exploitable",
-                "response": [
-                    "update"
-                ],
-                "detail": "1 package change(s) verified by Composer's solver."
-            }
-        },
-        {
             "bom-ref": "vuln:PKSA-365x-2zjk-pt47@pkg:composer/symfony/http-foundation@6.4.12",
             "id": "PKSA-365x-2zjk-pt47",
             "source": {
@@ -2163,6 +1891,278 @@
                     "update"
                 ],
                 "detail": "1 package change(s) verified by Composer's solver."
+            }
+        },
+        {
+            "bom-ref": "vuln:PKSA-dxyf-6n16-t87m@pkg:composer/aws/aws-sdk-php@3.322.6",
+            "id": "PKSA-dxyf-6n16-t87m",
+            "source": {
+                "name": "Packagist",
+                "url": "https://packagist.org/security-advisories/PKSA-dxyf-6n16-t87m"
+            },
+            "references": [
+                {
+                    "id": "CVE-2025-14761",
+                    "source": {
+                        "name": "NVD",
+                        "url": "https://nvd.nist.gov/vuln/detail/CVE-2025-14761"
+                    }
+                },
+                {
+                    "id": "CVE-2025-14761",
+                    "source": {
+                        "name": "advisory",
+                        "url": "https://aws.amazon.com/security/security-bulletins/AWS-2025-032/"
+                    }
+                }
+            ],
+            "ratings": [
+                {
+                    "severity": "medium",
+                    "method": "other",
+                    "source": {
+                        "name": "Packagist",
+                        "url": "https://packagist.org/security-advisories/PKSA-dxyf-6n16-t87m"
+                    }
+                }
+            ],
+            "description": "Key Commitment Issues in S3 Encryption Clients",
+            "detail": "Affected versions: >=3.0.0,<3.368.0",
+            "recommendation": "Run: composer update aws/aws-sdk-php",
+            "affects": [
+                {
+                    "ref": "pkg:composer/aws/aws-sdk-php@3.322.6"
+                }
+            ],
+            "properties": [
+                {
+                    "name": "composer-remediate:remediation_status",
+                    "value": "verified"
+                },
+                {
+                    "name": "composer-remediate:command",
+                    "value": "composer update aws/aws-sdk-php"
+                },
+                {
+                    "name": "composer-remediate:direct",
+                    "value": "false"
+                },
+                {
+                    "name": "composer-remediate:dev",
+                    "value": "false"
+                }
+            ],
+            "published": "2025-12-17T20:15:00+00:00",
+            "analysis": {
+                "state": "exploitable",
+                "response": [
+                    "update"
+                ],
+                "detail": "2 package change(s) verified by Composer's solver."
+            }
+        },
+        {
+            "bom-ref": "vuln:PKSA-csyb-yc4p-mnbs@pkg:composer/nesbot/carbon@2.72.5",
+            "id": "PKSA-csyb-yc4p-mnbs",
+            "source": {
+                "name": "Packagist",
+                "url": "https://packagist.org/security-advisories/PKSA-csyb-yc4p-mnbs"
+            },
+            "references": [
+                {
+                    "id": "CVE-2025-22145",
+                    "source": {
+                        "name": "NVD",
+                        "url": "https://nvd.nist.gov/vuln/detail/CVE-2025-22145"
+                    }
+                },
+                {
+                    "id": "CVE-2025-22145",
+                    "source": {
+                        "name": "advisory",
+                        "url": "https://github.com/advisories/GHSA-j3f9-p6hm-5w6q"
+                    }
+                }
+            ],
+            "ratings": [
+                {
+                    "severity": "medium",
+                    "method": "other",
+                    "source": {
+                        "name": "Packagist",
+                        "url": "https://packagist.org/security-advisories/PKSA-csyb-yc4p-mnbs"
+                    }
+                }
+            ],
+            "description": "Carbon has an arbitrary file include via unvalidated input passed to Carbon::setLocale",
+            "detail": "Affected versions: <2.72.6|>=3.0.0,<3.8.4",
+            "recommendation": "Run: composer update nesbot/carbon",
+            "affects": [
+                {
+                    "ref": "pkg:composer/nesbot/carbon@2.72.5"
+                }
+            ],
+            "properties": [
+                {
+                    "name": "composer-remediate:remediation_status",
+                    "value": "verified"
+                },
+                {
+                    "name": "composer-remediate:command",
+                    "value": "composer update nesbot/carbon"
+                },
+                {
+                    "name": "composer-remediate:direct",
+                    "value": "false"
+                },
+                {
+                    "name": "composer-remediate:dev",
+                    "value": "false"
+                }
+            ],
+            "published": "2025-01-08T21:03:28+00:00",
+            "analysis": {
+                "state": "exploitable",
+                "response": [
+                    "update"
+                ],
+                "detail": "1 package change(s) verified by Composer's solver."
+            }
+        },
+        {
+            "bom-ref": "vuln:PKSA-pcdf-qvqm-w4tv@pkg:composer/robrichards/xmlseclibs@3.1.1",
+            "id": "PKSA-pcdf-qvqm-w4tv",
+            "source": {
+                "name": "Packagist",
+                "url": "https://packagist.org/security-advisories/PKSA-pcdf-qvqm-w4tv"
+            },
+            "references": [
+                {
+                    "id": "CVE-2025-66578",
+                    "source": {
+                        "name": "NVD",
+                        "url": "https://nvd.nist.gov/vuln/detail/CVE-2025-66578"
+                    }
+                },
+                {
+                    "id": "CVE-2025-66578",
+                    "source": {
+                        "name": "advisory",
+                        "url": "https://github.com/advisories/GHSA-c4cc-x928-vjw9"
+                    }
+                }
+            ],
+            "ratings": [
+                {
+                    "severity": "medium",
+                    "method": "other",
+                    "source": {
+                        "name": "Packagist",
+                        "url": "https://packagist.org/security-advisories/PKSA-pcdf-qvqm-w4tv"
+                    }
+                }
+            ],
+            "description": "robrichards/xmlseclibs has an Libxml2 Canonicalization error which can bypass Digest/Signature validation",
+            "detail": "Affected versions: <=3.1.3",
+            "recommendation": "Run: composer update robrichards/xmlseclibs",
+            "affects": [
+                {
+                    "ref": "pkg:composer/robrichards/xmlseclibs@3.1.1"
+                }
+            ],
+            "properties": [
+                {
+                    "name": "composer-remediate:remediation_status",
+                    "value": "verified"
+                },
+                {
+                    "name": "composer-remediate:command",
+                    "value": "composer update robrichards/xmlseclibs"
+                },
+                {
+                    "name": "composer-remediate:direct",
+                    "value": "false"
+                },
+                {
+                    "name": "composer-remediate:dev",
+                    "value": "false"
+                }
+            ],
+            "published": "2025-12-08T17:57:33+00:00",
+            "analysis": {
+                "state": "exploitable",
+                "response": [
+                    "update"
+                ],
+                "detail": "1 package change(s) verified by Composer's solver."
+            }
+        },
+        {
+            "bom-ref": "vuln:PKSA-y2cr-5h3j-g3ys@pkg:composer/firebase/php-jwt@6.10.1",
+            "id": "PKSA-y2cr-5h3j-g3ys",
+            "source": {
+                "name": "Packagist",
+                "url": "https://packagist.org/security-advisories/PKSA-y2cr-5h3j-g3ys"
+            },
+            "references": [
+                {
+                    "id": "CVE-2025-45769",
+                    "source": {
+                        "name": "NVD",
+                        "url": "https://nvd.nist.gov/vuln/detail/CVE-2025-45769"
+                    }
+                },
+                {
+                    "id": "CVE-2025-45769",
+                    "source": {
+                        "name": "advisory",
+                        "url": "https://github.com/advisories/GHSA-2x45-7fc3-mxwq"
+                    }
+                }
+            ],
+            "ratings": [
+                {
+                    "severity": "low",
+                    "method": "other",
+                    "source": {
+                        "name": "Packagist",
+                        "url": "https://packagist.org/security-advisories/PKSA-y2cr-5h3j-g3ys"
+                    }
+                }
+            ],
+            "description": "php-jwt contains weak encryption",
+            "detail": "Affected versions: <7.0.0",
+            "recommendation": "Run: composer update laravel/socialite:v5.24.1 -W -m --with 'firebase/php-jwt:>=7.0.0'",
+            "affects": [
+                {
+                    "ref": "pkg:composer/firebase/php-jwt@6.10.1"
+                }
+            ],
+            "properties": [
+                {
+                    "name": "composer-remediate:remediation_status",
+                    "value": "verified"
+                },
+                {
+                    "name": "composer-remediate:command",
+                    "value": "composer update laravel/socialite:v5.24.1 -W -m --with 'firebase/php-jwt:>=7.0.0'"
+                },
+                {
+                    "name": "composer-remediate:direct",
+                    "value": "false"
+                },
+                {
+                    "name": "composer-remediate:dev",
+                    "value": "false"
+                }
+            ],
+            "published": "2025-07-31T21:31:53+00:00",
+            "analysis": {
+                "state": "exploitable",
+                "response": [
+                    "update"
+                ],
+                "detail": "3 package change(s) verified by Composer's solver."
             }
         }
     ]

@@ -7,6 +7,55 @@ Composer Remediate — 2 findings in pixelfed-laravel11-symfony
 Advisories: advisory snapshot advisories.json
 Solver: in-process Composer dry-run
 
+CVE-2024-51736
+────────────────────────────────────────────────────────────
+Affected
+  symfony/process v7.1.5
+  CVE-2024-51736 (PKSA-wws7-mr54-jsny): CVE-2024-51736: Command execution hijack on Windows with Process class
+    https://symfony.com/cve-2024-51736
+    affected versions: >=2.0.0,<3.0.0|>=3.0.0,<4.0.0|>=4.0.0,<5.0.0|>=5.0.0,<5.1.0|>=5.1.0,<5.2.0|>=5.2.0,<5.3.0|>=5.3.0,<5.4.0|>=5.4.0,<5.4.46|>=6.0.0,<6.1.0|>=6.1.0,<6.2.0|>=6.2.0,<6.3.0|>=6.3.0,<6.4.0|>=6.4.0,<6.4.14|>=7.0.0,<7.1.0|>=7.1.0,<7.1.7
+Introduced by
+  root
+  └── laravel/framework v11.26.0
+      └── symfony/process v7.1.5  (requires ^7.0)
+  root
+  └── laravel/helpers v1.7.0
+      └── laravel/framework v11.26.0
+          └── symfony/process v7.1.5  (requires ^7.0)
+  root
+  └── laravel/horizon v5.29.0
+      └── laravel/framework v11.26.0
+          └── symfony/process v7.1.5  (requires ^7.0)
+  root
+  └── laravel/passport v12.3.0
+      └── laravel/framework v11.26.0
+          └── symfony/process v7.1.5  (requires ^7.0)
+  root
+  └── laravel/tinker v2.10.0
+      └── laravel/framework v11.26.0
+          └── symfony/process v7.1.5  (requires ^7.0)
+  … and 13 more paths
+Current state
+  Transitive dependency.
+Recommended remediation
+  symfony/process v7.1.5 -> v7.2.0
+Composer validation
+  PASS  1 package changed, 0 added, 0 removed, 0 root constraints changed
+Expected changes
+  symfony/process v7.1.5 -> v7.2.0
+Recommended command
+  composer update symfony/process
+Other candidates
+  valid, rank 2: composer update symfony/process -w -m --with 'symfony/process:>=7.1.7'  (1 changes)
+  valid, rank 3: composer update laravel/helpers -W -m --with 'symfony/process:>=7.1.7'  (2 changes)
+  valid, rank 4: composer update laravel/passport -W -m --with 'symfony/process:>=7.1.7'  (2 changes)
+  valid, rank 5: composer update laravel/tinker -W -m --with 'symfony/process:>=7.1.7'  (2 changes)
+  valid, rank 6: composer update laravel/ui -W -m --with 'symfony/process:>=7.1.7'  (2 changes)
+  valid, rank 7: composer update laravel/horizon -W -m --with 'symfony/process:>=7.1.7'  (3 changes)
+  valid, rank 8: composer update laravel/framework -W -m --with 'symfony/process:>=7.1.7'  (3 changes)
+  valid, rank 9: composer update laravel/framework laravel/horizon pbmedia/laravel-ffmpeg spatie/laravel-backup spatie/laravel-image-optimizer -W -m --with 'symfony/process:>=7.1.7'  (4 changes)
+  not tried (a better candidate already exists): composer require --no-update laravel/framework:^12.0 && composer update laravel/framework -W -m --with 'symfony/process:>=7.1.7'
+
 CVE-2024-50345
 ────────────────────────────────────────────────────────────
 Affected
@@ -60,55 +109,6 @@ Other candidates
   valid, rank 8: composer update laravel/framework -W -m --with 'symfony/http-foundation:>=7.1.7'  (3 changes)
   valid, rank 9: composer update laravel/framework laravel/passport -W -m --with 'symfony/http-foundation:>=7.1.7'  (3 changes)
   not tried (a better candidate already exists): composer require --no-update laravel/framework:^12.0 && composer update laravel/framework -W -m --with 'symfony/http-foundation:>=7.1.7'
-
-CVE-2024-51736
-────────────────────────────────────────────────────────────
-Affected
-  symfony/process v7.1.5
-  CVE-2024-51736 (PKSA-wws7-mr54-jsny): CVE-2024-51736: Command execution hijack on Windows with Process class
-    https://symfony.com/cve-2024-51736
-    affected versions: >=2.0.0,<3.0.0|>=3.0.0,<4.0.0|>=4.0.0,<5.0.0|>=5.0.0,<5.1.0|>=5.1.0,<5.2.0|>=5.2.0,<5.3.0|>=5.3.0,<5.4.0|>=5.4.0,<5.4.46|>=6.0.0,<6.1.0|>=6.1.0,<6.2.0|>=6.2.0,<6.3.0|>=6.3.0,<6.4.0|>=6.4.0,<6.4.14|>=7.0.0,<7.1.0|>=7.1.0,<7.1.7
-Introduced by
-  root
-  └── laravel/framework v11.26.0
-      └── symfony/process v7.1.5  (requires ^7.0)
-  root
-  └── laravel/helpers v1.7.0
-      └── laravel/framework v11.26.0
-          └── symfony/process v7.1.5  (requires ^7.0)
-  root
-  └── laravel/horizon v5.29.0
-      └── laravel/framework v11.26.0
-          └── symfony/process v7.1.5  (requires ^7.0)
-  root
-  └── laravel/passport v12.3.0
-      └── laravel/framework v11.26.0
-          └── symfony/process v7.1.5  (requires ^7.0)
-  root
-  └── laravel/tinker v2.10.0
-      └── laravel/framework v11.26.0
-          └── symfony/process v7.1.5  (requires ^7.0)
-  … and 13 more paths
-Current state
-  Transitive dependency.
-Recommended remediation
-  symfony/process v7.1.5 -> v7.2.0
-Composer validation
-  PASS  1 package changed, 0 added, 0 removed, 0 root constraints changed
-Expected changes
-  symfony/process v7.1.5 -> v7.2.0
-Recommended command
-  composer update symfony/process
-Other candidates
-  valid, rank 2: composer update symfony/process -w -m --with 'symfony/process:>=7.1.7'  (1 changes)
-  valid, rank 3: composer update laravel/helpers -W -m --with 'symfony/process:>=7.1.7'  (2 changes)
-  valid, rank 4: composer update laravel/passport -W -m --with 'symfony/process:>=7.1.7'  (2 changes)
-  valid, rank 5: composer update laravel/tinker -W -m --with 'symfony/process:>=7.1.7'  (2 changes)
-  valid, rank 6: composer update laravel/ui -W -m --with 'symfony/process:>=7.1.7'  (2 changes)
-  valid, rank 7: composer update laravel/horizon -W -m --with 'symfony/process:>=7.1.7'  (3 changes)
-  valid, rank 8: composer update laravel/framework -W -m --with 'symfony/process:>=7.1.7'  (3 changes)
-  valid, rank 9: composer update laravel/framework laravel/horizon pbmedia/laravel-ffmpeg spatie/laravel-backup spatie/laravel-image-optimizer -W -m --with 'symfony/process:>=7.1.7'  (4 changes)
-  not tried (a better candidate already exists): composer require --no-update laravel/framework:^12.0 && composer update laravel/framework -W -m --with 'symfony/process:>=7.1.7'
 
 Summary
   Findings: 2 advisories on 2 packages, 2 packages with a verified fix

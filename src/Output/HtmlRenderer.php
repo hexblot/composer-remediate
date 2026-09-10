@@ -98,6 +98,9 @@ final class HtmlRenderer
         $h[] = sprintf('<section class="finding" id="finding-%d">', $number);
         $h[] = '<h2>' . self::e($f->packageName) . ' <span class="version">' . self::e($f->prettyVersion) . '</span>' . ($f->viaReplacedName !== null ? ' <small>replaces ' . self::e($f->viaReplacedName) . '</small>' : '') . '</h2>';
         $h[] = '<p class="state">' . ($f->isRootRequirement ? 'Direct dependency.' : 'Transitive dependency.') . ($f->isDev ? ' Development requirement only.' : '') . '</p>';
+        if ($f->abandoned !== []) {
+            $h[] = '<p class="abandoned"><strong>Abandoned:</strong> ' . self::e(TextRenderer::abandonedLine($f)) . '</p>';
+        }
 
         $h[] = '<h3>Advisories</h3><ul class="advisories">';
         foreach ($plan->allFindings() as $finding) {
@@ -106,8 +109,12 @@ final class HtmlRenderer
             $safeLink = self::safeUrl($a->link);
             $h[] = '<li><strong>' . ($safeLink !== null ? '<a href="' . self::e($safeLink) . '" rel="noopener noreferrer">' . $label . '</a>' : $label) . '</strong>'
                 . ($a->severity !== null ? ' <span class="badge sev-' . self::e(strtolower($a->severity)) . '">' . self::e($a->severity) . '</span>' : '')
+                . ($a->isKnownExploited() ? ' <span class="badge kev">KEV</span>' : '')
+                . ($a->epss !== null ? ' <span class="badge epss">EPSS ' . self::e(sprintf('%.2f', $a->epss)) . '</span>' : '')
                 . ($a->title !== null ? '<br>' . self::e($a->title) : '')
-                . '<br><small>affected versions: <code>' . self::e($a->affectedVersions->getPrettyString()) . '</code></small></li>';
+                . '<br><small>affected versions: <code>' . self::e($a->affectedVersions->getPrettyString()) . '</code></small>'
+                . (TextRenderer::exploitLine($a) !== null ? '<br><small>' . self::e((string) TextRenderer::exploitLine($a)) . '</small>' : '')
+                . '</li>';
         }
         $h[] = '</ul>';
 
@@ -243,6 +250,7 @@ table{border-collapse:collapse;width:100%;font-size:.92rem}th,td{text-align:left
 .badge{display:inline-block;font-size:.75rem;font-weight:600;padding:.1rem .5rem;border-radius:999px;border:1px solid currentColor;white-space:nowrap}
 .badge.ok{color:var(--ok)}.badge.none,.badge.rejected{color:var(--bad)}.badge.skipped,.badge.dev{color:var(--muted)}
 .badge.sev-critical,.badge.sev-high{color:var(--bad)}.badge.sev-medium{color:var(--warn)}.badge.sev-low{color:var(--muted)}
+.badge.kev{color:#fff;background:var(--bad);border-color:var(--bad)}.badge.epss{color:var(--warn)}.abandoned{color:var(--warn)}
 .warning{border-left:4px solid var(--warn);padding:.5rem .8rem;background:rgba(212,167,44,.1)}.clean{color:var(--ok);font-weight:600}
 .none-box{border-left:4px solid var(--bad);padding:.5rem .8rem;background:rgba(180,35,24,.08)}
 .advisories{padding-left:1.2rem}.advisories li{margin:.4rem 0}

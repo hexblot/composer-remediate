@@ -8,7 +8,7 @@
         "advisory_source": "advisory snapshot advisories.json",
         "solver": "in-process Composer dry-run",
         "solver_runs": "16",
-        "composer_json_sha256": "95ab7b56835198de3afa0a333e5ac45550e56adb4b0ef55225fbe5833a282d5f",
+        "composer_json_sha256": "45d6f3ae8377e5e5122222bd8fbf18ab636ba7de87d98930c483f2ca3382face",
         "composer_lock_sha256": "2dbaa7b34c4c01d7ef5715f78a6c4dfe11a0a4533a4b8855f22eb8d218f54b2f",
         "analysis_timestamp": "(fixture)",
         "locked_packages": "217"
@@ -23,6 +23,8 @@
         "packages_gated": 2,
         "packages_baselined": 0,
         "packages_with_constraint_drag": 0,
+        "packages_known_exploited": 0,
+        "packages_with_abandoned_dependency": 0,
         "combined_command": "composer update google/apiclient:v2.12.2 -W -m --with 'firebase/php-jwt:>=6.0.0'",
         "combined_fixes": 1,
         "combined_total": 3,
@@ -65,9 +67,13 @@
                             "name": "GitHub",
                             "remoteId": "GHSA-8xf4-w7qw-pjjw"
                         }
-                    ]
+                    ],
+                    "epss": null,
+                    "epss_percentile": null,
+                    "kev_added": null
                 }
             ],
+            "abandoned": [],
             "paths_total": 4,
             "paths": [
                 {
@@ -318,7 +324,10 @@
                             "name": "GitHub",
                             "remoteId": "GHSA-gxr4-xjj5-5px2"
                         }
-                    ]
+                    ],
+                    "epss": null,
+                    "epss_percentile": null,
+                    "kev_added": null
                 },
                 {
                     "id": "PKSA-vf2x-zfw2-cnsj",
@@ -333,9 +342,13 @@
                             "name": "GitHub",
                             "remoteId": "GHSA-6c3j-c64m-qhgq"
                         }
-                    ]
+                    ],
+                    "epss": null,
+                    "epss_percentile": null,
+                    "kev_added": null
                 }
             ],
+            "abandoned": [],
             "paths_total": 1,
             "paths": [
                 {

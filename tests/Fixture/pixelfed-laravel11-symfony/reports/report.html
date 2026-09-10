@@ -16,6 +16,7 @@ table{border-collapse:collapse;width:100%;font-size:.92rem}th,td{text-align:left
 .badge{display:inline-block;font-size:.75rem;font-weight:600;padding:.1rem .5rem;border-radius:999px;border:1px solid currentColor;white-space:nowrap}
 .badge.ok{color:var(--ok)}.badge.none,.badge.rejected{color:var(--bad)}.badge.skipped,.badge.dev{color:var(--muted)}
 .badge.sev-critical,.badge.sev-high{color:var(--bad)}.badge.sev-medium{color:var(--warn)}.badge.sev-low{color:var(--muted)}
+.badge.kev{color:#fff;background:var(--bad);border-color:var(--bad)}.badge.epss{color:var(--warn)}.abandoned{color:var(--warn)}
 .warning{border-left:4px solid var(--warn);padding:.5rem .8rem;background:rgba(212,167,44,.1)}.clean{color:var(--ok);font-weight:600}
 .none-box{border-left:4px solid var(--bad);padding:.5rem .8rem;background:rgba(180,35,24,.08)}
 .advisories{padding-left:1.2rem}.advisories li{margin:.4rem 0}
@@ -23,8 +24,57 @@ details summary{cursor:pointer;color:var(--accent);margin:.5rem 0}
 .meta dl{display:grid;grid-template-columns:max-content 1fr;gap:.2rem 1rem;font-size:.85rem;color:var(--muted)}.meta dt{font-weight:600}.meta dd{margin:0;word-break:break-all}</style></head><body>
 <header><h1>Composer Remediate</h1><p class="sub">Composer Remediate — 2 findings in <code>pixelfed-laravel11-symfony</code></p></header>
 <main>
-<section><h2>Summary</h2><p>2 advisories on 2 packages.</p><p class="command"><span class="badge ok">fixes all 2</span> <code>composer update symfony/http-foundation symfony/process</code></p><table class="summary"><thead><tr><th>Package</th><th>Advisories</th><th>Status</th><th>Recommended command</th></tr></thead><tbody><tr><td><a href="#finding-1">symfony/http-foundation v7.1.5</a></td><td>CVE-2024-50345</td><td><span class="badge ok">verified</span></td><td><code>composer update symfony/http-foundation</code></td></tr><tr><td><a href="#finding-2">symfony/process v7.1.5</a></td><td>CVE-2024-51736</td><td><span class="badge ok">verified</span></td><td><code>composer update symfony/process</code></td></tr></tbody></table></section>
+<section><h2>Summary</h2><p>2 advisories on 2 packages.</p><p class="command"><span class="badge ok">fixes all 2</span> <code>composer update symfony/http-foundation symfony/process</code></p><table class="summary"><thead><tr><th>Package</th><th>Advisories</th><th>Status</th><th>Recommended command</th></tr></thead><tbody><tr><td><a href="#finding-1">symfony/process v7.1.5</a></td><td>CVE-2024-51736</td><td><span class="badge ok">verified</span></td><td><code>composer update symfony/process</code></td></tr><tr><td><a href="#finding-2">symfony/http-foundation v7.1.5</a></td><td>CVE-2024-50345</td><td><span class="badge ok">verified</span></td><td><code>composer update symfony/http-foundation</code></td></tr></tbody></table></section>
 <section class="finding" id="finding-1">
+<h2>symfony/process <span class="version">v7.1.5</span></h2>
+<p class="state">Transitive dependency.</p>
+<h3>Advisories</h3><ul class="advisories">
+<li><strong><a href="https://symfony.com/cve-2024-51736" rel="noopener noreferrer">CVE-2024-51736 <small>(PKSA-wws7-mr54-jsny)</small></a></strong> <span class="badge sev-high">high</span><br>CVE-2024-51736: Command execution hijack on Windows with Process class<br><small>affected versions: <code>&gt;=2.0.0,&lt;3.0.0|&gt;=3.0.0,&lt;4.0.0|&gt;=4.0.0,&lt;5.0.0|&gt;=5.0.0,&lt;5.1.0|&gt;=5.1.0,&lt;5.2.0|&gt;=5.2.0,&lt;5.3.0|&gt;=5.3.0,&lt;5.4.0|&gt;=5.4.0,&lt;5.4.46|&gt;=6.0.0,&lt;6.1.0|&gt;=6.1.0,&lt;6.2.0|&gt;=6.2.0,&lt;6.3.0|&gt;=6.3.0,&lt;6.4.0|&gt;=6.4.0,&lt;6.4.14|&gt;=7.0.0,&lt;7.1.0|&gt;=7.1.0,&lt;7.1.7</code></small></li>
+</ul>
+<h3>Introduced by</h3>
+<pre class="tree">root
+└── laravel/framework v11.26.0
+    └── symfony/process v7.1.5  (requires ^7.0)
+
+root
+└── laravel/helpers v1.7.0
+    └── laravel/framework v11.26.0
+        └── symfony/process v7.1.5  (requires ^7.0)
+
+root
+└── laravel/horizon v5.29.0
+    └── laravel/framework v11.26.0
+        └── symfony/process v7.1.5  (requires ^7.0)
+
+root
+└── laravel/passport v12.3.0
+    └── laravel/framework v11.26.0
+        └── symfony/process v7.1.5  (requires ^7.0)
+
+root
+└── laravel/tinker v2.10.0
+    └── laravel/framework v11.26.0
+        └── symfony/process v7.1.5  (requires ^7.0)</pre>
+<p><small>… and 13 more paths</small></p>
+<h3>Recommended remediation</h3>
+<p class="command"><code>composer update symfony/process</code></p>
+<p class="validation"><span class="badge ok">Composer validation: PASS</span> 1 package changed, 0 added, 0 removed, 0 root constraints changed.</p>
+<details open><summary>Expected changes (1)</summary><table class="changes"><thead><tr><th>Package</th><th>From</th><th>To</th><th>Kind</th></tr></thead><tbody>
+<tr><td>symfony/process</td><td>v7.1.5</td><td>v7.2.0</td><td>upgraded, minor</td></tr>
+</tbody></table></details>
+<details><summary>Other candidates (9)</summary><table class="candidates"><thead><tr><th>Outcome</th><th>Command</th><th>Detail</th></tr></thead><tbody>
+<tr><td><span class="badge ok">valid, rank 2</span></td><td><code>composer update symfony/process -w -m --with &apos;symfony/process:&gt;=7.1.7&apos;</code></td><td>1 changes</td></tr>
+<tr><td><span class="badge ok">valid, rank 3</span></td><td><code>composer update laravel/helpers -W -m --with &apos;symfony/process:&gt;=7.1.7&apos;</code></td><td>2 changes</td></tr>
+<tr><td><span class="badge ok">valid, rank 4</span></td><td><code>composer update laravel/passport -W -m --with &apos;symfony/process:&gt;=7.1.7&apos;</code></td><td>2 changes</td></tr>
+<tr><td><span class="badge ok">valid, rank 5</span></td><td><code>composer update laravel/tinker -W -m --with &apos;symfony/process:&gt;=7.1.7&apos;</code></td><td>2 changes</td></tr>
+<tr><td><span class="badge ok">valid, rank 6</span></td><td><code>composer update laravel/ui -W -m --with &apos;symfony/process:&gt;=7.1.7&apos;</code></td><td>2 changes</td></tr>
+<tr><td><span class="badge ok">valid, rank 7</span></td><td><code>composer update laravel/horizon -W -m --with &apos;symfony/process:&gt;=7.1.7&apos;</code></td><td>3 changes</td></tr>
+<tr><td><span class="badge ok">valid, rank 8</span></td><td><code>composer update laravel/framework -W -m --with &apos;symfony/process:&gt;=7.1.7&apos;</code></td><td>3 changes</td></tr>
+<tr><td><span class="badge ok">valid, rank 9</span></td><td><code>composer update laravel/framework laravel/horizon pbmedia/laravel-ffmpeg spatie/laravel-backup spatie/laravel-image-optimizer -W -m --with &apos;symfony/process:&gt;=7.1.7&apos;</code></td><td>4 changes</td></tr>
+<tr><td><span class="badge skipped">not tried</span></td><td><code>composer require --no-update laravel/framework:^12.0 &amp;&amp; composer update laravel/framework -W -m --with &apos;symfony/process:&gt;=7.1.7&apos;</code></td><td>a better candidate already exists</td></tr>
+</tbody></table></details>
+</section>
+<section class="finding" id="finding-2">
 <h2>symfony/http-foundation <span class="version">v7.1.5</span></h2>
 <p class="state">Transitive dependency.</p>
 <h3>Advisories</h3><ul class="advisories">
@@ -78,55 +128,6 @@ root
 <tr><td><span class="badge skipped">not tried</span></td><td><code>composer require --no-update laravel/framework:^12.0 &amp;&amp; composer update laravel/framework -W -m --with &apos;symfony/http-foundation:&gt;=7.1.7&apos;</code></td><td>a better candidate already exists</td></tr>
 </tbody></table></details>
 </section>
-<section class="finding" id="finding-2">
-<h2>symfony/process <span class="version">v7.1.5</span></h2>
-<p class="state">Transitive dependency.</p>
-<h3>Advisories</h3><ul class="advisories">
-<li><strong><a href="https://symfony.com/cve-2024-51736" rel="noopener noreferrer">CVE-2024-51736 <small>(PKSA-wws7-mr54-jsny)</small></a></strong> <span class="badge sev-high">high</span><br>CVE-2024-51736: Command execution hijack on Windows with Process class<br><small>affected versions: <code>&gt;=2.0.0,&lt;3.0.0|&gt;=3.0.0,&lt;4.0.0|&gt;=4.0.0,&lt;5.0.0|&gt;=5.0.0,&lt;5.1.0|&gt;=5.1.0,&lt;5.2.0|&gt;=5.2.0,&lt;5.3.0|&gt;=5.3.0,&lt;5.4.0|&gt;=5.4.0,&lt;5.4.46|&gt;=6.0.0,&lt;6.1.0|&gt;=6.1.0,&lt;6.2.0|&gt;=6.2.0,&lt;6.3.0|&gt;=6.3.0,&lt;6.4.0|&gt;=6.4.0,&lt;6.4.14|&gt;=7.0.0,&lt;7.1.0|&gt;=7.1.0,&lt;7.1.7</code></small></li>
-</ul>
-<h3>Introduced by</h3>
-<pre class="tree">root
-└── laravel/framework v11.26.0
-    └── symfony/process v7.1.5  (requires ^7.0)
-
-root
-└── laravel/helpers v1.7.0
-    └── laravel/framework v11.26.0
-        └── symfony/process v7.1.5  (requires ^7.0)
-
-root
-└── laravel/horizon v5.29.0
-    └── laravel/framework v11.26.0
-        └── symfony/process v7.1.5  (requires ^7.0)
-
-root
-└── laravel/passport v12.3.0
-    └── laravel/framework v11.26.0
-        └── symfony/process v7.1.5  (requires ^7.0)
-
-root
-└── laravel/tinker v2.10.0
-    └── laravel/framework v11.26.0
-        └── symfony/process v7.1.5  (requires ^7.0)</pre>
-<p><small>… and 13 more paths</small></p>
-<h3>Recommended remediation</h3>
-<p class="command"><code>composer update symfony/process</code></p>
-<p class="validation"><span class="badge ok">Composer validation: PASS</span> 1 package changed, 0 added, 0 removed, 0 root constraints changed.</p>
-<details open><summary>Expected changes (1)</summary><table class="changes"><thead><tr><th>Package</th><th>From</th><th>To</th><th>Kind</th></tr></thead><tbody>
-<tr><td>symfony/process</td><td>v7.1.5</td><td>v7.2.0</td><td>upgraded, minor</td></tr>
-</tbody></table></details>
-<details><summary>Other candidates (9)</summary><table class="candidates"><thead><tr><th>Outcome</th><th>Command</th><th>Detail</th></tr></thead><tbody>
-<tr><td><span class="badge ok">valid, rank 2</span></td><td><code>composer update symfony/process -w -m --with &apos;symfony/process:&gt;=7.1.7&apos;</code></td><td>1 changes</td></tr>
-<tr><td><span class="badge ok">valid, rank 3</span></td><td><code>composer update laravel/helpers -W -m --with &apos;symfony/process:&gt;=7.1.7&apos;</code></td><td>2 changes</td></tr>
-<tr><td><span class="badge ok">valid, rank 4</span></td><td><code>composer update laravel/passport -W -m --with &apos;symfony/process:&gt;=7.1.7&apos;</code></td><td>2 changes</td></tr>
-<tr><td><span class="badge ok">valid, rank 5</span></td><td><code>composer update laravel/tinker -W -m --with &apos;symfony/process:&gt;=7.1.7&apos;</code></td><td>2 changes</td></tr>
-<tr><td><span class="badge ok">valid, rank 6</span></td><td><code>composer update laravel/ui -W -m --with &apos;symfony/process:&gt;=7.1.7&apos;</code></td><td>2 changes</td></tr>
-<tr><td><span class="badge ok">valid, rank 7</span></td><td><code>composer update laravel/horizon -W -m --with &apos;symfony/process:&gt;=7.1.7&apos;</code></td><td>3 changes</td></tr>
-<tr><td><span class="badge ok">valid, rank 8</span></td><td><code>composer update laravel/framework -W -m --with &apos;symfony/process:&gt;=7.1.7&apos;</code></td><td>3 changes</td></tr>
-<tr><td><span class="badge ok">valid, rank 9</span></td><td><code>composer update laravel/framework laravel/horizon pbmedia/laravel-ffmpeg spatie/laravel-backup spatie/laravel-image-optimizer -W -m --with &apos;symfony/process:&gt;=7.1.7&apos;</code></td><td>4 changes</td></tr>
-<tr><td><span class="badge skipped">not tried</span></td><td><code>composer require --no-update laravel/framework:^12.0 &amp;&amp; composer update laravel/framework -W -m --with &apos;symfony/process:&gt;=7.1.7&apos;</code></td><td>a better candidate already exists</td></tr>
-</tbody></table></details>
-</section>
 <section class="meta"><h2>Analysis metadata</h2><dl>
 <dt>project</dt><dd>pixelfed-laravel11-symfony</dd>
 <dt>engine version</dt><dd>dev-main</dd>
@@ -135,7 +136,7 @@ root
 <dt>advisory source</dt><dd>advisory snapshot advisories.json</dd>
 <dt>solver</dt><dd>in-process Composer dry-run</dd>
 <dt>solver runs</dt><dd>19</dd>
-<dt>composer json sha256</dt><dd>6dfdb96213b339e210ededceb5436a9ca28028fbd086247cb64d542e9e328f0d</dd>
+<dt>composer json sha256</dt><dd>b108b00dd4c31b98d7dff364a8ce9e8456d55c1257d103636f7617a4c011c928</dd>
 <dt>composer lock sha256</dt><dd>90dfb4efb8c374b65c0c1251fb37c9e2256c43bd72a232bfc2c63abb1801690c</dd>
 <dt>analysis timestamp</dt><dd>(fixture)</dd>
 <dt>locked packages</dt><dd>173</dd>

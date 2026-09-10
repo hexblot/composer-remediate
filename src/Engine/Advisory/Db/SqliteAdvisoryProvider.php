@@ -44,7 +44,19 @@ final class SqliteAdvisoryProvider implements AdvisoryProvider, CoverageAware
     {
         $meta = $this->database->meta();
 
-        return sprintf('advisory database %s (%s advisories, built %s, dataset %s)', $this->database->path, $meta['advisory_count'] ?? '?', $meta['built_at'] ?? '?', substr($meta['dataset_hash'] ?? '', 0, 12));
+        $exploit = 'no exploit data';
+        if ($this->database->tracksExploits()) {
+            $parts = [];
+            if (isset($meta['epss_score_date'])) {
+                $parts[] = 'EPSS scored ' . substr($meta['epss_score_date'], 0, 10);
+            }
+            if (isset($meta['kev_date_released'])) {
+                $parts[] = 'KEV catalogue ' . substr($meta['kev_date_released'], 0, 10);
+            }
+            $exploit = $parts === [] ? 'exploit data for ' . ($meta['exploit_count'] ?? '0') . ' CVEs' : implode(', ', $parts);
+        }
+
+        return sprintf('advisory database %s (%s advisories, built %s, dataset %s, %s)', $this->database->path, $meta['advisory_count'] ?? '?', $meta['built_at'] ?? '?', substr($meta['dataset_hash'] ?? '', 0, 12), $exploit);
     }
 
     public function isComplete(): bool

@@ -8,7 +8,7 @@
         "advisory_source": "advisory snapshot advisories.json",
         "solver": "in-process Composer dry-run",
         "solver_runs": "78",
-        "composer_json_sha256": "d2d2e6c1c923b36f60853b8d0ecf7b07e45c2884b2a24700128dea8e78f69ba9",
+        "composer_json_sha256": "058256a835fff7e54b024a28db993a6afad852d8ba1a70dfbd8e4877f1180f05",
         "composer_lock_sha256": "22fd0acc2517587b38c52afc1c3a03768d5ea1fae006f954fcc185f8abe5b05e",
         "analysis_timestamp": "(fixture)",
         "locked_packages": "192"
@@ -23,7 +23,9 @@
         "packages_gated": 6,
         "packages_baselined": 0,
         "packages_with_constraint_drag": 0,
-        "combined_command": "composer update symfony/http-foundation symfony/twig-bridge twig/twig symfony/process -w -m --with 'twig/twig:>=3.11.2,<3.12.0 || >=3.14.1'",
+        "packages_known_exploited": 0,
+        "packages_with_abandoned_dependency": 1,
+        "combined_command": "composer update symfony/http-foundation symfony/process symfony/twig-bridge twig/twig -w -m --with 'twig/twig:>=3.11.2,<3.12.0 || >=3.14.1'",
         "combined_fixes": 6,
         "combined_total": 14,
         "combined_fixes_all": false,
@@ -61,7 +63,10 @@
                             "name": "GitHub",
                             "remoteId": "GHSA-w9xv-qf98-ccq4"
                         }
-                    ]
+                    ],
+                    "epss": null,
+                    "epss_percentile": null,
+                    "kev_added": null
                 },
                 {
                     "id": "PKSA-dvbq-8ft2-ngrw",
@@ -76,7 +81,10 @@
                             "name": "GitHub",
                             "remoteId": "GHSA-v66g-p9x6-v98p"
                         }
-                    ]
+                    ],
+                    "epss": null,
+                    "epss_percentile": null,
+                    "kev_added": null
                 },
                 {
                     "id": "PKSA-m4hk-rk8p-4t5p",
@@ -91,7 +99,10 @@
                             "name": "GitHub",
                             "remoteId": "GHSA-wgmf-q9vr-vww6"
                         }
-                    ]
+                    ],
+                    "epss": null,
+                    "epss_percentile": null,
+                    "kev_added": null
                 },
                 {
                     "id": "PKSA-mkg2-1wyw-57y7",
@@ -106,7 +117,10 @@
                             "name": "GitHub",
                             "remoteId": "GHSA-6hwr-6v2f-3m88"
                         }
-                    ]
+                    ],
+                    "epss": null,
+                    "epss_percentile": null,
+                    "kev_added": null
                 },
                 {
                     "id": "PKSA-p1pj-q951-6f1x",
@@ -121,7 +135,10 @@
                             "name": "GitHub",
                             "remoteId": "GHSA-r8w8-74ww-j4wh"
                         }
-                    ]
+                    ],
+                    "epss": null,
+                    "epss_percentile": null,
+                    "kev_added": null
                 },
                 {
                     "id": "PKSA-xk3k-rd1m-pxmg",
@@ -136,7 +153,10 @@
                             "name": "GitHub",
                             "remoteId": "GHSA-5gpr-w2p5-6m37"
                         }
-                    ]
+                    ],
+                    "epss": null,
+                    "epss_percentile": null,
+                    "kev_added": null
                 },
                 {
                     "id": "PKSA-xp7t-fbrb-qjv4",
@@ -151,9 +171,13 @@
                             "name": "GitHub",
                             "remoteId": "GHSA-ghg6-32f9-2jp7"
                         }
-                    ]
+                    ],
+                    "epss": null,
+                    "epss_percentile": null,
+                    "kev_added": null
                 }
             ],
+            "abandoned": [],
             "paths_total": 1,
             "paths": [
                 {
@@ -219,476 +243,6 @@
             ]
         },
         {
-            "package": "symfony/http-foundation",
-            "version": "v4.4.49",
-            "version_normalized": "4.4.49.0",
-            "direct": false,
-            "dev": false,
-            "baselined": false,
-            "counts_for_exit": true,
-            "via_replaced_package": null,
-            "advisories": [
-                {
-                    "id": "PKSA-b35n-565h-rs4q",
-                    "cve": "CVE-2024-50345",
-                    "title": "CVE-2024-50345: Open redirect via browser-sanitized URLs",
-                    "link": "https://symfony.com/cve-2024-50345",
-                    "severity": "low",
-                    "reported_at": "2024-11-05T08:00:00+00:00",
-                    "affected_versions": ">=2.0.0,<3.0.0|>=3.0.0,<4.0.0|>=4.0.0,<5.0.0|>=5.0.0,<5.1.0|>=5.1.0,<5.2.0|>=5.2.0,<5.3.0|>=5.3.0,<5.4.0|>=5.4.0,<5.4.46|>=6.0.0,<6.1.0|>=6.1.0,<6.2.0|>=6.2.0,<6.3.0|>=6.3.0,<6.4.0|>=6.4.0,<6.4.14|>=7.0.0,<7.1.0|>=7.1.0,<7.1.7",
-                    "sources": [
-                        {
-                            "name": "GitHub",
-                            "remoteId": "GHSA-mrqx-rp3w-jpjp"
-                        },
-                        {
-                            "name": "FriendsOfPHP/security-advisories",
-                            "remoteId": "symfony/http-foundation/CVE-2024-50345.yaml"
-                        }
-                    ]
-                }
-            ],
-            "paths_total": 56,
-            "paths": [
-                {
-                    "cyclic": false,
-                    "chain": [
-                        {
-                            "package": "root",
-                            "version": null,
-                            "requires": "^3.0"
-                        },
-                        {
-                            "package": "friendsofsymfony/rest-bundle",
-                            "version": "3.5.0",
-                            "requires": "^4.4|^5.3|^6.0"
-                        }
-                    ],
-                    "target": {
-                        "package": "symfony/http-foundation",
-                        "version": "v4.4.49"
-                    }
-                },
-                {
-                    "cyclic": false,
-                    "chain": [
-                        {
-                            "package": "root",
-                            "version": null,
-                            "requires": "^3.5"
-                        },
-                        {
-                            "package": "kevinpapst/adminlte-bundle",
-                            "version": "3.6.1",
-                            "requires": ">4.3"
-                        }
-                    ],
-                    "target": {
-                        "package": "symfony/http-foundation",
-                        "version": "v4.4.49"
-                    }
-                },
-                {
-                    "cyclic": false,
-                    "chain": [
-                        {
-                            "package": "root",
-                            "version": null,
-                            "requires": "^4.4"
-                        },
-                        {
-                            "package": "symfony/framework-bundle",
-                            "version": "v4.4.49",
-                            "requires": "^4.4|^5.0"
-                        }
-                    ],
-                    "target": {
-                        "package": "symfony/http-foundation",
-                        "version": "v4.4.49"
-                    }
-                },
-                {
-                    "cyclic": false,
-                    "chain": [
-                        {
-                            "package": "root",
-                            "version": null,
-                            "requires": "^2.0"
-                        },
-                        {
-                            "package": "doctrine/doctrine-bundle",
-                            "version": "2.7.2",
-                            "requires": "^4.4 || ^5.4 || ^6.0"
-                        },
-                        {
-                            "package": "symfony/framework-bundle",
-                            "version": "v4.4.49",
-                            "requires": "^4.4|^5.0"
-                        }
-                    ],
-                    "target": {
-                        "package": "symfony/http-foundation",
-                        "version": "v4.4.49"
-                    }
-                },
-                {
-                    "cyclic": false,
-                    "chain": [
-                        {
-                            "package": "root",
-                            "version": null,
-                            "requires": "^3.0"
-                        },
-                        {
-                            "package": "doctrine/doctrine-migrations-bundle",
-                            "version": "3.2.2",
-                            "requires": "~1.0|~2.0"
-                        },
-                        {
-                            "package": "doctrine/doctrine-bundle",
-                            "version": "2.7.2",
-                            "requires": "^4.4 || ^5.4 || ^6.0"
-                        },
-                        {
-                            "package": "symfony/framework-bundle",
-                            "version": "v4.4.49",
-                            "requires": "^4.4|^5.0"
-                        }
-                    ],
-                    "target": {
-                        "package": "symfony/http-foundation",
-                        "version": "v4.4.49"
-                    }
-                },
-                {
-                    "cyclic": false,
-                    "chain": [
-                        {
-                            "package": "root",
-                            "version": null,
-                            "requires": "^6.0"
-                        },
-                        {
-                            "package": "dama/doctrine-test-bundle",
-                            "version": "v6.7.5",
-                            "requires": "^1.11 || ^2.0"
-                        },
-                        {
-                            "package": "doctrine/doctrine-bundle",
-                            "version": "2.7.2",
-                            "requires": "^4.4 || ^5.4 || ^6.0"
-                        },
-                        {
-                            "package": "symfony/framework-bundle",
-                            "version": "v4.4.49",
-                            "requires": "^4.4|^5.0"
-                        }
-                    ],
-                    "target": {
-                        "package": "symfony/http-foundation",
-                        "version": "v4.4.49"
-                    }
-                },
-                {
-                    "cyclic": false,
-                    "chain": [
-                        {
-                            "package": "root",
-                            "version": null,
-                            "requires": "^3.2"
-                        },
-                        {
-                            "package": "doctrine/doctrine-fixtures-bundle",
-                            "version": "3.4.2",
-                            "requires": "^1.11|^2.0"
-                        },
-                        {
-                            "package": "doctrine/doctrine-bundle",
-                            "version": "2.7.2",
-                            "requires": "^4.4 || ^5.4 || ^6.0"
-                        },
-                        {
-                            "package": "symfony/framework-bundle",
-                            "version": "v4.4.49",
-                            "requires": "^4.4|^5.0"
-                        }
-                    ],
-                    "target": {
-                        "package": "symfony/http-foundation",
-                        "version": "v4.4.49"
-                    }
-                },
-                {
-                    "cyclic": false,
-                    "chain": [
-                        {
-                            "package": "root",
-                            "version": null,
-                            "requires": "^3.0"
-                        },
-                        {
-                            "package": "doctrine/doctrine-migrations-bundle",
-                            "version": "3.2.2",
-                            "requires": "~3.4|~4.0|~5.0|~6.0"
-                        },
-                        {
-                            "package": "symfony/framework-bundle",
-                            "version": "v4.4.49",
-                            "requires": "^4.4|^5.0"
-                        }
-                    ],
-                    "target": {
-                        "package": "symfony/http-foundation",
-                        "version": "v4.4.49"
-                    }
-                },
-                {
-                    "cyclic": false,
-                    "chain": [
-                        {
-                            "package": "root",
-                            "version": null,
-                            "requires": "^3.0"
-                        },
-                        {
-                            "package": "friendsofsymfony/rest-bundle",
-                            "version": "3.5.0",
-                            "requires": "^4.4.1|^5.0|^6.0"
-                        },
-                        {
-                            "package": "symfony/framework-bundle",
-                            "version": "v4.4.49",
-                            "requires": "^4.4|^5.0"
-                        }
-                    ],
-                    "target": {
-                        "package": "symfony/http-foundation",
-                        "version": "v4.4.49"
-                    }
-                },
-                {
-                    "cyclic": false,
-                    "chain": [
-                        {
-                            "package": "root",
-                            "version": null,
-                            "requires": "^1.0"
-                        },
-                        {
-                            "package": "handcraftedinthealps/rest-routing-bundle",
-                            "version": "1.0.6",
-                            "requires": "^4.4.1|^5.0|^6.0"
-                        },
-                        {
-                            "package": "symfony/framework-bundle",
-                            "version": "v4.4.49",
-                            "requires": "^4.4|^5.0"
-                        }
-                    ],
-                    "target": {
-                        "package": "symfony/http-foundation",
-                        "version": "v4.4.49"
-                    }
-                }
-            ],
-            "solver_runs": 19,
-            "search_exhausted": true,
-            "remediation": {
-                "status": "verified",
-                "command": "composer update symfony/http-foundation",
-                "strategy": "lock-refresh",
-                "root_constraint_changes": [],
-                "constraint_drag": null,
-                "blocking_risk": [],
-                "summary": {
-                    "changed": 1,
-                    "added": 0,
-                    "removed": 0,
-                    "total": 1,
-                    "major_change": true,
-                    "downgrade": false,
-                    "prerelease": false
-                },
-                "changes": [
-                    {
-                        "package": "symfony/http-foundation",
-                        "kind": "upgraded",
-                        "step": "major",
-                        "from": "v4.4.49",
-                        "to": "v5.4.46"
-                    }
-                ]
-            },
-            "candidates": [
-                {
-                    "command": "composer update symfony/http-foundation",
-                    "strategy": "lock-refresh",
-                    "outcome": "valid",
-                    "rank": 1,
-                    "summary": {
-                        "changed": 1,
-                        "added": 0,
-                        "removed": 0,
-                        "total": 1,
-                        "major_change": true,
-                        "downgrade": false,
-                        "prerelease": false
-                    },
-                    "solver_status": "resolved"
-                },
-                {
-                    "command": "composer update symfony/http-foundation -w -m --with 'symfony/http-foundation:>=5.4.46,<6.0.0 || >=6.4.14,<7.0.0 || >=7.1.7'",
-                    "strategy": "with-dependencies",
-                    "outcome": "valid",
-                    "rank": 2,
-                    "summary": {
-                        "changed": 1,
-                        "added": 0,
-                        "removed": 0,
-                        "total": 1,
-                        "major_change": true,
-                        "downgrade": false,
-                        "prerelease": false
-                    },
-                    "solver_status": "resolved"
-                },
-                {
-                    "command": "composer update friendsofsymfony/rest-bundle -W -m --with 'symfony/http-foundation:>=5.4.46,<6.0.0 || >=6.4.14,<7.0.0 || >=7.1.7'",
-                    "strategy": "parent-update",
-                    "outcome": "valid",
-                    "rank": 3,
-                    "summary": {
-                        "changed": 1,
-                        "added": 0,
-                        "removed": 0,
-                        "total": 1,
-                        "major_change": true,
-                        "downgrade": false,
-                        "prerelease": false
-                    },
-                    "solver_status": "resolved"
-                },
-                {
-                    "command": "composer update kevinpapst/adminlte-bundle -W -m --with 'symfony/http-foundation:>=5.4.46,<6.0.0 || >=6.4.14,<7.0.0 || >=7.1.7'",
-                    "strategy": "parent-update",
-                    "outcome": "valid",
-                    "rank": 4,
-                    "summary": {
-                        "changed": 1,
-                        "added": 0,
-                        "removed": 0,
-                        "total": 1,
-                        "major_change": true,
-                        "downgrade": false,
-                        "prerelease": false
-                    },
-                    "solver_status": "resolved"
-                },
-                {
-                    "command": "composer update symfony/twig-bundle -W -m --with 'symfony/http-foundation:>=5.4.46,<6.0.0 || >=6.4.14,<7.0.0 || >=7.1.7'",
-                    "strategy": "parent-update",
-                    "outcome": "valid",
-                    "rank": 5,
-                    "summary": {
-                        "changed": 1,
-                        "added": 0,
-                        "removed": 0,
-                        "total": 1,
-                        "major_change": true,
-                        "downgrade": false,
-                        "prerelease": false
-                    },
-                    "solver_status": "resolved"
-                },
-                {
-                    "command": "composer update doctrine/doctrine-bundle -W -m --with 'symfony/http-foundation:>=5.4.46,<6.0.0 || >=6.4.14,<7.0.0 || >=7.1.7'",
-                    "strategy": "parent-update",
-                    "outcome": "valid",
-                    "rank": 6,
-                    "summary": {
-                        "changed": 1,
-                        "added": 0,
-                        "removed": 0,
-                        "total": 1,
-                        "major_change": true,
-                        "downgrade": false,
-                        "prerelease": false
-                    },
-                    "solver_status": "resolved"
-                },
-                {
-                    "command": "composer update doctrine/doctrine-migrations-bundle:3.2.3 -W -m --with 'symfony/http-foundation:>=5.4.46,<6.0.0 || >=6.4.14,<7.0.0 || >=7.1.7'",
-                    "strategy": "parent-update",
-                    "outcome": "valid",
-                    "rank": 7,
-                    "summary": {
-                        "changed": 2,
-                        "added": 0,
-                        "removed": 0,
-                        "total": 2,
-                        "major_change": true,
-                        "downgrade": false,
-                        "prerelease": false
-                    },
-                    "solver_status": "resolved"
-                },
-                {
-                    "command": "composer update symfony/framework-bundle -W -m --with 'symfony/http-foundation:>=5.4.46,<6.0.0 || >=6.4.14,<7.0.0 || >=7.1.7'",
-                    "strategy": "parent-update",
-                    "outcome": "valid",
-                    "rank": 8,
-                    "summary": {
-                        "changed": 2,
-                        "added": 0,
-                        "removed": 0,
-                        "total": 2,
-                        "major_change": true,
-                        "downgrade": false,
-                        "prerelease": false
-                    },
-                    "solver_status": "resolved"
-                },
-                {
-                    "command": "composer update doctrine/doctrine-migrations-bundle -W -m --with 'symfony/http-foundation:>=5.4.46,<6.0.0 || >=6.4.14,<7.0.0 || >=7.1.7'",
-                    "strategy": "parent-update",
-                    "outcome": "valid",
-                    "rank": 9,
-                    "summary": {
-                        "changed": 2,
-                        "added": 0,
-                        "removed": 0,
-                        "total": 2,
-                        "major_change": true,
-                        "downgrade": false,
-                        "prerelease": false
-                    },
-                    "solver_status": "resolved"
-                },
-                {
-                    "command": "composer update friendsofsymfony/rest-bundle kevinpapst/adminlte-bundle symfony/framework-bundle handcraftedinthealps/rest-routing-bundle sensio/framework-extra-bundle symfony/monolog-bundle symfony/security-bundle symfony/twig-bundle symfony/webpack-encore-bundle doctrine/doctrine-fixtures-bundle symfony/debug-bundle symfony/maker-bundle symfony/web-profiler-bundle -W -m --with 'symfony/http-foundation:>=5.4.46,<6.0.0 || >=6.4.14,<7.0.0 || >=7.1.7'",
-                    "strategy": "parent-update",
-                    "outcome": "valid",
-                    "rank": 10,
-                    "summary": {
-                        "changed": 6,
-                        "added": 0,
-                        "removed": 0,
-                        "total": 6,
-                        "major_change": true,
-                        "downgrade": false,
-                        "prerelease": false
-                    },
-                    "solver_status": "resolved"
-                },
-                {
-                    "command": "composer require --no-update friendsofsymfony/rest-bundle:^4.0 && composer update friendsofsymfony/rest-bundle -W -m --with 'symfony/http-foundation:>=5.4.46,<6.0.0 || >=6.4.14,<7.0.0 || >=7.1.7'",
-                    "strategy": "root-constraint-widen",
-                    "outcome": "skipped",
-                    "reason": "a better candidate already exists"
-                }
-            ]
-        },
-        {
             "package": "symfony/twig-bridge",
             "version": "v4.4.49",
             "version_normalized": "4.4.49.0",
@@ -715,9 +269,13 @@
                             "name": "FriendsOfPHP/security-advisories",
                             "remoteId": "symfony/twig-bridge/CVE-2023-46734.yaml"
                         }
-                    ]
+                    ],
+                    "epss": null,
+                    "epss_percentile": null,
+                    "kev_added": null
                 }
             ],
+            "abandoned": [],
             "paths_total": 5,
             "paths": [
                 {
@@ -998,107 +556,6 @@
             ]
         },
         {
-            "package": "symfony/validator",
-            "version": "v4.4.48",
-            "version_normalized": "4.4.48.0",
-            "direct": true,
-            "dev": false,
-            "baselined": false,
-            "counts_for_exit": true,
-            "via_replaced_package": null,
-            "advisories": [
-                {
-                    "id": "PKSA-w2tw-kmfg-rt9s",
-                    "cve": "CVE-2024-50343",
-                    "title": "CVE-2024-50343: Incorrect response from Validator when input ends with `\n`",
-                    "link": "https://symfony.com/cve-2024-50343",
-                    "severity": "low",
-                    "reported_at": "2024-08-30T08:00:00+00:00",
-                    "affected_versions": ">=2.0.0,<3.0.0|>=3.0.0,<4.0.0|>=4.0.0,<5.0.0|>=5.0.0,<5.1.0|>=5.1.0,<5.2.0|>=5.2.0,<5.3.0|>=5.3.0,<5.4.0|>=5.4.0,<5.4.43|>=6.0.0,<6.1.0|>=6.1.0,<6.2.0|>=6.2.0,<6.3.0|>=6.3.0,<6.4.0|>=6.4.0,<6.4.11|>=7.0.0,<7.1.0|>=7.1.0,<7.1.4",
-                    "sources": [
-                        {
-                            "name": "GitHub",
-                            "remoteId": "GHSA-g3rh-rrhp-jhh9"
-                        },
-                        {
-                            "name": "FriendsOfPHP/security-advisories",
-                            "remoteId": "symfony/validator/CVE-2024-50343.yaml"
-                        }
-                    ]
-                }
-            ],
-            "paths_total": 1,
-            "paths": [
-                {
-                    "cyclic": false,
-                    "chain": [
-                        {
-                            "package": "root",
-                            "version": null,
-                            "requires": "^4.4"
-                        }
-                    ],
-                    "target": {
-                        "package": "symfony/validator",
-                        "version": "v4.4.48"
-                    }
-                }
-            ],
-            "solver_runs": 5,
-            "search_exhausted": false,
-            "remediation": {
-                "status": "none",
-                "outcome": "none",
-                "blocker": null
-            },
-            "candidates": [
-                {
-                    "command": "composer update symfony/validator",
-                    "strategy": "lock-refresh",
-                    "outcome": "rejected",
-                    "reason": "resolves, but symfony/validator ends at v4.4.48 which is still affected by PKSA-w2tw-kmfg-rt9s",
-                    "summary": {
-                        "changed": 0,
-                        "added": 0,
-                        "removed": 0,
-                        "total": 0,
-                        "major_change": false,
-                        "downgrade": false,
-                        "prerelease": false
-                    },
-                    "solver_status": "resolved"
-                },
-                {
-                    "command": "composer update symfony/validator -w -m --with 'symfony/validator:>=5.4.43,<6.0.0 || >=6.4.11,<7.0.0 || >=7.1.4'",
-                    "strategy": "with-dependencies",
-                    "outcome": "rejected",
-                    "reason": "Composer could not resolve the dependencies: Your requirements could not be resolved to an installable set of packages.\n  Problem 1\n    - Root composer.json requires symfony/validator ^4.4, found symfony/validator[v4.4.48] but it conflicts with your temporary update constraint (symfony/validator:>=5.4.43,<6.0.0 || >=6.4.11,<7.0.0 || >=7.1.4).",
-                    "solver_status": "conflict"
-                },
-                {
-                    "command": "composer update symfony/validator -W -m --with 'symfony/validator:>=5.4.43,<6.0.0 || >=6.4.11,<7.0.0 || >=7.1.4'",
-                    "strategy": "parent-update",
-                    "outcome": "rejected",
-                    "reason": "Composer could not resolve the dependencies: Your requirements could not be resolved to an installable set of packages.\n  Problem 1\n    - Root composer.json requires symfony/validator ^4.4, found symfony/validator[v4.4.48] but it conflicts with your temporary update constraint (symfony/validator:>=5.4.43,<6.0.0 || >=6.4.11,<7.0.0 || >=7.1.4).",
-                    "solver_status": "conflict"
-                },
-                {
-                    "command": "composer require --no-update symfony/validator:^5.0 && composer update symfony/validator -W -m --with 'symfony/validator:>=5.4.43,<6.0.0 || >=6.4.11,<7.0.0 || >=7.1.4'",
-                    "strategy": "root-constraint-widen",
-                    "outcome": "rejected",
-                    "reason": "Composer could not resolve the dependencies: Your requirements could not be resolved to an installable set of packages.\n  Problem 1\n    - symfony/expression-language is locked to version v4.4.47 and an update of this package was not requested.\n    - Root composer.json requires symfony/validator ^5.0 -> satisfiable by symfony/validator[v5.4.43, ..., v5.4.47].\n    - symfony/validator[v5.4.43, ..., v5.4.47] conflict with symfony/expression-language <5.1.",
-                    "solver_status": "conflict"
-                },
-                {
-                    "command": "composer require --no-update symfony/validator:^5.0 && composer update symfony/validator symfony/expression-language -W -m --with 'symfony/validator:>=5.4.43,<6.0.0 || >=6.4.11,<7.0.0 || >=7.1.4'",
-                    "strategy": "root-constraint-widen",
-                    "outcome": "rejected",
-                    "reason": "Composer could not resolve the dependencies: Your requirements could not be resolved to an installable set of packages.\n  Problem 1\n    - Root composer.json requires symfony/expression-language ^4.4 -> satisfiable by symfony/expression-language[v4.4.47].\n    - Root composer.json requires symfony/validator ^5.0 -> satisfiable by symfony/validator[v5.4.43, ..., v5.4.47].\n    - symfony/validator[v5.4.43, ..., v5.4.47] conflict with symfony/expression-language <5.1.",
-                    "solver_status": "conflict"
-                }
-            ]
-        },
-        {
             "package": "twig/twig",
             "version": "v3.5.1",
             "version_normalized": "3.5.1.0",
@@ -1125,7 +582,10 @@
                             "name": "FriendsOfPHP/security-advisories",
                             "remoteId": "twig/twig/CVE-2024-51755.yaml"
                         }
-                    ]
+                    ],
+                    "epss": null,
+                    "epss_percentile": null,
+                    "kev_added": null
                 },
                 {
                     "id": "PKSA-6319-ffpf-gx66",
@@ -1144,7 +604,10 @@
                             "name": "FriendsOfPHP/security-advisories",
                             "remoteId": "twig/twig/CVE-2024-45411.yaml"
                         }
-                    ]
+                    ],
+                    "epss": null,
+                    "epss_percentile": null,
+                    "kev_added": null
                 },
                 {
                     "id": "PKSA-yhcn-xrg3-68b1",
@@ -1163,9 +626,13 @@
                             "name": "FriendsOfPHP/security-advisories",
                             "remoteId": "twig/twig/CVE-2024-51754.yaml"
                         }
-                    ]
+                    ],
+                    "epss": null,
+                    "epss_percentile": null,
+                    "kev_added": null
                 }
             ],
+            "abandoned": [],
             "paths_total": 15,
             "paths": [
                 {
@@ -1641,6 +1108,590 @@
             ]
         },
         {
+            "package": "symfony/http-foundation",
+            "version": "v4.4.49",
+            "version_normalized": "4.4.49.0",
+            "direct": false,
+            "dev": false,
+            "baselined": false,
+            "counts_for_exit": true,
+            "via_replaced_package": null,
+            "advisories": [
+                {
+                    "id": "PKSA-b35n-565h-rs4q",
+                    "cve": "CVE-2024-50345",
+                    "title": "CVE-2024-50345: Open redirect via browser-sanitized URLs",
+                    "link": "https://symfony.com/cve-2024-50345",
+                    "severity": "low",
+                    "reported_at": "2024-11-05T08:00:00+00:00",
+                    "affected_versions": ">=2.0.0,<3.0.0|>=3.0.0,<4.0.0|>=4.0.0,<5.0.0|>=5.0.0,<5.1.0|>=5.1.0,<5.2.0|>=5.2.0,<5.3.0|>=5.3.0,<5.4.0|>=5.4.0,<5.4.46|>=6.0.0,<6.1.0|>=6.1.0,<6.2.0|>=6.2.0,<6.3.0|>=6.3.0,<6.4.0|>=6.4.0,<6.4.14|>=7.0.0,<7.1.0|>=7.1.0,<7.1.7",
+                    "sources": [
+                        {
+                            "name": "GitHub",
+                            "remoteId": "GHSA-mrqx-rp3w-jpjp"
+                        },
+                        {
+                            "name": "FriendsOfPHP/security-advisories",
+                            "remoteId": "symfony/http-foundation/CVE-2024-50345.yaml"
+                        }
+                    ],
+                    "epss": null,
+                    "epss_percentile": null,
+                    "kev_added": null
+                }
+            ],
+            "abandoned": [
+                {
+                    "package": "sensio/framework-extra-bundle",
+                    "replacement": "Symfony"
+                }
+            ],
+            "paths_total": 56,
+            "paths": [
+                {
+                    "cyclic": false,
+                    "chain": [
+                        {
+                            "package": "root",
+                            "version": null,
+                            "requires": "^3.0"
+                        },
+                        {
+                            "package": "friendsofsymfony/rest-bundle",
+                            "version": "3.5.0",
+                            "requires": "^4.4|^5.3|^6.0"
+                        }
+                    ],
+                    "target": {
+                        "package": "symfony/http-foundation",
+                        "version": "v4.4.49"
+                    }
+                },
+                {
+                    "cyclic": false,
+                    "chain": [
+                        {
+                            "package": "root",
+                            "version": null,
+                            "requires": "^3.5"
+                        },
+                        {
+                            "package": "kevinpapst/adminlte-bundle",
+                            "version": "3.6.1",
+                            "requires": ">4.3"
+                        }
+                    ],
+                    "target": {
+                        "package": "symfony/http-foundation",
+                        "version": "v4.4.49"
+                    }
+                },
+                {
+                    "cyclic": false,
+                    "chain": [
+                        {
+                            "package": "root",
+                            "version": null,
+                            "requires": "^4.4"
+                        },
+                        {
+                            "package": "symfony/framework-bundle",
+                            "version": "v4.4.49",
+                            "requires": "^4.4|^5.0"
+                        }
+                    ],
+                    "target": {
+                        "package": "symfony/http-foundation",
+                        "version": "v4.4.49"
+                    }
+                },
+                {
+                    "cyclic": false,
+                    "chain": [
+                        {
+                            "package": "root",
+                            "version": null,
+                            "requires": "^2.0"
+                        },
+                        {
+                            "package": "doctrine/doctrine-bundle",
+                            "version": "2.7.2",
+                            "requires": "^4.4 || ^5.4 || ^6.0"
+                        },
+                        {
+                            "package": "symfony/framework-bundle",
+                            "version": "v4.4.49",
+                            "requires": "^4.4|^5.0"
+                        }
+                    ],
+                    "target": {
+                        "package": "symfony/http-foundation",
+                        "version": "v4.4.49"
+                    }
+                },
+                {
+                    "cyclic": false,
+                    "chain": [
+                        {
+                            "package": "root",
+                            "version": null,
+                            "requires": "^3.0"
+                        },
+                        {
+                            "package": "doctrine/doctrine-migrations-bundle",
+                            "version": "3.2.2",
+                            "requires": "~1.0|~2.0"
+                        },
+                        {
+                            "package": "doctrine/doctrine-bundle",
+                            "version": "2.7.2",
+                            "requires": "^4.4 || ^5.4 || ^6.0"
+                        },
+                        {
+                            "package": "symfony/framework-bundle",
+                            "version": "v4.4.49",
+                            "requires": "^4.4|^5.0"
+                        }
+                    ],
+                    "target": {
+                        "package": "symfony/http-foundation",
+                        "version": "v4.4.49"
+                    }
+                },
+                {
+                    "cyclic": false,
+                    "chain": [
+                        {
+                            "package": "root",
+                            "version": null,
+                            "requires": "^6.0"
+                        },
+                        {
+                            "package": "dama/doctrine-test-bundle",
+                            "version": "v6.7.5",
+                            "requires": "^1.11 || ^2.0"
+                        },
+                        {
+                            "package": "doctrine/doctrine-bundle",
+                            "version": "2.7.2",
+                            "requires": "^4.4 || ^5.4 || ^6.0"
+                        },
+                        {
+                            "package": "symfony/framework-bundle",
+                            "version": "v4.4.49",
+                            "requires": "^4.4|^5.0"
+                        }
+                    ],
+                    "target": {
+                        "package": "symfony/http-foundation",
+                        "version": "v4.4.49"
+                    }
+                },
+                {
+                    "cyclic": false,
+                    "chain": [
+                        {
+                            "package": "root",
+                            "version": null,
+                            "requires": "^3.2"
+                        },
+                        {
+                            "package": "doctrine/doctrine-fixtures-bundle",
+                            "version": "3.4.2",
+                            "requires": "^1.11|^2.0"
+                        },
+                        {
+                            "package": "doctrine/doctrine-bundle",
+                            "version": "2.7.2",
+                            "requires": "^4.4 || ^5.4 || ^6.0"
+                        },
+                        {
+                            "package": "symfony/framework-bundle",
+                            "version": "v4.4.49",
+                            "requires": "^4.4|^5.0"
+                        }
+                    ],
+                    "target": {
+                        "package": "symfony/http-foundation",
+                        "version": "v4.4.49"
+                    }
+                },
+                {
+                    "cyclic": false,
+                    "chain": [
+                        {
+                            "package": "root",
+                            "version": null,
+                            "requires": "^3.0"
+                        },
+                        {
+                            "package": "doctrine/doctrine-migrations-bundle",
+                            "version": "3.2.2",
+                            "requires": "~3.4|~4.0|~5.0|~6.0"
+                        },
+                        {
+                            "package": "symfony/framework-bundle",
+                            "version": "v4.4.49",
+                            "requires": "^4.4|^5.0"
+                        }
+                    ],
+                    "target": {
+                        "package": "symfony/http-foundation",
+                        "version": "v4.4.49"
+                    }
+                },
+                {
+                    "cyclic": false,
+                    "chain": [
+                        {
+                            "package": "root",
+                            "version": null,
+                            "requires": "^3.0"
+                        },
+                        {
+                            "package": "friendsofsymfony/rest-bundle",
+                            "version": "3.5.0",
+                            "requires": "^4.4.1|^5.0|^6.0"
+                        },
+                        {
+                            "package": "symfony/framework-bundle",
+                            "version": "v4.4.49",
+                            "requires": "^4.4|^5.0"
+                        }
+                    ],
+                    "target": {
+                        "package": "symfony/http-foundation",
+                        "version": "v4.4.49"
+                    }
+                },
+                {
+                    "cyclic": false,
+                    "chain": [
+                        {
+                            "package": "root",
+                            "version": null,
+                            "requires": "^1.0"
+                        },
+                        {
+                            "package": "handcraftedinthealps/rest-routing-bundle",
+                            "version": "1.0.6",
+                            "requires": "^4.4.1|^5.0|^6.0"
+                        },
+                        {
+                            "package": "symfony/framework-bundle",
+                            "version": "v4.4.49",
+                            "requires": "^4.4|^5.0"
+                        }
+                    ],
+                    "target": {
+                        "package": "symfony/http-foundation",
+                        "version": "v4.4.49"
+                    }
+                }
+            ],
+            "solver_runs": 19,
+            "search_exhausted": true,
+            "remediation": {
+                "status": "verified",
+                "command": "composer update symfony/http-foundation",
+                "strategy": "lock-refresh",
+                "root_constraint_changes": [],
+                "constraint_drag": null,
+                "blocking_risk": [],
+                "summary": {
+                    "changed": 1,
+                    "added": 0,
+                    "removed": 0,
+                    "total": 1,
+                    "major_change": true,
+                    "downgrade": false,
+                    "prerelease": false
+                },
+                "changes": [
+                    {
+                        "package": "symfony/http-foundation",
+                        "kind": "upgraded",
+                        "step": "major",
+                        "from": "v4.4.49",
+                        "to": "v5.4.46"
+                    }
+                ]
+            },
+            "candidates": [
+                {
+                    "command": "composer update symfony/http-foundation",
+                    "strategy": "lock-refresh",
+                    "outcome": "valid",
+                    "rank": 1,
+                    "summary": {
+                        "changed": 1,
+                        "added": 0,
+                        "removed": 0,
+                        "total": 1,
+                        "major_change": true,
+                        "downgrade": false,
+                        "prerelease": false
+                    },
+                    "solver_status": "resolved"
+                },
+                {
+                    "command": "composer update symfony/http-foundation -w -m --with 'symfony/http-foundation:>=5.4.46,<6.0.0 || >=6.4.14,<7.0.0 || >=7.1.7'",
+                    "strategy": "with-dependencies",
+                    "outcome": "valid",
+                    "rank": 2,
+                    "summary": {
+                        "changed": 1,
+                        "added": 0,
+                        "removed": 0,
+                        "total": 1,
+                        "major_change": true,
+                        "downgrade": false,
+                        "prerelease": false
+                    },
+                    "solver_status": "resolved"
+                },
+                {
+                    "command": "composer update friendsofsymfony/rest-bundle -W -m --with 'symfony/http-foundation:>=5.4.46,<6.0.0 || >=6.4.14,<7.0.0 || >=7.1.7'",
+                    "strategy": "parent-update",
+                    "outcome": "valid",
+                    "rank": 3,
+                    "summary": {
+                        "changed": 1,
+                        "added": 0,
+                        "removed": 0,
+                        "total": 1,
+                        "major_change": true,
+                        "downgrade": false,
+                        "prerelease": false
+                    },
+                    "solver_status": "resolved"
+                },
+                {
+                    "command": "composer update kevinpapst/adminlte-bundle -W -m --with 'symfony/http-foundation:>=5.4.46,<6.0.0 || >=6.4.14,<7.0.0 || >=7.1.7'",
+                    "strategy": "parent-update",
+                    "outcome": "valid",
+                    "rank": 4,
+                    "summary": {
+                        "changed": 1,
+                        "added": 0,
+                        "removed": 0,
+                        "total": 1,
+                        "major_change": true,
+                        "downgrade": false,
+                        "prerelease": false
+                    },
+                    "solver_status": "resolved"
+                },
+                {
+                    "command": "composer update symfony/twig-bundle -W -m --with 'symfony/http-foundation:>=5.4.46,<6.0.0 || >=6.4.14,<7.0.0 || >=7.1.7'",
+                    "strategy": "parent-update",
+                    "outcome": "valid",
+                    "rank": 5,
+                    "summary": {
+                        "changed": 1,
+                        "added": 0,
+                        "removed": 0,
+                        "total": 1,
+                        "major_change": true,
+                        "downgrade": false,
+                        "prerelease": false
+                    },
+                    "solver_status": "resolved"
+                },
+                {
+                    "command": "composer update doctrine/doctrine-bundle -W -m --with 'symfony/http-foundation:>=5.4.46,<6.0.0 || >=6.4.14,<7.0.0 || >=7.1.7'",
+                    "strategy": "parent-update",
+                    "outcome": "valid",
+                    "rank": 6,
+                    "summary": {
+                        "changed": 1,
+                        "added": 0,
+                        "removed": 0,
+                        "total": 1,
+                        "major_change": true,
+                        "downgrade": false,
+                        "prerelease": false
+                    },
+                    "solver_status": "resolved"
+                },
+                {
+                    "command": "composer update doctrine/doctrine-migrations-bundle:3.2.3 -W -m --with 'symfony/http-foundation:>=5.4.46,<6.0.0 || >=6.4.14,<7.0.0 || >=7.1.7'",
+                    "strategy": "parent-update",
+                    "outcome": "valid",
+                    "rank": 7,
+                    "summary": {
+                        "changed": 2,
+                        "added": 0,
+                        "removed": 0,
+                        "total": 2,
+                        "major_change": true,
+                        "downgrade": false,
+                        "prerelease": false
+                    },
+                    "solver_status": "resolved"
+                },
+                {
+                    "command": "composer update symfony/framework-bundle -W -m --with 'symfony/http-foundation:>=5.4.46,<6.0.0 || >=6.4.14,<7.0.0 || >=7.1.7'",
+                    "strategy": "parent-update",
+                    "outcome": "valid",
+                    "rank": 8,
+                    "summary": {
+                        "changed": 2,
+                        "added": 0,
+                        "removed": 0,
+                        "total": 2,
+                        "major_change": true,
+                        "downgrade": false,
+                        "prerelease": false
+                    },
+                    "solver_status": "resolved"
+                },
+                {
+                    "command": "composer update doctrine/doctrine-migrations-bundle -W -m --with 'symfony/http-foundation:>=5.4.46,<6.0.0 || >=6.4.14,<7.0.0 || >=7.1.7'",
+                    "strategy": "parent-update",
+                    "outcome": "valid",
+                    "rank": 9,
+                    "summary": {
+                        "changed": 2,
+                        "added": 0,
+                        "removed": 0,
+                        "total": 2,
+                        "major_change": true,
+                        "downgrade": false,
+                        "prerelease": false
+                    },
+                    "solver_status": "resolved"
+                },
+                {
+                    "command": "composer update friendsofsymfony/rest-bundle kevinpapst/adminlte-bundle symfony/framework-bundle handcraftedinthealps/rest-routing-bundle sensio/framework-extra-bundle symfony/monolog-bundle symfony/security-bundle symfony/twig-bundle symfony/webpack-encore-bundle doctrine/doctrine-fixtures-bundle symfony/debug-bundle symfony/maker-bundle symfony/web-profiler-bundle -W -m --with 'symfony/http-foundation:>=5.4.46,<6.0.0 || >=6.4.14,<7.0.0 || >=7.1.7'",
+                    "strategy": "parent-update",
+                    "outcome": "valid",
+                    "rank": 10,
+                    "summary": {
+                        "changed": 6,
+                        "added": 0,
+                        "removed": 0,
+                        "total": 6,
+                        "major_change": true,
+                        "downgrade": false,
+                        "prerelease": false
+                    },
+                    "solver_status": "resolved"
+                },
+                {
+                    "command": "composer require --no-update friendsofsymfony/rest-bundle:^4.0 && composer update friendsofsymfony/rest-bundle -W -m --with 'symfony/http-foundation:>=5.4.46,<6.0.0 || >=6.4.14,<7.0.0 || >=7.1.7'",
+                    "strategy": "root-constraint-widen",
+                    "outcome": "skipped",
+                    "reason": "a better candidate already exists"
+                }
+            ]
+        },
+        {
+            "package": "symfony/validator",
+            "version": "v4.4.48",
+            "version_normalized": "4.4.48.0",
+            "direct": true,
+            "dev": false,
+            "baselined": false,
+            "counts_for_exit": true,
+            "via_replaced_package": null,
+            "advisories": [
+                {
+                    "id": "PKSA-w2tw-kmfg-rt9s",
+                    "cve": "CVE-2024-50343",
+                    "title": "CVE-2024-50343: Incorrect response from Validator when input ends with `\n`",
+                    "link": "https://symfony.com/cve-2024-50343",
+                    "severity": "low",
+                    "reported_at": "2024-08-30T08:00:00+00:00",
+                    "affected_versions": ">=2.0.0,<3.0.0|>=3.0.0,<4.0.0|>=4.0.0,<5.0.0|>=5.0.0,<5.1.0|>=5.1.0,<5.2.0|>=5.2.0,<5.3.0|>=5.3.0,<5.4.0|>=5.4.0,<5.4.43|>=6.0.0,<6.1.0|>=6.1.0,<6.2.0|>=6.2.0,<6.3.0|>=6.3.0,<6.4.0|>=6.4.0,<6.4.11|>=7.0.0,<7.1.0|>=7.1.0,<7.1.4",
+                    "sources": [
+                        {
+                            "name": "GitHub",
+                            "remoteId": "GHSA-g3rh-rrhp-jhh9"
+                        },
+                        {
+                            "name": "FriendsOfPHP/security-advisories",
+                            "remoteId": "symfony/validator/CVE-2024-50343.yaml"
+                        }
+                    ],
+                    "epss": null,
+                    "epss_percentile": null,
+                    "kev_added": null
+                }
+            ],
+            "abandoned": [],
+            "paths_total": 1,
+            "paths": [
+                {
+                    "cyclic": false,
+                    "chain": [
+                        {
+                            "package": "root",
+                            "version": null,
+                            "requires": "^4.4"
+                        }
+                    ],
+                    "target": {
+                        "package": "symfony/validator",
+                        "version": "v4.4.48"
+                    }
+                }
+            ],
+            "solver_runs": 5,
+            "search_exhausted": false,
+            "remediation": {
+                "status": "none",
+                "outcome": "none",
+                "blocker": null
+            },
+            "candidates": [
+                {
+                    "command": "composer update symfony/validator",
+                    "strategy": "lock-refresh",
+                    "outcome": "rejected",
+                    "reason": "resolves, but symfony/validator ends at v4.4.48 which is still affected by PKSA-w2tw-kmfg-rt9s",
+                    "summary": {
+                        "changed": 0,
+                        "added": 0,
+                        "removed": 0,
+                        "total": 0,
+                        "major_change": false,
+                        "downgrade": false,
+                        "prerelease": false
+                    },
+                    "solver_status": "resolved"
+                },
+                {
+                    "command": "composer update symfony/validator -w -m --with 'symfony/validator:>=5.4.43,<6.0.0 || >=6.4.11,<7.0.0 || >=7.1.4'",
+                    "strategy": "with-dependencies",
+                    "outcome": "rejected",
+                    "reason": "Composer could not resolve the dependencies: Your requirements could not be resolved to an installable set of packages.\n  Problem 1\n    - Root composer.json requires symfony/validator ^4.4, found symfony/validator[v4.4.48] but it conflicts with your temporary update constraint (symfony/validator:>=5.4.43,<6.0.0 || >=6.4.11,<7.0.0 || >=7.1.4).",
+                    "solver_status": "conflict"
+                },
+                {
+                    "command": "composer update symfony/validator -W -m --with 'symfony/validator:>=5.4.43,<6.0.0 || >=6.4.11,<7.0.0 || >=7.1.4'",
+                    "strategy": "parent-update",
+                    "outcome": "rejected",
+                    "reason": "Composer could not resolve the dependencies: Your requirements could not be resolved to an installable set of packages.\n  Problem 1\n    - Root composer.json requires symfony/validator ^4.4, found symfony/validator[v4.4.48] but it conflicts with your temporary update constraint (symfony/validator:>=5.4.43,<6.0.0 || >=6.4.11,<7.0.0 || >=7.1.4).",
+                    "solver_status": "conflict"
+                },
+                {
+                    "command": "composer require --no-update symfony/validator:^5.0 && composer update symfony/validator -W -m --with 'symfony/validator:>=5.4.43,<6.0.0 || >=6.4.11,<7.0.0 || >=7.1.4'",
+                    "strategy": "root-constraint-widen",
+                    "outcome": "rejected",
+                    "reason": "Composer could not resolve the dependencies: Your requirements could not be resolved to an installable set of packages.\n  Problem 1\n    - symfony/expression-language is locked to version v4.4.47 and an update of this package was not requested.\n    - Root composer.json requires symfony/validator ^5.0 -> satisfiable by symfony/validator[v5.4.43, ..., v5.4.47].\n    - symfony/validator[v5.4.43, ..., v5.4.47] conflict with symfony/expression-language <5.1.",
+                    "solver_status": "conflict"
+                },
+                {
+                    "command": "composer require --no-update symfony/validator:^5.0 && composer update symfony/validator symfony/expression-language -W -m --with 'symfony/validator:>=5.4.43,<6.0.0 || >=6.4.11,<7.0.0 || >=7.1.4'",
+                    "strategy": "root-constraint-widen",
+                    "outcome": "rejected",
+                    "reason": "Composer could not resolve the dependencies: Your requirements could not be resolved to an installable set of packages.\n  Problem 1\n    - Root composer.json requires symfony/expression-language ^4.4 -> satisfiable by symfony/expression-language[v4.4.47].\n    - Root composer.json requires symfony/validator ^5.0 -> satisfiable by symfony/validator[v5.4.43, ..., v5.4.47].\n    - symfony/validator[v5.4.43, ..., v5.4.47] conflict with symfony/expression-language <5.1.",
+                    "solver_status": "conflict"
+                }
+            ]
+        },
+        {
             "package": "symfony/process",
             "version": "v4.4.44",
             "version_normalized": "4.4.44.0",
@@ -1667,9 +1718,13 @@
                             "name": "FriendsOfPHP/security-advisories",
                             "remoteId": "symfony/process/CVE-2024-51736.yaml"
                         }
-                    ]
+                    ],
+                    "epss": null,
+                    "epss_percentile": null,
+                    "kev_added": null
                 }
             ],
+            "abandoned": [],
             "paths_total": 1,
             "paths": [
                 {

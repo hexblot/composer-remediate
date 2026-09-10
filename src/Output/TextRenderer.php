@@ -6,6 +6,7 @@ namespace Remediate\Output;
 
 use Remediate\Engine\Graph\DependencyPath;
 use Remediate\Engine\Plan\EvaluatedCandidate;
+use Remediate\Engine\Matching\Finding;
 use Remediate\Engine\Plan\FindingPlan;
 use Remediate\Engine\Plan\Plan;
 use Symfony\Component\Console\Formatter\OutputFormatter;
@@ -94,6 +95,14 @@ final class TextRenderer
         if ($unsolved !== []) {
             $out[] = '  ' . $this->tag('No verified fix:', 'fg=red') . ' ' . implode('; ', array_map(static fn (FindingPlan $p): string => implode(', ', array_map(static fn ($f): string => $f->advisory->displayId(), $p->allFindings())) . ' on ' . $p->finding->packageName, $unsolved));
         }
+        $exploited = array_filter($plan->findings, static fn (FindingPlan $p): bool => $p->isKnownExploited());
+        if ($exploited !== []) {
+            $out[] = '  ' . $this->tag(sprintf('Known exploited: %d package%s carr%s an advisory in CISA\'s KEV catalogue (%s); fix these first.', count($exploited), count($exploited) === 1 ? '' : 's', count($exploited) === 1 ? 'ies' : 'y', implode(', ', array_map(static fn (FindingPlan $p): string => $p->finding->packageName, $exploited))), 'fg=red;options=bold');
+        }
+        $abandoned = array_filter($plan->findings, static fn (FindingPlan $p): bool => $p->finding->abandoned !== []);
+        if ($abandoned !== []) {
+            $out[] = sprintf('  Abandoned: %d finding%s involve%s a package Packagist marks abandoned (%s).', count($abandoned), count($abandoned) === 1 ? '' : 's', count($abandoned) === 1 ? 's' : '', implode(', ', array_unique(array_merge(...array_map(static fn (FindingPlan $p): array => array_keys($p->finding->abandoned), array_values($abandoned))))));
+        }
         $dragged = array_filter($plan->findings, static fn (FindingPlan $p): bool => $p->constraintDrag() !== null);
         if ($dragged !== []) {
             $out[] = sprintf('  Constraint drag: %d fix%s require%s widening a constraint in composer.json.', count($dragged), count($dragged) === 1 ? '' : 'es', count($dragged) === 1 ? 's' : '');
@@ -126,6 +135,10 @@ final class TextRenderer
                 $out[] = '    ' . $a->link;
             }
             $out[] = '    affected versions: ' . $a->affectedVersions->getPrettyString();
+            $exploit = self::exploitLine($a);
+            if ($exploit !== null) {
+                $out[] = '    ' . ($a->isKnownExploited() ? $this->tag($exploit, 'fg=red;options=bold') : $exploit);
+            }
         }
 
         $out[] = $this->heading('Introduced by');
@@ -141,6 +154,9 @@ final class TextRenderer
 
         $out[] = $this->heading('Current state');
         $out[] = '  ' . ($f->isRootRequirement ? 'Direct dependency.' : 'Transitive dependency.') . ($f->isDev ? ' Development requirement only.' : '');
+        if ($f->abandoned !== []) {
+            $out[] = '  ' . $this->tag('Abandoned:', 'fg=yellow') . ' ' . self::abandonedLine($f);
+        }
 
         $recommended = $plan->recommended();
         if ($recommended === null || $recommended->diff === null) {
@@ -255,5 +271,45 @@ final class TextRenderer
         }
 
         return $lines;
+    }
+
+    /** "EPSS 0.93 (97th percentile); CISA KEV since 2026-01-05", or null when nothing is known. */
+    public static function exploitLine(\Remediate\Engine\Advisory\Advisory $a): ?string
+    {
+        $parts = [];
+        if ($a->epss !== null) {
+            $parts[] = sprintf('EPSS %.2f', $a->epss) . ($a->epssPercentile !== null ? sprintf(' (%d%s percentile)', (int) round($a->epssPercentile * 100), self::ordinal((int) round($a->epssPercentile * 100))) : '');
+        }
+        if ($a->kevAdded !== null) {
+            $parts[] = 'listed in CISA KEV since ' . $a->kevAdded->format('Y-m-d') . ': exploited in the wild';
+        }
+
+        return $parts === [] ? null : implode('; ', $parts);
+    }
+
+    /** "acme/parent (replacement: acme/new), acme/lib (no replacement named)". */
+    public static function abandonedLine(Finding $f): string
+    {
+        $parts = [];
+        foreach ($f->abandoned as $name => $replacement) {
+            $role = $name === $f->packageName ? 'the vulnerable package itself' : 'on the dependency path';
+            $parts[] = sprintf('%s (%s%s)', $name, $role, $replacement !== null ? ', replacement: ' . $replacement : ', no replacement named');
+        }
+
+        return implode(', ', $parts) . ($f->isAbandoned() ? '. No fix will come from upstream; plan a replacement.' : '. An abandoned parent will not ship a release that lifts its pin.');
+    }
+
+    private static function ordinal(int $n): string
+    {
+        if ($n % 100 >= 11 && $n % 100 <= 13) {
+            return 'th';
+        }
+
+        return match ($n % 10) {
+            1 => 'st',
+            2 => 'nd',
+            3 => 'rd',
+            default => 'th',
+        };
     }
 }

@@ -53,6 +53,18 @@ final class DbStatusCommand extends BaseCommand
         if (!$db->tracksGaps()) {
             $output->writeln('<warning>Built before coverage gaps were recorded; rebuild to learn which upstream records were left out.</warning>');
         }
+        if (!$db->tracksExploits()) {
+            $output->writeln('<warning>Built before exploit data (EPSS, CISA KEV) was recorded; findings are ordered by severity alone. Rebuild to enable it.</warning>');
+        } else {
+            $meta = $db->meta();
+            $output->writeln(sprintf(
+                'Exploit data: %d CVEs%s%s%s',
+                $db->exploitCount(),
+                isset($meta['epss_score_date']) ? ', EPSS scored ' . $meta['epss_score_date'] : '',
+                isset($meta['kev_date_released']) ? ', KEV catalogue ' . $meta['kev_date_released'] . ' (' . ($meta['kev_count_matched'] ?? '0') . ' listed here)' : '',
+                isset($meta['enrichment_errors']) ? ', unavailable at build: ' . $meta['enrichment_errors'] : '',
+            ));
+        }
         foreach ($db->meta() as $key => $value) {
             if ($key === 'sources') {
                 $decoded = json_decode($value, true);

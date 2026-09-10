@@ -56,8 +56,8 @@ stands.
 - [x] the recommended command is executed by the real Composer binary in the harness (fixtures with
   `"execute": true`) and the written lock re-matched
 - [x] `composer-remediate` standalone binary for a plugin-free boundary; solver fallback wired;
-  scoped ignore policy; typed infrastructure failures in the exit code (external review, see
-  the changelog)
+  scoped ignore policy; typed infrastructure failures in the exit code (adversarial adoption review,
+  see the changelog)
 
 ## Phase 4 — global planning
 
@@ -71,7 +71,7 @@ stands.
   with advisory ids, before/after finding counts and the verified commands (the shape CVE Lite CLI
   uses, rather than one PR per package)
 
-## Phase 6 — integrations and prioritisation *(mostly complete)*
+## Phase 6 — integrations and prioritisation *(complete)*
 
 Features that [CVE Lite CLI](https://github.com/OWASP/cve-lite-cli) has proven useful for the
 JavaScript ecosystem and that transfer to Composer, in priority order.
@@ -81,11 +81,12 @@ JavaScript ecosystem and that transfer to Composer, in priority order.
 - [x] **CycloneDX 1.6 SBOM with vulnerabilities attached** (`--output=sbom.cdx.json`), using the
   per-vulnerability `recommendation` field for the verified command
 - [x] **`--fail-on <severity>`** gate threshold, combined with the existing exit codes
-- [ ] **EPSS and CISA KEV enrichment** in the advisory database build: exploit likelihood and
+- [x] **EPSS and CISA KEV enrichment** in the advisory database build: exploit likelihood and
   "exploited in the wild" flags, used to order findings by urgency rather than severity label alone
 - [x] **Constraint drag** as an explicit finding: the root constraint that blocks every in-range fix is
   named in the report and counted in the summary
-- [ ] **Abandoned parents** on the dependency path, using Packagist's abandoned marker
+- [x] **Abandoned parents** on the dependency path, using Packagist's abandoned marker (read from
+  the lock file, so it works offline)
 - [x] **Baseline / ratcheting mode** (`--baseline`, `--update-baseline`)
 - [x] **`--min-release-age <days>`** supply-chain cooldown
 - [x] **Ignore hygiene**: stale `--ignore` / `config.audit.ignore` / `config.policy` entries are reported

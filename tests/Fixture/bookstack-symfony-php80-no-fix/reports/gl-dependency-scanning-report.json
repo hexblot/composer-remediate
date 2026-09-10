@@ -168,49 +168,6 @@
             }
         },
         {
-            "id": "80ab050a-023d-593d-b474-90144420798c",
-            "category": "dependency_scanning",
-            "name": "CVE-2024-50345: CVE-2024-50345: Open redirect via browser-sanitized URLs",
-            "description": "symfony/http-foundation v6.0.20 is affected by CVE-2024-50345 (affected versions >=2.0.0,<3.0.0|>=3.0.0,<4.0.0|>=4.0.0,<5.0.0|>=5.0.0,<5.1.0|>=5.1.0,<5.2.0|>=5.2.0,<5.3.0|>=5.3.0,<5.4.0|>=5.4.0,<5.4.46|>=6.0.0,<6.1.0|>=6.1.0,<6.2.0|>=6.2.0,<6.3.0|>=6.3.0,<6.4.0|>=6.4.0,<6.4.14|>=7.0.0,<7.1.0|>=7.1.0,<7.1.7).",
-            "severity": "Low",
-            "solution": "No verified remediation found: No verified fix within the search budget (11 candidates tried, 11 solver runs); a fix outside the bounded search may still exist.",
-            "identifiers": [
-                {
-                    "type": "cve",
-                    "name": "CVE-2024-50345",
-                    "value": "CVE-2024-50345",
-                    "url": "https://nvd.nist.gov/vuln/detail/CVE-2024-50345"
-                },
-                {
-                    "type": "ghsa",
-                    "name": "GHSA-mrqx-rp3w-jpjp",
-                    "value": "GHSA-mrqx-rp3w-jpjp",
-                    "url": "https://github.com/advisories/GHSA-mrqx-rp3w-jpjp"
-                },
-                {
-                    "type": "packagist_advisory",
-                    "name": "PKSA-b35n-565h-rs4q",
-                    "value": "PKSA-b35n-565h-rs4q",
-                    "url": "https://packagist.org/security-advisories/PKSA-b35n-565h-rs4q"
-                }
-            ],
-            "links": [
-                {
-                    "url": "https://symfony.com/cve-2024-50345"
-                }
-            ],
-            "location": {
-                "file": "composer.lock",
-                "dependency": {
-                    "package": {
-                        "name": "symfony/http-foundation"
-                    },
-                    "version": "v6.0.20",
-                    "direct": false
-                }
-            }
-        },
-        {
             "id": "454ef405-0f05-5192-a1eb-4a9298590480",
             "category": "dependency_scanning",
             "name": "CVE-2024-51736: CVE-2024-51736: Command execution hijack on Windows with Process class",
@@ -249,6 +206,49 @@
                         "name": "symfony/process"
                     },
                     "version": "v6.0.19",
+                    "direct": false
+                }
+            }
+        },
+        {
+            "id": "80ab050a-023d-593d-b474-90144420798c",
+            "category": "dependency_scanning",
+            "name": "CVE-2024-50345: CVE-2024-50345: Open redirect via browser-sanitized URLs",
+            "description": "symfony/http-foundation v6.0.20 is affected by CVE-2024-50345 (affected versions >=2.0.0,<3.0.0|>=3.0.0,<4.0.0|>=4.0.0,<5.0.0|>=5.0.0,<5.1.0|>=5.1.0,<5.2.0|>=5.2.0,<5.3.0|>=5.3.0,<5.4.0|>=5.4.0,<5.4.46|>=6.0.0,<6.1.0|>=6.1.0,<6.2.0|>=6.2.0,<6.3.0|>=6.3.0,<6.4.0|>=6.4.0,<6.4.14|>=7.0.0,<7.1.0|>=7.1.0,<7.1.7).",
+            "severity": "Low",
+            "solution": "No verified remediation found: No verified fix within the search budget (11 candidates tried, 11 solver runs); a fix outside the bounded search may still exist.",
+            "identifiers": [
+                {
+                    "type": "cve",
+                    "name": "CVE-2024-50345",
+                    "value": "CVE-2024-50345",
+                    "url": "https://nvd.nist.gov/vuln/detail/CVE-2024-50345"
+                },
+                {
+                    "type": "ghsa",
+                    "name": "GHSA-mrqx-rp3w-jpjp",
+                    "value": "GHSA-mrqx-rp3w-jpjp",
+                    "url": "https://github.com/advisories/GHSA-mrqx-rp3w-jpjp"
+                },
+                {
+                    "type": "packagist_advisory",
+                    "name": "PKSA-b35n-565h-rs4q",
+                    "value": "PKSA-b35n-565h-rs4q",
+                    "url": "https://packagist.org/security-advisories/PKSA-b35n-565h-rs4q"
+                }
+            ],
+            "links": [
+                {
+                    "url": "https://symfony.com/cve-2024-50345"
+                }
+            ],
+            "location": {
+                "file": "composer.lock",
+                "dependency": {
+                    "package": {
+                        "name": "symfony/http-foundation"
+                    },
+                    "version": "v6.0.20",
                     "direct": false
                 }
             }

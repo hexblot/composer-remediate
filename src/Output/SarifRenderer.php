@@ -85,10 +85,13 @@ final class SarifRenderer
             'helpUri' => $advisory->link ?? 'https://packagist.org/security-advisories/' . $advisory->id,
             'help' => ['text' => sprintf('Advisory %s%s affects %s %s. Run composer remediate for the smallest verified upgrade.', $advisory->id, $advisory->cve !== null && $advisory->cve !== $advisory->id ? ' (' . $advisory->cve . ')' : '', $advisory->packageName, $advisory->affectedVersions->getPrettyString())],
             'defaultConfiguration' => ['level' => self::level($advisory->severity)],
-            'properties' => [
+            'properties' => array_filter([
                 'security-severity' => self::securitySeverity($advisory->severity),
-                'tags' => array_values(array_filter(['security', 'vulnerability', $advisory->severity !== null ? strtolower($advisory->severity) : null])),
-            ],
+                'tags' => array_values(array_filter(['security', 'vulnerability', $advisory->severity !== null ? strtolower($advisory->severity) : null, $advisory->isKnownExploited() ? 'known-exploited' : null])),
+                'epss' => $advisory->epss,
+                'epss_percentile' => $advisory->epssPercentile,
+                'kev_added' => $advisory->kevAdded?->format('Y-m-d'),
+            ], static fn ($v): bool => $v !== null),
         ];
     }
 
@@ -125,6 +128,9 @@ final class SarifRenderer
                 'severity' => $advisory->severity,
                 'remediation_status' => $command !== null ? 'verified' : 'none',
                 'command' => $command,
+                'known_exploited' => $advisory->isKnownExploited() ? true : null,
+                'epss' => $advisory->epss,
+                'abandoned' => $finding->abandoned !== [] ? array_keys($finding->abandoned) : null,
             ], static fn ($v): bool => $v !== null),
         ];
     }

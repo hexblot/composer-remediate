@@ -1436,74 +1436,6 @@
     ],
     "vulnerabilities": [
         {
-            "bom-ref": "vuln:PKSA-872h-8556-2chm@pkg:composer/dompdf/dompdf@1.2.2",
-            "id": "PKSA-872h-8556-2chm",
-            "source": {
-                "name": "Packagist",
-                "url": "https://packagist.org/security-advisories/PKSA-872h-8556-2chm"
-            },
-            "references": [
-                {
-                    "id": "CVE-2022-0085",
-                    "source": {
-                        "name": "NVD",
-                        "url": "https://nvd.nist.gov/vuln/detail/CVE-2022-0085"
-                    }
-                },
-                {
-                    "id": "CVE-2022-0085",
-                    "source": {
-                        "name": "advisory",
-                        "url": "https://github.com/advisories/GHSA-pf6p-25r2-fx45"
-                    }
-                }
-            ],
-            "ratings": [
-                {
-                    "severity": "medium",
-                    "method": "other",
-                    "source": {
-                        "name": "Packagist",
-                        "url": "https://packagist.org/security-advisories/PKSA-872h-8556-2chm"
-                    }
-                }
-            ],
-            "description": "Server-Side Request Forgery in dompdf/dompdf",
-            "detail": "Affected versions: <2.0.0",
-            "recommendation": "Run: composer require --no-update barryvdh/laravel-dompdf:^2.0 && composer update barryvdh/laravel-dompdf -W -m",
-            "affects": [
-                {
-                    "ref": "pkg:composer/dompdf/dompdf@1.2.2"
-                }
-            ],
-            "properties": [
-                {
-                    "name": "composer-remediate:remediation_status",
-                    "value": "verified"
-                },
-                {
-                    "name": "composer-remediate:command",
-                    "value": "composer require --no-update barryvdh/laravel-dompdf:^2.0 && composer update barryvdh/laravel-dompdf -W -m"
-                },
-                {
-                    "name": "composer-remediate:direct",
-                    "value": "false"
-                },
-                {
-                    "name": "composer-remediate:dev",
-                    "value": "false"
-                }
-            ],
-            "published": "2022-06-23T13:55:00+00:00",
-            "analysis": {
-                "state": "exploitable",
-                "response": [
-                    "update"
-                ],
-                "detail": "3 package change(s) verified by Composer's solver."
-            }
-        },
-        {
             "bom-ref": "vuln:PKSA-2z36-j4q9-rsfy@pkg:composer/guzzlehttp/guzzle@7.4.2",
             "id": "PKSA-2z36-j4q9-rsfy",
             "source": {
@@ -1841,6 +1773,74 @@
                     "update"
                 ],
                 "detail": "2 package change(s) verified by Composer's solver."
+            }
+        },
+        {
+            "bom-ref": "vuln:PKSA-872h-8556-2chm@pkg:composer/dompdf/dompdf@1.2.2",
+            "id": "PKSA-872h-8556-2chm",
+            "source": {
+                "name": "Packagist",
+                "url": "https://packagist.org/security-advisories/PKSA-872h-8556-2chm"
+            },
+            "references": [
+                {
+                    "id": "CVE-2022-0085",
+                    "source": {
+                        "name": "NVD",
+                        "url": "https://nvd.nist.gov/vuln/detail/CVE-2022-0085"
+                    }
+                },
+                {
+                    "id": "CVE-2022-0085",
+                    "source": {
+                        "name": "advisory",
+                        "url": "https://github.com/advisories/GHSA-pf6p-25r2-fx45"
+                    }
+                }
+            ],
+            "ratings": [
+                {
+                    "severity": "medium",
+                    "method": "other",
+                    "source": {
+                        "name": "Packagist",
+                        "url": "https://packagist.org/security-advisories/PKSA-872h-8556-2chm"
+                    }
+                }
+            ],
+            "description": "Server-Side Request Forgery in dompdf/dompdf",
+            "detail": "Affected versions: <2.0.0",
+            "recommendation": "Run: composer require --no-update barryvdh/laravel-dompdf:^2.0 && composer update barryvdh/laravel-dompdf -W -m",
+            "affects": [
+                {
+                    "ref": "pkg:composer/dompdf/dompdf@1.2.2"
+                }
+            ],
+            "properties": [
+                {
+                    "name": "composer-remediate:remediation_status",
+                    "value": "verified"
+                },
+                {
+                    "name": "composer-remediate:command",
+                    "value": "composer require --no-update barryvdh/laravel-dompdf:^2.0 && composer update barryvdh/laravel-dompdf -W -m"
+                },
+                {
+                    "name": "composer-remediate:direct",
+                    "value": "false"
+                },
+                {
+                    "name": "composer-remediate:dev",
+                    "value": "false"
+                }
+            ],
+            "published": "2022-06-23T13:55:00+00:00",
+            "analysis": {
+                "state": "exploitable",
+                "response": [
+                    "update"
+                ],
+                "detail": "3 package change(s) verified by Composer's solver."
             }
         }
     ]

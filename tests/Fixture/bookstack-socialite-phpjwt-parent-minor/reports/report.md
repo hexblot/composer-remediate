@@ -7,97 +7,32 @@ Composer Remediate — 9 findings in bookstack-socialite-phpjwt-parent-minor
 Advisories: advisory snapshot advisories.json
 Solver: in-process Composer dry-run
 
-CVE-2025-14761
+PKSA-67d7-mg8j-87zx
 ────────────────────────────────────────────────────────────
 Affected
-  aws/aws-sdk-php 3.322.6
-  CVE-2025-14761 (PKSA-dxyf-6n16-t87m): Key Commitment Issues in S3 Encryption Clients
-    https://aws.amazon.com/security/security-bulletins/AWS-2025-032/
-    affected versions: >=3.0.0,<3.368.0
+  onelogin/php-saml 4.2.0
+  PKSA-67d7-mg8j-87zx:  SAML PHP Toolkit Vulnerability on xmlseclibs CVE-2025-66475 
+    https://github.com/advisories/GHSA-5j8p-438x-rgg5
+    affected versions: >=4.0.0,<4.3.1|>=3.0.0,<3.8.1|<2.21.1
 Introduced by
   root
-  └── league/flysystem-aws-s3-v3 3.28.0
-      └── aws/aws-sdk-php 3.322.6  (requires ^3.295.10)
+  └── onelogin/php-saml 4.2.0  (requires ^4.0)
 Current state
-  Transitive dependency.
+  Direct dependency.
 Recommended remediation
-  aws/aws-sdk-php 3.322.6 -> 3.369.10
+  onelogin/php-saml 4.2.0 -> 4.3.1
 Composer validation
-  PASS  1 package changed, 1 added, 0 removed, 0 root constraints changed
+  PASS  2 packages changed, 0 added, 0 removed, 0 root constraints changed
 Expected changes
-  aws/aws-sdk-php 3.322.6 -> 3.369.10
-  symfony/filesystem added (v6.4.30)
+  onelogin/php-saml 4.2.0 -> 4.3.1
+  robrichards/xmlseclibs 3.1.1 -> 3.1.4
 Recommended command
-  composer update aws/aws-sdk-php
+  composer update onelogin/php-saml -w
 Other candidates
-  valid, rank 2: composer update aws/aws-sdk-php -w -m --with 'aws/aws-sdk-php:>=3.368.0'  (2 changes)
-  valid, rank 3: composer update league/flysystem-aws-s3-v3:3.29.0 -W -m --with 'aws/aws-sdk-php:>=3.368.0'  (3 changes)
-  valid, rank 4: composer update league/flysystem-aws-s3-v3 -W -m --with 'aws/aws-sdk-php:>=3.368.0'  (3 changes)
-  not tried (a better candidate already exists): composer require --no-update league/flysystem-aws-s3-v3:^4.0 && composer update league/flysystem-aws-s3-v3 -W -m --with 'aws/aws-sdk-php:>=3.368.0'
-
-CVE-2025-45769
-────────────────────────────────────────────────────────────
-Affected
-  firebase/php-jwt v6.10.1
-  CVE-2025-45769 (PKSA-y2cr-5h3j-g3ys): php-jwt contains weak encryption
-    https://github.com/advisories/GHSA-2x45-7fc3-mxwq
-    affected versions: <7.0.0
-Introduced by
-  root
-  └── laravel/socialite v5.16.0
-      └── firebase/php-jwt v6.10.1  (requires ^6.4)
-  root
-  └── socialiteproviders/discord 4.2.0
-      └── socialiteproviders/manager v4.6.0
-          └── laravel/socialite v5.16.0
-              └── firebase/php-jwt v6.10.1  (requires ^6.4)
-  root
-  └── socialiteproviders/gitlab 4.1.0
-      └── socialiteproviders/manager v4.6.0
-          └── laravel/socialite v5.16.0
-              └── firebase/php-jwt v6.10.1  (requires ^6.4)
-  root
-  └── socialiteproviders/microsoft-azure 5.2.0
-      └── socialiteproviders/manager v4.6.0
-          └── laravel/socialite v5.16.0
-              └── firebase/php-jwt v6.10.1  (requires ^6.4)
-  root
-  └── socialiteproviders/okta 4.4.0
-      └── socialiteproviders/manager v4.6.0
-          └── laravel/socialite v5.16.0
-              └── firebase/php-jwt v6.10.1  (requires ^6.4)
-  … and 1 more path
-Current state
-  Transitive dependency.
-Recommended remediation
-  laravel/socialite v5.16.0 -> v5.24.1
-  firebase/php-jwt v6.10.1 -> v7.0.2
-Composer validation
-  PASS  3 packages changed, 0 added, 0 removed, 0 root constraints changed, includes a major version change
-Expected changes
-  firebase/php-jwt v6.10.1 -> v7.0.2
-  laravel/socialite v5.16.0 -> v5.24.1
-  league/oauth1-client v1.10.1 -> v1.11.0
-Recommended command
-  composer update laravel/socialite:v5.24.1 -W -m --with 'firebase/php-jwt:>=7.0.0'
-Other candidates
-  valid, rank 2: composer update laravel/socialite -W -m --with 'firebase/php-jwt:>=7.0.0'  (3 changes)
-  valid, rank 3: composer update socialiteproviders/discord -W -m --with 'firebase/php-jwt:>=7.0.0'  (3 changes)
-  valid, rank 4: composer update socialiteproviders/gitlab -W -m --with 'firebase/php-jwt:>=7.0.0'  (3 changes)
-  valid, rank 5: composer update socialiteproviders/microsoft-azure -W -m --with 'firebase/php-jwt:>=7.0.0'  (3 changes)
-  valid, rank 6: composer update socialiteproviders/twitch -W -m --with 'firebase/php-jwt:>=7.0.0'  (3 changes)
-  valid, rank 7: composer update socialiteproviders/okta -W -m --with 'firebase/php-jwt:>=7.0.0'  (4 changes)
-  rejected: composer update firebase/php-jwt
-      resolves, but firebase/php-jwt ends at v6.11.1 which is still affected by PKSA-y2cr-5h3j-g3ys
-  rejected: composer update firebase/php-jwt -w -m --with 'firebase/php-jwt:>=7.0.0'
-      Composer could not resolve the dependencies: Your requirements could not be resolved to an installable set of packages.
-        Problem 1
-          - laravel/socialite is locked to version v5.16.0 and an update of this package was not requested.
-          - laravel/socialite v5.16.0 requires firebase/php-jwt ^6.4 -> found firebase/php-jwt[v6.10.1, v6.10.2, v6.11.0, v6.11.1] but it conflicts with your temporary update constraint (firebase/php-jwt:>=7.0.0).
-        Problem 2
-          - socialiteproviders/discord is locked to version 4.2.0 and an update of this package was not requested.
-  not tried (a better candidate already exists): composer require --no-update laravel/socialite:^6.0 && composer update laravel/socialite -W -m --with 'firebase/php-jwt:>=7.0.0'
-  not tried (a better candidate already exists): composer require --no-update socialiteproviders/discord:^5.0 && composer update socialiteproviders/discord -W -m --with 'firebase/php-jwt:>=7.0.0'
+  valid, rank 2: composer update onelogin/php-saml -W -m --with 'onelogin/php-saml:>=4.3.1'  (2 changes)
+  rejected: composer update onelogin/php-saml
+      resolves, but onelogin/php-saml ends at 4.3.0 which is still affected by PKSA-67d7-mg8j-87zx
+  not tried (a better candidate already exists): composer require --no-update onelogin/php-saml:^5.0 && composer update onelogin/php-saml -W -m --with 'onelogin/php-saml:>=4.3.1'
 
 CVE-2025-27515, CVE-2024-52301
 ────────────────────────────────────────────────────────────
@@ -203,114 +138,6 @@ Other candidates
   valid, rank 8: composer update larastan/larastan -W -m --with 'league/commonmark:>=2.7.0'  (3 changes)
   valid, rank 9: composer update laravel/socialite -W -m --with 'league/commonmark:>=2.7.0'  (3 changes)
   not tried (a better candidate already exists): composer require --no-update league/commonmark:^3.0 && composer update league/commonmark -W -m --with 'league/commonmark:>=2.7.0'
-
-CVE-2025-22145
-────────────────────────────────────────────────────────────
-Affected
-  nesbot/carbon 2.72.5
-  CVE-2025-22145 (PKSA-csyb-yc4p-mnbs): Carbon has an arbitrary file include via unvalidated input passed to Carbon::setLocale
-    https://github.com/advisories/GHSA-j3f9-p6hm-5w6q
-    affected versions: <2.72.6|>=3.0.0,<3.8.4
-Introduced by
-  root
-  └── laravel/framework v10.48.22
-      └── nesbot/carbon 2.72.5  (requires ^2.67)
-  root
-  └── laravel/socialite v5.16.0
-      └── laravel/framework v10.48.22
-          └── nesbot/carbon 2.72.5  (requires ^2.67)
-  root
-  └── socialiteproviders/discord 4.2.0
-      └── socialiteproviders/manager v4.6.0
-          └── laravel/socialite v5.16.0
-              └── laravel/framework v10.48.22
-                  └── nesbot/carbon 2.72.5  (requires ^2.67)
-  root
-  └── socialiteproviders/gitlab 4.1.0
-      └── socialiteproviders/manager v4.6.0
-          └── laravel/socialite v5.16.0
-              └── laravel/framework v10.48.22
-                  └── nesbot/carbon 2.72.5  (requires ^2.67)
-  root
-  └── socialiteproviders/microsoft-azure 5.2.0
-      └── socialiteproviders/manager v4.6.0
-          └── laravel/socialite v5.16.0
-              └── laravel/framework v10.48.22
-                  └── nesbot/carbon 2.72.5  (requires ^2.67)
-  … and 9 more paths
-Current state
-  Transitive dependency.
-Recommended remediation
-  nesbot/carbon 2.72.5 -> 2.73.0
-Composer validation
-  PASS  1 package changed, 0 added, 0 removed, 0 root constraints changed
-Expected changes
-  nesbot/carbon 2.72.5 -> 2.73.0
-Recommended command
-  composer update nesbot/carbon
-Other candidates
-  valid, rank 2: composer update nesbot/carbon -w -m --with 'nesbot/carbon:>=2.72.6,<3.0.0 || >=3.8.4'  (1 changes)
-  valid, rank 3: composer update socialiteproviders/discord -W -m --with 'nesbot/carbon:>=2.72.6,<3.0.0 || >=3.8.4'  (1 changes)
-  valid, rank 4: composer update socialiteproviders/gitlab -W -m --with 'nesbot/carbon:>=2.72.6,<3.0.0 || >=3.8.4'  (1 changes)
-  valid, rank 5: composer update laravel/tinker -W -m --with 'nesbot/carbon:>=2.72.6,<3.0.0 || >=3.8.4'  (2 changes)
-  valid, rank 6: composer update laravel/framework -W -m --with 'nesbot/carbon:>=2.72.6,<3.0.0 || >=3.8.4'  (2 changes)
-  valid, rank 7: composer update larastan/larastan -W -m --with 'nesbot/carbon:>=2.72.6,<3.0.0 || >=3.8.4'  (3 changes)
-  valid, rank 8: composer update laravel/socialite -W -m --with 'nesbot/carbon:>=2.72.6,<3.0.0 || >=3.8.4'  (3 changes)
-  not tried (a better candidate already exists): composer require --no-update laravel/framework:^11.0 && composer update laravel/framework -W -m --with 'nesbot/carbon:>=2.72.6,<3.0.0 || >=3.8.4'
-  not tried (a better candidate already exists): composer require --no-update laravel/socialite:^6.0 && composer update laravel/socialite -W -m --with 'nesbot/carbon:>=2.72.6,<3.0.0 || >=3.8.4'
-
-PKSA-67d7-mg8j-87zx
-────────────────────────────────────────────────────────────
-Affected
-  onelogin/php-saml 4.2.0
-  PKSA-67d7-mg8j-87zx:  SAML PHP Toolkit Vulnerability on xmlseclibs CVE-2025-66475 
-    https://github.com/advisories/GHSA-5j8p-438x-rgg5
-    affected versions: >=4.0.0,<4.3.1|>=3.0.0,<3.8.1|<2.21.1
-Introduced by
-  root
-  └── onelogin/php-saml 4.2.0  (requires ^4.0)
-Current state
-  Direct dependency.
-Recommended remediation
-  onelogin/php-saml 4.2.0 -> 4.3.1
-Composer validation
-  PASS  2 packages changed, 0 added, 0 removed, 0 root constraints changed
-Expected changes
-  onelogin/php-saml 4.2.0 -> 4.3.1
-  robrichards/xmlseclibs 3.1.1 -> 3.1.4
-Recommended command
-  composer update onelogin/php-saml -w
-Other candidates
-  valid, rank 2: composer update onelogin/php-saml -W -m --with 'onelogin/php-saml:>=4.3.1'  (2 changes)
-  rejected: composer update onelogin/php-saml
-      resolves, but onelogin/php-saml ends at 4.3.0 which is still affected by PKSA-67d7-mg8j-87zx
-  not tried (a better candidate already exists): composer require --no-update onelogin/php-saml:^5.0 && composer update onelogin/php-saml -W -m --with 'onelogin/php-saml:>=4.3.1'
-
-CVE-2025-66578
-────────────────────────────────────────────────────────────
-Affected
-  robrichards/xmlseclibs 3.1.1
-  CVE-2025-66578 (PKSA-pcdf-qvqm-w4tv): robrichards/xmlseclibs has an Libxml2 Canonicalization error which can bypass Digest/Signature validation
-    https://github.com/advisories/GHSA-c4cc-x928-vjw9
-    affected versions: <=3.1.3
-Introduced by
-  root
-  └── onelogin/php-saml 4.2.0
-      └── robrichards/xmlseclibs 3.1.1  (requires ^3.1)
-Current state
-  Transitive dependency.
-Recommended remediation
-  robrichards/xmlseclibs 3.1.1 -> 3.1.4
-Composer validation
-  PASS  1 package changed, 0 added, 0 removed, 0 root constraints changed
-Expected changes
-  robrichards/xmlseclibs 3.1.1 -> 3.1.4
-Recommended command
-  composer update robrichards/xmlseclibs
-Other candidates
-  valid, rank 2: composer update robrichards/xmlseclibs -w -m --with 'robrichards/xmlseclibs:>3.1.3'  (1 changes)
-  valid, rank 3: composer update onelogin/php-saml -W -m --with 'robrichards/xmlseclibs:>3.1.3'  (2 changes)
-  not tried (a better candidate already exists): composer require --no-update onelogin/php-saml:^5.0 && composer update onelogin/php-saml -W -m --with 'robrichards/xmlseclibs:>3.1.3'
 
 CVE-2025-64500, CVE-2024-50345
 ────────────────────────────────────────────────────────────
@@ -427,9 +254,182 @@ Other candidates
   valid, rank 9: composer update knplabs/knp-snappy laravel/framework -W -m --with 'symfony/process:>=6.4.14,<7.0.0 || >=7.1.7'  (3 changes)
   not tried (a better candidate already exists): composer require --no-update knplabs/knp-snappy:^2.0 && composer update knplabs/knp-snappy -W -m --with 'symfony/process:>=6.4.14,<7.0.0 || >=7.1.7'
 
+CVE-2025-14761
+────────────────────────────────────────────────────────────
+Affected
+  aws/aws-sdk-php 3.322.6
+  CVE-2025-14761 (PKSA-dxyf-6n16-t87m): Key Commitment Issues in S3 Encryption Clients
+    https://aws.amazon.com/security/security-bulletins/AWS-2025-032/
+    affected versions: >=3.0.0,<3.368.0
+Introduced by
+  root
+  └── league/flysystem-aws-s3-v3 3.28.0
+      └── aws/aws-sdk-php 3.322.6  (requires ^3.295.10)
+Current state
+  Transitive dependency.
+Recommended remediation
+  aws/aws-sdk-php 3.322.6 -> 3.369.10
+Composer validation
+  PASS  1 package changed, 1 added, 0 removed, 0 root constraints changed
+Expected changes
+  aws/aws-sdk-php 3.322.6 -> 3.369.10
+  symfony/filesystem added (v6.4.30)
+Recommended command
+  composer update aws/aws-sdk-php
+Other candidates
+  valid, rank 2: composer update aws/aws-sdk-php -w -m --with 'aws/aws-sdk-php:>=3.368.0'  (2 changes)
+  valid, rank 3: composer update league/flysystem-aws-s3-v3:3.29.0 -W -m --with 'aws/aws-sdk-php:>=3.368.0'  (3 changes)
+  valid, rank 4: composer update league/flysystem-aws-s3-v3 -W -m --with 'aws/aws-sdk-php:>=3.368.0'  (3 changes)
+  not tried (a better candidate already exists): composer require --no-update league/flysystem-aws-s3-v3:^4.0 && composer update league/flysystem-aws-s3-v3 -W -m --with 'aws/aws-sdk-php:>=3.368.0'
+
+CVE-2025-22145
+────────────────────────────────────────────────────────────
+Affected
+  nesbot/carbon 2.72.5
+  CVE-2025-22145 (PKSA-csyb-yc4p-mnbs): Carbon has an arbitrary file include via unvalidated input passed to Carbon::setLocale
+    https://github.com/advisories/GHSA-j3f9-p6hm-5w6q
+    affected versions: <2.72.6|>=3.0.0,<3.8.4
+Introduced by
+  root
+  └── laravel/framework v10.48.22
+      └── nesbot/carbon 2.72.5  (requires ^2.67)
+  root
+  └── laravel/socialite v5.16.0
+      └── laravel/framework v10.48.22
+          └── nesbot/carbon 2.72.5  (requires ^2.67)
+  root
+  └── socialiteproviders/discord 4.2.0
+      └── socialiteproviders/manager v4.6.0
+          └── laravel/socialite v5.16.0
+              └── laravel/framework v10.48.22
+                  └── nesbot/carbon 2.72.5  (requires ^2.67)
+  root
+  └── socialiteproviders/gitlab 4.1.0
+      └── socialiteproviders/manager v4.6.0
+          └── laravel/socialite v5.16.0
+              └── laravel/framework v10.48.22
+                  └── nesbot/carbon 2.72.5  (requires ^2.67)
+  root
+  └── socialiteproviders/microsoft-azure 5.2.0
+      └── socialiteproviders/manager v4.6.0
+          └── laravel/socialite v5.16.0
+              └── laravel/framework v10.48.22
+                  └── nesbot/carbon 2.72.5  (requires ^2.67)
+  … and 9 more paths
+Current state
+  Transitive dependency.
+Recommended remediation
+  nesbot/carbon 2.72.5 -> 2.73.0
+Composer validation
+  PASS  1 package changed, 0 added, 0 removed, 0 root constraints changed
+Expected changes
+  nesbot/carbon 2.72.5 -> 2.73.0
+Recommended command
+  composer update nesbot/carbon
+Other candidates
+  valid, rank 2: composer update nesbot/carbon -w -m --with 'nesbot/carbon:>=2.72.6,<3.0.0 || >=3.8.4'  (1 changes)
+  valid, rank 3: composer update socialiteproviders/discord -W -m --with 'nesbot/carbon:>=2.72.6,<3.0.0 || >=3.8.4'  (1 changes)
+  valid, rank 4: composer update socialiteproviders/gitlab -W -m --with 'nesbot/carbon:>=2.72.6,<3.0.0 || >=3.8.4'  (1 changes)
+  valid, rank 5: composer update laravel/tinker -W -m --with 'nesbot/carbon:>=2.72.6,<3.0.0 || >=3.8.4'  (2 changes)
+  valid, rank 6: composer update laravel/framework -W -m --with 'nesbot/carbon:>=2.72.6,<3.0.0 || >=3.8.4'  (2 changes)
+  valid, rank 7: composer update larastan/larastan -W -m --with 'nesbot/carbon:>=2.72.6,<3.0.0 || >=3.8.4'  (3 changes)
+  valid, rank 8: composer update laravel/socialite -W -m --with 'nesbot/carbon:>=2.72.6,<3.0.0 || >=3.8.4'  (3 changes)
+  not tried (a better candidate already exists): composer require --no-update laravel/framework:^11.0 && composer update laravel/framework -W -m --with 'nesbot/carbon:>=2.72.6,<3.0.0 || >=3.8.4'
+  not tried (a better candidate already exists): composer require --no-update laravel/socialite:^6.0 && composer update laravel/socialite -W -m --with 'nesbot/carbon:>=2.72.6,<3.0.0 || >=3.8.4'
+
+CVE-2025-66578
+────────────────────────────────────────────────────────────
+Affected
+  robrichards/xmlseclibs 3.1.1
+  CVE-2025-66578 (PKSA-pcdf-qvqm-w4tv): robrichards/xmlseclibs has an Libxml2 Canonicalization error which can bypass Digest/Signature validation
+    https://github.com/advisories/GHSA-c4cc-x928-vjw9
+    affected versions: <=3.1.3
+Introduced by
+  root
+  └── onelogin/php-saml 4.2.0
+      └── robrichards/xmlseclibs 3.1.1  (requires ^3.1)
+Current state
+  Transitive dependency.
+Recommended remediation
+  robrichards/xmlseclibs 3.1.1 -> 3.1.4
+Composer validation
+  PASS  1 package changed, 0 added, 0 removed, 0 root constraints changed
+Expected changes
+  robrichards/xmlseclibs 3.1.1 -> 3.1.4
+Recommended command
+  composer update robrichards/xmlseclibs
+Other candidates
+  valid, rank 2: composer update robrichards/xmlseclibs -w -m --with 'robrichards/xmlseclibs:>3.1.3'  (1 changes)
+  valid, rank 3: composer update onelogin/php-saml -W -m --with 'robrichards/xmlseclibs:>3.1.3'  (2 changes)
+  not tried (a better candidate already exists): composer require --no-update onelogin/php-saml:^5.0 && composer update onelogin/php-saml -W -m --with 'robrichards/xmlseclibs:>3.1.3'
+
+CVE-2025-45769
+────────────────────────────────────────────────────────────
+Affected
+  firebase/php-jwt v6.10.1
+  CVE-2025-45769 (PKSA-y2cr-5h3j-g3ys): php-jwt contains weak encryption
+    https://github.com/advisories/GHSA-2x45-7fc3-mxwq
+    affected versions: <7.0.0
+Introduced by
+  root
+  └── laravel/socialite v5.16.0
+      └── firebase/php-jwt v6.10.1  (requires ^6.4)
+  root
+  └── socialiteproviders/discord 4.2.0
+      └── socialiteproviders/manager v4.6.0
+          └── laravel/socialite v5.16.0
+              └── firebase/php-jwt v6.10.1  (requires ^6.4)
+  root
+  └── socialiteproviders/gitlab 4.1.0
+      └── socialiteproviders/manager v4.6.0
+          └── laravel/socialite v5.16.0
+              └── firebase/php-jwt v6.10.1  (requires ^6.4)
+  root
+  └── socialiteproviders/microsoft-azure 5.2.0
+      └── socialiteproviders/manager v4.6.0
+          └── laravel/socialite v5.16.0
+              └── firebase/php-jwt v6.10.1  (requires ^6.4)
+  root
+  └── socialiteproviders/okta 4.4.0
+      └── socialiteproviders/manager v4.6.0
+          └── laravel/socialite v5.16.0
+              └── firebase/php-jwt v6.10.1  (requires ^6.4)
+  … and 1 more path
+Current state
+  Transitive dependency.
+Recommended remediation
+  laravel/socialite v5.16.0 -> v5.24.1
+  firebase/php-jwt v6.10.1 -> v7.0.2
+Composer validation
+  PASS  3 packages changed, 0 added, 0 removed, 0 root constraints changed, includes a major version change
+Expected changes
+  firebase/php-jwt v6.10.1 -> v7.0.2
+  laravel/socialite v5.16.0 -> v5.24.1
+  league/oauth1-client v1.10.1 -> v1.11.0
+Recommended command
+  composer update laravel/socialite:v5.24.1 -W -m --with 'firebase/php-jwt:>=7.0.0'
+Other candidates
+  valid, rank 2: composer update laravel/socialite -W -m --with 'firebase/php-jwt:>=7.0.0'  (3 changes)
+  valid, rank 3: composer update socialiteproviders/discord -W -m --with 'firebase/php-jwt:>=7.0.0'  (3 changes)
+  valid, rank 4: composer update socialiteproviders/gitlab -W -m --with 'firebase/php-jwt:>=7.0.0'  (3 changes)
+  valid, rank 5: composer update socialiteproviders/microsoft-azure -W -m --with 'firebase/php-jwt:>=7.0.0'  (3 changes)
+  valid, rank 6: composer update socialiteproviders/twitch -W -m --with 'firebase/php-jwt:>=7.0.0'  (3 changes)
+  valid, rank 7: composer update socialiteproviders/okta -W -m --with 'firebase/php-jwt:>=7.0.0'  (4 changes)
+  rejected: composer update firebase/php-jwt
+      resolves, but firebase/php-jwt ends at v6.11.1 which is still affected by PKSA-y2cr-5h3j-g3ys
+  rejected: composer update firebase/php-jwt -w -m --with 'firebase/php-jwt:>=7.0.0'
+      Composer could not resolve the dependencies: Your requirements could not be resolved to an installable set of packages.
+        Problem 1
+          - laravel/socialite is locked to version v5.16.0 and an update of this package was not requested.
+          - laravel/socialite v5.16.0 requires firebase/php-jwt ^6.4 -> found firebase/php-jwt[v6.10.1, v6.10.2, v6.11.0, v6.11.1] but it conflicts with your temporary update constraint (firebase/php-jwt:>=7.0.0).
+        Problem 2
+          - socialiteproviders/discord is locked to version 4.2.0 and an update of this package was not requested.
+  not tried (a better candidate already exists): composer require --no-update laravel/socialite:^6.0 && composer update laravel/socialite -W -m --with 'firebase/php-jwt:>=7.0.0'
+  not tried (a better candidate already exists): composer require --no-update socialiteproviders/discord:^5.0 && composer update socialiteproviders/discord -W -m --with 'firebase/php-jwt:>=7.0.0'
+
 Summary
   Findings: 12 advisories on 9 packages, 9 packages with a verified fix
   You can fix all 12 findings with:
-    composer update aws/aws-sdk-php laravel/socialite:v5.24.1 laravel/framework league/commonmark nesbot/carbon onelogin/php-saml robrichards/xmlseclibs symfony/http-foundation symfony/process -W -m --with 'firebase/php-jwt:>=7.0.0'
+    composer update aws/aws-sdk-php laravel/framework laravel/socialite:v5.24.1 league/commonmark nesbot/carbon onelogin/php-saml robrichards/xmlseclibs symfony/http-foundation symfony/process -W -m --with 'firebase/php-jwt:>=7.0.0'
     (12 packages changed, verified by Composer)
 ```
