@@ -4,6 +4,9 @@
 
 - Every change that affects behaviour comes with a unit test or a fixture.
 - PHPStan level 8 must pass: `ddev composer phpstan`.
+- Coverage: `ddev xdebug on` once, then `ddev composer test:coverage` prints a summary and writes an
+  HTML report to `build/coverage/` (gitignored). Xdebug roughly doubles the fixture suite's run time,
+  so leave it off for ordinary runs (`ddev xdebug off`).
 - Documentation is part of the change. If a page in `docs/` describes the code you touched,
   update it in the same commit; `mkdocs build --strict` runs in CI (locally:
   `pipx run --spec mkdocs --pip-args=pymdown-extensions mkdocs build --strict`).
