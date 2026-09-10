@@ -31,10 +31,13 @@ final class LockDiff
                 $changes[] = PackageChange::between($name, $package->getPrettyVersion(), $package->getVersion(), $new->getPrettyVersion(), $new->getVersion());
                 continue;
             }
+            // Same version, different commit: a moved dev branch or a re-tagged release. Either way the
+            // installed code changes, so it is a change (of unclassifiable size) and the release-age
+            // guard sees it like any other.
             $oldRef = $package->getSourceReference() ?? $package->getDistReference();
             $newRef = $new->getSourceReference() ?? $new->getDistReference();
-            if ($oldRef !== null && $newRef !== null && $oldRef !== $newRef && str_starts_with($package->getVersion(), 'dev-')) {
-                $changes[] = PackageChange::between($name, $package->getPrettyVersion() . '#' . substr($oldRef, 0, 7), $package->getVersion(), $new->getPrettyVersion() . '#' . substr($newRef, 0, 7), $new->getVersion());
+            if ($oldRef !== null && $newRef !== null && $oldRef !== $newRef) {
+                $changes[] = new PackageChange($name, PackageChange::CHANGED, $package->getPrettyVersion() . '#' . substr($oldRef, 0, 7), $new->getPrettyVersion() . '#' . substr($newRef, 0, 7), $package->getVersion(), $new->getVersion(), VersionStep::Other);
             }
         }
         foreach ($after->packages as $name => $package) {

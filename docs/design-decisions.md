@@ -204,6 +204,14 @@ The same rule applies to any other `@internal` API the engine needs.
 - The adapter reads `SecurityAdvisory::$severity` only when the property exists (it does not in 2.4)
   and fails with "advisory data unavailable" when no configured repository provides advisories at
   all, rather than reporting a clean lock.
+- An advisory source that only knows the advisories of the current lock (`composer audit` output,
+  the audit fallback) cannot say whether a candidate lock is clean, so the planner verifies nothing
+  against it: findings are reported without a remediation and the run exits 2. Recommending a fix
+  checked against an incomplete source would be a fix verified against nothing.
+- Coverage gaps gate the exit code. A record about a locked package the source could not read means
+  the source cannot vouch for that package; a lock with such gaps and no findings exits 4 unless the
+  operator accepts the gaps explicitly. Earlier releases only warned, which let a gate read "the
+  data is incomplete" as "the lock is clean".
 - The fallback engages only on a PHP error from the in-process adapter (a method that no longer
   exists, a changed signature): that is what an incompatible `@internal` API looks like at runtime.
   A lookup failure (network down, no repository provides advisories) is not retried through

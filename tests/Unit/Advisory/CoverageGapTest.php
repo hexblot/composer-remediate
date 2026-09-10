@@ -4,6 +4,10 @@ declare(strict_types=1);
 
 namespace Remediate\Tests\Unit\Advisory;
 
+use Composer\Package\Link;
+use Composer\Package\Package;
+use Composer\Semver\Constraint\Constraint;
+use Composer\Semver\VersionParser;
 use PHPUnit\Framework\TestCase;
 use Remediate\Engine\Advisory\Db\AffectedRange;
 use Remediate\Engine\Advisory\Db\CoverageGap;
@@ -15,6 +19,8 @@ use Remediate\Engine\Advisory\Db\Source\JsonFileSource;
 use Remediate\Engine\Advisory\Db\Source\PackagistShapeMapper;
 use Remediate\Engine\Advisory\Db\SourceRecord;
 use Remediate\Engine\Advisory\Db\SqliteAdvisoryProvider;
+use Remediate\Engine\Lock\LockSnapshot;
+use Remediate\Engine\Matching\Matcher;
 use Remediate\Engine\Plan\Plan;
 use Remediate\Engine\Planner;
 use Remediate\Tests\Support\FakeSolver;
@@ -156,10 +162,43 @@ final class CoverageGapTest extends TestCase
         } finally {
             $project->destroy();
         }
-        self::assertSame(Plan::EXIT_CLEAN, $plan->exitCode(), 'no advisory could be read for acme/lib, so nothing is found');
+        self::assertSame([], $plan->findings, 'no advisory could be read for acme/lib, so nothing is found');
         self::assertCount(1, $plan->warnings, 'but the report says so');
         self::assertStringContainsString('Coverage gap: Upstream record GHSA-bad for acme/lib could not be interpreted', $plan->warnings[0]);
         self::assertStringContainsString('acme/lib is treated as unaffected', $plan->warnings[0]);
+        self::assertSame($plan->warnings, $plan->coverageGaps);
+        self::assertSame(Plan::EXIT_ADVISORIES_UNAVAILABLE, $plan->exitCode(), 'a source that could not read a record about a locked package cannot vouch for the lock: not a clean exit');
+        self::assertSame(Plan::EXIT_CLEAN, $plan->withAcceptedCoverageGaps()->exitCode(), 'unless the operator accepted the gaps');
+        self::assertTrue($plan->withAcceptedCoverageGaps()->coverageGapsAccepted);
+    }
+
+    public function testAGapInAReplacedPackageIsReportedAgainstTheReplacingPackagesLock(): void
+    {
+        $db = $this->tmp('.sqlite');
+        (new DatabaseBuilder([$this->source([], [new CoverageGap('Upstream', 'GHSA-inner', 'acme/component', 'unparsable affectedVersions', '!!')])]))->build($db, static function (): void {
+        });
+        // acme/suite replaces acme/component; only acme/suite is locked. Advisories for acme/component
+        // reach the lock through the replacement, so a gap about acme/component is a gap for this lock.
+        $project = new ScriptedProject(['acme/suite' => '^1.0'], [['acme/suite', '1.0.0']]);
+        try {
+            $context = $project->context();
+            $suite = $context->lockSnapshot()->get('acme/suite');
+            self::assertNotNull($suite);
+        } finally {
+            $project->destroy();
+        }
+        $lock = LockSnapshot::fromPackages([self::replacing('acme/suite', '1.0.0', 'acme/component')], []);
+        $warnings = (new SqliteAdvisoryProvider(Database::open($db)))->coverageWarnings(Matcher::queriedNames($lock));
+        self::assertCount(1, $warnings);
+        self::assertStringContainsString('GHSA-inner for acme/component', $warnings[0]);
+    }
+
+    private static function replacing(string $name, string $version, string $replaced): Package
+    {
+        $package = new Package($name, (new VersionParser())->normalize($version), $version);
+        $package->setReplaces([$replaced => new Link($name, $replaced, new Constraint('==', $package->getVersion()), Link::TYPE_REPLACE, 'self.version')]);
+
+        return $package;
     }
 
     public function testDatabaseWithoutGapTableIsFlagged(): void

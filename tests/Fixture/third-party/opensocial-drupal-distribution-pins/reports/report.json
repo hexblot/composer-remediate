@@ -8,7 +8,7 @@
         "advisory_source": "advisory snapshot advisories.json",
         "solver": "in-process Composer dry-run",
         "solver_runs": "21",
-        "composer_json_sha256": "f9886d38fa08368754bd06e035afa88ae527822e6bf4418920910b244e1fb02f",
+        "composer_json_sha256": "d5d5a7d4e876c1d497f7292cf5f39178188318130a2899186709bf0bb857efd7",
         "composer_lock_sha256": "d8cca41a495df2e94bca439a93f2b63a4cc3846fdd533404202155bb69ee5b31",
         "analysis_timestamp": "(fixture)",
         "locked_packages": "198"
@@ -25,6 +25,8 @@
         "packages_with_constraint_drag": 0,
         "packages_known_exploited": 0,
         "packages_with_abandoned_dependency": 0,
+        "coverage_gaps": 0,
+        "coverage_gaps_accepted": false,
         "combined_command": "composer update drupal/core symfony/validator twig/twig -w -m",
         "combined_fixes": 3,
         "combined_total": 3,

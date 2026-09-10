@@ -23,8 +23,21 @@ final class TextRenderer
     ) {
     }
 
+    /**
+     * Text from outside the tool (advisory titles and links, upstream ids, solver output): control
+     * characters and escape sequences never reach the terminal, and console tags are escaped when the
+     * output is decorated (undecorated output is written raw, so tags there are inert).
+     */
+    private function text(string $text): string
+    {
+        $text = ConsoleText::stripControls($text);
+
+        return $this->decorated ? OutputFormatter::escape($text) : $text;
+    }
+
     private function tag(string $text, string $style): string
     {
+        $text = ConsoleText::stripControls($text);
         if (!$this->decorated) {
             return $text;
         }
@@ -39,8 +52,8 @@ final class TextRenderer
         $this->currentPlan = $plan;
         $out = [];
         $out[] = $this->tag(sprintf('Composer Remediate — %d finding%s in %s', count($plan->findings), count($plan->findings) === 1 ? '' : 's', $plan->metadata['project'] ?? ''), 'options=bold');
-        $out[] = sprintf('Advisories: %s', $plan->metadata['advisory_source'] ?? '');
-        $out[] = sprintf('Solver: %s', $plan->metadata['solver'] ?? '');
+        $out[] = sprintf('Advisories: %s', $this->text($plan->metadata['advisory_source'] ?? ''));
+        $out[] = sprintf('Solver: %s', $this->text($plan->metadata['solver'] ?? ''));
         foreach ($plan->warnings as $warning) {
             $out[] = $this->tag('Warning: ' . $warning, 'fg=yellow');
         }
@@ -95,6 +108,9 @@ final class TextRenderer
         if ($unsolved !== []) {
             $out[] = '  ' . $this->tag('No verified fix:', 'fg=red') . ' ' . implode('; ', array_map(static fn (FindingPlan $p): string => implode(', ', array_map(static fn ($f): string => $f->advisory->displayId(), $p->allFindings())) . ' on ' . $p->finding->packageName, $unsolved));
         }
+        if ($plan->coverageGaps !== []) {
+            $out[] = '  ' . $this->tag(sprintf('Coverage gaps: %d advisory record%s about locked packages could not be read (see the warnings above); %s', count($plan->coverageGaps), count($plan->coverageGaps) === 1 ? '' : 's', $plan->coverageGapsAccepted ? 'accepted with --accept-coverage-gaps.' : 'without findings the exit code is 4, not 0, until accepted with --accept-coverage-gaps.'), 'fg=yellow');
+        }
         $exploited = array_filter($plan->findings, static fn (FindingPlan $p): bool => $p->isKnownExploited());
         if ($exploited !== []) {
             $out[] = '  ' . $this->tag(sprintf('Known exploited: %d package%s carr%s an advisory in CISA\'s KEV catalogue (%s); fix these first.', count($exploited), count($exploited) === 1 ? '' : 's', count($exploited) === 1 ? 'ies' : 'y', implode(', ', array_map(static fn (FindingPlan $p): string => $p->finding->packageName, $exploited))), 'fg=red;options=bold');
@@ -130,11 +146,11 @@ final class TextRenderer
         $out[] = sprintf('  %s %s%s', $f->packageName, $f->prettyVersion, $f->viaReplacedName !== null ? sprintf(' (replaces %s)', $f->viaReplacedName) : '');
         foreach ($plan->allFindings() as $finding) {
             $a = $finding->advisory;
-            $out[] = sprintf('  %s%s: %s', $a->displayId(), $a->cve !== null && $a->cve !== $a->id ? sprintf(' (%s)', $a->id) : '', $a->title ?? '(no title)');
+            $out[] = $this->text(sprintf('  %s%s: %s', $a->displayId(), $a->cve !== null && $a->cve !== $a->id ? sprintf(' (%s)', $a->id) : '', $a->title ?? '(no title)'));
             if ($a->link !== null) {
-                $out[] = '    ' . $a->link;
+                $out[] = '    ' . $this->text($a->link);
             }
-            $out[] = '    affected versions: ' . $a->affectedVersions->getPrettyString();
+            $out[] = '    affected versions: ' . $this->text($a->affectedVersions->getPrettyString());
             $exploit = self::exploitLine($a);
             if ($exploit !== null) {
                 $out[] = '    ' . ($a->isKnownExploited() ? $this->tag($exploit, 'fg=red;options=bold') : $exploit);
@@ -155,7 +171,7 @@ final class TextRenderer
         $out[] = $this->heading('Current state');
         $out[] = '  ' . ($f->isRootRequirement ? 'Direct dependency.' : 'Transitive dependency.') . ($f->isDev ? ' Development requirement only.' : '');
         if ($f->abandoned !== []) {
-            $out[] = '  ' . $this->tag('Abandoned:', 'fg=yellow') . ' ' . self::abandonedLine($f);
+            $out[] = '  ' . $this->tag('Abandoned:', 'fg=yellow') . ' ' . $this->text(self::abandonedLine($f));
         }
 
         $recommended = $plan->recommended();
@@ -163,7 +179,7 @@ final class TextRenderer
             $out[] = $this->heading('Recommended remediation');
             $out[] = $this->tag(sprintf('  No verified remediation found (%s).', $plan->outcome()), 'fg=red');
             if ($plan->blocker !== null) {
-                $out[] = '  ' . $plan->blocker;
+                $out[] = '  ' . $this->text($plan->blocker);
             }
         } else {
             $diff = $recommended->diff;
@@ -230,7 +246,7 @@ final class TextRenderer
                 $out[] = '  ' . $this->tag('rejected:', 'fg=yellow') . ' ' . $candidate->candidate->commandLine($this->minimalChangesSupported);
                 $reason = $candidate->rejectionReason ?? '';
                 foreach (array_slice(explode("\n", $reason), 0, 6) as $line) {
-                    $out[] = '      ' . $line;
+                    $out[] = '      ' . $this->text($line);
                 }
             }
             foreach ($plan->skipped as $candidate) {

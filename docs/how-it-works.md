@@ -158,7 +158,8 @@ options shape which findings count towards it:
 
 - `--fail-on <severity>`: findings whose advisories are all below the threshold are reported but do
   not affect the exit code. Unknown severities always count.
-- `--baseline <file>`: findings listed in the file (advisory@package keys) are reported, marked
+- `--baseline <file>`: findings listed in the file (`advisory@package` keys, `advisory@package/target`
+  for a finding reached through a replaced or provided package) are reported, marked
   `[baselined]`, and excluded from the exit code. `--update-baseline` writes the current findings to the
   file. This is how a gate is introduced on a project with existing findings: accept today's state,
   fail on anything new, and delete entries as fixes land.

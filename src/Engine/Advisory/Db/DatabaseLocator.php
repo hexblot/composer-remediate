@@ -26,8 +26,26 @@ final class DatabaseLocator
     /** @var list<string> */
     private array $warnings = [];
 
-    public function __construct(private readonly Composer $composer, private readonly HttpDownloader $downloader, private readonly bool $offline = false)
+    /**
+     * @param bool        $requireChecksum refuse a URL download that no published `<url>.sha256` sidecar or expected
+     *                                     digest verifies (the default); false accepts it with a warning in the report
+     * @param string|null $expectedSha256  the digest the operator trusts (hex); a download or cached copy that differs
+     *                                     is refused. The sidecar is only as trustworthy as the host that serves both,
+     *                                     so this is the real trust anchor for a URL you do not publish yourself
+     */
+    public function __construct(
+        private readonly Composer $composer,
+        private readonly HttpDownloader $downloader,
+        private readonly bool $offline = false,
+        private readonly bool $requireChecksum = true,
+        private readonly ?string $expectedSha256 = null,
+    ) {
+    }
+
+    /** Text with the user:password part of every URL in it removed, for messages and stored metadata. */
+    public static function redact(string $text): string
     {
+        return preg_replace('{([a-z][a-z0-9+.-]*://)[^/?#@\s"\']*@}i', '$1***@', $text) ?? $text;
     }
 
     /** Where `db:build` writes by default and where a URL download is cached. */
@@ -68,8 +86,13 @@ final class DatabaseLocator
      */
     public function resolve(string $location): string
     {
-        if (preg_match('{^https?://}i', $location) === 1) {
+        if (preg_match('{^https://}i', $location) === 1) {
             return $this->download($location);
+        }
+        if (preg_match('{^[a-z][a-z0-9+.-]*://}i', $location) === 1) {
+            // Advisory data decides a security gate: only TLS-protected downloads are accepted. This also
+            // keeps a composer.json-configured location from pointing the tool at an internal http service.
+            throw new AdvisoryLookupFailed(sprintf('Advisory database location %s is not an https URL or a local path; only https:// URLs are downloaded.', self::redact($location)));
         }
         $path = $location;
         if (!str_starts_with($path, '/') && !preg_match('{^[A-Za-z]:[\\\\/]}', $path)) {
@@ -96,36 +119,48 @@ final class DatabaseLocator
 
     private function download(string $url): string
     {
+        $shown = self::redact($url);
         $dir = $this->cacheDirectory();
-        @mkdir($dir, 0755, true);
+        @mkdir($dir, 0700, true);
         $file = $dir . '/db-' . sha1($url) . '.sqlite';
+        // The cache directory may be shared (Composer's cache under a shared HOME, or the temp dir as
+        // a last resort). A symlink planted at one of the predictable names would make this process
+        // write through it into a file of the attacker's choosing, so every path is checked first.
+        foreach ([$dir, $file, self::statusFile($file)] as $path) {
+            if (is_link($path)) {
+                throw new AdvisoryLookupFailed(sprintf('Refusing to use the advisory database cache: %s is a symbolic link.', $path));
+            }
+        }
         $fresh = is_file($file) && (time() - (int) filemtime($file)) < self::TTL_SECONDS;
         if ($fresh) {
-            $this->recallVerification($file, $url);
+            $this->requireExpectedDigest($file, $shown);
+            $this->recallVerification($file, $shown);
 
             return $file;
         }
         if ($this->offline) {
             if (is_file($file)) {
-                $this->warnings[] = sprintf('Offline: using the advisory database cached %s from %s; advisories published since then are unknown.', self::age($file), $url);
-                $this->recallVerification($file, $url);
+                $this->requireExpectedDigest($file, $shown);
+                $this->warnings[] = sprintf('Offline: using the advisory database cached %s from %s; advisories published since then are unknown.', self::age($file), $shown);
+                $this->recallVerification($file, $shown);
 
                 return $file;
             }
-            throw new AdvisoryLookupFailed(sprintf('Offline mode and no cached copy of %s.', $url));
+            throw new AdvisoryLookupFailed(sprintf('Offline mode and no cached copy of %s.', $shown));
         }
-        $tmp = $file . '.tmp-' . bin2hex(random_bytes(4));
+        $tmp = $file . '.tmp-' . bin2hex(random_bytes(8));
         try {
             $this->downloader->copy($url, $tmp);
         } catch (TransportException $e) {
             @unlink($tmp);
             if (is_file($file)) {
+                $this->requireExpectedDigest($file, $shown);
                 $this->warnings[] = sprintf('Advisory database refresh failed (%s); using the copy cached %s. Advisories published since then are unknown to this run.', self::shortError($e), self::age($file));
-                $this->recallVerification($file, $url);
+                $this->recallVerification($file, $shown);
 
                 return $file;
             }
-            throw new AdvisoryLookupFailed(sprintf('Could not download advisory database %s: %s', $url, $e->getMessage()), 0, $e);
+            throw new AdvisoryLookupFailed(sprintf('Could not download advisory database %s: %s', $shown, self::redact($e->getMessage())), 0, $e);
         }
         $verified = $this->verifyChecksum($url, $tmp);
         if (!@rename($tmp, $file)) {
@@ -133,10 +168,29 @@ final class DatabaseLocator
             throw new AdvisoryLookupFailed(sprintf('Could not store downloaded advisory database in %s.', $file));
         }
         // The verification outcome is a property of the cached bytes, not of this request: record it so
-        // every later run that reuses the cache repeats the disclosure.
-        @file_put_contents(self::statusFile($file), json_encode(['verified' => $verified, 'url' => $url, 'fetched_at' => gmdate(DATE_ATOM)], JSON_THROW_ON_ERROR));
+        // every later run that reuses the cache repeats the disclosure. Written atomically, never through
+        // an existing link (checked above), and without the URL's credentials.
+        $statusTmp = self::statusFile($file) . '.tmp-' . bin2hex(random_bytes(8));
+        if (@file_put_contents($statusTmp, json_encode(['verified' => $verified, 'url' => $shown, 'fetched_at' => gmdate(DATE_ATOM)], JSON_THROW_ON_ERROR)) !== false) {
+            @rename($statusTmp, self::statusFile($file));
+        }
+        @unlink($statusTmp);
 
         return $file;
+    }
+
+    /** With an expected digest, a cached copy is only as good as its bytes: check them on every use. */
+    private function requireExpectedDigest(string $file, string $shown): void
+    {
+        if ($this->expectedSha256 === null) {
+            return;
+        }
+        $actual = hash_file('sha256', $file);
+        if ($actual === false || !hash_equals(strtolower($this->expectedSha256), $actual)) {
+            @unlink($file);
+            @unlink(self::statusFile($file));
+            throw new AdvisoryLookupFailed(sprintf('The cached advisory database from %s does not match the expected sha256 (expected %s, got %s); the copy was discarded.', $shown, $this->expectedSha256, $actual === false ? '?' : $actual));
+        }
     }
 
     private static function statusFile(string $file): string
@@ -160,18 +214,34 @@ final class DatabaseLocator
     }
 
     /**
-     * Compares the download with the publisher's `<url>.sha256` sidecar (either a bare digest or
-     * `sha256sum` output with a filename). No sidecar means no verification, which is reported.
-     * Returns whether the download was verified.
+     * Verifies the download: against the operator's expected digest when one was given (the trust
+     * anchor), otherwise against the publisher's `<url>.sha256` sidecar (a bare digest or `sha256sum`
+     * output). A mismatch is fatal. No sidecar and no expected digest is fatal too unless the operator
+     * chose to accept unverified downloads, in which case it is reported. Returns whether the download
+     * was verified.
      */
     private function verifyChecksum(string $url, string $file): bool
     {
+        $shown = self::redact($url);
+        $actual = hash_file('sha256', $file);
+        if ($this->expectedSha256 !== null) {
+            if ($actual === false || !hash_equals(strtolower($this->expectedSha256), $actual)) {
+                @unlink($file);
+                throw new AdvisoryLookupFailed(sprintf('Advisory database %s does not match the expected sha256 (expected %s, got %s).', $shown, $this->expectedSha256, $actual === false ? '?' : $actual));
+            }
+
+            return true;
+        }
         $sidecar = $file . '.sha256';
         try {
             $this->downloader->copy($url . '.sha256', $sidecar);
         } catch (TransportException $e) {
             @unlink($sidecar);
-            $this->warnings[] = sprintf('No checksum published next to %s (%s); the download was not verified against a sha256.', $url, self::shortError($e));
+            if ($this->requireChecksum) {
+                @unlink($file);
+                throw new AdvisoryLookupFailed(sprintf('No checksum published next to %s (%s), so the download cannot be verified. Publish <url>.sha256 (the output of sha256sum), pass --database-sha256=<digest>, or pass --allow-unverified-database to accept it with a warning.', $shown, self::shortError($e)), 0, $e);
+            }
+            $this->warnings[] = sprintf('No checksum published next to %s (%s); the download was not verified against a sha256.', $shown, self::shortError($e));
 
             return false;
         }
@@ -179,12 +249,11 @@ final class DatabaseLocator
         @unlink($sidecar);
         if (preg_match('{^([0-9a-f]{64})\b}i', $published, $m) !== 1) {
             @unlink($file);
-            throw new AdvisoryLookupFailed(sprintf('The checksum file at %s.sha256 is not a sha256 digest.', $url));
+            throw new AdvisoryLookupFailed(sprintf('The checksum file at %s.sha256 is not a sha256 digest.', $shown));
         }
-        $actual = hash_file('sha256', $file);
         if ($actual === false || !hash_equals(strtolower($m[1]), $actual)) {
             @unlink($file);
-            throw new AdvisoryLookupFailed(sprintf('Advisory database %s does not match its published sha256 (expected %s, got %s).', $url, $m[1], $actual === false ? '?' : $actual));
+            throw new AdvisoryLookupFailed(sprintf('Advisory database %s does not match its published sha256 (expected %s, got %s).', $shown, $m[1], $actual === false ? '?' : $actual));
         }
 
         return true;

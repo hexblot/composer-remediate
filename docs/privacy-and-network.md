@@ -56,7 +56,9 @@ falling back to the network.
 
 With an [advisory database](advisory-database.md) (`--database-location`) the first row of the
 table disappears: advisories are read from a local SQLite file you built yourself or downloaded
-once, and no package names are sent anywhere for the advisory lookup. A database URL is fetched
+once, and no package names are sent anywhere for the advisory lookup. Only `https://` database
+URLs are accepted, so a `composer.json` cannot point the tool at an internal plain-http service, and
+credentials embedded in a URL never appear in messages or cache metadata. A database URL is fetched
 along with its `.sha256` sidecar; the download is verified against it, the verification outcome is
 recorded next to the cached copy and repeated as a warning on every later run that reuses an
 unverified copy, and a refresh that fails falls back to the cached copy with a warning in the report

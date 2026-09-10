@@ -32,10 +32,15 @@ final class Finding
         return array_key_exists($this->packageName, $this->abandoned);
     }
 
-    /** Stable identity of "this advisory on this package", used to compare locks before and after. */
+    /**
+     * Stable identity of "this advisory on this package", used to compare locks before and after and
+     * as the baseline key. A finding reached through a replaced or provided package carries that
+     * target too: one advisory id (a CVE spanning several components) on one replacing package would
+     * otherwise collapse two findings into one.
+     */
     public function key(): string
     {
-        return $this->advisory->id . '@' . $this->packageName;
+        return $this->advisory->id . '@' . $this->packageName . ($this->viaReplacedName !== null ? '/' . $this->viaReplacedName : '');
     }
 
     /**

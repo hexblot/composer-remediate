@@ -311,9 +311,10 @@ root
 <p><small>… and 41 more paths</small></p>
 <h3>Recommended remediation</h3>
 <p class="command"><code>composer update shopware/storefront:6.4.15.2 shopware/recovery shopware/elasticsearch shopware/administration -W -m</code></p>
-<p class="validation"><span class="badge ok">Composer validation: PASS</span> 6 packages changed, 0 added, 0 removed, 0 root constraints changed.</p>
-<details open><summary>Expected changes (6)</summary><table class="changes"><thead><tr><th>Package</th><th>From</th><th>To</th><th>Kind</th></tr></thead><tbody>
+<p class="validation"><span class="badge ok">Composer validation: PASS</span> 7 packages changed, 0 added, 0 removed, 0 root constraints changed.</p>
+<details open><summary>Expected changes (7)</summary><table class="changes"><thead><tr><th>Package</th><th>From</th><th>To</th><th>Kind</th></tr></thead><tbody>
 <tr><td>shopware/administration</td><td>6.4.15.1</td><td>6.4.15.2</td><td>upgraded, patch</td></tr>
+<tr><td>shopware/conflicts</td><td>0.0.1#a66242b</td><td>0.0.1#017e453</td><td>changed, other</td></tr>
 <tr><td>shopware/core</td><td>6.4.15.1</td><td>6.4.15.2</td><td>upgraded, patch</td></tr>
 <tr><td>shopware/elasticsearch</td><td>6.4.15.1</td><td>6.4.15.2</td><td>upgraded, patch</td></tr>
 <tr><td>shopware/recovery</td><td>6.4.15.1</td><td>6.4.15.2</td><td>upgraded, patch</td></tr>
@@ -321,11 +322,11 @@ root
 <tr><td>twig/twig</td><td>v3.3.10</td><td>v3.4.3</td><td>upgraded, minor</td></tr>
 </tbody></table></details>
 <details><summary>Other candidates (22)</summary><table class="candidates"><thead><tr><th>Outcome</th><th>Command</th><th>Detail</th></tr></thead><tbody>
-<tr><td><span class="badge ok">valid, rank 2</span></td><td><code>composer update shopware/storefront shopware/recovery shopware/elasticsearch shopware/administration -W -m --with &apos;twig/twig:&gt;=3.4.3&apos;</code></td><td>6 changes</td></tr>
-<tr><td><span class="badge ok">valid, rank 3</span></td><td><code>composer update shopware/core:6.4.15.2 shopware/storefront symfony/web-profiler-bundle shopware/recovery shopware/elasticsearch shopware/administration -W -m --with &apos;twig/twig:&gt;=3.4.3&apos;</code></td><td>7 changes</td></tr>
-<tr><td><span class="badge ok">valid, rank 4</span></td><td><code>composer update shopware/administration:6.4.15.2 shopware/storefront symfony/web-profiler-bundle shopware/recovery shopware/elasticsearch -W -m --with &apos;twig/twig:&gt;=3.4.3&apos;</code></td><td>7 changes</td></tr>
-<tr><td><span class="badge ok">valid, rank 5</span></td><td><code>composer update shopware/core shopware/storefront symfony/web-profiler-bundle shopware/recovery shopware/elasticsearch shopware/administration -W -m --with &apos;twig/twig:&gt;=3.4.3&apos;</code></td><td>7 changes</td></tr>
-<tr><td><span class="badge ok">valid, rank 6</span></td><td><code>composer update shopware/administration shopware/storefront symfony/web-profiler-bundle shopware/recovery shopware/elasticsearch -W -m --with &apos;twig/twig:&gt;=3.4.3&apos;</code></td><td>7 changes</td></tr>
+<tr><td><span class="badge ok">valid, rank 2</span></td><td><code>composer update shopware/storefront shopware/recovery shopware/elasticsearch shopware/administration -W -m --with &apos;twig/twig:&gt;=3.4.3&apos;</code></td><td>7 changes</td></tr>
+<tr><td><span class="badge ok">valid, rank 3</span></td><td><code>composer update shopware/core:6.4.15.2 shopware/storefront symfony/web-profiler-bundle shopware/recovery shopware/elasticsearch shopware/administration -W -m --with &apos;twig/twig:&gt;=3.4.3&apos;</code></td><td>8 changes</td></tr>
+<tr><td><span class="badge ok">valid, rank 4</span></td><td><code>composer update shopware/administration:6.4.15.2 shopware/storefront symfony/web-profiler-bundle shopware/recovery shopware/elasticsearch -W -m --with &apos;twig/twig:&gt;=3.4.3&apos;</code></td><td>8 changes</td></tr>
+<tr><td><span class="badge ok">valid, rank 5</span></td><td><code>composer update shopware/core shopware/storefront symfony/web-profiler-bundle shopware/recovery shopware/elasticsearch shopware/administration -W -m --with &apos;twig/twig:&gt;=3.4.3&apos;</code></td><td>8 changes</td></tr>
+<tr><td><span class="badge ok">valid, rank 6</span></td><td><code>composer update shopware/administration shopware/storefront symfony/web-profiler-bundle shopware/recovery shopware/elasticsearch -W -m --with &apos;twig/twig:&gt;=3.4.3&apos;</code></td><td>8 changes</td></tr>
 <tr><td><span class="badge rejected">rejected</span></td><td><code>composer update twig/twig</code></td><td><pre class="reason">resolves, but twig/twig ends at v3.3.10 which is still affected by PKSA-n7sg-8f52-pqtf</pre></td></tr>
 <tr><td><span class="badge rejected">rejected</span></td><td><code>composer update twig/twig -w -m --with &apos;twig/twig:&gt;=3.4.3&apos;</code></td><td><pre class="reason">Composer could not resolve the dependencies: Your requirements could not be resolved to an installable set of packages.
   Problem 1
@@ -487,7 +488,7 @@ Use the option --with-all-dependencies (-W) to allow upgrades, downgrades and re
 <dt>advisory source</dt><dd>advisory snapshot advisories.json</dd>
 <dt>solver</dt><dd>in-process Composer dry-run</dd>
 <dt>solver runs</dt><dd>56</dd>
-<dt>composer json sha256</dt><dd>aa056dbe0bb6742ce84a97d429e7c7c68bd9cfb23c5dc9a36c2a33ea1a405a2c</dd>
+<dt>composer json sha256</dt><dd>befbad62a13d2adafff5596609c8e4fec903afa57ca62f87a5b9b8ffeebe05f6</dd>
 <dt>composer lock sha256</dt><dd>0166a25c8ee830ae631dad4fee40c7826c06f7cd18e413ab36c454440d37c811</dd>
 <dt>analysis timestamp</dt><dd>(fixture)</dd>
 <dt>locked packages</dt><dd>202</dd>

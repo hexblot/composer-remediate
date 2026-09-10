@@ -125,7 +125,7 @@
       "advisory": "CVE-2024-50343",
       "remediation": true,
       "target_version": "v5.4.43",
-      "max_changes": 2
+      "max_changes": 3
     }
   ],
   "combined_command": "composer update aws/aws-sdk-php composer/composer shopware/core symfony/twig-bridge -W -m --with 'symfony/validator:>=5.4.43,<6.0.0 || >=6.4.11,<7.0.0 || >=7.1.4'"

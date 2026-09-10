@@ -94,13 +94,17 @@ final class Planner
         $warnings = [];
 
         if (!$this->advisories->isComplete()) {
-            $warnings[] = sprintf('Advisory source "%s" only knows advisories for the current lock; candidate locks cannot be checked for other advisories.', $this->advisories->describe());
+            $warnings[] = sprintf('Advisory source "%s" only knows advisories for the current lock; a candidate lock cannot be checked for other advisories, so no remediation is verified or recommended. Use a complete source: --database-location or a full Packagist snapshot.', $this->advisories->describe());
         }
 
         $allFindings = $matcher->match($lock, $isRoot);
+        $coverageGaps = [];
         if ($this->advisories instanceof CoverageAware) {
-            // Records the source could not read are not evidence of safety; say so next to the result.
-            array_push($warnings, ...$this->advisories->coverageWarnings($lock->names()));
+            // Records the source could not read are not evidence of safety: they are reported next to
+            // the result and, unless the operator accepts them, keep a lock without findings from
+            // exiting clean. Replaced and provided names count, since advisories reach them too.
+            $coverageGaps = $this->advisories->coverageWarnings(Matcher::queriedNames($lock));
+            array_push($warnings, ...$coverageGaps);
         }
         if ($matcher->ignoredCount() > 0) {
             $warnings[] = sprintf('%d advisory match%s ignored per configuration (--ignore, config.audit.ignore or config.policy).', $matcher->ignoredCount(), $matcher->ignoredCount() === 1 ? '' : 'es');
@@ -158,7 +162,7 @@ final class Planner
             'composer_lock_sha256' => self::fileHash($context->lockPath()),
             'analysis_timestamp' => gmdate('c'),
             'locked_packages' => (string) $lock->count(),
-        ], $warnings, $combined, null, self::inventory($lock));
+        ], $warnings, $combined, null, self::inventory($lock), [], $coverageGaps);
     }
 
     /**
@@ -201,6 +205,11 @@ final class Planner
         $finding = $group[0]->withPaths($graph->pathsToRoot($group[0]->packageName));
         $finding = $finding->withAbandoned(self::abandonedOnPaths($finding, $lock));
         $related = array_slice($group, 1);
+        if (!$this->advisories->isComplete()) {
+            // A source that only knows the current lock's advisories cannot say whether a candidate lock
+            // is clean; recommending anyway would be a fix verified against nothing. Fail closed.
+            return new FindingPlan($finding, [], [], sprintf('Advisory source "%s" only knows the advisories of the current lock; a candidate lock cannot be checked for other advisories, so no remediation can be verified. Use a complete source (--database-location, or a full Packagist snapshot with --advisories-file).', $this->advisories->describe()), [], $related);
+        }
         $groupKeys = [];
         foreach ($group as $member) {
             $groupKeys[$member->key()] = true;

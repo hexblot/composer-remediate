@@ -136,7 +136,7 @@
             "name": "CVE-2022-39261: Possibility to load a template outside a configured directory when using the filesystem loader",
             "description": "twig/twig v3.3.10 is affected by CVE-2022-39261 (affected versions >=1.0.0,<1.44.7|>=2.0.0,<2.15.3|>=3.0.0,<3.4.3).",
             "severity": "High",
-            "solution": "Run `composer update shopware/storefront:6.4.15.2 shopware/recovery shopware/elasticsearch shopware/administration -W -m` (verified with Composer's solver, 6 package change(s)).",
+            "solution": "Run `composer update shopware/storefront:6.4.15.2 shopware/recovery shopware/elasticsearch shopware/administration -W -m` (verified with Composer's solver, 7 package change(s)).",
             "identifiers": [
                 {
                     "type": "cve",

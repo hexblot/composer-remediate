@@ -55,6 +55,26 @@ final class LockDiffTest extends TestCase
         self::assertFalse($after->isDev('a/kept'));
     }
 
+    public function testAMovedReferenceOnTheSameVersionIsAChangeTheReleaseAgeGuardSees(): void
+    {
+        $old = new Package('a/b', '1.2.3.0', '1.2.3');
+        $old->setDistReference('aaaaaaa1111');
+        $new = new Package('a/b', '1.2.3.0', '1.2.3');
+        $new->setDistReference('bbbbbbb2222');
+        $diff = LockDiff::between(LockSnapshot::fromPackages([$old], []), LockSnapshot::fromPackages([$new], []));
+        $change = $diff->changeFor('a/b');
+        self::assertNotNull($change, 'same version, different commit: a re-tagged release is a change');
+        self::assertSame(PackageChange::CHANGED, $change->kind);
+        self::assertSame(VersionStep::Other, $change->step);
+        self::assertSame('1.2.3#aaaaaaa', $change->fromPretty);
+        self::assertSame('1.2.3#bbbbbbb', $change->toPretty);
+
+        $guard = new \Remediate\Engine\Solver\ReleaseAgeGuard(7);
+        $young = $guard->tooYoung($diff, LockSnapshot::fromPackages([$new], []));
+        self::assertCount(1, $young, 'the guard refuses it: the release date of the new bytes is unknown');
+        self::assertStringContainsString('release date unknown', $young[0]);
+    }
+
     public function testDevBranchChangesAreOther(): void
     {
         $before = LockSnapshot::fromPackages([new Package('a/b', 'dev-main', 'dev-main')], []);

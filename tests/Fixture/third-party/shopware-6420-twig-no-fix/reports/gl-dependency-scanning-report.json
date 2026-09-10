@@ -1076,7 +1076,7 @@
             "name": "CVE-2024-50343: CVE-2024-50343: Incorrect response from Validator when input ends with `\n`",
             "description": "symfony/validator v5.4.23 is affected by CVE-2024-50343 (affected versions >=2.0.0,<3.0.0|>=3.0.0,<4.0.0|>=4.0.0,<5.0.0|>=5.0.0,<5.1.0|>=5.1.0,<5.2.0|>=5.2.0,<5.3.0|>=5.3.0,<5.4.0|>=5.4.0,<5.4.43|>=6.0.0,<6.1.0|>=6.1.0,<6.2.0|>=6.2.0,<6.3.0|>=6.3.0,<6.4.0|>=6.4.0,<6.4.11|>=7.0.0,<7.1.0|>=7.1.0,<7.1.4). Abandoned: shopware/recovery (on the dependency path, no replacement named). An abandoned parent will not ship a release that lifts its pin.",
             "severity": "Low",
-            "solution": "Run `composer update shopware/core -W -m --with 'symfony/validator:>=5.4.43,<6.0.0 || >=6.4.11,<7.0.0 || >=7.1.4'` (verified with Composer's solver, 2 package change(s)).",
+            "solution": "Run `composer update shopware/core -W -m --with 'symfony/validator:>=5.4.43,<6.0.0 || >=6.4.11,<7.0.0 || >=7.1.4'` (verified with Composer's solver, 3 package change(s)).",
             "identifiers": [
                 {
                     "type": "cve",

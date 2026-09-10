@@ -14,8 +14,9 @@ vulnerability are recommended. Nothing in the project is modified.
 
 Exit codes: 0 no vulnerabilities, 1 vulnerabilities with a verified remediation,
 2 at least one vulnerability without a verified remediation (and no tool failure), 3 error (also
-when a solver error prevented the search from completing), 4 advisory data unavailable,
-5 package metadata could not be fetched while solving.
+when a solver error prevented the search from completing), 4 advisory data unavailable (also when
+the source could not read records about locked packages and `--accept-coverage-gaps` was
+not given), 5 package metadata could not be fetched while solving.
 
 Running as `composer remediate` means Composer has already activated the project's
 other allowed plugins before this command starts. The `composer-remediate` binary shipped
@@ -34,7 +35,10 @@ with the package runs the same command with plugins and scripts disabled from th
 | `--ignore`, `-i` | repeatable | Advisory id or CVE to ignore (repeatable); audit-scoped entries of config.audit.ignore and config.policy.advisories are honoured as well |
 | `--allow-direct-require` | flag | Also consider adding a transitive package as a direct requirement to force a fixed version |
 | `--advisories-file` | required | Read advisories from a JSON file in the Packagist API shape (or `composer audit --format=json` output) instead of the configured repositories |
-| `--database-location` | required | Read advisories from a local advisory database (path or URL) built with remediate:db-build; also REMEDIATE_DATABASE or extra.remediate.database |
+| `--database-location` | required | Read advisories from a local advisory database (path or https URL) built with remediate:db-build; also REMEDIATE_DATABASE or extra.remediate.database |
+| `--database-sha256` | required | Expected sha256 of the advisory database (hex); a downloaded or cached copy that differs is refused. The trust anchor for a URL you do not publish yourself |
+| `--allow-unverified-database` | flag | Accept a database URL without a published &lt;url&gt;.sha256 sidecar and without --database-sha256 (refused otherwise); the report says the download was not verified |
+| `--accept-coverage-gaps` | flag | Exit 0 for a lock without findings even when the advisory source could not read records about locked packages (otherwise exit 4); the gaps stay in the report |
 | `--max-candidates` | required, default `10` | Maximum number of candidate commands to try per finding |
 | `--solve-budget` | required, default `60` | Maximum number of solver runs per finding, all search phases included (candidates, conflict expansion, parent descent, simplification) |
 | `--solver` | required, default `auto` | How candidates are verified: auto (in-process, falling back to a `composer update` subprocess when the in-process route errors), in-process, or subprocess |
@@ -78,7 +82,9 @@ Show where the advisory database comes from and what it contains
 
 | Option | Value | Description |
 |---|---|---|
-| `--database-location` | required | Path or URL of the database (default: REMEDIATE_DATABASE, then extra.remediate.database, then the default build path) |
+| `--database-location` | required | Path or https URL of the database (default: REMEDIATE_DATABASE, then extra.remediate.database, then the default build path) |
+| `--database-sha256` | required | Expected sha256 of the database (hex); a downloaded or cached copy that differs is refused |
+| `--allow-unverified-database` | flag | Accept a database URL without a published &lt;url&gt;.sha256 sidecar and without --database-sha256 |
 
 ## Exit codes
 

@@ -454,11 +454,11 @@ Recommended command
   composer update composer/composer
 Other candidates
   valid, rank 2: composer update composer/composer -w -m --with 'composer/composer:>=2.2.24,<2.3.0 || >=2.7.7'  (1 changes)
-  valid, rank 3: composer update shopware/core -W -m --with 'composer/composer:>=2.2.24,<2.3.0 || >=2.7.7'  (1 changes)
-  valid, rank 4: composer update shopware/administration -W -m --with 'composer/composer:>=2.2.24,<2.3.0 || >=2.7.7'  (1 changes)
-  valid, rank 5: composer update shopware/elasticsearch -W -m --with 'composer/composer:>=2.2.24,<2.3.0 || >=2.7.7'  (1 changes)
-  valid, rank 6: composer update shopware/recovery -W -m --with 'composer/composer:>=2.2.24,<2.3.0 || >=2.7.7'  (1 changes)
-  valid, rank 7: composer update shopware/storefront -W -m --with 'composer/composer:>=2.2.24,<2.3.0 || >=2.7.7'  (1 changes)
+  valid, rank 3: composer update shopware/core -W -m --with 'composer/composer:>=2.2.24,<2.3.0 || >=2.7.7'  (2 changes)
+  valid, rank 4: composer update shopware/administration -W -m --with 'composer/composer:>=2.2.24,<2.3.0 || >=2.7.7'  (2 changes)
+  valid, rank 5: composer update shopware/elasticsearch -W -m --with 'composer/composer:>=2.2.24,<2.3.0 || >=2.7.7'  (2 changes)
+  valid, rank 6: composer update shopware/recovery -W -m --with 'composer/composer:>=2.2.24,<2.3.0 || >=2.7.7'  (2 changes)
+  valid, rank 7: composer update shopware/storefront -W -m --with 'composer/composer:>=2.2.24,<2.3.0 || >=2.7.7'  (2 changes)
   not tried (a better candidate already exists): composer require --no-update shopware/core:^6.5 && composer update shopware/core -W -m --with 'composer/composer:>=2.2.24,<2.3.0 || >=2.7.7'
   not tried (a better candidate already exists): composer require --no-update shopware/administration:^6.5 && composer update shopware/administration -W -m --with 'composer/composer:>=2.2.24,<2.3.0 || >=2.7.7'
   not tried (a better candidate already exists): composer require --no-update shopware/elasticsearch:^6.5 && composer update shopware/elasticsearch -W -m --with 'composer/composer:>=2.2.24,<2.3.0 || >=2.7.7'
@@ -650,11 +650,11 @@ Expected changes
 Recommended command
   composer update aws/aws-sdk-php -w -m
 Other candidates
-  valid, rank 2: composer update shopware/core -W -m --with 'aws/aws-sdk-php:>=3.288.1'  (2 changes)
-  valid, rank 3: composer update shopware/administration -W -m --with 'aws/aws-sdk-php:>=3.288.1'  (2 changes)
-  valid, rank 4: composer update shopware/elasticsearch -W -m --with 'aws/aws-sdk-php:>=3.288.1'  (2 changes)
-  valid, rank 5: composer update shopware/recovery -W -m --with 'aws/aws-sdk-php:>=3.288.1'  (2 changes)
-  valid, rank 6: composer update shopware/storefront -W -m --with 'aws/aws-sdk-php:>=3.288.1'  (2 changes)
+  valid, rank 2: composer update shopware/core -W -m --with 'aws/aws-sdk-php:>=3.288.1'  (3 changes)
+  valid, rank 3: composer update shopware/administration -W -m --with 'aws/aws-sdk-php:>=3.288.1'  (3 changes)
+  valid, rank 4: composer update shopware/elasticsearch -W -m --with 'aws/aws-sdk-php:>=3.288.1'  (3 changes)
+  valid, rank 5: composer update shopware/recovery -W -m --with 'aws/aws-sdk-php:>=3.288.1'  (3 changes)
+  valid, rank 6: composer update shopware/storefront -W -m --with 'aws/aws-sdk-php:>=3.288.1'  (3 changes)
   rejected: composer update aws/aws-sdk-php
       resolves, but aws/aws-sdk-php ends at 3.283.10 which is still affected by PKSA-n3s6-289w-qtqb
   not tried (a better candidate already exists): composer require --no-update shopware/core:^6.5 && composer update shopware/core -W -m --with 'aws/aws-sdk-php:>=3.288.1'
@@ -702,13 +702,13 @@ Recommended command
   composer update symfony/twig-bridge
 Other candidates
   valid, rank 2: composer update symfony/twig-bridge -w -m --with 'symfony/twig-bridge:>=5.4.31,<6.0.0 || >=6.3.8'  (1 changes)
-  valid, rank 3: composer update shopware/core -W -m --with 'symfony/twig-bridge:>=5.4.31,<6.0.0 || >=6.3.8'  (1 changes)
-  valid, rank 4: composer update shopware/administration -W -m --with 'symfony/twig-bridge:>=5.4.31,<6.0.0 || >=6.3.8'  (1 changes)
-  valid, rank 5: composer update shopware/elasticsearch -W -m --with 'symfony/twig-bridge:>=5.4.31,<6.0.0 || >=6.3.8'  (1 changes)
-  valid, rank 6: composer update shopware/recovery -W -m --with 'symfony/twig-bridge:>=5.4.31,<6.0.0 || >=6.3.8'  (1 changes)
-  valid, rank 7: composer update shopware/storefront -W -m --with 'symfony/twig-bridge:>=5.4.31,<6.0.0 || >=6.3.8'  (1 changes)
+  valid, rank 3: composer update shopware/core -W -m --with 'symfony/twig-bridge:>=5.4.31,<6.0.0 || >=6.3.8'  (2 changes)
+  valid, rank 4: composer update shopware/administration -W -m --with 'symfony/twig-bridge:>=5.4.31,<6.0.0 || >=6.3.8'  (2 changes)
+  valid, rank 5: composer update shopware/elasticsearch -W -m --with 'symfony/twig-bridge:>=5.4.31,<6.0.0 || >=6.3.8'  (2 changes)
+  valid, rank 6: composer update shopware/recovery -W -m --with 'symfony/twig-bridge:>=5.4.31,<6.0.0 || >=6.3.8'  (2 changes)
+  valid, rank 7: composer update shopware/storefront -W -m --with 'symfony/twig-bridge:>=5.4.31,<6.0.0 || >=6.3.8'  (2 changes)
   valid, rank 8: composer update symfony/web-profiler-bundle -W -m --with 'symfony/twig-bridge:>=5.4.31,<6.0.0 || >=6.3.8'  (2 changes)
-  valid, rank 9: composer update shopware/core symfony/web-profiler-bundle -W -m --with 'symfony/twig-bridge:>=5.4.31,<6.0.0 || >=6.3.8'  (2 changes)
+  valid, rank 9: composer update shopware/core symfony/web-profiler-bundle -W -m --with 'symfony/twig-bridge:>=5.4.31,<6.0.0 || >=6.3.8'  (3 changes)
   not tried (a better candidate already exists): composer require --no-update shopware/core:^6.5 && composer update shopware/core -W -m --with 'symfony/twig-bridge:>=5.4.31,<6.0.0 || >=6.3.8'
 
 CVE-2024-32489, CVE-2024-22640
@@ -1035,18 +1035,19 @@ Current state
 Recommended remediation
   symfony/validator v5.4.23 -> v5.4.43
 Composer validation
-  PASS  2 packages changed, 0 added, 0 removed, 0 root constraints changed
+  PASS  3 packages changed, 0 added, 0 removed, 0 root constraints changed
 Expected changes
+  shopware/conflicts 0.0.2#b5414fb -> 0.0.2#8bfddbb
   symfony/translation v5.4.22 -> v5.4.44
   symfony/validator v5.4.23 -> v5.4.43
 Recommended command
   composer update shopware/core -W -m --with 'symfony/validator:>=5.4.43,<6.0.0 || >=6.4.11,<7.0.0 || >=7.1.4'
 Other candidates
-  valid, rank 2: composer update shopware/storefront -W -m --with 'symfony/validator:>=5.4.43,<6.0.0 || >=6.4.11,<7.0.0 || >=7.1.4'  (2 changes)
-  valid, rank 3: composer update shopware/administration -W -m --with 'symfony/validator:>=5.4.43,<6.0.0 || >=6.4.11,<7.0.0 || >=7.1.4'  (2 changes)
-  valid, rank 4: composer update shopware/elasticsearch -W -m --with 'symfony/validator:>=5.4.43,<6.0.0 || >=6.4.11,<7.0.0 || >=7.1.4'  (2 changes)
-  valid, rank 5: composer update shopware/recovery -W -m --with 'symfony/validator:>=5.4.43,<6.0.0 || >=6.4.11,<7.0.0 || >=7.1.4'  (2 changes)
-  valid, rank 6: composer update shopware/core shopware/storefront -W -m --with 'symfony/validator:>=5.4.43,<6.0.0 || >=6.4.11,<7.0.0 || >=7.1.4'  (2 changes)
+  valid, rank 2: composer update shopware/storefront -W -m --with 'symfony/validator:>=5.4.43,<6.0.0 || >=6.4.11,<7.0.0 || >=7.1.4'  (3 changes)
+  valid, rank 3: composer update shopware/administration -W -m --with 'symfony/validator:>=5.4.43,<6.0.0 || >=6.4.11,<7.0.0 || >=7.1.4'  (3 changes)
+  valid, rank 4: composer update shopware/elasticsearch -W -m --with 'symfony/validator:>=5.4.43,<6.0.0 || >=6.4.11,<7.0.0 || >=7.1.4'  (3 changes)
+  valid, rank 5: composer update shopware/recovery -W -m --with 'symfony/validator:>=5.4.43,<6.0.0 || >=6.4.11,<7.0.0 || >=7.1.4'  (3 changes)
+  valid, rank 6: composer update shopware/core shopware/storefront -W -m --with 'symfony/validator:>=5.4.43,<6.0.0 || >=6.4.11,<7.0.0 || >=7.1.4'  (3 changes)
   rejected: composer update symfony/validator
       resolves, but symfony/validator ends at v5.4.34 which is still affected by PKSA-w2tw-kmfg-rt9s
   rejected: composer update symfony/validator -w -m --with 'symfony/validator:>=5.4.43,<6.0.0 || >=6.4.11,<7.0.0 || >=7.1.4'
@@ -1062,7 +1063,7 @@ Other candidates
 Summary
   Findings: 26 advisories on 10 packages, 4 packages with a verified fix
   composer update aws/aws-sdk-php composer/composer shopware/core symfony/twig-bridge -W -m --with 'symfony/validator:>=5.4.43,<6.0.0 || >=6.4.11,<7.0.0 || >=7.1.4' fixes 7 of 26 findings
-    (6 packages changed, verified by Composer)
+    (7 packages changed, verified by Composer)
   No verified fix: CVE-2024-25117, CVE-2023-50251, PKSA-qsyb-3psh-f1t3 on phenx/php-svg-lib; CVE-2024-42354, CVE-2024-42355, CVE-2024-42356, CVE-2024-22406, CVE-2024-22407, CVE-2024-31447, CVE-2024-42357 on shopware/core; CVE-2023-23924, CVE-2023-50262, CVE-2022-0085, CVE-2022-41343, CVE-2022-2400 on shopwarelabs/dompdf; CVE-2023-37260 on league/oauth2-server; CVE-2024-32489, CVE-2024-22640 on tecnickcom/tcpdf; CVE-2024-45411 on twig/twig
   Abandoned: 10 findings involve a package Packagist marks abandoned (shopware/recovery).
 ```

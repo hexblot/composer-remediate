@@ -20,6 +20,7 @@ use Remediate\Engine\Advisory\Db\Source\OsvDumpSource;
 use Remediate\Engine\Advisory\Db\Source\PackagistApiSource;
 use Remediate\Engine\Plan\Plan;
 use Remediate\Engine\Planner;
+use Remediate\Output\ConsoleText;
 use Symfony\Component\Console\Input\InputInterface;
 use Symfony\Component\Console\Input\InputOption;
 use Symfony\Component\Console\Output\OutputInterface;
@@ -129,12 +130,12 @@ HELP);
         }
 
         $log = static function (string $message) use ($io): void {
-            $io->writeError('<comment>' . $message . '</comment>');
+            $io->writeError('<comment>' . ConsoleText::safe($message) . '</comment>');
         };
         try {
             $result = (new DatabaseBuilder($sources, new Merger(), new DatabaseWriter(), $enrichments))->build($path, $log, ['engine_version' => Planner::engineVersion()]);
         } catch (\RuntimeException $e) {
-            $io->writeError('<error>Build failed: ' . $e->getMessage() . '</error>');
+            $io->writeError('<error>Build failed: ' . ConsoleText::safe($e->getMessage()) . '</error>');
 
             return Plan::EXIT_ADVISORIES_UNAVAILABLE;
         }
@@ -145,7 +146,7 @@ HELP);
             $output->writeln('  Coverage gaps are upstream records the build could not interpret; they are stored in the database and reported by composer remediate for packages in the lock. List them with remediate:db-status.');
         }
         if ($enrichments !== []) {
-            $output->writeln(sprintf('  exploit data (EPSS / CISA KEV) for %d CVE%s%s', $result['exploits'], $result['exploits'] === 1 ? '' : 's', $result['enrichment_errors'] !== [] ? '; unavailable: ' . implode('; ', $result['enrichment_errors']) : ''));
+            $output->writeln(ConsoleText::safe(sprintf('  exploit data (EPSS / CISA KEV) for %d CVE%s%s', $result['exploits'], $result['exploits'] === 1 ? '' : 's', $result['enrichment_errors'] !== [] ? '; unavailable: ' . implode('; ', $result['enrichment_errors']) : '')));
         }
         $output->writeln(sprintf('  dataset hash %s', $result['hash']));
         $output->writeln(sprintf('Use it with: <comment>composer remediate --database-location=%s</comment>', $result['path']));

@@ -3502,7 +3502,7 @@
                 "response": [
                     "update"
                 ],
-                "detail": "2 package change(s) verified by Composer's solver."
+                "detail": "3 package change(s) verified by Composer's solver."
             }
         }
     ]

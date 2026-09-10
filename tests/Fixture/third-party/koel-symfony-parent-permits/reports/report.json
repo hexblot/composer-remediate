@@ -8,7 +8,7 @@
         "advisory_source": "advisory snapshot advisories.json",
         "solver": "in-process Composer dry-run",
         "solver_runs": "17",
-        "composer_json_sha256": "c50e26f834a9e425185d1e031dc65359075da3080328dfe79051c17300918aab",
+        "composer_json_sha256": "649770eb0790b021edd2a6b03ff63e1d36e3824740ca352bd13a9aa79834ef70",
         "composer_lock_sha256": "920a682f7d00cc3136de9c274c03cb9980e591ed30164b6328601b79faa6c5a0",
         "analysis_timestamp": "(fixture)",
         "locked_packages": "180"
@@ -25,6 +25,8 @@
         "packages_with_constraint_drag": 0,
         "packages_known_exploited": 0,
         "packages_with_abandoned_dependency": 0,
+        "coverage_gaps": 0,
+        "coverage_gaps_accepted": false,
         "combined_command": "composer update symfony/http-foundation symfony/process",
         "combined_fixes": 2,
         "combined_total": 2,

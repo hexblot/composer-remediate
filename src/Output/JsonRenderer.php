@@ -60,6 +60,8 @@ final class JsonRenderer
                 'packages_with_constraint_drag' => count(array_filter($plan->findings, static fn (FindingPlan $p): bool => $p->constraintDrag() !== null)),
                 'packages_known_exploited' => count(array_filter($plan->findings, static fn (FindingPlan $p): bool => $p->isKnownExploited())),
                 'packages_with_abandoned_dependency' => count(array_filter($plan->findings, static fn (FindingPlan $p): bool => $p->finding->abandoned !== [])),
+                'coverage_gaps' => count($plan->coverageGaps),
+                'coverage_gaps_accepted' => $plan->coverageGapsAccepted,
                 'combined_command' => $combined?->candidate->commandLine($this->minimalChangesSupported),
                 'combined_fixes' => $combined?->fixedCount(),
                 'combined_total' => $combined?->totalCount(),

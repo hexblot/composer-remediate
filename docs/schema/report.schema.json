@@ -17,7 +17,7 @@
     "warnings": {"type": "array", "items": {"type": "string"}},
     "summary": {
       "type": "object",
-      "required": ["advisories", "packages", "packages_with_fix", "fail_on", "packages_gated", "packages_baselined", "packages_with_constraint_drag", "packages_known_exploited", "packages_with_abandoned_dependency", "combined_command", "combined_fixes", "combined_total", "combined_fixes_all", "combined_changes"],
+      "required": ["advisories", "packages", "packages_with_fix", "fail_on", "packages_gated", "packages_baselined", "packages_with_constraint_drag", "packages_known_exploited", "packages_with_abandoned_dependency", "coverage_gaps", "coverage_gaps_accepted", "combined_command", "combined_fixes", "combined_total", "combined_fixes_all", "combined_changes"],
       "additionalProperties": false,
       "properties": {
         "advisories": {"type": "integer", "minimum": 0},
@@ -29,6 +29,8 @@
         "packages_with_constraint_drag": {"type": "integer", "minimum": 0, "description": "Packages whose only fix requires widening a composer.json constraint"},
         "packages_known_exploited": {"type": "integer", "minimum": 0, "description": "Packages with at least one advisory in CISA's Known Exploited Vulnerabilities catalogue"},
         "packages_with_abandoned_dependency": {"type": "integer", "minimum": 0, "description": "Packages whose dependency paths (themselves included) contain a package Packagist marks abandoned"},
+        "coverage_gaps": {"type": "integer", "minimum": 0, "description": "Advisory records about locked (or replaced/provided) packages the advisory source could not read; unless accepted, a lock with gaps and no findings exits 4"},
+        "coverage_gaps_accepted": {"type": "boolean", "description": "Whether --accept-coverage-gaps let a lock with gaps exit clean"},
         "combined_command": {"type": ["string", "null"]},
         "combined_fixes": {"type": ["integer", "null"]},
         "combined_total": {"type": ["integer", "null"]},

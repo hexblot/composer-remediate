@@ -284,5 +284,11 @@ final class PlannerTest extends TestCase
         $plan = $planner->plan($project->context(), $project->workspace());
 
         self::assertNotEmpty(array_filter($plan->warnings, static fn (string $w): bool => str_contains($w, 'only knows advisories for the current lock')));
+        self::assertCount(1, $plan->findings, 'the finding itself is real and reported');
+        self::assertFalse($plan->findings[0]->hasRemediation(), 'but no candidate can be verified against a source that cannot vouch for a candidate lock');
+        self::assertSame([], $plan->findings[0]->evaluated, 'nothing was even solved');
+        self::assertStringContainsString('no remediation can be verified', (string) $plan->findings[0]->blocker);
+        self::assertNull($plan->combined);
+        self::assertSame(Plan::EXIT_NO_REMEDIATION, $plan->exitCode(), 'fail closed: a gate sees an unfixed vulnerability, not a verified fix');
     }
 }

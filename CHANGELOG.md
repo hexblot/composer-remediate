@@ -7,6 +7,41 @@ All notable changes to this project are documented here. The format follows
 
 ### Security
 
+Answers to an Aikido code scan (nine findings), each with a regression test.
+
+- **Incomplete advisory sources fail closed.** A source that only knows the current lock's
+  advisories (`composer audit` output through `--advisories-file`, the audit fallback) cannot check a
+  candidate lock, so the planner no longer verifies candidates against it: findings are reported with
+  a blocker and no remediation, and the run exits 2 instead of recommending fixes verified against
+  nothing. Before, the run warned and still reported the fixes as verified.
+- **Coverage gaps gate the exit code.** A lock with no findings but with advisory records about
+  locked (or replaced/provided) packages that the source could not read exits 4, not 0;
+  `--accept-coverage-gaps` restores 0 once the gaps have been read. The JSON summary carries
+  `coverage_gaps` and `coverage_gaps_accepted`. Gaps about packages a locked package replaces or
+  provides are now reported at all; before, only the locked names were checked.
+- **Advisory database downloads must be verified.** A URL without a published `<url>.sha256` and
+  without an expected digest is refused; `--allow-unverified-database` restores the old warn-and-
+  accept behaviour. `--database-sha256=<hex>` pins the digest the operator trusts, which is checked
+  on the download and on every later use of the cached copy, and is the trust anchor for a database
+  someone else publishes (the sidecar comes from the same host). Only `https://` locations are
+  downloaded, wherever they are configured (option, environment or `composer.json`). Credentials
+  embedded in a URL are redacted from every message and from the cache metadata. Symbolic links at
+  the cache paths are refused and the cache directory is created private; the status file is written
+  atomically.
+- **A same-version lock change that moves the commit** (a re-tagged release, not only a moved dev
+  branch) is now a change, so the release-age guard refuses it when the date is unknown or too young
+  and reports it as one change of unclassifiable size.
+- **One advisory id on two replaced components** (a CVE spanning several Symfony components under
+  `symfony/symfony`) produced one finding; the finding key now includes the replaced target
+  (`advisory@package/target`), so both are reported. Baseline entries for such findings use the new
+  key.
+- **Console output sanitised.** Advisory titles, links, upstream record ids, solver output and file
+  names are stripped of control characters and escape sequences before they reach a terminal, and
+  console formatting tags in them are escaped in decorated output (`Remediate\Output\ConsoleText`),
+  so a crafted advisory cannot restyle the report or rewrite the line above it. `remediate:db-build`
+  and `remediate:db-status` sanitise the upstream text they print.
+- The GitLab pipeline verifies the Composer installer against its published signature instead of
+  piping the download into PHP.
 - The advisory-database release job runs in the `advisory-db` GitHub environment, whose
   deployment-branch policy admits only `main`. A `workflow_dispatch` from another branch executes
   that branch's copy of the workflow file, so no check inside the file (a pinned checkout ref, a

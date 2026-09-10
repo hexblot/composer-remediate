@@ -84,7 +84,7 @@
       "remediation": true,
       "command": "composer update shopware/storefront:6.4.15.2 shopware/recovery shopware/elasticsearch shopware/administration -W -m",
       "target_version": "v3.4.3",
-      "max_changes": 6
+      "max_changes": 7
     },
     {
       "package": "shopwarelabs/dompdf",

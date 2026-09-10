@@ -263,9 +263,10 @@ Recommended remediation
   shopware/administration 6.4.15.1 -> 6.4.15.2
   twig/twig v3.3.10 -> v3.4.3
 Composer validation
-  PASS  6 packages changed, 0 added, 0 removed, 0 root constraints changed
+  PASS  7 packages changed, 0 added, 0 removed, 0 root constraints changed
 Expected changes
   shopware/administration 6.4.15.1 -> 6.4.15.2
+  shopware/conflicts 0.0.1#a66242b -> 0.0.1#017e453
   shopware/core 6.4.15.1 -> 6.4.15.2
   shopware/elasticsearch 6.4.15.1 -> 6.4.15.2
   shopware/recovery 6.4.15.1 -> 6.4.15.2
@@ -274,11 +275,11 @@ Expected changes
 Recommended command
   composer update shopware/storefront:6.4.15.2 shopware/recovery shopware/elasticsearch shopware/administration -W -m
 Other candidates
-  valid, rank 2: composer update shopware/storefront shopware/recovery shopware/elasticsearch shopware/administration -W -m --with 'twig/twig:>=3.4.3'  (6 changes)
-  valid, rank 3: composer update shopware/core:6.4.15.2 shopware/storefront symfony/web-profiler-bundle shopware/recovery shopware/elasticsearch shopware/administration -W -m --with 'twig/twig:>=3.4.3'  (7 changes)
-  valid, rank 4: composer update shopware/administration:6.4.15.2 shopware/storefront symfony/web-profiler-bundle shopware/recovery shopware/elasticsearch -W -m --with 'twig/twig:>=3.4.3'  (7 changes)
-  valid, rank 5: composer update shopware/core shopware/storefront symfony/web-profiler-bundle shopware/recovery shopware/elasticsearch shopware/administration -W -m --with 'twig/twig:>=3.4.3'  (7 changes)
-  valid, rank 6: composer update shopware/administration shopware/storefront symfony/web-profiler-bundle shopware/recovery shopware/elasticsearch -W -m --with 'twig/twig:>=3.4.3'  (7 changes)
+  valid, rank 2: composer update shopware/storefront shopware/recovery shopware/elasticsearch shopware/administration -W -m --with 'twig/twig:>=3.4.3'  (7 changes)
+  valid, rank 3: composer update shopware/core:6.4.15.2 shopware/storefront symfony/web-profiler-bundle shopware/recovery shopware/elasticsearch shopware/administration -W -m --with 'twig/twig:>=3.4.3'  (8 changes)
+  valid, rank 4: composer update shopware/administration:6.4.15.2 shopware/storefront symfony/web-profiler-bundle shopware/recovery shopware/elasticsearch -W -m --with 'twig/twig:>=3.4.3'  (8 changes)
+  valid, rank 5: composer update shopware/core shopware/storefront symfony/web-profiler-bundle shopware/recovery shopware/elasticsearch shopware/administration -W -m --with 'twig/twig:>=3.4.3'  (8 changes)
+  valid, rank 6: composer update shopware/administration shopware/storefront symfony/web-profiler-bundle shopware/recovery shopware/elasticsearch -W -m --with 'twig/twig:>=3.4.3'  (8 changes)
   rejected: composer update twig/twig
       resolves, but twig/twig ends at v3.3.10 which is still affected by PKSA-n7sg-8f52-pqtf
   rejected: composer update twig/twig -w -m --with 'twig/twig:>=3.4.3'
@@ -384,6 +385,6 @@ Other candidates
 Summary
   Findings: 4 advisories on 2 packages, 1 package with a verified fix
   composer update shopware/storefront:6.4.15.2 shopware/recovery shopware/elasticsearch shopware/administration -W -m fixes 1 of 4 findings
-    (6 packages changed, verified by Composer)
+    (7 packages changed, verified by Composer)
   No verified fix: CVE-2022-0085, CVE-2022-41343, CVE-2022-2400 on shopwarelabs/dompdf
 ```

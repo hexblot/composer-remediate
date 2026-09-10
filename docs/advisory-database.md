@@ -126,9 +126,12 @@ does not drop such data silently. Each failure is stored in the database as a **
 its source, identifier, the package it names and the reason. This includes the partial case: an OSV
 record naming several packages is kept for the packages whose ranges can be read, and a gap is
 recorded for each package whose range cannot. `composer remediate` prints a warning for every gap
-that names a package in the lock, and
-the package is treated as unaffected by that record, and the report says so. `remediate:db-status` lists the gaps.
-Databases built before gap tracking existed are flagged as such; rebuild them.
+that names a package in the lock (or a package the lock replaces or provides), and
+the package is treated as unaffected by that record, and the report says so. A lock with such gaps
+and no findings exits `4` (advisory data unavailable) rather than `0`: the source cannot vouch for it.
+`--accept-coverage-gaps` restores exit `0` once the gaps have been read; the JSON report carries
+`coverage_gaps` and `coverage_gaps_accepted`. `remediate:db-status` lists the gaps. Databases built
+before gap tracking existed are flagged as such and count as a gap; rebuild them.
 
 Private advisories are different: a record in an `--include` file that cannot be interpreted fails
 the build, the same way an unparsable `--advisories-file` fails a run, because that data is yours to
@@ -171,11 +174,17 @@ sha256sum -c advisories.sqlite.sha256      # the sidecar is `sha256sum` output: 
 
 What the client verifies on its own: when `--database-location` is a URL, the plugin also fetches
 `<url>.sha256` and refuses a download whose digest does not match (exit 4). A URL without a sidecar
-is accepted with a warning in the report saying the download was not verified; that outcome is
+is refused as well, unless `--allow-unverified-database` is given, in which case the report says the
+download was not verified; that outcome is
 recorded next to the cached copy, and every later run that reuses the copy repeats the warning, so
 the disclosure belongs to the bytes in use rather than to the request that fetched them. The attestation is
 **not** checked automatically; it is there for `gh attestation verify` in a pipeline step, and the
 trust the client places in a URL is the trust in TLS plus the publisher's checksum, nothing more.
+The sidecar comes from the same host as the database, so it proves integrity in transit, not the
+publisher's identity. For a database you do not publish yourself, pin the digest you trust with
+`--database-sha256=<hex>`: the download and every later cached copy are checked against it, the
+sidecar is not consulted, and a mismatch is fatal. Only `https://` URLs are downloaded; a plain
+`http://` location, whether from the option, the environment or `composer.json`, is refused.
 
 Cached downloads are refreshed after 24 hours. When the refresh fails (feed down, network error) the
 cached copy is still used, but the report carries a warning with the age of the copy so a stale

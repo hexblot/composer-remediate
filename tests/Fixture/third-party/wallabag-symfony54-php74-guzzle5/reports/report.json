@@ -8,7 +8,7 @@
         "advisory_source": "advisory snapshot advisories.json",
         "solver": "in-process Composer dry-run",
         "solver_runs": "55",
-        "composer_json_sha256": "cd26230f53395b7044f5979ce8d16dd8331a29ee6b8f435b5e9e982463019283",
+        "composer_json_sha256": "f58dc61a8e3d5d711dc38a4548d58d49b5e1cc71f7acacdd2af663b660cdb295",
         "composer_lock_sha256": "5aaa53d7db401cd4701aaccdb488673174e572fdf1a08939479d9022373f788f",
         "analysis_timestamp": "(fixture)",
         "locked_packages": "279"
@@ -25,6 +25,8 @@
         "packages_with_constraint_drag": 0,
         "packages_known_exploited": 0,
         "packages_with_abandoned_dependency": 5,
+        "coverage_gaps": 0,
+        "coverage_gaps_accepted": false,
         "combined_command": "composer update symfony/http-client symfony/http-foundation symfony/process symfony/security-http symfony/validator tecnickcom/tcpdf twig/twig",
         "combined_fixes": 11,
         "combined_total": 16,

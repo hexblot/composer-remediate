@@ -2094,7 +2094,7 @@
                 "response": [
                     "update"
                 ],
-                "detail": "6 package change(s) verified by Composer's solver."
+                "detail": "7 package change(s) verified by Composer's solver."
             }
         }
     ]

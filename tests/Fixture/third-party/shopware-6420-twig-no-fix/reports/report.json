@@ -8,7 +8,7 @@
         "advisory_source": "advisory snapshot advisories.json",
         "solver": "in-process Composer dry-run",
         "solver_runs": "139",
-        "composer_json_sha256": "868f4a89531092811c3320c039bfc23e3351d5ab12ccb93c69ca191fad5cb5a1",
+        "composer_json_sha256": "b59632c2c919e783ea9d27aaf0e27315aebaf07a3afb28ea133b1ef691123ea9",
         "composer_lock_sha256": "45cb39a5300625dd42fa86f3fdce23fc30203b96a16ccc3ec0c4afbc2bec7455",
         "analysis_timestamp": "(fixture)",
         "locked_packages": "201"
@@ -25,15 +25,17 @@
         "packages_with_constraint_drag": 0,
         "packages_known_exploited": 0,
         "packages_with_abandoned_dependency": 10,
+        "coverage_gaps": 0,
+        "coverage_gaps_accepted": false,
         "combined_command": "composer update aws/aws-sdk-php composer/composer shopware/core symfony/twig-bridge -W -m --with 'symfony/validator:>=5.4.43,<6.0.0 || >=6.4.11,<7.0.0 || >=7.1.4'",
         "combined_fixes": 7,
         "combined_total": 26,
         "combined_fixes_all": false,
         "combined_changes": {
-            "changed": 6,
+            "changed": 7,
             "added": 0,
             "removed": 0,
-            "total": 6,
+            "total": 7,
             "major_change": false,
             "downgrade": false,
             "prerelease": false
@@ -1342,10 +1344,10 @@
                     "outcome": "valid",
                     "rank": 3,
                     "summary": {
-                        "changed": 1,
+                        "changed": 2,
                         "added": 0,
                         "removed": 0,
-                        "total": 1,
+                        "total": 2,
                         "major_change": false,
                         "downgrade": false,
                         "prerelease": false
@@ -1358,10 +1360,10 @@
                     "outcome": "valid",
                     "rank": 4,
                     "summary": {
-                        "changed": 1,
+                        "changed": 2,
                         "added": 0,
                         "removed": 0,
-                        "total": 1,
+                        "total": 2,
                         "major_change": false,
                         "downgrade": false,
                         "prerelease": false
@@ -1374,10 +1376,10 @@
                     "outcome": "valid",
                     "rank": 5,
                     "summary": {
-                        "changed": 1,
+                        "changed": 2,
                         "added": 0,
                         "removed": 0,
-                        "total": 1,
+                        "total": 2,
                         "major_change": false,
                         "downgrade": false,
                         "prerelease": false
@@ -1390,10 +1392,10 @@
                     "outcome": "valid",
                     "rank": 6,
                     "summary": {
-                        "changed": 1,
+                        "changed": 2,
                         "added": 0,
                         "removed": 0,
-                        "total": 1,
+                        "total": 2,
                         "major_change": false,
                         "downgrade": false,
                         "prerelease": false
@@ -1406,10 +1408,10 @@
                     "outcome": "valid",
                     "rank": 7,
                     "summary": {
-                        "changed": 1,
+                        "changed": 2,
                         "added": 0,
                         "removed": 0,
-                        "total": 1,
+                        "total": 2,
                         "major_change": false,
                         "downgrade": false,
                         "prerelease": false
@@ -2075,10 +2077,10 @@
                     "outcome": "valid",
                     "rank": 2,
                     "summary": {
-                        "changed": 2,
+                        "changed": 3,
                         "added": 0,
                         "removed": 0,
-                        "total": 2,
+                        "total": 3,
                         "major_change": false,
                         "downgrade": false,
                         "prerelease": false
@@ -2091,10 +2093,10 @@
                     "outcome": "valid",
                     "rank": 3,
                     "summary": {
-                        "changed": 2,
+                        "changed": 3,
                         "added": 0,
                         "removed": 0,
-                        "total": 2,
+                        "total": 3,
                         "major_change": false,
                         "downgrade": false,
                         "prerelease": false
@@ -2107,10 +2109,10 @@
                     "outcome": "valid",
                     "rank": 4,
                     "summary": {
-                        "changed": 2,
+                        "changed": 3,
                         "added": 0,
                         "removed": 0,
-                        "total": 2,
+                        "total": 3,
                         "major_change": false,
                         "downgrade": false,
                         "prerelease": false
@@ -2123,10 +2125,10 @@
                     "outcome": "valid",
                     "rank": 5,
                     "summary": {
-                        "changed": 2,
+                        "changed": 3,
                         "added": 0,
                         "removed": 0,
-                        "total": 2,
+                        "total": 3,
                         "major_change": false,
                         "downgrade": false,
                         "prerelease": false
@@ -2139,10 +2141,10 @@
                     "outcome": "valid",
                     "rank": 6,
                     "summary": {
-                        "changed": 2,
+                        "changed": 3,
                         "added": 0,
                         "removed": 0,
-                        "total": 2,
+                        "total": 3,
                         "major_change": false,
                         "downgrade": false,
                         "prerelease": false
@@ -2549,10 +2551,10 @@
                     "outcome": "valid",
                     "rank": 3,
                     "summary": {
-                        "changed": 1,
+                        "changed": 2,
                         "added": 0,
                         "removed": 0,
-                        "total": 1,
+                        "total": 2,
                         "major_change": false,
                         "downgrade": false,
                         "prerelease": false
@@ -2565,10 +2567,10 @@
                     "outcome": "valid",
                     "rank": 4,
                     "summary": {
-                        "changed": 1,
+                        "changed": 2,
                         "added": 0,
                         "removed": 0,
-                        "total": 1,
+                        "total": 2,
                         "major_change": false,
                         "downgrade": false,
                         "prerelease": false
@@ -2581,10 +2583,10 @@
                     "outcome": "valid",
                     "rank": 5,
                     "summary": {
-                        "changed": 1,
+                        "changed": 2,
                         "added": 0,
                         "removed": 0,
-                        "total": 1,
+                        "total": 2,
                         "major_change": false,
                         "downgrade": false,
                         "prerelease": false
@@ -2597,10 +2599,10 @@
                     "outcome": "valid",
                     "rank": 6,
                     "summary": {
-                        "changed": 1,
+                        "changed": 2,
                         "added": 0,
                         "removed": 0,
-                        "total": 1,
+                        "total": 2,
                         "major_change": false,
                         "downgrade": false,
                         "prerelease": false
@@ -2613,10 +2615,10 @@
                     "outcome": "valid",
                     "rank": 7,
                     "summary": {
-                        "changed": 1,
+                        "changed": 2,
                         "added": 0,
                         "removed": 0,
-                        "total": 1,
+                        "total": 2,
                         "major_change": false,
                         "downgrade": false,
                         "prerelease": false
@@ -2645,10 +2647,10 @@
                     "outcome": "valid",
                     "rank": 9,
                     "summary": {
-                        "changed": 2,
+                        "changed": 3,
                         "added": 0,
                         "removed": 0,
-                        "total": 2,
+                        "total": 3,
                         "major_change": false,
                         "downgrade": false,
                         "prerelease": false
@@ -3588,15 +3590,22 @@
                 "constraint_drag": null,
                 "blocking_risk": [],
                 "summary": {
-                    "changed": 2,
+                    "changed": 3,
                     "added": 0,
                     "removed": 0,
-                    "total": 2,
+                    "total": 3,
                     "major_change": false,
                     "downgrade": false,
                     "prerelease": false
                 },
                 "changes": [
+                    {
+                        "package": "shopware/conflicts",
+                        "kind": "changed",
+                        "step": "other",
+                        "from": "0.0.2#b5414fb",
+                        "to": "0.0.2#8bfddbb"
+                    },
                     {
                         "package": "symfony/translation",
                         "kind": "upgraded",
@@ -3620,10 +3629,10 @@
                     "outcome": "valid",
                     "rank": 1,
                     "summary": {
-                        "changed": 2,
+                        "changed": 3,
                         "added": 0,
                         "removed": 0,
-                        "total": 2,
+                        "total": 3,
                         "major_change": false,
                         "downgrade": false,
                         "prerelease": false
@@ -3636,10 +3645,10 @@
                     "outcome": "valid",
                     "rank": 2,
                     "summary": {
-                        "changed": 2,
+                        "changed": 3,
                         "added": 0,
                         "removed": 0,
-                        "total": 2,
+                        "total": 3,
                         "major_change": false,
                         "downgrade": false,
                         "prerelease": false
@@ -3652,10 +3661,10 @@
                     "outcome": "valid",
                     "rank": 3,
                     "summary": {
-                        "changed": 2,
+                        "changed": 3,
                         "added": 0,
                         "removed": 0,
-                        "total": 2,
+                        "total": 3,
                         "major_change": false,
                         "downgrade": false,
                         "prerelease": false
@@ -3668,10 +3677,10 @@
                     "outcome": "valid",
                     "rank": 4,
                     "summary": {
-                        "changed": 2,
+                        "changed": 3,
                         "added": 0,
                         "removed": 0,
-                        "total": 2,
+                        "total": 3,
                         "major_change": false,
                         "downgrade": false,
                         "prerelease": false
@@ -3684,10 +3693,10 @@
                     "outcome": "valid",
                     "rank": 5,
                     "summary": {
-                        "changed": 2,
+                        "changed": 3,
                         "added": 0,
                         "removed": 0,
-                        "total": 2,
+                        "total": 3,
                         "major_change": false,
                         "downgrade": false,
                         "prerelease": false
@@ -3700,10 +3709,10 @@
                     "outcome": "valid",
                     "rank": 6,
                     "summary": {
-                        "changed": 2,
+                        "changed": 3,
                         "added": 0,
                         "removed": 0,
-                        "total": 2,
+                        "total": 3,
                         "major_change": false,
                         "downgrade": false,
                         "prerelease": false

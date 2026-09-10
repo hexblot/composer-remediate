@@ -21,7 +21,7 @@ findings do:
 | `Advisory source "…" only knows advisories for the current lock` | The source was a `composer audit` dump; candidate locks could not be checked for other advisories. |
 | `N advisory matches ignored per configuration` | `--ignore`, `config.audit.ignore` or `config.policy` suppressed findings. |
 | `Ignore hygiene: …` | Ignore entries that match nothing in this lock; stale configuration. |
-| `Coverage gap: …` | An advisory database record about a locked package could not be interpreted when the database was built; the package is treated as unaffected by that record. See [Advisory database](advisory-database.md#coverage-gaps). |
+| `Coverage gap: …` | An advisory database record about a locked package (or one it replaces or provides) could not be interpreted when the database was built; the package is treated as unaffected by that record. A lock with gaps and no findings exits `4`, not `0`, unless `--accept-coverage-gaps` is given. See [Advisory database](advisory-database.md#coverage-gaps). |
 | `Advisory database refresh failed …` / `Offline: using the advisory database cached …` | The advisories are older than the run; their age is given. |
 | `… was downloaded without a published sha256 …` | The database in use was never verified against a checksum. |
 | `<package>: the recommended command moves … to a version that still carries another advisory` | Blocking risk, see below. |
@@ -136,11 +136,11 @@ code.
 
 | Exit | Meaning |
 |---|---|
-| `0` | No known vulnerabilities in the lock (after `--fail-on` and baseline) |
+| `0` | No known vulnerabilities in the lock (after `--fail-on` and baseline), and no coverage gap about a locked package unless `--accept-coverage-gaps` was given |
 | `1` | Vulnerabilities found and every gated one has a verified fix |
 | `2` | At least one gated vulnerability has no verified fix, and every solve completed |
 | `3` | Tool error: no lock file, bad option, or a solver error left an outcome unknown |
-| `4` | Advisory data unavailable: no advisory-capable repository, unreadable snapshot, checksum mismatch |
+| `4` | Advisory data unavailable: the source could not be read or fetched, an incomplete source cannot verify candidates, or records about locked packages could not be read (coverage gaps) and were not accepted |
 | `5` | Package metadata could not be fetched while solving |
 
 ## The same content in other formats

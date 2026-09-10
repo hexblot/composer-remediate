@@ -682,7 +682,7 @@ Built with `bin/build-fixture.php --as-of=2024-09-15`.
 | symfony/twig-bridge v5.4.22 | CVE-2023-46734 | <code>composer update symfony/twig-bridge</code> | 1 | verified |
 | tecnickcom/tcpdf 6.4.4 | CVE-2024-32489, CVE-2024-22640 |  |  | none found within the search budget |
 | twig/twig v3.4.3 | CVE-2024-45411 |  |  | none found within the search budget |
-| symfony/validator v5.4.23 | CVE-2024-50343 | <code>composer update shopware/core -W -m --with &apos;symfony/validator:&gt;=5.4.43,&lt;6.0.0 &#124;&#124; &gt;=6.4.11,&lt;7.0.0 &#124;&#124; &gt;=7.1.4&apos;</code> | 2 | verified |
+| symfony/validator v5.4.23 | CVE-2024-50343 | <code>composer update shopware/core -W -m --with &apos;symfony/validator:&gt;=5.4.43,&lt;6.0.0 &#124;&#124; &gt;=6.4.11,&lt;7.0.0 &#124;&#124; &gt;=7.1.4&apos;</code> | 3 | verified |
 
 Combined command (7 of 26 findings): `composer update aws/aws-sdk-php composer/composer shopware/core symfony/twig-bridge -W -m --with 'symfony/validator:>=5.4.43,<6.0.0 || >=6.4.11,<7.0.0 || >=7.1.4'`
 
@@ -728,7 +728,7 @@ Built with `bin/build-fixture.php --as-of=2022-10-10`.
 | Package | Advisories | Recommended command | Changes | Outcome |
 |---|---|---|---|---|
 | shopwarelabs/dompdf v1.0.3 | CVE-2022-0085, CVE-2022-41343, CVE-2022-2400 |  |  | none |
-| twig/twig v3.3.10 | CVE-2022-39261 | <code>composer update shopware/storefront:6.4.15.2 shopware/recovery shopware/elasticsearch shopware/administration -W -m</code> | 6 | verified |
+| twig/twig v3.3.10 | CVE-2022-39261 | <code>composer update shopware/storefront:6.4.15.2 shopware/recovery shopware/elasticsearch shopware/administration -W -m</code> | 7 | verified |
 
 Combined command (1 of 4 findings): `composer update shopware/storefront:6.4.15.2 shopware/recovery shopware/elasticsearch shopware/administration -W -m`
 

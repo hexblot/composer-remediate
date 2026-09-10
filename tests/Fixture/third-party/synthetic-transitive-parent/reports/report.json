@@ -8,7 +8,7 @@
         "advisory_source": "advisory snapshot advisories.json",
         "solver": "in-process Composer dry-run",
         "solver_runs": "8",
-        "composer_json_sha256": "97aec9c78c7a0d2441a4ede8816a8371e8e2e780f4df5b70641121f98a4d4c74",
+        "composer_json_sha256": "bcbc4047085686b5e3f14d20c8687add0f664deaf969dce58671cd8b6dd10b6d",
         "composer_lock_sha256": "f10764ed7b880765eee352528d15efa0b251503fe5d86e860e4344d3aada6dad",
         "analysis_timestamp": "(fixture)",
         "locked_packages": "3"
@@ -25,6 +25,8 @@
         "packages_with_constraint_drag": 0,
         "packages_known_exploited": 0,
         "packages_with_abandoned_dependency": 0,
+        "coverage_gaps": 0,
+        "coverage_gaps_accepted": false,
         "combined_command": "composer update acme/app-framework:1.1.0 -W -m",
         "combined_fixes": 1,
         "combined_total": 1,

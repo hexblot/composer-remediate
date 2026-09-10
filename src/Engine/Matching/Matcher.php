@@ -79,7 +79,7 @@ final class Matcher
      */
     public function match(LockSnapshot $lock, callable $isRootRequirement): array
     {
-        $advisories = $this->provider->advisoriesFor(self::namesToQuery($lock));
+        $advisories = $this->provider->advisoriesFor(self::queriedNames($lock));
         $findings = [];
         $this->ignoredCount = 0;
         $this->usedIgnores = [];
@@ -129,8 +129,14 @@ final class Matcher
         return $keys;
     }
 
-    /** @return list<string> */
-    private static function namesToQuery(LockSnapshot $lock): array
+    /**
+     * Every name an advisory can be about in this lock: the locked packages plus everything they
+     * replace or provide. Coverage questions must use the same set, or a gap in a replaced package
+     * (symfony/http-foundation under symfony/symfony) goes unreported.
+     *
+     * @return list<string>
+     */
+    public static function queriedNames(LockSnapshot $lock): array
     {
         $names = [];
         foreach ($lock->packages as $package) {

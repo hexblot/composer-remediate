@@ -8,7 +8,7 @@
         "advisory_source": "advisory snapshot advisories.json",
         "solver": "in-process Composer dry-run",
         "solver_runs": "78",
-        "composer_json_sha256": "058256a835fff7e54b024a28db993a6afad852d8ba1a70dfbd8e4877f1180f05",
+        "composer_json_sha256": "1da35eece0e9770be993e4d2b8a2dc4054cc12ebfd24a52ff9d3f0d181a8625e",
         "composer_lock_sha256": "22fd0acc2517587b38c52afc1c3a03768d5ea1fae006f954fcc185f8abe5b05e",
         "analysis_timestamp": "(fixture)",
         "locked_packages": "192"
@@ -25,6 +25,8 @@
         "packages_with_constraint_drag": 0,
         "packages_known_exploited": 0,
         "packages_with_abandoned_dependency": 1,
+        "coverage_gaps": 0,
+        "coverage_gaps_accepted": false,
         "combined_command": "composer update symfony/http-foundation symfony/process symfony/twig-bridge twig/twig -w -m --with 'twig/twig:>=3.11.2,<3.12.0 || >=3.14.1'",
         "combined_fixes": 6,
         "combined_total": 14,

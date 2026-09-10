@@ -8,7 +8,7 @@
         "advisory_source": "advisory snapshot advisories.json",
         "solver": "in-process Composer dry-run",
         "solver_runs": "56",
-        "composer_json_sha256": "8caaa1fb655c1133f9f36967a23d78510033b4ba81426152c02bbd874e013ab7",
+        "composer_json_sha256": "6db7247fd0703e13b8e078b5c972186e5c5d4bc54124d7958b0130eacbbbbe07",
         "composer_lock_sha256": "b7f5a2dbf068b7d2c712b0b48b4ffebaa46cf09a360f1875741011455cea8c99",
         "analysis_timestamp": "(fixture)",
         "locked_packages": "168"
@@ -27,6 +27,8 @@
         "packages_with_constraint_drag": 0,
         "packages_known_exploited": 0,
         "packages_with_abandoned_dependency": 0,
+        "coverage_gaps": 0,
+        "coverage_gaps_accepted": false,
         "combined_command": "composer update drupal/core-recommended symfony/validator -W -m",
         "combined_fixes": 2,
         "combined_total": 4,

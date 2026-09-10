@@ -28,6 +28,7 @@ use Remediate\Engine\Solver\ReleaseAgeGuard;
 use Remediate\Engine\Solver\ScratchWorkspace;
 use Remediate\Engine\Solver\SolverInterface;
 use Remediate\Engine\Solver\SubprocessSolver;
+use Remediate\Output\ConsoleText;
 use Remediate\Output\LockLineIndex;
 use Remediate\Output\ReportFormat;
 use Symfony\Component\Console\Input\InputInterface;
@@ -55,7 +56,10 @@ final class RemediateCommand extends BaseCommand
                 new InputOption('ignore', 'i', InputOption::VALUE_REQUIRED | InputOption::VALUE_IS_ARRAY, 'Advisory id or CVE to ignore (repeatable); audit-scoped entries of config.audit.ignore and config.policy.advisories are honoured as well'),
                 new InputOption('allow-direct-require', null, InputOption::VALUE_NONE, 'Also consider adding a transitive package as a direct requirement to force a fixed version'),
                 new InputOption('advisories-file', null, InputOption::VALUE_REQUIRED, 'Read advisories from a JSON file in the Packagist API shape (or `composer audit --format=json` output) instead of the configured repositories'),
-                new InputOption('database-location', null, InputOption::VALUE_REQUIRED, 'Read advisories from a local advisory database (path or URL) built with remediate:db-build; also REMEDIATE_DATABASE or extra.remediate.database'),
+                new InputOption('database-location', null, InputOption::VALUE_REQUIRED, 'Read advisories from a local advisory database (path or https URL) built with remediate:db-build; also REMEDIATE_DATABASE or extra.remediate.database'),
+                new InputOption('database-sha256', null, InputOption::VALUE_REQUIRED, 'Expected sha256 of the advisory database (hex); a downloaded or cached copy that differs is refused. The trust anchor for a URL you do not publish yourself'),
+                new InputOption('allow-unverified-database', null, InputOption::VALUE_NONE, 'Accept a database URL without a published <url>.sha256 sidecar and without --database-sha256 (refused otherwise); the report says the download was not verified'),
+                new InputOption('accept-coverage-gaps', null, InputOption::VALUE_NONE, 'Exit 0 for a lock without findings even when the advisory source could not read records about locked packages (otherwise exit 4); the gaps stay in the report'),
                 new InputOption('max-candidates', null, InputOption::VALUE_REQUIRED, 'Maximum number of candidate commands to try per finding', '10'),
                 new InputOption('solve-budget', null, InputOption::VALUE_REQUIRED, 'Maximum number of solver runs per finding, all search phases included (candidates, conflict expansion, parent descent, simplification)', (string) Planner::DEFAULT_SOLVE_BUDGET),
                 new InputOption('solver', null, InputOption::VALUE_REQUIRED, 'How candidates are verified: auto (in-process, falling back to a `composer update` subprocess when the in-process route errors), in-process, or subprocess', 'auto'),
@@ -70,8 +74,9 @@ vulnerability are recommended. Nothing in the project is modified.
 
 Exit codes: 0 no vulnerabilities, 1 vulnerabilities with a verified remediation,
 2 at least one vulnerability without a verified remediation (and no tool failure), 3 error (also
-when a solver error prevented the search from completing), 4 advisory data unavailable,
-5 package metadata could not be fetched while solving.
+when a solver error prevented the search from completing), 4 advisory data unavailable (also when
+the source could not read records about locked packages and <info>--accept-coverage-gaps</info> was
+not given), 5 package metadata could not be fetched while solving.
 
 Running as <info>composer remediate</info> means Composer has already activated the project's
 other allowed plugins before this command starts. The <info>composer-remediate</info> binary shipped
@@ -96,7 +101,7 @@ HELP);
             try {
                 $outputs[] = ReportFormat::parseOutputSpec($spec);
             } catch (\InvalidArgumentException $e) {
-                $io->writeError('<error>' . $e->getMessage() . '</error>');
+                $io->writeError('<error>' . ConsoleText::safe($e->getMessage()) . '</error>');
 
                 return Plan::EXIT_ERROR;
             }
@@ -139,7 +144,13 @@ HELP);
 
         $advisoriesFile = $input->getOption('advisories-file');
         $dbOption = $input->getOption('database-location');
-        $locator = new DatabaseLocator($composer, Factory::createHttpDownloader($io, $composer->getConfig()), (bool) $input->getOption('offline'));
+        $expectedSha = $input->getOption('database-sha256');
+        if (is_string($expectedSha) && $expectedSha !== '' && preg_match('{^[0-9a-f]{64}$}i', $expectedSha) !== 1) {
+            $io->writeError('<error>--database-sha256 must be a 64-character hexadecimal sha256 digest.</error>');
+
+            return Plan::EXIT_ERROR;
+        }
+        $locator = new DatabaseLocator($composer, Factory::createHttpDownloader($io, $composer->getConfig()), (bool) $input->getOption('offline'), !(bool) $input->getOption('allow-unverified-database'), is_string($expectedSha) && $expectedSha !== '' ? strtolower($expectedSha) : null);
         $dbLocation = $locator->configured(is_string($dbOption) ? $dbOption : null);
         if (is_string($advisoriesFile) && $advisoriesFile !== '') {
             $advisories = new JsonFileAdvisoryProvider($advisoriesFile);
@@ -147,7 +158,7 @@ HELP);
             try {
                 $advisories = new SqliteAdvisoryProvider(Database::open($locator->resolve($dbLocation)));
             } catch (AdvisoryLookupFailed $e) {
-                $io->writeError('<error>Advisory database unavailable: ' . $e->getMessage() . '</error>');
+                $io->writeError('<error>Advisory database unavailable: ' . ConsoleText::safe($e->getMessage()) . '</error>');
 
                 return Plan::EXIT_ADVISORIES_UNAVAILABLE;
             }
@@ -169,7 +180,7 @@ HELP);
             !(bool) $input->getOption('no-dev'),
             $maxCandidates,
             static function (string $message) use ($io): void {
-                $io->writeError('<comment>' . $message . '</comment>', true, \Composer\IO\IOInterface::VERBOSE);
+                $io->writeError('<comment>' . ConsoleText::safe($message) . '</comment>', true, \Composer\IO\IOInterface::VERBOSE);
             },
             $ignore,
             $releaseAge,
@@ -179,7 +190,7 @@ HELP);
         try {
             $plan = $planner->plan($context, ScratchWorkspace::fromProject($context));
         } catch (AdvisoryLookupFailed $e) {
-            $io->writeError('<error>Advisory data unavailable: ' . $e->getMessage() . '</error>');
+            $io->writeError('<error>Advisory data unavailable: ' . ConsoleText::safe($e->getMessage()) . '</error>');
             if ((bool) $input->getOption('offline')) {
                 $io->writeError('<comment>Offline mode: pass --advisories-file=<json> or --database-location=<sqlite> (see remediate:db-build).</comment>');
             }
@@ -192,13 +203,16 @@ HELP);
         if ($advisories instanceof FallbackAdvisoryProvider && $advisories->warnings() !== []) {
             $plan = $plan->withWarnings($advisories->warnings());
         }
+        if ((bool) $input->getOption('accept-coverage-gaps')) {
+            $plan = $plan->withAcceptedCoverageGaps();
+        }
 
         $failOn = $input->getOption('fail-on');
         if (is_string($failOn) && $failOn !== '') {
             try {
                 $plan = $plan->withFailOn($failOn);
             } catch (\InvalidArgumentException $e) {
-                $io->writeError('<error>' . $e->getMessage() . '</error>');
+                $io->writeError('<error>' . ConsoleText::safe($e->getMessage()) . '</error>');
 
                 return Plan::EXIT_ERROR;
             }
@@ -216,7 +230,7 @@ HELP);
                     $io->writeError(sprintf('<warning>Baseline %s does not exist; run with --update-baseline to create it.</warning>', $baselinePath));
                 }
             } catch (\RuntimeException $e) {
-                $io->writeError('<error>' . $e->getMessage() . '</error>');
+                $io->writeError('<error>' . ConsoleText::safe($e->getMessage()) . '</error>');
 
                 return Plan::EXIT_ERROR;
             }

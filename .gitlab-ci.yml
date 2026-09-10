@@ -5,7 +5,10 @@ stages: [test, deploy]
   image: php:${PHP_VERSION}-cli
   before_script:
     - apt-get update -qq && apt-get install -qq -y git unzip > /dev/null
-    - curl -sS https://getcomposer.org/installer | php -- --install-dir=/usr/local/bin --filename=composer
+    # Composer's documented installer verification: the installer's sha384 is published on a second host.
+    - php -r "copy('https://getcomposer.org/installer', 'composer-setup.php');"
+    - php -r "if (hash_file('sha384', 'composer-setup.php') !== trim(file_get_contents('https://composer.github.io/installer.sig'))) { echo 'Composer installer checksum mismatch'; unlink('composer-setup.php'); exit(1); }"
+    - php composer-setup.php --install-dir=/usr/local/bin --filename=composer && rm composer-setup.php
     - composer install --no-interaction --no-progress
   script:
     - composer phpstan

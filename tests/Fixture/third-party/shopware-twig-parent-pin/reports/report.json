@@ -8,7 +8,7 @@
         "advisory_source": "advisory snapshot advisories.json",
         "solver": "in-process Composer dry-run",
         "solver_runs": "56",
-        "composer_json_sha256": "aa056dbe0bb6742ce84a97d429e7c7c68bd9cfb23c5dc9a36c2a33ea1a405a2c",
+        "composer_json_sha256": "befbad62a13d2adafff5596609c8e4fec903afa57ca62f87a5b9b8ffeebe05f6",
         "composer_lock_sha256": "0166a25c8ee830ae631dad4fee40c7826c06f7cd18e413ab36c454440d37c811",
         "analysis_timestamp": "(fixture)",
         "locked_packages": "202"
@@ -25,15 +25,17 @@
         "packages_with_constraint_drag": 0,
         "packages_known_exploited": 0,
         "packages_with_abandoned_dependency": 0,
+        "coverage_gaps": 0,
+        "coverage_gaps_accepted": false,
         "combined_command": "composer update shopware/storefront:6.4.15.2 shopware/recovery shopware/elasticsearch shopware/administration -W -m",
         "combined_fixes": 1,
         "combined_total": 4,
         "combined_fixes_all": false,
         "combined_changes": {
-            "changed": 6,
+            "changed": 7,
             "added": 0,
             "removed": 0,
-            "total": 6,
+            "total": 7,
             "major_change": false,
             "downgrade": false,
             "prerelease": false
@@ -732,10 +734,10 @@
                 "constraint_drag": null,
                 "blocking_risk": [],
                 "summary": {
-                    "changed": 6,
+                    "changed": 7,
                     "added": 0,
                     "removed": 0,
-                    "total": 6,
+                    "total": 7,
                     "major_change": false,
                     "downgrade": false,
                     "prerelease": false
@@ -747,6 +749,13 @@
                         "step": "patch",
                         "from": "6.4.15.1",
                         "to": "6.4.15.2"
+                    },
+                    {
+                        "package": "shopware/conflicts",
+                        "kind": "changed",
+                        "step": "other",
+                        "from": "0.0.1#a66242b",
+                        "to": "0.0.1#017e453"
                     },
                     {
                         "package": "shopware/core",
@@ -792,10 +801,10 @@
                     "outcome": "valid",
                     "rank": 1,
                     "summary": {
-                        "changed": 6,
+                        "changed": 7,
                         "added": 0,
                         "removed": 0,
-                        "total": 6,
+                        "total": 7,
                         "major_change": false,
                         "downgrade": false,
                         "prerelease": false
@@ -808,10 +817,10 @@
                     "outcome": "valid",
                     "rank": 2,
                     "summary": {
-                        "changed": 6,
+                        "changed": 7,
                         "added": 0,
                         "removed": 0,
-                        "total": 6,
+                        "total": 7,
                         "major_change": false,
                         "downgrade": false,
                         "prerelease": false
@@ -824,10 +833,10 @@
                     "outcome": "valid",
                     "rank": 3,
                     "summary": {
-                        "changed": 7,
+                        "changed": 8,
                         "added": 0,
                         "removed": 0,
-                        "total": 7,
+                        "total": 8,
                         "major_change": false,
                         "downgrade": false,
                         "prerelease": false
@@ -840,10 +849,10 @@
                     "outcome": "valid",
                     "rank": 4,
                     "summary": {
-                        "changed": 7,
+                        "changed": 8,
                         "added": 0,
                         "removed": 0,
-                        "total": 7,
+                        "total": 8,
                         "major_change": false,
                         "downgrade": false,
                         "prerelease": false
@@ -856,10 +865,10 @@
                     "outcome": "valid",
                     "rank": 5,
                     "summary": {
-                        "changed": 7,
+                        "changed": 8,
                         "added": 0,
                         "removed": 0,
-                        "total": 7,
+                        "total": 8,
                         "major_change": false,
                         "downgrade": false,
                         "prerelease": false
@@ -872,10 +881,10 @@
                     "outcome": "valid",
                     "rank": 6,
                     "summary": {
-                        "changed": 7,
+                        "changed": 8,
                         "added": 0,
                         "removed": 0,
-                        "total": 7,
+                        "total": 8,
                         "major_change": false,
                         "downgrade": false,
                         "prerelease": false

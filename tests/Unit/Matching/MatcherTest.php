@@ -70,4 +70,44 @@ final class MatcherTest extends TestCase
         self::assertSame(1, $ignoring->ignoredCount());
         self::assertSame(['PKSA-1@acme/lib' => true], $ignoring->findingKeys($lock));
     }
+
+    public function testTheSameAdvisoryIdOnTwoReplacedTargetsYieldsTwoFindings(): void
+    {
+        // A database keyed by CVE gives both components the same advisory id; the monorepo package
+        // replaces both. Before, the second finding collapsed into the first.
+        $parser = new VersionParser();
+        $provider = new class([
+            'acme/http' => [new Advisory('CVE-2026-77', 'acme/http', $parser->parseConstraints('<5.0.0'), 'shared', 'CVE-2026-77')],
+            'acme/kernel' => [new Advisory('CVE-2026-77', 'acme/kernel', $parser->parseConstraints('<5.0.0'), 'shared', 'CVE-2026-77')],
+        ]) implements AdvisoryProvider {
+            /** @param array<string, list<Advisory>> $advisories */
+            public function __construct(private readonly array $advisories)
+            {
+            }
+
+            public function advisoriesFor(array $packageNames): array
+            {
+                return array_intersect_key($this->advisories, array_flip(array_map('strtolower', $packageNames)));
+            }
+
+            public function describe(): string
+            {
+                return 'test';
+            }
+
+            public function isComplete(): bool
+            {
+                return true;
+            }
+        };
+        $suite = new Package('acme/suite', '4.4.0.0', '4.4.0');
+        $suite->setReplaces([
+            'acme/http' => new Link('acme/suite', 'acme/http', new Constraint('==', '4.4.0.0'), Link::TYPE_REPLACE, 'self.version'),
+            'acme/kernel' => new Link('acme/suite', 'acme/kernel', new Constraint('==', '4.4.0.0'), Link::TYPE_REPLACE, 'self.version'),
+        ]);
+        $findings = (new Matcher($provider))->match(LockSnapshot::fromPackages([$suite], []), static fn (): bool => true);
+        self::assertCount(2, $findings);
+        self::assertSame(['CVE-2026-77@acme/suite/acme/http', 'CVE-2026-77@acme/suite/acme/kernel'], array_map(static fn ($f): string => $f->key(), $findings));
+        self::assertSame(['acme/http', 'acme/kernel'], array_map(static fn ($f): ?string => $f->viaReplacedName, $findings));
+    }
 }
