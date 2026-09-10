@@ -68,6 +68,9 @@ jobs:
         with:
           php-version: '8.4'
           tools: composer:v2
+      # Composer's cache directory also holds the advisory database (remediate/advisories.sqlite), so
+      # this one cache entry keeps it between runs; each run then confirms it with one small request
+      # and downloads only when the published database moved. Pass --database-path to keep it elsewhere.
       - uses: actions/cache@v4
         with:
           path: ~/.cache/composer
@@ -137,7 +140,7 @@ remediate:
   image: composer:2
   cache:
     key: composer-$CI_COMMIT_REF_SLUG
-    paths: [.composer-cache]
+    paths: [.composer-cache]   # package metadata and the advisory database (remediate/advisories.sqlite)
   variables:
     COMPOSER_CACHE_DIR: $CI_PROJECT_DIR/.composer-cache
   before_script:
@@ -225,4 +228,13 @@ Fields worth knowing: `exit_code`, `summary.combined_command`, `summary.combined
 - `--no-dev` gates production dependencies only; drop it to include tooling.
 - Accepted risks belong in `composer.json` (`config.audit.ignore`, or `config.policy.advisories.ignore`
   on Composer 2.10+) so the same decision applies to `composer audit` and to this tool.
-- For air-gapped runners, `--offline --advisories-file=<snapshot>` works with a warm Composer cache.
+- The advisory database lives in Composer's cache directory by default, so caching that directory
+  (as both recipes do) keeps it between runs. To keep it somewhere else, or to share one file between
+  jobs, pass `--database-path=<file>` and cache that file. Each run confirms the copy against the
+  published database with one small request and downloads only when it moved; when the network is
+  down the copy is used and the report says how old it is. Add `--database-max-age=48` to fail
+  instead once a copy that cannot be confirmed is older than two days, or run
+  `composer remediate:db-build --if-stale` first to build from the sources when the published
+  database cannot be reached. See [Advisory database](advisory-database.md#the-default-a-copy-kept-current).
+- For air-gapped runners, `--offline` with the database already at its path (or
+  `--offline --advisories-file=<snapshot>`) works with a warm Composer cache.

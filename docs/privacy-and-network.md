@@ -15,7 +15,8 @@ package names to the repository, as any `composer update` does.
 
 | Data | Sent to | When |
 |---|---|---|
-| Package names in your lock file | Advisory source (Packagist by default) | Advisory lookup, Phase 0 and 1. Same request `composer audit` makes: a POST of up to 500 names per batch. Versions are not sent; matching happens locally. Should Composer's in-process advisory API be unusable, the same lookup runs as a `composer audit --locked --no-plugins --no-scripts` subprocess against the same repositories, with the same request and without activating the project's plugins. |
+| Nothing about your project | github.com (this project's `advisory-db-latest` release), or the mirror you configure | Keeping the advisory database current, by default on every run: one small request for the publisher's `latest.json` or `.sha256`, and the database download itself when the copy is missing or stale. The request carries no package names; matching happens locally against the file. `--no-database`, `--offline` or a local path as the source stop it. |
+| Package names in your lock file | Advisory source (the configured repositories, Packagist by default) | Only when no advisory database can be had (or with `--no-database`): the same request `composer audit` makes, a POST of up to 500 names per batch. Versions are not sent; matching happens locally. Should Composer's in-process advisory API be unusable, the same lookup runs as a `composer audit --locked --no-plugins --no-scripts` subprocess against the same repositories, with the same request and without activating the project's plugins. |
 | Package names being resolved | Your configured Composer repositories | Solver validation, identical to `composer update`. Served from the Composer cache when possible. |
 | Nothing else | | No telemetry, no accounts, no project files. |
 

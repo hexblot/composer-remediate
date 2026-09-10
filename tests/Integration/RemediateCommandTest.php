@@ -221,7 +221,7 @@ final class RemediateCommandTest extends TestCase
 
         $result = $this->remediate(['--advisories-file' => $this->project . '/missing.json', '--offline' => true]);
         self::assertSame(Plan::EXIT_ADVISORIES_UNAVAILABLE, $result->exitCode, $result->describe());
-        self::assertStringContainsString('Offline mode: pass --advisories-file=<json> or --database-location=<sqlite>', $result->stderr);
+        self::assertStringContainsString('Offline mode: the advisory database must already be at its path', $result->stderr);
         self::assertFalse(Platform::getEnv('COMPOSER_DISABLE_NETWORK'), 'the runner undoes what --offline exports');
     }
 
@@ -241,11 +241,12 @@ final class RemediateCommandTest extends TestCase
         self::assertSame(Plan::EXIT_ADVISORIES_UNAVAILABLE, $result->exitCode, $result->describe());
         self::assertStringContainsString('Advisory database unavailable: Advisory database ' . $missing . ' does not exist.', $result->stderr);
 
+        $previous = Platform::getEnv(DatabaseLocator::ENV);
         Platform::putEnv(DatabaseLocator::ENV, $missing);
         try {
             $result = $this->runner->run($base, $this->project);
         } finally {
-            Platform::clearEnv(DatabaseLocator::ENV);
+            is_string($previous) ? Platform::putEnv(DatabaseLocator::ENV, $previous) : Platform::clearEnv(DatabaseLocator::ENV);
         }
         self::assertSame(Plan::EXIT_ADVISORIES_UNAVAILABLE, $result->exitCode, 'via ' . DatabaseLocator::ENV . ': ' . $result->describe());
 
@@ -256,6 +257,38 @@ final class RemediateCommandTest extends TestCase
         });
         $result = $this->runner->run($base, $this->project);
         self::assertSame(Plan::EXIT_ADVISORIES_UNAVAILABLE, $result->exitCode, 'via extra.remediate.database: ' . $result->describe());
+    }
+
+    public function testAnUnreachableDatabaseSourceFallsBackToTheConfiguredRepositoriesWithAWarning(): void
+    {
+        $result = $this->runner->run(['command' => 'remediate', '--database-location' => 'https://127.0.0.1:9/advisories.sqlite'], $this->project);
+        self::assertSame(Plan::EXIT_ADVISORIES_UNAVAILABLE, $result->exitCode, $result->describe());
+        self::assertStringContainsString('No advisory database at', $result->stderr);
+        self::assertStringContainsString('Asking the configured repositories instead.', $result->stderr);
+        self::assertStringContainsString('None of the configured repositories provides security advisories', $result->stderr, 'the fallback ran and failed for its own reason');
+    }
+
+    public function testAPinnedDigestForbidsTheFallback(): void
+    {
+        $result = $this->runner->run(['command' => 'remediate', '--database-location' => 'https://127.0.0.1:9/advisories.sqlite', '--database-sha256' => str_repeat('a', 64)], $this->project);
+        self::assertSame(Plan::EXIT_ADVISORIES_UNAVAILABLE, $result->exitCode, $result->describe());
+        self::assertStringContainsString('--database-sha256 was given, so no other source is acceptable', $result->stderr);
+        self::assertStringNotContainsString('Asking the configured repositories', $result->stderr);
+    }
+
+    public function testNoDatabaseAsksTheConfiguredRepositoriesDirectly(): void
+    {
+        $result = $this->runner->run(['command' => 'remediate', '--no-database' => true, '--database-location' => 'https://127.0.0.1:9/advisories.sqlite'], $this->project);
+        self::assertSame(Plan::EXIT_ADVISORIES_UNAVAILABLE, $result->exitCode, $result->describe());
+        self::assertStringNotContainsString('advisory database', strtolower($result->stderr));
+        self::assertStringContainsString('None of the configured repositories provides security advisories', $result->stderr);
+    }
+
+    public function testAMalformedMaximumAgeIsAnOptionError(): void
+    {
+        $result = $this->runner->run(['command' => 'remediate', '--database-location' => 'https://127.0.0.1:9/advisories.sqlite', '--database-max-age' => 'soon'], $this->project);
+        self::assertSame(Plan::EXIT_ERROR, $result->exitCode, $result->describe());
+        self::assertStringContainsString('--database-max-age must be a number of hours', $result->stderr);
     }
 
     public function testWithoutAnAdvisorySourceTheConfiguredRepositoriesAreAskedAndAnAbsenceIsAnError(): void

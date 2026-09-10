@@ -351,3 +351,54 @@ acceptance test and the ranking's view of root-constraint changes differ.
   ranker and the text renderer must know which goal they serve.
 - Fixtures from Composer's discussions board join the corpus, with the human-chosen command recorded
   the same way as the security cases.
+
+## The published advisory database is the default source, kept current at a fixed path
+
+### Context
+
+Until 0.6 a run with nothing configured asked the configured repositories for advisories, as
+`composer audit` does, and the advisory database was opt-in. A URL was cached under a hidden name in
+Composer's cache directory and refreshed by age. Users who wanted the database in CI had to build or
+download it themselves on every run, and a locally built file at a given path was never reused: the
+tool could not tell whether it was current.
+
+### Decision
+
+A run keeps one database file at a known path (default: `<composer cache dir>/remediate/advisories.sqlite`)
+and, on every run, confirms it against the source it comes from (default: this project's
+`advisory-db-latest` release) by content, not by date: same sha256, same dataset hash, or a newer
+local build count as current; anything else is replaced by a verified download or, on request, a
+rebuild from the sources. Path, source and maximum age are independent settings, each with its own
+default, so configuring one never moves another. When the source cannot be reached the copy is used
+and the report says so; when there is no copy at all the configured repositories are asked and the
+report says that too. `--no-database` and a local path as the source keep the old behaviours.
+
+### Reasoning
+
+- Every report then carries the same exploit data, coverage gaps and three merged sources, rather
+  than only the reports of users who knew about the database.
+- Comparing content survives CI caches, which restore files with arbitrary timestamps, and lets a
+  locally built database (with `--include`, say) be recognised as current instead of overwritten.
+- The freshness request is a few bytes against a release asset, needs no token, and is not subject to
+  GitHub's API rate limit.
+- The chain degrades one step at a time with a warning at each step, never silently: current copy,
+  download, unconfirmed copy, repository API, exit 4. `--database-max-age` and `--database-sha256`
+  let an operator refuse the degraded steps.
+
+### Alternatives
+
+- **Keep the repository API as the default and document the cache pattern.** Leaves most users
+  without exploit data and coverage gaps, and every CI user writing the same shell test of a file's age.
+- **Compare by HTTP `Last-Modified` or file modification time.** Breaks on cache restores and
+  re-uploads, and cannot recognise a local build.
+- **A hidden cache only.** That is what 0.6 did; it could not be declared as a CI cache artefact
+  without knowing the hashed file name.
+
+### Consequences
+
+- A plain run contacts github.com once per run. The privacy page lists the request and the three
+  ways to stop it (`--no-database`, `--offline`, a local path as the source).
+- The trust anchor for the default is TLS plus the publisher's digest and the release workflow's
+  protected environment; `--database-sha256` pins a digest for anyone who wants more.
+- Publishing `latest.json` next to a mirrored database (sha256, dataset_hash, published_at) is what
+  lets clients of that mirror recognise their own builds; a `.sha256` sidecar alone still verifies.

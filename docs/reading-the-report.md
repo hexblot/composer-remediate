@@ -22,7 +22,9 @@ findings do:
 | `N advisory matches ignored per configuration` | `--ignore`, `config.audit.ignore` or `config.policy` suppressed findings. |
 | `Ignore hygiene: …` | Ignore entries that match nothing in this lock; stale configuration. |
 | `Coverage gap: …` | An advisory database record about a locked package (or one it replaces or provides) could not be interpreted when the database was built; the package is treated as unaffected by that record. A lock with gaps and no findings exits `4`, not `0`, unless `--accept-coverage-gaps` is given. See [Advisory database](advisory-database.md#coverage-gaps). |
-| `Advisory database refresh failed …` / `Offline: using the advisory database cached …` | The advisories are older than the run; their age is given. |
+| `Could not confirm that the advisory database at … is current` / `Offline: using the advisory database at …` | The published database could not be asked (or `--offline`); the local copy is used and its build age is given. `--database-max-age` turns this into exit `4` past a chosen age. |
+| `Advisory database unavailable; the configured repositories were asked instead` | No copy at the database path and nothing could be fetched; the run used the repository API as `composer audit` does, without exploit data or coverage gaps. |
+| `… is not a readable advisory database …; it will be replaced` | The file at the database path was not a database (corrupt, foreign); it was replaced by a download. |
 | `… was downloaded without a published sha256 …` | The database in use was never verified against a checksum. |
 | `<package>: the recommended command moves … to a version that still carries another advisory` | Blocking risk, see below. |
 

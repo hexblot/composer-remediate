@@ -14,6 +14,9 @@ $home = sys_get_temp_dir() . '/composer-remediate-tests-' . getmypid();
 \Composer\Util\Platform::putEnv('COMPOSER_CACHE_DIR', $home . '/cache');
 \Composer\Util\Platform::putEnv('COMPOSER_NO_INTERACTION', '1');
 \Composer\Util\Platform::putEnv('COMPOSER_DISABLE_XDEBUG_WARN', '1');
+// By default the plugin keeps a shared advisory database current from this project's GitHub release.
+// Tests never reach the network for that: the source is the configured repositories unless a test says otherwise.
+\Composer\Util\Platform::putEnv('REMEDIATE_DATABASE', 'composer');
 
 register_shutdown_function(static function () use ($home): void {
     $it = new RecursiveIteratorIterator(new RecursiveDirectoryIterator($home, FilesystemIterator::SKIP_DOTS), RecursiveIteratorIterator::CHILD_FIRST);

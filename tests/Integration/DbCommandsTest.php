@@ -20,6 +20,8 @@ use Remediate\Tests\Support\FixtureRunner;
 final class DbCommandsTest extends TestCase
 {
     private const FIXTURE = FixtureRunner::FIXTURE_ROOT . '/synthetic-transitive-parent';
+    /** A publisher nothing listens at: connection refused, no DNS, no waiting. */
+    private const UNREACHABLE = 'https://127.0.0.1:9/advisories.sqlite';
 
     private CommandRunner $runner;
     private string $project;
@@ -126,13 +128,13 @@ YAML);
         self::assertStringContainsString('Advisory database written: ' . $db, $result->stdout);
         self::assertStringContainsString('2 advisories from 2 source records, 0 with conflicting ranges, 1 coverage gap,', $result->stdout);
         self::assertStringContainsString('Coverage gaps are upstream records the build could not interpret', $result->stdout);
-        self::assertStringContainsString('composer remediate --database-location=' . $db, $result->stdout);
+        self::assertStringContainsString('composer remediate --database-path=' . $db, $result->stdout);
         self::assertStringContainsString('FriendsOfPHP: reading ' . $this->checkout, $result->stderr);
         self::assertStringContainsString('2 files, 1 records, 1 skipped (recorded as coverage gaps)', $result->stderr);
 
         $status = $this->runner->run(['command' => 'remediate:db-status', '--database-location' => $db], $this->project);
         self::assertSame(0, $status->exitCode, $status->describe());
-        self::assertStringContainsString('Location: ' . $db, $status->stdout);
+        self::assertStringContainsString('Path: ' . $db, $status->stdout);
         self::assertStringContainsString('File: ' . $db, $status->stdout);
         self::assertStringContainsString('source: FriendsOfPHP, 1 records, fetched ', $status->stdout);
         self::assertStringContainsString('source: local:advisories.json, 1 records', $status->stdout);
@@ -154,24 +156,91 @@ YAML);
         self::assertSame(0, $result->exitCode, $result->describe());
         self::assertFileExists($this->defaultBuildPath());
 
+        // With the publisher unreachable, status reports on the copy at the default path as it is.
+        $status = $this->runner->run(['command' => 'remediate:db-status', '--database-location' => self::UNREACHABLE], $this->project);
+        self::assertSame(0, $status->exitCode, $status->describe());
+        self::assertStringContainsString('Path: ' . $this->defaultBuildPath() . ' (default)', $status->stdout);
+        self::assertStringContainsString('Source: ' . self::UNREACHABLE, $status->stdout);
+        self::assertStringContainsString('Status: could not be confirmed current', $status->stdout);
+        self::assertStringContainsString('advisory_count: 2', $status->stdout);
+    }
+
+    public function testStatusOfTheDefaultConfigurationSaysWhichSettingsAreDefaults(): void
+    {
+        // The test bootstrap points REMEDIATE_DATABASE at the configured repositories.
         $status = $this->runner->run(['command' => 'remediate:db-status'], $this->project);
         self::assertSame(0, $status->exitCode, $status->describe());
-        self::assertStringContainsString('Location: ' . $this->defaultBuildPath(), $status->stdout);
-        self::assertStringContainsString('advisory_count: 2', $status->stdout);
+        self::assertStringContainsString('No advisory database is configured (source set to composer)', $status->stdout);
+
+        $status = $this->runner->run(['command' => 'remediate:db-status', '--database-location' => self::UNREACHABLE], $this->project);
+        self::assertSame(Plan::EXIT_ADVISORIES_UNAVAILABLE, $status->exitCode, $status->describe());
+        self::assertStringContainsString('No advisory database at ' . $this->defaultBuildPath() . ' and none could be fetched', $status->stdout);
+        self::assertStringContainsString('falls back to the configured repositories meanwhile', $status->stdout);
+    }
+
+    public function testIfStaleBuildsOnceThenKeepsTheCopyWhenThePublisherIsUnreachable(): void
+    {
+        $previous = Platform::getEnv(DatabaseLocator::ENV);
+        Platform::putEnv(DatabaseLocator::ENV, self::UNREACHABLE);
+        try {
+            $first = $this->build(['--if-stale' => true]);
+            self::assertSame(0, $first->exitCode, $first->describe());
+            self::assertStringContainsString('Advisory database written', $first->stdout);
+            self::assertStringContainsString('reads it from this path by default', $first->stdout);
+            self::assertFileExists($this->defaultBuildPath());
+            $built = (string) file_get_contents($this->defaultBuildPath());
+
+            $second = $this->build(['--if-stale' => true]);
+            self::assertSame(0, $second->exitCode, $second->describe());
+            self::assertStringContainsString('Advisory database kept', $second->stdout);
+            self::assertStringContainsString('could not be confirmed current', $second->stdout);
+            self::assertStringEqualsFile($this->defaultBuildPath(), $built, 'nothing was rebuilt');
+        } finally {
+            is_string($previous) ? Platform::putEnv(DatabaseLocator::ENV, $previous) : Platform::clearEnv(DatabaseLocator::ENV);
+        }
+    }
+
+    public function testIfStaleNeedsAPublishedDatabaseToCompareWith(): void
+    {
+        $result = $this->build(['--if-stale' => true]);
+        self::assertSame(Plan::EXIT_ERROR, $result->exitCode, $result->describe());
+        self::assertStringContainsString('--if-stale needs a published database', $result->stderr);
+    }
+
+    public function testAnExplicitOutputPathIsAdvertisedAsTheDatabasePath(): void
+    {
+        $db = $this->project . '/team.sqlite';
+        $result = $this->build(['--output' => $db]);
+        self::assertSame(0, $result->exitCode, $result->describe());
+        self::assertStringContainsString('composer remediate --database-path=' . $db, $result->stdout);
+
+        $status = $this->runner->run(['command' => 'remediate:db-status', '--database-path' => $db, '--database-location' => self::UNREACHABLE, '--offline' => true], $this->project);
+        self::assertSame(0, $status->exitCode, $status->describe());
+        self::assertStringContainsString('Path: ' . $db, $status->stdout);
+        self::assertStringContainsString('Status: offline, using the copy built', $status->stdout);
+    }
+
+    public function testAMalformedMaximumAgeIsAnOptionError(): void
+    {
+        $status = $this->runner->run(['command' => 'remediate:db-status', '--database-location' => self::UNREACHABLE, '--database-max-age' => 'soon'], $this->project);
+        self::assertSame(Plan::EXIT_ERROR, $status->exitCode, $status->describe());
+        self::assertStringContainsString('--database-max-age must be a number of hours', $status->stderr);
     }
 
     public function testStatusHonoursTheEnvironmentVariable(): void
     {
         $db = $this->project . '/env.sqlite';
         self::assertSame(0, $this->build(['--output' => $db])->exitCode);
+        $previous = Platform::getEnv(DatabaseLocator::ENV);
         Platform::putEnv(DatabaseLocator::ENV, $db);
         try {
             $status = $this->runner->run(['command' => 'remediate:db-status'], $this->project);
         } finally {
-            Platform::clearEnv(DatabaseLocator::ENV);
+            is_string($previous) ? Platform::putEnv(DatabaseLocator::ENV, $previous) : Platform::clearEnv(DatabaseLocator::ENV);
         }
         self::assertSame(0, $status->exitCode, $status->describe());
-        self::assertStringContainsString('Location: ' . $db, $status->stdout);
+        self::assertStringContainsString('Path: ' . $db, $status->stdout);
+        self::assertStringContainsString('Status: a local file named by --database-location', $status->stdout);
     }
 
     public function testStatusOfAMissingDatabaseSaysHowToBuildOne(): void

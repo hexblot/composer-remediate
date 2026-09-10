@@ -46,8 +46,9 @@ composer remediate --solve-budget 80                            # allow more sol
 composer remediate --format=json                                # machine-readable output on stdout
 composer remediate --no-dev                # ignore findings in require-dev packages
 composer remediate --ignore CVE-2024-50345 # leave an advisory out (also honours config.audit.ignore / config.policy)
-composer remediate --database-location=advisories.sqlite         # advisories from a local database (see Advisory database)
-composer remediate --offline --database-location=advisories.sqlite   # no network at all; needs a warm Composer cache
+composer remediate --database-path=.cache/advisories.sqlite      # keep the advisory database in a path your CI caches (see Advisory database)
+composer remediate --offline                                     # no network at all; needs a warm Composer cache and the database already at its path
+composer remediate --no-database                                 # ask the configured repositories instead, as composer audit does
 composer remediate -v                      # show every candidate command as it is tried
 ```
 

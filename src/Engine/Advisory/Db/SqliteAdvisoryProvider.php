@@ -15,7 +15,10 @@ final class SqliteAdvisoryProvider implements AdvisoryProvider, CoverageAware
     /** @var array<string, true> */
     private array $fetched = [];
 
-    public function __construct(private readonly Database $database)
+    /**
+     * @param string|null $provenance how the file was established as current (see LocatedDatabase), for the report header
+     */
+    public function __construct(private readonly Database $database, private readonly ?string $provenance = null)
     {
     }
 
@@ -56,7 +59,7 @@ final class SqliteAdvisoryProvider implements AdvisoryProvider, CoverageAware
             $exploit = $parts === [] ? 'exploit data for ' . ($meta['exploit_count'] ?? '0') . ' CVEs' : implode(', ', $parts);
         }
 
-        return sprintf('advisory database %s (%s advisories, built %s, dataset %s, %s)', $this->database->path, $meta['advisory_count'] ?? '?', $meta['built_at'] ?? '?', substr($meta['dataset_hash'] ?? '', 0, 12), $exploit);
+        return sprintf('advisory database %s (%s advisories, built %s, dataset %s, %s)%s', $this->database->path, $meta['advisory_count'] ?? '?', $meta['built_at'] ?? '?', substr($meta['dataset_hash'] ?? '', 0, 12), $exploit, $this->provenance !== null ? '; ' . $this->provenance : '');
     }
 
     public function isComplete(): bool

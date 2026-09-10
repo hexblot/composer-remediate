@@ -24,7 +24,10 @@ final class DbStatusCommand extends BaseCommand
             ->setAliases(['remediate-db-status'])
             ->setDescription('Show where the advisory database comes from and what it contains')
             ->setDefinition([
-                new InputOption('database-location', null, InputOption::VALUE_REQUIRED, 'Path or https URL of the database (default: REMEDIATE_DATABASE, then extra.remediate.database, then the default build path)'),
+                new InputOption('database-location', null, InputOption::VALUE_REQUIRED, 'Where the database comes from: https URL(s) tried in order (default: the database this project publishes), `composer` for none, or a local file; also REMEDIATE_DATABASE or extra.remediate.database'),
+                new InputOption('database-path', null, InputOption::VALUE_REQUIRED, 'The file the database is kept in (default: COMPOSER_CACHE_DIR/remediate/advisories.sqlite); also REMEDIATE_DATABASE_PATH or extra.remediate.database_path'),
+                new InputOption('database-max-age', null, InputOption::VALUE_REQUIRED, 'Fail when the copy cannot be confirmed current and is older than this many hours (or 2d, 36h); also REMEDIATE_DATABASE_MAX_AGE'),
+                new InputOption('offline', null, InputOption::VALUE_NONE, 'Do not contact the source; report on the copy at the path as it is'),
                 new InputOption('database-sha256', null, InputOption::VALUE_REQUIRED, 'Expected sha256 of the database (hex); a downloaded or cached copy that differs is refused'),
                 new InputOption('allow-unverified-database', null, InputOption::VALUE_NONE, 'Accept a database URL without a published <url>.sha256 sidecar and without --database-sha256'),
             ]);
@@ -45,18 +48,45 @@ final class DbStatusCommand extends BaseCommand
 
             return Plan::EXIT_ERROR;
         }
-        $locator = new DatabaseLocator($composer, Factory::createHttpDownloader($io, $composer->getConfig()), false, !(bool) $input->getOption('allow-unverified-database'), is_string($expectedSha) && $expectedSha !== '' ? strtolower($expectedSha) : null);
-        $option = $input->getOption('database-location');
-        $location = $locator->configured(is_string($option) ? $option : null) ?? $locator->defaultBuildPath();
-        $output->writeln(sprintf('Location: %s', ConsoleText::safe(DatabaseLocator::redact($location))));
+        $locator = new DatabaseLocator($composer, Factory::createHttpDownloader($io, $composer->getConfig()), (bool) $input->getOption('offline'), !(bool) $input->getOption('allow-unverified-database'), is_string($expectedSha) && $expectedSha !== '' ? strtolower($expectedSha) : null);
+        $option = static fn (string $name): ?string => is_string($v = $input->getOption($name)) && $v !== '' ? $v : null;
         try {
-            $path = $locator->resolve($location);
+            $settings = $locator->settings($option('database-location'), $option('database-path'), $option('database-max-age'));
+        } catch (\InvalidArgumentException $e) {
+            $io->writeError('<error>' . ConsoleText::safe($e->getMessage()) . '</error>');
+
+            return Plan::EXIT_ERROR;
+        }
+        if (!$settings->usesDatabase()) {
+            $output->writeln('No advisory database is configured (' . ConsoleText::safe($settings->sourcesConfigured ? 'source set to composer' : 'default') . '); composer remediate asks the configured repositories, as composer audit does.');
+
+            return 0;
+        }
+        $output->writeln(sprintf('Path: %s%s', ConsoleText::safe($settings->localSource() ?? $settings->path), $settings->pathConfigured || $settings->localSource() !== null ? '' : ' (default)'));
+        if ($settings->localSource() === null) {
+            $output->writeln(sprintf('Source: %s%s', ConsoleText::safe(DatabaseLocator::redact(implode(', ', $settings->sources))), $settings->sourcesConfigured ? '' : ' (default)'));
+        }
+        try {
+            $located = $locator->locate($settings);
+            if ($located === null) {
+                foreach ($locator->warnings() as $warning) {
+                    $output->writeln('<error>' . ConsoleText::safe($warning) . '</error>');
+                }
+                $output->writeln('Build one with <comment>composer remediate:db-build</comment>, or check the source; composer remediate falls back to the configured repositories meanwhile.');
+
+                return Plan::EXIT_ADVISORIES_UNAVAILABLE;
+            }
+            $path = $located->path;
             $db = Database::open($path);
         } catch (AdvisoryLookupFailed $e) {
             $output->writeln('<error>' . ConsoleText::safe($e->getMessage()) . '</error>');
             $output->writeln('Build one with <comment>composer remediate:db-build</comment>.');
 
             return Plan::EXIT_ADVISORIES_UNAVAILABLE;
+        }
+        $output->writeln(sprintf('Status: %s', ConsoleText::safe($located->provenance)));
+        foreach ($locator->warnings() as $warning) {
+            $output->writeln('<warning>' . ConsoleText::safe($warning) . '</warning>');
         }
         $output->writeln(sprintf('File: %s (%.1f MB)', $path, (int) filesize($path) / 1048576));
         if (!$db->tracksGaps()) {

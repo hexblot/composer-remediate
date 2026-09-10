@@ -13,6 +13,7 @@ use Remediate\Engine\Advisory\AdvisoryProvider;
 use Remediate\Engine\Advisory\AuditSubprocessAdvisoryProvider;
 use Remediate\Engine\Advisory\ComposerRepositoryAdvisoryProvider;
 use Remediate\Engine\Advisory\Db\Database;
+use Remediate\Engine\Advisory\Db\DatabaseBuildFactory;
 use Remediate\Engine\Advisory\Db\DatabaseLocator;
 use Remediate\Engine\Advisory\Db\SqliteAdvisoryProvider;
 use Remediate\Engine\Advisory\FallbackAdvisoryProvider;
@@ -40,6 +41,9 @@ final class RemediateCommand extends BaseCommand
 {
     public const SOLVERS = ['auto', 'in-process', 'subprocess'];
 
+    /** @var list<string> warnings gathered while choosing the advisory source, attached to the plan */
+    private array $planWarnings = [];
+
     protected function configure(): void
     {
         $this
@@ -53,11 +57,15 @@ final class RemediateCommand extends BaseCommand
                 new InputOption('update-baseline', null, InputOption::VALUE_NONE, 'Write every finding of this run to the --baseline file (accept the current state, then tighten over time)'),
                 new InputOption('min-release-age', null, InputOption::VALUE_REQUIRED, 'Never recommend a release published fewer than this many days ago, or without a known release date (supply-chain cooldown)'),
                 new InputOption('no-dev', null, InputOption::VALUE_NONE, 'Ignore vulnerabilities in require-dev packages'),
-                new InputOption('offline', null, InputOption::VALUE_NONE, 'Refuse all network access; needs a warm Composer cache plus --advisories-file or --database-location (sets COMPOSER_DISABLE_NETWORK=1)'),
+                new InputOption('offline', null, InputOption::VALUE_NONE, 'Refuse all network access; needs a warm Composer cache plus an advisory database already at its path, or --advisories-file (sets COMPOSER_DISABLE_NETWORK=1)'),
                 new InputOption('ignore', 'i', InputOption::VALUE_REQUIRED | InputOption::VALUE_IS_ARRAY, 'Advisory id or CVE to ignore (repeatable); audit-scoped entries of config.audit.ignore and config.policy.advisories are honoured as well'),
                 new InputOption('allow-direct-require', null, InputOption::VALUE_NONE, 'Also consider adding a transitive package as a direct requirement to force a fixed version'),
                 new InputOption('advisories-file', null, InputOption::VALUE_REQUIRED, 'Read advisories from a JSON file in the Packagist API shape (or `composer audit --format=json` output) instead of the configured repositories'),
-                new InputOption('database-location', null, InputOption::VALUE_REQUIRED, 'Read advisories from a local advisory database (path or https URL) built with remediate:db-build; also REMEDIATE_DATABASE or extra.remediate.database'),
+                new InputOption('database-location', null, InputOption::VALUE_REQUIRED, 'Where the advisory database comes from: https URL(s) of a published database, comma-separated and tried in order (default: the database this project publishes); `composer` to ask the configured repositories instead; or a local file to read as it is. Also REMEDIATE_DATABASE or extra.remediate.database'),
+                new InputOption('database-path', null, InputOption::VALUE_REQUIRED, 'The file the advisory database is kept in and read from (default: COMPOSER_CACHE_DIR/remediate/advisories.sqlite); also REMEDIATE_DATABASE_PATH or extra.remediate.database_path. Cache it between CI runs'),
+                new InputOption('database-max-age', null, InputOption::VALUE_REQUIRED, 'When the database cannot be confirmed current (source unreachable, --offline), fail with exit 4 instead of warning if the copy is older than this many hours (or 2d, 36h); also REMEDIATE_DATABASE_MAX_AGE or extra.remediate.database_max_age'),
+                new InputOption('no-database', null, InputOption::VALUE_NONE, 'Ask the configured repositories for advisories, as composer audit does, instead of using an advisory database (same as --database-location=composer)'),
+                new InputOption('rebuild-database', null, InputOption::VALUE_NONE, 'When the database at its path is missing or not current, build it from the sources (Packagist, OSV, FriendsOfPHP, with EPSS and KEV data) instead of downloading it'),
                 new InputOption('database-sha256', null, InputOption::VALUE_REQUIRED, 'Expected sha256 of the advisory database (hex); a downloaded or cached copy that differs is refused. The trust anchor for a URL you do not publish yourself'),
                 new InputOption('allow-unverified-database', null, InputOption::VALUE_NONE, 'Accept a database URL without a published <url>.sha256 sidecar and without --database-sha256 (refused otherwise); the report says the download was not verified'),
                 new InputOption('accept-coverage-gaps', null, InputOption::VALUE_NONE, 'Exit 0 for a lock without findings even when the advisory source could not read records about locked packages (otherwise exit 4); the gaps stay in the report'),
@@ -78,6 +86,14 @@ Exit codes: 0 no vulnerabilities, 1 vulnerabilities with a verified remediation,
 when a solver error prevented the search from completing), 4 advisory data unavailable (also when
 the source could not read records about locked packages and <info>--accept-coverage-gaps</info> was
 not given), 5 package metadata could not be fetched while solving.
+
+Advisories come from an advisory database kept at <info>--database-path</info> (default: Composer's
+cache directory). On every run the file is checked against the published database it comes from
+(<info>--database-location</info>, default: this project's release): a copy with the same sha256 or
+dataset hash, or a newer local build, is used; a missing or stale copy is downloaded (or rebuilt with
+<info>--rebuild-database</info>); when the source cannot be reached the copy is used and the report says
+how old it is. Without any usable database the configured repositories are asked, as
+<info>composer audit</info> does, and the report says so. <info>--no-database</info> chooses that directly.
 
 Running as <info>composer remediate</info> means Composer has already activated the project's
 other allowed plugins before this command starts. The <info>composer-remediate</info> binary shipped
@@ -112,6 +128,7 @@ HELP);
         if (is_int($advisories)) {
             return $advisories;
         }
+        $this->planWarnings = [...$locator->warnings(), ...$this->planWarnings];
         $platformArguments = self::platformArguments($input);
         $solver = $this->buildSolver(strtolower((string) $input->getOption('solver')), $input, $platformArguments);
 
@@ -120,12 +137,12 @@ HELP);
         } catch (AdvisoryLookupFailed $e) {
             $io->writeError('<error>Advisory data unavailable: ' . ConsoleText::safe($e->getMessage()) . '</error>');
             if ((bool) $input->getOption('offline')) {
-                $io->writeError('<comment>Offline mode: pass --advisories-file=<json> or --database-location=<sqlite> (see remediate:db-build).</comment>');
+                $io->writeError('<comment>Offline mode: the advisory database must already be at its path (see remediate:db-status), or pass --advisories-file=<json>.</comment>');
             }
 
             return Plan::EXIT_ADVISORIES_UNAVAILABLE;
         }
-        $plan = $plan->withWarnings([...$locator->warnings(), ...($advisories instanceof FallbackAdvisoryProvider ? $advisories->warnings() : [])]);
+        $plan = $plan->withWarnings([...$this->planWarnings, ...($advisories instanceof FallbackAdvisoryProvider ? $advisories->warnings() : [])]);
         $plan = $this->gate($plan, $input, $io);
         if (is_int($plan)) {
             return $plan;
@@ -215,8 +232,11 @@ HELP);
     }
 
     /**
-     * Where advisories come from, in order of preference: --advisories-file, a configured or given
-     * shared database, else Composer's own repositories. Exit 4 when a configured database is unusable.
+     * Where advisories come from, in order of preference: --advisories-file; the advisory database at its
+     * path, kept current from the configured sources (or rebuilt with --rebuild-database); else Composer's
+     * own repositories, with a warning when a database was expected but none could be had. Exit 4 for a
+     * database that is refused (digest mismatch, unverifiable download, too old) or a pinned digest that
+     * nothing satisfies.
      */
     private function advisoryProvider(InputInterface $input, \Composer\Composer $composer, ProjectContext $context, DatabaseLocator $locator, IOInterface $io): AdvisoryProvider|int
     {
@@ -224,18 +244,48 @@ HELP);
         if (is_string($advisoriesFile) && $advisoriesFile !== '') {
             return new JsonFileAdvisoryProvider($advisoriesFile);
         }
-        $dbOption = $input->getOption('database-location');
-        $dbLocation = $locator->configured(is_string($dbOption) ? $dbOption : null);
-        if ($dbLocation === null) {
+        $option = static fn (string $name): ?string => is_string($v = $input->getOption($name)) && $v !== '' ? $v : null;
+        try {
+            $settings = $locator->settings($option('database-location'), $option('database-path'), $option('database-max-age'), (bool) $input->getOption('no-database'));
+        } catch (\InvalidArgumentException $e) {
+            $io->writeError('<error>' . ConsoleText::safe($e->getMessage()) . '</error>');
+
+            return Plan::EXIT_ERROR;
+        }
+        if (!$settings->usesDatabase()) {
             return self::composerAdvisoryProvider($composer, $context);
         }
+        $rebuild = null;
+        if ((bool) $input->getOption('rebuild-database')) {
+            $downloader = Factory::createHttpDownloader($io, $composer->getConfig());
+            $tempDir = $locator->cacheDirectory() . '/tmp';
+            $rebuild = static function (string $path) use ($downloader, $tempDir, $io): void {
+                $io->writeError('<comment>Building the advisory database from the sources…</comment>');
+                DatabaseBuildFactory::defaultBuilder($downloader, $tempDir)->build($path, static function (string $message) use ($io): void {
+                    $io->writeError('<comment>' . ConsoleText::safe($message) . '</comment>', true, IOInterface::VERBOSE);
+                }, ['engine_version' => Planner::engineVersion()]);
+            };
+        }
         try {
-            return new SqliteAdvisoryProvider(Database::open($locator->resolve($dbLocation)));
+            $located = $locator->locate($settings, $rebuild);
+            if ($located !== null) {
+                return new SqliteAdvisoryProvider(Database::open($located->path), $located->provenance);
+            }
         } catch (AdvisoryLookupFailed $e) {
             $io->writeError('<error>Advisory database unavailable: ' . ConsoleText::safe($e->getMessage()) . '</error>');
 
             return Plan::EXIT_ADVISORIES_UNAVAILABLE;
         }
+        $why = $locator->warnings() === [] ? 'no advisory database' : $locator->warnings()[count($locator->warnings()) - 1];
+        if ($option('database-sha256') !== null) {
+            $io->writeError('<error>Advisory database unavailable and --database-sha256 was given, so no other source is acceptable: ' . ConsoleText::safe($why) . '</error>');
+
+            return Plan::EXIT_ADVISORIES_UNAVAILABLE;
+        }
+        $this->planWarnings[] = 'Advisory database unavailable; the configured repositories were asked instead, as composer audit does. Exploit data and coverage gaps are not available from that source.';
+        $io->writeError('<comment>' . ConsoleText::safe($why) . ' Asking the configured repositories instead.</comment>');
+
+        return self::composerAdvisoryProvider($composer, $context);
     }
 
     /**

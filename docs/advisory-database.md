@@ -1,10 +1,55 @@
 # Advisory database
 
-By default `composer remediate` asks the configured repositories (Packagist) for advisories, the
-same request `composer audit` makes. The advisory database is the alternative: a single SQLite file
-built from live sources that you can keep locally, share inside a team, or download from a URL. It
-makes runs fully offline, lets you pin the advisory state for reproducible results, and lets you add
-private advisories.
+The advisory database is a single SQLite file built from three live sources (Packagist, OSV,
+FriendsOfPHP) and enriched with exploit data (EPSS, CISA KEV). By default `composer remediate` keeps
+a copy of the database this project publishes at a fixed path and reads it; you can also build the
+same database yourself, add private advisories, share it inside a team, or point the tool at your own
+mirror. It makes runs fully offline, lets you pin the advisory state for reproducible results, and
+gives every report the same exploit data and coverage-gap bookkeeping.
+
+## The default: a copy kept current
+
+Three settings decide where the database lives and where it comes from. Each is resolved as command
+option, then environment variable, then `extra.remediate` in `composer.json`, then the default, and
+giving one never changes another: pointing at your own mirror keeps the default path, moving the path
+keeps the default source.
+
+| Setting | Option | Environment | `composer.json` | Default |
+|---|---|---|---|---|
+| Path: the file kept current and read | `--database-path` | `REMEDIATE_DATABASE_PATH` | `extra.remediate.database_path` | `<composer cache dir>/remediate/advisories.sqlite` |
+| Source: where it comes from | `--database-location` | `REMEDIATE_DATABASE` | `extra.remediate.database` (string or list) | this project's `advisory-db-latest` release |
+| Maximum age of an unconfirmed copy | `--database-max-age` | `REMEDIATE_DATABASE_MAX_AGE` | `extra.remediate.database_max_age` | none |
+
+On every run the file at the path is checked against the source:
+
+1. The publisher's `latest.json` (sha256, dataset hash, publication time) is fetched; a mirror without
+   one is asked for its `<url>.sha256` sidecar instead. Both are a few bytes.
+2. A local file with the **same sha256** is the published database itself. One with the **same dataset
+   hash** is a local build of the same data. One **built after** the publication is a newer local
+   build (yours, with `--include` perhaps). Each of those is current and used as it is.
+3. Anything else is stale, or missing, and is replaced by a verified download written beside the path
+   and moved into place. `--rebuild-database` (or `remediate:db-build --if-stale`) builds it from the
+   sources instead of downloading.
+4. When no source can be reached, the copy is used and the report says so with the copy's age. With
+   `--database-max-age`, a copy older than that fails the run (exit 4) instead: a broken network must
+   not silently turn into stale coverage. `--offline` uses the copy without any check.
+5. When there is no copy and nothing can be fetched, the configured repositories are asked for
+   advisories, as `composer audit` does; the report warns that exploit data and coverage gaps are not
+   available from that source. `--no-database` (or a source of `composer`) chooses that directly, and
+   `--database-sha256` forbids the fallback, since a pinned digest means nothing else is acceptable.
+
+Several sources are tried in order (`--database-location=https://mirror.example/adv.sqlite,https://github.com/…`,
+or a list in `composer.json`), so a team mirror can sit in front of the published database. The
+report header names the outcome ("confirmed current against …", "downloaded from …", "could not be
+confirmed current, using the copy built 3 hours ago"), and `remediate:db-status` prints the three
+settings, which of them are defaults, and the same verdict.
+
+In CI, declare the path as a cached file and nothing else is needed: the first run downloads, later
+runs confirm with one small request or download only when the database moved. See
+[CI integration](ci-integration.md).
+
+A file given as `--database-location` (a local path rather than a URL) is read as it is, without any
+check, which is what that option meant before 0.7.
 
 ## Build it
 
@@ -28,8 +73,12 @@ fuzzy matches: false deduplication is worse than duplication.
 Where sources disagree, matching uses the union of their ranges: a version any source calls affected
 is treated as affected.
 
-The default output path is `<composer cache dir>/remediate/advisories.sqlite`. A build takes well
-under a minute and the file is a few megabytes.
+The default output path is the database path above, so `composer remediate` reads the build on its
+next run and the freshness check treats it as a local build. A build takes well under a minute and
+the file is a few megabytes. A build with no options reproduces the database this project publishes:
+the release workflow runs the same command with the same defaults, so the dataset hashes agree when
+the feeds have not moved in between. `--if-stale` runs the freshness check first and skips the build
+when the file is current.
 
 ### Private advisories
 
@@ -110,8 +159,10 @@ Or per project in `composer.json`:
 ```
 
 Precedence: `--database-location`, then `REMEDIATE_DATABASE`, then `extra.remediate.database`. A URL
-is downloaded into Composer's cache directory and refreshed when the copy is older than 24 hours;
-with `--offline` the cached copy is used as is.
+is kept current at the database path as described above; a local path is read as it is. To publish
+your own database for others, put `advisories.sqlite` and its `advisories.sqlite.sha256` (the output
+of `sha256sum`) on an https server; a `latest.json` next to it with `sha256`, `dataset_hash` and
+`published_at` lets clients recognise their own builds of the same data as current.
 
 `composer remediate:db-status` shows where the database comes from, when it was built, which
 sources contributed how many records, the dataset hash, the exploit data it carries, and the
@@ -172,12 +223,13 @@ gh attestation verify advisories.sqlite --repo hexblot/composer-remediate
 sha256sum -c advisories.sqlite.sha256      # the sidecar is `sha256sum` output: digest and filename
 ```
 
-What the client verifies on its own: when `--database-location` is a URL, the plugin also fetches
-`<url>.sha256` and refuses a download whose digest does not match (exit 4). A URL without a sidecar
-is refused as well, unless `--allow-unverified-database` is given, in which case the report says the
-download was not verified; that outcome is
-recorded next to the cached copy, and every later run that reuses the copy repeats the warning, so
-the disclosure belongs to the bytes in use rather than to the request that fetched them. The attestation is
+What the client verifies on its own: every download is checked against the publisher's digest, from
+`latest.json` or the `<url>.sha256` sidecar, and refused when it does not match (exit 4); a publisher
+moving between the two requests is resolved by re-reading the sidecar once. A URL that publishes
+neither is not downloaded at all unless `--allow-unverified-database` is given, in which case the
+report says the download was not verified; that outcome is recorded next to the copy, and every later
+run that uses the copy repeats the warning, so the disclosure belongs to the bytes in use rather than
+to the request that fetched them. The attestation is
 **not** checked automatically; it is there for `gh attestation verify` in a pipeline step, and the
 trust the client places in a URL is the trust in TLS plus the publisher's checksum, nothing more.
 The sidecar comes from the same host as the database, so it proves integrity in transit, not the
@@ -186,10 +238,10 @@ publisher's identity. For a database you do not publish yourself, pin the digest
 sidecar is not consulted, and a mismatch is fatal. Only `https://` URLs are downloaded; a plain
 `http://` location, whether from the option, the environment or `composer.json`, is refused.
 
-Cached downloads are refreshed after 24 hours. When the refresh fails (feed down, network error) the
-cached copy is still used, but the report carries a warning with the age of the copy so a stale
-database is never mistaken for current coverage. `--offline` uses the cache unconditionally and warns
-in the same way.
+When the source cannot be reached the copy at the path is still used, but the report carries a
+warning with the age of the copy so a stale database is never mistaken for current coverage;
+`--database-max-age` turns that warning into a failure past a chosen age. `--offline` uses the copy
+unconditionally and warns in the same way.
 
 ## Data licences
 

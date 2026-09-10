@@ -18,6 +18,14 @@ when a solver error prevented the search from completing), 4 advisory data unava
 the source could not read records about locked packages and `--accept-coverage-gaps` was
 not given), 5 package metadata could not be fetched while solving.
 
+Advisories come from an advisory database kept at `--database-path` (default: Composer's
+cache directory). On every run the file is checked against the published database it comes from
+(`--database-location`, default: this project's release): a copy with the same sha256 or
+dataset hash, or a newer local build, is used; a missing or stale copy is downloaded (or rebuilt with
+`--rebuild-database`); when the source cannot be reached the copy is used and the report says
+how old it is. Without any usable database the configured repositories are asked, as
+`composer audit` does, and the report says so. `--no-database` chooses that directly.
+
 Running as `composer remediate` means Composer has already activated the project's
 other allowed plugins before this command starts. The `composer-remediate` binary shipped
 with the package runs the same command with plugins and scripts disabled from the first instruction.
@@ -31,11 +39,15 @@ with the package runs the same command with plugins and scripts disabled from th
 | `--update-baseline` | flag | Write every finding of this run to the --baseline file (accept the current state, then tighten over time) |
 | `--min-release-age` | required | Never recommend a release published fewer than this many days ago, or without a known release date (supply-chain cooldown) |
 | `--no-dev` | flag | Ignore vulnerabilities in require-dev packages |
-| `--offline` | flag | Refuse all network access; needs a warm Composer cache plus --advisories-file or --database-location (sets COMPOSER_DISABLE_NETWORK=1) |
+| `--offline` | flag | Refuse all network access; needs a warm Composer cache plus an advisory database already at its path, or --advisories-file (sets COMPOSER_DISABLE_NETWORK=1) |
 | `--ignore`, `-i` | repeatable | Advisory id or CVE to ignore (repeatable); audit-scoped entries of config.audit.ignore and config.policy.advisories are honoured as well |
 | `--allow-direct-require` | flag | Also consider adding a transitive package as a direct requirement to force a fixed version |
 | `--advisories-file` | required | Read advisories from a JSON file in the Packagist API shape (or `composer audit --format=json` output) instead of the configured repositories |
-| `--database-location` | required | Read advisories from a local advisory database (path or https URL) built with remediate:db-build; also REMEDIATE_DATABASE or extra.remediate.database |
+| `--database-location` | required | Where the advisory database comes from: https URL(s) of a published database, comma-separated and tried in order (default: the database this project publishes); `composer` to ask the configured repositories instead; or a local file to read as it is. Also REMEDIATE_DATABASE or extra.remediate.database |
+| `--database-path` | required | The file the advisory database is kept in and read from (default: COMPOSER_CACHE_DIR/remediate/advisories.sqlite); also REMEDIATE_DATABASE_PATH or extra.remediate.database_path. Cache it between CI runs |
+| `--database-max-age` | required | When the database cannot be confirmed current (source unreachable, --offline), fail with exit 4 instead of warning if the copy is older than this many hours (or 2d, 36h); also REMEDIATE_DATABASE_MAX_AGE or extra.remediate.database_max_age |
+| `--no-database` | flag | Ask the configured repositories for advisories, as composer audit does, instead of using an advisory database (same as --database-location=composer) |
+| `--rebuild-database` | flag | When the database at its path is missing or not current, build it from the sources (Packagist, OSV, FriendsOfPHP, with EPSS and KEV data) instead of downloading it |
 | `--database-sha256` | required | Expected sha256 of the advisory database (hex); a downloaded or cached copy that differs is refused. The trust anchor for a URL you do not publish yourself |
 | `--allow-unverified-database` | flag | Accept a database URL without a published &lt;url&gt;.sha256 sidecar and without --database-sha256 (refused otherwise); the report says the download was not verified |
 | `--accept-coverage-gaps` | flag | Exit 0 for a lock without findings even when the advisory source could not read records about locked packages (otherwise exit 4); the gaps stay in the report |
@@ -60,13 +72,17 @@ Every CVE in the database is enriched with its EPSS exploit probability and its 
 present (`--enrich`); reports order findings by that urgency. A feed that cannot be fetched
 is recorded in the database's metadata and the build continues without it.
 
-Use the file with `composer remediate --database-location=PATH`, the REMEDIATE_DATABASE
-environment variable, or `extra.remediate.database` in composer.json. The file is portable:
-publish it on a web server or as a release asset and point other machines at the URL.
+Written to the path `composer remediate` reads by default, so the next run uses it; a build
+with no options reproduces the database this project publishes. `--if-stale` first checks the
+existing file against the published database (same sha256 or dataset hash, or a newer local build) and
+skips the build when it is current, which suits a CI cache. The file is portable: publish it on a web
+server or as a release asset with a `.sha256` sidecar (or a latest.json) and point other
+machines at the URL with `--database-location`.
 
 | Option | Value | Description |
 |---|---|---|
-| `--output`, `-o` | required | Where to write the database (default: COMPOSER_CACHE_DIR/remediate/advisories.sqlite) |
+| `--output`, `-o` | required | Where to write the database (default: the configured path, see --database-path of remediate; COMPOSER_CACHE_DIR/remediate/advisories.sqlite unless configured) |
+| `--if-stale` | flag | Build only when the database at the output path is missing or not current against the published one (REMEDIATE_DATABASE or extra.remediate.database, default: this project's release); otherwise report it as current and exit 0 |
 | `--source`, `-s` | repeatable | Source to include: packagist, osv, friendsofphp (repeatable; default all) |
 | `--friendsofphp-path` | required | Local checkout of FriendsOfPHP/security-advisories to read instead of downloading |
 | `--include` | repeatable | Additional JSON file in the Packagist API shape with private or organisational advisories (repeatable) |
@@ -82,7 +98,10 @@ Show where the advisory database comes from and what it contains
 
 | Option | Value | Description |
 |---|---|---|
-| `--database-location` | required | Path or https URL of the database (default: REMEDIATE_DATABASE, then extra.remediate.database, then the default build path) |
+| `--database-location` | required | Where the database comes from: https URL(s) tried in order (default: the database this project publishes), `composer` for none, or a local file; also REMEDIATE_DATABASE or extra.remediate.database |
+| `--database-path` | required | The file the database is kept in (default: COMPOSER_CACHE_DIR/remediate/advisories.sqlite); also REMEDIATE_DATABASE_PATH or extra.remediate.database_path |
+| `--database-max-age` | required | Fail when the copy cannot be confirmed current and is older than this many hours (or 2d, 36h); also REMEDIATE_DATABASE_MAX_AGE |
+| `--offline` | flag | Do not contact the source; report on the copy at the path as it is |
 | `--database-sha256` | required | Expected sha256 of the database (hex); a downloaded or cached copy that differs is refused |
 | `--allow-unverified-database` | flag | Accept a database URL without a published &lt;url&gt;.sha256 sidecar and without --database-sha256 |
 

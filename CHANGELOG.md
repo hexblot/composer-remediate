@@ -7,6 +7,26 @@ All notable changes to this project are documented here. The format follows
 
 ### Changed
 
+- **The advisory database is the default source, kept current at a fixed path.** A run without
+  options keeps a copy of the database this project publishes at
+  `<composer cache dir>/remediate/advisories.sqlite` and checks it on every run against the
+  publisher's `latest.json` (or `.sha256` sidecar): a copy with the same sha256 or dataset hash, or a
+  newer local build, is used as it is; a missing or stale copy is replaced by a verified download.
+  When the source cannot be reached the copy is used and the report says how old it is; when there
+  is no copy at all the configured repositories are asked, as `composer audit` does, with a warning.
+  Path (`--database-path`, `REMEDIATE_DATABASE_PATH`, `extra.remediate.database_path`), source
+  (`--database-location`, now also a comma-separated list or a list in `composer.json`, tried in
+  order) and `--database-max-age` (fail instead of warn when an unconfirmed copy is older than this)
+  are independent settings with their own defaults. `--no-database` (or a source of `composer`)
+  selects the repository API directly; a local path as the source is read as it is, as before;
+  `--database-sha256` forbids the fallback. `--rebuild-database` on `remediate` and `--if-stale` on
+  `remediate:db-build` build from the sources under the same freshness rule, so a CI cache of the
+  path works with either. `remediate:db-status` prints the three settings, which are defaults, and
+  the verdict; `remediate:db-build` writes to the configured path by default and a build with no
+  options reproduces the published database. The hidden per-URL cache under Composer's cache
+  directory is gone; the first run after upgrading downloads once into the new path.
+  New network behaviour: a plain run contacts github.com once per run (a few bytes, no package names);
+  see the privacy page for the three ways to stop it.
 - Roadmap: Phase 7, goal-driven planning, added as a candidate after Phase 5, motivated by
   composer/composer discussion 12777 (a TYPO3 major upgrade blocked by a transitive package Composer's
   error never names); the design-decisions page records why a security fix is treated as one goal
