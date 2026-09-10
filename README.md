@@ -2,6 +2,7 @@
 
 [![CI](https://github.com/hexblot/composer-remediate/actions/workflows/ci.yml/badge.svg?branch=main)](https://github.com/hexblot/composer-remediate/actions/workflows/ci.yml)
 [![Coverage](https://img.shields.io/endpoint?url=https%3A%2F%2Fraw.githubusercontent.com%2Fhexblot%2Fcomposer-remediate%2Fbadges%2Fcoverage.json)](https://github.com/hexblot/composer-remediate/actions/workflows/ci.yml)
+[![Architecture](https://img.shields.io/endpoint?url=https%3A%2F%2Fraw.githubusercontent.com%2Fhexblot%2Fcomposer-remediate%2Fbadges%2Farchitecture.json)](https://github.com/hexblot/composer-remediate/blob/main/deptrac.yaml)
 [![Docs](https://github.com/hexblot/composer-remediate/actions/workflows/docs.yml/badge.svg?branch=main)](https://hexblot.github.io/composer-remediate/)
 [![Advisory database](https://github.com/hexblot/composer-remediate/actions/workflows/advisory-db.yml/badge.svg)](https://github.com/hexblot/composer-remediate/releases/tag/advisory-db-latest)
 [![Latest release](https://img.shields.io/github/v/release/hexblot/composer-remediate?filter=v*&display_name=tag&label=release)](https://github.com/hexblot/composer-remediate/releases)

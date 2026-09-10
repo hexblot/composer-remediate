@@ -53,11 +53,32 @@ jobs:
       - run: composer install --no-interaction --no-progress
       - run: composer phpstan
       # Deptrac needs PHP 8.2+ and its own dependencies, so it lives in tools/deptrac with a pinned lock.
+      # The JSON report feeds the architecture badge and is written first so it exists whatever the
+      # verdict; the table run sets the step outcome. The step does not stop the job, so the badge can
+      # say "failing"; the last step of the job fails it instead.
       - name: Architecture rules (Deptrac)
+        id: deptrac
         if: matrix.php == '8.4'
+        continue-on-error: true
         run: |
           composer --working-dir=tools/deptrac install --no-interaction --no-progress
+          mkdir -p build
+          tools/deptrac/vendor/bin/deptrac analyse --config-file=deptrac.yaml --no-progress --fail-on-uncovered --formatter=json --output=build/deptrac.json > /dev/null || true
           composer deptrac
+      - name: Architecture badge data
+        if: matrix.php == '8.4'
+        run: |
+          php -r '
+            $report = is_file("build/deptrac.json") ? (json_decode((string) file_get_contents("build/deptrac.json"), true)["Report"] ?? null) : null;
+            if (!is_array($report)) {
+              $badge = ["message" => "unknown", "color" => "lightgrey"];
+            } else {
+              $bad = (int) $report["Violations"] + (int) $report["Uncovered"] + (int) $report["Errors"];
+              $badge = $bad === 0 ? ["message" => "passing", "color" => "brightgreen"] : ["message" => sprintf("failing (%d)", $bad), "color" => "red"];
+            }
+            file_put_contents("architecture.json", json_encode(["schemaVersion" => 1, "label" => "architecture"] + $badge));
+            echo file_get_contents("architecture.json"), PHP_EOL;
+          '
       - run: composer test
         if: matrix.php != '8.4'
       - name: Tests with coverage
@@ -72,7 +93,7 @@ jobs:
           name: coverage
           path: build/coverage
           retention-days: 14
-      - name: Publish the coverage badge
+      - name: Publish the coverage and architecture badges
         if: matrix.php == '8.4' && github.event_name == 'push' && github.ref == 'refs/heads/main'
         env:
           GITHUB_TOKEN: ${{ github.token }}
@@ -84,13 +105,18 @@ jobs:
             file_put_contents("coverage.json", json_encode(["schemaVersion" => 1, "label" => "coverage", "message" => sprintf("%.1f%%", $pct), "color" => $color]));
             echo file_get_contents("coverage.json"), PHP_EOL;
           '
-          mkdir -p /tmp/badges && cp coverage.json /tmp/badges/ && cd /tmp/badges
+          mkdir -p /tmp/badges && cp coverage.json architecture.json /tmp/badges/ && cd /tmp/badges
           git init -q -b badges
           git config user.name "github-actions[bot]"
           git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
-          git add coverage.json
-          git commit -q -m "Coverage badge for ${GITHUB_SHA}"
+          git add coverage.json architecture.json
+          git commit -q -m "Badges for ${GITHUB_SHA}"
           git push -q --force "https://x-access-token:${GITHUB_TOKEN}@github.com/${GITHUB_REPOSITORY}.git" badges
+      - name: Fail the job when the architecture rules failed
+        if: matrix.php == '8.4' && steps.deptrac.outcome == 'failure'
+        run: |
+          echo "::error::Deptrac reported violations or uncovered dependencies; see the Architecture rules step."
+          exit 1
       - name: CLI reference is up to date
         if: matrix.php == '8.4'
         run: php bin/cli-reference.php | diff -u docs/cli-reference.md - || (echo "::error::docs/cli-reference.md is stale; run php bin/cli-reference.php > docs/cli-reference.md" && exit 1)

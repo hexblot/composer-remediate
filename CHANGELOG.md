@@ -11,7 +11,8 @@ All notable changes to this project are documented here. The format follows
   `ComposerApi`, `SymfonyConsole`, `SymfonyProcess`, `SymfonyYaml`) and each project layer states
   which it may use; the run fails on any dependency left unclassified (`--fail-on-uncovered`), so a
   new library or a new corner of Composer's API has to be allowed deliberately. The report went from
-  296 uncovered dependencies to zero, with 468 allowed.
+  296 uncovered dependencies to zero, with 468 allowed. The README carries an architecture badge fed
+  by the PHP 8.4 CI job ("passing", or "failing (n)"), next to the coverage badge.
 
 [Unreleased]: https://github.com/hexblot/composer-remediate/compare/v0.6.0...HEAD
 

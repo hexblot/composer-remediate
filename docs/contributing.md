@@ -17,7 +17,9 @@
   pull in a new library or a new corner of Composer, add a layer for it and allow it where it is
   meant to be used. Deptrac needs PHP 8.2 or newer, so it is installed separately with
   `ddev composer --working-dir=tools/deptrac install` (its lock is committed; the PHP 8.4 CI job runs
-  it). `ddev composer check` runs PHPStan, Deptrac and the tests together.
+  it and, on pushes to `main`, writes the README's architecture badge to the `badges` branch: "passing",
+  or "failing (n)" with the number of violations and uncovered dependencies). `ddev composer check` runs
+  PHPStan, Deptrac and the tests together.
 - Methods stay short enough to read in one screen. Commands parse options, assemble collaborators and
   emit the report in separate methods; the planner's search phases (candidates, expansion, descent,
   global combination) are separate methods or classes; renderers have one method per report section.
