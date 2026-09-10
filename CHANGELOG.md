@@ -5,6 +5,17 @@ All notable changes to this project are documented here. The format follows
 
 ## [Unreleased]
 
+[Unreleased]: https://github.com/hexblot/composer-remediate/compare/v0.6.0...HEAD
+
+## [0.6.0] - 2026-09-10
+
+A feature release with changed defaults. Global planning (Phase 4) searches for the smallest command
+that fixes every finding and explains the search; the answers to an Aikido code scan make incomplete
+advisory sources, unverified database downloads and unread coverage gaps fail closed, so exit codes can
+differ from 0.5.0 in CI; three CLI options, a `combined_search` block in the JSON summary and Deptrac
+layer rules arrive with it. The `Plan::SEVERITIES` constant is gone, replaced by the
+`Engine\Advisory\Severity` enum.
+
 ### Added
 
 - **Global planning (Phase 4).** The planner now searches for one command that fixes every finding
@@ -83,7 +94,7 @@ Answers to an Aikido code scan (nine findings), each with a regression test.
   release-capable token; the environment policy is enforced by GitHub before the job starts. A
   `github.ref` guard gives a clearer error for an accidental dispatch from a branch.
 
-[Unreleased]: https://github.com/hexblot/composer-remediate/compare/v0.5.0...HEAD
+[0.6.0]: https://github.com/hexblot/composer-remediate/releases/tag/v0.6.0
 
 ## [0.5.0] - 2026-09-10
 

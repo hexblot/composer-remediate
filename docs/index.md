@@ -57,9 +57,10 @@ answers that review and the reviewer's recheck, with a test behind each change, 
 command layer, the advisory feed readers and both advisory adapters under test (171 tests, 94% of
 lines); 0.4.2 answers a third recheck (three findings on the audit fallback's plugin boundary, OSV
 limit semantics and coverage-gap bookkeeping), which the reviewer then confirmed closed; 0.5.0 adds
-EPSS and CISA KEV urgency ordering, abandoned-package flagging and the completed fixture corpus. Global planning
-(Phase 4) and `--apply` (Phase 5) are still ahead, so every release so far recommends and never
-modifies your project.
+EPSS and CISA KEV urgency ordering, abandoned-package flagging and the completed fixture corpus; 0.6.0
+adds global planning (Phase 4: one command for every finding, with the search explained), answers an
+Aikido code scan by failing closed on unverified data, and adds Deptrac layer rules. `--apply`
+(Phase 5) is still ahead, so every release so far recommends and never modifies your project.
 
 ## Start here
 
