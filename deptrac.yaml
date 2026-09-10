@@ -1,15 +1,19 @@
 # Architecture rules, checked with `composer deptrac` (see docs/contributing.md).
 #
-# Layers, innermost first. The engine knows nothing about how it is invoked or rendered; the
-# renderers read the engine's plan; the commands wire the engine and pick a renderer; the plugin
-# registers the commands. Inside the engine, advisory handling (feed readers, the database, the
-# providers) stays independent of planning, so the database can be built and served without a project.
+# Project layers, innermost first: Advisory (feed readers, database, providers) knows nothing about
+# planning, so a database can be built and served without a project; Engine plans; Output renders the
+# plan; Command wires the engine and picks a renderer; Plugin registers the commands.
+#
+# Third-party code is classified too, so that every external dependency is a deliberate allowance
+# rather than an uncovered one. `--fail-on-uncovered` (in the composer script) makes a dependency on
+# an unclassified namespace a failure: add a layer for it and say which project layers may use it.
+# PHP's own classes are ignored (ignore_uncovered_internal_classes).
 deptrac:
   paths:
     - ./src
-  exclude_files:
-    - '#.*Test\.php$#'
+  ignore_uncovered_internal_classes: true
   layers:
+    # --- project ---
     - name: Plugin
       collectors:
         - type: classLike
@@ -35,19 +39,71 @@ deptrac:
           must_not:
             - type: classLike
               value: ^Remediate\\Engine\\Advisory\\.*
+    # --- third party ---
+    # Version arithmetic: constraints, comparators, the parser. Pure, safe anywhere.
+    - name: Semver
+      collectors:
+        - type: classLike
+          value: ^Composer\\Semver\\.*
+    # Composer's plugin and command base classes: only the plugin and its commands may extend them.
+    - name: ComposerPlugin
+      collectors:
+        - type: classLike
+          value: ^Composer\\(Plugin|Command)\\.*
+    # The rest of Composer's API: packages, repositories, the solver, IO, config, downloads.
+    - name: ComposerApi
+      collectors:
+        - type: bool
+          must:
+            - type: classLike
+              value: ^Composer\\.*
+          must_not:
+            - type: classLike
+              value: ^Composer\\(Semver|Plugin|Command)\\.*
+    - name: SymfonyConsole
+      collectors:
+        - type: classLike
+          value: ^Symfony\\Component\\Console\\.*
+    - name: SymfonyProcess
+      collectors:
+        - type: classLike
+          value: ^Symfony\\Component\\Process\\.*
+    - name: SymfonyYaml
+      collectors:
+        - type: classLike
+          value: ^Symfony\\Component\\Yaml\\.*
   ruleset:
     Plugin:
       - Command
+      - ComposerPlugin
+      - ComposerApi
     Command:
       - Output
       - Engine
       - Advisory
+      - ComposerPlugin
+      - ComposerApi
+      - Semver
+      - SymfonyConsole
     Output:
       - Engine
       - Advisory
+      - Semver
+      - SymfonyConsole
     Engine:
       - Advisory
-    Advisory: ~
-  formatters:
-    graphviz:
-      hidden_layers: []
+      - ComposerApi
+      - Semver
+      - SymfonyProcess   # the subprocess solver
+      - SymfonyConsole   # InProcessSolver sets the verbosity of Composer's installer through OutputInterface constants
+    Advisory:
+      - ComposerApi      # HttpDownloader, ComposerRepository, the advisory API
+      - Semver
+      - SymfonyProcess   # the composer audit fallback
+      - SymfonyYaml      # the FriendsOfPHP feed
+    Semver: ~
+    ComposerPlugin: ~
+    ComposerApi: ~
+    SymfonyConsole: ~
+    SymfonyProcess: ~
+    SymfonyYaml: ~

@@ -11,7 +11,11 @@
 - The layer rules in `deptrac.yaml` must pass: `ddev composer deptrac`. Plugin → Command → Output →
   Engine → Advisory, each layer depending only on those inside it; the advisory code (feed readers,
   database, providers) never reaches into planning, so a database can be built and served without a
-  project. Deptrac needs PHP 8.2 or newer, so it is installed separately with
+  project. Third-party code is classified too (Semver, ComposerPlugin, ComposerApi, SymfonyConsole,
+  SymfonyProcess, SymfonyYaml) and each project layer lists which of them it may use, so the report
+  shows zero uncovered dependencies and the run fails on a dependency nobody has classified: when you
+  pull in a new library or a new corner of Composer, add a layer for it and allow it where it is
+  meant to be used. Deptrac needs PHP 8.2 or newer, so it is installed separately with
   `ddev composer --working-dir=tools/deptrac install` (its lock is committed; the PHP 8.4 CI job runs
   it). `ddev composer check` runs PHPStan, Deptrac and the tests together.
 - Methods stay short enough to read in one screen. Commands parse options, assemble collaborators and

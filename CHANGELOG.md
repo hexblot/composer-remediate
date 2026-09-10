@@ -5,6 +5,14 @@ All notable changes to this project are documented here. The format follows
 
 ## [Unreleased]
 
+### Changed
+
+- Deptrac classifies third-party code as layers of its own (`Semver`, `ComposerPlugin`,
+  `ComposerApi`, `SymfonyConsole`, `SymfonyProcess`, `SymfonyYaml`) and each project layer states
+  which it may use; the run fails on any dependency left unclassified (`--fail-on-uncovered`), so a
+  new library or a new corner of Composer's API has to be allowed deliberately. The report went from
+  296 uncovered dependencies to zero, with 468 allowed.
+
 [Unreleased]: https://github.com/hexblot/composer-remediate/compare/v0.6.0...HEAD
 
 ## [0.6.0] - 2026-09-10
