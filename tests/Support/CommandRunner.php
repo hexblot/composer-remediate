@@ -32,7 +32,7 @@ final class CommandRunner
         if ($repo === false || !is_file($repo . '/packages.json')) {
             throw new \RuntimeException("Fixture $fixtureDir needs a plain repo/packages.json to be run through the command layer");
         }
-        $workspace = ScratchWorkspace::fromFiles($fixtureDir . '/composer.json', $fixtureDir . '/composer.lock');
+        $workspace = ScratchWorkspace::fromFiles($fixtureDir . '/composer.fixture.json', $fixtureDir . '/composer.fixture.lock');
         $workspace->overrideRepositories([
             ['type' => 'composer', 'url' => 'file://' . $repo],
             ['packagist.org' => false],

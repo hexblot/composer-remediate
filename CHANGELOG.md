@@ -27,14 +27,44 @@ All notable changes to this project are documented here. The format follows
   CycloneDX and GitLab reports carry the names. The lock snapshot now preserves the marker. Tests:
   planner detection on a scripted lock, every output format.
 
+- **Phase 3 fixture corpus complete: five Drupal and five Symfony cases.** New real historical
+  fixtures: Mass.gov on Drupal 10.3 (the meta-package's tilde pins let every November 2024 fix through
+  as a plain update; an abandoned Goutte on the path), Open Social's project template (the
+  distribution's `~10.2.5` pin permits the Drupal 10.2.9 patch; Twig 3.14 needs a package the lock
+  never had), Acquia CMS (Drupal 10.3 without `core-recommended`, a monorepo whose modules come from
+  `path` repositories with branch aliases), wallabag (Symfony 5.4 on PHP 7.4: eleven of sixteen
+  advisories fixable, Guzzle 5 stuck behind the root constraint and an abandoned adapter) and Mautic 5
+  (a monorepo whose own `path` package pins PhpSpreadsheet below the fix). Each carries provenance,
+  the reasoning behind the expected command and stored reports; the case-studies page grows with them.
+- `bin/build-fixture.php` learned what these projects needed: it fetches the requirement closure of
+  every version it keeps (metadata Composer never loaded for the locked graph), takes `path` /
+  `artifact` packages from the lock file with their branch aliases and a neutral dist while dropping
+  other versions of those names (a path repository takes precedence), splits and retries advisory API
+  batches that come back unreadable, and stores fixture manifests as `composer.fixture.json` /
+  `composer.fixture.lock`. `expected.json` gained `root_version` for projects whose dependencies
+  conflict with the root package by version.
+
+### Security
+
+- GitHub workflows hardened after an Aikido scan: every action is pinned to a commit SHA with its
+  version noted (and a Dependabot configuration keeps the pins current); no workflow expression is
+  interpolated into a shell script any more, values reach scripts through the environment (the
+  `force` input of the advisory-database workflow was the reported template-injection vector); the
+  advisory-database workflow's write permissions moved from the workflow to its single job and the CI
+  workflow defaults to read; every checkout runs with `persist-credentials: false` (the badge push
+  and the release steps use explicit tokens). `bin/run-fixture.php` validates the fixture name before
+  building a path from it.
+
 ### Changed
 
 - Findings are ordered by urgency (see above); before, they were ordered by package name. The stored
   fixture reports and the case-studies page are regenerated accordingly.
-- Test fixtures moved from `tests/Fixture/<name>` to `tests/Fixture/third-party/<name>`. GitHub's
-  dependency graph treats a `third-party` path as vendored and does not scan the manifests inside, so
-  the fixtures' historical lock files (vulnerable on purpose) no longer raise Dependabot alerts against
-  this repository. `bin/build-fixture.php` writes there by default.
+- Test fixtures moved from `tests/Fixture/<name>` to `tests/Fixture/third-party/<name>`, and their
+  manifests are stored as `composer.fixture.json` / `composer.fixture.lock`. The fixtures' historical
+  lock files are vulnerable on purpose and raised hundreds of Dependabot alerts; GitHub's dependency
+  graph parses every `composer.json` and `composer.lock` in a repository whatever the directory (the
+  `third-party` name alone did not exempt them), and does not parse the renamed files.
+  `bin/build-fixture.php` writes the new layout by default.
 
 [Unreleased]: https://github.com/hexblot/composer-remediate/compare/v0.4.2...HEAD
 

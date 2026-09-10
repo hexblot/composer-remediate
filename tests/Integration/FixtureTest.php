@@ -24,6 +24,7 @@ use Symfony\Component\Process\Process;
  *   {
  *     "description": "...",
  *     "platform": {"php": "8.3.0"},                 optional config.platform overrides
+ *     "root_version": "dev-develop",                optional root package version (what a git checkout would guess)
  *     "strict_findings": false,                     when true, the plan must contain exactly the listed findings
  *     "combined_command": "composer update a b",   optional: the verified command covering all fixable findings
  *     "findings": [

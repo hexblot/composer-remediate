@@ -20,7 +20,11 @@ use Remediate\Engine\Solver\ScratchWorkspace;
  */
 final class FixtureRunner
 {
-    /** Fixtures live under a directory GitHub's dependency graph treats as vendored, so their lock files raise no Dependabot alerts. */
+    /**
+     * Fixture manifests are stored as composer.fixture.json / composer.fixture.lock: GitHub's dependency
+     * graph parses every composer.json and composer.lock in a repository whatever the directory, and these
+     * historical locks are vulnerable on purpose.
+     */
     public const FIXTURE_ROOT = __DIR__ . '/../Fixture/third-party';
 
     /** @var list<ScratchProject> */
@@ -60,7 +64,7 @@ final class FixtureRunner
     public function workspace(string $fixtureDir): ScratchWorkspace
     {
         $expected = self::expected($fixtureDir);
-        $workspace = ScratchWorkspace::fromFiles($fixtureDir . '/composer.json', $fixtureDir . '/composer.lock');
+        $workspace = ScratchWorkspace::fromFiles($fixtureDir . '/composer.fixture.json', $fixtureDir . '/composer.fixture.lock');
         $repoDir = $this->repositoryDirectory($fixtureDir);
         $workspace->overrideRepositories([
             ['type' => 'composer', 'url' => 'file://' . $repoDir],
@@ -70,6 +74,9 @@ final class FixtureRunner
         if (is_array($platform)) {
             /** @var array<string, string|false> $platform */
             $workspace->overridePlatform($platform);
+        }
+        if (is_string($expected['root_version'] ?? null) && $expected['root_version'] !== '') {
+            $workspace->overrideRootVersion($expected['root_version']);
         }
 
         return $workspace;

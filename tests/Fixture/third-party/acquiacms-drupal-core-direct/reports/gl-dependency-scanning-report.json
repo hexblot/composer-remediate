@@ -1,0 +1,2131 @@
+{
+    "version": "15.2.1",
+    "vulnerabilities": [
+        {
+            "id": "454ef405-0f05-5192-a1eb-4a9298590480",
+            "category": "dependency_scanning",
+            "name": "CVE-2024-51736: CVE-2024-51736: Command execution hijack on Windows with Process class",
+            "description": "symfony/process v6.4.8 is affected by CVE-2024-51736 (affected versions >=2.0.0,<3.0.0|>=3.0.0,<4.0.0|>=4.0.0,<5.0.0|>=5.0.0,<5.1.0|>=5.1.0,<5.2.0|>=5.2.0,<5.3.0|>=5.3.0,<5.4.0|>=5.4.0,<5.4.46|>=6.0.0,<6.1.0|>=6.1.0,<6.2.0|>=6.2.0,<6.3.0|>=6.3.0,<6.4.0|>=6.4.0,<6.4.14|>=7.0.0,<7.1.0|>=7.1.0,<7.1.7).",
+            "severity": "High",
+            "solution": "Run `composer update symfony/process` (verified with Composer's solver, 1 package change(s)).",
+            "identifiers": [
+                {
+                    "type": "cve",
+                    "name": "CVE-2024-51736",
+                    "value": "CVE-2024-51736",
+                    "url": "https://nvd.nist.gov/vuln/detail/CVE-2024-51736"
+                },
+                {
+                    "type": "ghsa",
+                    "name": "GHSA-qq5c-677p-737q",
+                    "value": "GHSA-qq5c-677p-737q",
+                    "url": "https://github.com/advisories/GHSA-qq5c-677p-737q"
+                },
+                {
+                    "type": "packagist_advisory",
+                    "name": "PKSA-wws7-mr54-jsny",
+                    "value": "PKSA-wws7-mr54-jsny",
+                    "url": "https://packagist.org/security-advisories/PKSA-wws7-mr54-jsny"
+                }
+            ],
+            "links": [
+                {
+                    "url": "https://symfony.com/cve-2024-51736"
+                }
+            ],
+            "location": {
+                "file": "composer.lock",
+                "dependency": {
+                    "package": {
+                        "name": "symfony/process"
+                    },
+                    "version": "v6.4.8",
+                    "direct": false
+                }
+            }
+        },
+        {
+            "id": "9d1dd5d5-6b10-58f8-ac22-d2902e58afd3",
+            "category": "dependency_scanning",
+            "name": "CVE-2024-45440: Drupal Full Path Disclosure",
+            "description": "drupal/core 10.3.5 is affected by CVE-2024-45440 (affected versions >=8.0.0,<10.2.9|>=10.3.0,<10.3.6|>=11.0.0,<11.0.5).",
+            "severity": "Medium",
+            "solution": "Run `composer update drupal/core` (verified with Composer's solver, 1 package change(s)).",
+            "identifiers": [
+                {
+                    "type": "cve",
+                    "name": "CVE-2024-45440",
+                    "value": "CVE-2024-45440",
+                    "url": "https://nvd.nist.gov/vuln/detail/CVE-2024-45440"
+                },
+                {
+                    "type": "ghsa",
+                    "name": "GHSA-mg8j-w93w-xjgc",
+                    "value": "GHSA-mg8j-w93w-xjgc",
+                    "url": "https://github.com/advisories/GHSA-mg8j-w93w-xjgc"
+                },
+                {
+                    "type": "packagist_advisory",
+                    "name": "PKSA-styk-3knc-d1bt",
+                    "value": "PKSA-styk-3knc-d1bt",
+                    "url": "https://packagist.org/security-advisories/PKSA-styk-3knc-d1bt"
+                }
+            ],
+            "links": [
+                {
+                    "url": "https://github.com/advisories/GHSA-mg8j-w93w-xjgc"
+                }
+            ],
+            "location": {
+                "file": "composer.lock",
+                "dependency": {
+                    "package": {
+                        "name": "drupal/core"
+                    },
+                    "version": "10.3.5",
+                    "direct": false
+                }
+            }
+        },
+        {
+            "id": "5f28dce3-d700-55c3-b929-4283f2a804b6",
+            "category": "dependency_scanning",
+            "name": "CVE-2024-50342: CVE-2024-50342: Internal address and port enumeration allowed by NoPrivateNetworkHttpClient",
+            "description": "symfony/http-client v7.1.4 is affected by CVE-2024-50342 (affected versions >=4.3.0,<4.4.0|>=4.4.0,<5.0.0|>=5.0.0,<5.1.0|>=5.1.0,<5.2.0|>=5.2.0,<5.3.0|>=5.3.0,<5.4.0|>=5.4.0,<5.4.47|>=6.0.0,<6.1.0|>=6.1.0,<6.2.0|>=6.2.0,<6.3.0|>=6.3.0,<6.4.0|>=6.4.0,<6.4.15|>=7.0.0,<7.1.0|>=7.1.0,<7.1.8).",
+            "severity": "Low",
+            "solution": "Run `composer update symfony/http-client` (verified with Composer's solver, 1 package change(s)).",
+            "identifiers": [
+                {
+                    "type": "cve",
+                    "name": "CVE-2024-50342",
+                    "value": "CVE-2024-50342",
+                    "url": "https://nvd.nist.gov/vuln/detail/CVE-2024-50342"
+                },
+                {
+                    "type": "ghsa",
+                    "name": "GHSA-9c3x-r3wp-mgxm",
+                    "value": "GHSA-9c3x-r3wp-mgxm",
+                    "url": "https://github.com/advisories/GHSA-9c3x-r3wp-mgxm"
+                },
+                {
+                    "type": "packagist_advisory",
+                    "name": "PKSA-4k7v-pfvw-nqvp",
+                    "value": "PKSA-4k7v-pfvw-nqvp",
+                    "url": "https://packagist.org/security-advisories/PKSA-4k7v-pfvw-nqvp"
+                }
+            ],
+            "links": [
+                {
+                    "url": "https://symfony.com/cve-2024-50342"
+                }
+            ],
+            "location": {
+                "file": "composer.lock",
+                "dependency": {
+                    "package": {
+                        "name": "symfony/http-client"
+                    },
+                    "version": "v7.1.4",
+                    "direct": false
+                }
+            }
+        },
+        {
+            "id": "80ab050a-023d-593d-b474-90144420798c",
+            "category": "dependency_scanning",
+            "name": "CVE-2024-50345: CVE-2024-50345: Open redirect via browser-sanitized URLs",
+            "description": "symfony/http-foundation v6.4.10 is affected by CVE-2024-50345 (affected versions >=2.0.0,<3.0.0|>=3.0.0,<4.0.0|>=4.0.0,<5.0.0|>=5.0.0,<5.1.0|>=5.1.0,<5.2.0|>=5.2.0,<5.3.0|>=5.3.0,<5.4.0|>=5.4.0,<5.4.46|>=6.0.0,<6.1.0|>=6.1.0,<6.2.0|>=6.2.0,<6.3.0|>=6.3.0,<6.4.0|>=6.4.0,<6.4.14|>=7.0.0,<7.1.0|>=7.1.0,<7.1.7).",
+            "severity": "Low",
+            "solution": "Run `composer update symfony/http-foundation` (verified with Composer's solver, 1 package change(s)).",
+            "identifiers": [
+                {
+                    "type": "cve",
+                    "name": "CVE-2024-50345",
+                    "value": "CVE-2024-50345",
+                    "url": "https://nvd.nist.gov/vuln/detail/CVE-2024-50345"
+                },
+                {
+                    "type": "ghsa",
+                    "name": "GHSA-mrqx-rp3w-jpjp",
+                    "value": "GHSA-mrqx-rp3w-jpjp",
+                    "url": "https://github.com/advisories/GHSA-mrqx-rp3w-jpjp"
+                },
+                {
+                    "type": "packagist_advisory",
+                    "name": "PKSA-b35n-565h-rs4q",
+                    "value": "PKSA-b35n-565h-rs4q",
+                    "url": "https://packagist.org/security-advisories/PKSA-b35n-565h-rs4q"
+                }
+            ],
+            "links": [
+                {
+                    "url": "https://symfony.com/cve-2024-50345"
+                }
+            ],
+            "location": {
+                "file": "composer.lock",
+                "dependency": {
+                    "package": {
+                        "name": "symfony/http-foundation"
+                    },
+                    "version": "v6.4.10",
+                    "direct": false
+                }
+            }
+        },
+        {
+            "id": "7e10b568-0b13-5e0a-82f1-8a5c9d048aba",
+            "category": "dependency_scanning",
+            "name": "CVE-2024-51755: Unguarded calls to __isset() and to array-accesses when the sandbox is enabled",
+            "description": "twig/twig v3.14.0 is affected by CVE-2024-51755 (affected versions >=1.0.0,<2.0.0|>=2.0.0,<3.0.0|>=3.0.0,<3.11.2|>=3.12.0,<3.14.1).",
+            "severity": "Low",
+            "solution": "Run `composer update twig/twig` (verified with Composer's solver, 1 package change(s)).",
+            "identifiers": [
+                {
+                    "type": "cve",
+                    "name": "CVE-2024-51755",
+                    "value": "CVE-2024-51755",
+                    "url": "https://nvd.nist.gov/vuln/detail/CVE-2024-51755"
+                },
+                {
+                    "type": "ghsa",
+                    "name": "GHSA-jjxq-ff2g-95vh",
+                    "value": "GHSA-jjxq-ff2g-95vh",
+                    "url": "https://github.com/advisories/GHSA-jjxq-ff2g-95vh"
+                },
+                {
+                    "type": "packagist_advisory",
+                    "name": "PKSA-2wrf-1xmk-1pky",
+                    "value": "PKSA-2wrf-1xmk-1pky",
+                    "url": "https://packagist.org/security-advisories/PKSA-2wrf-1xmk-1pky"
+                }
+            ],
+            "links": [
+                {
+                    "url": "https://symfony.com/blog/cve-2024-51755-unguarded-calls-to-isset-and-to-array-accesses-in-a-sandbox"
+                }
+            ],
+            "location": {
+                "file": "composer.lock",
+                "dependency": {
+                    "package": {
+                        "name": "twig/twig"
+                    },
+                    "version": "v3.14.0",
+                    "direct": false
+                }
+            }
+        },
+        {
+            "id": "999133fa-01bf-5969-ad31-5feab67a1467",
+            "category": "dependency_scanning",
+            "name": "CVE-2024-51754: Unguarded calls to __toString() when nesting an object into an array",
+            "description": "twig/twig v3.14.0 is affected by CVE-2024-51754 (affected versions >=1.0.0,<2.0.0|>=2.0.0,<3.0.0|>=3.0.0,<3.11.2|>=3.12.0,<3.14.1).",
+            "severity": "Low",
+            "solution": "Run `composer update twig/twig` (verified with Composer's solver, 1 package change(s)).",
+            "identifiers": [
+                {
+                    "type": "cve",
+                    "name": "CVE-2024-51754",
+                    "value": "CVE-2024-51754",
+                    "url": "https://nvd.nist.gov/vuln/detail/CVE-2024-51754"
+                },
+                {
+                    "type": "ghsa",
+                    "name": "GHSA-6377-hfv9-hqf6",
+                    "value": "GHSA-6377-hfv9-hqf6",
+                    "url": "https://github.com/advisories/GHSA-6377-hfv9-hqf6"
+                },
+                {
+                    "type": "packagist_advisory",
+                    "name": "PKSA-yhcn-xrg3-68b1",
+                    "value": "PKSA-yhcn-xrg3-68b1",
+                    "url": "https://packagist.org/security-advisories/PKSA-yhcn-xrg3-68b1"
+                }
+            ],
+            "links": [
+                {
+                    "url": "https://symfony.com/blog/cve-2024-51754-unguarded-calls-to-tostring-in-a-sandbox-when-an-object-is-in-an-array-or-an-argument-list"
+                }
+            ],
+            "location": {
+                "file": "composer.lock",
+                "dependency": {
+                    "package": {
+                        "name": "twig/twig"
+                    },
+                    "version": "v3.14.0",
+                    "direct": false
+                }
+            }
+        }
+    ],
+    "dependency_files": [
+        {
+            "path": "composer.lock",
+            "package_manager": "composer",
+            "dependencies": [
+                {
+                    "package": {
+                        "name": "acquia/acquia-cms-starterkit"
+                    },
+                    "version": "1.1.10"
+                },
+                {
+                    "package": {
+                        "name": "acquia/coding-standards"
+                    },
+                    "version": "v1.1.0"
+                },
+                {
+                    "package": {
+                        "name": "acquia/cohesion"
+                    },
+                    "version": "8.0.0"
+                },
+                {
+                    "package": {
+                        "name": "acquia/cohesion-theme"
+                    },
+                    "version": "8.0.0"
+                },
+                {
+                    "package": {
+                        "name": "acquia/drupal-environment-detector"
+                    },
+                    "version": "1.6.0"
+                },
+                {
+                    "package": {
+                        "name": "acquia/http-hmac-php"
+                    },
+                    "version": "6.1.0"
+                },
+                {
+                    "package": {
+                        "name": "asm89/stack-cors"
+                    },
+                    "version": "v2.2.0"
+                },
+                {
+                    "package": {
+                        "name": "behat/mink"
+                    },
+                    "version": "v1.11.0"
+                },
+                {
+                    "package": {
+                        "name": "behat/mink-browserkit-driver"
+                    },
+                    "version": "v2.2.0"
+                },
+                {
+                    "package": {
+                        "name": "caxy/php-htmldiff"
+                    },
+                    "version": "v0.1.15"
+                },
+                {
+                    "package": {
+                        "name": "chi-teck/drupal-code-generator"
+                    },
+                    "version": "3.6.1"
+                },
+                {
+                    "package": {
+                        "name": "clue/stream-filter"
+                    },
+                    "version": "v1.7.0"
+                },
+                {
+                    "package": {
+                        "name": "colinodell/psr-testlogger"
+                    },
+                    "version": "v1.3.0"
+                },
+                {
+                    "package": {
+                        "name": "commerceguys/addressing"
+                    },
+                    "version": "v2.2.2"
+                },
+                {
+                    "package": {
+                        "name": "composer/ca-bundle"
+                    },
+                    "version": "1.5.1"
+                },
+                {
+                    "package": {
+                        "name": "composer/class-map-generator"
+                    },
+                    "version": "1.3.4"
+                },
+                {
+                    "package": {
+                        "name": "composer/composer"
+                    },
+                    "version": "2.7.9"
+                },
+                {
+                    "package": {
+                        "name": "composer/installers"
+                    },
+                    "version": "v2.3.0"
+                },
+                {
+                    "package": {
+                        "name": "composer/metadata-minifier"
+                    },
+                    "version": "1.0.0"
+                },
+                {
+                    "package": {
+                        "name": "composer/pcre"
+                    },
+                    "version": "3.3.1"
+                },
+                {
+                    "package": {
+                        "name": "composer/semver"
+                    },
+                    "version": "3.4.2"
+                },
+                {
+                    "package": {
+                        "name": "composer/spdx-licenses"
+                    },
+                    "version": "1.5.8"
+                },
+                {
+                    "package": {
+                        "name": "composer/xdebug-handler"
+                    },
+                    "version": "3.0.5"
+                },
+                {
+                    "package": {
+                        "name": "consolidation/annotated-command"
+                    },
+                    "version": "4.10.0"
+                },
+                {
+                    "package": {
+                        "name": "consolidation/config"
+                    },
+                    "version": "2.1.2"
+                },
+                {
+                    "package": {
+                        "name": "consolidation/filter-via-dot-access-data"
+                    },
+                    "version": "2.0.2"
+                },
+                {
+                    "package": {
+                        "name": "consolidation/log"
+                    },
+                    "version": "3.1.0"
+                },
+                {
+                    "package": {
+                        "name": "consolidation/output-formatters"
+                    },
+                    "version": "4.5.0"
+                },
+                {
+                    "package": {
+                        "name": "consolidation/robo"
+                    },
+                    "version": "4.0.6"
+                },
+                {
+                    "package": {
+                        "name": "consolidation/self-update"
+                    },
+                    "version": "2.2.0"
+                },
+                {
+                    "package": {
+                        "name": "consolidation/site-alias"
+                    },
+                    "version": "4.1.0"
+                },
+                {
+                    "package": {
+                        "name": "consolidation/site-process"
+                    },
+                    "version": "5.4.0"
+                },
+                {
+                    "package": {
+                        "name": "cweagans/composer-patches"
+                    },
+                    "version": "1.7.3"
+                },
+                {
+                    "package": {
+                        "name": "davedevelopment/stiphle"
+                    },
+                    "version": "0.9.4"
+                },
+                {
+                    "package": {
+                        "name": "dealerdirect/phpcodesniffer-composer-installer"
+                    },
+                    "version": "v1.0.0"
+                },
+                {
+                    "package": {
+                        "name": "dflydev/dot-access-data"
+                    },
+                    "version": "v3.0.3"
+                },
+                {
+                    "package": {
+                        "name": "doctrine/annotations"
+                    },
+                    "version": "1.14.4"
+                },
+                {
+                    "package": {
+                        "name": "doctrine/collections"
+                    },
+                    "version": "2.2.2"
+                },
+                {
+                    "package": {
+                        "name": "doctrine/deprecations"
+                    },
+                    "version": "1.1.3"
+                },
+                {
+                    "package": {
+                        "name": "doctrine/instantiator"
+                    },
+                    "version": "2.0.0"
+                },
+                {
+                    "package": {
+                        "name": "doctrine/lexer"
+                    },
+                    "version": "2.1.1"
+                },
+                {
+                    "package": {
+                        "name": "dompdf/php-font-lib"
+                    },
+                    "version": "1.0.0"
+                },
+                {
+                    "package": {
+                        "name": "drupal/acquia_cms_article"
+                    },
+                    "version": "dev-develop"
+                },
+                {
+                    "package": {
+                        "name": "drupal/acquia_cms_audio"
+                    },
+                    "version": "dev-develop"
+                },
+                {
+                    "package": {
+                        "name": "drupal/acquia_cms_common"
+                    },
+                    "version": "dev-develop"
+                },
+                {
+                    "package": {
+                        "name": "drupal/acquia_cms_component"
+                    },
+                    "version": "dev-develop"
+                },
+                {
+                    "package": {
+                        "name": "drupal/acquia_cms_dam"
+                    },
+                    "version": "dev-develop"
+                },
+                {
+                    "package": {
+                        "name": "drupal/acquia_cms_document"
+                    },
+                    "version": "dev-develop"
+                },
+                {
+                    "package": {
+                        "name": "drupal/acquia_cms_event"
+                    },
+                    "version": "dev-develop"
+                },
+                {
+                    "package": {
+                        "name": "drupal/acquia_cms_image"
+                    },
+                    "version": "dev-develop"
+                },
+                {
+                    "package": {
+                        "name": "drupal/acquia_cms_page"
+                    },
+                    "version": "dev-develop"
+                },
+                {
+                    "package": {
+                        "name": "drupal/acquia_cms_person"
+                    },
+                    "version": "dev-develop"
+                },
+                {
+                    "package": {
+                        "name": "drupal/acquia_cms_place"
+                    },
+                    "version": "dev-develop"
+                },
+                {
+                    "package": {
+                        "name": "drupal/acquia_cms_search"
+                    },
+                    "version": "dev-develop"
+                },
+                {
+                    "package": {
+                        "name": "drupal/acquia_cms_site_studio"
+                    },
+                    "version": "dev-develop"
+                },
+                {
+                    "package": {
+                        "name": "drupal/acquia_cms_starter"
+                    },
+                    "version": "dev-develop"
+                },
+                {
+                    "package": {
+                        "name": "drupal/acquia_cms_toolbar"
+                    },
+                    "version": "dev-develop"
+                },
+                {
+                    "package": {
+                        "name": "drupal/acquia_cms_tour"
+                    },
+                    "version": "dev-develop"
+                },
+                {
+                    "package": {
+                        "name": "drupal/acquia_cms_video"
+                    },
+                    "version": "dev-develop"
+                },
+                {
+                    "package": {
+                        "name": "drupal/acquia_connector"
+                    },
+                    "version": "4.0.8"
+                },
+                {
+                    "package": {
+                        "name": "drupal/acquia_dam"
+                    },
+                    "version": "dev-1.0.x"
+                },
+                {
+                    "package": {
+                        "name": "drupal/acquia_purge"
+                    },
+                    "version": "1.5.0"
+                },
+                {
+                    "package": {
+                        "name": "drupal/acquia_search"
+                    },
+                    "version": "3.1.13"
+                },
+                {
+                    "package": {
+                        "name": "drupal/address"
+                    },
+                    "version": "2.0.2"
+                },
+                {
+                    "package": {
+                        "name": "drupal/admin_toolbar"
+                    },
+                    "version": "3.5.0"
+                },
+                {
+                    "package": {
+                        "name": "drupal/autologout"
+                    },
+                    "version": "1.5.0"
+                },
+                {
+                    "package": {
+                        "name": "drupal/captcha"
+                    },
+                    "version": "2.0.6"
+                },
+                {
+                    "package": {
+                        "name": "drupal/checklistapi"
+                    },
+                    "version": "2.1.6"
+                },
+                {
+                    "package": {
+                        "name": "drupal/coder"
+                    },
+                    "version": "8.3.24"
+                },
+                {
+                    "package": {
+                        "name": "drupal/collapsiblock"
+                    },
+                    "version": "4.3.0"
+                },
+                {
+                    "package": {
+                        "name": "drupal/component"
+                    },
+                    "version": "1.0.0-rc4"
+                },
+                {
+                    "package": {
+                        "name": "drupal/config_filter"
+                    },
+                    "version": "dev-3428542-automated-drupal-11"
+                },
+                {
+                    "package": {
+                        "name": "drupal/config_ignore"
+                    },
+                    "version": "3.3.0"
+                },
+                {
+                    "package": {
+                        "name": "drupal/config_rewrite"
+                    },
+                    "version": "1.6.0"
+                },
+                {
+                    "package": {
+                        "name": "drupal/config_split"
+                    },
+                    "version": "2.0.1"
+                },
+                {
+                    "package": {
+                        "name": "drupal/consumer_image_styles"
+                    },
+                    "version": "4.0.8"
+                },
+                {
+                    "package": {
+                        "name": "drupal/consumers"
+                    },
+                    "version": "1.19.0"
+                },
+                {
+                    "package": {
+                        "name": "drupal/core"
+                    },
+                    "version": "10.3.5"
+                },
+                {
+                    "package": {
+                        "name": "drupal/core-composer-scaffold"
+                    },
+                    "version": "11.0.2"
+                },
+                {
+                    "package": {
+                        "name": "drupal/core-dev"
+                    },
+                    "version": "11.0.0-alpha1"
+                },
+                {
+                    "package": {
+                        "name": "drupal/crop"
+                    },
+                    "version": "2.4.0"
+                },
+                {
+                    "package": {
+                        "name": "drupal/ctools"
+                    },
+                    "version": "4.1.0"
+                },
+                {
+                    "package": {
+                        "name": "drupal/default_content"
+                    },
+                    "version": "2.0.0-alpha3"
+                },
+                {
+                    "package": {
+                        "name": "drupal/diff"
+                    },
+                    "version": "1.7.0"
+                },
+                {
+                    "package": {
+                        "name": "drupal/entity_clone"
+                    },
+                    "version": "2.1.0-beta1"
+                },
+                {
+                    "package": {
+                        "name": "drupal/entity_reference_revisions"
+                    },
+                    "version": "1.12.0"
+                },
+                {
+                    "package": {
+                        "name": "drupal/facets"
+                    },
+                    "version": "2.0.8"
+                },
+                {
+                    "package": {
+                        "name": "drupal/facets_pretty_paths"
+                    },
+                    "version": "2.0.2"
+                },
+                {
+                    "package": {
+                        "name": "drupal/field_group"
+                    },
+                    "version": "3.6.0"
+                },
+                {
+                    "package": {
+                        "name": "drupal/file_mdm"
+                    },
+                    "version": "3.1.0"
+                },
+                {
+                    "package": {
+                        "name": "drupal/focal_point"
+                    },
+                    "version": "2.1.1"
+                },
+                {
+                    "package": {
+                        "name": "drupal/geocoder"
+                    },
+                    "version": "4.25.0"
+                },
+                {
+                    "package": {
+                        "name": "drupal/geofield"
+                    },
+                    "version": "1.61.0"
+                },
+                {
+                    "package": {
+                        "name": "drupal/gin"
+                    },
+                    "version": "3.0.0-rc13"
+                },
+                {
+                    "package": {
+                        "name": "drupal/gin_toolbar"
+                    },
+                    "version": "1.0.0-rc6"
+                },
+                {
+                    "package": {
+                        "name": "drupal/google_tag"
+                    },
+                    "version": "2.0.6"
+                },
+                {
+                    "package": {
+                        "name": "drupal/honeypot"
+                    },
+                    "version": "2.2.0"
+                },
+                {
+                    "package": {
+                        "name": "drupal/imagemagick"
+                    },
+                    "version": "4.0.2"
+                },
+                {
+                    "package": {
+                        "name": "drupal/imce"
+                    },
+                    "version": "3.1.1"
+                },
+                {
+                    "package": {
+                        "name": "drupal/jquery_ui"
+                    },
+                    "version": "1.7.0"
+                },
+                {
+                    "package": {
+                        "name": "drupal/js_cookie"
+                    },
+                    "version": "1.0.1"
+                },
+                {
+                    "package": {
+                        "name": "drupal/jsonapi_extras"
+                    },
+                    "version": "3.25.0"
+                },
+                {
+                    "package": {
+                        "name": "drupal/media_entity_soundcloud"
+                    },
+                    "version": "3.2.0"
+                },
+                {
+                    "package": {
+                        "name": "drupal/memcache"
+                    },
+                    "version": "2.7.0"
+                },
+                {
+                    "package": {
+                        "name": "drupal/metatag"
+                    },
+                    "version": "2.0.2"
+                },
+                {
+                    "package": {
+                        "name": "drupal/moderation_dashboard"
+                    },
+                    "version": "3.1.0"
+                },
+                {
+                    "package": {
+                        "name": "drupal/moderation_sidebar"
+                    },
+                    "version": "1.8.0"
+                },
+                {
+                    "package": {
+                        "name": "drupal/node_revision_delete"
+                    },
+                    "version": "2.0.0-rc1"
+                },
+                {
+                    "package": {
+                        "name": "drupal/password_policy"
+                    },
+                    "version": "4.0.3"
+                },
+                {
+                    "package": {
+                        "name": "drupal/pathauto"
+                    },
+                    "version": "1.13.0"
+                },
+                {
+                    "package": {
+                        "name": "drupal/purge"
+                    },
+                    "version": "3.6.0"
+                },
+                {
+                    "package": {
+                        "name": "drupal/purge_queuer_coretags"
+                    },
+                    "version": "3.6.0"
+                },
+                {
+                    "package": {
+                        "name": "drupal/recaptcha"
+                    },
+                    "version": "3.4.0"
+                },
+                {
+                    "package": {
+                        "name": "drupal/redirect"
+                    },
+                    "version": "1.10.0"
+                },
+                {
+                    "package": {
+                        "name": "drupal/reroute_email"
+                    },
+                    "version": "2.2.1"
+                },
+                {
+                    "package": {
+                        "name": "drupal/responsive_preview"
+                    },
+                    "version": "2.2.0"
+                },
+                {
+                    "package": {
+                        "name": "drupal/scheduler"
+                    },
+                    "version": "2.1.0"
+                },
+                {
+                    "package": {
+                        "name": "drupal/scheduler_content_moderation_integration"
+                    },
+                    "version": "3.0.3"
+                },
+                {
+                    "package": {
+                        "name": "drupal/schema_metatag"
+                    },
+                    "version": "3.0.3"
+                },
+                {
+                    "package": {
+                        "name": "drupal/search_api"
+                    },
+                    "version": "1.35.0"
+                },
+                {
+                    "package": {
+                        "name": "drupal/search_api_autocomplete"
+                    },
+                    "version": "1.9.0"
+                },
+                {
+                    "package": {
+                        "name": "drupal/search_api_solr"
+                    },
+                    "version": "4.3.5"
+                },
+                {
+                    "package": {
+                        "name": "drupal/seckit"
+                    },
+                    "version": "2.0.2"
+                },
+                {
+                    "package": {
+                        "name": "drupal/shield"
+                    },
+                    "version": "1.8.0"
+                },
+                {
+                    "package": {
+                        "name": "drupal/simple_sitemap"
+                    },
+                    "version": "4.2.1"
+                },
+                {
+                    "package": {
+                        "name": "drupal/sitestudio_config_management"
+                    },
+                    "version": "dev-1.x"
+                },
+                {
+                    "package": {
+                        "name": "drupal/sitestudio_gin"
+                    },
+                    "version": "dev-3434617-automated-drupal-11"
+                },
+                {
+                    "package": {
+                        "name": "drupal/smart_trim"
+                    },
+                    "version": "2.2.0"
+                },
+                {
+                    "package": {
+                        "name": "drupal/social_media_links"
+                    },
+                    "version": "2.10.0"
+                },
+                {
+                    "package": {
+                        "name": "drupal/sophron"
+                    },
+                    "version": "2.1.0"
+                },
+                {
+                    "package": {
+                        "name": "drupal/stable"
+                    },
+                    "version": "2.1.0"
+                },
+                {
+                    "package": {
+                        "name": "drupal/token"
+                    },
+                    "version": "1.15.0"
+                },
+                {
+                    "package": {
+                        "name": "drupal/username_enumeration_prevention"
+                    },
+                    "version": "1.4.0"
+                },
+                {
+                    "package": {
+                        "name": "drupal/views_remote_data"
+                    },
+                    "version": "1.0.3"
+                },
+                {
+                    "package": {
+                        "name": "drupal/workbench_email"
+                    },
+                    "version": "3.0.5"
+                },
+                {
+                    "package": {
+                        "name": "drush/drush"
+                    },
+                    "version": "13.0.1"
+                },
+                {
+                    "package": {
+                        "name": "e0ipso/shaper"
+                    },
+                    "version": "1.2.4"
+                },
+                {
+                    "package": {
+                        "name": "egulias/email-validator"
+                    },
+                    "version": "4.0.2"
+                },
+                {
+                    "package": {
+                        "name": "ergebnis/composer-normalize"
+                    },
+                    "version": "2.43.0"
+                },
+                {
+                    "package": {
+                        "name": "ergebnis/json"
+                    },
+                    "version": "1.2.0"
+                },
+                {
+                    "package": {
+                        "name": "ergebnis/json-normalizer"
+                    },
+                    "version": "4.5.0"
+                },
+                {
+                    "package": {
+                        "name": "ergebnis/json-pointer"
+                    },
+                    "version": "3.4.0"
+                },
+                {
+                    "package": {
+                        "name": "ergebnis/json-printer"
+                    },
+                    "version": "3.5.0"
+                },
+                {
+                    "package": {
+                        "name": "ergebnis/json-schema-validator"
+                    },
+                    "version": "4.2.0"
+                },
+                {
+                    "package": {
+                        "name": "ezyang/htmlpurifier"
+                    },
+                    "version": "v4.17.0"
+                },
+                {
+                    "package": {
+                        "name": "fileeye/mimemap"
+                    },
+                    "version": "2.1.2"
+                },
+                {
+                    "package": {
+                        "name": "fileeye/pel"
+                    },
+                    "version": "0.10.0"
+                },
+                {
+                    "package": {
+                        "name": "geocoder-php/common-http"
+                    },
+                    "version": "4.6.0"
+                },
+                {
+                    "package": {
+                        "name": "geocoder-php/google-maps-provider"
+                    },
+                    "version": "4.7.1"
+                },
+                {
+                    "package": {
+                        "name": "google/protobuf"
+                    },
+                    "version": "v3.25.4"
+                },
+                {
+                    "package": {
+                        "name": "google/recaptcha"
+                    },
+                    "version": "1.3.0"
+                },
+                {
+                    "package": {
+                        "name": "grasmash/expander"
+                    },
+                    "version": "3.0.0"
+                },
+                {
+                    "package": {
+                        "name": "grasmash/yaml-cli"
+                    },
+                    "version": "3.2.1"
+                },
+                {
+                    "package": {
+                        "name": "guzzlehttp/guzzle"
+                    },
+                    "version": "7.9.2"
+                },
+                {
+                    "package": {
+                        "name": "guzzlehttp/promises"
+                    },
+                    "version": "2.0.3"
+                },
+                {
+                    "package": {
+                        "name": "guzzlehttp/psr7"
+                    },
+                    "version": "2.7.0"
+                },
+                {
+                    "package": {
+                        "name": "halaxa/json-machine"
+                    },
+                    "version": "1.1.4"
+                },
+                {
+                    "package": {
+                        "name": "http-interop/http-factory-guzzle"
+                    },
+                    "version": "1.2.0"
+                },
+                {
+                    "package": {
+                        "name": "illuminate/collections"
+                    },
+                    "version": "v11.22.0"
+                },
+                {
+                    "package": {
+                        "name": "illuminate/conditionable"
+                    },
+                    "version": "v11.22.0"
+                },
+                {
+                    "package": {
+                        "name": "illuminate/contracts"
+                    },
+                    "version": "v11.22.0"
+                },
+                {
+                    "package": {
+                        "name": "illuminate/macroable"
+                    },
+                    "version": "v11.22.0"
+                },
+                {
+                    "package": {
+                        "name": "itamair/geophp"
+                    },
+                    "version": "1.6"
+                },
+                {
+                    "package": {
+                        "name": "jangregor/phpstan-prophecy"
+                    },
+                    "version": "1.0.2"
+                },
+                {
+                    "package": {
+                        "name": "jean85/pretty-package-versions"
+                    },
+                    "version": "2.0.6"
+                },
+                {
+                    "package": {
+                        "name": "justinrainbow/json-schema"
+                    },
+                    "version": "5.3.0"
+                },
+                {
+                    "package": {
+                        "name": "laminas/laminas-stdlib"
+                    },
+                    "version": "3.19.0"
+                },
+                {
+                    "package": {
+                        "name": "laravel/prompts"
+                    },
+                    "version": "v0.1.25"
+                },
+                {
+                    "package": {
+                        "name": "league/container"
+                    },
+                    "version": "4.2.2"
+                },
+                {
+                    "package": {
+                        "name": "localheinz/diff"
+                    },
+                    "version": "1.1.1"
+                },
+                {
+                    "package": {
+                        "name": "lullabot/mink-selenium2-driver"
+                    },
+                    "version": "v1.7.4"
+                },
+                {
+                    "package": {
+                        "name": "lullabot/php-webdriver"
+                    },
+                    "version": "v2.0.6"
+                },
+                {
+                    "package": {
+                        "name": "maennchen/zipstream-php"
+                    },
+                    "version": "3.1.0"
+                },
+                {
+                    "package": {
+                        "name": "masterminds/html5"
+                    },
+                    "version": "2.9.0"
+                },
+                {
+                    "package": {
+                        "name": "mck89/peast"
+                    },
+                    "version": "v1.16.3"
+                },
+                {
+                    "package": {
+                        "name": "mglaman/drupal-check"
+                    },
+                    "version": "1.5.0"
+                },
+                {
+                    "package": {
+                        "name": "mglaman/phpstan-drupal"
+                    },
+                    "version": "1.2.12"
+                },
+                {
+                    "package": {
+                        "name": "micheh/phpcs-gitlab"
+                    },
+                    "version": "1.1.0"
+                },
+                {
+                    "package": {
+                        "name": "mikey179/vfsstream"
+                    },
+                    "version": "v1.6.12"
+                },
+                {
+                    "package": {
+                        "name": "mkalkbrenner/php-htmldiff-advanced"
+                    },
+                    "version": "0.0.8"
+                },
+                {
+                    "package": {
+                        "name": "mnsami/composer-custom-directory-installer"
+                    },
+                    "version": "2.0.0"
+                },
+                {
+                    "package": {
+                        "name": "myclabs/deep-copy"
+                    },
+                    "version": "1.12.0"
+                },
+                {
+                    "package": {
+                        "name": "nette/neon"
+                    },
+                    "version": "v3.4.3"
+                },
+                {
+                    "package": {
+                        "name": "nikic/php-parser"
+                    },
+                    "version": "v5.1.0"
+                },
+                {
+                    "package": {
+                        "name": "nnnick/chartjs"
+                    },
+                    "version": "v4.4.1"
+                },
+                {
+                    "package": {
+                        "name": "oomphinc/composer-installers-extender"
+                    },
+                    "version": "2.0.1"
+                },
+                {
+                    "package": {
+                        "name": "open-telemetry/api"
+                    },
+                    "version": "1.0.3"
+                },
+                {
+                    "package": {
+                        "name": "open-telemetry/context"
+                    },
+                    "version": "1.0.2"
+                },
+                {
+                    "package": {
+                        "name": "open-telemetry/exporter-otlp"
+                    },
+                    "version": "1.0.4"
+                },
+                {
+                    "package": {
+                        "name": "open-telemetry/gen-otlp-protobuf"
+                    },
+                    "version": "1.2.0"
+                },
+                {
+                    "package": {
+                        "name": "open-telemetry/sdk"
+                    },
+                    "version": "1.0.8"
+                },
+                {
+                    "package": {
+                        "name": "open-telemetry/sem-conv"
+                    },
+                    "version": "1.27.1"
+                },
+                {
+                    "package": {
+                        "name": "pear/archive_tar"
+                    },
+                    "version": "1.5.0"
+                },
+                {
+                    "package": {
+                        "name": "pear/console_getopt"
+                    },
+                    "version": "v1.4.3"
+                },
+                {
+                    "package": {
+                        "name": "pear/pear-core-minimal"
+                    },
+                    "version": "v1.10.15"
+                },
+                {
+                    "package": {
+                        "name": "pear/pear_exception"
+                    },
+                    "version": "v1.0.2"
+                },
+                {
+                    "package": {
+                        "name": "phar-io/manifest"
+                    },
+                    "version": "2.0.4"
+                },
+                {
+                    "package": {
+                        "name": "phar-io/version"
+                    },
+                    "version": "3.2.1"
+                },
+                {
+                    "package": {
+                        "name": "phootwork/collection"
+                    },
+                    "version": "v3.2.2"
+                },
+                {
+                    "package": {
+                        "name": "phootwork/lang"
+                    },
+                    "version": "v3.2.2"
+                },
+                {
+                    "package": {
+                        "name": "php-http/discovery"
+                    },
+                    "version": "1.19.4"
+                },
+                {
+                    "package": {
+                        "name": "php-http/guzzle7-adapter"
+                    },
+                    "version": "1.0.0"
+                },
+                {
+                    "package": {
+                        "name": "php-http/httplug"
+                    },
+                    "version": "2.4.0"
+                },
+                {
+                    "package": {
+                        "name": "php-http/message"
+                    },
+                    "version": "1.16.1"
+                },
+                {
+                    "package": {
+                        "name": "php-http/promise"
+                    },
+                    "version": "1.3.1"
+                },
+                {
+                    "package": {
+                        "name": "phpcompatibility/php-compatibility"
+                    },
+                    "version": "9.3.5"
+                },
+                {
+                    "package": {
+                        "name": "phpdocumentor/reflection-common"
+                    },
+                    "version": "2.2.0"
+                },
+                {
+                    "package": {
+                        "name": "phpdocumentor/reflection-docblock"
+                    },
+                    "version": "5.4.1"
+                },
+                {
+                    "package": {
+                        "name": "phpdocumentor/type-resolver"
+                    },
+                    "version": "1.8.2"
+                },
+                {
+                    "package": {
+                        "name": "phpowermove/docblock"
+                    },
+                    "version": "v4.0"
+                },
+                {
+                    "package": {
+                        "name": "phpspec/prophecy"
+                    },
+                    "version": "v1.19.0"
+                },
+                {
+                    "package": {
+                        "name": "phpspec/prophecy-phpunit"
+                    },
+                    "version": "v2.2.0"
+                },
+                {
+                    "package": {
+                        "name": "phpstan/extension-installer"
+                    },
+                    "version": "1.4.3"
+                },
+                {
+                    "package": {
+                        "name": "phpstan/phpdoc-parser"
+                    },
+                    "version": "1.30.1"
+                },
+                {
+                    "package": {
+                        "name": "phpstan/phpstan"
+                    },
+                    "version": "1.12.2"
+                },
+                {
+                    "package": {
+                        "name": "phpstan/phpstan-deprecation-rules"
+                    },
+                    "version": "1.2.0"
+                },
+                {
+                    "package": {
+                        "name": "phpstan/phpstan-phpunit"
+                    },
+                    "version": "1.4.0"
+                },
+                {
+                    "package": {
+                        "name": "phpunit/php-code-coverage"
+                    },
+                    "version": "9.2.32"
+                },
+                {
+                    "package": {
+                        "name": "phpunit/php-file-iterator"
+                    },
+                    "version": "3.0.6"
+                },
+                {
+                    "package": {
+                        "name": "phpunit/php-invoker"
+                    },
+                    "version": "3.1.1"
+                },
+                {
+                    "package": {
+                        "name": "phpunit/php-text-template"
+                    },
+                    "version": "2.0.4"
+                },
+                {
+                    "package": {
+                        "name": "phpunit/php-timer"
+                    },
+                    "version": "5.0.3"
+                },
+                {
+                    "package": {
+                        "name": "phpunit/phpunit"
+                    },
+                    "version": "9.6.20"
+                },
+                {
+                    "package": {
+                        "name": "psr/cache"
+                    },
+                    "version": "3.0.0"
+                },
+                {
+                    "package": {
+                        "name": "psr/container"
+                    },
+                    "version": "2.0.2"
+                },
+                {
+                    "package": {
+                        "name": "psr/event-dispatcher"
+                    },
+                    "version": "1.0.0"
+                },
+                {
+                    "package": {
+                        "name": "psr/http-client"
+                    },
+                    "version": "1.0.3"
+                },
+                {
+                    "package": {
+                        "name": "psr/http-factory"
+                    },
+                    "version": "1.1.0"
+                },
+                {
+                    "package": {
+                        "name": "psr/http-message"
+                    },
+                    "version": "2.0"
+                },
+                {
+                    "package": {
+                        "name": "psr/log"
+                    },
+                    "version": "3.0.2"
+                },
+                {
+                    "package": {
+                        "name": "psr/simple-cache"
+                    },
+                    "version": "3.0.0"
+                },
+                {
+                    "package": {
+                        "name": "psy/psysh"
+                    },
+                    "version": "v0.12.4"
+                },
+                {
+                    "package": {
+                        "name": "ralouphie/getallheaders"
+                    },
+                    "version": "3.0.3"
+                },
+                {
+                    "package": {
+                        "name": "react/promise"
+                    },
+                    "version": "v3.2.0"
+                },
+                {
+                    "package": {
+                        "name": "sebastian/cli-parser"
+                    },
+                    "version": "1.0.2"
+                },
+                {
+                    "package": {
+                        "name": "sebastian/code-unit"
+                    },
+                    "version": "1.0.8"
+                },
+                {
+                    "package": {
+                        "name": "sebastian/code-unit-reverse-lookup"
+                    },
+                    "version": "2.0.3"
+                },
+                {
+                    "package": {
+                        "name": "sebastian/comparator"
+                    },
+                    "version": "4.0.8"
+                },
+                {
+                    "package": {
+                        "name": "sebastian/complexity"
+                    },
+                    "version": "2.0.3"
+                },
+                {
+                    "package": {
+                        "name": "sebastian/diff"
+                    },
+                    "version": "4.0.6"
+                },
+                {
+                    "package": {
+                        "name": "sebastian/environment"
+                    },
+                    "version": "5.1.5"
+                },
+                {
+                    "package": {
+                        "name": "sebastian/exporter"
+                    },
+                    "version": "4.0.6"
+                },
+                {
+                    "package": {
+                        "name": "sebastian/global-state"
+                    },
+                    "version": "5.0.7"
+                },
+                {
+                    "package": {
+                        "name": "sebastian/lines-of-code"
+                    },
+                    "version": "1.0.4"
+                },
+                {
+                    "package": {
+                        "name": "sebastian/object-enumerator"
+                    },
+                    "version": "4.0.4"
+                },
+                {
+                    "package": {
+                        "name": "sebastian/object-reflector"
+                    },
+                    "version": "2.0.4"
+                },
+                {
+                    "package": {
+                        "name": "sebastian/recursion-context"
+                    },
+                    "version": "4.0.5"
+                },
+                {
+                    "package": {
+                        "name": "sebastian/resource-operations"
+                    },
+                    "version": "3.0.4"
+                },
+                {
+                    "package": {
+                        "name": "sebastian/type"
+                    },
+                    "version": "3.2.1"
+                },
+                {
+                    "package": {
+                        "name": "sebastian/version"
+                    },
+                    "version": "3.0.2"
+                },
+                {
+                    "package": {
+                        "name": "seld/jsonlint"
+                    },
+                    "version": "1.11.0"
+                },
+                {
+                    "package": {
+                        "name": "seld/phar-utils"
+                    },
+                    "version": "1.2.1"
+                },
+                {
+                    "package": {
+                        "name": "seld/signal-handler"
+                    },
+                    "version": "2.0.2"
+                },
+                {
+                    "package": {
+                        "name": "sirbrillig/phpcs-variable-analysis"
+                    },
+                    "version": "v2.11.19"
+                },
+                {
+                    "package": {
+                        "name": "slevomat/coding-standard"
+                    },
+                    "version": "8.15.0"
+                },
+                {
+                    "package": {
+                        "name": "solarium/solarium"
+                    },
+                    "version": "6.3.5"
+                },
+                {
+                    "package": {
+                        "name": "squizlabs/php_codesniffer"
+                    },
+                    "version": "3.10.2"
+                },
+                {
+                    "package": {
+                        "name": "stecman/symfony-console-completion"
+                    },
+                    "version": "v0.13.0"
+                },
+                {
+                    "package": {
+                        "name": "symfony/browser-kit"
+                    },
+                    "version": "v7.1.1"
+                },
+                {
+                    "package": {
+                        "name": "symfony/config"
+                    },
+                    "version": "v7.0.8"
+                },
+                {
+                    "package": {
+                        "name": "symfony/console"
+                    },
+                    "version": "v6.4.11"
+                },
+                {
+                    "package": {
+                        "name": "symfony/css-selector"
+                    },
+                    "version": "v7.1.1"
+                },
+                {
+                    "package": {
+                        "name": "symfony/dependency-injection"
+                    },
+                    "version": "v6.4.11"
+                },
+                {
+                    "package": {
+                        "name": "symfony/deprecation-contracts"
+                    },
+                    "version": "v3.5.0"
+                },
+                {
+                    "package": {
+                        "name": "symfony/dom-crawler"
+                    },
+                    "version": "v7.1.1"
+                },
+                {
+                    "package": {
+                        "name": "symfony/error-handler"
+                    },
+                    "version": "v7.1.3"
+                },
+                {
+                    "package": {
+                        "name": "symfony/event-dispatcher"
+                    },
+                    "version": "v6.4.8"
+                },
+                {
+                    "package": {
+                        "name": "symfony/event-dispatcher-contracts"
+                    },
+                    "version": "v3.5.0"
+                },
+                {
+                    "package": {
+                        "name": "symfony/filesystem"
+                    },
+                    "version": "v6.4.9"
+                },
+                {
+                    "package": {
+                        "name": "symfony/finder"
+                    },
+                    "version": "v6.4.11"
+                },
+                {
+                    "package": {
+                        "name": "symfony/http-client"
+                    },
+                    "version": "v7.1.4"
+                },
+                {
+                    "package": {
+                        "name": "symfony/http-client-contracts"
+                    },
+                    "version": "v3.5.0"
+                },
+                {
+                    "package": {
+                        "name": "symfony/http-foundation"
+                    },
+                    "version": "v6.4.10"
+                },
+                {
+                    "package": {
+                        "name": "symfony/http-kernel"
+                    },
+                    "version": "v6.4.11"
+                },
+                {
+                    "package": {
+                        "name": "symfony/lock"
+                    },
+                    "version": "v7.1.1"
+                },
+                {
+                    "package": {
+                        "name": "symfony/mailer"
+                    },
+                    "version": "v6.4.9"
+                },
+                {
+                    "package": {
+                        "name": "symfony/mime"
+                    },
+                    "version": "v6.4.11"
+                },
+                {
+                    "package": {
+                        "name": "symfony/phpunit-bridge"
+                    },
+                    "version": "v7.1.4"
+                },
+                {
+                    "package": {
+                        "name": "symfony/polyfill-ctype"
+                    },
+                    "version": "v1.31.0"
+                },
+                {
+                    "package": {
+                        "name": "symfony/polyfill-iconv"
+                    },
+                    "version": "v1.31.0"
+                },
+                {
+                    "package": {
+                        "name": "symfony/polyfill-intl-grapheme"
+                    },
+                    "version": "v1.31.0"
+                },
+                {
+                    "package": {
+                        "name": "symfony/polyfill-intl-idn"
+                    },
+                    "version": "v1.31.0"
+                },
+                {
+                    "package": {
+                        "name": "symfony/polyfill-intl-normalizer"
+                    },
+                    "version": "v1.31.0"
+                },
+                {
+                    "package": {
+                        "name": "symfony/polyfill-mbstring"
+                    },
+                    "version": "v1.31.0"
+                },
+                {
+                    "package": {
+                        "name": "symfony/polyfill-php73"
+                    },
+                    "version": "v1.31.0"
+                },
+                {
+                    "package": {
+                        "name": "symfony/polyfill-php80"
+                    },
+                    "version": "v1.31.0"
+                },
+                {
+                    "package": {
+                        "name": "symfony/polyfill-php81"
+                    },
+                    "version": "v1.31.0"
+                },
+                {
+                    "package": {
+                        "name": "symfony/polyfill-php82"
+                    },
+                    "version": "v1.30.0"
+                },
+                {
+                    "package": {
+                        "name": "symfony/polyfill-php83"
+                    },
+                    "version": "v1.31.0"
+                },
+                {
+                    "package": {
+                        "name": "symfony/process"
+                    },
+                    "version": "v6.4.8"
+                },
+                {
+                    "package": {
+                        "name": "symfony/psr-http-message-bridge"
+                    },
+                    "version": "v6.4.11"
+                },
+                {
+                    "package": {
+                        "name": "symfony/routing"
+                    },
+                    "version": "v6.4.11"
+                },
+                {
+                    "package": {
+                        "name": "symfony/serializer"
+                    },
+                    "version": "v6.4.11"
+                },
+                {
+                    "package": {
+                        "name": "symfony/service-contracts"
+                    },
+                    "version": "v3.5.0"
+                },
+                {
+                    "package": {
+                        "name": "symfony/string"
+                    },
+                    "version": "v6.4.11"
+                },
+                {
+                    "package": {
+                        "name": "symfony/translation-contracts"
+                    },
+                    "version": "v3.5.0"
+                },
+                {
+                    "package": {
+                        "name": "symfony/validator"
+                    },
+                    "version": "v6.4.11"
+                },
+                {
+                    "package": {
+                        "name": "symfony/var-dumper"
+                    },
+                    "version": "v7.1.4"
+                },
+                {
+                    "package": {
+                        "name": "symfony/var-exporter"
+                    },
+                    "version": "v7.1.2"
+                },
+                {
+                    "package": {
+                        "name": "symfony/yaml"
+                    },
+                    "version": "v6.4.11"
+                },
+                {
+                    "package": {
+                        "name": "theseer/tokenizer"
+                    },
+                    "version": "1.2.3"
+                },
+                {
+                    "package": {
+                        "name": "twig/twig"
+                    },
+                    "version": "v3.14.0"
+                },
+                {
+                    "package": {
+                        "name": "webflo/drupal-finder"
+                    },
+                    "version": "1.3.1"
+                },
+                {
+                    "package": {
+                        "name": "webmozart/assert"
+                    },
+                    "version": "1.11.0"
+                },
+                {
+                    "package": {
+                        "name": "weitzman/drupal-test-traits"
+                    },
+                    "version": "2.3.1"
+                },
+                {
+                    "package": {
+                        "name": "willdurand/geocoder"
+                    },
+                    "version": "4.6.0"
+                }
+            ]
+        }
+    ],
+    "scan": {
+        "analyzer": {
+            "id": "composer-remediate",
+            "name": "Composer Remediate",
+            "version": "dev-main",
+            "vendor": {
+                "name": "composer-remediate"
+            },
+            "url": "https://hexblot.github.io/composer-remediate/"
+        },
+        "scanner": {
+            "id": "composer-remediate",
+            "name": "Composer Remediate",
+            "version": "dev-main",
+            "vendor": {
+                "name": "composer-remediate"
+            },
+            "url": "https://hexblot.github.io/composer-remediate/"
+        },
+        "type": "dependency_scanning",
+        "start_time": "2026-01-01T00:00:00",
+        "end_time": "2026-01-01T00:00:00",
+        "status": "success"
+    }
+}

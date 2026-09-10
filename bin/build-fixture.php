@@ -9,7 +9,8 @@
  * Steps: copy composer.json/.lock to a scratch directory with an empty Composer cache, run one full
  * dry-run update so Composer fetches every package metadata file the solver could need, turn the
  * cache into a static repository (versions below the locked one are dropped, metadata trimmed to
- * what the solver reads), fetch the advisories for every package name from Packagist, record the
+ * what the solver reads), fetch the metadata of every package the static repository's versions
+ * require but Composer never loaded, fetch the advisories for every package name from Packagist, record the
  * platform of the build environment, and write an expected.json skeleton listing the findings for a
  * human to complete.
  *
@@ -26,11 +27,16 @@
 
 declare(strict_types=1);
 
+use Composer\Factory;
 use Composer\IO\NullIO;
 use Composer\MetadataMinifier\MetadataMinifier;
+use Composer\Package\BasePackage;
+use Composer\Repository\ComposerRepository;
 use Composer\Repository\PlatformRepository;
 use Composer\Semver\Comparator;
+use Composer\Semver\Constraint\MatchAllConstraint;
 use Composer\Semver\VersionParser;
+use Composer\Util\Platform;
 use Remediate\Engine\Advisory\JsonFileAdvisoryProvider;
 use Remediate\Engine\Matching\Matcher;
 use Remediate\Engine\Project\ProjectContext;
@@ -154,98 +160,191 @@ foreach (['packages', 'packages-dev'] as $section) {
 $versionParser = new VersionParser();
 $keepFields = ['name', 'version', 'version_normalized', 'type', 'require', 'replace', 'provide', 'conflict', 'dist', 'default-branch', 'bin'];
 
-$static = [];
-$files = glob("$tmp/cache/repo/*/provider-*.json") ?: [];
-$log(sprintf('Building static repository from %d cached metadata files…', count($files)));
-foreach ($files as $file) {
-    $decoded = json_decode((string) file_get_contents($file), true);
-    if (!is_array($decoded) || !isset($decoded['packages']) || !is_array($decoded['packages'])) {
-        continue;
-    }
-    $minified = ($decoded['minified'] ?? null) === 'composer/2.0';
-    foreach ($decoded['packages'] as $packageName => $versions) {
-        if (!is_string($packageName) || !is_array($versions)) {
+/**
+ * Everything the cache holds, trimmed to what the solver reads; re-run after each metadata fetch.
+ *
+ * @return array<string, array<string, array<string, mixed>>> package => version => metadata
+ */
+$buildStatic = static function () use ($tmp, $locked, $versionParser, $keepFields, $keepDev, $asOf, $historyCutoff, $log): array {
+    $static = [];
+    $files = glob("$tmp/cache/repo/*/provider-*.json") ?: [];
+    $log(sprintf('Building static repository from %d cached metadata files…', count($files)));
+    foreach ($files as $file) {
+        $decoded = json_decode((string) file_get_contents($file), true);
+        if (!is_array($decoded) || !isset($decoded['packages']) || !is_array($decoded['packages'])) {
             continue;
         }
-        $packageName = strtolower($packageName);
-        if ($minified) {
-            /** @var list<array<string, mixed>> $versions */
-            $versions = MetadataMinifier::expand(array_values($versions));
-        }
-        $lockedVersion = $locked[$packageName] ?? null;
-        $lockedNormalized = null;
-        if ($lockedVersion !== null) {
-            try {
-                $lockedNormalized = $versionParser->normalize($lockedVersion);
-            } catch (UnexpectedValueException) {
-                $lockedNormalized = null;
-            }
-        }
-        foreach ($versions as $entry) {
-            if (!is_array($entry) || !isset($entry['version']) || !is_string($entry['version'])) {
+        $minified = ($decoded['minified'] ?? null) === 'composer/2.0';
+        foreach ($decoded['packages'] as $packageName => $versions) {
+            if (!is_string($packageName) || !is_array($versions)) {
                 continue;
             }
-            $version = $entry['version'];
-            $normalized = is_string($entry['version_normalized'] ?? null) ? $entry['version_normalized'] : null;
-            if ($normalized === null) {
+            $packageName = strtolower($packageName);
+            if ($minified) {
+                /** @var list<array<string, mixed>> $versions */
+                $versions = MetadataMinifier::expand(array_values($versions));
+            }
+            $lockedVersion = $locked[$packageName] ?? null;
+            $lockedNormalized = null;
+            if ($lockedVersion !== null) {
                 try {
-                    $normalized = $versionParser->normalize($version);
+                    $lockedNormalized = $versionParser->normalize($lockedVersion);
                 } catch (UnexpectedValueException) {
+                    $lockedNormalized = null;
+                }
+            }
+            foreach ($versions as $entry) {
+                if (!is_array($entry) || !isset($entry['version']) || !is_string($entry['version'])) {
                     continue;
                 }
-            }
-            $isDev = str_starts_with($normalized, 'dev-') || str_ends_with($normalized, '-dev') && str_starts_with($normalized, '9999999');
-            $isLocked = $lockedNormalized !== null && $normalized === $lockedNormalized;
-            if ($isDev && !$isLocked && !$keepDev) {
-                continue;
-            }
-            if (!$isDev && $lockedNormalized !== null && !str_starts_with($lockedNormalized, 'dev-') && Comparator::lessThan($normalized, $lockedNormalized)) {
-                continue;
-            }
-            if (!$isLocked && is_string($entry['time'] ?? null)) {
-                try {
-                    $released = new DateTimeImmutable($entry['time']);
-                    if ($asOf !== null && $released > $asOf) {
+                $version = $entry['version'];
+                $normalized = is_string($entry['version_normalized'] ?? null) ? $entry['version_normalized'] : null;
+                if ($normalized === null) {
+                    try {
+                        $normalized = $versionParser->normalize($version);
+                    } catch (UnexpectedValueException) {
                         continue;
                     }
-                    if ($lockedNormalized === null && $released < $historyCutoff) {
-                        continue; // not in the lock: only recent history is plausible for the solver
+                }
+                $isDev = str_starts_with($normalized, 'dev-') || str_ends_with($normalized, '-dev') && str_starts_with($normalized, '9999999');
+                $isLocked = $lockedNormalized !== null && $normalized === $lockedNormalized;
+                if ($isDev && !$isLocked && !$keepDev) {
+                    continue;
+                }
+                if (!$isDev && $lockedNormalized !== null && !str_starts_with($lockedNormalized, 'dev-') && Comparator::lessThan($normalized, $lockedNormalized)) {
+                    continue;
+                }
+                if (!$isLocked && is_string($entry['time'] ?? null)) {
+                    try {
+                        $released = new DateTimeImmutable($entry['time']);
+                        if ($asOf !== null && $released > $asOf) {
+                            continue;
+                        }
+                        if ($lockedNormalized === null && $released < $historyCutoff) {
+                            continue; // not in the lock: only recent history is plausible for the solver
+                        }
+                    } catch (Exception) {
+                        // unparsable release time: keep the version
                     }
-                } catch (Exception) {
-                    // unparsable release time: keep the version
+                }
+                $trimmed = array_intersect_key($entry, array_flip($keepFields));
+                $trimmed['name'] = $packageName;
+                $trimmed['version_normalized'] = $normalized;
+                if (isset($trimmed['dist']) && is_array($trimmed['dist'])) {
+                    $trimmed['dist'] = array_intersect_key($trimmed['dist'], array_flip(['type', 'url', 'reference']));
+                }
+                $static[$packageName][$version] = $trimmed;
+            }
+        }
+    }
+    ksort($static);
+
+    return $static;
+};
+$static = $buildStatic();
+
+// 2b. Metadata Composer never asked for: a version a candidate may reach can require a package the
+// locked graph does not contain (Twig 3.11 pulling in symfony/polyfill-php81, for example). Walk the
+// requirement closure of every version in the static repository and fetch the missing names through
+// the project's own repositories until nothing new appears.
+$log('Fetching metadata for the requirement closure…');
+Platform::putEnv('COMPOSER_HOME', "$tmp/home");
+Platform::putEnv('COMPOSER_CACHE_DIR', "$tmp/cache");
+Platform::putEnv('COMPOSER_NO_INTERACTION', '1');
+$closureComposer = Factory::create(new NullIO(), "$tmp/project/composer.json", true, true);
+$closureRepos = array_values(array_filter($closureComposer->getRepositoryManager()->getRepositories(), static fn ($r): bool => $r instanceof ComposerRepository));
+for ($round = 1; $round <= 6; ++$round) {
+    $wanted = [];
+    foreach ($static as $versions) {
+        foreach ($versions as $entry) {
+            foreach (['require', 'replace', 'provide', 'conflict'] as $link) {
+                foreach (is_array($entry[$link] ?? null) ? $entry[$link] : [] as $req => $constraint) {
+                    $req = strtolower((string) $req);
+                    if (!isset($static[$req]) && !isset($locked[$req]) && !preg_match('{^(php|php-64bit|hhvm|ext-|lib-|composer)}', $req) && str_contains($req, '/')) {
+                        $wanted[$req] = new MatchAllConstraint();
+                    }
                 }
             }
-            $trimmed = array_intersect_key($entry, array_flip($keepFields));
-            $trimmed['name'] = $packageName;
-            $trimmed['version_normalized'] = $normalized;
-            if (isset($trimmed['dist']) && is_array($trimmed['dist'])) {
-                $trimmed['dist'] = array_intersect_key($trimmed['dist'], array_flip(['type', 'url', 'reference']));
-            }
-            $static[$packageName][$version] = $trimmed;
+        }
+    }
+    if ($wanted === []) {
+        break;
+    }
+    $log(sprintf('  round %d: %d package name%s referenced but absent, fetching…', $round, count($wanted), count($wanted) === 1 ? '' : 's'));
+    $found = 0;
+    foreach ($closureRepos as $repo) {
+        try {
+            $result = $repo->loadPackages($wanted, BasePackage::STABILITIES, []);
+        } catch (Throwable $e) {
+            $log('  (' . $repo->getRepoName() . ': ' . trim(explode("\n", $e->getMessage())[0]) . ')');
+            continue;
+        }
+        foreach ($result['namesFound'] as $name) {
+            unset($wanted[strtolower((string) $name)]);
+            ++$found;
+        }
+    }
+    $before = count($static);
+    $static = $buildStatic();
+    if ($found === 0 || count($static) === $before) {
+        if ($wanted !== []) {
+            $log('  not provided by any repository (left out): ' . implode(', ', array_keys($wanted)));
+        }
+        break;
+    }
+}
+$missing = array_diff_key($locked, $static);
+// Packages installed from a path or artifact repository (a monorepo's own packages, usually) may also
+// exist on Packagist under the same name; the lock's entry is the one the project actually resolved
+// against, so it always overrides whatever the public metadata says about that version.
+$local = [];
+foreach (['packages', 'packages-dev'] as $section) {
+    foreach (is_array($lockData[$section] ?? null) ? $lockData[$section] : [] as $entry) {
+        if (is_array($entry) && isset($entry['name']) && is_string($entry['name']) && is_array($entry['dist'] ?? null) && in_array($entry['dist']['type'] ?? null, ['path', 'artifact'], true)) {
+            $local[strtolower($entry['name'])] = true;
         }
     }
 }
-ksort($static);
-$missing = array_diff_key($locked, $static);
-if ($missing !== []) {
-    $log('  locked packages without cached metadata, copied from the lock file as single versions: ' . implode(', ', array_keys($missing)));
+if ($missing !== [] || $local !== []) {
+    if ($missing !== []) {
+        $log('  locked packages without cached metadata, copied from the lock file as single versions: ' . implode(', ', array_keys($missing)));
+    }
+    if ($local !== []) {
+        $log('  locked packages from path/artifact repositories, taken from the lock file: ' . implode(', ', array_keys($local)));
+    }
     foreach (['packages', 'packages-dev'] as $section) {
         foreach (is_array($lockData[$section] ?? null) ? $lockData[$section] : [] as $entry) {
             if (!is_array($entry) || !isset($entry['name'], $entry['version']) || !is_string($entry['name']) || !is_string($entry['version'])) {
                 continue;
             }
             $pname = strtolower($entry['name']);
-            if (!isset($missing[$pname])) {
+            if (!isset($missing[$pname]) && !isset($local[$pname])) {
                 continue;
             }
             $trimmed = array_intersect_key($entry, array_flip($keepFields));
             $trimmed['name'] = $pname;
+            // A branch alias (dev-develop as 3.x-dev) is how a monorepo's dev package satisfies its siblings'
+            // "^3.1" requirements; Composer reads it from extra.branch-alias, so that key is kept.
+            if (is_array($entry['extra'] ?? null) && is_array($entry['extra']['branch-alias'] ?? null)) {
+                $trimmed['extra'] = ['branch-alias' => $entry['extra']['branch-alias']];
+            }
+            // A `path` dist marks the package as "always re-resolve from the symlink", which makes Composer
+            // refuse the locked version in partial updates; the fixture has no such directory, so give it
+            // a neutral dist (never downloaded in a dry run).
+            if (!is_array($trimmed['dist'] ?? null) || in_array($trimmed['dist']['type'] ?? null, ['path', 'artifact'], true)) {
+                $trimmed['dist'] = ['type' => 'zip', 'url' => 'https://fixture.invalid/' . str_replace('/', '-', $pname) . '.zip', 'reference' => is_array($entry['dist'] ?? null) && is_string($entry['dist']['reference'] ?? null) ? $entry['dist']['reference'] : null];
+            }
             if (!isset($trimmed['version_normalized'])) {
                 try {
                     $trimmed['version_normalized'] = $versionParser->normalize($entry['version']);
                 } catch (UnexpectedValueException) {
                     continue;
                 }
+            }
+            if (isset($local[$pname])) {
+                // A path/artifact repository takes precedence for its package names: Composer never considers
+                // the same names from Packagist while it is configured, so the frozen repository must not either.
+                $static[$pname] = [];
             }
             $static[$pname][$entry['version']] = $trimmed;
         }
@@ -267,19 +366,44 @@ $log(sprintf('  %d packages, %d versions, %.1f MB uncompressed, %.1f MB gzipped'
 $log('Fetching advisories from Packagist…');
 $names = array_values(array_unique([...array_keys($static), ...array_keys($locked)]));
 $advisories = [];
-foreach (array_chunk($names, 400) as $batch) {
-    $context = stream_context_create(['http' => [
-        'method' => 'POST',
-        'header' => "Content-Type: application/x-www-form-urlencoded\r\nUser-Agent: composer-remediate/build-fixture\r\n",
-        'content' => http_build_query(['packages' => $batch]),
-        'timeout' => 60,
-    ]]);
-    $response = @file_get_contents('https://packagist.org/api/security-advisories/', false, $context);
-    if ($response === false) {
-        throw new RuntimeException('Packagist advisory API request failed');
+/**
+ * One advisory API call; a response that is not JSON (a truncated body, an error page) is retried once
+ * and then the batch is split, so one bad answer cannot abort a build.
+ *
+ * @param list<string> $batch
+ *
+ * @return array<string, mixed>
+ */
+$fetchAdvisories = static function (array $batch) use (&$fetchAdvisories, $log): array {
+    for ($attempt = 1; $attempt <= 2; ++$attempt) {
+        $context = stream_context_create(['http' => [
+            'method' => 'POST',
+            'header' => "Content-Type: application/x-www-form-urlencoded\r\nUser-Agent: composer-remediate/build-fixture\r\nAccept: application/json\r\n",
+            'content' => http_build_query(['packages' => $batch]),
+            'timeout' => 60,
+        ]]);
+        $response = @file_get_contents('https://packagist.org/api/security-advisories/', false, $context);
+        if ($response !== false) {
+            $decoded = json_decode($response, true);
+            if (is_array($decoded) && isset($decoded['advisories']) && is_array($decoded['advisories'])) {
+                return $decoded['advisories'];
+            }
+        }
+        sleep(2);
     }
-    $decoded = json_decode($response, true, 512, JSON_THROW_ON_ERROR);
-    if (is_array($decoded) && isset($decoded['advisories']) && is_array($decoded['advisories'])) {
+    if (count($batch) === 1) {
+        $log('  advisory API returned no usable answer for ' . $batch[0] . '; skipped');
+
+        return [];
+    }
+    $log(sprintf('  advisory API returned no usable answer for a batch of %d names; splitting', count($batch)));
+    $half = intdiv(count($batch), 2);
+
+    return $fetchAdvisories(array_slice($batch, 0, $half)) + $fetchAdvisories(array_slice($batch, $half));
+};
+foreach (array_chunk($names, 200) as $batch) {
+    $decoded = ['advisories' => $fetchAdvisories($batch)];
+    {
         foreach ($decoded['advisories'] as $packageName => $list) {
             if (!is_string($packageName) || !is_array($list)) {
                 continue;
@@ -328,10 +452,13 @@ ksort($platform);
 $log(sprintf('Platform: php %s plus %d extensions', is_string($platform['php'] ?? null) ? $platform['php'] : '?', count($platform) - 1));
 
 // 5. Copy project files and compute the findings the harness will see.
-copy("$projectDir/composer.json", "$fixtureDir/composer.json");
-copy("$projectDir/composer.lock", "$fixtureDir/composer.lock");
+// Stored under names GitHub's dependency graph does not parse (it scans every composer.json /
+// composer.lock in a repository, whatever the directory), so the deliberately vulnerable historical
+// locks raise no Dependabot alerts against this repository.
+copy("$projectDir/composer.json", "$fixtureDir/composer.fixture.json");
+copy("$projectDir/composer.lock", "$fixtureDir/composer.fixture.lock");
 
-$workspace = ScratchWorkspace::fromFiles("$fixtureDir/composer.json", "$fixtureDir/composer.lock");
+$workspace = ScratchWorkspace::fromFiles("$fixtureDir/composer.fixture.json", "$fixtureDir/composer.fixture.lock");
 $repoDir = "$tmp/repo";
 mkdir($repoDir, 0700, true);
 file_put_contents("$repoDir/packages.json", $staticJson);

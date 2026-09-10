@@ -1,0 +1,2571 @@
+{
+    "schema_version": 1,
+    "analysis_metadata": {
+        "project": "wallabag-symfony54-php74-guzzle5",
+        "engine_version": "dev-main",
+        "composer_version": "(fixture)",
+        "php_version": "(fixture)",
+        "advisory_source": "advisory snapshot advisories.json",
+        "solver": "in-process Composer dry-run",
+        "solver_runs": "55",
+        "composer_json_sha256": "cd26230f53395b7044f5979ce8d16dd8331a29ee6b8f435b5e9e982463019283",
+        "composer_lock_sha256": "5aaa53d7db401cd4701aaccdb488673174e572fdf1a08939479d9022373f788f",
+        "analysis_timestamp": "(fixture)",
+        "locked_packages": "279"
+    },
+    "exit_code": 2,
+    "warnings": [],
+    "summary": {
+        "advisories": 16,
+        "packages": 8,
+        "packages_with_fix": 7,
+        "fail_on": null,
+        "packages_gated": 8,
+        "packages_baselined": 0,
+        "packages_with_constraint_drag": 0,
+        "packages_known_exploited": 0,
+        "packages_with_abandoned_dependency": 5,
+        "combined_command": "composer update symfony/http-client symfony/http-foundation symfony/process symfony/security-http symfony/validator tecnickcom/tcpdf twig/twig",
+        "combined_fixes": 11,
+        "combined_total": 16,
+        "combined_fixes_all": false,
+        "combined_changes": {
+            "changed": 7,
+            "added": 0,
+            "removed": 0,
+            "total": 7,
+            "major_change": false,
+            "downgrade": false,
+            "prerelease": false
+        }
+    },
+    "findings": [
+        {
+            "package": "guzzlehttp/guzzle",
+            "version": "5.3.4",
+            "version_normalized": "5.3.4.0",
+            "direct": true,
+            "dev": false,
+            "baselined": false,
+            "counts_for_exit": true,
+            "via_replaced_package": null,
+            "advisories": [
+                {
+                    "id": "PKSA-2z36-j4q9-rsfy",
+                    "cve": "CVE-2022-31043",
+                    "title": "Fix failure to strip Authorization header on HTTP downgrade",
+                    "link": "https://github.com/guzzle/guzzle/security/advisories/GHSA-w248-ffj2-4v5q",
+                    "severity": "high",
+                    "reported_at": "2022-06-09T21:36:50+00:00",
+                    "affected_versions": ">=7,<7.4.4|>=4,<6.5.7",
+                    "sources": [
+                        {
+                            "name": "GitHub",
+                            "remoteId": "GHSA-w248-ffj2-4v5q"
+                        },
+                        {
+                            "name": "FriendsOfPHP/security-advisories",
+                            "remoteId": "guzzlehttp/guzzle/CVE-2022-31043.yaml"
+                        }
+                    ],
+                    "epss": null,
+                    "epss_percentile": null,
+                    "kev_added": null
+                },
+                {
+                    "id": "PKSA-6d8m-6kgw-18zr",
+                    "cve": "CVE-2022-29248",
+                    "title": "Cross-domain cookie leakage",
+                    "link": "https://github.com/guzzle/guzzle/security/advisories/GHSA-cwmx-hcrq-mhc3",
+                    "severity": "high",
+                    "reported_at": "2022-05-25T13:19:12+00:00",
+                    "affected_versions": ">=7,<7.4.3|>=4,<6.5.6",
+                    "sources": [
+                        {
+                            "name": "GitHub",
+                            "remoteId": "GHSA-cwmx-hcrq-mhc3"
+                        },
+                        {
+                            "name": "FriendsOfPHP/security-advisories",
+                            "remoteId": "guzzlehttp/guzzle/CVE-2022-29248.yaml"
+                        }
+                    ],
+                    "epss": null,
+                    "epss_percentile": null,
+                    "kev_added": null
+                },
+                {
+                    "id": "PKSA-fvw5-9t6n-nwvr",
+                    "cve": "CVE-2022-31042",
+                    "title": "Failure to strip the Cookie header on change in host or HTTP downgrade",
+                    "link": "https://github.com/guzzle/guzzle/security/advisories/GHSA-f2wf-25xc-69c9",
+                    "severity": "high",
+                    "reported_at": "2022-06-09T21:36:50+00:00",
+                    "affected_versions": ">=7,<7.4.4|>=4,<6.5.7",
+                    "sources": [
+                        {
+                            "name": "GitHub",
+                            "remoteId": "GHSA-f2wf-25xc-69c9"
+                        },
+                        {
+                            "name": "FriendsOfPHP/security-advisories",
+                            "remoteId": "guzzlehttp/guzzle/CVE-2022-31042.yaml"
+                        }
+                    ],
+                    "epss": null,
+                    "epss_percentile": null,
+                    "kev_added": null
+                },
+                {
+                    "id": "PKSA-k1b4-kshy-xgbh",
+                    "cve": "CVE-2022-31090",
+                    "title": "CURLOPT_HTTPAUTH option not cleared on change of origin",
+                    "link": "https://github.com/guzzle/guzzle/security/advisories/GHSA-25mq-v84q-4j7r",
+                    "severity": "high",
+                    "reported_at": "2022-06-20T22:16:07+00:00",
+                    "affected_versions": ">=7,<7.4.5|>=4,<6.5.8",
+                    "sources": [
+                        {
+                            "name": "GitHub",
+                            "remoteId": "GHSA-25mq-v84q-4j7r"
+                        },
+                        {
+                            "name": "FriendsOfPHP/security-advisories",
+                            "remoteId": "guzzlehttp/guzzle/CVE-2022-31090.yaml"
+                        }
+                    ],
+                    "epss": null,
+                    "epss_percentile": null,
+                    "kev_added": null
+                },
+                {
+                    "id": "PKSA-yfw5-9gnj-n2c7",
+                    "cve": "CVE-2022-31091",
+                    "title": "Change in port should be considered a change in origin",
+                    "link": "https://github.com/guzzle/guzzle/security/advisories/GHSA-q559-8m2m-g699",
+                    "severity": "high",
+                    "reported_at": "2022-06-20T22:16:07+00:00",
+                    "affected_versions": ">=7,<7.4.5|>=4,<6.5.8",
+                    "sources": [
+                        {
+                            "name": "GitHub",
+                            "remoteId": "GHSA-q559-8m2m-g699"
+                        },
+                        {
+                            "name": "FriendsOfPHP/security-advisories",
+                            "remoteId": "guzzlehttp/guzzle/CVE-2022-31091.yaml"
+                        }
+                    ],
+                    "epss": null,
+                    "epss_percentile": null,
+                    "kev_added": null
+                }
+            ],
+            "abandoned": [
+                {
+                    "package": "php-http/guzzle5-adapter",
+                    "replacement": "php-http/guzzle7-adapter"
+                }
+            ],
+            "paths_total": 2,
+            "paths": [
+                {
+                    "cyclic": false,
+                    "chain": [
+                        {
+                            "package": "root",
+                            "version": null,
+                            "requires": "^5.3.4"
+                        }
+                    ],
+                    "target": {
+                        "package": "guzzlehttp/guzzle",
+                        "version": "5.3.4"
+                    }
+                },
+                {
+                    "cyclic": false,
+                    "chain": [
+                        {
+                            "package": "root",
+                            "version": null,
+                            "requires": "^2.0"
+                        },
+                        {
+                            "package": "php-http/guzzle5-adapter",
+                            "version": "2.0.0",
+                            "requires": "^5.1"
+                        }
+                    ],
+                    "target": {
+                        "package": "guzzlehttp/guzzle",
+                        "version": "5.3.4"
+                    }
+                }
+            ],
+            "solver_runs": 8,
+            "search_exhausted": false,
+            "remediation": {
+                "status": "none",
+                "outcome": "none",
+                "blocker": null
+            },
+            "candidates": [
+                {
+                    "command": "composer update guzzlehttp/guzzle",
+                    "strategy": "lock-refresh",
+                    "outcome": "rejected",
+                    "reason": "resolves, but guzzlehttp/guzzle ends at 5.3.4 which is still affected by PKSA-2z36-j4q9-rsfy, PKSA-6d8m-6kgw-18zr, PKSA-fvw5-9t6n-nwvr, PKSA-k1b4-kshy-xgbh, PKSA-yfw5-9gnj-n2c7",
+                    "summary": {
+                        "changed": 0,
+                        "added": 0,
+                        "removed": 0,
+                        "total": 0,
+                        "major_change": false,
+                        "downgrade": false,
+                        "prerelease": false
+                    },
+                    "solver_status": "resolved"
+                },
+                {
+                    "command": "composer update guzzlehttp/guzzle -w -m --with 'guzzlehttp/guzzle:>=6.5.8,<7.0.0 || >=7.4.5'",
+                    "strategy": "with-dependencies",
+                    "outcome": "rejected",
+                    "reason": "Composer could not resolve the dependencies: Your requirements could not be resolved to an installable set of packages.\n  Problem 1\n    - Root composer.json requires guzzlehttp/guzzle ^5.3.4, found guzzlehttp/guzzle[5.3.4, 5.3.x-dev] but it conflicts with your temporary update constraint (guzzlehttp/guzzle:>=6.5.8,<7.0.0 || >=7.4.5).\n  Problem 2\n    - php-http/guzzle5-adapter is locked to version 2.0.0 and an update of this package was not requested.\n    - php-http/guzzle5-adapter 2.0.0 requires guzzlehttp/guzzle ^5.1 -> found guzzlehttp/guzzle[5.3.4, 5.3.x-dev] but it conflicts with your temporary update constraint (guzzlehttp/guzzle:>=6.5.8,<7.0.0 || >=7.4.5).\nUse the option --with-all-dependencies (-W) to allow upgrades, downgrades and removals for packages currently locked to specific versions.",
+                    "solver_status": "conflict"
+                },
+                {
+                    "command": "composer update guzzlehttp/guzzle -W -m --with 'guzzlehttp/guzzle:>=6.5.8,<7.0.0 || >=7.4.5'",
+                    "strategy": "parent-update",
+                    "outcome": "rejected",
+                    "reason": "Composer could not resolve the dependencies: Your requirements could not be resolved to an installable set of packages.\n  Problem 1\n    - Root composer.json requires guzzlehttp/guzzle ^5.3.4, found guzzlehttp/guzzle[5.3.4, 5.3.x-dev] but it conflicts with your temporary update constraint (guzzlehttp/guzzle:>=6.5.8,<7.0.0 || >=7.4.5).\n  Problem 2\n    - php-http/guzzle5-adapter is locked to version 2.0.0 and an update of this package was not requested.\n    - php-http/guzzle5-adapter 2.0.0 requires guzzlehttp/guzzle ^5.1 -> found guzzlehttp/guzzle[5.3.4, 5.3.x-dev] but it conflicts with your temporary update constraint (guzzlehttp/guzzle:>=6.5.8,<7.0.0 || >=7.4.5).",
+                    "solver_status": "conflict"
+                },
+                {
+                    "command": "composer update guzzlehttp/guzzle php-http/guzzle5-adapter -W -m --with 'guzzlehttp/guzzle:>=6.5.8,<7.0.0 || >=7.4.5'",
+                    "strategy": "parent-update",
+                    "outcome": "rejected",
+                    "reason": "Composer could not resolve the dependencies: Your requirements could not be resolved to an installable set of packages.\n  Problem 1\n    - Root composer.json requires guzzlehttp/guzzle ^5.3.4, found guzzlehttp/guzzle[5.3.4, 5.3.x-dev] but it conflicts with your temporary update constraint (guzzlehttp/guzzle:>=6.5.8,<7.0.0 || >=7.4.5).\n  Problem 2\n    - Root composer.json requires php-http/guzzle5-adapter ^2.0 -> satisfiable by php-http/guzzle5-adapter[2.0.0].\n    - php-http/guzzle5-adapter 2.0.0 requires guzzlehttp/guzzle ^5.1 -> found guzzlehttp/guzzle[5.3.4, 5.3.x-dev] but it conflicts with your temporary update constraint (guzzlehttp/guzzle:>=6.5.8,<7.0.0 || >=7.4.5).",
+                    "solver_status": "conflict"
+                },
+                {
+                    "command": "composer update php-http/guzzle5-adapter -W -m --with 'guzzlehttp/guzzle:>=6.5.8,<7.0.0 || >=7.4.5'",
+                    "strategy": "parent-update",
+                    "outcome": "rejected",
+                    "reason": "Composer could not resolve the dependencies: Your requirements could not be resolved to an installable set of packages.\n  Problem 1\n    - Root composer.json requires guzzlehttp/guzzle ^5.3.4, found guzzlehttp/guzzle[5.3.4, 5.3.x-dev] but it conflicts with your temporary update constraint (guzzlehttp/guzzle:>=6.5.8,<7.0.0 || >=7.4.5).\n  Problem 2\n    - Root composer.json requires php-http/guzzle5-adapter ^2.0 -> satisfiable by php-http/guzzle5-adapter[2.0.0].\n    - php-http/guzzle5-adapter 2.0.0 requires guzzlehttp/guzzle ^5.1 -> found guzzlehttp/guzzle[5.3.4, 5.3.x-dev] but it conflicts with your temporary update constraint (guzzlehttp/guzzle:>=6.5.8,<7.0.0 || >=7.4.5).",
+                    "solver_status": "conflict"
+                },
+                {
+                    "command": "composer require --no-update guzzlehttp/guzzle:^6.0 && composer update guzzlehttp/guzzle -W -m --with 'guzzlehttp/guzzle:>=6.5.8,<7.0.0 || >=7.4.5'",
+                    "strategy": "root-constraint-widen",
+                    "outcome": "rejected",
+                    "reason": "Composer could not resolve the dependencies: Your requirements could not be resolved to an installable set of packages.\n  Problem 1\n    - Root composer.json requires guzzlehttp/guzzle ^6.0, found guzzlehttp/guzzle[6.0.0, ..., 6.5.x-dev] but these were not loaded, likely because it conflicts with another require.\n  Problem 2\n    - php-http/guzzle5-adapter is locked to version 2.0.0 and an update of this package was not requested.\n    - php-http/guzzle5-adapter 2.0.0 requires guzzlehttp/guzzle ^5.1 -> found guzzlehttp/guzzle[5.3.4, 5.3.x-dev] but it conflicts with your root composer.json require (^6.0).",
+                    "solver_status": "conflict"
+                },
+                {
+                    "command": "composer require --no-update guzzlehttp/guzzle:^6.0 && composer update guzzlehttp/guzzle php-http/guzzle5-adapter -W -m --with 'guzzlehttp/guzzle:>=6.5.8,<7.0.0 || >=7.4.5'",
+                    "strategy": "root-constraint-widen",
+                    "outcome": "rejected",
+                    "reason": "Composer could not resolve the dependencies: Your requirements could not be resolved to an installable set of packages.\n  Problem 1\n    - Root composer.json requires guzzlehttp/guzzle ^6.0 -> satisfiable by guzzlehttp/guzzle[6.5.8, 6.5.x-dev].\n    - guzzlehttp/guzzle[6.5.8, ..., 6.5.x-dev] require guzzlehttp/psr7 ^1.9 -> found guzzlehttp/psr7[2.7.0] but it does not match the constraint.\n  Problem 2\n    - Root composer.json requires php-http/guzzle5-adapter ^2.0 -> satisfiable by php-http/guzzle5-adapter[2.0.0].\n    - php-http/guzzle5-adapter 2.0.0 requires guzzlehttp/guzzle ^5.1 -> found guzzlehttp/guzzle[5.3.4, 5.3.x-dev] but it conflicts with your root composer.json require (^6.0).",
+                    "solver_status": "conflict"
+                },
+                {
+                    "command": "composer require --no-update php-http/guzzle5-adapter:^3.0 && composer update php-http/guzzle5-adapter -W -m --with 'guzzlehttp/guzzle:>=6.5.8,<7.0.0 || >=7.4.5'",
+                    "strategy": "root-constraint-widen",
+                    "outcome": "rejected",
+                    "reason": "Composer could not resolve the dependencies: Your requirements could not be resolved to an installable set of packages.\n  Problem 1\n    - Root composer.json requires guzzlehttp/guzzle ^5.3.4, found guzzlehttp/guzzle[5.3.4, 5.3.x-dev] but it conflicts with your temporary update constraint (guzzlehttp/guzzle:>=6.5.8,<7.0.0 || >=7.4.5).\n  Problem 2\n    - Root composer.json requires php-http/guzzle5-adapter ^3.0, found php-http/guzzle5-adapter[2.0.0] but it does not match the constraint.",
+                    "solver_status": "conflict"
+                }
+            ]
+        },
+        {
+            "package": "symfony/security-http",
+            "version": "v5.4.41",
+            "version_normalized": "5.4.41.0",
+            "direct": true,
+            "dev": false,
+            "baselined": false,
+            "counts_for_exit": true,
+            "via_replaced_package": null,
+            "advisories": [
+                {
+                    "id": "PKSA-rqvm-b18n-vg69",
+                    "cve": "CVE-2024-51996",
+                    "title": "CVE-2024-51996: Authentication Bypass via persisted RememberMe cookie",
+                    "link": "https://symfony.com/cve-2024-51996",
+                    "severity": "high",
+                    "reported_at": "2024-11-13T08:00:00+00:00",
+                    "affected_versions": ">=5.3.0,<5.4.0|>=5.4.0,<5.4.47|>=6.0.0,<6.1.0|>=6.1.0,<6.2.0|>=6.2.0,<6.3.0|>=6.3.0,<6.4.0|>=6.4.0,<6.4.15|>=7.0.0,<7.1.0|>=7.1.0,<7.1.8",
+                    "sources": [
+                        {
+                            "name": "GitHub",
+                            "remoteId": "GHSA-cg23-qf8f-62rr"
+                        },
+                        {
+                            "name": "FriendsOfPHP/security-advisories",
+                            "remoteId": "symfony/security-http/CVE-2024-51996.yaml"
+                        }
+                    ],
+                    "epss": null,
+                    "epss_percentile": null,
+                    "kev_added": null
+                }
+            ],
+            "abandoned": [
+                {
+                    "package": "scheb/2fa-qr-code",
+                    "replacement": null
+                }
+            ],
+            "paths_total": 22,
+            "paths": [
+                {
+                    "cyclic": false,
+                    "chain": [
+                        {
+                            "package": "root",
+                            "version": null,
+                            "requires": "^5.4.35"
+                        }
+                    ],
+                    "target": {
+                        "package": "symfony/security-http",
+                        "version": "v5.4.41"
+                    }
+                },
+                {
+                    "cyclic": false,
+                    "chain": [
+                        {
+                            "package": "root",
+                            "version": null,
+                            "requires": "^5.0.1"
+                        },
+                        {
+                            "package": "sentry/sentry-symfony",
+                            "version": "5.0.1",
+                            "requires": "^4.4.20||^5.0.11||^6.0||^7.0"
+                        }
+                    ],
+                    "target": {
+                        "package": "symfony/security-http",
+                        "version": "v5.4.41"
+                    }
+                },
+                {
+                    "cyclic": false,
+                    "chain": [
+                        {
+                            "package": "root",
+                            "version": null,
+                            "requires": "^5.4.35"
+                        },
+                        {
+                            "package": "symfony/security-bundle",
+                            "version": "v5.4.41",
+                            "requires": "^5.4.30|^6.3.6"
+                        }
+                    ],
+                    "target": {
+                        "package": "symfony/security-http",
+                        "version": "v5.4.41"
+                    }
+                },
+                {
+                    "cyclic": false,
+                    "chain": [
+                        {
+                            "package": "root",
+                            "version": null,
+                            "requires": "dev-master#dc8ff343363cf794d30eb1a123610d186a43f162"
+                        },
+                        {
+                            "package": "friendsofsymfony/oauth-server-bundle",
+                            "version": "2.0.x-dev",
+                            "requires": "^4.4 || ^5.1"
+                        },
+                        {
+                            "package": "symfony/security-bundle",
+                            "version": "v5.4.41",
+                            "requires": "^5.4.30|^6.3.6"
+                        }
+                    ],
+                    "target": {
+                        "package": "symfony/security-http",
+                        "version": "v5.4.41"
+                    }
+                },
+                {
+                    "cyclic": false,
+                    "chain": [
+                        {
+                            "package": "root",
+                            "version": null,
+                            "requires": "dev-master#dc8ff343363cf794d30eb1a123610d186a43f162"
+                        },
+                        {
+                            "package": "friendsofsymfony/oauth-server-bundle",
+                            "version": "dev-master",
+                            "requires": "^4.4 || ^5.1"
+                        },
+                        {
+                            "package": "symfony/security-bundle",
+                            "version": "v5.4.41",
+                            "requires": "^5.4.30|^6.3.6"
+                        }
+                    ],
+                    "target": {
+                        "package": "symfony/security-http",
+                        "version": "v5.4.41"
+                    }
+                },
+                {
+                    "cyclic": false,
+                    "chain": [
+                        {
+                            "package": "root",
+                            "version": null,
+                            "requires": "^3.2.1"
+                        },
+                        {
+                            "package": "friendsofsymfony/user-bundle",
+                            "version": "v3.4.0",
+                            "requires": "^4.4 || ^5.0 || ^6.0"
+                        },
+                        {
+                            "package": "symfony/security-bundle",
+                            "version": "v5.4.41",
+                            "requires": "^5.4.30|^6.3.6"
+                        }
+                    ],
+                    "target": {
+                        "package": "symfony/security-http",
+                        "version": "v5.4.41"
+                    }
+                },
+                {
+                    "cyclic": false,
+                    "chain": [
+                        {
+                            "package": "root",
+                            "version": null,
+                            "requires": "^5.13.2"
+                        },
+                        {
+                            "package": "scheb/2fa-bundle",
+                            "version": "v5.13.2",
+                            "requires": "^4.4.1|^5.0"
+                        },
+                        {
+                            "package": "symfony/security-bundle",
+                            "version": "v5.4.41",
+                            "requires": "^5.4.30|^6.3.6"
+                        }
+                    ],
+                    "target": {
+                        "package": "symfony/security-http",
+                        "version": "v5.4.41"
+                    }
+                },
+                {
+                    "cyclic": false,
+                    "chain": [
+                        {
+                            "package": "root",
+                            "version": null,
+                            "requires": "^5.13.2"
+                        },
+                        {
+                            "package": "scheb/2fa-backup-code",
+                            "version": "v5.13.2",
+                            "requires": "self.version"
+                        },
+                        {
+                            "package": "scheb/2fa-bundle",
+                            "version": "v5.13.2",
+                            "requires": "^4.4.1|^5.0"
+                        },
+                        {
+                            "package": "symfony/security-bundle",
+                            "version": "v5.4.41",
+                            "requires": "^5.4.30|^6.3.6"
+                        }
+                    ],
+                    "target": {
+                        "package": "symfony/security-http",
+                        "version": "v5.4.41"
+                    }
+                },
+                {
+                    "cyclic": false,
+                    "chain": [
+                        {
+                            "package": "root",
+                            "version": null,
+                            "requires": "^5.13.2"
+                        },
+                        {
+                            "package": "scheb/2fa-email",
+                            "version": "v5.13.2",
+                            "requires": "self.version"
+                        },
+                        {
+                            "package": "scheb/2fa-bundle",
+                            "version": "v5.13.2",
+                            "requires": "^4.4.1|^5.0"
+                        },
+                        {
+                            "package": "symfony/security-bundle",
+                            "version": "v5.4.41",
+                            "requires": "^5.4.30|^6.3.6"
+                        }
+                    ],
+                    "target": {
+                        "package": "symfony/security-http",
+                        "version": "v5.4.41"
+                    }
+                },
+                {
+                    "cyclic": false,
+                    "chain": [
+                        {
+                            "package": "root",
+                            "version": null,
+                            "requires": "^5.13.2"
+                        },
+                        {
+                            "package": "scheb/2fa-google-authenticator",
+                            "version": "v5.13.2",
+                            "requires": "self.version"
+                        },
+                        {
+                            "package": "scheb/2fa-bundle",
+                            "version": "v5.13.2",
+                            "requires": "^4.4.1|^5.0"
+                        },
+                        {
+                            "package": "symfony/security-bundle",
+                            "version": "v5.4.41",
+                            "requires": "^5.4.30|^6.3.6"
+                        }
+                    ],
+                    "target": {
+                        "package": "symfony/security-http",
+                        "version": "v5.4.41"
+                    }
+                }
+            ],
+            "solver_runs": 9,
+            "search_exhausted": true,
+            "remediation": {
+                "status": "verified",
+                "command": "composer update symfony/security-http",
+                "strategy": "lock-refresh",
+                "root_constraint_changes": [],
+                "constraint_drag": null,
+                "blocking_risk": [],
+                "summary": {
+                    "changed": 1,
+                    "added": 0,
+                    "removed": 0,
+                    "total": 1,
+                    "major_change": false,
+                    "downgrade": false,
+                    "prerelease": false
+                },
+                "changes": [
+                    {
+                        "package": "symfony/security-http",
+                        "kind": "upgraded",
+                        "step": "patch",
+                        "from": "v5.4.41",
+                        "to": "v5.4.47"
+                    }
+                ]
+            },
+            "candidates": [
+                {
+                    "command": "composer update symfony/security-http",
+                    "strategy": "lock-refresh",
+                    "outcome": "valid",
+                    "rank": 1,
+                    "summary": {
+                        "changed": 1,
+                        "added": 0,
+                        "removed": 0,
+                        "total": 1,
+                        "major_change": false,
+                        "downgrade": false,
+                        "prerelease": false
+                    },
+                    "solver_status": "resolved"
+                },
+                {
+                    "command": "composer update symfony/security-http -w -m --with 'symfony/security-http:>=5.4.47,<6.0.0 || >=6.4.15,<7.0.0 || >=7.1.8'",
+                    "strategy": "with-dependencies",
+                    "outcome": "valid",
+                    "rank": 2,
+                    "summary": {
+                        "changed": 1,
+                        "added": 0,
+                        "removed": 0,
+                        "total": 1,
+                        "major_change": false,
+                        "downgrade": false,
+                        "prerelease": false
+                    },
+                    "solver_status": "resolved"
+                },
+                {
+                    "command": "composer update symfony/security-http -W -m --with 'symfony/security-http:>=5.4.47,<6.0.0 || >=6.4.15,<7.0.0 || >=7.1.8'",
+                    "strategy": "parent-update",
+                    "outcome": "valid",
+                    "rank": 3,
+                    "summary": {
+                        "changed": 1,
+                        "added": 0,
+                        "removed": 0,
+                        "total": 1,
+                        "major_change": false,
+                        "downgrade": false,
+                        "prerelease": false
+                    },
+                    "solver_status": "resolved"
+                },
+                {
+                    "command": "composer update friendsofsymfony/oauth-server-bundle -W -m --with 'symfony/security-http:>=5.4.47,<6.0.0 || >=6.4.15,<7.0.0 || >=7.1.8'",
+                    "strategy": "parent-update",
+                    "outcome": "valid",
+                    "rank": 4,
+                    "summary": {
+                        "changed": 1,
+                        "added": 0,
+                        "removed": 0,
+                        "total": 1,
+                        "major_change": false,
+                        "downgrade": false,
+                        "prerelease": false
+                    },
+                    "solver_status": "resolved"
+                },
+                {
+                    "command": "composer update friendsofsymfony/user-bundle -W -m --with 'symfony/security-http:>=5.4.47,<6.0.0 || >=6.4.15,<7.0.0 || >=7.1.8'",
+                    "strategy": "parent-update",
+                    "outcome": "valid",
+                    "rank": 5,
+                    "summary": {
+                        "changed": 1,
+                        "added": 0,
+                        "removed": 0,
+                        "total": 1,
+                        "major_change": false,
+                        "downgrade": false,
+                        "prerelease": false
+                    },
+                    "solver_status": "resolved"
+                },
+                {
+                    "command": "composer update scheb/2fa-bundle -W -m --with 'symfony/security-http:>=5.4.47,<6.0.0 || >=6.4.15,<7.0.0 || >=7.1.8'",
+                    "strategy": "parent-update",
+                    "outcome": "valid",
+                    "rank": 6,
+                    "summary": {
+                        "changed": 1,
+                        "added": 0,
+                        "removed": 0,
+                        "total": 1,
+                        "major_change": false,
+                        "downgrade": false,
+                        "prerelease": false
+                    },
+                    "solver_status": "resolved"
+                },
+                {
+                    "command": "composer update symfony/security-bundle -W -m --with 'symfony/security-http:>=5.4.47,<6.0.0 || >=6.4.15,<7.0.0 || >=7.1.8'",
+                    "strategy": "parent-update",
+                    "outcome": "valid",
+                    "rank": 7,
+                    "summary": {
+                        "changed": 2,
+                        "added": 0,
+                        "removed": 0,
+                        "total": 2,
+                        "major_change": false,
+                        "downgrade": false,
+                        "prerelease": false
+                    },
+                    "solver_status": "resolved"
+                },
+                {
+                    "command": "composer update sentry/sentry-symfony -W -m --with 'symfony/security-http:>=5.4.47,<6.0.0 || >=6.4.15,<7.0.0 || >=7.1.8'",
+                    "strategy": "parent-update",
+                    "outcome": "valid",
+                    "rank": 8,
+                    "summary": {
+                        "changed": 3,
+                        "added": 0,
+                        "removed": 0,
+                        "total": 3,
+                        "major_change": false,
+                        "downgrade": false,
+                        "prerelease": false
+                    },
+                    "solver_status": "resolved"
+                },
+                {
+                    "command": "composer update sentry/sentry-symfony symfony/security-bundle symfony/security-http -W -m --with 'symfony/security-http:>=5.4.47,<6.0.0 || >=6.4.15,<7.0.0 || >=7.1.8'",
+                    "strategy": "parent-update",
+                    "outcome": "valid",
+                    "rank": 9,
+                    "summary": {
+                        "changed": 4,
+                        "added": 0,
+                        "removed": 0,
+                        "total": 4,
+                        "major_change": false,
+                        "downgrade": false,
+                        "prerelease": false
+                    },
+                    "solver_status": "resolved"
+                },
+                {
+                    "command": "composer require --no-update symfony/security-http:^6.0 && composer update symfony/security-http -W -m --with 'symfony/security-http:>=5.4.47,<6.0.0 || >=6.4.15,<7.0.0 || >=7.1.8'",
+                    "strategy": "root-constraint-widen",
+                    "outcome": "skipped",
+                    "reason": "a better candidate already exists"
+                }
+            ]
+        },
+        {
+            "package": "tecnickcom/tcpdf",
+            "version": "6.7.7",
+            "version_normalized": "6.7.7.0",
+            "direct": true,
+            "dev": false,
+            "baselined": false,
+            "counts_for_exit": true,
+            "via_replaced_package": null,
+            "advisories": [
+                {
+                    "id": "PKSA-98jj-zbnk-dgwp",
+                    "cve": "CVE-2024-56521",
+                    "title": "TCPDF missing certificate validation",
+                    "link": "https://github.com/advisories/GHSA-9mgx-552f-59p6",
+                    "severity": "high",
+                    "reported_at": "2024-12-27T06:30:47+00:00",
+                    "affected_versions": "<6.8.0",
+                    "sources": [
+                        {
+                            "name": "GitHub",
+                            "remoteId": "GHSA-9mgx-552f-59p6"
+                        }
+                    ],
+                    "epss": null,
+                    "epss_percentile": null,
+                    "kev_added": null
+                },
+                {
+                    "id": "PKSA-tdkc-7xrw-d14c",
+                    "cve": "CVE-2024-56519",
+                    "title": "TCPDF lacks SVG sanitization",
+                    "link": "https://github.com/advisories/GHSA-4p8j-vhjm-6pvw",
+                    "severity": "medium",
+                    "reported_at": "2024-12-27T06:30:47+00:00",
+                    "affected_versions": "<6.8.0",
+                    "sources": [
+                        {
+                            "name": "GitHub",
+                            "remoteId": "GHSA-4p8j-vhjm-6pvw"
+                        }
+                    ],
+                    "epss": null,
+                    "epss_percentile": null,
+                    "kev_added": null
+                },
+                {
+                    "id": "PKSA-wb9y-hg45-chz4",
+                    "cve": "CVE-2024-56522",
+                    "title": "TCPDF has incorrect comparison",
+                    "link": "https://github.com/advisories/GHSA-w95c-7994-ghpr",
+                    "severity": "high",
+                    "reported_at": "2024-12-27T06:30:48+00:00",
+                    "affected_versions": "<6.8.0",
+                    "sources": [
+                        {
+                            "name": "GitHub",
+                            "remoteId": "GHSA-w95c-7994-ghpr"
+                        }
+                    ],
+                    "epss": null,
+                    "epss_percentile": null,
+                    "kev_added": null
+                },
+                {
+                    "id": "PKSA-ys59-hzk7-wxt5",
+                    "cve": "CVE-2024-56527",
+                    "title": "TCPDF missing character escape on error messages",
+                    "link": "https://github.com/advisories/GHSA-qx95-cwh6-9mvq",
+                    "severity": "medium",
+                    "reported_at": "2024-12-27T06:30:48+00:00",
+                    "affected_versions": "<6.8.0",
+                    "sources": [
+                        {
+                            "name": "GitHub",
+                            "remoteId": "GHSA-qx95-cwh6-9mvq"
+                        }
+                    ],
+                    "epss": null,
+                    "epss_percentile": null,
+                    "kev_added": null
+                }
+            ],
+            "abandoned": [],
+            "paths_total": 1,
+            "paths": [
+                {
+                    "cyclic": false,
+                    "chain": [
+                        {
+                            "package": "root",
+                            "version": null,
+                            "requires": "^6.6.5"
+                        }
+                    ],
+                    "target": {
+                        "package": "tecnickcom/tcpdf",
+                        "version": "6.7.7"
+                    }
+                }
+            ],
+            "solver_runs": 3,
+            "search_exhausted": false,
+            "remediation": {
+                "status": "verified",
+                "command": "composer update tecnickcom/tcpdf",
+                "strategy": "lock-refresh",
+                "root_constraint_changes": [],
+                "constraint_drag": null,
+                "blocking_risk": [],
+                "summary": {
+                    "changed": 1,
+                    "added": 0,
+                    "removed": 0,
+                    "total": 1,
+                    "major_change": false,
+                    "downgrade": false,
+                    "prerelease": false
+                },
+                "changes": [
+                    {
+                        "package": "tecnickcom/tcpdf",
+                        "kind": "upgraded",
+                        "step": "minor",
+                        "from": "6.7.7",
+                        "to": "6.8.0"
+                    }
+                ]
+            },
+            "candidates": [
+                {
+                    "command": "composer update tecnickcom/tcpdf",
+                    "strategy": "lock-refresh",
+                    "outcome": "valid",
+                    "rank": 1,
+                    "summary": {
+                        "changed": 1,
+                        "added": 0,
+                        "removed": 0,
+                        "total": 1,
+                        "major_change": false,
+                        "downgrade": false,
+                        "prerelease": false
+                    },
+                    "solver_status": "resolved"
+                },
+                {
+                    "command": "composer update tecnickcom/tcpdf -w -m --with 'tecnickcom/tcpdf:>=6.8.0'",
+                    "strategy": "with-dependencies",
+                    "outcome": "valid",
+                    "rank": 2,
+                    "summary": {
+                        "changed": 1,
+                        "added": 0,
+                        "removed": 0,
+                        "total": 1,
+                        "major_change": false,
+                        "downgrade": false,
+                        "prerelease": false
+                    },
+                    "solver_status": "resolved"
+                },
+                {
+                    "command": "composer update tecnickcom/tcpdf -W -m --with 'tecnickcom/tcpdf:>=6.8.0'",
+                    "strategy": "parent-update",
+                    "outcome": "valid",
+                    "rank": 3,
+                    "summary": {
+                        "changed": 1,
+                        "added": 0,
+                        "removed": 0,
+                        "total": 1,
+                        "major_change": false,
+                        "downgrade": false,
+                        "prerelease": false
+                    },
+                    "solver_status": "resolved"
+                },
+                {
+                    "command": "composer require --no-update tecnickcom/tcpdf:^7.0 && composer update tecnickcom/tcpdf -W -m --with 'tecnickcom/tcpdf:>=6.8.0'",
+                    "strategy": "root-constraint-widen",
+                    "outcome": "skipped",
+                    "reason": "a better candidate already exists"
+                }
+            ]
+        },
+        {
+            "package": "symfony/http-client",
+            "version": "v5.4.41",
+            "version_normalized": "5.4.41.0",
+            "direct": true,
+            "dev": false,
+            "baselined": false,
+            "counts_for_exit": true,
+            "via_replaced_package": null,
+            "advisories": [
+                {
+                    "id": "PKSA-4k7v-pfvw-nqvp",
+                    "cve": "CVE-2024-50342",
+                    "title": "CVE-2024-50342: Internal address and port enumeration allowed by NoPrivateNetworkHttpClient",
+                    "link": "https://symfony.com/cve-2024-50342",
+                    "severity": "low",
+                    "reported_at": "2024-11-13T08:00:00+00:00",
+                    "affected_versions": ">=4.3.0,<4.4.0|>=4.4.0,<5.0.0|>=5.0.0,<5.1.0|>=5.1.0,<5.2.0|>=5.2.0,<5.3.0|>=5.3.0,<5.4.0|>=5.4.0,<5.4.47|>=6.0.0,<6.1.0|>=6.1.0,<6.2.0|>=6.2.0,<6.3.0|>=6.3.0,<6.4.0|>=6.4.0,<6.4.15|>=7.0.0,<7.1.0|>=7.1.0,<7.1.8",
+                    "sources": [
+                        {
+                            "name": "GitHub",
+                            "remoteId": "GHSA-9c3x-r3wp-mgxm"
+                        },
+                        {
+                            "name": "FriendsOfPHP/security-advisories",
+                            "remoteId": "symfony/http-client/CVE-2024-50342.yaml"
+                        }
+                    ],
+                    "epss": null,
+                    "epss_percentile": null,
+                    "kev_added": null
+                }
+            ],
+            "abandoned": [],
+            "paths_total": 1,
+            "paths": [
+                {
+                    "cyclic": false,
+                    "chain": [
+                        {
+                            "package": "root",
+                            "version": null,
+                            "requires": "^5.4.35"
+                        }
+                    ],
+                    "target": {
+                        "package": "symfony/http-client",
+                        "version": "v5.4.41"
+                    }
+                }
+            ],
+            "solver_runs": 3,
+            "search_exhausted": false,
+            "remediation": {
+                "status": "verified",
+                "command": "composer update symfony/http-client",
+                "strategy": "lock-refresh",
+                "root_constraint_changes": [],
+                "constraint_drag": null,
+                "blocking_risk": [],
+                "summary": {
+                    "changed": 1,
+                    "added": 0,
+                    "removed": 0,
+                    "total": 1,
+                    "major_change": false,
+                    "downgrade": false,
+                    "prerelease": false
+                },
+                "changes": [
+                    {
+                        "package": "symfony/http-client",
+                        "kind": "upgraded",
+                        "step": "patch",
+                        "from": "v5.4.41",
+                        "to": "v5.4.47"
+                    }
+                ]
+            },
+            "candidates": [
+                {
+                    "command": "composer update symfony/http-client",
+                    "strategy": "lock-refresh",
+                    "outcome": "valid",
+                    "rank": 1,
+                    "summary": {
+                        "changed": 1,
+                        "added": 0,
+                        "removed": 0,
+                        "total": 1,
+                        "major_change": false,
+                        "downgrade": false,
+                        "prerelease": false
+                    },
+                    "solver_status": "resolved"
+                },
+                {
+                    "command": "composer update symfony/http-client -w -m --with 'symfony/http-client:>=5.4.47,<6.0.0 || >=6.4.15,<7.0.0 || >=7.1.8'",
+                    "strategy": "with-dependencies",
+                    "outcome": "valid",
+                    "rank": 2,
+                    "summary": {
+                        "changed": 1,
+                        "added": 0,
+                        "removed": 0,
+                        "total": 1,
+                        "major_change": false,
+                        "downgrade": false,
+                        "prerelease": false
+                    },
+                    "solver_status": "resolved"
+                },
+                {
+                    "command": "composer update symfony/http-client -W -m --with 'symfony/http-client:>=5.4.47,<6.0.0 || >=6.4.15,<7.0.0 || >=7.1.8'",
+                    "strategy": "parent-update",
+                    "outcome": "valid",
+                    "rank": 3,
+                    "summary": {
+                        "changed": 2,
+                        "added": 0,
+                        "removed": 0,
+                        "total": 2,
+                        "major_change": false,
+                        "downgrade": false,
+                        "prerelease": false
+                    },
+                    "solver_status": "resolved"
+                },
+                {
+                    "command": "composer require --no-update symfony/http-client:^6.0 && composer update symfony/http-client -W -m --with 'symfony/http-client:>=5.4.47,<6.0.0 || >=6.4.15,<7.0.0 || >=7.1.8'",
+                    "strategy": "root-constraint-widen",
+                    "outcome": "skipped",
+                    "reason": "a better candidate already exists"
+                }
+            ]
+        },
+        {
+            "package": "symfony/http-foundation",
+            "version": "v5.4.45",
+            "version_normalized": "5.4.45.0",
+            "direct": true,
+            "dev": false,
+            "baselined": false,
+            "counts_for_exit": true,
+            "via_replaced_package": null,
+            "advisories": [
+                {
+                    "id": "PKSA-b35n-565h-rs4q",
+                    "cve": "CVE-2024-50345",
+                    "title": "CVE-2024-50345: Open redirect via browser-sanitized URLs",
+                    "link": "https://symfony.com/cve-2024-50345",
+                    "severity": "low",
+                    "reported_at": "2024-11-05T08:00:00+00:00",
+                    "affected_versions": ">=2.0.0,<3.0.0|>=3.0.0,<4.0.0|>=4.0.0,<5.0.0|>=5.0.0,<5.1.0|>=5.1.0,<5.2.0|>=5.2.0,<5.3.0|>=5.3.0,<5.4.0|>=5.4.0,<5.4.46|>=6.0.0,<6.1.0|>=6.1.0,<6.2.0|>=6.2.0,<6.3.0|>=6.3.0,<6.4.0|>=6.4.0,<6.4.14|>=7.0.0,<7.1.0|>=7.1.0,<7.1.7",
+                    "sources": [
+                        {
+                            "name": "GitHub",
+                            "remoteId": "GHSA-mrqx-rp3w-jpjp"
+                        },
+                        {
+                            "name": "FriendsOfPHP/security-advisories",
+                            "remoteId": "symfony/http-foundation/CVE-2024-50345.yaml"
+                        }
+                    ],
+                    "epss": null,
+                    "epss_percentile": null,
+                    "kev_added": null
+                }
+            ],
+            "abandoned": [
+                {
+                    "package": "scheb/2fa-qr-code",
+                    "replacement": null
+                },
+                {
+                    "package": "sensio/framework-extra-bundle",
+                    "replacement": "Symfony"
+                },
+                {
+                    "package": "symfony/web-server-bundle",
+                    "replacement": null
+                }
+            ],
+            "paths_total": 162,
+            "paths": [
+                {
+                    "cyclic": false,
+                    "chain": [
+                        {
+                            "package": "root",
+                            "version": null,
+                            "requires": "^5.4.35"
+                        }
+                    ],
+                    "target": {
+                        "package": "symfony/http-foundation",
+                        "version": "v5.4.45"
+                    }
+                },
+                {
+                    "cyclic": false,
+                    "chain": [
+                        {
+                            "package": "root",
+                            "version": null,
+                            "requires": "^3.8"
+                        },
+                        {
+                            "package": "babdev/pagerfanta-bundle",
+                            "version": "v3.8.0",
+                            "requires": "^4.4 || ^5.4 || ^6.0"
+                        }
+                    ],
+                    "target": {
+                        "package": "symfony/http-foundation",
+                        "version": "v5.4.45"
+                    }
+                },
+                {
+                    "cyclic": false,
+                    "chain": [
+                        {
+                            "package": "root",
+                            "version": null,
+                            "requires": "^2.7.0"
+                        },
+                        {
+                            "package": "craue/config-bundle",
+                            "version": "2.7.0",
+                            "requires": "~4.4|~5.4|^6.3"
+                        }
+                    ],
+                    "target": {
+                        "package": "symfony/http-foundation",
+                        "version": "v5.4.45"
+                    }
+                },
+                {
+                    "cyclic": false,
+                    "chain": [
+                        {
+                            "package": "root",
+                            "version": null,
+                            "requires": "dev-master#dc8ff343363cf794d30eb1a123610d186a43f162"
+                        },
+                        {
+                            "package": "friendsofsymfony/oauth-server-bundle",
+                            "version": "2.0.x-dev",
+                            "requires": "~1.1"
+                        },
+                        {
+                            "package": "friendsofsymfony/oauth2-php",
+                            "version": "1.3.1",
+                            "requires": "~3.0|~4.0|~5.0"
+                        }
+                    ],
+                    "target": {
+                        "package": "symfony/http-foundation",
+                        "version": "v5.4.45"
+                    }
+                },
+                {
+                    "cyclic": false,
+                    "chain": [
+                        {
+                            "package": "root",
+                            "version": null,
+                            "requires": "dev-master#dc8ff343363cf794d30eb1a123610d186a43f162"
+                        },
+                        {
+                            "package": "friendsofsymfony/oauth-server-bundle",
+                            "version": "dev-master",
+                            "requires": "~1.1"
+                        },
+                        {
+                            "package": "friendsofsymfony/oauth2-php",
+                            "version": "1.3.1",
+                            "requires": "~3.0|~4.0|~5.0"
+                        }
+                    ],
+                    "target": {
+                        "package": "symfony/http-foundation",
+                        "version": "v5.4.45"
+                    }
+                },
+                {
+                    "cyclic": false,
+                    "chain": [
+                        {
+                            "package": "root",
+                            "version": null,
+                            "requires": "^3.6"
+                        },
+                        {
+                            "package": "friendsofsymfony/rest-bundle",
+                            "version": "3.7.1",
+                            "requires": "^5.4|^6.4|^7.0"
+                        }
+                    ],
+                    "target": {
+                        "package": "symfony/http-foundation",
+                        "version": "v5.4.45"
+                    }
+                },
+                {
+                    "cyclic": false,
+                    "chain": [
+                        {
+                            "package": "root",
+                            "version": null,
+                            "requires": "^3.2.1"
+                        },
+                        {
+                            "package": "friendsofsymfony/user-bundle",
+                            "version": "v3.4.0",
+                            "requires": "^4.4 || ^5.0 || ^6.0"
+                        }
+                    ],
+                    "target": {
+                        "package": "symfony/http-foundation",
+                        "version": "v5.4.45"
+                    }
+                },
+                {
+                    "cyclic": false,
+                    "chain": [
+                        {
+                            "package": "root",
+                            "version": null,
+                            "requires": "^4.20.0"
+                        },
+                        {
+                            "package": "nelmio/api-doc-bundle",
+                            "version": "v4.32.3",
+                            "requires": "^5.4 || ^6.4 || ^7.0"
+                        }
+                    ],
+                    "target": {
+                        "package": "symfony/http-foundation",
+                        "version": "v5.4.45"
+                    }
+                },
+                {
+                    "cyclic": false,
+                    "chain": [
+                        {
+                            "package": "root",
+                            "version": null,
+                            "requires": "^5.13.2"
+                        },
+                        {
+                            "package": "scheb/2fa-bundle",
+                            "version": "v5.13.2",
+                            "requires": "^4.4|^5.0"
+                        }
+                    ],
+                    "target": {
+                        "package": "symfony/http-foundation",
+                        "version": "v5.4.45"
+                    }
+                },
+                {
+                    "cyclic": false,
+                    "chain": [
+                        {
+                            "package": "root",
+                            "version": null,
+                            "requires": "^5.13.2"
+                        },
+                        {
+                            "package": "scheb/2fa-backup-code",
+                            "version": "v5.13.2",
+                            "requires": "self.version"
+                        },
+                        {
+                            "package": "scheb/2fa-bundle",
+                            "version": "v5.13.2",
+                            "requires": "^4.4|^5.0"
+                        }
+                    ],
+                    "target": {
+                        "package": "symfony/http-foundation",
+                        "version": "v5.4.45"
+                    }
+                }
+            ],
+            "solver_runs": 9,
+            "search_exhausted": true,
+            "remediation": {
+                "status": "verified",
+                "command": "composer update symfony/http-foundation",
+                "strategy": "lock-refresh",
+                "root_constraint_changes": [],
+                "constraint_drag": null,
+                "blocking_risk": [],
+                "summary": {
+                    "changed": 1,
+                    "added": 0,
+                    "removed": 0,
+                    "total": 1,
+                    "major_change": false,
+                    "downgrade": false,
+                    "prerelease": false
+                },
+                "changes": [
+                    {
+                        "package": "symfony/http-foundation",
+                        "kind": "upgraded",
+                        "step": "patch",
+                        "from": "v5.4.45",
+                        "to": "v5.4.48"
+                    }
+                ]
+            },
+            "candidates": [
+                {
+                    "command": "composer update symfony/http-foundation",
+                    "strategy": "lock-refresh",
+                    "outcome": "valid",
+                    "rank": 1,
+                    "summary": {
+                        "changed": 1,
+                        "added": 0,
+                        "removed": 0,
+                        "total": 1,
+                        "major_change": false,
+                        "downgrade": false,
+                        "prerelease": false
+                    },
+                    "solver_status": "resolved"
+                },
+                {
+                    "command": "composer update symfony/http-foundation -w -m --with 'symfony/http-foundation:>=5.4.46,<6.0.0 || >=6.4.14,<7.0.0 || >=7.1.7'",
+                    "strategy": "with-dependencies",
+                    "outcome": "valid",
+                    "rank": 2,
+                    "summary": {
+                        "changed": 1,
+                        "added": 0,
+                        "removed": 0,
+                        "total": 1,
+                        "major_change": false,
+                        "downgrade": false,
+                        "prerelease": false
+                    },
+                    "solver_status": "resolved"
+                },
+                {
+                    "command": "composer update symfony/http-foundation -W -m --with 'symfony/http-foundation:>=5.4.46,<6.0.0 || >=6.4.14,<7.0.0 || >=7.1.7'",
+                    "strategy": "parent-update",
+                    "outcome": "valid",
+                    "rank": 3,
+                    "summary": {
+                        "changed": 1,
+                        "added": 0,
+                        "removed": 0,
+                        "total": 1,
+                        "major_change": false,
+                        "downgrade": false,
+                        "prerelease": false
+                    },
+                    "solver_status": "resolved"
+                },
+                {
+                    "command": "composer update babdev/pagerfanta-bundle -W -m --with 'symfony/http-foundation:>=5.4.46,<6.0.0 || >=6.4.14,<7.0.0 || >=7.1.7'",
+                    "strategy": "parent-update",
+                    "outcome": "valid",
+                    "rank": 4,
+                    "summary": {
+                        "changed": 1,
+                        "added": 0,
+                        "removed": 0,
+                        "total": 1,
+                        "major_change": false,
+                        "downgrade": false,
+                        "prerelease": false
+                    },
+                    "solver_status": "resolved"
+                },
+                {
+                    "command": "composer update craue/config-bundle -W -m --with 'symfony/http-foundation:>=5.4.46,<6.0.0 || >=6.4.14,<7.0.0 || >=7.1.7'",
+                    "strategy": "parent-update",
+                    "outcome": "valid",
+                    "rank": 5,
+                    "summary": {
+                        "changed": 1,
+                        "added": 0,
+                        "removed": 0,
+                        "total": 1,
+                        "major_change": false,
+                        "downgrade": false,
+                        "prerelease": false
+                    },
+                    "solver_status": "resolved"
+                },
+                {
+                    "command": "composer update friendsofsymfony/user-bundle -W -m --with 'symfony/http-foundation:>=5.4.46,<6.0.0 || >=6.4.14,<7.0.0 || >=7.1.7'",
+                    "strategy": "parent-update",
+                    "outcome": "valid",
+                    "rank": 6,
+                    "summary": {
+                        "changed": 1,
+                        "added": 0,
+                        "removed": 0,
+                        "total": 1,
+                        "major_change": false,
+                        "downgrade": false,
+                        "prerelease": false
+                    },
+                    "solver_status": "resolved"
+                },
+                {
+                    "command": "composer update friendsofsymfony/rest-bundle -W -m --with 'symfony/http-foundation:>=5.4.46,<6.0.0 || >=6.4.14,<7.0.0 || >=7.1.7'",
+                    "strategy": "parent-update",
+                    "outcome": "valid",
+                    "rank": 7,
+                    "summary": {
+                        "changed": 2,
+                        "added": 0,
+                        "removed": 0,
+                        "total": 2,
+                        "major_change": false,
+                        "downgrade": false,
+                        "prerelease": false
+                    },
+                    "solver_status": "resolved"
+                },
+                {
+                    "command": "composer update nelmio/api-doc-bundle -W -m --with 'symfony/http-foundation:>=5.4.46,<6.0.0 || >=6.4.14,<7.0.0 || >=7.1.7'",
+                    "strategy": "parent-update",
+                    "outcome": "valid",
+                    "rank": 8,
+                    "summary": {
+                        "changed": 2,
+                        "added": 0,
+                        "removed": 0,
+                        "total": 2,
+                        "major_change": false,
+                        "downgrade": false,
+                        "prerelease": false
+                    },
+                    "solver_status": "resolved"
+                },
+                {
+                    "command": "composer update babdev/pagerfanta-bundle craue/config-bundle friendsofsymfony/oauth-server-bundle friendsofsymfony/rest-bundle friendsofsymfony/user-bundle nelmio/api-doc-bundle scheb/2fa-bundle symfony/framework-bundle symfony/http-kernel sentry/sentry-symfony symfony/security-bundle symfony/security-http symfony/http-foundation -W -m --with 'symfony/http-foundation:>=5.4.46,<6.0.0 || >=6.4.14,<7.0.0 || >=7.1.7'",
+                    "strategy": "parent-update",
+                    "outcome": "valid",
+                    "rank": 9,
+                    "summary": {
+                        "changed": 8,
+                        "added": 0,
+                        "removed": 0,
+                        "total": 8,
+                        "major_change": false,
+                        "downgrade": false,
+                        "prerelease": false
+                    },
+                    "solver_status": "resolved"
+                },
+                {
+                    "command": "composer require --no-update symfony/http-foundation:^6.0 && composer update symfony/http-foundation -W -m --with 'symfony/http-foundation:>=5.4.46,<6.0.0 || >=6.4.14,<7.0.0 || >=7.1.7'",
+                    "strategy": "root-constraint-widen",
+                    "outcome": "skipped",
+                    "reason": "a better candidate already exists"
+                }
+            ]
+        },
+        {
+            "package": "symfony/validator",
+            "version": "v5.4.41",
+            "version_normalized": "5.4.41.0",
+            "direct": true,
+            "dev": false,
+            "baselined": false,
+            "counts_for_exit": true,
+            "via_replaced_package": null,
+            "advisories": [
+                {
+                    "id": "PKSA-w2tw-kmfg-rt9s",
+                    "cve": "CVE-2024-50343",
+                    "title": "CVE-2024-50343: Incorrect response from Validator when input ends with `\n`",
+                    "link": "https://symfony.com/cve-2024-50343",
+                    "severity": "low",
+                    "reported_at": "2024-08-30T08:00:00+00:00",
+                    "affected_versions": ">=2.0.0,<3.0.0|>=3.0.0,<4.0.0|>=4.0.0,<5.0.0|>=5.0.0,<5.1.0|>=5.1.0,<5.2.0|>=5.2.0,<5.3.0|>=5.3.0,<5.4.0|>=5.4.0,<5.4.43|>=6.0.0,<6.1.0|>=6.1.0,<6.2.0|>=6.2.0,<6.3.0|>=6.3.0,<6.4.0|>=6.4.0,<6.4.11|>=7.0.0,<7.1.0|>=7.1.0,<7.1.4",
+                    "sources": [
+                        {
+                            "name": "GitHub",
+                            "remoteId": "GHSA-g3rh-rrhp-jhh9"
+                        },
+                        {
+                            "name": "FriendsOfPHP/security-advisories",
+                            "remoteId": "symfony/validator/CVE-2024-50343.yaml"
+                        }
+                    ],
+                    "epss": null,
+                    "epss_percentile": null,
+                    "kev_added": null
+                }
+            ],
+            "abandoned": [],
+            "paths_total": 7,
+            "paths": [
+                {
+                    "cyclic": false,
+                    "chain": [
+                        {
+                            "package": "root",
+                            "version": null,
+                            "requires": "^5.4.35"
+                        }
+                    ],
+                    "target": {
+                        "package": "symfony/validator",
+                        "version": "v5.4.41"
+                    }
+                },
+                {
+                    "cyclic": false,
+                    "chain": [
+                        {
+                            "package": "root",
+                            "version": null,
+                            "requires": "^2.7.0"
+                        },
+                        {
+                            "package": "craue/config-bundle",
+                            "version": "2.7.0",
+                            "requires": "~4.4|~5.4|^6.3"
+                        }
+                    ],
+                    "target": {
+                        "package": "symfony/validator",
+                        "version": "v5.4.41"
+                    }
+                },
+                {
+                    "cyclic": false,
+                    "chain": [
+                        {
+                            "package": "root",
+                            "version": null,
+                            "requires": "^3.2.1"
+                        },
+                        {
+                            "package": "friendsofsymfony/user-bundle",
+                            "version": "v3.4.0",
+                            "requires": "^4.4 || ^5.0 || ^6.0"
+                        }
+                    ],
+                    "target": {
+                        "package": "symfony/validator",
+                        "version": "v5.4.41"
+                    }
+                },
+                {
+                    "cyclic": false,
+                    "chain": [
+                        {
+                            "package": "root",
+                            "version": null,
+                            "requires": "dev-master"
+                        },
+                        {
+                            "package": "wallabag/rulerz-bundle",
+                            "version": "9999999-dev",
+                            "requires": "dev-master"
+                        },
+                        {
+                            "package": "wallabag/rulerz-bridge",
+                            "version": "9999999-dev",
+                            "requires": "^4.4|^5.4|^6.4"
+                        }
+                    ],
+                    "target": {
+                        "package": "symfony/validator",
+                        "version": "v5.4.41"
+                    }
+                },
+                {
+                    "cyclic": false,
+                    "chain": [
+                        {
+                            "package": "root",
+                            "version": null,
+                            "requires": "dev-master"
+                        },
+                        {
+                            "package": "wallabag/rulerz-bundle",
+                            "version": "dev-master",
+                            "requires": "dev-master"
+                        },
+                        {
+                            "package": "wallabag/rulerz-bridge",
+                            "version": "9999999-dev",
+                            "requires": "^4.4|^5.4|^6.4"
+                        }
+                    ],
+                    "target": {
+                        "package": "symfony/validator",
+                        "version": "v5.4.41"
+                    }
+                },
+                {
+                    "cyclic": false,
+                    "chain": [
+                        {
+                            "package": "root",
+                            "version": null,
+                            "requires": "dev-master"
+                        },
+                        {
+                            "package": "wallabag/rulerz-bundle",
+                            "version": "9999999-dev",
+                            "requires": "dev-master"
+                        },
+                        {
+                            "package": "wallabag/rulerz-bridge",
+                            "version": "dev-master",
+                            "requires": "^4.4|^5.4|^6.4"
+                        }
+                    ],
+                    "target": {
+                        "package": "symfony/validator",
+                        "version": "v5.4.41"
+                    }
+                },
+                {
+                    "cyclic": false,
+                    "chain": [
+                        {
+                            "package": "root",
+                            "version": null,
+                            "requires": "dev-master"
+                        },
+                        {
+                            "package": "wallabag/rulerz-bundle",
+                            "version": "dev-master",
+                            "requires": "dev-master"
+                        },
+                        {
+                            "package": "wallabag/rulerz-bridge",
+                            "version": "dev-master",
+                            "requires": "^4.4|^5.4|^6.4"
+                        }
+                    ],
+                    "target": {
+                        "package": "symfony/validator",
+                        "version": "v5.4.41"
+                    }
+                }
+            ],
+            "solver_runs": 7,
+            "search_exhausted": false,
+            "remediation": {
+                "status": "verified",
+                "command": "composer update symfony/validator",
+                "strategy": "lock-refresh",
+                "root_constraint_changes": [],
+                "constraint_drag": null,
+                "blocking_risk": [],
+                "summary": {
+                    "changed": 1,
+                    "added": 0,
+                    "removed": 0,
+                    "total": 1,
+                    "major_change": false,
+                    "downgrade": false,
+                    "prerelease": false
+                },
+                "changes": [
+                    {
+                        "package": "symfony/validator",
+                        "kind": "upgraded",
+                        "step": "patch",
+                        "from": "v5.4.41",
+                        "to": "v5.4.48"
+                    }
+                ]
+            },
+            "candidates": [
+                {
+                    "command": "composer update symfony/validator",
+                    "strategy": "lock-refresh",
+                    "outcome": "valid",
+                    "rank": 1,
+                    "summary": {
+                        "changed": 1,
+                        "added": 0,
+                        "removed": 0,
+                        "total": 1,
+                        "major_change": false,
+                        "downgrade": false,
+                        "prerelease": false
+                    },
+                    "solver_status": "resolved"
+                },
+                {
+                    "command": "composer update symfony/validator -w -m --with 'symfony/validator:>=5.4.43,<6.0.0 || >=6.4.11,<7.0.0 || >=7.1.4'",
+                    "strategy": "with-dependencies",
+                    "outcome": "valid",
+                    "rank": 2,
+                    "summary": {
+                        "changed": 1,
+                        "added": 0,
+                        "removed": 0,
+                        "total": 1,
+                        "major_change": false,
+                        "downgrade": false,
+                        "prerelease": false
+                    },
+                    "solver_status": "resolved"
+                },
+                {
+                    "command": "composer update symfony/validator -W -m --with 'symfony/validator:>=5.4.43,<6.0.0 || >=6.4.11,<7.0.0 || >=7.1.4'",
+                    "strategy": "parent-update",
+                    "outcome": "valid",
+                    "rank": 3,
+                    "summary": {
+                        "changed": 1,
+                        "added": 0,
+                        "removed": 0,
+                        "total": 1,
+                        "major_change": false,
+                        "downgrade": false,
+                        "prerelease": false
+                    },
+                    "solver_status": "resolved"
+                },
+                {
+                    "command": "composer update craue/config-bundle -W -m --with 'symfony/validator:>=5.4.43,<6.0.0 || >=6.4.11,<7.0.0 || >=7.1.4'",
+                    "strategy": "parent-update",
+                    "outcome": "valid",
+                    "rank": 4,
+                    "summary": {
+                        "changed": 1,
+                        "added": 0,
+                        "removed": 0,
+                        "total": 1,
+                        "major_change": false,
+                        "downgrade": false,
+                        "prerelease": false
+                    },
+                    "solver_status": "resolved"
+                },
+                {
+                    "command": "composer update friendsofsymfony/user-bundle -W -m --with 'symfony/validator:>=5.4.43,<6.0.0 || >=6.4.11,<7.0.0 || >=7.1.4'",
+                    "strategy": "parent-update",
+                    "outcome": "valid",
+                    "rank": 5,
+                    "summary": {
+                        "changed": 1,
+                        "added": 0,
+                        "removed": 0,
+                        "total": 1,
+                        "major_change": false,
+                        "downgrade": false,
+                        "prerelease": false
+                    },
+                    "solver_status": "resolved"
+                },
+                {
+                    "command": "composer update wallabag/rulerz-bundle -W -m --with 'symfony/validator:>=5.4.43,<6.0.0 || >=6.4.11,<7.0.0 || >=7.1.4'",
+                    "strategy": "parent-update",
+                    "outcome": "valid",
+                    "rank": 6,
+                    "summary": {
+                        "changed": 1,
+                        "added": 0,
+                        "removed": 0,
+                        "total": 1,
+                        "major_change": false,
+                        "downgrade": false,
+                        "prerelease": false
+                    },
+                    "solver_status": "resolved"
+                },
+                {
+                    "command": "composer update craue/config-bundle friendsofsymfony/user-bundle wallabag/rulerz-bundle symfony/validator -W -m --with 'symfony/validator:>=5.4.43,<6.0.0 || >=6.4.11,<7.0.0 || >=7.1.4'",
+                    "strategy": "parent-update",
+                    "outcome": "valid",
+                    "rank": 7,
+                    "summary": {
+                        "changed": 1,
+                        "added": 0,
+                        "removed": 0,
+                        "total": 1,
+                        "major_change": false,
+                        "downgrade": false,
+                        "prerelease": false
+                    },
+                    "solver_status": "resolved"
+                },
+                {
+                    "command": "composer require --no-update symfony/validator:^6.0 && composer update symfony/validator -W -m --with 'symfony/validator:>=5.4.43,<6.0.0 || >=6.4.11,<7.0.0 || >=7.1.4'",
+                    "strategy": "root-constraint-widen",
+                    "outcome": "skipped",
+                    "reason": "a better candidate already exists"
+                },
+                {
+                    "command": "composer require --no-update craue/config-bundle:^3.0 && composer update craue/config-bundle -W -m --with 'symfony/validator:>=5.4.43,<6.0.0 || >=6.4.11,<7.0.0 || >=7.1.4'",
+                    "strategy": "root-constraint-widen",
+                    "outcome": "skipped",
+                    "reason": "a better candidate already exists"
+                },
+                {
+                    "command": "composer require --no-update friendsofsymfony/user-bundle:^4.0 && composer update friendsofsymfony/user-bundle -W -m --with 'symfony/validator:>=5.4.43,<6.0.0 || >=6.4.11,<7.0.0 || >=7.1.4'",
+                    "strategy": "root-constraint-widen",
+                    "outcome": "skipped",
+                    "reason": "a better candidate already exists"
+                }
+            ]
+        },
+        {
+            "package": "twig/twig",
+            "version": "v3.11.1",
+            "version_normalized": "3.11.1.0",
+            "direct": true,
+            "dev": false,
+            "baselined": false,
+            "counts_for_exit": true,
+            "via_replaced_package": null,
+            "advisories": [
+                {
+                    "id": "PKSA-2wrf-1xmk-1pky",
+                    "cve": "CVE-2024-51755",
+                    "title": "Unguarded calls to __isset() and to array-accesses when the sandbox is enabled",
+                    "link": "https://symfony.com/blog/cve-2024-51755-unguarded-calls-to-isset-and-to-array-accesses-in-a-sandbox",
+                    "severity": "low",
+                    "reported_at": "2024-11-06T08:00:00+00:00",
+                    "affected_versions": ">=1.0.0,<2.0.0|>=2.0.0,<3.0.0|>=3.0.0,<3.11.2|>=3.12.0,<3.14.1",
+                    "sources": [
+                        {
+                            "name": "GitHub",
+                            "remoteId": "GHSA-jjxq-ff2g-95vh"
+                        },
+                        {
+                            "name": "FriendsOfPHP/security-advisories",
+                            "remoteId": "twig/twig/CVE-2024-51755.yaml"
+                        }
+                    ],
+                    "epss": null,
+                    "epss_percentile": null,
+                    "kev_added": null
+                },
+                {
+                    "id": "PKSA-yhcn-xrg3-68b1",
+                    "cve": "CVE-2024-51754",
+                    "title": "Unguarded calls to __toString() when nesting an object into an array",
+                    "link": "https://symfony.com/blog/cve-2024-51754-unguarded-calls-to-tostring-in-a-sandbox-when-an-object-is-in-an-array-or-an-argument-list",
+                    "severity": "low",
+                    "reported_at": "2024-11-06T08:00:00+00:00",
+                    "affected_versions": ">=1.0.0,<2.0.0|>=2.0.0,<3.0.0|>=3.0.0,<3.11.2|>=3.12.0,<3.14.1",
+                    "sources": [
+                        {
+                            "name": "GitHub",
+                            "remoteId": "GHSA-6377-hfv9-hqf6"
+                        },
+                        {
+                            "name": "FriendsOfPHP/security-advisories",
+                            "remoteId": "twig/twig/CVE-2024-51754.yaml"
+                        }
+                    ],
+                    "epss": null,
+                    "epss_percentile": null,
+                    "kev_added": null
+                }
+            ],
+            "abandoned": [
+                {
+                    "package": "scheb/2fa-qr-code",
+                    "replacement": null
+                }
+            ],
+            "paths_total": 32,
+            "paths": [
+                {
+                    "cyclic": false,
+                    "chain": [
+                        {
+                            "package": "root",
+                            "version": null,
+                            "requires": "^3.8.0"
+                        }
+                    ],
+                    "target": {
+                        "package": "twig/twig",
+                        "version": "v3.11.1"
+                    }
+                },
+                {
+                    "cyclic": false,
+                    "chain": [
+                        {
+                            "package": "root",
+                            "version": null,
+                            "requires": "^3.2.1"
+                        },
+                        {
+                            "package": "friendsofsymfony/user-bundle",
+                            "version": "v3.4.0",
+                            "requires": "^1.34 || ^2.4 || ^3.0"
+                        }
+                    ],
+                    "target": {
+                        "package": "twig/twig",
+                        "version": "v3.11.1"
+                    }
+                },
+                {
+                    "cyclic": false,
+                    "chain": [
+                        {
+                            "package": "root",
+                            "version": null,
+                            "requires": "^3.0"
+                        },
+                        {
+                            "package": "mnapoli/piwik-twig-extension",
+                            "version": "3.0.0",
+                            "requires": "~2.10|~3.0"
+                        }
+                    ],
+                    "target": {
+                        "package": "twig/twig",
+                        "version": "v3.11.1"
+                    }
+                },
+                {
+                    "cyclic": false,
+                    "chain": [
+                        {
+                            "package": "root",
+                            "version": null,
+                            "requires": "^3.8"
+                        },
+                        {
+                            "package": "pagerfanta/twig",
+                            "version": "v3.8.0",
+                            "requires": "^2.13 || ^3.0"
+                        }
+                    ],
+                    "target": {
+                        "package": "twig/twig",
+                        "version": "v3.11.1"
+                    }
+                },
+                {
+                    "cyclic": false,
+                    "chain": [
+                        {
+                            "package": "root",
+                            "version": null,
+                            "requires": "^5.4.35"
+                        },
+                        {
+                            "package": "symfony/twig-bundle",
+                            "version": "v5.4.40",
+                            "requires": "^5.3|^6.0"
+                        },
+                        {
+                            "package": "symfony/twig-bridge",
+                            "version": "v5.4.41",
+                            "requires": "^2.13|^3.0.4"
+                        }
+                    ],
+                    "target": {
+                        "package": "twig/twig",
+                        "version": "v3.11.1"
+                    }
+                },
+                {
+                    "cyclic": false,
+                    "chain": [
+                        {
+                            "package": "root",
+                            "version": null,
+                            "requires": "dev-master#dc8ff343363cf794d30eb1a123610d186a43f162"
+                        },
+                        {
+                            "package": "friendsofsymfony/oauth-server-bundle",
+                            "version": "2.0.x-dev",
+                            "requires": "^4.4 || ^5.1"
+                        },
+                        {
+                            "package": "symfony/twig-bundle",
+                            "version": "v5.4.40",
+                            "requires": "^5.3|^6.0"
+                        },
+                        {
+                            "package": "symfony/twig-bridge",
+                            "version": "v5.4.41",
+                            "requires": "^2.13|^3.0.4"
+                        }
+                    ],
+                    "target": {
+                        "package": "twig/twig",
+                        "version": "v3.11.1"
+                    }
+                },
+                {
+                    "cyclic": false,
+                    "chain": [
+                        {
+                            "package": "root",
+                            "version": null,
+                            "requires": "dev-master#dc8ff343363cf794d30eb1a123610d186a43f162"
+                        },
+                        {
+                            "package": "friendsofsymfony/oauth-server-bundle",
+                            "version": "dev-master",
+                            "requires": "^4.4 || ^5.1"
+                        },
+                        {
+                            "package": "symfony/twig-bundle",
+                            "version": "v5.4.40",
+                            "requires": "^5.3|^6.0"
+                        },
+                        {
+                            "package": "symfony/twig-bridge",
+                            "version": "v5.4.41",
+                            "requires": "^2.13|^3.0.4"
+                        }
+                    ],
+                    "target": {
+                        "package": "twig/twig",
+                        "version": "v3.11.1"
+                    }
+                },
+                {
+                    "cyclic": false,
+                    "chain": [
+                        {
+                            "package": "root",
+                            "version": null,
+                            "requires": "^3.2.1"
+                        },
+                        {
+                            "package": "friendsofsymfony/user-bundle",
+                            "version": "v3.4.0",
+                            "requires": "^4.4 || ^5.0 || ^6.0"
+                        },
+                        {
+                            "package": "symfony/twig-bundle",
+                            "version": "v5.4.40",
+                            "requires": "^5.3|^6.0"
+                        },
+                        {
+                            "package": "symfony/twig-bridge",
+                            "version": "v5.4.41",
+                            "requires": "^2.13|^3.0.4"
+                        }
+                    ],
+                    "target": {
+                        "package": "twig/twig",
+                        "version": "v3.11.1"
+                    }
+                },
+                {
+                    "cyclic": false,
+                    "chain": [
+                        {
+                            "package": "root",
+                            "version": null,
+                            "requires": "^5.13.2"
+                        },
+                        {
+                            "package": "scheb/2fa-bundle",
+                            "version": "v5.13.2",
+                            "requires": "^4.4|^5.0"
+                        },
+                        {
+                            "package": "symfony/twig-bundle",
+                            "version": "v5.4.40",
+                            "requires": "^5.3|^6.0"
+                        },
+                        {
+                            "package": "symfony/twig-bridge",
+                            "version": "v5.4.41",
+                            "requires": "^2.13|^3.0.4"
+                        }
+                    ],
+                    "target": {
+                        "package": "twig/twig",
+                        "version": "v3.11.1"
+                    }
+                },
+                {
+                    "cyclic": false,
+                    "chain": [
+                        {
+                            "package": "root",
+                            "version": null,
+                            "requires": "^5.13.2"
+                        },
+                        {
+                            "package": "scheb/2fa-backup-code",
+                            "version": "v5.13.2",
+                            "requires": "self.version"
+                        },
+                        {
+                            "package": "scheb/2fa-bundle",
+                            "version": "v5.13.2",
+                            "requires": "^4.4|^5.0"
+                        },
+                        {
+                            "package": "symfony/twig-bundle",
+                            "version": "v5.4.40",
+                            "requires": "^5.3|^6.0"
+                        },
+                        {
+                            "package": "symfony/twig-bridge",
+                            "version": "v5.4.41",
+                            "requires": "^2.13|^3.0.4"
+                        }
+                    ],
+                    "target": {
+                        "package": "twig/twig",
+                        "version": "v3.11.1"
+                    }
+                }
+            ],
+            "solver_runs": 9,
+            "search_exhausted": true,
+            "remediation": {
+                "status": "verified",
+                "command": "composer update twig/twig",
+                "strategy": "lock-refresh",
+                "root_constraint_changes": [],
+                "constraint_drag": null,
+                "blocking_risk": [],
+                "summary": {
+                    "changed": 1,
+                    "added": 0,
+                    "removed": 0,
+                    "total": 1,
+                    "major_change": false,
+                    "downgrade": false,
+                    "prerelease": false
+                },
+                "changes": [
+                    {
+                        "package": "twig/twig",
+                        "kind": "upgraded",
+                        "step": "patch",
+                        "from": "v3.11.1",
+                        "to": "v3.11.3"
+                    }
+                ]
+            },
+            "candidates": [
+                {
+                    "command": "composer update twig/twig",
+                    "strategy": "lock-refresh",
+                    "outcome": "valid",
+                    "rank": 1,
+                    "summary": {
+                        "changed": 1,
+                        "added": 0,
+                        "removed": 0,
+                        "total": 1,
+                        "major_change": false,
+                        "downgrade": false,
+                        "prerelease": false
+                    },
+                    "solver_status": "resolved"
+                },
+                {
+                    "command": "composer update twig/twig -w -m --with 'twig/twig:>=3.11.2,<3.12.0 || >=3.14.1'",
+                    "strategy": "with-dependencies",
+                    "outcome": "valid",
+                    "rank": 2,
+                    "summary": {
+                        "changed": 1,
+                        "added": 0,
+                        "removed": 0,
+                        "total": 1,
+                        "major_change": false,
+                        "downgrade": false,
+                        "prerelease": false
+                    },
+                    "solver_status": "resolved"
+                },
+                {
+                    "command": "composer update twig/twig -W -m --with 'twig/twig:>=3.11.2,<3.12.0 || >=3.14.1'",
+                    "strategy": "parent-update",
+                    "outcome": "valid",
+                    "rank": 3,
+                    "summary": {
+                        "changed": 1,
+                        "added": 0,
+                        "removed": 0,
+                        "total": 1,
+                        "major_change": false,
+                        "downgrade": false,
+                        "prerelease": false
+                    },
+                    "solver_status": "resolved"
+                },
+                {
+                    "command": "composer update friendsofsymfony/user-bundle -W -m --with 'twig/twig:>=3.11.2,<3.12.0 || >=3.14.1'",
+                    "strategy": "parent-update",
+                    "outcome": "valid",
+                    "rank": 4,
+                    "summary": {
+                        "changed": 1,
+                        "added": 0,
+                        "removed": 0,
+                        "total": 1,
+                        "major_change": false,
+                        "downgrade": false,
+                        "prerelease": false
+                    },
+                    "solver_status": "resolved"
+                },
+                {
+                    "command": "composer update mnapoli/piwik-twig-extension -W -m --with 'twig/twig:>=3.11.2,<3.12.0 || >=3.14.1'",
+                    "strategy": "parent-update",
+                    "outcome": "valid",
+                    "rank": 5,
+                    "summary": {
+                        "changed": 1,
+                        "added": 0,
+                        "removed": 0,
+                        "total": 1,
+                        "major_change": false,
+                        "downgrade": false,
+                        "prerelease": false
+                    },
+                    "solver_status": "resolved"
+                },
+                {
+                    "command": "composer update pagerfanta/twig -W -m --with 'twig/twig:>=3.11.2,<3.12.0 || >=3.14.1'",
+                    "strategy": "parent-update",
+                    "outcome": "valid",
+                    "rank": 6,
+                    "summary": {
+                        "changed": 1,
+                        "added": 0,
+                        "removed": 0,
+                        "total": 1,
+                        "major_change": false,
+                        "downgrade": false,
+                        "prerelease": false
+                    },
+                    "solver_status": "resolved"
+                },
+                {
+                    "command": "composer update twig/extra-bundle -W -m --with 'twig/twig:>=3.11.2,<3.12.0 || >=3.14.1'",
+                    "strategy": "parent-update",
+                    "outcome": "valid",
+                    "rank": 7,
+                    "summary": {
+                        "changed": 1,
+                        "added": 0,
+                        "removed": 0,
+                        "total": 1,
+                        "major_change": false,
+                        "downgrade": false,
+                        "prerelease": false
+                    },
+                    "solver_status": "resolved"
+                },
+                {
+                    "command": "composer update symfony/twig-bundle -W -m --with 'twig/twig:>=3.11.2,<3.12.0 || >=3.14.1'",
+                    "strategy": "parent-update",
+                    "outcome": "valid",
+                    "rank": 8,
+                    "summary": {
+                        "changed": 2,
+                        "added": 0,
+                        "removed": 0,
+                        "total": 2,
+                        "major_change": false,
+                        "downgrade": false,
+                        "prerelease": false
+                    },
+                    "solver_status": "resolved"
+                },
+                {
+                    "command": "composer update friendsofsymfony/user-bundle mnapoli/piwik-twig-extension pagerfanta/twig symfony/twig-bundle symfony/debug-bundle twig/extra-bundle twig/string-extra symfony/web-profiler-bundle twig/twig -W -m --with 'twig/twig:>=3.11.2,<3.12.0 || >=3.14.1'",
+                    "strategy": "parent-update",
+                    "outcome": "valid",
+                    "rank": 9,
+                    "summary": {
+                        "changed": 4,
+                        "added": 0,
+                        "removed": 0,
+                        "total": 4,
+                        "major_change": false,
+                        "downgrade": false,
+                        "prerelease": false
+                    },
+                    "solver_status": "resolved"
+                },
+                {
+                    "command": "composer require --no-update twig/twig:^4.0 && composer update twig/twig -W -m --with 'twig/twig:>=3.11.2,<3.12.0 || >=3.14.1'",
+                    "strategy": "root-constraint-widen",
+                    "outcome": "skipped",
+                    "reason": "a better candidate already exists"
+                }
+            ]
+        },
+        {
+            "package": "symfony/process",
+            "version": "v5.4.45",
+            "version_normalized": "5.4.45.0",
+            "direct": true,
+            "dev": true,
+            "baselined": false,
+            "counts_for_exit": true,
+            "via_replaced_package": null,
+            "advisories": [
+                {
+                    "id": "PKSA-wws7-mr54-jsny",
+                    "cve": "CVE-2024-51736",
+                    "title": "CVE-2024-51736: Command execution hijack on Windows with Process class",
+                    "link": "https://symfony.com/cve-2024-51736",
+                    "severity": "high",
+                    "reported_at": "2024-11-05T08:00:00+00:00",
+                    "affected_versions": ">=2.0.0,<3.0.0|>=3.0.0,<4.0.0|>=4.0.0,<5.0.0|>=5.0.0,<5.1.0|>=5.1.0,<5.2.0|>=5.2.0,<5.3.0|>=5.3.0,<5.4.0|>=5.4.0,<5.4.46|>=6.0.0,<6.1.0|>=6.1.0,<6.2.0|>=6.2.0,<6.3.0|>=6.3.0,<6.4.0|>=6.4.0,<6.4.14|>=7.0.0,<7.1.0|>=7.1.0,<7.1.7",
+                    "sources": [
+                        {
+                            "name": "GitHub",
+                            "remoteId": "GHSA-qq5c-677p-737q"
+                        },
+                        {
+                            "name": "FriendsOfPHP/security-advisories",
+                            "remoteId": "symfony/process/CVE-2024-51736.yaml"
+                        }
+                    ],
+                    "epss": null,
+                    "epss_percentile": null,
+                    "kev_added": null
+                }
+            ],
+            "abandoned": [
+                {
+                    "package": "symfony/web-server-bundle",
+                    "replacement": null
+                }
+            ],
+            "paths_total": 3,
+            "paths": [
+                {
+                    "cyclic": false,
+                    "chain": [
+                        {
+                            "package": "root",
+                            "version": null,
+                            "requires": "^5.4"
+                        }
+                    ],
+                    "target": {
+                        "package": "symfony/process",
+                        "version": "v5.4.45"
+                    }
+                },
+                {
+                    "cyclic": false,
+                    "chain": [
+                        {
+                            "package": "root",
+                            "version": null,
+                            "requires": "^3.49"
+                        },
+                        {
+                            "package": "friendsofphp/php-cs-fixer",
+                            "version": "v3.64.0",
+                            "requires": "^5.4 || ^6.0 || ^7.0"
+                        }
+                    ],
+                    "target": {
+                        "package": "symfony/process",
+                        "version": "v5.4.45"
+                    }
+                },
+                {
+                    "cyclic": false,
+                    "chain": [
+                        {
+                            "package": "root",
+                            "version": null,
+                            "requires": "^4.4.44"
+                        },
+                        {
+                            "package": "symfony/web-server-bundle",
+                            "version": "v4.4.44",
+                            "requires": "^3.4.2|^4.0.2|^5.0"
+                        }
+                    ],
+                    "target": {
+                        "package": "symfony/process",
+                        "version": "v5.4.45"
+                    }
+                }
+            ],
+            "solver_runs": 6,
+            "search_exhausted": false,
+            "remediation": {
+                "status": "verified",
+                "command": "composer update symfony/process",
+                "strategy": "lock-refresh",
+                "root_constraint_changes": [],
+                "constraint_drag": null,
+                "blocking_risk": [],
+                "summary": {
+                    "changed": 1,
+                    "added": 0,
+                    "removed": 0,
+                    "total": 1,
+                    "major_change": false,
+                    "downgrade": false,
+                    "prerelease": false
+                },
+                "changes": [
+                    {
+                        "package": "symfony/process",
+                        "kind": "upgraded",
+                        "step": "patch",
+                        "from": "v5.4.45",
+                        "to": "v5.4.47"
+                    }
+                ]
+            },
+            "candidates": [
+                {
+                    "command": "composer update symfony/process",
+                    "strategy": "lock-refresh",
+                    "outcome": "valid",
+                    "rank": 1,
+                    "summary": {
+                        "changed": 1,
+                        "added": 0,
+                        "removed": 0,
+                        "total": 1,
+                        "major_change": false,
+                        "downgrade": false,
+                        "prerelease": false
+                    },
+                    "solver_status": "resolved"
+                },
+                {
+                    "command": "composer update symfony/process -w -m --with 'symfony/process:>=5.4.46,<6.0.0 || >=6.4.14,<7.0.0 || >=7.1.7'",
+                    "strategy": "with-dependencies",
+                    "outcome": "valid",
+                    "rank": 2,
+                    "summary": {
+                        "changed": 1,
+                        "added": 0,
+                        "removed": 0,
+                        "total": 1,
+                        "major_change": false,
+                        "downgrade": false,
+                        "prerelease": false
+                    },
+                    "solver_status": "resolved"
+                },
+                {
+                    "command": "composer update symfony/process -W -m --with 'symfony/process:>=5.4.46,<6.0.0 || >=6.4.14,<7.0.0 || >=7.1.7'",
+                    "strategy": "parent-update",
+                    "outcome": "valid",
+                    "rank": 3,
+                    "summary": {
+                        "changed": 1,
+                        "added": 0,
+                        "removed": 0,
+                        "total": 1,
+                        "major_change": false,
+                        "downgrade": false,
+                        "prerelease": false
+                    },
+                    "solver_status": "resolved"
+                },
+                {
+                    "command": "composer update symfony/web-server-bundle -W -m --with 'symfony/process:>=5.4.46,<6.0.0 || >=6.4.14,<7.0.0 || >=7.1.7'",
+                    "strategy": "parent-update",
+                    "outcome": "valid",
+                    "rank": 4,
+                    "summary": {
+                        "changed": 1,
+                        "added": 0,
+                        "removed": 0,
+                        "total": 1,
+                        "major_change": false,
+                        "downgrade": false,
+                        "prerelease": false
+                    },
+                    "solver_status": "resolved"
+                },
+                {
+                    "command": "composer update friendsofphp/php-cs-fixer -W -m --with 'symfony/process:>=5.4.46,<6.0.0 || >=6.4.14,<7.0.0 || >=7.1.7'",
+                    "strategy": "parent-update",
+                    "outcome": "valid",
+                    "rank": 5,
+                    "summary": {
+                        "changed": 2,
+                        "added": 0,
+                        "removed": 0,
+                        "total": 2,
+                        "major_change": false,
+                        "downgrade": false,
+                        "prerelease": false
+                    },
+                    "solver_status": "resolved"
+                },
+                {
+                    "command": "composer update friendsofphp/php-cs-fixer symfony/web-server-bundle symfony/process -W -m --with 'symfony/process:>=5.4.46,<6.0.0 || >=6.4.14,<7.0.0 || >=7.1.7'",
+                    "strategy": "parent-update",
+                    "outcome": "valid",
+                    "rank": 6,
+                    "summary": {
+                        "changed": 2,
+                        "added": 0,
+                        "removed": 0,
+                        "total": 2,
+                        "major_change": false,
+                        "downgrade": false,
+                        "prerelease": false
+                    },
+                    "solver_status": "resolved"
+                },
+                {
+                    "command": "composer require --no-update symfony/process:^6.0 && composer update symfony/process -W -m --with 'symfony/process:>=5.4.46,<6.0.0 || >=6.4.14,<7.0.0 || >=7.1.7'",
+                    "strategy": "root-constraint-widen",
+                    "outcome": "skipped",
+                    "reason": "a better candidate already exists"
+                },
+                {
+                    "command": "composer require --no-update friendsofphp/php-cs-fixer:^4.0 && composer update friendsofphp/php-cs-fixer -W -m --with 'symfony/process:>=5.4.46,<6.0.0 || >=6.4.14,<7.0.0 || >=7.1.7'",
+                    "strategy": "root-constraint-widen",
+                    "outcome": "skipped",
+                    "reason": "a better candidate already exists"
+                },
+                {
+                    "command": "composer require --no-update symfony/web-server-bundle:^5.0 && composer update symfony/web-server-bundle -W -m --with 'symfony/process:>=5.4.46,<6.0.0 || >=6.4.14,<7.0.0 || >=7.1.7'",
+                    "strategy": "root-constraint-widen",
+                    "outcome": "skipped",
+                    "reason": "a better candidate already exists"
+                }
+            ]
+        }
+    ],
+    "unsolved_findings": [
+        "guzzlehttp/guzzle"
+    ]
+}

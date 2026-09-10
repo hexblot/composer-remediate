@@ -31,9 +31,9 @@ CVE-2026-XXXXX  symfony/http-foundation 6.4.21
 ```
 
 Status: released as **0.x** on [Packagist](https://packagist.org/packages/hexblot/composer-remediate);
-every release so far recommends and never modifies your project. Phases 0 to 2 and 6 of the
-[roadmap](https://hexblot.github.io/composer-remediate/roadmap/) are complete, Phase 3 (a larger
-Drupal and Symfony corpus) is in progress, global planning (Phase 4) and `--apply` (Phase 5) are ahead.
+every release so far recommends and never modifies your project. Phases 0 to 3 and 6 of the
+[roadmap](https://hexblot.github.io/composer-remediate/roadmap/) are complete (seventeen real
+historical fixtures); global planning (Phase 4) and `--apply` (Phase 5) are ahead.
 Three rounds of adversarial adoption review are answered in the [changelog](CHANGELOG.md), each finding
 with a test. Current state, fixtures and evidence: [hexblot.github.io/composer-remediate](https://hexblot.github.io/composer-remediate/).
 

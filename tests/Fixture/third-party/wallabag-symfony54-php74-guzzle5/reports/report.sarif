@@ -1,0 +1,986 @@
+{
+    "$schema": "https://json.schemastore.org/sarif-2.1.0.json",
+    "version": "2.1.0",
+    "runs": [
+        {
+            "tool": {
+                "driver": {
+                    "name": "composer-remediate",
+                    "version": "dev-main",
+                    "informationUri": "https://hexblot.github.io/composer-remediate/",
+                    "rules": [
+                        {
+                            "id": "PKSA-2z36-j4q9-rsfy",
+                            "name": "CVE202231043",
+                            "shortDescription": {
+                                "text": "Fix failure to strip Authorization header on HTTP downgrade"
+                            },
+                            "fullDescription": {
+                                "text": "Fix failure to strip Authorization header on HTTP downgrade. Affected versions of guzzlehttp/guzzle: >=7,<7.4.4|>=4,<6.5.7."
+                            },
+                            "helpUri": "https://github.com/guzzle/guzzle/security/advisories/GHSA-w248-ffj2-4v5q",
+                            "help": {
+                                "text": "Advisory PKSA-2z36-j4q9-rsfy (CVE-2022-31043) affects guzzlehttp/guzzle >=7,<7.4.4|>=4,<6.5.7. Run composer remediate for the smallest verified upgrade."
+                            },
+                            "defaultConfiguration": {
+                                "level": "error"
+                            },
+                            "properties": {
+                                "security-severity": "7.5",
+                                "tags": [
+                                    "security",
+                                    "vulnerability",
+                                    "high"
+                                ]
+                            }
+                        },
+                        {
+                            "id": "PKSA-6d8m-6kgw-18zr",
+                            "name": "CVE202229248",
+                            "shortDescription": {
+                                "text": "Cross-domain cookie leakage"
+                            },
+                            "fullDescription": {
+                                "text": "Cross-domain cookie leakage. Affected versions of guzzlehttp/guzzle: >=7,<7.4.3|>=4,<6.5.6."
+                            },
+                            "helpUri": "https://github.com/guzzle/guzzle/security/advisories/GHSA-cwmx-hcrq-mhc3",
+                            "help": {
+                                "text": "Advisory PKSA-6d8m-6kgw-18zr (CVE-2022-29248) affects guzzlehttp/guzzle >=7,<7.4.3|>=4,<6.5.6. Run composer remediate for the smallest verified upgrade."
+                            },
+                            "defaultConfiguration": {
+                                "level": "error"
+                            },
+                            "properties": {
+                                "security-severity": "7.5",
+                                "tags": [
+                                    "security",
+                                    "vulnerability",
+                                    "high"
+                                ]
+                            }
+                        },
+                        {
+                            "id": "PKSA-fvw5-9t6n-nwvr",
+                            "name": "CVE202231042",
+                            "shortDescription": {
+                                "text": "Failure to strip the Cookie header on change in host or HTTP downgrade"
+                            },
+                            "fullDescription": {
+                                "text": "Failure to strip the Cookie header on change in host or HTTP downgrade. Affected versions of guzzlehttp/guzzle: >=7,<7.4.4|>=4,<6.5.7."
+                            },
+                            "helpUri": "https://github.com/guzzle/guzzle/security/advisories/GHSA-f2wf-25xc-69c9",
+                            "help": {
+                                "text": "Advisory PKSA-fvw5-9t6n-nwvr (CVE-2022-31042) affects guzzlehttp/guzzle >=7,<7.4.4|>=4,<6.5.7. Run composer remediate for the smallest verified upgrade."
+                            },
+                            "defaultConfiguration": {
+                                "level": "error"
+                            },
+                            "properties": {
+                                "security-severity": "7.5",
+                                "tags": [
+                                    "security",
+                                    "vulnerability",
+                                    "high"
+                                ]
+                            }
+                        },
+                        {
+                            "id": "PKSA-k1b4-kshy-xgbh",
+                            "name": "CVE202231090",
+                            "shortDescription": {
+                                "text": "CURLOPT_HTTPAUTH option not cleared on change of origin"
+                            },
+                            "fullDescription": {
+                                "text": "CURLOPT_HTTPAUTH option not cleared on change of origin. Affected versions of guzzlehttp/guzzle: >=7,<7.4.5|>=4,<6.5.8."
+                            },
+                            "helpUri": "https://github.com/guzzle/guzzle/security/advisories/GHSA-25mq-v84q-4j7r",
+                            "help": {
+                                "text": "Advisory PKSA-k1b4-kshy-xgbh (CVE-2022-31090) affects guzzlehttp/guzzle >=7,<7.4.5|>=4,<6.5.8. Run composer remediate for the smallest verified upgrade."
+                            },
+                            "defaultConfiguration": {
+                                "level": "error"
+                            },
+                            "properties": {
+                                "security-severity": "7.5",
+                                "tags": [
+                                    "security",
+                                    "vulnerability",
+                                    "high"
+                                ]
+                            }
+                        },
+                        {
+                            "id": "PKSA-yfw5-9gnj-n2c7",
+                            "name": "CVE202231091",
+                            "shortDescription": {
+                                "text": "Change in port should be considered a change in origin"
+                            },
+                            "fullDescription": {
+                                "text": "Change in port should be considered a change in origin. Affected versions of guzzlehttp/guzzle: >=7,<7.4.5|>=4,<6.5.8."
+                            },
+                            "helpUri": "https://github.com/guzzle/guzzle/security/advisories/GHSA-q559-8m2m-g699",
+                            "help": {
+                                "text": "Advisory PKSA-yfw5-9gnj-n2c7 (CVE-2022-31091) affects guzzlehttp/guzzle >=7,<7.4.5|>=4,<6.5.8. Run composer remediate for the smallest verified upgrade."
+                            },
+                            "defaultConfiguration": {
+                                "level": "error"
+                            },
+                            "properties": {
+                                "security-severity": "7.5",
+                                "tags": [
+                                    "security",
+                                    "vulnerability",
+                                    "high"
+                                ]
+                            }
+                        },
+                        {
+                            "id": "PKSA-rqvm-b18n-vg69",
+                            "name": "CVE202451996",
+                            "shortDescription": {
+                                "text": "CVE-2024-51996: Authentication Bypass via persisted RememberMe cookie"
+                            },
+                            "fullDescription": {
+                                "text": "CVE-2024-51996: Authentication Bypass via persisted RememberMe cookie. Affected versions of symfony/security-http: >=5.3.0,<5.4.0|>=5.4.0,<5.4.47|>=6.0.0,<6.1.0|>=6.1.0,<6.2.0|>=6.2.0,<6.3.0|>=6.3.0,<6.4.0|>=6.4.0,<6.4.15|>=7.0.0,<7.1.0|>=7.1.0,<7.1.8."
+                            },
+                            "helpUri": "https://symfony.com/cve-2024-51996",
+                            "help": {
+                                "text": "Advisory PKSA-rqvm-b18n-vg69 (CVE-2024-51996) affects symfony/security-http >=5.3.0,<5.4.0|>=5.4.0,<5.4.47|>=6.0.0,<6.1.0|>=6.1.0,<6.2.0|>=6.2.0,<6.3.0|>=6.3.0,<6.4.0|>=6.4.0,<6.4.15|>=7.0.0,<7.1.0|>=7.1.0,<7.1.8. Run composer remediate for the smallest verified upgrade."
+                            },
+                            "defaultConfiguration": {
+                                "level": "error"
+                            },
+                            "properties": {
+                                "security-severity": "7.5",
+                                "tags": [
+                                    "security",
+                                    "vulnerability",
+                                    "high"
+                                ]
+                            }
+                        },
+                        {
+                            "id": "PKSA-98jj-zbnk-dgwp",
+                            "name": "CVE202456521",
+                            "shortDescription": {
+                                "text": "TCPDF missing certificate validation"
+                            },
+                            "fullDescription": {
+                                "text": "TCPDF missing certificate validation. Affected versions of tecnickcom/tcpdf: <6.8.0."
+                            },
+                            "helpUri": "https://github.com/advisories/GHSA-9mgx-552f-59p6",
+                            "help": {
+                                "text": "Advisory PKSA-98jj-zbnk-dgwp (CVE-2024-56521) affects tecnickcom/tcpdf <6.8.0. Run composer remediate for the smallest verified upgrade."
+                            },
+                            "defaultConfiguration": {
+                                "level": "error"
+                            },
+                            "properties": {
+                                "security-severity": "7.5",
+                                "tags": [
+                                    "security",
+                                    "vulnerability",
+                                    "high"
+                                ]
+                            }
+                        },
+                        {
+                            "id": "PKSA-tdkc-7xrw-d14c",
+                            "name": "CVE202456519",
+                            "shortDescription": {
+                                "text": "TCPDF lacks SVG sanitization"
+                            },
+                            "fullDescription": {
+                                "text": "TCPDF lacks SVG sanitization. Affected versions of tecnickcom/tcpdf: <6.8.0."
+                            },
+                            "helpUri": "https://github.com/advisories/GHSA-4p8j-vhjm-6pvw",
+                            "help": {
+                                "text": "Advisory PKSA-tdkc-7xrw-d14c (CVE-2024-56519) affects tecnickcom/tcpdf <6.8.0. Run composer remediate for the smallest verified upgrade."
+                            },
+                            "defaultConfiguration": {
+                                "level": "warning"
+                            },
+                            "properties": {
+                                "security-severity": "5.0",
+                                "tags": [
+                                    "security",
+                                    "vulnerability",
+                                    "medium"
+                                ]
+                            }
+                        },
+                        {
+                            "id": "PKSA-wb9y-hg45-chz4",
+                            "name": "CVE202456522",
+                            "shortDescription": {
+                                "text": "TCPDF has incorrect comparison"
+                            },
+                            "fullDescription": {
+                                "text": "TCPDF has incorrect comparison. Affected versions of tecnickcom/tcpdf: <6.8.0."
+                            },
+                            "helpUri": "https://github.com/advisories/GHSA-w95c-7994-ghpr",
+                            "help": {
+                                "text": "Advisory PKSA-wb9y-hg45-chz4 (CVE-2024-56522) affects tecnickcom/tcpdf <6.8.0. Run composer remediate for the smallest verified upgrade."
+                            },
+                            "defaultConfiguration": {
+                                "level": "error"
+                            },
+                            "properties": {
+                                "security-severity": "7.5",
+                                "tags": [
+                                    "security",
+                                    "vulnerability",
+                                    "high"
+                                ]
+                            }
+                        },
+                        {
+                            "id": "PKSA-ys59-hzk7-wxt5",
+                            "name": "CVE202456527",
+                            "shortDescription": {
+                                "text": "TCPDF missing character escape on error messages"
+                            },
+                            "fullDescription": {
+                                "text": "TCPDF missing character escape on error messages. Affected versions of tecnickcom/tcpdf: <6.8.0."
+                            },
+                            "helpUri": "https://github.com/advisories/GHSA-qx95-cwh6-9mvq",
+                            "help": {
+                                "text": "Advisory PKSA-ys59-hzk7-wxt5 (CVE-2024-56527) affects tecnickcom/tcpdf <6.8.0. Run composer remediate for the smallest verified upgrade."
+                            },
+                            "defaultConfiguration": {
+                                "level": "warning"
+                            },
+                            "properties": {
+                                "security-severity": "5.0",
+                                "tags": [
+                                    "security",
+                                    "vulnerability",
+                                    "medium"
+                                ]
+                            }
+                        },
+                        {
+                            "id": "PKSA-4k7v-pfvw-nqvp",
+                            "name": "CVE202450342",
+                            "shortDescription": {
+                                "text": "CVE-2024-50342: Internal address and port enumeration allowed by NoPrivateNetworkHttpClient"
+                            },
+                            "fullDescription": {
+                                "text": "CVE-2024-50342: Internal address and port enumeration allowed by NoPrivateNetworkHttpClient. Affected versions of symfony/http-client: >=4.3.0,<4.4.0|>=4.4.0,<5.0.0|>=5.0.0,<5.1.0|>=5.1.0,<5.2.0|>=5.2.0,<5.3.0|>=5.3.0,<5.4.0|>=5.4.0,<5.4.47|>=6.0.0,<6.1.0|>=6.1.0,<6.2.0|>=6.2.0,<6.3.0|>=6.3.0,<6.4.0|>=6.4.0,<6.4.15|>=7.0.0,<7.1.0|>=7.1.0,<7.1.8."
+                            },
+                            "helpUri": "https://symfony.com/cve-2024-50342",
+                            "help": {
+                                "text": "Advisory PKSA-4k7v-pfvw-nqvp (CVE-2024-50342) affects symfony/http-client >=4.3.0,<4.4.0|>=4.4.0,<5.0.0|>=5.0.0,<5.1.0|>=5.1.0,<5.2.0|>=5.2.0,<5.3.0|>=5.3.0,<5.4.0|>=5.4.0,<5.4.47|>=6.0.0,<6.1.0|>=6.1.0,<6.2.0|>=6.2.0,<6.3.0|>=6.3.0,<6.4.0|>=6.4.0,<6.4.15|>=7.0.0,<7.1.0|>=7.1.0,<7.1.8. Run composer remediate for the smallest verified upgrade."
+                            },
+                            "defaultConfiguration": {
+                                "level": "note"
+                            },
+                            "properties": {
+                                "security-severity": "2.5",
+                                "tags": [
+                                    "security",
+                                    "vulnerability",
+                                    "low"
+                                ]
+                            }
+                        },
+                        {
+                            "id": "PKSA-b35n-565h-rs4q",
+                            "name": "CVE202450345",
+                            "shortDescription": {
+                                "text": "CVE-2024-50345: Open redirect via browser-sanitized URLs"
+                            },
+                            "fullDescription": {
+                                "text": "CVE-2024-50345: Open redirect via browser-sanitized URLs. Affected versions of symfony/http-foundation: >=2.0.0,<3.0.0|>=3.0.0,<4.0.0|>=4.0.0,<5.0.0|>=5.0.0,<5.1.0|>=5.1.0,<5.2.0|>=5.2.0,<5.3.0|>=5.3.0,<5.4.0|>=5.4.0,<5.4.46|>=6.0.0,<6.1.0|>=6.1.0,<6.2.0|>=6.2.0,<6.3.0|>=6.3.0,<6.4.0|>=6.4.0,<6.4.14|>=7.0.0,<7.1.0|>=7.1.0,<7.1.7."
+                            },
+                            "helpUri": "https://symfony.com/cve-2024-50345",
+                            "help": {
+                                "text": "Advisory PKSA-b35n-565h-rs4q (CVE-2024-50345) affects symfony/http-foundation >=2.0.0,<3.0.0|>=3.0.0,<4.0.0|>=4.0.0,<5.0.0|>=5.0.0,<5.1.0|>=5.1.0,<5.2.0|>=5.2.0,<5.3.0|>=5.3.0,<5.4.0|>=5.4.0,<5.4.46|>=6.0.0,<6.1.0|>=6.1.0,<6.2.0|>=6.2.0,<6.3.0|>=6.3.0,<6.4.0|>=6.4.0,<6.4.14|>=7.0.0,<7.1.0|>=7.1.0,<7.1.7. Run composer remediate for the smallest verified upgrade."
+                            },
+                            "defaultConfiguration": {
+                                "level": "note"
+                            },
+                            "properties": {
+                                "security-severity": "2.5",
+                                "tags": [
+                                    "security",
+                                    "vulnerability",
+                                    "low"
+                                ]
+                            }
+                        },
+                        {
+                            "id": "PKSA-w2tw-kmfg-rt9s",
+                            "name": "CVE202450343",
+                            "shortDescription": {
+                                "text": "CVE-2024-50343: Incorrect response from Validator when input ends with `\n`"
+                            },
+                            "fullDescription": {
+                                "text": "CVE-2024-50343: Incorrect response from Validator when input ends with `\n`. Affected versions of symfony/validator: >=2.0.0,<3.0.0|>=3.0.0,<4.0.0|>=4.0.0,<5.0.0|>=5.0.0,<5.1.0|>=5.1.0,<5.2.0|>=5.2.0,<5.3.0|>=5.3.0,<5.4.0|>=5.4.0,<5.4.43|>=6.0.0,<6.1.0|>=6.1.0,<6.2.0|>=6.2.0,<6.3.0|>=6.3.0,<6.4.0|>=6.4.0,<6.4.11|>=7.0.0,<7.1.0|>=7.1.0,<7.1.4."
+                            },
+                            "helpUri": "https://symfony.com/cve-2024-50343",
+                            "help": {
+                                "text": "Advisory PKSA-w2tw-kmfg-rt9s (CVE-2024-50343) affects symfony/validator >=2.0.0,<3.0.0|>=3.0.0,<4.0.0|>=4.0.0,<5.0.0|>=5.0.0,<5.1.0|>=5.1.0,<5.2.0|>=5.2.0,<5.3.0|>=5.3.0,<5.4.0|>=5.4.0,<5.4.43|>=6.0.0,<6.1.0|>=6.1.0,<6.2.0|>=6.2.0,<6.3.0|>=6.3.0,<6.4.0|>=6.4.0,<6.4.11|>=7.0.0,<7.1.0|>=7.1.0,<7.1.4. Run composer remediate for the smallest verified upgrade."
+                            },
+                            "defaultConfiguration": {
+                                "level": "note"
+                            },
+                            "properties": {
+                                "security-severity": "2.5",
+                                "tags": [
+                                    "security",
+                                    "vulnerability",
+                                    "low"
+                                ]
+                            }
+                        },
+                        {
+                            "id": "PKSA-2wrf-1xmk-1pky",
+                            "name": "CVE202451755",
+                            "shortDescription": {
+                                "text": "Unguarded calls to __isset() and to array-accesses when the sandbox is enabled"
+                            },
+                            "fullDescription": {
+                                "text": "Unguarded calls to __isset() and to array-accesses when the sandbox is enabled. Affected versions of twig/twig: >=1.0.0,<2.0.0|>=2.0.0,<3.0.0|>=3.0.0,<3.11.2|>=3.12.0,<3.14.1."
+                            },
+                            "helpUri": "https://symfony.com/blog/cve-2024-51755-unguarded-calls-to-isset-and-to-array-accesses-in-a-sandbox",
+                            "help": {
+                                "text": "Advisory PKSA-2wrf-1xmk-1pky (CVE-2024-51755) affects twig/twig >=1.0.0,<2.0.0|>=2.0.0,<3.0.0|>=3.0.0,<3.11.2|>=3.12.0,<3.14.1. Run composer remediate for the smallest verified upgrade."
+                            },
+                            "defaultConfiguration": {
+                                "level": "note"
+                            },
+                            "properties": {
+                                "security-severity": "2.5",
+                                "tags": [
+                                    "security",
+                                    "vulnerability",
+                                    "low"
+                                ]
+                            }
+                        },
+                        {
+                            "id": "PKSA-yhcn-xrg3-68b1",
+                            "name": "CVE202451754",
+                            "shortDescription": {
+                                "text": "Unguarded calls to __toString() when nesting an object into an array"
+                            },
+                            "fullDescription": {
+                                "text": "Unguarded calls to __toString() when nesting an object into an array. Affected versions of twig/twig: >=1.0.0,<2.0.0|>=2.0.0,<3.0.0|>=3.0.0,<3.11.2|>=3.12.0,<3.14.1."
+                            },
+                            "helpUri": "https://symfony.com/blog/cve-2024-51754-unguarded-calls-to-tostring-in-a-sandbox-when-an-object-is-in-an-array-or-an-argument-list",
+                            "help": {
+                                "text": "Advisory PKSA-yhcn-xrg3-68b1 (CVE-2024-51754) affects twig/twig >=1.0.0,<2.0.0|>=2.0.0,<3.0.0|>=3.0.0,<3.11.2|>=3.12.0,<3.14.1. Run composer remediate for the smallest verified upgrade."
+                            },
+                            "defaultConfiguration": {
+                                "level": "note"
+                            },
+                            "properties": {
+                                "security-severity": "2.5",
+                                "tags": [
+                                    "security",
+                                    "vulnerability",
+                                    "low"
+                                ]
+                            }
+                        },
+                        {
+                            "id": "PKSA-wws7-mr54-jsny",
+                            "name": "CVE202451736",
+                            "shortDescription": {
+                                "text": "CVE-2024-51736: Command execution hijack on Windows with Process class"
+                            },
+                            "fullDescription": {
+                                "text": "CVE-2024-51736: Command execution hijack on Windows with Process class. Affected versions of symfony/process: >=2.0.0,<3.0.0|>=3.0.0,<4.0.0|>=4.0.0,<5.0.0|>=5.0.0,<5.1.0|>=5.1.0,<5.2.0|>=5.2.0,<5.3.0|>=5.3.0,<5.4.0|>=5.4.0,<5.4.46|>=6.0.0,<6.1.0|>=6.1.0,<6.2.0|>=6.2.0,<6.3.0|>=6.3.0,<6.4.0|>=6.4.0,<6.4.14|>=7.0.0,<7.1.0|>=7.1.0,<7.1.7."
+                            },
+                            "helpUri": "https://symfony.com/cve-2024-51736",
+                            "help": {
+                                "text": "Advisory PKSA-wws7-mr54-jsny (CVE-2024-51736) affects symfony/process >=2.0.0,<3.0.0|>=3.0.0,<4.0.0|>=4.0.0,<5.0.0|>=5.0.0,<5.1.0|>=5.1.0,<5.2.0|>=5.2.0,<5.3.0|>=5.3.0,<5.4.0|>=5.4.0,<5.4.46|>=6.0.0,<6.1.0|>=6.1.0,<6.2.0|>=6.2.0,<6.3.0|>=6.3.0,<6.4.0|>=6.4.0,<6.4.14|>=7.0.0,<7.1.0|>=7.1.0,<7.1.7. Run composer remediate for the smallest verified upgrade."
+                            },
+                            "defaultConfiguration": {
+                                "level": "error"
+                            },
+                            "properties": {
+                                "security-severity": "7.5",
+                                "tags": [
+                                    "security",
+                                    "vulnerability",
+                                    "high"
+                                ]
+                            }
+                        }
+                    ]
+                }
+            },
+            "invocations": [
+                {
+                    "executionSuccessful": true,
+                    "exitCode": 2,
+                    "properties": {
+                        "composer_version": "(fixture)",
+                        "advisory_source": "advisory snapshot advisories.json",
+                        "combined_command": "composer update symfony/http-client symfony/http-foundation symfony/process symfony/security-http symfony/validator tecnickcom/tcpdf twig/twig"
+                    }
+                }
+            ],
+            "results": [
+                {
+                    "ruleId": "PKSA-2z36-j4q9-rsfy",
+                    "ruleIndex": 0,
+                    "level": "error",
+                    "message": {
+                        "text": "guzzlehttp/guzzle 5.3.4 is affected by CVE-2022-31043: Fix failure to strip Authorization header on HTTP downgrade. No verified remediation found."
+                    },
+                    "locations": [
+                        {
+                            "physicalLocation": {
+                                "artifactLocation": {
+                                    "uri": "composer.lock",
+                                    "uriBaseId": "%SRCROOT%"
+                                },
+                                "region": {
+                                    "startLine": 2992
+                                }
+                            }
+                        }
+                    ],
+                    "partialFingerprints": {
+                        "advisoryPackage/v1": "PKSA-2z36-j4q9-rsfy@guzzlehttp/guzzle"
+                    },
+                    "properties": {
+                        "package": "guzzlehttp/guzzle",
+                        "version": "5.3.4",
+                        "direct": true,
+                        "dev": false,
+                        "cve": "CVE-2022-31043",
+                        "severity": "high",
+                        "remediation_status": "none",
+                        "abandoned": [
+                            "php-http/guzzle5-adapter"
+                        ]
+                    }
+                },
+                {
+                    "ruleId": "PKSA-6d8m-6kgw-18zr",
+                    "ruleIndex": 1,
+                    "level": "error",
+                    "message": {
+                        "text": "guzzlehttp/guzzle 5.3.4 is affected by CVE-2022-29248: Cross-domain cookie leakage. No verified remediation found."
+                    },
+                    "locations": [
+                        {
+                            "physicalLocation": {
+                                "artifactLocation": {
+                                    "uri": "composer.lock",
+                                    "uriBaseId": "%SRCROOT%"
+                                },
+                                "region": {
+                                    "startLine": 2992
+                                }
+                            }
+                        }
+                    ],
+                    "partialFingerprints": {
+                        "advisoryPackage/v1": "PKSA-6d8m-6kgw-18zr@guzzlehttp/guzzle"
+                    },
+                    "properties": {
+                        "package": "guzzlehttp/guzzle",
+                        "version": "5.3.4",
+                        "direct": true,
+                        "dev": false,
+                        "cve": "CVE-2022-29248",
+                        "severity": "high",
+                        "remediation_status": "none"
+                    }
+                },
+                {
+                    "ruleId": "PKSA-fvw5-9t6n-nwvr",
+                    "ruleIndex": 2,
+                    "level": "error",
+                    "message": {
+                        "text": "guzzlehttp/guzzle 5.3.4 is affected by CVE-2022-31042: Failure to strip the Cookie header on change in host or HTTP downgrade. No verified remediation found."
+                    },
+                    "locations": [
+                        {
+                            "physicalLocation": {
+                                "artifactLocation": {
+                                    "uri": "composer.lock",
+                                    "uriBaseId": "%SRCROOT%"
+                                },
+                                "region": {
+                                    "startLine": 2992
+                                }
+                            }
+                        }
+                    ],
+                    "partialFingerprints": {
+                        "advisoryPackage/v1": "PKSA-fvw5-9t6n-nwvr@guzzlehttp/guzzle"
+                    },
+                    "properties": {
+                        "package": "guzzlehttp/guzzle",
+                        "version": "5.3.4",
+                        "direct": true,
+                        "dev": false,
+                        "cve": "CVE-2022-31042",
+                        "severity": "high",
+                        "remediation_status": "none"
+                    }
+                },
+                {
+                    "ruleId": "PKSA-k1b4-kshy-xgbh",
+                    "ruleIndex": 3,
+                    "level": "error",
+                    "message": {
+                        "text": "guzzlehttp/guzzle 5.3.4 is affected by CVE-2022-31090: CURLOPT_HTTPAUTH option not cleared on change of origin. No verified remediation found."
+                    },
+                    "locations": [
+                        {
+                            "physicalLocation": {
+                                "artifactLocation": {
+                                    "uri": "composer.lock",
+                                    "uriBaseId": "%SRCROOT%"
+                                },
+                                "region": {
+                                    "startLine": 2992
+                                }
+                            }
+                        }
+                    ],
+                    "partialFingerprints": {
+                        "advisoryPackage/v1": "PKSA-k1b4-kshy-xgbh@guzzlehttp/guzzle"
+                    },
+                    "properties": {
+                        "package": "guzzlehttp/guzzle",
+                        "version": "5.3.4",
+                        "direct": true,
+                        "dev": false,
+                        "cve": "CVE-2022-31090",
+                        "severity": "high",
+                        "remediation_status": "none"
+                    }
+                },
+                {
+                    "ruleId": "PKSA-yfw5-9gnj-n2c7",
+                    "ruleIndex": 4,
+                    "level": "error",
+                    "message": {
+                        "text": "guzzlehttp/guzzle 5.3.4 is affected by CVE-2022-31091: Change in port should be considered a change in origin. No verified remediation found."
+                    },
+                    "locations": [
+                        {
+                            "physicalLocation": {
+                                "artifactLocation": {
+                                    "uri": "composer.lock",
+                                    "uriBaseId": "%SRCROOT%"
+                                },
+                                "region": {
+                                    "startLine": 2992
+                                }
+                            }
+                        }
+                    ],
+                    "partialFingerprints": {
+                        "advisoryPackage/v1": "PKSA-yfw5-9gnj-n2c7@guzzlehttp/guzzle"
+                    },
+                    "properties": {
+                        "package": "guzzlehttp/guzzle",
+                        "version": "5.3.4",
+                        "direct": true,
+                        "dev": false,
+                        "cve": "CVE-2022-31091",
+                        "severity": "high",
+                        "remediation_status": "none"
+                    }
+                },
+                {
+                    "ruleId": "PKSA-rqvm-b18n-vg69",
+                    "ruleIndex": 5,
+                    "level": "error",
+                    "message": {
+                        "text": "symfony/security-http v5.4.41 is affected by CVE-2024-51996: CVE-2024-51996: Authentication Bypass via persisted RememberMe cookie. Verified fix: composer update symfony/security-http"
+                    },
+                    "locations": [
+                        {
+                            "physicalLocation": {
+                                "artifactLocation": {
+                                    "uri": "composer.lock",
+                                    "uriBaseId": "%SRCROOT%"
+                                },
+                                "region": {
+                                    "startLine": 13102
+                                }
+                            }
+                        }
+                    ],
+                    "partialFingerprints": {
+                        "advisoryPackage/v1": "PKSA-rqvm-b18n-vg69@symfony/security-http"
+                    },
+                    "properties": {
+                        "package": "symfony/security-http",
+                        "version": "v5.4.41",
+                        "direct": true,
+                        "dev": false,
+                        "cve": "CVE-2024-51996",
+                        "severity": "high",
+                        "remediation_status": "verified",
+                        "command": "composer update symfony/security-http",
+                        "abandoned": [
+                            "scheb/2fa-qr-code"
+                        ]
+                    }
+                },
+                {
+                    "ruleId": "PKSA-98jj-zbnk-dgwp",
+                    "ruleIndex": 6,
+                    "level": "error",
+                    "message": {
+                        "text": "tecnickcom/tcpdf 6.7.7 is affected by CVE-2024-56521: TCPDF missing certificate validation. Verified fix: composer update tecnickcom/tcpdf"
+                    },
+                    "locations": [
+                        {
+                            "physicalLocation": {
+                                "artifactLocation": {
+                                    "uri": "composer.lock",
+                                    "uriBaseId": "%SRCROOT%"
+                                },
+                                "region": {
+                                    "startLine": 14326
+                                }
+                            }
+                        }
+                    ],
+                    "partialFingerprints": {
+                        "advisoryPackage/v1": "PKSA-98jj-zbnk-dgwp@tecnickcom/tcpdf"
+                    },
+                    "properties": {
+                        "package": "tecnickcom/tcpdf",
+                        "version": "6.7.7",
+                        "direct": true,
+                        "dev": false,
+                        "cve": "CVE-2024-56521",
+                        "severity": "high",
+                        "remediation_status": "verified",
+                        "command": "composer update tecnickcom/tcpdf"
+                    }
+                },
+                {
+                    "ruleId": "PKSA-tdkc-7xrw-d14c",
+                    "ruleIndex": 7,
+                    "level": "warning",
+                    "message": {
+                        "text": "tecnickcom/tcpdf 6.7.7 is affected by CVE-2024-56519: TCPDF lacks SVG sanitization. Verified fix: composer update tecnickcom/tcpdf"
+                    },
+                    "locations": [
+                        {
+                            "physicalLocation": {
+                                "artifactLocation": {
+                                    "uri": "composer.lock",
+                                    "uriBaseId": "%SRCROOT%"
+                                },
+                                "region": {
+                                    "startLine": 14326
+                                }
+                            }
+                        }
+                    ],
+                    "partialFingerprints": {
+                        "advisoryPackage/v1": "PKSA-tdkc-7xrw-d14c@tecnickcom/tcpdf"
+                    },
+                    "properties": {
+                        "package": "tecnickcom/tcpdf",
+                        "version": "6.7.7",
+                        "direct": true,
+                        "dev": false,
+                        "cve": "CVE-2024-56519",
+                        "severity": "medium",
+                        "remediation_status": "verified",
+                        "command": "composer update tecnickcom/tcpdf"
+                    }
+                },
+                {
+                    "ruleId": "PKSA-wb9y-hg45-chz4",
+                    "ruleIndex": 8,
+                    "level": "error",
+                    "message": {
+                        "text": "tecnickcom/tcpdf 6.7.7 is affected by CVE-2024-56522: TCPDF has incorrect comparison. Verified fix: composer update tecnickcom/tcpdf"
+                    },
+                    "locations": [
+                        {
+                            "physicalLocation": {
+                                "artifactLocation": {
+                                    "uri": "composer.lock",
+                                    "uriBaseId": "%SRCROOT%"
+                                },
+                                "region": {
+                                    "startLine": 14326
+                                }
+                            }
+                        }
+                    ],
+                    "partialFingerprints": {
+                        "advisoryPackage/v1": "PKSA-wb9y-hg45-chz4@tecnickcom/tcpdf"
+                    },
+                    "properties": {
+                        "package": "tecnickcom/tcpdf",
+                        "version": "6.7.7",
+                        "direct": true,
+                        "dev": false,
+                        "cve": "CVE-2024-56522",
+                        "severity": "high",
+                        "remediation_status": "verified",
+                        "command": "composer update tecnickcom/tcpdf"
+                    }
+                },
+                {
+                    "ruleId": "PKSA-ys59-hzk7-wxt5",
+                    "ruleIndex": 9,
+                    "level": "warning",
+                    "message": {
+                        "text": "tecnickcom/tcpdf 6.7.7 is affected by CVE-2024-56527: TCPDF missing character escape on error messages. Verified fix: composer update tecnickcom/tcpdf"
+                    },
+                    "locations": [
+                        {
+                            "physicalLocation": {
+                                "artifactLocation": {
+                                    "uri": "composer.lock",
+                                    "uriBaseId": "%SRCROOT%"
+                                },
+                                "region": {
+                                    "startLine": 14326
+                                }
+                            }
+                        }
+                    ],
+                    "partialFingerprints": {
+                        "advisoryPackage/v1": "PKSA-ys59-hzk7-wxt5@tecnickcom/tcpdf"
+                    },
+                    "properties": {
+                        "package": "tecnickcom/tcpdf",
+                        "version": "6.7.7",
+                        "direct": true,
+                        "dev": false,
+                        "cve": "CVE-2024-56527",
+                        "severity": "medium",
+                        "remediation_status": "verified",
+                        "command": "composer update tecnickcom/tcpdf"
+                    }
+                },
+                {
+                    "ruleId": "PKSA-4k7v-pfvw-nqvp",
+                    "ruleIndex": 10,
+                    "level": "note",
+                    "message": {
+                        "text": "symfony/http-client v5.4.41 is affected by CVE-2024-50342: CVE-2024-50342: Internal address and port enumeration allowed by NoPrivateNetworkHttpClient. Verified fix: composer update symfony/http-client"
+                    },
+                    "locations": [
+                        {
+                            "physicalLocation": {
+                                "artifactLocation": {
+                                    "uri": "composer.lock",
+                                    "uriBaseId": "%SRCROOT%"
+                                },
+                                "region": {
+                                    "startLine": 10638
+                                }
+                            }
+                        }
+                    ],
+                    "partialFingerprints": {
+                        "advisoryPackage/v1": "PKSA-4k7v-pfvw-nqvp@symfony/http-client"
+                    },
+                    "properties": {
+                        "package": "symfony/http-client",
+                        "version": "v5.4.41",
+                        "direct": true,
+                        "dev": false,
+                        "cve": "CVE-2024-50342",
+                        "severity": "low",
+                        "remediation_status": "verified",
+                        "command": "composer update symfony/http-client"
+                    }
+                },
+                {
+                    "ruleId": "PKSA-b35n-565h-rs4q",
+                    "ruleIndex": 11,
+                    "level": "note",
+                    "message": {
+                        "text": "symfony/http-foundation v5.4.45 is affected by CVE-2024-50345: CVE-2024-50345: Open redirect via browser-sanitized URLs. Verified fix: composer update symfony/http-foundation"
+                    },
+                    "locations": [
+                        {
+                            "physicalLocation": {
+                                "artifactLocation": {
+                                    "uri": "composer.lock",
+                                    "uriBaseId": "%SRCROOT%"
+                                },
+                                "region": {
+                                    "startLine": 10807
+                                }
+                            }
+                        }
+                    ],
+                    "partialFingerprints": {
+                        "advisoryPackage/v1": "PKSA-b35n-565h-rs4q@symfony/http-foundation"
+                    },
+                    "properties": {
+                        "package": "symfony/http-foundation",
+                        "version": "v5.4.45",
+                        "direct": true,
+                        "dev": false,
+                        "cve": "CVE-2024-50345",
+                        "severity": "low",
+                        "remediation_status": "verified",
+                        "command": "composer update symfony/http-foundation",
+                        "abandoned": [
+                            "scheb/2fa-qr-code",
+                            "sensio/framework-extra-bundle",
+                            "symfony/web-server-bundle"
+                        ]
+                    }
+                },
+                {
+                    "ruleId": "PKSA-w2tw-kmfg-rt9s",
+                    "ruleIndex": 12,
+                    "level": "note",
+                    "message": {
+                        "text": "symfony/validator v5.4.41 is affected by CVE-2024-50343: CVE-2024-50343: Incorrect response from Validator when input ends with `\n`. Verified fix: composer update symfony/validator"
+                    },
+                    "locations": [
+                        {
+                            "physicalLocation": {
+                                "artifactLocation": {
+                                    "uri": "composer.lock",
+                                    "uriBaseId": "%SRCROOT%"
+                                },
+                                "region": {
+                                    "startLine": 13976
+                                }
+                            }
+                        }
+                    ],
+                    "partialFingerprints": {
+                        "advisoryPackage/v1": "PKSA-w2tw-kmfg-rt9s@symfony/validator"
+                    },
+                    "properties": {
+                        "package": "symfony/validator",
+                        "version": "v5.4.41",
+                        "direct": true,
+                        "dev": false,
+                        "cve": "CVE-2024-50343",
+                        "severity": "low",
+                        "remediation_status": "verified",
+                        "command": "composer update symfony/validator"
+                    }
+                },
+                {
+                    "ruleId": "PKSA-2wrf-1xmk-1pky",
+                    "ruleIndex": 13,
+                    "level": "note",
+                    "message": {
+                        "text": "twig/twig v3.11.1 is affected by CVE-2024-51755: Unguarded calls to __isset() and to array-accesses when the sandbox is enabled. Verified fix: composer update twig/twig"
+                    },
+                    "locations": [
+                        {
+                            "physicalLocation": {
+                                "artifactLocation": {
+                                    "uri": "composer.lock",
+                                    "uriBaseId": "%SRCROOT%"
+                                },
+                                "region": {
+                                    "startLine": 14729
+                                }
+                            }
+                        }
+                    ],
+                    "partialFingerprints": {
+                        "advisoryPackage/v1": "PKSA-2wrf-1xmk-1pky@twig/twig"
+                    },
+                    "properties": {
+                        "package": "twig/twig",
+                        "version": "v3.11.1",
+                        "direct": true,
+                        "dev": false,
+                        "cve": "CVE-2024-51755",
+                        "severity": "low",
+                        "remediation_status": "verified",
+                        "command": "composer update twig/twig",
+                        "abandoned": [
+                            "scheb/2fa-qr-code"
+                        ]
+                    }
+                },
+                {
+                    "ruleId": "PKSA-yhcn-xrg3-68b1",
+                    "ruleIndex": 14,
+                    "level": "note",
+                    "message": {
+                        "text": "twig/twig v3.11.1 is affected by CVE-2024-51754: Unguarded calls to __toString() when nesting an object into an array. Verified fix: composer update twig/twig"
+                    },
+                    "locations": [
+                        {
+                            "physicalLocation": {
+                                "artifactLocation": {
+                                    "uri": "composer.lock",
+                                    "uriBaseId": "%SRCROOT%"
+                                },
+                                "region": {
+                                    "startLine": 14729
+                                }
+                            }
+                        }
+                    ],
+                    "partialFingerprints": {
+                        "advisoryPackage/v1": "PKSA-yhcn-xrg3-68b1@twig/twig"
+                    },
+                    "properties": {
+                        "package": "twig/twig",
+                        "version": "v3.11.1",
+                        "direct": true,
+                        "dev": false,
+                        "cve": "CVE-2024-51754",
+                        "severity": "low",
+                        "remediation_status": "verified",
+                        "command": "composer update twig/twig"
+                    }
+                },
+                {
+                    "ruleId": "PKSA-wws7-mr54-jsny",
+                    "ruleIndex": 15,
+                    "level": "error",
+                    "message": {
+                        "text": "symfony/process v5.4.45 is affected by CVE-2024-51736: CVE-2024-51736: Command execution hijack on Windows with Process class. Verified fix: composer update symfony/process"
+                    },
+                    "locations": [
+                        {
+                            "physicalLocation": {
+                                "artifactLocation": {
+                                    "uri": "composer.lock",
+                                    "uriBaseId": "%SRCROOT%"
+                                },
+                                "region": {
+                                    "startLine": 19738
+                                }
+                            }
+                        }
+                    ],
+                    "partialFingerprints": {
+                        "advisoryPackage/v1": "PKSA-wws7-mr54-jsny@symfony/process"
+                    },
+                    "properties": {
+                        "package": "symfony/process",
+                        "version": "v5.4.45",
+                        "direct": true,
+                        "dev": true,
+                        "cve": "CVE-2024-51736",
+                        "severity": "high",
+                        "remediation_status": "verified",
+                        "command": "composer update symfony/process",
+                        "abandoned": [
+                            "symfony/web-server-bundle"
+                        ]
+                    }
+                }
+            ]
+        }
+    ]
+}

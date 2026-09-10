@@ -1,0 +1,185 @@
+{
+  "description": "Fifth plain-Symfony instance, a monorepo: Mautic 5 (Symfony 5.4, PHP 8.1) on its 5.x branch in September 2024, snapshot 2024-11-20. The application's own code is the path package mautic/core-lib, so every finding is transitive through it. Seven advisories on six Symfony components and Twig are plain updates that one combined command fixes. Nine PhpSpreadsheet advisories have no fix: mautic/core-lib requires phpoffice/phpspreadsheet ^1.15 <1.28 while the fixes start at 1.29.4; only editing the monorepo's own constraint would help, which is outside a remediation planner's remit. The project needs ext-imap, which the fixture's platform declares.",
+  "source": {
+    "project": "mautic/mautic",
+    "url": "https://github.com/mautic/mautic",
+    "commit": "daad1994fff57d91414a4ee3a545810eab97154e",
+    "commit_date": "2024-09-16",
+    "as_of": "2024-11-20"
+  },
+  "platform": {
+    "ext-apcu": "5.1.28",
+    "ext-bcmath": "8.5.5",
+    "ext-bz2": "8.5.5",
+    "ext-calendar": "8.5.5",
+    "ext-ctype": "8.5.5",
+    "ext-curl": "8.5.5",
+    "ext-date": "8.5.5",
+    "ext-dom": "20031129",
+    "ext-exif": "8.5.5",
+    "ext-ffi": "8.5.5",
+    "ext-fileinfo": "8.5.5",
+    "ext-filter": "8.5.5",
+    "ext-ftp": "8.5.5",
+    "ext-gd": "8.5.5",
+    "ext-gettext": "8.5.5",
+    "ext-hash": "8.5.5",
+    "ext-iconv": "8.5.5",
+    "ext-igbinary": "3.2.16",
+    "ext-imagick": "3.8.1",
+    "ext-imap": "8.1.0",
+    "ext-intl": "8.5.5",
+    "ext-json": "8.5.5",
+    "ext-ldap": "8.5.5",
+    "ext-lexbor": "8.5.5",
+    "ext-libxml": "8.5.5",
+    "ext-mbstring": "8.5.5",
+    "ext-memcached": "3.4.0",
+    "ext-msgpack": "3.0.0",
+    "ext-mysqli": "8.5.5",
+    "ext-mysqlnd": "0",
+    "ext-openssl": "8.5.5",
+    "ext-pcntl": "8.5.5",
+    "ext-pcov": "1.0.12",
+    "ext-pcre": "8.5.5",
+    "ext-pdo": "8.5.5",
+    "ext-pdo_mysql": "8.5.5",
+    "ext-pdo_pgsql": "8.5.5",
+    "ext-pdo_sqlite": "8.5.5",
+    "ext-pgsql": "8.5.5",
+    "ext-phar": "8.5.5",
+    "ext-posix": "8.5.5",
+    "ext-random": "8.5.5",
+    "ext-readline": "8.5.5",
+    "ext-redis": "6.3.0",
+    "ext-reflection": "8.5.5",
+    "ext-session": "8.5.5",
+    "ext-shmop": "8.5.5",
+    "ext-simplexml": "8.5.5",
+    "ext-soap": "8.5.5",
+    "ext-sockets": "8.5.5",
+    "ext-sodium": "8.5.5",
+    "ext-spl": "8.5.5",
+    "ext-sqlite3": "8.5.5",
+    "ext-sysvmsg": "8.5.5",
+    "ext-sysvsem": "8.5.5",
+    "ext-sysvshm": "8.5.5",
+    "ext-tokenizer": "8.5.5",
+    "ext-uploadprogress": "2.0.2",
+    "ext-uri": "8.5.5",
+    "ext-xml": "8.5.5",
+    "ext-xmlreader": "8.5.5",
+    "ext-xmlrpc": "1.0.0",
+    "ext-xmlwriter": "8.5.5",
+    "ext-xsl": "8.5.5",
+    "ext-yaml": "2.3.0",
+    "ext-zend-opcache": "8.5.5",
+    "ext-zip": "1.22.8",
+    "ext-zlib": "8.5.5",
+    "php": "8.1.0"
+  },
+  "combined_command": "composer update symfony/http-client symfony/http-foundation symfony/process symfony/security-http symfony/validator twig/twig",
+  "findings": [
+    {
+      "package": "symfony/http-foundation",
+      "advisory": "CVE-2024-50345",
+      "remediation": true,
+      "command": "composer update symfony/http-foundation",
+      "target_version": "v5.4.48",
+      "max_changes": 1
+    },
+    {
+      "package": "symfony/http-client",
+      "advisory": "CVE-2024-50342",
+      "remediation": true,
+      "command": "composer update symfony/http-client",
+      "target_version": "v5.4.47",
+      "max_changes": 1
+    },
+    {
+      "package": "symfony/security-http",
+      "advisory": "CVE-2024-51996",
+      "remediation": true,
+      "command": "composer update symfony/security-http",
+      "target_version": "v5.4.47",
+      "max_changes": 1
+    },
+    {
+      "package": "symfony/validator",
+      "advisory": "CVE-2024-50343",
+      "remediation": true,
+      "command": "composer update symfony/validator",
+      "target_version": "v5.4.47",
+      "max_changes": 1
+    },
+    {
+      "package": "symfony/process",
+      "advisory": "CVE-2024-51736",
+      "remediation": true,
+      "command": "composer update symfony/process",
+      "target_version": "v5.4.47",
+      "max_changes": 1
+    },
+    {
+      "package": "twig/twig",
+      "advisory": "CVE-2024-51754",
+      "remediation": true,
+      "command": "composer update twig/twig",
+      "target_version": "v3.15.0",
+      "max_changes": 1
+    },
+    {
+      "package": "twig/twig",
+      "advisory": "CVE-2024-51755",
+      "remediation": true,
+      "command": "composer update twig/twig",
+      "target_version": "v3.15.0",
+      "max_changes": 1
+    },
+    {
+      "package": "phpoffice/phpspreadsheet",
+      "advisory": "CVE-2024-45046",
+      "remediation": false
+    },
+    {
+      "package": "phpoffice/phpspreadsheet",
+      "advisory": "CVE-2024-45048",
+      "remediation": false
+    },
+    {
+      "package": "phpoffice/phpspreadsheet",
+      "advisory": "CVE-2024-45060",
+      "remediation": false
+    },
+    {
+      "package": "phpoffice/phpspreadsheet",
+      "advisory": "CVE-2024-45290",
+      "remediation": false
+    },
+    {
+      "package": "phpoffice/phpspreadsheet",
+      "advisory": "CVE-2024-45291",
+      "remediation": false
+    },
+    {
+      "package": "phpoffice/phpspreadsheet",
+      "advisory": "CVE-2024-45292",
+      "remediation": false
+    },
+    {
+      "package": "phpoffice/phpspreadsheet",
+      "advisory": "CVE-2024-45293",
+      "remediation": false
+    },
+    {
+      "package": "phpoffice/phpspreadsheet",
+      "advisory": "CVE-2024-47873",
+      "remediation": false
+    },
+    {
+      "package": "phpoffice/phpspreadsheet",
+      "advisory": "CVE-2024-48917",
+      "remediation": false
+    }
+  ]
+}

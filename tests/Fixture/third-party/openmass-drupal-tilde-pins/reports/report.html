@@ -1,0 +1,248 @@
+<!DOCTYPE html><html lang="en"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Composer Remediate — 4 findings</title>
+<style>:root{color-scheme:light dark;--bg:#fff;--fg:#1c1e21;--muted:#5f6b7a;--border:#d9dee5;--panel:#f6f8fa;--ok:#1a7f37;--bad:#b42318;--warn:#9a6700;--accent:#0f6b8a}
+@media(prefers-color-scheme:dark){:root{--bg:#0f1418;--fg:#e6edf3;--muted:#9aa7b4;--border:#2b3640;--panel:#161c22;--ok:#3fb950;--bad:#f0665b;--warn:#d4a72c;--accent:#58b8d8}}
+body{margin:0;background:var(--bg);color:var(--fg);font:15px/1.5 system-ui,-apple-system,Segoe UI,Roboto,sans-serif}
+header{padding:1.5rem 2rem;border-bottom:1px solid var(--border)}header h1{margin:0;font-size:1.4rem}.sub{margin:.25rem 0 0;color:var(--muted)}
+main{max-width:70rem;margin:0 auto;padding:1rem 2rem 3rem}
+section{margin:1.5rem 0}.finding{border:1px solid var(--border);border-radius:8px;padding:1rem 1.25rem;background:var(--panel)}
+h2{font-size:1.15rem;margin:.25rem 0 .5rem}h3{font-size:.95rem;margin:1rem 0 .35rem;color:var(--muted);text-transform:uppercase;letter-spacing:.04em}
+.version{font-weight:400;color:var(--muted)}.state{margin:0;color:var(--muted)}
+code{font:.9em ui-monospace,SFMono-Regular,Menlo,monospace;background:rgba(127,127,127,.12);padding:.1em .35em;border-radius:4px;word-break:break-all}
+pre{font:.85rem ui-monospace,SFMono-Regular,Menlo,monospace;background:rgba(127,127,127,.1);padding:.75rem 1rem;border-radius:6px;overflow-x:auto;margin:.25rem 0}
+pre.reason{white-space:pre-wrap;margin:0;background:none;padding:0}
+.command code{display:block;padding:.6rem .8rem;font-size:.95rem;border-left:4px solid var(--accent)}
+table{border-collapse:collapse;width:100%;font-size:.92rem}th,td{text-align:left;padding:.4rem .6rem;border-bottom:1px solid var(--border);vertical-align:top}th{color:var(--muted);font-weight:600}
+.badge{display:inline-block;font-size:.75rem;font-weight:600;padding:.1rem .5rem;border-radius:999px;border:1px solid currentColor;white-space:nowrap}
+.badge.ok{color:var(--ok)}.badge.none,.badge.rejected{color:var(--bad)}.badge.skipped,.badge.dev{color:var(--muted)}
+.badge.sev-critical,.badge.sev-high{color:var(--bad)}.badge.sev-medium{color:var(--warn)}.badge.sev-low{color:var(--muted)}
+.badge.kev{color:#fff;background:var(--bad);border-color:var(--bad)}.badge.epss{color:var(--warn)}.abandoned{color:var(--warn)}
+.warning{border-left:4px solid var(--warn);padding:.5rem .8rem;background:rgba(212,167,44,.1)}.clean{color:var(--ok);font-weight:600}
+.none-box{border-left:4px solid var(--bad);padding:.5rem .8rem;background:rgba(180,35,24,.08)}
+.advisories{padding-left:1.2rem}.advisories li{margin:.4rem 0}
+details summary{cursor:pointer;color:var(--accent);margin:.5rem 0}
+.meta dl{display:grid;grid-template-columns:max-content 1fr;gap:.2rem 1rem;font-size:.85rem;color:var(--muted)}.meta dt{font-weight:600}.meta dd{margin:0;word-break:break-all}</style></head><body>
+<header><h1>Composer Remediate</h1><p class="sub">Composer Remediate — 4 findings in <code>openmass-drupal-tilde-pins</code></p></header>
+<main>
+<section><h2>Summary</h2><p>5 advisories on 4 packages.</p><p class="command"><span class="badge ok">fixes all 5</span> <code>composer update symfony/http-client symfony/http-foundation symfony/process twig/twig</code></p><table class="summary"><thead><tr><th>Package</th><th>Advisories</th><th>Status</th><th>Recommended command</th></tr></thead><tbody><tr><td><a href="#finding-1">symfony/process v6.4.12</a></td><td>CVE-2024-51736</td><td><span class="badge ok">verified</span></td><td><code>composer update symfony/process</code></td></tr><tr><td><a href="#finding-2">symfony/http-client v6.4.10</a></td><td>CVE-2024-50342</td><td><span class="badge ok">verified</span></td><td><code>composer update symfony/http-client</code></td></tr><tr><td><a href="#finding-3">symfony/http-foundation v6.4.12</a></td><td>CVE-2024-50345</td><td><span class="badge ok">verified</span></td><td><code>composer update symfony/http-foundation</code></td></tr><tr><td><a href="#finding-4">twig/twig v3.14.0</a></td><td>CVE-2024-51755, CVE-2024-51754</td><td><span class="badge ok">verified</span></td><td><code>composer update twig/twig</code></td></tr></tbody></table></section>
+<section class="finding" id="finding-1">
+<h2>symfony/process <span class="version">v6.4.12</span></h2>
+<p class="state">Transitive dependency.</p>
+<h3>Advisories</h3><ul class="advisories">
+<li><strong><a href="https://symfony.com/cve-2024-51736" rel="noopener noreferrer">CVE-2024-51736 <small>(PKSA-wws7-mr54-jsny)</small></a></strong> <span class="badge sev-high">high</span><br>CVE-2024-51736: Command execution hijack on Windows with Process class<br><small>affected versions: <code>&gt;=2.0.0,&lt;3.0.0|&gt;=3.0.0,&lt;4.0.0|&gt;=4.0.0,&lt;5.0.0|&gt;=5.0.0,&lt;5.1.0|&gt;=5.1.0,&lt;5.2.0|&gt;=5.2.0,&lt;5.3.0|&gt;=5.3.0,&lt;5.4.0|&gt;=5.4.0,&lt;5.4.46|&gt;=6.0.0,&lt;6.1.0|&gt;=6.1.0,&lt;6.2.0|&gt;=6.2.0,&lt;6.3.0|&gt;=6.3.0,&lt;6.4.0|&gt;=6.4.0,&lt;6.4.14|&gt;=7.0.0,&lt;7.1.0|&gt;=7.1.0,&lt;7.1.7</code></small></li>
+</ul>
+<h3>Introduced by</h3>
+<pre class="tree">root
+└── drush/drush 13.3.0
+    └── consolidation/robo 4.0.6
+        └── symfony/process v6.4.12  (requires ^6)
+
+root
+└── drupal/devel_entity_updates 4.2.0-rc1
+    └── drush/drush 13.3.0
+        └── consolidation/robo 4.0.6
+            └── symfony/process v6.4.12  (requires ^6)
+
+root
+└── drush/drush 13.3.0
+    └── consolidation/site-process 5.4.0
+        └── symfony/process v6.4.12  (requires ^6 || ^7)
+
+root
+└── drupal/devel_entity_updates 4.2.0-rc1
+    └── drush/drush 13.3.0
+        └── consolidation/site-process 5.4.0
+            └── symfony/process v6.4.12  (requires ^6 || ^7)
+
+root
+└── drupal/core 10.3.6
+    └── symfony/process v6.4.12  (requires ^6.4)</pre>
+<p><small>… and 181 more paths</small></p>
+<h3>Recommended remediation</h3>
+<p class="command"><code>composer update symfony/process</code></p>
+<p class="validation"><span class="badge ok">Composer validation: PASS</span> 1 package changed, 0 added, 0 removed, 0 root constraints changed.</p>
+<details open><summary>Expected changes (1)</summary><table class="changes"><thead><tr><th>Package</th><th>From</th><th>To</th><th>Kind</th></tr></thead><tbody>
+<tr><td>symfony/process</td><td>v6.4.12</td><td>v6.4.15</td><td>upgraded, patch</td></tr>
+</tbody></table></details>
+<details><summary>Other candidates (9)</summary><table class="candidates"><thead><tr><th>Outcome</th><th>Command</th><th>Detail</th></tr></thead><tbody>
+<tr><td><span class="badge ok">valid, rank 2</span></td><td><code>composer update symfony/process -w -m --with &apos;symfony/process:&gt;=6.4.14,&lt;7.0.0 || &gt;=7.1.7&apos;</code></td><td>1 changes</td></tr>
+<tr><td><span class="badge ok">valid, rank 3</span></td><td><code>composer update drupal/devel_entity_updates -W -m --with &apos;symfony/process:&gt;=6.4.14,&lt;7.0.0 || &gt;=7.1.7&apos;</code></td><td>1 changes</td></tr>
+<tr><td><span class="badge ok">valid, rank 4</span></td><td><code>composer update drush/drush -W -m --with &apos;symfony/process:&gt;=6.4.14,&lt;7.0.0 || &gt;=7.1.7&apos;</code></td><td>2 changes</td></tr>
+<tr><td><span class="badge ok">valid, rank 5</span></td><td><code>composer update drupal/upgrade_status -W -m --with &apos;symfony/process:&gt;=6.4.14,&lt;7.0.0 || &gt;=7.1.7&apos;</code></td><td>2 changes</td></tr>
+<tr><td><span class="badge ok">valid, rank 6</span></td><td><code>composer update drupal/acquia_purge -W -m --with &apos;symfony/process:&gt;=6.4.14,&lt;7.0.0 || &gt;=7.1.7&apos;</code></td><td>2 changes</td></tr>
+<tr><td><span class="badge ok">valid, rank 7</span></td><td><code>composer update drupal/access_unpublished -W -m --with &apos;symfony/process:&gt;=6.4.14,&lt;7.0.0 || &gt;=7.1.7&apos;</code></td><td>2 changes</td></tr>
+<tr><td><span class="badge ok">valid, rank 8</span></td><td><code>composer update drupal/core-recommended -W -m --with &apos;symfony/process:&gt;=6.4.14,&lt;7.0.0 || &gt;=7.1.7&apos;</code></td><td>4 changes</td></tr>
+<tr><td><span class="badge rejected">rejected</span></td><td><code>composer update drush/drush drupal/access_unpublished drupal/acquia_purge drupal/address drupal/admin_toolbar drupal/akamai drupal/allowed_formats drupal/asset_cache_bust drupal/auto_entitylabel drupal/better_exposed_filters drupal/cache_metrics drupal/ckeditor5_fullscreen drupal/ckeditor5_paste_filter drupal/color drupal/components drupal/conditional_fields drupal/config_ignore drupal/core-recommended drupal/focal_point drupal/csv_field drupal/csv_serialization drupal/pathauto drupal/view_mode_page drupal/datalayer drupal/entity_hierarchy drupal/devel drupal/devel_entity_updates drupal/diff drupal/draggableviews drupal/dropzonejs drupal/file_browser drupal/dynamic_entity_reference drupal/editoria11y drupal/embed drupal/entity_browser drupal/entity_diff_ui drupal/entity_embed drupal/entity_reference_revisions drupal/entity_reference_tree drupal/entity_usage drupal/entity_usage_queue_tracking drupal/entityreference_filter drupal/environment_indicator drupal/openid_connect drupal/field_group drupal/flag drupal/geocoder drupal/geofield drupal/gin drupal/gin_toolbar drupal/google_map_field drupal/google_tag drupal/http_response_headers drupal/hux drupal/iframe_resizer drupal/imagick drupal/inline_entity_form drupal/jquery_ui_autocomplete drupal/key drupal/key_auth drupal/key_value_field drupal/linkit drupal/mailchimp_transactional drupal/maxlength drupal/media_entity_download drupal/memcache drupal/metatag drupal/monolog drupal/node_edit_protection drupal/node_title_help_text drupal/office_hours drupal/openid_connect_windows_aad drupal/paragraphs drupal/pathologic drupal/prepopulate drupal/private_files_download_permission drupal/prod_no_redirect drupal/purge drupal/purge_queues drupal/queue_unique drupal/quick_node_clone drupal/r4032login drupal/rabbit_hole drupal/redirect drupal/require_on_publish drupal/scheduled_transitions drupal/schema_metatag drupal/seckit drupal/security_review drupal/seven drupal/simple_sitemap drupal/stage_file_proxy drupal/subpathauto drupal/term_reference_tree drupal/twig_field_value drupal/twig_tweak drupal/upgrade_status drupal/username_enumeration_prevention drupal/video_embed_field drupal/views_aggregator drupal/views_ajax_history drupal/views_autocomplete_filters drupal/views_bulk_edit drupal/views_bulk_operations drupal/views_custom_cache_tag drupal/views_data_export drupal/views_porter_stemmer drupal/views_simple_math_field drupal/views_taxonomy_term_name_into_id drupal/drupal-extension drupal/core-dev -W -m --with &apos;symfony/process:&gt;=6.4.14,&lt;7.0.0 || &gt;=7.1.7&apos;</code></td><td><pre class="reason">Composer could not resolve the dependencies: Your requirements could not be resolved to an installable set of packages.
+  Problem 1
+    - Root composer.json requires drupal/config_ignore 3.x-dev (exact version match), found drupal/config_ignore[dev-3.x, 1.0.0-rc1, ..., 1.4.0, 2.0.0-rc2, ..., 2.4.0, 3.0.0-beta1, ..., 3.4.0] but these do not match your constraint and are therefore not installable. Make sure you either fix the constraint or avoid updating this package to keep the one present in the lock file (drupal/config_ignore[3.x-dev (alias of dev-3.x)]).
+  Problem 2
+    - Root composer.json requires drupal/openid_connect_windows_aad dev-2.0.x -&gt; satisfiable by drupal/openid_connect_windows_aad[dev-2.0.x].
+    - drupal/openid_connect_windows_aad dev-2.0.x requires drupal/openid_connect ^3.0.0-alpha7 -&gt; found drupal/openid_connect[3.0.0-alpha7, 3.0.0-alpha8, 3.0.0-alpha9] but it conflicts with your root composer.json require (dev-3.x as 2.0).</pre></td></tr>
+<tr><td><span class="badge skipped">not tried</span></td><td><code>composer require --no-update drupal/core-recommended:^11.0 &amp;&amp; composer update drupal/core-recommended -W -m --with &apos;symfony/process:&gt;=6.4.14,&lt;7.0.0 || &gt;=7.1.7&apos;</code></td><td>a better candidate already exists</td></tr>
+</tbody></table></details>
+</section>
+<section class="finding" id="finding-2">
+<h2>symfony/http-client <span class="version">v6.4.10</span></h2>
+<p class="state">Direct dependency.</p>
+<p class="abandoned"><strong>Abandoned:</strong> behat/mink-goutte-driver (on the dependency path, replacement: behat/mink-browserkit-driver), fabpot/goutte (on the dependency path, replacement: symfony/browser-kit). An abandoned parent will not ship a release that lifts its pin.</p>
+<h3>Advisories</h3><ul class="advisories">
+<li><strong><a href="https://symfony.com/cve-2024-50342" rel="noopener noreferrer">CVE-2024-50342 <small>(PKSA-4k7v-pfvw-nqvp)</small></a></strong> <span class="badge sev-low">low</span><br>CVE-2024-50342: Internal address and port enumeration allowed by NoPrivateNetworkHttpClient<br><small>affected versions: <code>&gt;=4.3.0,&lt;4.4.0|&gt;=4.4.0,&lt;5.0.0|&gt;=5.0.0,&lt;5.1.0|&gt;=5.1.0,&lt;5.2.0|&gt;=5.2.0,&lt;5.3.0|&gt;=5.3.0,&lt;5.4.0|&gt;=5.4.0,&lt;5.4.47|&gt;=6.0.0,&lt;6.1.0|&gt;=6.1.0,&lt;6.2.0|&gt;=6.2.0,&lt;6.3.0|&gt;=6.3.0,&lt;6.4.0|&gt;=6.4.0,&lt;6.4.15|&gt;=7.0.0,&lt;7.1.0|&gt;=7.1.0,&lt;7.1.8</code></small></li>
+</ul>
+<h3>Introduced by</h3>
+<pre class="tree">root
+└── symfony/http-client v6.4.10  (requires ^6.3)
+
+root
+└── drupal/drupal-extension v5.0.0rc1
+    └── symfony/http-client v6.4.10  (requires ~4.4 || ^5 || ^6)
+
+root
+└── behat/mink-goutte-driver v2.0.0
+    └── fabpot/goutte v4.0.3
+        └── symfony/http-client v6.4.10  (requires ^4.4|^5.0|^6.0)</pre>
+<h3>Recommended remediation</h3>
+<p class="command"><code>composer update symfony/http-client</code></p>
+<p class="validation"><span class="badge ok">Composer validation: PASS</span> 1 package changed, 0 added, 0 removed, 0 root constraints changed.</p>
+<details open><summary>Expected changes (1)</summary><table class="changes"><thead><tr><th>Package</th><th>From</th><th>To</th><th>Kind</th></tr></thead><tbody>
+<tr><td>symfony/http-client</td><td>v6.4.10</td><td>v6.4.15</td><td>upgraded, patch</td></tr>
+</tbody></table></details>
+<details><summary>Other candidates (8)</summary><table class="candidates"><thead><tr><th>Outcome</th><th>Command</th><th>Detail</th></tr></thead><tbody>
+<tr><td><span class="badge ok">valid, rank 2</span></td><td><code>composer update symfony/http-client -w -m --with &apos;symfony/http-client:&gt;=6.4.15,&lt;7.0.0 || &gt;=7.1.8&apos;</code></td><td>1 changes</td></tr>
+<tr><td><span class="badge ok">valid, rank 3</span></td><td><code>composer update symfony/http-client -W -m --with &apos;symfony/http-client:&gt;=6.4.15,&lt;7.0.0 || &gt;=7.1.8&apos;</code></td><td>1 changes</td></tr>
+<tr><td><span class="badge ok">valid, rank 4</span></td><td><code>composer update behat/mink-goutte-driver -W -m --with &apos;symfony/http-client:&gt;=6.4.15,&lt;7.0.0 || &gt;=7.1.8&apos;</code></td><td>1 changes</td></tr>
+<tr><td><span class="badge ok">valid, rank 5</span></td><td><code>composer update drupal/drupal-extension -W -m --with &apos;symfony/http-client:&gt;=6.4.15,&lt;7.0.0 || &gt;=7.1.8&apos;</code></td><td>2 changes</td></tr>
+<tr><td><span class="badge ok">valid, rank 6</span></td><td><code>composer update drupal/drupal-extension behat/mink-goutte-driver symfony/http-client -W -m --with &apos;symfony/http-client:&gt;=6.4.15,&lt;7.0.0 || &gt;=7.1.8&apos;</code></td><td>2 changes</td></tr>
+<tr><td><span class="badge skipped">not tried</span></td><td><code>composer require --no-update symfony/http-client:^7.0 &amp;&amp; composer update symfony/http-client -W -m --with &apos;symfony/http-client:&gt;=6.4.15,&lt;7.0.0 || &gt;=7.1.8&apos;</code></td><td>a better candidate already exists</td></tr>
+<tr><td><span class="badge skipped">not tried</span></td><td><code>composer require --no-update drupal/drupal-extension:^6.0 &amp;&amp; composer update drupal/drupal-extension -W -m --with &apos;symfony/http-client:&gt;=6.4.15,&lt;7.0.0 || &gt;=7.1.8&apos;</code></td><td>a better candidate already exists</td></tr>
+<tr><td><span class="badge skipped">not tried</span></td><td><code>composer require --no-update behat/mink-goutte-driver:^3.0 &amp;&amp; composer update behat/mink-goutte-driver -W -m --with &apos;symfony/http-client:&gt;=6.4.15,&lt;7.0.0 || &gt;=7.1.8&apos;</code></td><td>a better candidate already exists</td></tr>
+</tbody></table></details>
+</section>
+<section class="finding" id="finding-3">
+<h2>symfony/http-foundation <span class="version">v6.4.12</span></h2>
+<p class="state">Transitive dependency.</p>
+<h3>Advisories</h3><ul class="advisories">
+<li><strong><a href="https://symfony.com/cve-2024-50345" rel="noopener noreferrer">CVE-2024-50345 <small>(PKSA-b35n-565h-rs4q)</small></a></strong> <span class="badge sev-low">low</span><br>CVE-2024-50345: Open redirect via browser-sanitized URLs<br><small>affected versions: <code>&gt;=2.0.0,&lt;3.0.0|&gt;=3.0.0,&lt;4.0.0|&gt;=4.0.0,&lt;5.0.0|&gt;=5.0.0,&lt;5.1.0|&gt;=5.1.0,&lt;5.2.0|&gt;=5.2.0,&lt;5.3.0|&gt;=5.3.0,&lt;5.4.0|&gt;=5.4.0,&lt;5.4.46|&gt;=6.0.0,&lt;6.1.0|&gt;=6.1.0,&lt;6.2.0|&gt;=6.2.0,&lt;6.3.0|&gt;=6.3.0,&lt;6.4.0|&gt;=6.4.0,&lt;6.4.14|&gt;=7.0.0,&lt;7.1.0|&gt;=7.1.0,&lt;7.1.7</code></small></li>
+</ul>
+<h3>Introduced by</h3>
+<pre class="tree">root
+└── drupal/core 10.3.6
+    └── asm89/stack-cors v2.2.0
+        └── symfony/http-foundation v6.4.12  (requires ^5.3|^6|^7)
+
+root
+└── drupal/access_unpublished 1.5.0
+    └── drupal/core 10.3.6
+        └── asm89/stack-cors v2.2.0
+            └── symfony/http-foundation v6.4.12  (requires ^5.3|^6|^7)
+
+root
+└── drupal/acquia_purge 1.3.0
+    └── drupal/core 10.3.6
+        └── asm89/stack-cors v2.2.0
+            └── symfony/http-foundation v6.4.12  (requires ^5.3|^6|^7)
+
+root
+└── drupal/address 1.12.0
+    └── drupal/core 10.3.6
+        └── asm89/stack-cors v2.2.0
+            └── symfony/http-foundation v6.4.12  (requires ^5.3|^6|^7)
+
+root
+└── drupal/admin_toolbar 3.4.2
+    └── drupal/core 10.3.6
+        └── asm89/stack-cors v2.2.0
+            └── symfony/http-foundation v6.4.12  (requires ^5.3|^6|^7)</pre>
+<p><small>… and 191 more paths</small></p>
+<h3>Recommended remediation</h3>
+<p class="command"><code>composer update symfony/http-foundation</code></p>
+<p class="validation"><span class="badge ok">Composer validation: PASS</span> 1 package changed, 0 added, 0 removed, 0 root constraints changed.</p>
+<details open><summary>Expected changes (1)</summary><table class="changes"><thead><tr><th>Package</th><th>From</th><th>To</th><th>Kind</th></tr></thead><tbody>
+<tr><td>symfony/http-foundation</td><td>v6.4.12</td><td>v6.4.14</td><td>upgraded, patch</td></tr>
+</tbody></table></details>
+<details><summary>Other candidates (9)</summary><table class="candidates"><thead><tr><th>Outcome</th><th>Command</th><th>Detail</th></tr></thead><tbody>
+<tr><td><span class="badge ok">valid, rank 2</span></td><td><code>composer update symfony/http-foundation -w -m --with &apos;symfony/http-foundation:&gt;=6.4.14,&lt;7.0.0 || &gt;=7.1.7&apos;</code></td><td>1 changes</td></tr>
+<tr><td><span class="badge ok">valid, rank 3</span></td><td><code>composer update drupal/address -W -m --with &apos;symfony/http-foundation:&gt;=6.4.14,&lt;7.0.0 || &gt;=7.1.7&apos;</code></td><td>1 changes</td></tr>
+<tr><td><span class="badge ok">valid, rank 4</span></td><td><code>composer update drupal/allowed_formats -W -m --with &apos;symfony/http-foundation:&gt;=6.4.14,&lt;7.0.0 || &gt;=7.1.7&apos;</code></td><td>1 changes</td></tr>
+<tr><td><span class="badge ok">valid, rank 5</span></td><td><code>composer update drupal/akamai -W -m --with &apos;symfony/http-foundation:&gt;=6.4.14,&lt;7.0.0 || &gt;=7.1.7&apos;</code></td><td>2 changes</td></tr>
+<tr><td><span class="badge ok">valid, rank 6</span></td><td><code>composer update drupal/acquia_purge -W -m --with &apos;symfony/http-foundation:&gt;=6.4.14,&lt;7.0.0 || &gt;=7.1.7&apos;</code></td><td>2 changes</td></tr>
+<tr><td><span class="badge ok">valid, rank 7</span></td><td><code>composer update drupal/admin_toolbar -W -m --with &apos;symfony/http-foundation:&gt;=6.4.14,&lt;7.0.0 || &gt;=7.1.7&apos;</code></td><td>2 changes</td></tr>
+<tr><td><span class="badge ok">valid, rank 8</span></td><td><code>composer update drupal/access_unpublished -W -m --with &apos;symfony/http-foundation:&gt;=6.4.14,&lt;7.0.0 || &gt;=7.1.7&apos;</code></td><td>2 changes</td></tr>
+<tr><td><span class="badge rejected">rejected</span></td><td><code>composer update drupal/access_unpublished drupal/acquia_purge drupal/address drupal/admin_toolbar drupal/akamai drupal/allowed_formats drupal/asset_cache_bust drupal/auto_entitylabel drupal/better_exposed_filters drupal/cache_metrics drupal/ckeditor5_fullscreen drupal/ckeditor5_paste_filter drupal/color drupal/components drupal/conditional_fields drupal/config_ignore drupal/core-recommended drupal/focal_point drupal/csv_field drupal/csv_serialization drupal/pathauto drupal/view_mode_page drupal/datalayer drupal/entity_hierarchy drupal/devel drupal/devel_entity_updates drupal/diff drupal/draggableviews drupal/dropzonejs drupal/file_browser drupal/dynamic_entity_reference drupal/editoria11y drupal/embed drupal/entity_browser drupal/entity_diff_ui drupal/entity_embed drupal/entity_reference_revisions drupal/entity_reference_tree drupal/entity_usage drupal/entity_usage_queue_tracking drupal/entityreference_filter drupal/environment_indicator drupal/openid_connect drupal/field_group drupal/flag drupal/geocoder drupal/geofield drupal/gin drupal/gin_toolbar drupal/google_map_field drupal/google_tag drupal/http_response_headers drupal/hux drupal/iframe_resizer drupal/imagick drupal/inline_entity_form drupal/jquery_ui_autocomplete drupal/key drupal/key_auth drupal/key_value_field drupal/linkit drupal/mailchimp_transactional drupal/maxlength drupal/media_entity_download drupal/memcache drupal/metatag drupal/monolog drupal/node_edit_protection drupal/node_title_help_text drupal/office_hours drupal/openid_connect_windows_aad drupal/paragraphs drupal/pathologic drupal/prepopulate drupal/private_files_download_permission drupal/prod_no_redirect drupal/purge drupal/purge_queues drupal/queue_unique drupal/quick_node_clone drupal/r4032login drupal/rabbit_hole drupal/redirect drupal/require_on_publish drupal/scheduled_transitions drupal/schema_metatag drupal/seckit drupal/security_review drupal/seven drupal/simple_sitemap drupal/stage_file_proxy drupal/subpathauto drupal/term_reference_tree drupal/twig_field_value drupal/twig_tweak drupal/upgrade_status drupal/username_enumeration_prevention drupal/video_embed_field drupal/views_aggregator drupal/views_ajax_history drupal/views_autocomplete_filters drupal/views_bulk_edit drupal/views_bulk_operations drupal/views_custom_cache_tag drupal/views_data_export drupal/views_porter_stemmer drupal/views_simple_math_field drupal/views_taxonomy_term_name_into_id drupal/drupal-extension -W -m --with &apos;symfony/http-foundation:&gt;=6.4.14,&lt;7.0.0 || &gt;=7.1.7&apos;</code></td><td><pre class="reason">Composer could not resolve the dependencies: Your requirements could not be resolved to an installable set of packages.
+  Problem 1
+    - Root composer.json requires drupal/config_ignore 3.x-dev (exact version match), found drupal/config_ignore[dev-3.x, 1.0.0-rc1, ..., 1.4.0, 2.0.0-rc2, ..., 2.4.0, 3.0.0-beta1, ..., 3.4.0] but these do not match your constraint and are therefore not installable. Make sure you either fix the constraint or avoid updating this package to keep the one present in the lock file (drupal/config_ignore[3.x-dev (alias of dev-3.x)]).
+  Problem 2
+    - Root composer.json requires drupal/openid_connect_windows_aad dev-2.0.x -&gt; satisfiable by drupal/openid_connect_windows_aad[dev-2.0.x].
+    - drupal/openid_connect_windows_aad dev-2.0.x requires drupal/openid_connect ^3.0.0-alpha7 -&gt; found drupal/openid_connect[3.0.0-alpha7, 3.0.0-alpha8, 3.0.0-alpha9] but it conflicts with your root composer.json require (dev-3.x as 2.0).</pre></td></tr>
+<tr><td><span class="badge skipped">not tried</span></td><td><code>composer require --no-update drupal/access_unpublished:^2.0 &amp;&amp; composer update drupal/access_unpublished -W -m --with &apos;symfony/http-foundation:&gt;=6.4.14,&lt;7.0.0 || &gt;=7.1.7&apos;</code></td><td>a better candidate already exists</td></tr>
+</tbody></table></details>
+</section>
+<section class="finding" id="finding-4">
+<h2>twig/twig <span class="version">v3.14.0</span></h2>
+<p class="state">Transitive dependency.</p>
+<h3>Advisories</h3><ul class="advisories">
+<li><strong><a href="https://symfony.com/blog/cve-2024-51755-unguarded-calls-to-isset-and-to-array-accesses-in-a-sandbox" rel="noopener noreferrer">CVE-2024-51755 <small>(PKSA-2wrf-1xmk-1pky)</small></a></strong> <span class="badge sev-low">low</span><br>Unguarded calls to __isset() and to array-accesses when the sandbox is enabled<br><small>affected versions: <code>&gt;=1.0.0,&lt;2.0.0|&gt;=2.0.0,&lt;3.0.0|&gt;=3.0.0,&lt;3.11.2|&gt;=3.12.0,&lt;3.14.1</code></small></li>
+<li><strong><a href="https://symfony.com/blog/cve-2024-51754-unguarded-calls-to-tostring-in-a-sandbox-when-an-object-is-in-an-array-or-an-argument-list" rel="noopener noreferrer">CVE-2024-51754 <small>(PKSA-yhcn-xrg3-68b1)</small></a></strong> <span class="badge sev-low">low</span><br>Unguarded calls to __toString() when nesting an object into an array<br><small>affected versions: <code>&gt;=1.0.0,&lt;2.0.0|&gt;=2.0.0,&lt;3.0.0|&gt;=3.0.0,&lt;3.11.2|&gt;=3.12.0,&lt;3.14.1</code></small></li>
+</ul>
+<h3>Introduced by</h3>
+<pre class="tree">root
+└── drush/drush 13.3.0
+    └── chi-teck/drupal-code-generator 3.6.1
+        └── twig/twig v3.14.0  (requires ^3.4)
+
+root
+└── drupal/devel_entity_updates 4.2.0-rc1
+    └── drush/drush 13.3.0
+        └── chi-teck/drupal-code-generator 3.6.1
+            └── twig/twig v3.14.0  (requires ^3.4)
+
+root
+└── drupal/core 10.3.6
+    └── twig/twig v3.14.0  (requires ^3.14.0)
+
+root
+└── drupal/access_unpublished 1.5.0
+    └── drupal/core 10.3.6
+        └── twig/twig v3.14.0  (requires ^3.14.0)
+
+root
+└── drupal/acquia_purge 1.3.0
+    └── drupal/core 10.3.6
+        └── twig/twig v3.14.0  (requires ^3.14.0)</pre>
+<p><small>… and 178 more paths</small></p>
+<h3>Recommended remediation</h3>
+<p class="command"><code>composer update twig/twig</code></p>
+<p class="validation"><span class="badge ok">Composer validation: PASS</span> 1 package changed, 0 added, 0 removed, 0 root constraints changed.</p>
+<details open><summary>Expected changes (1)</summary><table class="changes"><thead><tr><th>Package</th><th>From</th><th>To</th><th>Kind</th></tr></thead><tbody>
+<tr><td>twig/twig</td><td>v3.14.0</td><td>v3.14.2</td><td>upgraded, patch</td></tr>
+</tbody></table></details>
+<details><summary>Other candidates (9)</summary><table class="candidates"><thead><tr><th>Outcome</th><th>Command</th><th>Detail</th></tr></thead><tbody>
+<tr><td><span class="badge ok">valid, rank 2</span></td><td><code>composer update twig/twig -w -m --with &apos;twig/twig:&gt;=3.14.1&apos;</code></td><td>1 changes</td></tr>
+<tr><td><span class="badge ok">valid, rank 3</span></td><td><code>composer update drupal/devel_entity_updates -W -m --with &apos;twig/twig:&gt;=3.14.1&apos;</code></td><td>1 changes</td></tr>
+<tr><td><span class="badge ok">valid, rank 4</span></td><td><code>composer update drush/drush -W -m --with &apos;twig/twig:&gt;=3.14.1&apos;</code></td><td>2 changes</td></tr>
+<tr><td><span class="badge ok">valid, rank 5</span></td><td><code>composer update drupal/twig_tweak -W -m --with &apos;twig/twig:&gt;=3.14.1&apos;</code></td><td>2 changes</td></tr>
+<tr><td><span class="badge ok">valid, rank 6</span></td><td><code>composer update drupal/access_unpublished -W -m --with &apos;twig/twig:&gt;=3.14.1&apos;</code></td><td>2 changes</td></tr>
+<tr><td><span class="badge ok">valid, rank 7</span></td><td><code>composer update vincentlanglet/twig-cs-fixer -W -m --with &apos;twig/twig:&gt;=3.14.1&apos;</code></td><td>2 changes</td></tr>
+<tr><td><span class="badge ok">valid, rank 8</span></td><td><code>composer update drupal/core-recommended -W -m --with &apos;twig/twig:&gt;=3.14.1&apos;</code></td><td>3 changes</td></tr>
+<tr><td><span class="badge rejected">rejected</span></td><td><code>composer update drush/drush drupal/access_unpublished drupal/acquia_purge drupal/address drupal/admin_toolbar drupal/akamai drupal/allowed_formats drupal/asset_cache_bust drupal/auto_entitylabel drupal/better_exposed_filters drupal/cache_metrics drupal/ckeditor5_fullscreen drupal/ckeditor5_paste_filter drupal/color drupal/components drupal/conditional_fields drupal/config_ignore drupal/core-recommended drupal/focal_point drupal/csv_field drupal/csv_serialization drupal/pathauto drupal/view_mode_page drupal/datalayer drupal/entity_hierarchy drupal/devel drupal/devel_entity_updates drupal/diff drupal/draggableviews drupal/dropzonejs drupal/file_browser drupal/dynamic_entity_reference drupal/editoria11y drupal/embed drupal/entity_browser drupal/entity_diff_ui drupal/entity_embed drupal/entity_reference_revisions drupal/entity_reference_tree drupal/entity_usage drupal/entity_usage_queue_tracking drupal/entityreference_filter drupal/environment_indicator drupal/openid_connect drupal/field_group drupal/flag drupal/geocoder drupal/geofield drupal/gin drupal/gin_toolbar drupal/google_map_field drupal/google_tag drupal/http_response_headers drupal/hux drupal/iframe_resizer drupal/imagick drupal/inline_entity_form drupal/jquery_ui_autocomplete drupal/key drupal/key_auth drupal/key_value_field drupal/linkit drupal/mailchimp_transactional drupal/maxlength drupal/media_entity_download drupal/memcache drupal/metatag drupal/monolog drupal/node_edit_protection drupal/node_title_help_text drupal/office_hours drupal/openid_connect_windows_aad drupal/paragraphs drupal/pathologic drupal/prepopulate drupal/private_files_download_permission drupal/prod_no_redirect drupal/purge drupal/purge_queues drupal/queue_unique drupal/quick_node_clone drupal/r4032login drupal/rabbit_hole drupal/redirect drupal/require_on_publish drupal/scheduled_transitions drupal/schema_metatag drupal/seckit drupal/security_review drupal/seven drupal/simple_sitemap drupal/stage_file_proxy drupal/subpathauto drupal/term_reference_tree drupal/twig_field_value drupal/twig_tweak drupal/upgrade_status drupal/username_enumeration_prevention drupal/video_embed_field drupal/views_aggregator drupal/views_ajax_history drupal/views_autocomplete_filters drupal/views_bulk_edit drupal/views_bulk_operations drupal/views_custom_cache_tag drupal/views_data_export drupal/views_porter_stemmer drupal/views_simple_math_field drupal/views_taxonomy_term_name_into_id drupal/drupal-extension vincentlanglet/twig-cs-fixer -W -m --with &apos;twig/twig:&gt;=3.14.1&apos;</code></td><td><pre class="reason">Composer could not resolve the dependencies: Your requirements could not be resolved to an installable set of packages.
+  Problem 1
+    - Root composer.json requires drupal/config_ignore 3.x-dev (exact version match), found drupal/config_ignore[dev-3.x, 1.0.0-rc1, ..., 1.4.0, 2.0.0-rc2, ..., 2.4.0, 3.0.0-beta1, ..., 3.4.0] but these do not match your constraint and are therefore not installable. Make sure you either fix the constraint or avoid updating this package to keep the one present in the lock file (drupal/config_ignore[3.x-dev (alias of dev-3.x)]).
+  Problem 2
+    - Root composer.json requires drupal/openid_connect_windows_aad dev-2.0.x -&gt; satisfiable by drupal/openid_connect_windows_aad[dev-2.0.x].
+    - drupal/openid_connect_windows_aad dev-2.0.x requires drupal/openid_connect ^3.0.0-alpha7 -&gt; found drupal/openid_connect[3.0.0-alpha7, 3.0.0-alpha8, 3.0.0-alpha9] but it conflicts with your root composer.json require (dev-3.x as 2.0).</pre></td></tr>
+<tr><td><span class="badge skipped">not tried</span></td><td><code>composer require --no-update drupal/core-recommended:^11.0 &amp;&amp; composer update drupal/core-recommended -W -m --with &apos;twig/twig:&gt;=3.14.1&apos;</code></td><td>a better candidate already exists</td></tr>
+</tbody></table></details>
+</section>
+<section class="meta"><h2>Analysis metadata</h2><dl>
+<dt>project</dt><dd>openmass-drupal-tilde-pins</dd>
+<dt>engine version</dt><dd>dev-main</dd>
+<dt>composer version</dt><dd>(fixture)</dd>
+<dt>php version</dt><dd>(fixture)</dd>
+<dt>advisory source</dt><dd>advisory snapshot advisories.json</dd>
+<dt>solver</dt><dd>in-process Composer dry-run</dd>
+<dt>solver runs</dt><dd>34</dd>
+<dt>composer json sha256</dt><dd>7ca85d15925007af8421fee7be0bbd4ad4bd12a0bab38b82b4095f435bc0398f</dd>
+<dt>composer lock sha256</dt><dd>c8d3e2f63a4fad6c585cd68f4b05e282801b4ca96e46b4d80ab9d55ed22f678c</dd>
+<dt>analysis timestamp</dt><dd>(fixture)</dd>
+<dt>locked packages</dt><dd>373</dd>
+</dl></section>
+</main></body></html>

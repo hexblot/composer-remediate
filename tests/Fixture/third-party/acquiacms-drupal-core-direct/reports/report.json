@@ -1,0 +1,2293 @@
+{
+    "schema_version": 1,
+    "analysis_metadata": {
+        "project": "acquiacms-drupal-core-direct",
+        "engine_version": "dev-main",
+        "composer_version": "(fixture)",
+        "php_version": "(fixture)",
+        "advisory_source": "advisory snapshot advisories.json",
+        "solver": "in-process Composer dry-run",
+        "solver_runs": "37",
+        "composer_json_sha256": "b2e2a05bafbf182b6e15ab859b3679115303aeeabe0e6e591d1eddcaf59d5b89",
+        "composer_lock_sha256": "0f6ad98f51db2d2df6b6958636e777c9b134d06b8bd2ac7a3202220e7a9bd7f1",
+        "analysis_timestamp": "(fixture)",
+        "locked_packages": "306"
+    },
+    "exit_code": 1,
+    "warnings": [],
+    "summary": {
+        "advisories": 6,
+        "packages": 5,
+        "packages_with_fix": 5,
+        "fail_on": null,
+        "packages_gated": 5,
+        "packages_baselined": 0,
+        "packages_with_constraint_drag": 0,
+        "packages_known_exploited": 0,
+        "packages_with_abandoned_dependency": 0,
+        "combined_command": "composer update drupal/core symfony/http-client symfony/http-foundation symfony/process twig/twig",
+        "combined_fixes": 6,
+        "combined_total": 6,
+        "combined_fixes_all": true,
+        "combined_changes": {
+            "changed": 5,
+            "added": 0,
+            "removed": 0,
+            "total": 5,
+            "major_change": false,
+            "downgrade": false,
+            "prerelease": false
+        }
+    },
+    "findings": [
+        {
+            "package": "symfony/process",
+            "version": "v6.4.8",
+            "version_normalized": "6.4.8.0",
+            "direct": false,
+            "dev": false,
+            "baselined": false,
+            "counts_for_exit": true,
+            "via_replaced_package": null,
+            "advisories": [
+                {
+                    "id": "PKSA-wws7-mr54-jsny",
+                    "cve": "CVE-2024-51736",
+                    "title": "CVE-2024-51736: Command execution hijack on Windows with Process class",
+                    "link": "https://symfony.com/cve-2024-51736",
+                    "severity": "high",
+                    "reported_at": "2024-11-05T08:00:00+00:00",
+                    "affected_versions": ">=2.0.0,<3.0.0|>=3.0.0,<4.0.0|>=4.0.0,<5.0.0|>=5.0.0,<5.1.0|>=5.1.0,<5.2.0|>=5.2.0,<5.3.0|>=5.3.0,<5.4.0|>=5.4.0,<5.4.46|>=6.0.0,<6.1.0|>=6.1.0,<6.2.0|>=6.2.0,<6.3.0|>=6.3.0,<6.4.0|>=6.4.0,<6.4.14|>=7.0.0,<7.1.0|>=7.1.0,<7.1.7",
+                    "sources": [
+                        {
+                            "name": "GitHub",
+                            "remoteId": "GHSA-qq5c-677p-737q"
+                        },
+                        {
+                            "name": "FriendsOfPHP/security-advisories",
+                            "remoteId": "symfony/process/CVE-2024-51736.yaml"
+                        }
+                    ],
+                    "epss": null,
+                    "epss_percentile": null,
+                    "kev_added": null
+                }
+            ],
+            "abandoned": [],
+            "paths_total": 37,
+            "paths": [
+                {
+                    "cyclic": false,
+                    "chain": [
+                        {
+                            "package": "root",
+                            "version": null,
+                            "requires": "^1"
+                        },
+                        {
+                            "package": "acquia/acquia-cms-starterkit",
+                            "version": "1.1.10",
+                            "requires": "^6.2 || ^7.0"
+                        }
+                    ],
+                    "target": {
+                        "package": "symfony/process",
+                        "version": "v6.4.8"
+                    }
+                },
+                {
+                    "cyclic": false,
+                    "chain": [
+                        {
+                            "package": "root",
+                            "version": null,
+                            "requires": "^1"
+                        },
+                        {
+                            "package": "acquia/acquia-cms-starterkit",
+                            "version": "1.1.10",
+                            "requires": "^2.7.0"
+                        },
+                        {
+                            "package": "composer/composer",
+                            "version": "2.7.9",
+                            "requires": "^5.4.35 || ^6.3.12 || ^7.0.3"
+                        }
+                    ],
+                    "target": {
+                        "package": "symfony/process",
+                        "version": "v6.4.8"
+                    }
+                },
+                {
+                    "cyclic": false,
+                    "chain": [
+                        {
+                            "package": "root",
+                            "version": null,
+                            "requires": "^10 || ^11"
+                        },
+                        {
+                            "package": "drupal/core-dev",
+                            "version": "11.0.0-alpha1",
+                            "requires": "^2.7"
+                        },
+                        {
+                            "package": "composer/composer",
+                            "version": "2.7.9",
+                            "requires": "^5.4.35 || ^6.3.12 || ^7.0.3"
+                        }
+                    ],
+                    "target": {
+                        "package": "symfony/process",
+                        "version": "v6.4.8"
+                    }
+                },
+                {
+                    "cyclic": false,
+                    "chain": [
+                        {
+                            "package": "root",
+                            "version": null,
+                            "requires": "^10 || ^11 || ^12 || ^13"
+                        },
+                        {
+                            "package": "drush/drush",
+                            "version": "13.0.1",
+                            "requires": "^4.0.6 || ^5"
+                        },
+                        {
+                            "package": "consolidation/robo",
+                            "version": "4.0.6",
+                            "requires": "^6"
+                        }
+                    ],
+                    "target": {
+                        "package": "symfony/process",
+                        "version": "v6.4.8"
+                    }
+                },
+                {
+                    "cyclic": false,
+                    "chain": [
+                        {
+                            "package": "root",
+                            "version": null,
+                            "requires": "dev-develop"
+                        },
+                        {
+                            "package": "drupal/acquia_cms_site_studio",
+                            "version": "1.x-dev",
+                            "requires": "~7.4.0 || ~7.5.0 || ~8.0.0"
+                        },
+                        {
+                            "package": "acquia/cohesion",
+                            "version": "8.0.0",
+                            "requires": "^11.6 || ^12 || ^13"
+                        },
+                        {
+                            "package": "drush/drush",
+                            "version": "13.0.1",
+                            "requires": "^4.0.6 || ^5"
+                        },
+                        {
+                            "package": "consolidation/robo",
+                            "version": "4.0.6",
+                            "requires": "^6"
+                        }
+                    ],
+                    "target": {
+                        "package": "symfony/process",
+                        "version": "v6.4.8"
+                    }
+                },
+                {
+                    "cyclic": false,
+                    "chain": [
+                        {
+                            "package": "root",
+                            "version": null,
+                            "requires": "dev-develop"
+                        },
+                        {
+                            "package": "drupal/acquia_cms_site_studio",
+                            "version": "dev-develop",
+                            "requires": "~7.4.0 || ~7.5.0 || ~8.0.0"
+                        },
+                        {
+                            "package": "acquia/cohesion",
+                            "version": "8.0.0",
+                            "requires": "^11.6 || ^12 || ^13"
+                        },
+                        {
+                            "package": "drush/drush",
+                            "version": "13.0.1",
+                            "requires": "^4.0.6 || ^5"
+                        },
+                        {
+                            "package": "consolidation/robo",
+                            "version": "4.0.6",
+                            "requires": "^6"
+                        }
+                    ],
+                    "target": {
+                        "package": "symfony/process",
+                        "version": "v6.4.8"
+                    }
+                },
+                {
+                    "cyclic": false,
+                    "chain": [
+                        {
+                            "package": "root",
+                            "version": null,
+                            "requires": "dev-develop"
+                        },
+                        {
+                            "package": "drupal/acquia_cms_site_studio",
+                            "version": "1.x-dev",
+                            "requires": "^1.0"
+                        },
+                        {
+                            "package": "drupal/sitestudio_config_management",
+                            "version": "1.x-dev",
+                            "requires": "~7.4.0 || ~7.5.0 || ~8.0.0"
+                        },
+                        {
+                            "package": "acquia/cohesion",
+                            "version": "8.0.0",
+                            "requires": "^11.6 || ^12 || ^13"
+                        },
+                        {
+                            "package": "drush/drush",
+                            "version": "13.0.1",
+                            "requires": "^4.0.6 || ^5"
+                        },
+                        {
+                            "package": "consolidation/robo",
+                            "version": "4.0.6",
+                            "requires": "^6"
+                        }
+                    ],
+                    "target": {
+                        "package": "symfony/process",
+                        "version": "v6.4.8"
+                    }
+                },
+                {
+                    "cyclic": false,
+                    "chain": [
+                        {
+                            "package": "root",
+                            "version": null,
+                            "requires": "dev-develop"
+                        },
+                        {
+                            "package": "drupal/acquia_cms_site_studio",
+                            "version": "dev-develop",
+                            "requires": "^1.0"
+                        },
+                        {
+                            "package": "drupal/sitestudio_config_management",
+                            "version": "1.x-dev",
+                            "requires": "~7.4.0 || ~7.5.0 || ~8.0.0"
+                        },
+                        {
+                            "package": "acquia/cohesion",
+                            "version": "8.0.0",
+                            "requires": "^11.6 || ^12 || ^13"
+                        },
+                        {
+                            "package": "drush/drush",
+                            "version": "13.0.1",
+                            "requires": "^4.0.6 || ^5"
+                        },
+                        {
+                            "package": "consolidation/robo",
+                            "version": "4.0.6",
+                            "requires": "^6"
+                        }
+                    ],
+                    "target": {
+                        "package": "symfony/process",
+                        "version": "v6.4.8"
+                    }
+                },
+                {
+                    "cyclic": false,
+                    "chain": [
+                        {
+                            "package": "root",
+                            "version": null,
+                            "requires": "dev-develop"
+                        },
+                        {
+                            "package": "drupal/acquia_cms_site_studio",
+                            "version": "1.x-dev",
+                            "requires": "^1.0"
+                        },
+                        {
+                            "package": "drupal/sitestudio_config_management",
+                            "version": "dev-1.x",
+                            "requires": "~7.4.0 || ~7.5.0 || ~8.0.0"
+                        },
+                        {
+                            "package": "acquia/cohesion",
+                            "version": "8.0.0",
+                            "requires": "^11.6 || ^12 || ^13"
+                        },
+                        {
+                            "package": "drush/drush",
+                            "version": "13.0.1",
+                            "requires": "^4.0.6 || ^5"
+                        },
+                        {
+                            "package": "consolidation/robo",
+                            "version": "4.0.6",
+                            "requires": "^6"
+                        }
+                    ],
+                    "target": {
+                        "package": "symfony/process",
+                        "version": "v6.4.8"
+                    }
+                },
+                {
+                    "cyclic": false,
+                    "chain": [
+                        {
+                            "package": "root",
+                            "version": null,
+                            "requires": "dev-develop"
+                        },
+                        {
+                            "package": "drupal/acquia_cms_site_studio",
+                            "version": "dev-develop",
+                            "requires": "^1.0"
+                        },
+                        {
+                            "package": "drupal/sitestudio_config_management",
+                            "version": "dev-1.x",
+                            "requires": "~7.4.0 || ~7.5.0 || ~8.0.0"
+                        },
+                        {
+                            "package": "acquia/cohesion",
+                            "version": "8.0.0",
+                            "requires": "^11.6 || ^12 || ^13"
+                        },
+                        {
+                            "package": "drush/drush",
+                            "version": "13.0.1",
+                            "requires": "^4.0.6 || ^5"
+                        },
+                        {
+                            "package": "consolidation/robo",
+                            "version": "4.0.6",
+                            "requires": "^6"
+                        }
+                    ],
+                    "target": {
+                        "package": "symfony/process",
+                        "version": "v6.4.8"
+                    }
+                }
+            ],
+            "solver_runs": 9,
+            "search_exhausted": true,
+            "remediation": {
+                "status": "verified",
+                "command": "composer update symfony/process",
+                "strategy": "lock-refresh",
+                "root_constraint_changes": [],
+                "constraint_drag": null,
+                "blocking_risk": [],
+                "summary": {
+                    "changed": 1,
+                    "added": 0,
+                    "removed": 0,
+                    "total": 1,
+                    "major_change": false,
+                    "downgrade": false,
+                    "prerelease": false
+                },
+                "changes": [
+                    {
+                        "package": "symfony/process",
+                        "kind": "upgraded",
+                        "step": "patch",
+                        "from": "v6.4.8",
+                        "to": "v6.4.15"
+                    }
+                ]
+            },
+            "candidates": [
+                {
+                    "command": "composer update symfony/process",
+                    "strategy": "lock-refresh",
+                    "outcome": "valid",
+                    "rank": 1,
+                    "summary": {
+                        "changed": 1,
+                        "added": 0,
+                        "removed": 0,
+                        "total": 1,
+                        "major_change": false,
+                        "downgrade": false,
+                        "prerelease": false
+                    },
+                    "solver_status": "resolved"
+                },
+                {
+                    "command": "composer update symfony/process -w -m --with 'symfony/process:>=6.4.14,<7.0.0 || >=7.1.7'",
+                    "strategy": "with-dependencies",
+                    "outcome": "valid",
+                    "rank": 2,
+                    "summary": {
+                        "changed": 1,
+                        "added": 0,
+                        "removed": 0,
+                        "total": 1,
+                        "major_change": false,
+                        "downgrade": false,
+                        "prerelease": false
+                    },
+                    "solver_status": "resolved"
+                },
+                {
+                    "command": "composer update acquia/acquia-cms-starterkit -W -m --with 'symfony/process:>=6.4.14,<7.0.0 || >=7.1.7'",
+                    "strategy": "parent-update",
+                    "outcome": "valid",
+                    "rank": 3,
+                    "summary": {
+                        "changed": 1,
+                        "added": 0,
+                        "removed": 0,
+                        "total": 1,
+                        "major_change": false,
+                        "downgrade": false,
+                        "prerelease": false
+                    },
+                    "solver_status": "resolved"
+                },
+                {
+                    "command": "composer update drupal/core-dev -W -m --with 'symfony/process:>=6.4.14,<7.0.0 || >=7.1.7'",
+                    "strategy": "parent-update",
+                    "outcome": "valid",
+                    "rank": 4,
+                    "summary": {
+                        "changed": 1,
+                        "added": 0,
+                        "removed": 0,
+                        "total": 1,
+                        "major_change": false,
+                        "downgrade": false,
+                        "prerelease": false
+                    },
+                    "solver_status": "resolved"
+                },
+                {
+                    "command": "composer update drupal/acquia_cms_audio -W -m --with 'symfony/process:>=6.4.14,<7.0.0 || >=7.1.7'",
+                    "strategy": "parent-update",
+                    "outcome": "valid",
+                    "rank": 5,
+                    "summary": {
+                        "changed": 1,
+                        "added": 0,
+                        "removed": 0,
+                        "total": 1,
+                        "major_change": false,
+                        "downgrade": false,
+                        "prerelease": false
+                    },
+                    "solver_status": "resolved"
+                },
+                {
+                    "command": "composer update drupal/acquia_cms_component -W -m --with 'symfony/process:>=6.4.14,<7.0.0 || >=7.1.7'",
+                    "strategy": "parent-update",
+                    "outcome": "valid",
+                    "rank": 6,
+                    "summary": {
+                        "changed": 1,
+                        "added": 0,
+                        "removed": 0,
+                        "total": 1,
+                        "major_change": false,
+                        "downgrade": false,
+                        "prerelease": false
+                    },
+                    "solver_status": "resolved"
+                },
+                {
+                    "command": "composer update drush/drush -W -m --with 'symfony/process:>=6.4.14,<7.0.0 || >=7.1.7'",
+                    "strategy": "parent-update",
+                    "outcome": "valid",
+                    "rank": 7,
+                    "summary": {
+                        "changed": 2,
+                        "added": 0,
+                        "removed": 0,
+                        "total": 2,
+                        "major_change": false,
+                        "downgrade": false,
+                        "prerelease": false
+                    },
+                    "solver_status": "resolved"
+                },
+                {
+                    "command": "composer update drupal/acquia_cms_site_studio -W -m --with 'symfony/process:>=6.4.14,<7.0.0 || >=7.1.7'",
+                    "strategy": "parent-update",
+                    "outcome": "valid",
+                    "rank": 8,
+                    "summary": {
+                        "changed": 2,
+                        "added": 0,
+                        "removed": 1,
+                        "total": 3,
+                        "major_change": false,
+                        "downgrade": false,
+                        "prerelease": false
+                    },
+                    "solver_status": "resolved"
+                },
+                {
+                    "command": "composer update acquia/acquia-cms-starterkit drupal/core-dev drush/drush drupal/acquia_cms_audio drupal/acquia_cms_component drupal/acquia_cms_starter drupal/acquia_cms_dam -W -m --with 'symfony/process:>=6.4.14,<7.0.0 || >=7.1.7'",
+                    "strategy": "parent-update",
+                    "outcome": "valid",
+                    "rank": 9,
+                    "summary": {
+                        "changed": 3,
+                        "added": 0,
+                        "removed": 0,
+                        "total": 3,
+                        "major_change": false,
+                        "downgrade": false,
+                        "prerelease": false
+                    },
+                    "solver_status": "resolved"
+                },
+                {
+                    "command": "composer require --no-update acquia/acquia-cms-starterkit:^2.0 && composer update acquia/acquia-cms-starterkit -W -m --with 'symfony/process:>=6.4.14,<7.0.0 || >=7.1.7'",
+                    "strategy": "root-constraint-widen",
+                    "outcome": "skipped",
+                    "reason": "a better candidate already exists"
+                }
+            ]
+        },
+        {
+            "package": "drupal/core",
+            "version": "10.3.5",
+            "version_normalized": "10.3.5.0",
+            "direct": false,
+            "dev": false,
+            "baselined": false,
+            "counts_for_exit": true,
+            "via_replaced_package": null,
+            "advisories": [
+                {
+                    "id": "PKSA-styk-3knc-d1bt",
+                    "cve": "CVE-2024-45440",
+                    "title": "Drupal Full Path Disclosure",
+                    "link": "https://github.com/advisories/GHSA-mg8j-w93w-xjgc",
+                    "severity": "medium",
+                    "reported_at": "2024-08-29T12:31:05+00:00",
+                    "affected_versions": ">=8.0.0,<10.2.9|>=10.3.0,<10.3.6|>=11.0.0,<11.0.5",
+                    "sources": [
+                        {
+                            "name": "GitHub",
+                            "remoteId": "GHSA-mg8j-w93w-xjgc"
+                        }
+                    ],
+                    "epss": null,
+                    "epss_percentile": null,
+                    "kev_added": null
+                }
+            ],
+            "abandoned": [],
+            "paths_total": 36,
+            "paths": [
+                {
+                    "cyclic": false,
+                    "chain": [
+                        {
+                            "package": "root",
+                            "version": null,
+                            "requires": "dev-develop"
+                        },
+                        {
+                            "package": "drupal/acquia_cms_audio",
+                            "version": "1.x-dev",
+                            "requires": "^1.9 || ^2.1 || ^3.1"
+                        },
+                        {
+                            "package": "drupal/acquia_cms_common",
+                            "version": "3.x-dev",
+                            "requires": "^10.2.2 || ^11"
+                        }
+                    ],
+                    "target": {
+                        "package": "drupal/core",
+                        "version": "10.3.5"
+                    }
+                },
+                {
+                    "cyclic": false,
+                    "chain": [
+                        {
+                            "package": "root",
+                            "version": null,
+                            "requires": "dev-develop"
+                        },
+                        {
+                            "package": "drupal/acquia_cms_audio",
+                            "version": "dev-develop",
+                            "requires": "^1.9 || ^2.1 || ^3.1"
+                        },
+                        {
+                            "package": "drupal/acquia_cms_common",
+                            "version": "3.x-dev",
+                            "requires": "^10.2.2 || ^11"
+                        }
+                    ],
+                    "target": {
+                        "package": "drupal/core",
+                        "version": "10.3.5"
+                    }
+                },
+                {
+                    "cyclic": false,
+                    "chain": [
+                        {
+                            "package": "root",
+                            "version": null,
+                            "requires": "dev-develop"
+                        },
+                        {
+                            "package": "drupal/acquia_cms_component",
+                            "version": "1.x-dev",
+                            "requires": "^1.9 || ^2.1 || ^3.1"
+                        },
+                        {
+                            "package": "drupal/acquia_cms_common",
+                            "version": "3.x-dev",
+                            "requires": "^10.2.2 || ^11"
+                        }
+                    ],
+                    "target": {
+                        "package": "drupal/core",
+                        "version": "10.3.5"
+                    }
+                },
+                {
+                    "cyclic": false,
+                    "chain": [
+                        {
+                            "package": "root",
+                            "version": null,
+                            "requires": "dev-develop"
+                        },
+                        {
+                            "package": "drupal/acquia_cms_component",
+                            "version": "dev-develop",
+                            "requires": "^1.9 || ^2.1 || ^3.1"
+                        },
+                        {
+                            "package": "drupal/acquia_cms_common",
+                            "version": "3.x-dev",
+                            "requires": "^10.2.2 || ^11"
+                        }
+                    ],
+                    "target": {
+                        "package": "drupal/core",
+                        "version": "10.3.5"
+                    }
+                },
+                {
+                    "cyclic": false,
+                    "chain": [
+                        {
+                            "package": "root",
+                            "version": null,
+                            "requires": "dev-develop"
+                        },
+                        {
+                            "package": "drupal/acquia_cms_starter",
+                            "version": "1.x-dev",
+                            "requires": "^1.4.6"
+                        },
+                        {
+                            "package": "drupal/acquia_cms_document",
+                            "version": "1.x-dev",
+                            "requires": "^1.9 || ^2.1 || ^3.1"
+                        },
+                        {
+                            "package": "drupal/acquia_cms_common",
+                            "version": "3.x-dev",
+                            "requires": "^10.2.2 || ^11"
+                        }
+                    ],
+                    "target": {
+                        "package": "drupal/core",
+                        "version": "10.3.5"
+                    }
+                },
+                {
+                    "cyclic": false,
+                    "chain": [
+                        {
+                            "package": "root",
+                            "version": null,
+                            "requires": "dev-develop"
+                        },
+                        {
+                            "package": "drupal/acquia_cms_starter",
+                            "version": "dev-develop",
+                            "requires": "^1.4.6"
+                        },
+                        {
+                            "package": "drupal/acquia_cms_document",
+                            "version": "1.x-dev",
+                            "requires": "^1.9 || ^2.1 || ^3.1"
+                        },
+                        {
+                            "package": "drupal/acquia_cms_common",
+                            "version": "3.x-dev",
+                            "requires": "^10.2.2 || ^11"
+                        }
+                    ],
+                    "target": {
+                        "package": "drupal/core",
+                        "version": "10.3.5"
+                    }
+                },
+                {
+                    "cyclic": false,
+                    "chain": [
+                        {
+                            "package": "root",
+                            "version": null,
+                            "requires": "dev-develop"
+                        },
+                        {
+                            "package": "drupal/acquia_cms_starter",
+                            "version": "1.x-dev",
+                            "requires": "^1.4.6"
+                        },
+                        {
+                            "package": "drupal/acquia_cms_document",
+                            "version": "dev-develop",
+                            "requires": "^1.9 || ^2.1 || ^3.1"
+                        },
+                        {
+                            "package": "drupal/acquia_cms_common",
+                            "version": "3.x-dev",
+                            "requires": "^10.2.2 || ^11"
+                        }
+                    ],
+                    "target": {
+                        "package": "drupal/core",
+                        "version": "10.3.5"
+                    }
+                },
+                {
+                    "cyclic": false,
+                    "chain": [
+                        {
+                            "package": "root",
+                            "version": null,
+                            "requires": "dev-develop"
+                        },
+                        {
+                            "package": "drupal/acquia_cms_starter",
+                            "version": "dev-develop",
+                            "requires": "^1.4.6"
+                        },
+                        {
+                            "package": "drupal/acquia_cms_document",
+                            "version": "dev-develop",
+                            "requires": "^1.9 || ^2.1 || ^3.1"
+                        },
+                        {
+                            "package": "drupal/acquia_cms_common",
+                            "version": "3.x-dev",
+                            "requires": "^10.2.2 || ^11"
+                        }
+                    ],
+                    "target": {
+                        "package": "drupal/core",
+                        "version": "10.3.5"
+                    }
+                },
+                {
+                    "cyclic": false,
+                    "chain": [
+                        {
+                            "package": "root",
+                            "version": null,
+                            "requires": "dev-develop"
+                        },
+                        {
+                            "package": "drupal/acquia_cms_dam",
+                            "version": "1.x-dev",
+                            "requires": "^1.5.10"
+                        },
+                        {
+                            "package": "drupal/acquia_cms_image",
+                            "version": "1.x-dev",
+                            "requires": "^1.9 || ^2.1 || ^3.1"
+                        },
+                        {
+                            "package": "drupal/acquia_cms_common",
+                            "version": "3.x-dev",
+                            "requires": "^10.2.2 || ^11"
+                        }
+                    ],
+                    "target": {
+                        "package": "drupal/core",
+                        "version": "10.3.5"
+                    }
+                },
+                {
+                    "cyclic": false,
+                    "chain": [
+                        {
+                            "package": "root",
+                            "version": null,
+                            "requires": "dev-develop"
+                        },
+                        {
+                            "package": "drupal/acquia_cms_dam",
+                            "version": "dev-develop",
+                            "requires": "^1.5.10"
+                        },
+                        {
+                            "package": "drupal/acquia_cms_image",
+                            "version": "1.x-dev",
+                            "requires": "^1.9 || ^2.1 || ^3.1"
+                        },
+                        {
+                            "package": "drupal/acquia_cms_common",
+                            "version": "3.x-dev",
+                            "requires": "^10.2.2 || ^11"
+                        }
+                    ],
+                    "target": {
+                        "package": "drupal/core",
+                        "version": "10.3.5"
+                    }
+                }
+            ],
+            "solver_runs": 7,
+            "search_exhausted": false,
+            "remediation": {
+                "status": "verified",
+                "command": "composer update drupal/core",
+                "strategy": "lock-refresh",
+                "root_constraint_changes": [],
+                "constraint_drag": null,
+                "blocking_risk": [],
+                "summary": {
+                    "changed": 1,
+                    "added": 0,
+                    "removed": 0,
+                    "total": 1,
+                    "major_change": false,
+                    "downgrade": false,
+                    "prerelease": false
+                },
+                "changes": [
+                    {
+                        "package": "drupal/core",
+                        "kind": "upgraded",
+                        "step": "patch",
+                        "from": "10.3.5",
+                        "to": "10.3.7"
+                    }
+                ]
+            },
+            "candidates": [
+                {
+                    "command": "composer update drupal/core",
+                    "strategy": "lock-refresh",
+                    "outcome": "valid",
+                    "rank": 1,
+                    "summary": {
+                        "changed": 1,
+                        "added": 0,
+                        "removed": 0,
+                        "total": 1,
+                        "major_change": false,
+                        "downgrade": false,
+                        "prerelease": false
+                    },
+                    "solver_status": "resolved"
+                },
+                {
+                    "command": "composer update drupal/core -w -m --with 'drupal/core:>=10.3.6,<11.0.0 || >=11.0.5'",
+                    "strategy": "with-dependencies",
+                    "outcome": "valid",
+                    "rank": 2,
+                    "summary": {
+                        "changed": 2,
+                        "added": 0,
+                        "removed": 0,
+                        "total": 2,
+                        "major_change": false,
+                        "downgrade": false,
+                        "prerelease": false
+                    },
+                    "solver_status": "resolved"
+                },
+                {
+                    "command": "composer update drupal/acquia_cms_audio -W -m --with 'drupal/core:>=10.3.6,<11.0.0 || >=11.0.5'",
+                    "strategy": "parent-update",
+                    "outcome": "valid",
+                    "rank": 3,
+                    "summary": {
+                        "changed": 2,
+                        "added": 0,
+                        "removed": 0,
+                        "total": 2,
+                        "major_change": false,
+                        "downgrade": false,
+                        "prerelease": false
+                    },
+                    "solver_status": "resolved"
+                },
+                {
+                    "command": "composer update drupal/acquia_cms_component -W -m --with 'drupal/core:>=10.3.6,<11.0.0 || >=11.0.5'",
+                    "strategy": "parent-update",
+                    "outcome": "valid",
+                    "rank": 4,
+                    "summary": {
+                        "changed": 2,
+                        "added": 0,
+                        "removed": 0,
+                        "total": 2,
+                        "major_change": false,
+                        "downgrade": false,
+                        "prerelease": false
+                    },
+                    "solver_status": "resolved"
+                },
+                {
+                    "command": "composer update drupal/acquia_cms_starter -W -m --with 'drupal/core:>=10.3.6,<11.0.0 || >=11.0.5'",
+                    "strategy": "parent-update",
+                    "outcome": "valid",
+                    "rank": 5,
+                    "summary": {
+                        "changed": 2,
+                        "added": 0,
+                        "removed": 0,
+                        "total": 2,
+                        "major_change": false,
+                        "downgrade": false,
+                        "prerelease": false
+                    },
+                    "solver_status": "resolved"
+                },
+                {
+                    "command": "composer update drupal/acquia_cms_dam -W -m --with 'drupal/core:>=10.3.6,<11.0.0 || >=11.0.5'",
+                    "strategy": "parent-update",
+                    "outcome": "valid",
+                    "rank": 6,
+                    "summary": {
+                        "changed": 3,
+                        "added": 0,
+                        "removed": 0,
+                        "total": 3,
+                        "major_change": false,
+                        "downgrade": false,
+                        "prerelease": false
+                    },
+                    "solver_status": "resolved"
+                },
+                {
+                    "command": "composer update drupal/acquia_cms_audio drupal/acquia_cms_component drupal/acquia_cms_starter drupal/acquia_cms_dam -W -m --with 'drupal/core:>=10.3.6,<11.0.0 || >=11.0.5'",
+                    "strategy": "parent-update",
+                    "outcome": "valid",
+                    "rank": 7,
+                    "summary": {
+                        "changed": 3,
+                        "added": 0,
+                        "removed": 0,
+                        "total": 3,
+                        "major_change": false,
+                        "downgrade": false,
+                        "prerelease": false
+                    },
+                    "solver_status": "resolved"
+                }
+            ]
+        },
+        {
+            "package": "symfony/http-client",
+            "version": "v7.1.4",
+            "version_normalized": "7.1.4.0",
+            "direct": false,
+            "dev": false,
+            "baselined": false,
+            "counts_for_exit": true,
+            "via_replaced_package": null,
+            "advisories": [
+                {
+                    "id": "PKSA-4k7v-pfvw-nqvp",
+                    "cve": "CVE-2024-50342",
+                    "title": "CVE-2024-50342: Internal address and port enumeration allowed by NoPrivateNetworkHttpClient",
+                    "link": "https://symfony.com/cve-2024-50342",
+                    "severity": "low",
+                    "reported_at": "2024-11-13T08:00:00+00:00",
+                    "affected_versions": ">=4.3.0,<4.4.0|>=4.4.0,<5.0.0|>=5.0.0,<5.1.0|>=5.1.0,<5.2.0|>=5.2.0,<5.3.0|>=5.3.0,<5.4.0|>=5.4.0,<5.4.47|>=6.0.0,<6.1.0|>=6.1.0,<6.2.0|>=6.2.0,<6.3.0|>=6.3.0,<6.4.0|>=6.4.0,<6.4.15|>=7.0.0,<7.1.0|>=7.1.0,<7.1.8",
+                    "sources": [
+                        {
+                            "name": "GitHub",
+                            "remoteId": "GHSA-9c3x-r3wp-mgxm"
+                        },
+                        {
+                            "name": "FriendsOfPHP/security-advisories",
+                            "remoteId": "symfony/http-client/CVE-2024-50342.yaml"
+                        }
+                    ],
+                    "epss": null,
+                    "epss_percentile": null,
+                    "kev_added": null
+                }
+            ],
+            "abandoned": [],
+            "paths_total": 1,
+            "paths": [
+                {
+                    "cyclic": false,
+                    "chain": [
+                        {
+                            "package": "root",
+                            "version": null,
+                            "requires": "^1"
+                        },
+                        {
+                            "package": "acquia/acquia-cms-starterkit",
+                            "version": "1.1.10",
+                            "requires": "^6.2 || ^7.0"
+                        }
+                    ],
+                    "target": {
+                        "package": "symfony/http-client",
+                        "version": "v7.1.4"
+                    }
+                }
+            ],
+            "solver_runs": 3,
+            "search_exhausted": false,
+            "remediation": {
+                "status": "verified",
+                "command": "composer update symfony/http-client",
+                "strategy": "lock-refresh",
+                "root_constraint_changes": [],
+                "constraint_drag": null,
+                "blocking_risk": [],
+                "summary": {
+                    "changed": 1,
+                    "added": 0,
+                    "removed": 0,
+                    "total": 1,
+                    "major_change": false,
+                    "downgrade": false,
+                    "prerelease": false
+                },
+                "changes": [
+                    {
+                        "package": "symfony/http-client",
+                        "kind": "upgraded",
+                        "step": "patch",
+                        "from": "v7.1.4",
+                        "to": "v7.1.8"
+                    }
+                ]
+            },
+            "candidates": [
+                {
+                    "command": "composer update symfony/http-client",
+                    "strategy": "lock-refresh",
+                    "outcome": "valid",
+                    "rank": 1,
+                    "summary": {
+                        "changed": 1,
+                        "added": 0,
+                        "removed": 0,
+                        "total": 1,
+                        "major_change": false,
+                        "downgrade": false,
+                        "prerelease": false
+                    },
+                    "solver_status": "resolved"
+                },
+                {
+                    "command": "composer update symfony/http-client -w -m --with 'symfony/http-client:>=7.1.8'",
+                    "strategy": "with-dependencies",
+                    "outcome": "valid",
+                    "rank": 2,
+                    "summary": {
+                        "changed": 1,
+                        "added": 0,
+                        "removed": 0,
+                        "total": 1,
+                        "major_change": false,
+                        "downgrade": false,
+                        "prerelease": false
+                    },
+                    "solver_status": "resolved"
+                },
+                {
+                    "command": "composer update acquia/acquia-cms-starterkit -W -m --with 'symfony/http-client:>=7.1.8'",
+                    "strategy": "parent-update",
+                    "outcome": "valid",
+                    "rank": 3,
+                    "summary": {
+                        "changed": 1,
+                        "added": 0,
+                        "removed": 0,
+                        "total": 1,
+                        "major_change": false,
+                        "downgrade": false,
+                        "prerelease": false
+                    },
+                    "solver_status": "resolved"
+                },
+                {
+                    "command": "composer require --no-update acquia/acquia-cms-starterkit:^2.0 && composer update acquia/acquia-cms-starterkit -W -m --with 'symfony/http-client:>=7.1.8'",
+                    "strategy": "root-constraint-widen",
+                    "outcome": "skipped",
+                    "reason": "a better candidate already exists"
+                }
+            ]
+        },
+        {
+            "package": "symfony/http-foundation",
+            "version": "v6.4.10",
+            "version_normalized": "6.4.10.0",
+            "direct": false,
+            "dev": false,
+            "baselined": false,
+            "counts_for_exit": true,
+            "via_replaced_package": null,
+            "advisories": [
+                {
+                    "id": "PKSA-b35n-565h-rs4q",
+                    "cve": "CVE-2024-50345",
+                    "title": "CVE-2024-50345: Open redirect via browser-sanitized URLs",
+                    "link": "https://symfony.com/cve-2024-50345",
+                    "severity": "low",
+                    "reported_at": "2024-11-05T08:00:00+00:00",
+                    "affected_versions": ">=2.0.0,<3.0.0|>=3.0.0,<4.0.0|>=4.0.0,<5.0.0|>=5.0.0,<5.1.0|>=5.1.0,<5.2.0|>=5.2.0,<5.3.0|>=5.3.0,<5.4.0|>=5.4.0,<5.4.46|>=6.0.0,<6.1.0|>=6.1.0,<6.2.0|>=6.2.0,<6.3.0|>=6.3.0,<6.4.0|>=6.4.0,<6.4.14|>=7.0.0,<7.1.0|>=7.1.0,<7.1.7",
+                    "sources": [
+                        {
+                            "name": "GitHub",
+                            "remoteId": "GHSA-mrqx-rp3w-jpjp"
+                        },
+                        {
+                            "name": "FriendsOfPHP/security-advisories",
+                            "remoteId": "symfony/http-foundation/CVE-2024-50345.yaml"
+                        }
+                    ],
+                    "epss": null,
+                    "epss_percentile": null,
+                    "kev_added": null
+                }
+            ],
+            "abandoned": [],
+            "paths_total": 36,
+            "paths": [
+                {
+                    "cyclic": false,
+                    "chain": [
+                        {
+                            "package": "root",
+                            "version": null,
+                            "requires": "dev-develop"
+                        },
+                        {
+                            "package": "drupal/acquia_cms_audio",
+                            "version": "1.x-dev",
+                            "requires": "^1.9 || ^2.1 || ^3.1"
+                        },
+                        {
+                            "package": "drupal/acquia_cms_common",
+                            "version": "3.x-dev",
+                            "requires": "^10.2.2 || ^11"
+                        },
+                        {
+                            "package": "drupal/core",
+                            "version": "10.3.5",
+                            "requires": "^2.1"
+                        },
+                        {
+                            "package": "asm89/stack-cors",
+                            "version": "v2.2.0",
+                            "requires": "^5.3|^6|^7"
+                        }
+                    ],
+                    "target": {
+                        "package": "symfony/http-foundation",
+                        "version": "v6.4.10"
+                    }
+                },
+                {
+                    "cyclic": false,
+                    "chain": [
+                        {
+                            "package": "root",
+                            "version": null,
+                            "requires": "dev-develop"
+                        },
+                        {
+                            "package": "drupal/acquia_cms_audio",
+                            "version": "dev-develop",
+                            "requires": "^1.9 || ^2.1 || ^3.1"
+                        },
+                        {
+                            "package": "drupal/acquia_cms_common",
+                            "version": "3.x-dev",
+                            "requires": "^10.2.2 || ^11"
+                        },
+                        {
+                            "package": "drupal/core",
+                            "version": "10.3.5",
+                            "requires": "^2.1"
+                        },
+                        {
+                            "package": "asm89/stack-cors",
+                            "version": "v2.2.0",
+                            "requires": "^5.3|^6|^7"
+                        }
+                    ],
+                    "target": {
+                        "package": "symfony/http-foundation",
+                        "version": "v6.4.10"
+                    }
+                },
+                {
+                    "cyclic": false,
+                    "chain": [
+                        {
+                            "package": "root",
+                            "version": null,
+                            "requires": "dev-develop"
+                        },
+                        {
+                            "package": "drupal/acquia_cms_component",
+                            "version": "1.x-dev",
+                            "requires": "^1.9 || ^2.1 || ^3.1"
+                        },
+                        {
+                            "package": "drupal/acquia_cms_common",
+                            "version": "3.x-dev",
+                            "requires": "^10.2.2 || ^11"
+                        },
+                        {
+                            "package": "drupal/core",
+                            "version": "10.3.5",
+                            "requires": "^2.1"
+                        },
+                        {
+                            "package": "asm89/stack-cors",
+                            "version": "v2.2.0",
+                            "requires": "^5.3|^6|^7"
+                        }
+                    ],
+                    "target": {
+                        "package": "symfony/http-foundation",
+                        "version": "v6.4.10"
+                    }
+                },
+                {
+                    "cyclic": false,
+                    "chain": [
+                        {
+                            "package": "root",
+                            "version": null,
+                            "requires": "dev-develop"
+                        },
+                        {
+                            "package": "drupal/acquia_cms_component",
+                            "version": "dev-develop",
+                            "requires": "^1.9 || ^2.1 || ^3.1"
+                        },
+                        {
+                            "package": "drupal/acquia_cms_common",
+                            "version": "3.x-dev",
+                            "requires": "^10.2.2 || ^11"
+                        },
+                        {
+                            "package": "drupal/core",
+                            "version": "10.3.5",
+                            "requires": "^2.1"
+                        },
+                        {
+                            "package": "asm89/stack-cors",
+                            "version": "v2.2.0",
+                            "requires": "^5.3|^6|^7"
+                        }
+                    ],
+                    "target": {
+                        "package": "symfony/http-foundation",
+                        "version": "v6.4.10"
+                    }
+                },
+                {
+                    "cyclic": false,
+                    "chain": [
+                        {
+                            "package": "root",
+                            "version": null,
+                            "requires": "dev-develop"
+                        },
+                        {
+                            "package": "drupal/acquia_cms_starter",
+                            "version": "1.x-dev",
+                            "requires": "^1.4.6"
+                        },
+                        {
+                            "package": "drupal/acquia_cms_document",
+                            "version": "1.x-dev",
+                            "requires": "^1.9 || ^2.1 || ^3.1"
+                        },
+                        {
+                            "package": "drupal/acquia_cms_common",
+                            "version": "3.x-dev",
+                            "requires": "^10.2.2 || ^11"
+                        },
+                        {
+                            "package": "drupal/core",
+                            "version": "10.3.5",
+                            "requires": "^2.1"
+                        },
+                        {
+                            "package": "asm89/stack-cors",
+                            "version": "v2.2.0",
+                            "requires": "^5.3|^6|^7"
+                        }
+                    ],
+                    "target": {
+                        "package": "symfony/http-foundation",
+                        "version": "v6.4.10"
+                    }
+                },
+                {
+                    "cyclic": false,
+                    "chain": [
+                        {
+                            "package": "root",
+                            "version": null,
+                            "requires": "dev-develop"
+                        },
+                        {
+                            "package": "drupal/acquia_cms_starter",
+                            "version": "dev-develop",
+                            "requires": "^1.4.6"
+                        },
+                        {
+                            "package": "drupal/acquia_cms_document",
+                            "version": "1.x-dev",
+                            "requires": "^1.9 || ^2.1 || ^3.1"
+                        },
+                        {
+                            "package": "drupal/acquia_cms_common",
+                            "version": "3.x-dev",
+                            "requires": "^10.2.2 || ^11"
+                        },
+                        {
+                            "package": "drupal/core",
+                            "version": "10.3.5",
+                            "requires": "^2.1"
+                        },
+                        {
+                            "package": "asm89/stack-cors",
+                            "version": "v2.2.0",
+                            "requires": "^5.3|^6|^7"
+                        }
+                    ],
+                    "target": {
+                        "package": "symfony/http-foundation",
+                        "version": "v6.4.10"
+                    }
+                },
+                {
+                    "cyclic": false,
+                    "chain": [
+                        {
+                            "package": "root",
+                            "version": null,
+                            "requires": "dev-develop"
+                        },
+                        {
+                            "package": "drupal/acquia_cms_starter",
+                            "version": "1.x-dev",
+                            "requires": "^1.4.6"
+                        },
+                        {
+                            "package": "drupal/acquia_cms_document",
+                            "version": "dev-develop",
+                            "requires": "^1.9 || ^2.1 || ^3.1"
+                        },
+                        {
+                            "package": "drupal/acquia_cms_common",
+                            "version": "3.x-dev",
+                            "requires": "^10.2.2 || ^11"
+                        },
+                        {
+                            "package": "drupal/core",
+                            "version": "10.3.5",
+                            "requires": "^2.1"
+                        },
+                        {
+                            "package": "asm89/stack-cors",
+                            "version": "v2.2.0",
+                            "requires": "^5.3|^6|^7"
+                        }
+                    ],
+                    "target": {
+                        "package": "symfony/http-foundation",
+                        "version": "v6.4.10"
+                    }
+                },
+                {
+                    "cyclic": false,
+                    "chain": [
+                        {
+                            "package": "root",
+                            "version": null,
+                            "requires": "dev-develop"
+                        },
+                        {
+                            "package": "drupal/acquia_cms_starter",
+                            "version": "dev-develop",
+                            "requires": "^1.4.6"
+                        },
+                        {
+                            "package": "drupal/acquia_cms_document",
+                            "version": "dev-develop",
+                            "requires": "^1.9 || ^2.1 || ^3.1"
+                        },
+                        {
+                            "package": "drupal/acquia_cms_common",
+                            "version": "3.x-dev",
+                            "requires": "^10.2.2 || ^11"
+                        },
+                        {
+                            "package": "drupal/core",
+                            "version": "10.3.5",
+                            "requires": "^2.1"
+                        },
+                        {
+                            "package": "asm89/stack-cors",
+                            "version": "v2.2.0",
+                            "requires": "^5.3|^6|^7"
+                        }
+                    ],
+                    "target": {
+                        "package": "symfony/http-foundation",
+                        "version": "v6.4.10"
+                    }
+                },
+                {
+                    "cyclic": false,
+                    "chain": [
+                        {
+                            "package": "root",
+                            "version": null,
+                            "requires": "dev-develop"
+                        },
+                        {
+                            "package": "drupal/acquia_cms_dam",
+                            "version": "1.x-dev",
+                            "requires": "^1.5.10"
+                        },
+                        {
+                            "package": "drupal/acquia_cms_image",
+                            "version": "1.x-dev",
+                            "requires": "^1.9 || ^2.1 || ^3.1"
+                        },
+                        {
+                            "package": "drupal/acquia_cms_common",
+                            "version": "3.x-dev",
+                            "requires": "^10.2.2 || ^11"
+                        },
+                        {
+                            "package": "drupal/core",
+                            "version": "10.3.5",
+                            "requires": "^2.1"
+                        },
+                        {
+                            "package": "asm89/stack-cors",
+                            "version": "v2.2.0",
+                            "requires": "^5.3|^6|^7"
+                        }
+                    ],
+                    "target": {
+                        "package": "symfony/http-foundation",
+                        "version": "v6.4.10"
+                    }
+                },
+                {
+                    "cyclic": false,
+                    "chain": [
+                        {
+                            "package": "root",
+                            "version": null,
+                            "requires": "dev-develop"
+                        },
+                        {
+                            "package": "drupal/acquia_cms_dam",
+                            "version": "dev-develop",
+                            "requires": "^1.5.10"
+                        },
+                        {
+                            "package": "drupal/acquia_cms_image",
+                            "version": "1.x-dev",
+                            "requires": "^1.9 || ^2.1 || ^3.1"
+                        },
+                        {
+                            "package": "drupal/acquia_cms_common",
+                            "version": "3.x-dev",
+                            "requires": "^10.2.2 || ^11"
+                        },
+                        {
+                            "package": "drupal/core",
+                            "version": "10.3.5",
+                            "requires": "^2.1"
+                        },
+                        {
+                            "package": "asm89/stack-cors",
+                            "version": "v2.2.0",
+                            "requires": "^5.3|^6|^7"
+                        }
+                    ],
+                    "target": {
+                        "package": "symfony/http-foundation",
+                        "version": "v6.4.10"
+                    }
+                }
+            ],
+            "solver_runs": 7,
+            "search_exhausted": false,
+            "remediation": {
+                "status": "verified",
+                "command": "composer update symfony/http-foundation",
+                "strategy": "lock-refresh",
+                "root_constraint_changes": [],
+                "constraint_drag": null,
+                "blocking_risk": [],
+                "summary": {
+                    "changed": 1,
+                    "added": 0,
+                    "removed": 0,
+                    "total": 1,
+                    "major_change": false,
+                    "downgrade": false,
+                    "prerelease": false
+                },
+                "changes": [
+                    {
+                        "package": "symfony/http-foundation",
+                        "kind": "upgraded",
+                        "step": "patch",
+                        "from": "v6.4.10",
+                        "to": "v6.4.16"
+                    }
+                ]
+            },
+            "candidates": [
+                {
+                    "command": "composer update symfony/http-foundation",
+                    "strategy": "lock-refresh",
+                    "outcome": "valid",
+                    "rank": 1,
+                    "summary": {
+                        "changed": 1,
+                        "added": 0,
+                        "removed": 0,
+                        "total": 1,
+                        "major_change": false,
+                        "downgrade": false,
+                        "prerelease": false
+                    },
+                    "solver_status": "resolved"
+                },
+                {
+                    "command": "composer update symfony/http-foundation -w -m --with 'symfony/http-foundation:>=6.4.14,<7.0.0 || >=7.1.7'",
+                    "strategy": "with-dependencies",
+                    "outcome": "valid",
+                    "rank": 2,
+                    "summary": {
+                        "changed": 1,
+                        "added": 0,
+                        "removed": 0,
+                        "total": 1,
+                        "major_change": false,
+                        "downgrade": false,
+                        "prerelease": false
+                    },
+                    "solver_status": "resolved"
+                },
+                {
+                    "command": "composer update drupal/acquia_cms_audio -W -m --with 'symfony/http-foundation:>=6.4.14,<7.0.0 || >=7.1.7'",
+                    "strategy": "parent-update",
+                    "outcome": "valid",
+                    "rank": 3,
+                    "summary": {
+                        "changed": 1,
+                        "added": 0,
+                        "removed": 0,
+                        "total": 1,
+                        "major_change": false,
+                        "downgrade": false,
+                        "prerelease": false
+                    },
+                    "solver_status": "resolved"
+                },
+                {
+                    "command": "composer update drupal/acquia_cms_component -W -m --with 'symfony/http-foundation:>=6.4.14,<7.0.0 || >=7.1.7'",
+                    "strategy": "parent-update",
+                    "outcome": "valid",
+                    "rank": 4,
+                    "summary": {
+                        "changed": 1,
+                        "added": 0,
+                        "removed": 0,
+                        "total": 1,
+                        "major_change": false,
+                        "downgrade": false,
+                        "prerelease": false
+                    },
+                    "solver_status": "resolved"
+                },
+                {
+                    "command": "composer update drupal/acquia_cms_starter -W -m --with 'symfony/http-foundation:>=6.4.14,<7.0.0 || >=7.1.7'",
+                    "strategy": "parent-update",
+                    "outcome": "valid",
+                    "rank": 5,
+                    "summary": {
+                        "changed": 1,
+                        "added": 0,
+                        "removed": 0,
+                        "total": 1,
+                        "major_change": false,
+                        "downgrade": false,
+                        "prerelease": false
+                    },
+                    "solver_status": "resolved"
+                },
+                {
+                    "command": "composer update drupal/acquia_cms_dam -W -m --with 'symfony/http-foundation:>=6.4.14,<7.0.0 || >=7.1.7'",
+                    "strategy": "parent-update",
+                    "outcome": "valid",
+                    "rank": 6,
+                    "summary": {
+                        "changed": 2,
+                        "added": 0,
+                        "removed": 0,
+                        "total": 2,
+                        "major_change": false,
+                        "downgrade": false,
+                        "prerelease": false
+                    },
+                    "solver_status": "resolved"
+                },
+                {
+                    "command": "composer update drupal/acquia_cms_audio drupal/acquia_cms_component drupal/acquia_cms_starter drupal/acquia_cms_dam -W -m --with 'symfony/http-foundation:>=6.4.14,<7.0.0 || >=7.1.7'",
+                    "strategy": "parent-update",
+                    "outcome": "valid",
+                    "rank": 7,
+                    "summary": {
+                        "changed": 2,
+                        "added": 0,
+                        "removed": 0,
+                        "total": 2,
+                        "major_change": false,
+                        "downgrade": false,
+                        "prerelease": false
+                    },
+                    "solver_status": "resolved"
+                }
+            ]
+        },
+        {
+            "package": "twig/twig",
+            "version": "v3.14.0",
+            "version_normalized": "3.14.0.0",
+            "direct": false,
+            "dev": false,
+            "baselined": false,
+            "counts_for_exit": true,
+            "via_replaced_package": null,
+            "advisories": [
+                {
+                    "id": "PKSA-2wrf-1xmk-1pky",
+                    "cve": "CVE-2024-51755",
+                    "title": "Unguarded calls to __isset() and to array-accesses when the sandbox is enabled",
+                    "link": "https://symfony.com/blog/cve-2024-51755-unguarded-calls-to-isset-and-to-array-accesses-in-a-sandbox",
+                    "severity": "low",
+                    "reported_at": "2024-11-06T08:00:00+00:00",
+                    "affected_versions": ">=1.0.0,<2.0.0|>=2.0.0,<3.0.0|>=3.0.0,<3.11.2|>=3.12.0,<3.14.1",
+                    "sources": [
+                        {
+                            "name": "GitHub",
+                            "remoteId": "GHSA-jjxq-ff2g-95vh"
+                        },
+                        {
+                            "name": "FriendsOfPHP/security-advisories",
+                            "remoteId": "twig/twig/CVE-2024-51755.yaml"
+                        }
+                    ],
+                    "epss": null,
+                    "epss_percentile": null,
+                    "kev_added": null
+                },
+                {
+                    "id": "PKSA-yhcn-xrg3-68b1",
+                    "cve": "CVE-2024-51754",
+                    "title": "Unguarded calls to __toString() when nesting an object into an array",
+                    "link": "https://symfony.com/blog/cve-2024-51754-unguarded-calls-to-tostring-in-a-sandbox-when-an-object-is-in-an-array-or-an-argument-list",
+                    "severity": "low",
+                    "reported_at": "2024-11-06T08:00:00+00:00",
+                    "affected_versions": ">=1.0.0,<2.0.0|>=2.0.0,<3.0.0|>=3.0.0,<3.11.2|>=3.12.0,<3.14.1",
+                    "sources": [
+                        {
+                            "name": "GitHub",
+                            "remoteId": "GHSA-6377-hfv9-hqf6"
+                        },
+                        {
+                            "name": "FriendsOfPHP/security-advisories",
+                            "remoteId": "twig/twig/CVE-2024-51754.yaml"
+                        }
+                    ],
+                    "epss": null,
+                    "epss_percentile": null,
+                    "kev_added": null
+                }
+            ],
+            "abandoned": [],
+            "paths_total": 34,
+            "paths": [
+                {
+                    "cyclic": false,
+                    "chain": [
+                        {
+                            "package": "root",
+                            "version": null,
+                            "requires": "^10 || ^11 || ^12 || ^13"
+                        },
+                        {
+                            "package": "drush/drush",
+                            "version": "13.0.1",
+                            "requires": "^3.6 || ^4@alpha"
+                        },
+                        {
+                            "package": "chi-teck/drupal-code-generator",
+                            "version": "3.6.1",
+                            "requires": "^3.4"
+                        }
+                    ],
+                    "target": {
+                        "package": "twig/twig",
+                        "version": "v3.14.0"
+                    }
+                },
+                {
+                    "cyclic": false,
+                    "chain": [
+                        {
+                            "package": "root",
+                            "version": null,
+                            "requires": "dev-develop"
+                        },
+                        {
+                            "package": "drupal/acquia_cms_site_studio",
+                            "version": "1.x-dev",
+                            "requires": "~7.4.0 || ~7.5.0 || ~8.0.0"
+                        },
+                        {
+                            "package": "acquia/cohesion",
+                            "version": "8.0.0",
+                            "requires": "^11.6 || ^12 || ^13"
+                        },
+                        {
+                            "package": "drush/drush",
+                            "version": "13.0.1",
+                            "requires": "^3.6 || ^4@alpha"
+                        },
+                        {
+                            "package": "chi-teck/drupal-code-generator",
+                            "version": "3.6.1",
+                            "requires": "^3.4"
+                        }
+                    ],
+                    "target": {
+                        "package": "twig/twig",
+                        "version": "v3.14.0"
+                    }
+                },
+                {
+                    "cyclic": false,
+                    "chain": [
+                        {
+                            "package": "root",
+                            "version": null,
+                            "requires": "dev-develop"
+                        },
+                        {
+                            "package": "drupal/acquia_cms_site_studio",
+                            "version": "dev-develop",
+                            "requires": "~7.4.0 || ~7.5.0 || ~8.0.0"
+                        },
+                        {
+                            "package": "acquia/cohesion",
+                            "version": "8.0.0",
+                            "requires": "^11.6 || ^12 || ^13"
+                        },
+                        {
+                            "package": "drush/drush",
+                            "version": "13.0.1",
+                            "requires": "^3.6 || ^4@alpha"
+                        },
+                        {
+                            "package": "chi-teck/drupal-code-generator",
+                            "version": "3.6.1",
+                            "requires": "^3.4"
+                        }
+                    ],
+                    "target": {
+                        "package": "twig/twig",
+                        "version": "v3.14.0"
+                    }
+                },
+                {
+                    "cyclic": false,
+                    "chain": [
+                        {
+                            "package": "root",
+                            "version": null,
+                            "requires": "dev-develop"
+                        },
+                        {
+                            "package": "drupal/acquia_cms_site_studio",
+                            "version": "1.x-dev",
+                            "requires": "^1.0"
+                        },
+                        {
+                            "package": "drupal/sitestudio_config_management",
+                            "version": "1.x-dev",
+                            "requires": "~7.4.0 || ~7.5.0 || ~8.0.0"
+                        },
+                        {
+                            "package": "acquia/cohesion",
+                            "version": "8.0.0",
+                            "requires": "^11.6 || ^12 || ^13"
+                        },
+                        {
+                            "package": "drush/drush",
+                            "version": "13.0.1",
+                            "requires": "^3.6 || ^4@alpha"
+                        },
+                        {
+                            "package": "chi-teck/drupal-code-generator",
+                            "version": "3.6.1",
+                            "requires": "^3.4"
+                        }
+                    ],
+                    "target": {
+                        "package": "twig/twig",
+                        "version": "v3.14.0"
+                    }
+                },
+                {
+                    "cyclic": false,
+                    "chain": [
+                        {
+                            "package": "root",
+                            "version": null,
+                            "requires": "dev-develop"
+                        },
+                        {
+                            "package": "drupal/acquia_cms_site_studio",
+                            "version": "dev-develop",
+                            "requires": "^1.0"
+                        },
+                        {
+                            "package": "drupal/sitestudio_config_management",
+                            "version": "1.x-dev",
+                            "requires": "~7.4.0 || ~7.5.0 || ~8.0.0"
+                        },
+                        {
+                            "package": "acquia/cohesion",
+                            "version": "8.0.0",
+                            "requires": "^11.6 || ^12 || ^13"
+                        },
+                        {
+                            "package": "drush/drush",
+                            "version": "13.0.1",
+                            "requires": "^3.6 || ^4@alpha"
+                        },
+                        {
+                            "package": "chi-teck/drupal-code-generator",
+                            "version": "3.6.1",
+                            "requires": "^3.4"
+                        }
+                    ],
+                    "target": {
+                        "package": "twig/twig",
+                        "version": "v3.14.0"
+                    }
+                },
+                {
+                    "cyclic": false,
+                    "chain": [
+                        {
+                            "package": "root",
+                            "version": null,
+                            "requires": "dev-develop"
+                        },
+                        {
+                            "package": "drupal/acquia_cms_site_studio",
+                            "version": "1.x-dev",
+                            "requires": "^1.0"
+                        },
+                        {
+                            "package": "drupal/sitestudio_config_management",
+                            "version": "dev-1.x",
+                            "requires": "~7.4.0 || ~7.5.0 || ~8.0.0"
+                        },
+                        {
+                            "package": "acquia/cohesion",
+                            "version": "8.0.0",
+                            "requires": "^11.6 || ^12 || ^13"
+                        },
+                        {
+                            "package": "drush/drush",
+                            "version": "13.0.1",
+                            "requires": "^3.6 || ^4@alpha"
+                        },
+                        {
+                            "package": "chi-teck/drupal-code-generator",
+                            "version": "3.6.1",
+                            "requires": "^3.4"
+                        }
+                    ],
+                    "target": {
+                        "package": "twig/twig",
+                        "version": "v3.14.0"
+                    }
+                },
+                {
+                    "cyclic": false,
+                    "chain": [
+                        {
+                            "package": "root",
+                            "version": null,
+                            "requires": "dev-develop"
+                        },
+                        {
+                            "package": "drupal/acquia_cms_site_studio",
+                            "version": "dev-develop",
+                            "requires": "^1.0"
+                        },
+                        {
+                            "package": "drupal/sitestudio_config_management",
+                            "version": "dev-1.x",
+                            "requires": "~7.4.0 || ~7.5.0 || ~8.0.0"
+                        },
+                        {
+                            "package": "acquia/cohesion",
+                            "version": "8.0.0",
+                            "requires": "^11.6 || ^12 || ^13"
+                        },
+                        {
+                            "package": "drush/drush",
+                            "version": "13.0.1",
+                            "requires": "^3.6 || ^4@alpha"
+                        },
+                        {
+                            "package": "chi-teck/drupal-code-generator",
+                            "version": "3.6.1",
+                            "requires": "^3.4"
+                        }
+                    ],
+                    "target": {
+                        "package": "twig/twig",
+                        "version": "v3.14.0"
+                    }
+                },
+                {
+                    "cyclic": false,
+                    "chain": [
+                        {
+                            "package": "root",
+                            "version": null,
+                            "requires": "dev-3434617-automated-drupal-11"
+                        },
+                        {
+                            "package": "drupal/sitestudio_gin",
+                            "version": "dev-3434617-automated-drupal-11",
+                            "requires": "^6.7.0 || ^7 || ^8"
+                        },
+                        {
+                            "package": "acquia/cohesion",
+                            "version": "8.0.0",
+                            "requires": "^11.6 || ^12 || ^13"
+                        },
+                        {
+                            "package": "drush/drush",
+                            "version": "13.0.1",
+                            "requires": "^3.6 || ^4@alpha"
+                        },
+                        {
+                            "package": "chi-teck/drupal-code-generator",
+                            "version": "3.6.1",
+                            "requires": "^3.4"
+                        }
+                    ],
+                    "target": {
+                        "package": "twig/twig",
+                        "version": "v3.14.0"
+                    }
+                },
+                {
+                    "cyclic": false,
+                    "chain": [
+                        {
+                            "package": "root",
+                            "version": null,
+                            "requires": "dev-develop"
+                        },
+                        {
+                            "package": "drupal/acquia_cms_audio",
+                            "version": "1.x-dev",
+                            "requires": "^1.9 || ^2.1 || ^3.1"
+                        },
+                        {
+                            "package": "drupal/acquia_cms_common",
+                            "version": "3.x-dev",
+                            "requires": "^10.2.2 || ^11"
+                        },
+                        {
+                            "package": "drupal/core",
+                            "version": "10.3.5",
+                            "requires": "^3.14.0"
+                        }
+                    ],
+                    "target": {
+                        "package": "twig/twig",
+                        "version": "v3.14.0"
+                    }
+                },
+                {
+                    "cyclic": false,
+                    "chain": [
+                        {
+                            "package": "root",
+                            "version": null,
+                            "requires": "dev-develop"
+                        },
+                        {
+                            "package": "drupal/acquia_cms_audio",
+                            "version": "dev-develop",
+                            "requires": "^1.9 || ^2.1 || ^3.1"
+                        },
+                        {
+                            "package": "drupal/acquia_cms_common",
+                            "version": "3.x-dev",
+                            "requires": "^10.2.2 || ^11"
+                        },
+                        {
+                            "package": "drupal/core",
+                            "version": "10.3.5",
+                            "requires": "^3.14.0"
+                        }
+                    ],
+                    "target": {
+                        "package": "twig/twig",
+                        "version": "v3.14.0"
+                    }
+                }
+            ],
+            "solver_runs": 10,
+            "search_exhausted": false,
+            "remediation": {
+                "status": "verified",
+                "command": "composer update twig/twig",
+                "strategy": "lock-refresh",
+                "root_constraint_changes": [],
+                "constraint_drag": null,
+                "blocking_risk": [],
+                "summary": {
+                    "changed": 1,
+                    "added": 0,
+                    "removed": 0,
+                    "total": 1,
+                    "major_change": false,
+                    "downgrade": false,
+                    "prerelease": false
+                },
+                "changes": [
+                    {
+                        "package": "twig/twig",
+                        "kind": "upgraded",
+                        "step": "minor",
+                        "from": "v3.14.0",
+                        "to": "v3.15.0"
+                    }
+                ]
+            },
+            "candidates": [
+                {
+                    "command": "composer update twig/twig",
+                    "strategy": "lock-refresh",
+                    "outcome": "valid",
+                    "rank": 1,
+                    "summary": {
+                        "changed": 1,
+                        "added": 0,
+                        "removed": 0,
+                        "total": 1,
+                        "major_change": false,
+                        "downgrade": false,
+                        "prerelease": false
+                    },
+                    "solver_status": "resolved"
+                },
+                {
+                    "command": "composer update twig/twig -w -m --with 'twig/twig:>=3.14.1'",
+                    "strategy": "with-dependencies",
+                    "outcome": "valid",
+                    "rank": 2,
+                    "summary": {
+                        "changed": 1,
+                        "added": 0,
+                        "removed": 0,
+                        "total": 1,
+                        "major_change": false,
+                        "downgrade": false,
+                        "prerelease": false
+                    },
+                    "solver_status": "resolved"
+                },
+                {
+                    "command": "composer update drupal/acquia_cms_audio -W -m --with 'twig/twig:>=3.14.1'",
+                    "strategy": "parent-update",
+                    "outcome": "valid",
+                    "rank": 3,
+                    "summary": {
+                        "changed": 1,
+                        "added": 0,
+                        "removed": 0,
+                        "total": 1,
+                        "major_change": false,
+                        "downgrade": false,
+                        "prerelease": false
+                    },
+                    "solver_status": "resolved"
+                },
+                {
+                    "command": "composer update drupal/acquia_cms_component -W -m --with 'twig/twig:>=3.14.1'",
+                    "strategy": "parent-update",
+                    "outcome": "valid",
+                    "rank": 4,
+                    "summary": {
+                        "changed": 1,
+                        "added": 0,
+                        "removed": 0,
+                        "total": 1,
+                        "major_change": false,
+                        "downgrade": false,
+                        "prerelease": false
+                    },
+                    "solver_status": "resolved"
+                },
+                {
+                    "command": "composer update drupal/acquia_cms_starter -W -m --with 'twig/twig:>=3.14.1'",
+                    "strategy": "parent-update",
+                    "outcome": "valid",
+                    "rank": 5,
+                    "summary": {
+                        "changed": 1,
+                        "added": 0,
+                        "removed": 0,
+                        "total": 1,
+                        "major_change": false,
+                        "downgrade": false,
+                        "prerelease": false
+                    },
+                    "solver_status": "resolved"
+                },
+                {
+                    "command": "composer update drush/drush -W -m --with 'twig/twig:>=3.14.1'",
+                    "strategy": "parent-update",
+                    "outcome": "valid",
+                    "rank": 6,
+                    "summary": {
+                        "changed": 2,
+                        "added": 0,
+                        "removed": 0,
+                        "total": 2,
+                        "major_change": false,
+                        "downgrade": false,
+                        "prerelease": false
+                    },
+                    "solver_status": "resolved"
+                },
+                {
+                    "command": "composer update drupal/acquia_cms_site_studio -W -m --with 'twig/twig:>=3.14.1'",
+                    "strategy": "parent-update",
+                    "outcome": "valid",
+                    "rank": 7,
+                    "summary": {
+                        "changed": 2,
+                        "added": 0,
+                        "removed": 1,
+                        "total": 3,
+                        "major_change": false,
+                        "downgrade": false,
+                        "prerelease": false
+                    },
+                    "solver_status": "resolved"
+                },
+                {
+                    "command": "composer update drush/drush drupal/acquia_cms_audio drupal/acquia_cms_component drupal/acquia_cms_starter drupal/acquia_cms_dam -W -m --with 'twig/twig:>=3.14.1'",
+                    "strategy": "parent-update",
+                    "outcome": "valid",
+                    "rank": 8,
+                    "summary": {
+                        "changed": 3,
+                        "added": 0,
+                        "removed": 0,
+                        "total": 3,
+                        "major_change": false,
+                        "downgrade": false,
+                        "prerelease": false
+                    },
+                    "solver_status": "resolved"
+                },
+                {
+                    "command": "composer update drupal/sitestudio_gin -W -m --with 'twig/twig:>=3.14.1'",
+                    "strategy": "parent-update",
+                    "outcome": "rejected",
+                    "reason": "Composer could not resolve the dependencies: Your requirements could not be resolved to an installable set of packages.\n  Problem 1\n    - Root composer.json requires drupal/sitestudio_gin dev-3434617-automated-drupal-11, found drupal/sitestudio_gin[1.0.0-alpha1, ..., 1.0.6] but these do not match your constraint and are therefore not installable. Make sure you either fix the constraint or avoid updating this package to keep the one present in the lock file (drupal/sitestudio_gin[dev-3434617-automated-drupal-11]).\n  Problem 2\n    - drupal/shield is locked to version 1.8.0 and an update of this package was not requested.\n    - drupal/core 10.3.5 requires twig/twig ^3.14.0 -> found twig/twig[v3.14.0, v3.14.1, v3.14.2, v3.15.0] but these were not loaded, likely because it conflicts with another require.\n    - drupal/shield 1.8.0 requires drupal/core ^9.2 || ^10 || ^11 -> satisfiable by drupal/core[10.3.5].",
+                    "solver_status": "conflict"
+                },
+                {
+                    "command": "composer update drupal/sitestudio_gin drupal/shield -W -m --with 'twig/twig:>=3.14.1'",
+                    "strategy": "parent-update",
+                    "outcome": "rejected",
+                    "reason": "Composer could not resolve the dependencies: Your requirements could not be resolved to an installable set of packages.\n  Problem 1\n    - Root composer.json requires drupal/sitestudio_gin dev-3434617-automated-drupal-11, found drupal/sitestudio_gin[1.0.0-alpha1, ..., 1.0.6] but these do not match your constraint and are therefore not installable. Make sure you either fix the constraint or avoid updating this package to keep the one present in the lock file (drupal/sitestudio_gin[dev-3434617-automated-drupal-11]).",
+                    "solver_status": "conflict"
+                },
+                {
+                    "command": "composer require --no-update drush/drush:^14.0 && composer update drush/drush -W -m --with 'twig/twig:>=3.14.1'",
+                    "strategy": "root-constraint-widen",
+                    "outcome": "skipped",
+                    "reason": "a better candidate already exists"
+                }
+            ]
+        }
+    ],
+    "unsolved_findings": []
+}

@@ -56,6 +56,16 @@ final class ScratchWorkspace
     }
 
     /**
+     * Pins the root package's version. Outside a git checkout Composer cannot guess it and uses
+     * "1.0.0+no-version-set", which a dependency's `conflict` with the root can then match; a fixture
+     * records the version the project's checkout would have had (a branch name such as dev-develop).
+     */
+    public function overrideRootVersion(string $version): void
+    {
+        $this->composerJson['version'] = $version;
+    }
+
+    /**
      * @param array<string, string|false> $platform config.platform overrides
      */
     public function overridePlatform(array $platform): void

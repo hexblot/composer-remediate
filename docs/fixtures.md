@@ -13,8 +13,8 @@ carries its own static Composer repository, and packagist.org is disabled during
 
 ```text
 tests/Fixture/third-party/<name>/
-  composer.json        real project manifest
-  composer.lock        real lock file
+  composer.fixture.json  real project manifest (stored under a name the dependency graph ignores)
+  composer.fixture.lock  real lock file, likewise
   repo/packages.json.gz  static Composer repository (gzipped): every package version the solver may consider
   advisories.json      advisory snapshot, in the Packagist security-advisories API shape
   expected.json        the remediation a human would choose, plus lock diff bounds
@@ -27,10 +27,12 @@ tests/Fixture/third-party/<name>/
   reports/gl-dependency-scanning-report.json  the same plan as a GitLab dependency-scanning report
 ```
 
-The `third-party` directory name is deliberate: GitHub's dependency graph treats paths with that
-name as vendored code and does not scan the manifests inside, so the historical `composer.lock`
-files (which contain vulnerable versions on purpose) raise no Dependabot alerts against this
-repository. The synthetic fixture lives there too, for one set of tooling paths.
+The historical lock files contain vulnerable versions on purpose, and GitHub's dependency graph parses
+every `composer.json` and `composer.lock` in a repository whatever the directory (a `third-party`
+path does not exempt them, as this repository found out). The manifests are therefore stored as
+`composer.fixture.json` and `composer.fixture.lock`, names the graph does not parse, so the fixtures
+raise no Dependabot alerts against this repository. The harness passes the two paths to Composer
+explicitly. The `third-party` directory name marks the content as vendored for language statistics.
 
 The `reports/` files are committed examples, regenerated with
 `php bin/run-fixture.php <name> --write-reports`; they carry fixed metadata so the output is
@@ -62,8 +64,19 @@ each version is trimmed to the fields the solver reads (`require`, `replace`, `p
 package name in the repository from Packagist, records the build environment's PHP and extension
 versions as `platform`, and writes an `expected.json` skeleton listing the findings it detected.
 
+After the dry runs the builder walks the requirement closure of every version it kept and fetches the
+metadata of packages Composer never loaded (Twig 3.11 pulling in `symfony/polyfill-php81`, which no
+locked graph contains, is the motivating case). Packages installed from `path` or `artifact`
+repositories are taken from the lock file with their branch aliases and a neutral dist, and other
+versions of those names are dropped, because a path repository takes precedence for its names.
+
 Finish the fixture by hand: describe the case, record provenance in `README.md`, and fill in the
-command a competent human would run. The harness compares the planner's recommendation against it. Exact command strings are asserted
+command a competent human would run. Two things the builder cannot know and `expected.json` may need:
+`platform` entries for extensions the project requires but the build machine lacks (`ext-tidy`,
+`ext-imap`), and `root_version` when a dependency conflicts with the root package by version (outside
+a git checkout Composer calls the root "1.0.0+no-version-set"; the value a checkout would guess, such
+as `dev-develop`, restores the real behaviour). A snapshot date matters too: the same project one
+week before a fix release is a legitimate "no fix" fixture, not a broken one. The harness compares the planner's recommendation against it. Exact command strings are asserted
 only on Composer releases with `--minimal-changes` (2.7+); on older releases the planner legitimately
 drops `-m` (and often the `--with` guard) because they produce the same lock there, and the same
 commands move many more packages (58 instead of 3 in one Laravel case), so only the outcome and the
@@ -106,6 +119,11 @@ rather than today's. Without it, later advisories would turn a clean "upgrade th
 | `invoiceninja-phpjwt-two-level` (Invoice Ninja, 2022-04) | Laravel | Two-level chain: `google/apiclient` and the non-root `google/auth` both pin php-jwt; `-W` moves both |
 | `kimai1-symfony44-artifact-repo` (Kimai 1.x, 2023-02) | Symfony 4.4, PHP 7.3 | Mixed outcomes: 4.4 components jump to 5.4 patch releases, direct PhpSpreadsheet unfixable on PHP 7; `artifact` repository |
 | `shopware-6420-twig-no-fix` (Shopware 6.4.20.2, 2023-05) | Symfony / Shopware | Constraint-bound "no fix": last 6.4 release pins twig, 6.5 needs PHP 8.1; 7 of 26 findings fixable |
+| `openmass-drupal-tilde-pins` (Mass.gov, 2024-10, snapshot 2024-11-25) | Drupal 10.3 | `core-recommended` with tilde pins: five November 2024 advisories on four packages are plain updates, one combined command; abandoned `fabpot/goutte` on a path |
+| `opensocial-drupal-distribution-pins` (Open Social template, 2024-05, snapshot 2024-10-15) | Drupal 10.2 distribution | `goalgorilla/open_social ~10.2.5` pin permits the core patch; Twig 3.14 needs a package absent from the lock (`symfony/polyfill-php81`); PHP 8.2 platform |
+| `acquiacms-drupal-core-direct` (Acquia CMS, 2024-09, snapshot 2024-11-25) | Drupal 10.3 monorepo | No `core-recommended`; the distribution's own modules come from `path` repositories with branch aliases; six advisories, one combined command; `root_version` |
+| `wallabag-symfony54-php74-guzzle5` (wallabag, 2024-10, snapshot 2025-01-15) | Symfony 5.4, PHP 7.4 | 11 of 16 advisories are plain updates (Symfony, Twig 3.11, TCPDF); Guzzle 5 has no fix behind the root constraint and an abandoned adapter; `ext-tidy` |
+| `mautic-symfony54-multi` (Mautic 5, 2024-09, snapshot 2024-11-20) | Symfony 5.4 monorepo | The application is a `path` package; 7 of 16 advisories fixable, nine PhpSpreadsheet advisories blocked by the monorepo's own constraint; `ext-imap` |
 
 Each fixture directory has a `README.md` with provenance and the reasoning behind the expected
 command, and a `reports/` directory with the stored console, JSON, HTML, SARIF, CycloneDX and GitLab

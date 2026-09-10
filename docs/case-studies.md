@@ -10,6 +10,7 @@ same fixtures the test suite asserts on, so a case study that stopped being true
 
 | Case | Advisories | Packages | Outcome | Combined command |
 |---|---|---|---|---|
+| [acquiacms-drupal-core-direct](#acquiacms-drupal-core-direct) | 6 | 5 | all fixable | <code>composer update drupal/core symfony/http-client symfony/http-foundation symfony/process twig/twig</code> |
 | [bookstack-guzzle-stale-lock](#bookstack-guzzle-stale-lock) | 6 | 2 | all fixable | <code>composer require --no-update barryvdh/laravel-dompdf:^2.0 &amp;&amp; composer update barryvdh/laravel-dompdf guzzlehttp/guzzle -W -m</code> |
 | [bookstack-phpseclib-knpsnappy](#bookstack-phpseclib-knpsnappy) | 2 | 2 | all fixable | <code>composer update knplabs/knp-snappy phpseclib/phpseclib</code> |
 | [bookstack-socialite-phpjwt-parent-minor](#bookstack-socialite-phpjwt-parent-minor) | 12 | 9 | all fixable | <code>composer update aws/aws-sdk-php laravel/framework laravel/socialite:v5.24.1 league/commonmark nesbot/carbon onelogin/php-saml robrichards/xmlseclibs symfony/http-foundation symfony/process -W -m --with &apos;firebase/php-jwt:&gt;=7.0.0&apos;</code> |
@@ -18,10 +19,77 @@ same fixtures the test suite asserts on, so a case study that stopped being true
 | [islandora-drupal-twig-meta-package](#islandora-drupal-twig-meta-package) | 4 | 4 | 2 of 4 packages fixable | <code>composer update drupal/core-recommended:10.3.4 symfony/validator -W -m</code> |
 | [kimai1-symfony44-artifact-repo](#kimai1-symfony44-artifact-repo) | 14 | 6 | 4 of 6 packages fixable | <code>composer update symfony/http-foundation symfony/process symfony/twig-bridge twig/twig -w -m --with &apos;twig/twig:&gt;=3.11.2,&lt;3.12.0 &#124;&#124; &gt;=3.14.1&apos;</code> |
 | [koel-symfony-parent-permits](#koel-symfony-parent-permits) | 2 | 2 | all fixable | <code>composer update symfony/http-foundation symfony/process</code> |
+| [mautic-symfony54-multi](#mautic-symfony54-multi) | 16 | 7 | 6 of 7 packages fixable | <code>composer update symfony/http-client symfony/http-foundation symfony/process symfony/security-http symfony/validator twig/twig</code> |
+| [openmass-drupal-tilde-pins](#openmass-drupal-tilde-pins) | 5 | 4 | all fixable | <code>composer update symfony/http-client symfony/http-foundation symfony/process twig/twig</code> |
+| [opensocial-drupal-distribution-pins](#opensocial-drupal-distribution-pins) | 3 | 3 | all fixable | <code>composer update drupal/core symfony/validator twig/twig -w -m</code> |
 | [pixelfed-laravel11-symfony](#pixelfed-laravel11-symfony) | 2 | 2 | all fixable | <code>composer update symfony/http-foundation symfony/process</code> |
 | [shopware-6420-twig-no-fix](#shopware-6420-twig-no-fix) | 26 | 10 | 4 of 10 packages fixable | <code>composer update aws/aws-sdk-php composer/composer shopware/core symfony/twig-bridge -W -m --with &apos;symfony/validator:&gt;=5.4.43,&lt;6.0.0 &#124;&#124; &gt;=6.4.11,&lt;7.0.0 &#124;&#124; &gt;=7.1.4&apos;</code> |
 | [shopware-twig-parent-pin](#shopware-twig-parent-pin) | 4 | 2 | 1 of 2 packages fixable | <code>composer update shopware/storefront:6.4.15.2 shopware/recovery shopware/elasticsearch shopware/administration -W -m</code> |
 | [usagov-drupal-core-recommended-twig](#usagov-drupal-core-recommended-twig) | 4 | 4 | 2 of 4 packages fixable | <code>composer update drupal/core-recommended symfony/validator -W -m</code> |
+| [wallabag-symfony54-php74-guzzle5](#wallabag-symfony54-php74-guzzle5) | 16 | 8 | 7 of 8 packages fixable | <code>composer update symfony/http-client symfony/http-foundation symfony/process symfony/security-http symfony/validator tecnickcom/tcpdf twig/twig</code> |
+
+## acquiacms-drupal-core-direct
+
+*Fifth Drupal instance, a monorepo distribution without the meta-package: Acquia CMS on Drupal 10.3.5 (September 2024), snapshot 2024-11-25. drupal/core is required directly (no core-recommended pin) and the distribution's own modules come from path repositories at dev-develop with branch aliases, so the frozen repository must carry the lock's entries for them and nothing else under those names. Six advisories on five transitive packages are each a plain one-package update and one combined command fixes all six. Two things a scratch copy cannot know are recorded: root_version dev-develop (the modules conflict with the root package below 1.5.2, which Composer's git version guess avoids in the real checkout) and PHP 8.3.*
+
+**Fifth Drupal instance: a monorepo distribution that requires core directly.**
+
+- Source: [acquia/acquia-cms](https://github.com/acquia/acquia-cms), Acquia's Drupal distribution,
+  at commit `3822bc67e3f49fddebbd7ee211c3a5ed5a550929` (2024-09-30, "ACMS-000: Pinned the
+  default_content module and updated patch as per latest release"). The next lock changes are
+  2024-10-10 and 2024-10-15 ("ACMS-4275: Updated minimum Drupal Core dependencies").
+- Snapshot date (`--as-of`): 2024-11-25, after Symfony's November releases and Drupal 10.3.7.
+- Platform: no `config.platform`; the fixture pins PHP 8.3.0. Repositories:
+  `https://packages.drupal.org/8`, a `package` repository for a JavaScript library, `vcs`
+  repositories for three drupal.org issue forks (dropped by the builder) and eighteen `path`
+  repositories, one per `modules/acquia_cms_*` directory of the monorepo, each at `dev-develop`.
+- `root_version`: `dev-develop`. The distribution's modules declare `conflict: acquia/acquia_cms
+  <1.5.2` against the root package; in a git checkout Composer guesses the root version from the
+  branch and the conflict never matches, whereas a copy without `.git` is "1.0.0+no-version-set" and
+  every update fails. The fixture records what the checkout would have had.
+
+#### Findings
+
+Unlike the Islandora, USAGov and Mass.gov fixtures there is no `drupal/core-recommended`; the root
+requires `drupal/core` with a caret constraint and Drupal core requires its Symfony components with
+carets too, so every fix is a plain update:
+
+| Package | Advisory | Command | Lands on |
+|---|---|---|---|
+| `drupal/core 10.3.5` | CVE-2024-45440 | `composer update drupal/core` | 10.3.7 |
+| `symfony/http-foundation v6.4.10` | CVE-2024-50345 | `composer update symfony/http-foundation` | v6.4.16 |
+| `symfony/process v6.4.8` | CVE-2024-51736 | `composer update symfony/process` | v6.4.15 |
+| `symfony/http-client v7.1.4` | CVE-2024-50342 | `composer update symfony/http-client` | v7.1.8 |
+| `twig/twig v3.14.0` | CVE-2024-51754, CVE-2024-51755 | `composer update twig/twig` | v3.15.0 |
+
+The combined command `composer update drupal/core symfony/http-client symfony/http-foundation
+symfony/process twig/twig` fixes all six with five changes.
+
+This fixture drove three builder changes. The `path` modules exist on drupal.org under the same names,
+so the builder takes them from the lock file (with `extra.branch-alias`, which is how `dev-develop`
+satisfies a sibling's `^3.1`), gives them a neutral dist (a `path` dist makes Composer refuse the locked
+version in partial updates) and drops every other version of those names, because a path repository
+takes precedence for the names it provides and Composer would never consider the drupal.org releases
+in the real checkout. Without the last change every plan dragged eight modules from `dev-develop` to
+release versions that the project could not install.
+
+Built with `bin/build-fixture.php --as-of=2024-11-25 --platform-php=8.3.0`, then `root_version` added.
+
+#### Planner result
+
+6 advisories on 5 packages; 5 packages with a verified fix.
+
+| Package | Advisories | Recommended command | Changes | Outcome |
+|---|---|---|---|---|
+| symfony/process v6.4.8 | CVE-2024-51736 | <code>composer update symfony/process</code> | 1 | verified |
+| drupal/core 10.3.5 | CVE-2024-45440 | <code>composer update drupal/core</code> | 1 | verified |
+| symfony/http-client v7.1.4 | CVE-2024-50342 | <code>composer update symfony/http-client</code> | 1 | verified |
+| symfony/http-foundation v6.4.10 | CVE-2024-50345 | <code>composer update symfony/http-foundation</code> | 1 | verified |
+| twig/twig v3.14.0 | CVE-2024-51755, CVE-2024-51754 | <code>composer update twig/twig</code> | 1 | verified |
+
+Combined command (6 of 6 findings): `composer update drupal/core symfony/http-client symfony/http-foundation symfony/process twig/twig`
+
+Stored reports: [console](https://github.com/hexblot/composer-remediate/blob/main/tests/Fixture/third-party/acquiacms-drupal-core-direct/reports/report.md), [JSON](https://github.com/hexblot/composer-remediate/blob/main/tests/Fixture/third-party/acquiacms-drupal-core-direct/reports/report.json), [HTML](https://github.com/hexblot/composer-remediate/blob/main/tests/Fixture/third-party/acquiacms-drupal-core-direct/reports/report.html), [SARIF](https://github.com/hexblot/composer-remediate/blob/main/tests/Fixture/third-party/acquiacms-drupal-core-direct/reports/report.sarif), [CycloneDX](https://github.com/hexblot/composer-remediate/blob/main/tests/Fixture/third-party/acquiacms-drupal-core-direct/reports/report.cdx.json), [GitLab](https://github.com/hexblot/composer-remediate/blob/main/tests/Fixture/third-party/acquiacms-drupal-core-direct/reports/gl-dependency-scanning-report.json). Fixture: [acquiacms-drupal-core-direct](https://github.com/hexblot/composer-remediate/blob/main/tests/Fixture/third-party/acquiacms-drupal-core-direct).
 
 ## bookstack-guzzle-stale-lock
 
@@ -364,6 +432,176 @@ Combined command (2 of 2 findings): `composer update symfony/http-foundation sym
 
 Stored reports: [console](https://github.com/hexblot/composer-remediate/blob/main/tests/Fixture/third-party/koel-symfony-parent-permits/reports/report.md), [JSON](https://github.com/hexblot/composer-remediate/blob/main/tests/Fixture/third-party/koel-symfony-parent-permits/reports/report.json), [HTML](https://github.com/hexblot/composer-remediate/blob/main/tests/Fixture/third-party/koel-symfony-parent-permits/reports/report.html), [SARIF](https://github.com/hexblot/composer-remediate/blob/main/tests/Fixture/third-party/koel-symfony-parent-permits/reports/report.sarif), [CycloneDX](https://github.com/hexblot/composer-remediate/blob/main/tests/Fixture/third-party/koel-symfony-parent-permits/reports/report.cdx.json), [GitLab](https://github.com/hexblot/composer-remediate/blob/main/tests/Fixture/third-party/koel-symfony-parent-permits/reports/gl-dependency-scanning-report.json). Fixture: [koel-symfony-parent-permits](https://github.com/hexblot/composer-remediate/blob/main/tests/Fixture/third-party/koel-symfony-parent-permits).
 
+## mautic-symfony54-multi
+
+*Fifth plain-Symfony instance, a monorepo: Mautic 5 (Symfony 5.4, PHP 8.1) on its 5.x branch in September 2024, snapshot 2024-11-20. The application's own code is the path package mautic/core-lib, so every finding is transitive through it. Seven advisories on six Symfony components and Twig are plain updates that one combined command fixes. Nine PhpSpreadsheet advisories have no fix: mautic/core-lib requires phpoffice/phpspreadsheet ^1.15 <1.28 while the fixes start at 1.29.4; only editing the monorepo's own constraint would help, which is outside a remediation planner's remit. The project needs ext-imap, which the fixture's platform declares.*
+
+**Fifth plain-Symfony instance: a monorepo whose own package pins a dependency below the fix.**
+
+- Source: [mautic/mautic](https://github.com/mautic/mautic) at commit
+  `daad1994fff57d91414a4ee3a545810eab97154e` (2024-09-16, "Bump twig/twig from 3.8.0 to 3.14.0"), a
+  Symfony 5.4 application. The repository is a monorepo: the root manifest requires the application
+  itself as `mautic/core-lib ^5.0` from a `path` repository (`app/`), locked at `5.0.0-dev`.
+- Snapshot date (`--as-of`): 2024-11-20, after Symfony's November releases, Twig 3.15.0 and
+  PhpSpreadsheet 1.29.4 (2024-11-10).
+- Platform: `config.platform.php` 8.1.0 from the project. The project requires `ext-imap`, which the
+  build environment lacks; the fixture adds it to the platform.
+
+#### Findings
+
+Sixteen advisories on seven packages, all transitive through `mautic/core-lib`.
+
+| Package | Advisories | Command | Lands on |
+|---|---|---|---|
+| `symfony/http-foundation v5.4.35` | CVE-2024-50345 | `composer update symfony/http-foundation` | v5.4.48 |
+| `symfony/http-client v5.4.35` | CVE-2024-50342 | `composer update symfony/http-client` | v5.4.47 |
+| `symfony/security-http v5.4.35` | CVE-2024-51996 | `composer update symfony/security-http` | v5.4.47 |
+| `symfony/validator v5.4.35` | CVE-2024-50343 | `composer update symfony/validator` | v5.4.47 |
+| `symfony/process v5.4.40` | CVE-2024-51736 | `composer update symfony/process` | v5.4.47 |
+| `twig/twig v3.14.0` | CVE-2024-51754, CVE-2024-51755 | `composer update twig/twig` | v3.15.0 |
+| `phpoffice/phpspreadsheet 1.27.1` | nine advisories (CVE-2024-45046 to CVE-2024-48917) | none | — |
+
+The combined command fixes 7 of 16:
+
+    composer update symfony/http-client symfony/http-foundation symfony/process symfony/security-http symfony/validator twig/twig
+
+PhpSpreadsheet has no fix within the project's constraints: `mautic/core-lib 5.0.0-dev` requires
+`phpoffice/phpspreadsheet ^1.15 <1.28` and the fixes are in 1.29.4 and the 2.x/3.x lines. The
+constraint lives in the monorepo's own `app/composer.json`, so the human fix is a code change to that
+file (Mautic's 5.x branch later moved to `^1.29.4`); the planner reports "no verified fix" rather than
+inventing an update the constraints forbid.
+
+This fixture motivated a builder change: a locked package that comes from a `path` repository may
+also exist on Packagist (`mautic/core-lib` does), and the public metadata for "5.0.0-dev" is not what
+the project resolved against. The builder now takes such packages from the lock file.
+
+Built with `bin/build-fixture.php --as-of=2024-11-20`, then `ext-imap` added to the platform.
+
+#### Planner result
+
+16 advisories on 7 packages; 6 packages with a verified fix.
+
+| Package | Advisories | Recommended command | Changes | Outcome |
+|---|---|---|---|---|
+| phpoffice/phpspreadsheet 1.27.1 | CVE-2024-45291, CVE-2024-47873, CVE-2024-45060, CVE-2024-48917, CVE-2024-45046, CVE-2024-45293, CVE-2024-45292, CVE-2024-45290, CVE-2024-45048 |  |  | none |
+| symfony/process v5.4.40 | CVE-2024-51736 | <code>composer update symfony/process</code> | 1 | verified |
+| symfony/security-http v5.4.35 | CVE-2024-51996 | <code>composer update symfony/security-http</code> | 1 | verified |
+| symfony/http-client v5.4.35 | CVE-2024-50342 | <code>composer update symfony/http-client</code> | 1 | verified |
+| symfony/http-foundation v5.4.35 | CVE-2024-50345 | <code>composer update symfony/http-foundation</code> | 1 | verified |
+| symfony/validator v5.4.35 | CVE-2024-50343 | <code>composer update symfony/validator</code> | 1 | verified |
+| twig/twig v3.14.0 | CVE-2024-51755, CVE-2024-51754 | <code>composer update twig/twig</code> | 1 | verified |
+
+Combined command (7 of 16 findings): `composer update symfony/http-client symfony/http-foundation symfony/process symfony/security-http symfony/validator twig/twig`
+
+Stored reports: [console](https://github.com/hexblot/composer-remediate/blob/main/tests/Fixture/third-party/mautic-symfony54-multi/reports/report.md), [JSON](https://github.com/hexblot/composer-remediate/blob/main/tests/Fixture/third-party/mautic-symfony54-multi/reports/report.json), [HTML](https://github.com/hexblot/composer-remediate/blob/main/tests/Fixture/third-party/mautic-symfony54-multi/reports/report.html), [SARIF](https://github.com/hexblot/composer-remediate/blob/main/tests/Fixture/third-party/mautic-symfony54-multi/reports/report.sarif), [CycloneDX](https://github.com/hexblot/composer-remediate/blob/main/tests/Fixture/third-party/mautic-symfony54-multi/reports/report.cdx.json), [GitLab](https://github.com/hexblot/composer-remediate/blob/main/tests/Fixture/third-party/mautic-symfony54-multi/reports/gl-dependency-scanning-report.json). Fixture: [mautic-symfony54-multi](https://github.com/hexblot/composer-remediate/blob/main/tests/Fixture/third-party/mautic-symfony54-multi).
+
+## openmass-drupal-tilde-pins
+
+*Third Drupal instance: Mass.gov on Drupal 10.3.6, where drupal/core-recommended pins the Symfony components and Twig with tilde constraints (~v6.4.7, ~v6.4.8, ~v3.14.0) that permit the patch releases carrying the November 2024 fixes. Five advisories on four packages (symfony/http-foundation, symfony/process, symfony/http-client, twig/twig x2) are each a plain one-package update and one combined command fixes all five; the http-client path runs through two abandoned packages (fabpot/goutte, behat/mink-goutte-driver), which the report flags.*
+
+**Third Drupal instance: a meta-package whose tilde pins let the fixes through.**
+
+- Source: [massgov/openmass](https://github.com/massgov/openmass) (Mass.gov, the Commonwealth of
+  Massachusetts' site) at commit `aecbd0717c32ccc9e2fcbdefa8341a2034e09701` (2024-10-25, "Upgrade
+  Drupal Test traits to 2.4. Also upgrade_status module, drush").
+- Snapshot date (`--as-of`): 2024-11-25, after Symfony's 6 November releases (6.4.14, 6.4.15) and
+  Twig's 3.14.1 / 3.14.2.
+- Platform: `config.platform.php` 8.3 from the project, recorded as 8.3.0. Repository:
+  `https://packages.drupal.org/8`, plus two `package` repositories the project declares.
+
+#### Findings
+
+Drupal 10.3's `drupal/core-recommended` pins its dependencies with tilde constraints
+(`symfony/http-foundation ~v6.4.7`, `symfony/process ~v6.4.8`, `twig/twig ~v3.14.0`), unlike the
+exact pins of the 10.2 fixtures (Islandora, USAGov). Every fix therefore fits inside the pin and the
+planner recommends a plain update for each package:
+
+| Package | Advisory | Command | Lands on |
+|---|---|---|---|
+| `symfony/http-foundation v6.4.12` | CVE-2024-50345 | `composer update symfony/http-foundation` | v6.4.14 |
+| `symfony/process v6.4.12` | CVE-2024-51736 | `composer update symfony/process` | v6.4.15 |
+| `symfony/http-client v6.4.10` (direct) | CVE-2024-50342 | `composer update symfony/http-client` | v6.4.15 |
+| `twig/twig v3.14.0` | CVE-2024-51754, CVE-2024-51755 | `composer update twig/twig` | v3.14.2 |
+
+The combined command `composer update symfony/http-client symfony/http-foundation symfony/process
+twig/twig` fixes all five advisories with four changes. `symfony/http-client` is also reached through
+`behat/mink-goutte-driver` and `fabpot/goutte`, both abandoned on Packagist (replacements
+`behat/mink-browserkit-driver` and `symfony/browser-kit`); the report names them.
+
+Drupal core's own November 2024 advisories (SA-CORE-2024-003 to -008, released 2024-11-20) are not
+in this snapshot: the Packagist feed carries no drupal/core record with a report date before the
+snapshot, so `drupal/core 10.2.6`-style findings appear in the Open Social fixture (August advisory)
+rather than here.
+
+Built with `bin/build-fixture.php --as-of=2024-11-25 --platform-php=8.3.0`.
+
+#### Planner result
+
+5 advisories on 4 packages; 4 packages with a verified fix.
+
+| Package | Advisories | Recommended command | Changes | Outcome |
+|---|---|---|---|---|
+| symfony/process v6.4.12 | CVE-2024-51736 | <code>composer update symfony/process</code> | 1 | verified |
+| symfony/http-client v6.4.10 | CVE-2024-50342 | <code>composer update symfony/http-client</code> | 1 | verified |
+| symfony/http-foundation v6.4.12 | CVE-2024-50345 | <code>composer update symfony/http-foundation</code> | 1 | verified |
+| twig/twig v3.14.0 | CVE-2024-51755, CVE-2024-51754 | <code>composer update twig/twig</code> | 1 | verified |
+
+Combined command (5 of 5 findings): `composer update symfony/http-client symfony/http-foundation symfony/process twig/twig`
+
+Stored reports: [console](https://github.com/hexblot/composer-remediate/blob/main/tests/Fixture/third-party/openmass-drupal-tilde-pins/reports/report.md), [JSON](https://github.com/hexblot/composer-remediate/blob/main/tests/Fixture/third-party/openmass-drupal-tilde-pins/reports/report.json), [HTML](https://github.com/hexblot/composer-remediate/blob/main/tests/Fixture/third-party/openmass-drupal-tilde-pins/reports/report.html), [SARIF](https://github.com/hexblot/composer-remediate/blob/main/tests/Fixture/third-party/openmass-drupal-tilde-pins/reports/report.sarif), [CycloneDX](https://github.com/hexblot/composer-remediate/blob/main/tests/Fixture/third-party/openmass-drupal-tilde-pins/reports/report.cdx.json), [GitLab](https://github.com/hexblot/composer-remediate/blob/main/tests/Fixture/third-party/openmass-drupal-tilde-pins/reports/gl-dependency-scanning-report.json). Fixture: [openmass-drupal-tilde-pins](https://github.com/hexblot/composer-remediate/blob/main/tests/Fixture/third-party/openmass-drupal-tilde-pins).
+
+## opensocial-drupal-distribution-pins
+
+*Fourth Drupal instance, a distribution: Open Social's project template on Open Social 12.4.2 / Drupal 10.2.6 (May 2024), snapshot mid-October 2024. The distribution package goalgorilla/open_social pins drupal/core ~10.2.5, which permits the 10.2.9 patch carrying the fix for CVE-2024-45440 (released 2024-10-08, so a snapshot one week earlier has no fix). Twig 3.10.3 (CVE-2024-45411) moves to 3.14.0 and needs symfony/polyfill-php81, a package absent from the lock, which the frozen repository must therefore carry. symfony/validator is a plain update. One combined command fixes all three.*
+
+**Fourth Drupal instance: a distribution package pins core, and the pin permits the patch.**
+
+- Source: [goalgorilla/social_template](https://github.com/goalgorilla/social_template), the
+  Composer project template for the Open Social distribution, at commit
+  `b5b634ccaf48347c7e46143b1a248dea4555e987` (2024-05-21, "updated to 12.4.2").
+- Snapshot date (`--as-of`): 2024-10-15, one week after Drupal 10.2.9 (2024-10-08). The same
+  project snapshotted at 2024-10-01 has no fix for core at all: 10.2.9 did not exist yet.
+- Platform: no `config.platform`; the fixture pins PHP 8.2.0 because the lock holds `lcobucci/clock
+  3.0.0`, which requires `~8.1.0 || ~8.2.0`. Repositories: `https://packages.drupal.org/8` and
+  `https://asset-packagist.org`.
+
+#### Findings
+
+The root requires only `goalgorilla/open_social ~12.4.0` (plus monolog); everything else, Drupal
+core included, arrives through the distribution, which requires `drupal/core ~10.2.5`.
+
+| Package | Advisory | Command | Lands on |
+|---|---|---|---|
+| `drupal/core 10.2.6` | CVE-2024-45440 | `composer update drupal/core -w -m` | 10.2.9 (plus twig 3.14.0 and symfony/polyfill-php81) |
+| `twig/twig v3.10.3` | CVE-2024-45411 | `composer update twig/twig` | v3.14.0 (adds symfony/polyfill-php81) |
+| `symfony/validator v6.4.7` | CVE-2024-50343 | `composer update symfony/validator` | v6.4.12 |
+
+`composer update drupal/core` alone stops at 10.2.7 (still affected): 10.2.9 requires a newer Twig,
+so `-w` is needed and the planner adds it. Human choice: Drupal's standard
+`composer update drupal/core --with-dependencies`, which is what the planner recommends. The combined
+command `composer update drupal/core symfony/validator twig/twig -w -m` fixes all three.
+
+This fixture also motivated a builder change: Twig 3.11+ requires `symfony/polyfill-php81`, a package
+the locked graph never contained, so a frozen repository built only from what Composer loaded for
+the locked graph could not express the fix. The builder now fetches the requirement closure of every
+version it keeps.
+
+Built with `bin/build-fixture.php --as-of=2024-10-15 --platform-php=8.2.0`.
+
+#### Planner result
+
+3 advisories on 3 packages; 3 packages with a verified fix.
+
+| Package | Advisories | Recommended command | Changes | Outcome |
+|---|---|---|---|---|
+| drupal/core 10.2.6 | CVE-2024-45440 | <code>composer update drupal/core -w -m</code> | 3 | verified |
+| twig/twig v3.10.3 | CVE-2024-45411 | <code>composer update twig/twig</code> | 2 | verified |
+| symfony/validator v6.4.7 | CVE-2024-50343 | <code>composer update symfony/validator</code> | 1 | verified |
+
+Combined command (3 of 3 findings): `composer update drupal/core symfony/validator twig/twig -w -m`
+
+Stored reports: [console](https://github.com/hexblot/composer-remediate/blob/main/tests/Fixture/third-party/opensocial-drupal-distribution-pins/reports/report.md), [JSON](https://github.com/hexblot/composer-remediate/blob/main/tests/Fixture/third-party/opensocial-drupal-distribution-pins/reports/report.json), [HTML](https://github.com/hexblot/composer-remediate/blob/main/tests/Fixture/third-party/opensocial-drupal-distribution-pins/reports/report.html), [SARIF](https://github.com/hexblot/composer-remediate/blob/main/tests/Fixture/third-party/opensocial-drupal-distribution-pins/reports/report.sarif), [CycloneDX](https://github.com/hexblot/composer-remediate/blob/main/tests/Fixture/third-party/opensocial-drupal-distribution-pins/reports/report.cdx.json), [GitLab](https://github.com/hexblot/composer-remediate/blob/main/tests/Fixture/third-party/opensocial-drupal-distribution-pins/reports/gl-dependency-scanning-report.json). Fixture: [opensocial-drupal-distribution-pins](https://github.com/hexblot/composer-remediate/blob/main/tests/Fixture/third-party/opensocial-drupal-distribution-pins).
+
 ## pixelfed-laravel11-symfony
 
 *Case 2 on Laravel 11: symfony/http-foundation and symfony/process 7.1.5 (CVE-2024-50345, CVE-2024-51736, fixed in 7.1.7) via laravel/framework 11.26.0 (^7.0). Plain partial updates; process lands on 7.2.0 because Packagist records that release on 2024-11-06.*
@@ -537,4 +775,66 @@ Built with `bin/build-fixture.php --as-of=2024-09-20 --platform-php=8.3.0`.
 Combined command (2 of 4 findings): `composer update drupal/core-recommended symfony/validator -W -m`
 
 Stored reports: [console](https://github.com/hexblot/composer-remediate/blob/main/tests/Fixture/third-party/usagov-drupal-core-recommended-twig/reports/report.md), [JSON](https://github.com/hexblot/composer-remediate/blob/main/tests/Fixture/third-party/usagov-drupal-core-recommended-twig/reports/report.json), [HTML](https://github.com/hexblot/composer-remediate/blob/main/tests/Fixture/third-party/usagov-drupal-core-recommended-twig/reports/report.html), [SARIF](https://github.com/hexblot/composer-remediate/blob/main/tests/Fixture/third-party/usagov-drupal-core-recommended-twig/reports/report.sarif), [CycloneDX](https://github.com/hexblot/composer-remediate/blob/main/tests/Fixture/third-party/usagov-drupal-core-recommended-twig/reports/report.cdx.json), [GitLab](https://github.com/hexblot/composer-remediate/blob/main/tests/Fixture/third-party/usagov-drupal-core-recommended-twig/reports/gl-dependency-scanning-report.json). Fixture: [usagov-drupal-core-recommended-twig](https://github.com/hexblot/composer-remediate/blob/main/tests/Fixture/third-party/usagov-drupal-core-recommended-twig).
+
+## wallabag-symfony54-php74-guzzle5
+
+*Fourth plain-Symfony instance: wallabag (Symfony 5.4 on a declared PHP 7.4 platform, October 2024, snapshot January 2025). Sixteen advisories on eight direct dependencies. Eleven are plain updates that one combined command fixes: five Symfony 5.4 components, Twig 3.11.1 to 3.11.3 (still supporting PHP 7.2.5) and TCPDF 6.7.7 to 6.8.0. The five Guzzle advisories have no fix: the root requires guzzlehttp/guzzle ^5.3.4 and the abandoned php-http/guzzle5-adapter also pins the 5.x line, while the fixes live in 6.5.8 and 7.4.5; the report names the abandoned adapter. The project needs ext-tidy, which the fixture's platform declares.*
+
+**Fourth plain-Symfony instance: many plain updates and one dependency stuck on an EOL major.**
+
+- Source: [wallabag/wallabag](https://github.com/wallabag/wallabag) at commit
+  `91baac7e128140563cd21837edb3f2b996920574` (2024-10-31, "Bump doctrine/persistence from 3.3.3 to
+  3.4.0"), a Symfony 5.4 application.
+- Snapshot date (`--as-of`): 2025-01-15, after Symfony's November 2024 releases and TCPDF 6.8.0
+  (2024-12-23).
+- Platform: `config.platform.php` 7.4.29 and `require.php >=7.4` from the project. The project
+  requires `ext-tidy`, which the build environment lacks; the fixture adds it to the platform (the
+  repository copies the build machine's extension list, so a project-required extension that is not
+  installed there has to be added by hand or nothing resolves).
+
+#### Findings
+
+Sixteen advisories on eight packages, all direct requirements of the application.
+
+| Package | Advisories | Command | Lands on |
+|---|---|---|---|
+| `symfony/http-foundation v5.4.45` | CVE-2024-50345 | `composer update symfony/http-foundation` | v5.4.48 |
+| `symfony/http-client v5.4.41` | CVE-2024-50342 | `composer update symfony/http-client` | v5.4.47 |
+| `symfony/security-http v5.4.41` | CVE-2024-51996 | `composer update symfony/security-http` | v5.4.47 |
+| `symfony/validator v5.4.41` | CVE-2024-50343 | `composer update symfony/validator` | v5.4.48 |
+| `symfony/process v5.4.45` (dev) | CVE-2024-51736 | `composer update symfony/process` | v5.4.47 |
+| `twig/twig v3.11.1` | CVE-2024-51754, CVE-2024-51755 | `composer update twig/twig` | v3.11.3 (3.11 still supports PHP 7.2.5) |
+| `tecnickcom/tcpdf 6.7.7` | CVE-2024-56519, -56521, -56522, -56527 | `composer update tecnickcom/tcpdf` | 6.8.0 |
+| `guzzlehttp/guzzle 5.3.4` | CVE-2022-29248, -31042, -31043, -31090, -31091 | none | — |
+
+The combined command fixes 11 of 16:
+
+    composer update symfony/http-client symfony/http-foundation symfony/process symfony/security-http symfony/validator tecnickcom/tcpdf twig/twig
+
+Guzzle has no fix within the project's constraints: the root requires `guzzlehttp/guzzle ^5.3.4`,
+the fixes are in 6.5.8 and 7.4.5, and widening the root constraint does not help because
+`php-http/guzzle5-adapter` (also a root requirement, abandoned on Packagist) requires the 5.x line.
+The report flags the abandoned adapter. Moving off Guzzle 5 is a code change, which is what wallabag
+eventually did; a remediation planner must say "no verified fix" here rather than invent one.
+
+Built with `bin/build-fixture.php --as-of=2025-01-15`, then `ext-tidy` added to the platform.
+
+#### Planner result
+
+16 advisories on 8 packages; 7 packages with a verified fix.
+
+| Package | Advisories | Recommended command | Changes | Outcome |
+|---|---|---|---|---|
+| guzzlehttp/guzzle 5.3.4 | CVE-2022-31043, CVE-2022-29248, CVE-2022-31042, CVE-2022-31090, CVE-2022-31091 |  |  | none |
+| symfony/security-http v5.4.41 | CVE-2024-51996 | <code>composer update symfony/security-http</code> | 1 | verified |
+| tecnickcom/tcpdf 6.7.7 | CVE-2024-56521, CVE-2024-56519, CVE-2024-56522, CVE-2024-56527 | <code>composer update tecnickcom/tcpdf</code> | 1 | verified |
+| symfony/http-client v5.4.41 | CVE-2024-50342 | <code>composer update symfony/http-client</code> | 1 | verified |
+| symfony/http-foundation v5.4.45 | CVE-2024-50345 | <code>composer update symfony/http-foundation</code> | 1 | verified |
+| symfony/validator v5.4.41 | CVE-2024-50343 | <code>composer update symfony/validator</code> | 1 | verified |
+| twig/twig v3.11.1 | CVE-2024-51755, CVE-2024-51754 | <code>composer update twig/twig</code> | 1 | verified |
+| symfony/process v5.4.45 (dev) | CVE-2024-51736 | <code>composer update symfony/process</code> | 1 | verified |
+
+Combined command (11 of 16 findings): `composer update symfony/http-client symfony/http-foundation symfony/process symfony/security-http symfony/validator tecnickcom/tcpdf twig/twig`
+
+Stored reports: [console](https://github.com/hexblot/composer-remediate/blob/main/tests/Fixture/third-party/wallabag-symfony54-php74-guzzle5/reports/report.md), [JSON](https://github.com/hexblot/composer-remediate/blob/main/tests/Fixture/third-party/wallabag-symfony54-php74-guzzle5/reports/report.json), [HTML](https://github.com/hexblot/composer-remediate/blob/main/tests/Fixture/third-party/wallabag-symfony54-php74-guzzle5/reports/report.html), [SARIF](https://github.com/hexblot/composer-remediate/blob/main/tests/Fixture/third-party/wallabag-symfony54-php74-guzzle5/reports/report.sarif), [CycloneDX](https://github.com/hexblot/composer-remediate/blob/main/tests/Fixture/third-party/wallabag-symfony54-php74-guzzle5/reports/report.cdx.json), [GitLab](https://github.com/hexblot/composer-remediate/blob/main/tests/Fixture/third-party/wallabag-symfony54-php74-guzzle5/reports/gl-dependency-scanning-report.json). Fixture: [wallabag-symfony54-php74-guzzle5](https://github.com/hexblot/composer-remediate/blob/main/tests/Fixture/third-party/wallabag-symfony54-php74-guzzle5).
 

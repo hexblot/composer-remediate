@@ -1,0 +1,384 @@
+{
+    "$schema": "https://json.schemastore.org/sarif-2.1.0.json",
+    "version": "2.1.0",
+    "runs": [
+        {
+            "tool": {
+                "driver": {
+                    "name": "composer-remediate",
+                    "version": "dev-main",
+                    "informationUri": "https://hexblot.github.io/composer-remediate/",
+                    "rules": [
+                        {
+                            "id": "PKSA-wws7-mr54-jsny",
+                            "name": "CVE202451736",
+                            "shortDescription": {
+                                "text": "CVE-2024-51736: Command execution hijack on Windows with Process class"
+                            },
+                            "fullDescription": {
+                                "text": "CVE-2024-51736: Command execution hijack on Windows with Process class. Affected versions of symfony/process: >=2.0.0,<3.0.0|>=3.0.0,<4.0.0|>=4.0.0,<5.0.0|>=5.0.0,<5.1.0|>=5.1.0,<5.2.0|>=5.2.0,<5.3.0|>=5.3.0,<5.4.0|>=5.4.0,<5.4.46|>=6.0.0,<6.1.0|>=6.1.0,<6.2.0|>=6.2.0,<6.3.0|>=6.3.0,<6.4.0|>=6.4.0,<6.4.14|>=7.0.0,<7.1.0|>=7.1.0,<7.1.7."
+                            },
+                            "helpUri": "https://symfony.com/cve-2024-51736",
+                            "help": {
+                                "text": "Advisory PKSA-wws7-mr54-jsny (CVE-2024-51736) affects symfony/process >=2.0.0,<3.0.0|>=3.0.0,<4.0.0|>=4.0.0,<5.0.0|>=5.0.0,<5.1.0|>=5.1.0,<5.2.0|>=5.2.0,<5.3.0|>=5.3.0,<5.4.0|>=5.4.0,<5.4.46|>=6.0.0,<6.1.0|>=6.1.0,<6.2.0|>=6.2.0,<6.3.0|>=6.3.0,<6.4.0|>=6.4.0,<6.4.14|>=7.0.0,<7.1.0|>=7.1.0,<7.1.7. Run composer remediate for the smallest verified upgrade."
+                            },
+                            "defaultConfiguration": {
+                                "level": "error"
+                            },
+                            "properties": {
+                                "security-severity": "7.5",
+                                "tags": [
+                                    "security",
+                                    "vulnerability",
+                                    "high"
+                                ]
+                            }
+                        },
+                        {
+                            "id": "PKSA-styk-3knc-d1bt",
+                            "name": "CVE202445440",
+                            "shortDescription": {
+                                "text": "Drupal Full Path Disclosure"
+                            },
+                            "fullDescription": {
+                                "text": "Drupal Full Path Disclosure. Affected versions of drupal/core: >=8.0.0,<10.2.9|>=10.3.0,<10.3.6|>=11.0.0,<11.0.5."
+                            },
+                            "helpUri": "https://github.com/advisories/GHSA-mg8j-w93w-xjgc",
+                            "help": {
+                                "text": "Advisory PKSA-styk-3knc-d1bt (CVE-2024-45440) affects drupal/core >=8.0.0,<10.2.9|>=10.3.0,<10.3.6|>=11.0.0,<11.0.5. Run composer remediate for the smallest verified upgrade."
+                            },
+                            "defaultConfiguration": {
+                                "level": "warning"
+                            },
+                            "properties": {
+                                "security-severity": "5.0",
+                                "tags": [
+                                    "security",
+                                    "vulnerability",
+                                    "medium"
+                                ]
+                            }
+                        },
+                        {
+                            "id": "PKSA-4k7v-pfvw-nqvp",
+                            "name": "CVE202450342",
+                            "shortDescription": {
+                                "text": "CVE-2024-50342: Internal address and port enumeration allowed by NoPrivateNetworkHttpClient"
+                            },
+                            "fullDescription": {
+                                "text": "CVE-2024-50342: Internal address and port enumeration allowed by NoPrivateNetworkHttpClient. Affected versions of symfony/http-client: >=4.3.0,<4.4.0|>=4.4.0,<5.0.0|>=5.0.0,<5.1.0|>=5.1.0,<5.2.0|>=5.2.0,<5.3.0|>=5.3.0,<5.4.0|>=5.4.0,<5.4.47|>=6.0.0,<6.1.0|>=6.1.0,<6.2.0|>=6.2.0,<6.3.0|>=6.3.0,<6.4.0|>=6.4.0,<6.4.15|>=7.0.0,<7.1.0|>=7.1.0,<7.1.8."
+                            },
+                            "helpUri": "https://symfony.com/cve-2024-50342",
+                            "help": {
+                                "text": "Advisory PKSA-4k7v-pfvw-nqvp (CVE-2024-50342) affects symfony/http-client >=4.3.0,<4.4.0|>=4.4.0,<5.0.0|>=5.0.0,<5.1.0|>=5.1.0,<5.2.0|>=5.2.0,<5.3.0|>=5.3.0,<5.4.0|>=5.4.0,<5.4.47|>=6.0.0,<6.1.0|>=6.1.0,<6.2.0|>=6.2.0,<6.3.0|>=6.3.0,<6.4.0|>=6.4.0,<6.4.15|>=7.0.0,<7.1.0|>=7.1.0,<7.1.8. Run composer remediate for the smallest verified upgrade."
+                            },
+                            "defaultConfiguration": {
+                                "level": "note"
+                            },
+                            "properties": {
+                                "security-severity": "2.5",
+                                "tags": [
+                                    "security",
+                                    "vulnerability",
+                                    "low"
+                                ]
+                            }
+                        },
+                        {
+                            "id": "PKSA-b35n-565h-rs4q",
+                            "name": "CVE202450345",
+                            "shortDescription": {
+                                "text": "CVE-2024-50345: Open redirect via browser-sanitized URLs"
+                            },
+                            "fullDescription": {
+                                "text": "CVE-2024-50345: Open redirect via browser-sanitized URLs. Affected versions of symfony/http-foundation: >=2.0.0,<3.0.0|>=3.0.0,<4.0.0|>=4.0.0,<5.0.0|>=5.0.0,<5.1.0|>=5.1.0,<5.2.0|>=5.2.0,<5.3.0|>=5.3.0,<5.4.0|>=5.4.0,<5.4.46|>=6.0.0,<6.1.0|>=6.1.0,<6.2.0|>=6.2.0,<6.3.0|>=6.3.0,<6.4.0|>=6.4.0,<6.4.14|>=7.0.0,<7.1.0|>=7.1.0,<7.1.7."
+                            },
+                            "helpUri": "https://symfony.com/cve-2024-50345",
+                            "help": {
+                                "text": "Advisory PKSA-b35n-565h-rs4q (CVE-2024-50345) affects symfony/http-foundation >=2.0.0,<3.0.0|>=3.0.0,<4.0.0|>=4.0.0,<5.0.0|>=5.0.0,<5.1.0|>=5.1.0,<5.2.0|>=5.2.0,<5.3.0|>=5.3.0,<5.4.0|>=5.4.0,<5.4.46|>=6.0.0,<6.1.0|>=6.1.0,<6.2.0|>=6.2.0,<6.3.0|>=6.3.0,<6.4.0|>=6.4.0,<6.4.14|>=7.0.0,<7.1.0|>=7.1.0,<7.1.7. Run composer remediate for the smallest verified upgrade."
+                            },
+                            "defaultConfiguration": {
+                                "level": "note"
+                            },
+                            "properties": {
+                                "security-severity": "2.5",
+                                "tags": [
+                                    "security",
+                                    "vulnerability",
+                                    "low"
+                                ]
+                            }
+                        },
+                        {
+                            "id": "PKSA-2wrf-1xmk-1pky",
+                            "name": "CVE202451755",
+                            "shortDescription": {
+                                "text": "Unguarded calls to __isset() and to array-accesses when the sandbox is enabled"
+                            },
+                            "fullDescription": {
+                                "text": "Unguarded calls to __isset() and to array-accesses when the sandbox is enabled. Affected versions of twig/twig: >=1.0.0,<2.0.0|>=2.0.0,<3.0.0|>=3.0.0,<3.11.2|>=3.12.0,<3.14.1."
+                            },
+                            "helpUri": "https://symfony.com/blog/cve-2024-51755-unguarded-calls-to-isset-and-to-array-accesses-in-a-sandbox",
+                            "help": {
+                                "text": "Advisory PKSA-2wrf-1xmk-1pky (CVE-2024-51755) affects twig/twig >=1.0.0,<2.0.0|>=2.0.0,<3.0.0|>=3.0.0,<3.11.2|>=3.12.0,<3.14.1. Run composer remediate for the smallest verified upgrade."
+                            },
+                            "defaultConfiguration": {
+                                "level": "note"
+                            },
+                            "properties": {
+                                "security-severity": "2.5",
+                                "tags": [
+                                    "security",
+                                    "vulnerability",
+                                    "low"
+                                ]
+                            }
+                        },
+                        {
+                            "id": "PKSA-yhcn-xrg3-68b1",
+                            "name": "CVE202451754",
+                            "shortDescription": {
+                                "text": "Unguarded calls to __toString() when nesting an object into an array"
+                            },
+                            "fullDescription": {
+                                "text": "Unguarded calls to __toString() when nesting an object into an array. Affected versions of twig/twig: >=1.0.0,<2.0.0|>=2.0.0,<3.0.0|>=3.0.0,<3.11.2|>=3.12.0,<3.14.1."
+                            },
+                            "helpUri": "https://symfony.com/blog/cve-2024-51754-unguarded-calls-to-tostring-in-a-sandbox-when-an-object-is-in-an-array-or-an-argument-list",
+                            "help": {
+                                "text": "Advisory PKSA-yhcn-xrg3-68b1 (CVE-2024-51754) affects twig/twig >=1.0.0,<2.0.0|>=2.0.0,<3.0.0|>=3.0.0,<3.11.2|>=3.12.0,<3.14.1. Run composer remediate for the smallest verified upgrade."
+                            },
+                            "defaultConfiguration": {
+                                "level": "note"
+                            },
+                            "properties": {
+                                "security-severity": "2.5",
+                                "tags": [
+                                    "security",
+                                    "vulnerability",
+                                    "low"
+                                ]
+                            }
+                        }
+                    ]
+                }
+            },
+            "invocations": [
+                {
+                    "executionSuccessful": true,
+                    "exitCode": 1,
+                    "properties": {
+                        "composer_version": "(fixture)",
+                        "advisory_source": "advisory snapshot advisories.json",
+                        "combined_command": "composer update drupal/core symfony/http-client symfony/http-foundation symfony/process twig/twig"
+                    }
+                }
+            ],
+            "results": [
+                {
+                    "ruleId": "PKSA-wws7-mr54-jsny",
+                    "ruleIndex": 0,
+                    "level": "error",
+                    "message": {
+                        "text": "symfony/process v6.4.8 is affected by CVE-2024-51736: CVE-2024-51736: Command execution hijack on Windows with Process class. Verified fix: composer update symfony/process"
+                    },
+                    "locations": [
+                        {
+                            "physicalLocation": {
+                                "artifactLocation": {
+                                    "uri": "composer.lock",
+                                    "uriBaseId": "%SRCROOT%"
+                                },
+                                "region": {
+                                    "startLine": 13484
+                                }
+                            }
+                        }
+                    ],
+                    "partialFingerprints": {
+                        "advisoryPackage/v1": "PKSA-wws7-mr54-jsny@symfony/process"
+                    },
+                    "properties": {
+                        "package": "symfony/process",
+                        "version": "v6.4.8",
+                        "direct": false,
+                        "dev": false,
+                        "cve": "CVE-2024-51736",
+                        "severity": "high",
+                        "remediation_status": "verified",
+                        "command": "composer update symfony/process"
+                    }
+                },
+                {
+                    "ruleId": "PKSA-styk-3knc-d1bt",
+                    "ruleIndex": 1,
+                    "level": "warning",
+                    "message": {
+                        "text": "drupal/core 10.3.5 is affected by CVE-2024-45440: Drupal Full Path Disclosure. Verified fix: composer update drupal/core"
+                    },
+                    "locations": [
+                        {
+                            "physicalLocation": {
+                                "artifactLocation": {
+                                    "uri": "composer.lock",
+                                    "uriBaseId": "%SRCROOT%"
+                                },
+                                "region": {
+                                    "startLine": 3981
+                                }
+                            }
+                        }
+                    ],
+                    "partialFingerprints": {
+                        "advisoryPackage/v1": "PKSA-styk-3knc-d1bt@drupal/core"
+                    },
+                    "properties": {
+                        "package": "drupal/core",
+                        "version": "10.3.5",
+                        "direct": false,
+                        "dev": false,
+                        "cve": "CVE-2024-45440",
+                        "severity": "medium",
+                        "remediation_status": "verified",
+                        "command": "composer update drupal/core"
+                    }
+                },
+                {
+                    "ruleId": "PKSA-4k7v-pfvw-nqvp",
+                    "ruleIndex": 2,
+                    "level": "note",
+                    "message": {
+                        "text": "symfony/http-client v7.1.4 is affected by CVE-2024-50342: CVE-2024-50342: Internal address and port enumeration allowed by NoPrivateNetworkHttpClient. Verified fix: composer update symfony/http-client"
+                    },
+                    "locations": [
+                        {
+                            "physicalLocation": {
+                                "artifactLocation": {
+                                    "uri": "composer.lock",
+                                    "uriBaseId": "%SRCROOT%"
+                                },
+                                "region": {
+                                    "startLine": 12167
+                                }
+                            }
+                        }
+                    ],
+                    "partialFingerprints": {
+                        "advisoryPackage/v1": "PKSA-4k7v-pfvw-nqvp@symfony/http-client"
+                    },
+                    "properties": {
+                        "package": "symfony/http-client",
+                        "version": "v7.1.4",
+                        "direct": false,
+                        "dev": false,
+                        "cve": "CVE-2024-50342",
+                        "severity": "low",
+                        "remediation_status": "verified",
+                        "command": "composer update symfony/http-client"
+                    }
+                },
+                {
+                    "ruleId": "PKSA-b35n-565h-rs4q",
+                    "ruleIndex": 3,
+                    "level": "note",
+                    "message": {
+                        "text": "symfony/http-foundation v6.4.10 is affected by CVE-2024-50345: CVE-2024-50345: Open redirect via browser-sanitized URLs. Verified fix: composer update symfony/http-foundation"
+                    },
+                    "locations": [
+                        {
+                            "physicalLocation": {
+                                "artifactLocation": {
+                                    "uri": "composer.lock",
+                                    "uriBaseId": "%SRCROOT%"
+                                },
+                                "region": {
+                                    "startLine": 12339
+                                }
+                            }
+                        }
+                    ],
+                    "partialFingerprints": {
+                        "advisoryPackage/v1": "PKSA-b35n-565h-rs4q@symfony/http-foundation"
+                    },
+                    "properties": {
+                        "package": "symfony/http-foundation",
+                        "version": "v6.4.10",
+                        "direct": false,
+                        "dev": false,
+                        "cve": "CVE-2024-50345",
+                        "severity": "low",
+                        "remediation_status": "verified",
+                        "command": "composer update symfony/http-foundation"
+                    }
+                },
+                {
+                    "ruleId": "PKSA-2wrf-1xmk-1pky",
+                    "ruleIndex": 4,
+                    "level": "note",
+                    "message": {
+                        "text": "twig/twig v3.14.0 is affected by CVE-2024-51755: Unguarded calls to __isset() and to array-accesses when the sandbox is enabled. Verified fix: composer update twig/twig"
+                    },
+                    "locations": [
+                        {
+                            "physicalLocation": {
+                                "artifactLocation": {
+                                    "uri": "composer.lock",
+                                    "uriBaseId": "%SRCROOT%"
+                                },
+                                "region": {
+                                    "startLine": 14384
+                                }
+                            }
+                        }
+                    ],
+                    "partialFingerprints": {
+                        "advisoryPackage/v1": "PKSA-2wrf-1xmk-1pky@twig/twig"
+                    },
+                    "properties": {
+                        "package": "twig/twig",
+                        "version": "v3.14.0",
+                        "direct": false,
+                        "dev": false,
+                        "cve": "CVE-2024-51755",
+                        "severity": "low",
+                        "remediation_status": "verified",
+                        "command": "composer update twig/twig"
+                    }
+                },
+                {
+                    "ruleId": "PKSA-yhcn-xrg3-68b1",
+                    "ruleIndex": 5,
+                    "level": "note",
+                    "message": {
+                        "text": "twig/twig v3.14.0 is affected by CVE-2024-51754: Unguarded calls to __toString() when nesting an object into an array. Verified fix: composer update twig/twig"
+                    },
+                    "locations": [
+                        {
+                            "physicalLocation": {
+                                "artifactLocation": {
+                                    "uri": "composer.lock",
+                                    "uriBaseId": "%SRCROOT%"
+                                },
+                                "region": {
+                                    "startLine": 14384
+                                }
+                            }
+                        }
+                    ],
+                    "partialFingerprints": {
+                        "advisoryPackage/v1": "PKSA-yhcn-xrg3-68b1@twig/twig"
+                    },
+                    "properties": {
+                        "package": "twig/twig",
+                        "version": "v3.14.0",
+                        "direct": false,
+                        "dev": false,
+                        "cve": "CVE-2024-51754",
+                        "severity": "low",
+                        "remediation_status": "verified",
+                        "command": "composer update twig/twig"
+                    }
+                }
+            ]
+        }
+    ]
+}

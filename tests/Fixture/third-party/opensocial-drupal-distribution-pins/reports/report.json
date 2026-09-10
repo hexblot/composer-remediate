@@ -1,0 +1,1315 @@
+{
+    "schema_version": 1,
+    "analysis_metadata": {
+        "project": "opensocial-drupal-distribution-pins",
+        "engine_version": "dev-main",
+        "composer_version": "(fixture)",
+        "php_version": "(fixture)",
+        "advisory_source": "advisory snapshot advisories.json",
+        "solver": "in-process Composer dry-run",
+        "solver_runs": "21",
+        "composer_json_sha256": "f9886d38fa08368754bd06e035afa88ae527822e6bf4418920910b244e1fb02f",
+        "composer_lock_sha256": "d8cca41a495df2e94bca439a93f2b63a4cc3846fdd533404202155bb69ee5b31",
+        "analysis_timestamp": "(fixture)",
+        "locked_packages": "198"
+    },
+    "exit_code": 1,
+    "warnings": [],
+    "summary": {
+        "advisories": 3,
+        "packages": 3,
+        "packages_with_fix": 3,
+        "fail_on": null,
+        "packages_gated": 3,
+        "packages_baselined": 0,
+        "packages_with_constraint_drag": 0,
+        "packages_known_exploited": 0,
+        "packages_with_abandoned_dependency": 0,
+        "combined_command": "composer update drupal/core symfony/validator twig/twig -w -m",
+        "combined_fixes": 3,
+        "combined_total": 3,
+        "combined_fixes_all": true,
+        "combined_changes": {
+            "changed": 3,
+            "added": 1,
+            "removed": 0,
+            "total": 4,
+            "major_change": false,
+            "downgrade": false,
+            "prerelease": false
+        }
+    },
+    "findings": [
+        {
+            "package": "drupal/core",
+            "version": "10.2.6",
+            "version_normalized": "10.2.6.0",
+            "direct": false,
+            "dev": false,
+            "baselined": false,
+            "counts_for_exit": true,
+            "via_replaced_package": null,
+            "advisories": [
+                {
+                    "id": "PKSA-styk-3knc-d1bt",
+                    "cve": "CVE-2024-45440",
+                    "title": "Drupal Full Path Disclosure",
+                    "link": "https://github.com/advisories/GHSA-mg8j-w93w-xjgc",
+                    "severity": "medium",
+                    "reported_at": "2024-08-29T12:31:05+00:00",
+                    "affected_versions": ">=8.0.0,<10.2.9|>=10.3.0,<10.3.6|>=11.0.0,<11.0.5",
+                    "sources": [
+                        {
+                            "name": "GitHub",
+                            "remoteId": "GHSA-mg8j-w93w-xjgc"
+                        }
+                    ],
+                    "epss": null,
+                    "epss_percentile": null,
+                    "kev_added": null
+                }
+            ],
+            "abandoned": [],
+            "paths_total": 106,
+            "paths": [
+                {
+                    "cyclic": false,
+                    "chain": [
+                        {
+                            "package": "root",
+                            "version": null,
+                            "requires": "~12.4.0"
+                        },
+                        {
+                            "package": "goalgorilla/open_social",
+                            "version": "12.4.2",
+                            "requires": "1.12.0"
+                        },
+                        {
+                            "package": "drupal/address",
+                            "version": "1.12.0",
+                            "requires": "^9.2 || ^10"
+                        }
+                    ],
+                    "target": {
+                        "package": "drupal/core",
+                        "version": "10.2.6"
+                    }
+                },
+                {
+                    "cyclic": false,
+                    "chain": [
+                        {
+                            "package": "root",
+                            "version": null,
+                            "requires": "~12.4.0"
+                        },
+                        {
+                            "package": "goalgorilla/open_social",
+                            "version": "12.4.2",
+                            "requires": "3.4.2"
+                        },
+                        {
+                            "package": "drupal/admin_toolbar",
+                            "version": "3.4.2",
+                            "requires": "^9.2 || ^10"
+                        }
+                    ],
+                    "target": {
+                        "package": "drupal/core",
+                        "version": "10.2.6"
+                    }
+                },
+                {
+                    "cyclic": false,
+                    "chain": [
+                        {
+                            "package": "root",
+                            "version": null,
+                            "requires": "~12.4.0"
+                        },
+                        {
+                            "package": "goalgorilla/open_social",
+                            "version": "12.4.2",
+                            "requires": "1.0.0-rc7"
+                        },
+                        {
+                            "package": "drupal/advancedqueue",
+                            "version": "1.0.0-rc7",
+                            "requires": "^9.1 || ^10"
+                        }
+                    ],
+                    "target": {
+                        "package": "drupal/core",
+                        "version": "10.2.6"
+                    }
+                },
+                {
+                    "cyclic": false,
+                    "chain": [
+                        {
+                            "package": "root",
+                            "version": null,
+                            "requires": "~12.4.0"
+                        },
+                        {
+                            "package": "goalgorilla/open_social",
+                            "version": "12.4.2",
+                            "requires": "1.0.0-beta5"
+                        },
+                        {
+                            "package": "drupal/ajax_comments",
+                            "version": "1.0.0-beta5",
+                            "requires": "^9.1 || ^10"
+                        }
+                    ],
+                    "target": {
+                        "package": "drupal/core",
+                        "version": "10.2.6"
+                    }
+                },
+                {
+                    "cyclic": false,
+                    "chain": [
+                        {
+                            "package": "root",
+                            "version": null,
+                            "requires": "~12.4.0"
+                        },
+                        {
+                            "package": "goalgorilla/open_social",
+                            "version": "12.4.2",
+                            "requires": "6.0.3"
+                        },
+                        {
+                            "package": "drupal/better_exposed_filters",
+                            "version": "6.0.3",
+                            "requires": "^9 || ^10"
+                        }
+                    ],
+                    "target": {
+                        "package": "drupal/core",
+                        "version": "10.2.6"
+                    }
+                },
+                {
+                    "cyclic": false,
+                    "chain": [
+                        {
+                            "package": "root",
+                            "version": null,
+                            "requires": "~12.4.0"
+                        },
+                        {
+                            "package": "goalgorilla/open_social",
+                            "version": "12.4.2",
+                            "requires": "1.0.0-rc4"
+                        },
+                        {
+                            "package": "drupal/block_field",
+                            "version": "1.0.0-rc4",
+                            "requires": "^9 || ^10"
+                        }
+                    ],
+                    "target": {
+                        "package": "drupal/core",
+                        "version": "10.2.6"
+                    }
+                },
+                {
+                    "cyclic": false,
+                    "chain": [
+                        {
+                            "package": "root",
+                            "version": null,
+                            "requires": "~12.4.0"
+                        },
+                        {
+                            "package": "goalgorilla/open_social",
+                            "version": "12.4.2",
+                            "requires": "~2.5.6"
+                        },
+                        {
+                            "package": "drupal/socialblue",
+                            "version": "2.5.8",
+                            "requires": "~2.5.9"
+                        },
+                        {
+                            "package": "drupal/socialbase",
+                            "version": "2.5.15",
+                            "requires": "3.29"
+                        },
+                        {
+                            "package": "drupal/bootstrap",
+                            "version": "3.29.0",
+                            "requires": "^9.5 || ^10"
+                        }
+                    ],
+                    "target": {
+                        "package": "drupal/core",
+                        "version": "10.2.6"
+                    }
+                },
+                {
+                    "cyclic": false,
+                    "chain": [
+                        {
+                            "package": "root",
+                            "version": null,
+                            "requires": "~12.4.0"
+                        },
+                        {
+                            "package": "goalgorilla/open_social",
+                            "version": "12.4.2",
+                            "requires": "1.0.2"
+                        },
+                        {
+                            "package": "drupal/ckeditor",
+                            "version": "1.0.2",
+                            "requires": "^9.4 || ^10"
+                        }
+                    ],
+                    "target": {
+                        "package": "drupal/core",
+                        "version": "10.2.6"
+                    }
+                },
+                {
+                    "cyclic": false,
+                    "chain": [
+                        {
+                            "package": "root",
+                            "version": null,
+                            "requires": "~12.4.0"
+                        },
+                        {
+                            "package": "goalgorilla/open_social",
+                            "version": "12.4.2",
+                            "requires": "1.0.3"
+                        },
+                        {
+                            "package": "drupal/color",
+                            "version": "1.0.3",
+                            "requires": "^9.4 || ^10"
+                        }
+                    ],
+                    "target": {
+                        "package": "drupal/core",
+                        "version": "10.2.6"
+                    }
+                },
+                {
+                    "cyclic": false,
+                    "chain": [
+                        {
+                            "package": "root",
+                            "version": null,
+                            "requires": "~12.4.0"
+                        },
+                        {
+                            "package": "goalgorilla/open_social",
+                            "version": "12.4.2",
+                            "requires": "^1"
+                        },
+                        {
+                            "package": "drupal/config_modify",
+                            "version": "1.1.0",
+                            "requires": "^9 || ^10 || ^11"
+                        }
+                    ],
+                    "target": {
+                        "package": "drupal/core",
+                        "version": "10.2.6"
+                    }
+                }
+            ],
+            "solver_runs": 9,
+            "search_exhausted": false,
+            "remediation": {
+                "status": "verified",
+                "command": "composer update drupal/core -w -m",
+                "strategy": "with-dependencies",
+                "root_constraint_changes": [],
+                "constraint_drag": null,
+                "blocking_risk": [],
+                "summary": {
+                    "changed": 2,
+                    "added": 1,
+                    "removed": 0,
+                    "total": 3,
+                    "major_change": false,
+                    "downgrade": false,
+                    "prerelease": false
+                },
+                "changes": [
+                    {
+                        "package": "drupal/core",
+                        "kind": "upgraded",
+                        "step": "patch",
+                        "from": "10.2.6",
+                        "to": "10.2.9"
+                    },
+                    {
+                        "package": "symfony/polyfill-php81",
+                        "kind": "added",
+                        "step": null,
+                        "from": null,
+                        "to": "v1.37.0"
+                    },
+                    {
+                        "package": "twig/twig",
+                        "kind": "upgraded",
+                        "step": "minor",
+                        "from": "v3.10.3",
+                        "to": "v3.14.0"
+                    }
+                ]
+            },
+            "candidates": [
+                {
+                    "command": "composer update drupal/core -w -m",
+                    "strategy": "with-dependencies",
+                    "outcome": "valid",
+                    "rank": 1,
+                    "summary": {
+                        "changed": 2,
+                        "added": 1,
+                        "removed": 0,
+                        "total": 3,
+                        "major_change": false,
+                        "downgrade": false,
+                        "prerelease": false
+                    },
+                    "solver_status": "resolved"
+                },
+                {
+                    "command": "composer update goalgorilla/open_social:12.4.3 -W -m --with 'drupal/core:>=10.2.9,<10.3.0 || >=10.3.6,<11.0.0 || >=11.0.5'",
+                    "strategy": "parent-update",
+                    "outcome": "valid",
+                    "rank": 2,
+                    "summary": {
+                        "changed": 8,
+                        "added": 3,
+                        "removed": 0,
+                        "total": 11,
+                        "major_change": true,
+                        "downgrade": false,
+                        "prerelease": false
+                    },
+                    "solver_status": "resolved"
+                },
+                {
+                    "command": "composer update goalgorilla/open_social -W -m --with 'drupal/core:>=10.2.9,<10.3.0 || >=10.3.6,<11.0.0 || >=11.0.5'",
+                    "strategy": "parent-update",
+                    "outcome": "valid",
+                    "rank": 3,
+                    "summary": {
+                        "changed": 8,
+                        "added": 3,
+                        "removed": 0,
+                        "total": 11,
+                        "major_change": true,
+                        "downgrade": false,
+                        "prerelease": false
+                    },
+                    "solver_status": "resolved"
+                },
+                {
+                    "command": "composer update drupal/core",
+                    "strategy": "lock-refresh",
+                    "outcome": "rejected",
+                    "reason": "resolves, but drupal/core ends at 10.2.7 which is still affected by PKSA-styk-3knc-d1bt",
+                    "summary": {
+                        "changed": 1,
+                        "added": 0,
+                        "removed": 0,
+                        "total": 1,
+                        "major_change": false,
+                        "downgrade": false,
+                        "prerelease": false
+                    },
+                    "solver_status": "resolved"
+                },
+                {
+                    "command": "composer require --no-update goalgorilla/open_social:^12.5 && composer update goalgorilla/open_social -W -m --with 'drupal/core:>=10.2.9,<10.3.0 || >=10.3.6,<11.0.0 || >=11.0.5'",
+                    "strategy": "root-constraint-widen",
+                    "outcome": "skipped",
+                    "reason": "a better candidate already exists"
+                }
+            ]
+        },
+        {
+            "package": "twig/twig",
+            "version": "v3.10.3",
+            "version_normalized": "3.10.3.0",
+            "direct": false,
+            "dev": false,
+            "baselined": false,
+            "counts_for_exit": true,
+            "via_replaced_package": null,
+            "advisories": [
+                {
+                    "id": "PKSA-6319-ffpf-gx66",
+                    "cve": "CVE-2024-45411",
+                    "title": "Possible sandbox bypass",
+                    "link": "https://symfony.com/blog/twig-security-release-possible-sandbox-bypass",
+                    "severity": "medium",
+                    "reported_at": "2024-09-09T08:51:06+00:00",
+                    "affected_versions": ">=1.0.0,<1.44.7|>=2.0.0,<2.16.0|>=3.0.0,<3.11.0|>=3.12.0,<3.14.0",
+                    "sources": [
+                        {
+                            "name": "GitHub",
+                            "remoteId": "GHSA-6j75-5wfj-gh66"
+                        },
+                        {
+                            "name": "FriendsOfPHP/security-advisories",
+                            "remoteId": "twig/twig/CVE-2024-45411.yaml"
+                        }
+                    ],
+                    "epss": null,
+                    "epss_percentile": null,
+                    "kev_added": null
+                }
+            ],
+            "abandoned": [],
+            "paths_total": 108,
+            "paths": [
+                {
+                    "cyclic": false,
+                    "chain": [
+                        {
+                            "package": "root",
+                            "version": null,
+                            "requires": "~12.4.0"
+                        },
+                        {
+                            "package": "goalgorilla/open_social",
+                            "version": "12.4.2",
+                            "requires": "^1"
+                        },
+                        {
+                            "package": "drupal/config_modify",
+                            "version": "1.1.0",
+                            "requires": "^2 || ^3"
+                        },
+                        {
+                            "package": "drupal/update_helper",
+                            "version": "3.0.4",
+                            "requires": "^2.4"
+                        },
+                        {
+                            "package": "chi-teck/drupal-code-generator",
+                            "version": "2.6.2",
+                            "requires": "^2.14.11 || ^3.1"
+                        }
+                    ],
+                    "target": {
+                        "package": "twig/twig",
+                        "version": "v3.10.3"
+                    }
+                },
+                {
+                    "cyclic": false,
+                    "chain": [
+                        {
+                            "package": "root",
+                            "version": null,
+                            "requires": "~12.4.0"
+                        },
+                        {
+                            "package": "goalgorilla/open_social",
+                            "version": "12.4.2",
+                            "requires": "^3 || ^4"
+                        },
+                        {
+                            "package": "drupal/update_helper",
+                            "version": "3.0.4",
+                            "requires": "^2.4"
+                        },
+                        {
+                            "package": "chi-teck/drupal-code-generator",
+                            "version": "2.6.2",
+                            "requires": "^2.14.11 || ^3.1"
+                        }
+                    ],
+                    "target": {
+                        "package": "twig/twig",
+                        "version": "v3.10.3"
+                    }
+                },
+                {
+                    "cyclic": false,
+                    "chain": [
+                        {
+                            "package": "root",
+                            "version": null,
+                            "requires": "~12.4.0"
+                        },
+                        {
+                            "package": "goalgorilla/open_social",
+                            "version": "12.4.2",
+                            "requires": "1.12.0"
+                        },
+                        {
+                            "package": "drupal/address",
+                            "version": "1.12.0",
+                            "requires": "^9.2 || ^10"
+                        },
+                        {
+                            "package": "drupal/core",
+                            "version": "10.2.6",
+                            "requires": "^3.5.0"
+                        }
+                    ],
+                    "target": {
+                        "package": "twig/twig",
+                        "version": "v3.10.3"
+                    }
+                },
+                {
+                    "cyclic": false,
+                    "chain": [
+                        {
+                            "package": "root",
+                            "version": null,
+                            "requires": "~12.4.0"
+                        },
+                        {
+                            "package": "goalgorilla/open_social",
+                            "version": "12.4.2",
+                            "requires": "3.4.2"
+                        },
+                        {
+                            "package": "drupal/admin_toolbar",
+                            "version": "3.4.2",
+                            "requires": "^9.2 || ^10"
+                        },
+                        {
+                            "package": "drupal/core",
+                            "version": "10.2.6",
+                            "requires": "^3.5.0"
+                        }
+                    ],
+                    "target": {
+                        "package": "twig/twig",
+                        "version": "v3.10.3"
+                    }
+                },
+                {
+                    "cyclic": false,
+                    "chain": [
+                        {
+                            "package": "root",
+                            "version": null,
+                            "requires": "~12.4.0"
+                        },
+                        {
+                            "package": "goalgorilla/open_social",
+                            "version": "12.4.2",
+                            "requires": "1.0.0-rc7"
+                        },
+                        {
+                            "package": "drupal/advancedqueue",
+                            "version": "1.0.0-rc7",
+                            "requires": "^9.1 || ^10"
+                        },
+                        {
+                            "package": "drupal/core",
+                            "version": "10.2.6",
+                            "requires": "^3.5.0"
+                        }
+                    ],
+                    "target": {
+                        "package": "twig/twig",
+                        "version": "v3.10.3"
+                    }
+                },
+                {
+                    "cyclic": false,
+                    "chain": [
+                        {
+                            "package": "root",
+                            "version": null,
+                            "requires": "~12.4.0"
+                        },
+                        {
+                            "package": "goalgorilla/open_social",
+                            "version": "12.4.2",
+                            "requires": "1.0.0-beta5"
+                        },
+                        {
+                            "package": "drupal/ajax_comments",
+                            "version": "1.0.0-beta5",
+                            "requires": "^9.1 || ^10"
+                        },
+                        {
+                            "package": "drupal/core",
+                            "version": "10.2.6",
+                            "requires": "^3.5.0"
+                        }
+                    ],
+                    "target": {
+                        "package": "twig/twig",
+                        "version": "v3.10.3"
+                    }
+                },
+                {
+                    "cyclic": false,
+                    "chain": [
+                        {
+                            "package": "root",
+                            "version": null,
+                            "requires": "~12.4.0"
+                        },
+                        {
+                            "package": "goalgorilla/open_social",
+                            "version": "12.4.2",
+                            "requires": "6.0.3"
+                        },
+                        {
+                            "package": "drupal/better_exposed_filters",
+                            "version": "6.0.3",
+                            "requires": "^9 || ^10"
+                        },
+                        {
+                            "package": "drupal/core",
+                            "version": "10.2.6",
+                            "requires": "^3.5.0"
+                        }
+                    ],
+                    "target": {
+                        "package": "twig/twig",
+                        "version": "v3.10.3"
+                    }
+                },
+                {
+                    "cyclic": false,
+                    "chain": [
+                        {
+                            "package": "root",
+                            "version": null,
+                            "requires": "~12.4.0"
+                        },
+                        {
+                            "package": "goalgorilla/open_social",
+                            "version": "12.4.2",
+                            "requires": "1.0.0-rc4"
+                        },
+                        {
+                            "package": "drupal/block_field",
+                            "version": "1.0.0-rc4",
+                            "requires": "^9 || ^10"
+                        },
+                        {
+                            "package": "drupal/core",
+                            "version": "10.2.6",
+                            "requires": "^3.5.0"
+                        }
+                    ],
+                    "target": {
+                        "package": "twig/twig",
+                        "version": "v3.10.3"
+                    }
+                },
+                {
+                    "cyclic": false,
+                    "chain": [
+                        {
+                            "package": "root",
+                            "version": null,
+                            "requires": "~12.4.0"
+                        },
+                        {
+                            "package": "goalgorilla/open_social",
+                            "version": "12.4.2",
+                            "requires": "~2.5.6"
+                        },
+                        {
+                            "package": "drupal/socialblue",
+                            "version": "2.5.8",
+                            "requires": "~2.5.9"
+                        },
+                        {
+                            "package": "drupal/socialbase",
+                            "version": "2.5.15",
+                            "requires": "3.29"
+                        },
+                        {
+                            "package": "drupal/bootstrap",
+                            "version": "3.29.0",
+                            "requires": "^9.5 || ^10"
+                        },
+                        {
+                            "package": "drupal/core",
+                            "version": "10.2.6",
+                            "requires": "^3.5.0"
+                        }
+                    ],
+                    "target": {
+                        "package": "twig/twig",
+                        "version": "v3.10.3"
+                    }
+                },
+                {
+                    "cyclic": false,
+                    "chain": [
+                        {
+                            "package": "root",
+                            "version": null,
+                            "requires": "~12.4.0"
+                        },
+                        {
+                            "package": "goalgorilla/open_social",
+                            "version": "12.4.2",
+                            "requires": "1.0.2"
+                        },
+                        {
+                            "package": "drupal/ckeditor",
+                            "version": "1.0.2",
+                            "requires": "^9.4 || ^10"
+                        },
+                        {
+                            "package": "drupal/core",
+                            "version": "10.2.6",
+                            "requires": "^3.5.0"
+                        }
+                    ],
+                    "target": {
+                        "package": "twig/twig",
+                        "version": "v3.10.3"
+                    }
+                }
+            ],
+            "solver_runs": 7,
+            "search_exhausted": false,
+            "remediation": {
+                "status": "verified",
+                "command": "composer update twig/twig",
+                "strategy": "lock-refresh",
+                "root_constraint_changes": [],
+                "constraint_drag": null,
+                "blocking_risk": [],
+                "summary": {
+                    "changed": 1,
+                    "added": 1,
+                    "removed": 0,
+                    "total": 2,
+                    "major_change": false,
+                    "downgrade": false,
+                    "prerelease": false
+                },
+                "changes": [
+                    {
+                        "package": "symfony/polyfill-php81",
+                        "kind": "added",
+                        "step": null,
+                        "from": null,
+                        "to": "v1.37.0"
+                    },
+                    {
+                        "package": "twig/twig",
+                        "kind": "upgraded",
+                        "step": "minor",
+                        "from": "v3.10.3",
+                        "to": "v3.14.0"
+                    }
+                ]
+            },
+            "candidates": [
+                {
+                    "command": "composer update twig/twig",
+                    "strategy": "lock-refresh",
+                    "outcome": "valid",
+                    "rank": 1,
+                    "summary": {
+                        "changed": 1,
+                        "added": 1,
+                        "removed": 0,
+                        "total": 2,
+                        "major_change": false,
+                        "downgrade": false,
+                        "prerelease": false
+                    },
+                    "solver_status": "resolved"
+                },
+                {
+                    "command": "composer update twig/twig -w -m --with 'twig/twig:>=3.11.0,<3.12.0 || >=3.14.0'",
+                    "strategy": "with-dependencies",
+                    "outcome": "valid",
+                    "rank": 2,
+                    "summary": {
+                        "changed": 1,
+                        "added": 1,
+                        "removed": 0,
+                        "total": 2,
+                        "major_change": false,
+                        "downgrade": false,
+                        "prerelease": false
+                    },
+                    "solver_status": "resolved"
+                },
+                {
+                    "command": "composer update goalgorilla/open_social:12.4.3 -W -m --with 'twig/twig:>=3.11.0,<3.12.0 || >=3.14.0'",
+                    "strategy": "parent-update",
+                    "outcome": "valid",
+                    "rank": 3,
+                    "summary": {
+                        "changed": 7,
+                        "added": 3,
+                        "removed": 0,
+                        "total": 10,
+                        "major_change": true,
+                        "downgrade": false,
+                        "prerelease": false
+                    },
+                    "solver_status": "resolved"
+                },
+                {
+                    "command": "composer update goalgorilla/open_social -W -m --with 'twig/twig:>=3.11.0,<3.12.0 || >=3.14.0'",
+                    "strategy": "parent-update",
+                    "outcome": "valid",
+                    "rank": 4,
+                    "summary": {
+                        "changed": 7,
+                        "added": 3,
+                        "removed": 0,
+                        "total": 10,
+                        "major_change": true,
+                        "downgrade": false,
+                        "prerelease": false
+                    },
+                    "solver_status": "resolved"
+                },
+                {
+                    "command": "composer require --no-update goalgorilla/open_social:^12.5 && composer update goalgorilla/open_social -W -m --with 'twig/twig:>=3.11.0,<3.12.0 || >=3.14.0'",
+                    "strategy": "root-constraint-widen",
+                    "outcome": "skipped",
+                    "reason": "a better candidate already exists"
+                }
+            ]
+        },
+        {
+            "package": "symfony/validator",
+            "version": "v6.4.7",
+            "version_normalized": "6.4.7.0",
+            "direct": false,
+            "dev": false,
+            "baselined": false,
+            "counts_for_exit": true,
+            "via_replaced_package": null,
+            "advisories": [
+                {
+                    "id": "PKSA-w2tw-kmfg-rt9s",
+                    "cve": "CVE-2024-50343",
+                    "title": "CVE-2024-50343: Incorrect response from Validator when input ends with `\n`",
+                    "link": "https://symfony.com/cve-2024-50343",
+                    "severity": "low",
+                    "reported_at": "2024-08-30T08:00:00+00:00",
+                    "affected_versions": ">=2.0.0,<3.0.0|>=3.0.0,<4.0.0|>=4.0.0,<5.0.0|>=5.0.0,<5.1.0|>=5.1.0,<5.2.0|>=5.2.0,<5.3.0|>=5.3.0,<5.4.0|>=5.4.0,<5.4.43|>=6.0.0,<6.1.0|>=6.1.0,<6.2.0|>=6.2.0,<6.3.0|>=6.3.0,<6.4.0|>=6.4.0,<6.4.11|>=7.0.0,<7.1.0|>=7.1.0,<7.1.4",
+                    "sources": [
+                        {
+                            "name": "GitHub",
+                            "remoteId": "GHSA-g3rh-rrhp-jhh9"
+                        },
+                        {
+                            "name": "FriendsOfPHP/security-advisories",
+                            "remoteId": "symfony/validator/CVE-2024-50343.yaml"
+                        }
+                    ],
+                    "epss": null,
+                    "epss_percentile": null,
+                    "kev_added": null
+                }
+            ],
+            "abandoned": [],
+            "paths_total": 106,
+            "paths": [
+                {
+                    "cyclic": false,
+                    "chain": [
+                        {
+                            "package": "root",
+                            "version": null,
+                            "requires": "~12.4.0"
+                        },
+                        {
+                            "package": "goalgorilla/open_social",
+                            "version": "12.4.2",
+                            "requires": "1.12.0"
+                        },
+                        {
+                            "package": "drupal/address",
+                            "version": "1.12.0",
+                            "requires": "^9.2 || ^10"
+                        },
+                        {
+                            "package": "drupal/core",
+                            "version": "10.2.6",
+                            "requires": "^6.4"
+                        }
+                    ],
+                    "target": {
+                        "package": "symfony/validator",
+                        "version": "v6.4.7"
+                    }
+                },
+                {
+                    "cyclic": false,
+                    "chain": [
+                        {
+                            "package": "root",
+                            "version": null,
+                            "requires": "~12.4.0"
+                        },
+                        {
+                            "package": "goalgorilla/open_social",
+                            "version": "12.4.2",
+                            "requires": "3.4.2"
+                        },
+                        {
+                            "package": "drupal/admin_toolbar",
+                            "version": "3.4.2",
+                            "requires": "^9.2 || ^10"
+                        },
+                        {
+                            "package": "drupal/core",
+                            "version": "10.2.6",
+                            "requires": "^6.4"
+                        }
+                    ],
+                    "target": {
+                        "package": "symfony/validator",
+                        "version": "v6.4.7"
+                    }
+                },
+                {
+                    "cyclic": false,
+                    "chain": [
+                        {
+                            "package": "root",
+                            "version": null,
+                            "requires": "~12.4.0"
+                        },
+                        {
+                            "package": "goalgorilla/open_social",
+                            "version": "12.4.2",
+                            "requires": "1.0.0-rc7"
+                        },
+                        {
+                            "package": "drupal/advancedqueue",
+                            "version": "1.0.0-rc7",
+                            "requires": "^9.1 || ^10"
+                        },
+                        {
+                            "package": "drupal/core",
+                            "version": "10.2.6",
+                            "requires": "^6.4"
+                        }
+                    ],
+                    "target": {
+                        "package": "symfony/validator",
+                        "version": "v6.4.7"
+                    }
+                },
+                {
+                    "cyclic": false,
+                    "chain": [
+                        {
+                            "package": "root",
+                            "version": null,
+                            "requires": "~12.4.0"
+                        },
+                        {
+                            "package": "goalgorilla/open_social",
+                            "version": "12.4.2",
+                            "requires": "1.0.0-beta5"
+                        },
+                        {
+                            "package": "drupal/ajax_comments",
+                            "version": "1.0.0-beta5",
+                            "requires": "^9.1 || ^10"
+                        },
+                        {
+                            "package": "drupal/core",
+                            "version": "10.2.6",
+                            "requires": "^6.4"
+                        }
+                    ],
+                    "target": {
+                        "package": "symfony/validator",
+                        "version": "v6.4.7"
+                    }
+                },
+                {
+                    "cyclic": false,
+                    "chain": [
+                        {
+                            "package": "root",
+                            "version": null,
+                            "requires": "~12.4.0"
+                        },
+                        {
+                            "package": "goalgorilla/open_social",
+                            "version": "12.4.2",
+                            "requires": "6.0.3"
+                        },
+                        {
+                            "package": "drupal/better_exposed_filters",
+                            "version": "6.0.3",
+                            "requires": "^9 || ^10"
+                        },
+                        {
+                            "package": "drupal/core",
+                            "version": "10.2.6",
+                            "requires": "^6.4"
+                        }
+                    ],
+                    "target": {
+                        "package": "symfony/validator",
+                        "version": "v6.4.7"
+                    }
+                },
+                {
+                    "cyclic": false,
+                    "chain": [
+                        {
+                            "package": "root",
+                            "version": null,
+                            "requires": "~12.4.0"
+                        },
+                        {
+                            "package": "goalgorilla/open_social",
+                            "version": "12.4.2",
+                            "requires": "1.0.0-rc4"
+                        },
+                        {
+                            "package": "drupal/block_field",
+                            "version": "1.0.0-rc4",
+                            "requires": "^9 || ^10"
+                        },
+                        {
+                            "package": "drupal/core",
+                            "version": "10.2.6",
+                            "requires": "^6.4"
+                        }
+                    ],
+                    "target": {
+                        "package": "symfony/validator",
+                        "version": "v6.4.7"
+                    }
+                },
+                {
+                    "cyclic": false,
+                    "chain": [
+                        {
+                            "package": "root",
+                            "version": null,
+                            "requires": "~12.4.0"
+                        },
+                        {
+                            "package": "goalgorilla/open_social",
+                            "version": "12.4.2",
+                            "requires": "~2.5.6"
+                        },
+                        {
+                            "package": "drupal/socialblue",
+                            "version": "2.5.8",
+                            "requires": "~2.5.9"
+                        },
+                        {
+                            "package": "drupal/socialbase",
+                            "version": "2.5.15",
+                            "requires": "3.29"
+                        },
+                        {
+                            "package": "drupal/bootstrap",
+                            "version": "3.29.0",
+                            "requires": "^9.5 || ^10"
+                        },
+                        {
+                            "package": "drupal/core",
+                            "version": "10.2.6",
+                            "requires": "^6.4"
+                        }
+                    ],
+                    "target": {
+                        "package": "symfony/validator",
+                        "version": "v6.4.7"
+                    }
+                },
+                {
+                    "cyclic": false,
+                    "chain": [
+                        {
+                            "package": "root",
+                            "version": null,
+                            "requires": "~12.4.0"
+                        },
+                        {
+                            "package": "goalgorilla/open_social",
+                            "version": "12.4.2",
+                            "requires": "1.0.2"
+                        },
+                        {
+                            "package": "drupal/ckeditor",
+                            "version": "1.0.2",
+                            "requires": "^9.4 || ^10"
+                        },
+                        {
+                            "package": "drupal/core",
+                            "version": "10.2.6",
+                            "requires": "^6.4"
+                        }
+                    ],
+                    "target": {
+                        "package": "symfony/validator",
+                        "version": "v6.4.7"
+                    }
+                },
+                {
+                    "cyclic": false,
+                    "chain": [
+                        {
+                            "package": "root",
+                            "version": null,
+                            "requires": "~12.4.0"
+                        },
+                        {
+                            "package": "goalgorilla/open_social",
+                            "version": "12.4.2",
+                            "requires": "1.0.3"
+                        },
+                        {
+                            "package": "drupal/color",
+                            "version": "1.0.3",
+                            "requires": "^9.4 || ^10"
+                        },
+                        {
+                            "package": "drupal/core",
+                            "version": "10.2.6",
+                            "requires": "^6.4"
+                        }
+                    ],
+                    "target": {
+                        "package": "symfony/validator",
+                        "version": "v6.4.7"
+                    }
+                },
+                {
+                    "cyclic": false,
+                    "chain": [
+                        {
+                            "package": "root",
+                            "version": null,
+                            "requires": "~12.4.0"
+                        },
+                        {
+                            "package": "goalgorilla/open_social",
+                            "version": "12.4.2",
+                            "requires": "^1"
+                        },
+                        {
+                            "package": "drupal/config_modify",
+                            "version": "1.1.0",
+                            "requires": "^9 || ^10 || ^11"
+                        },
+                        {
+                            "package": "drupal/core",
+                            "version": "10.2.6",
+                            "requires": "^6.4"
+                        }
+                    ],
+                    "target": {
+                        "package": "symfony/validator",
+                        "version": "v6.4.7"
+                    }
+                }
+            ],
+            "solver_runs": 3,
+            "search_exhausted": false,
+            "remediation": {
+                "status": "verified",
+                "command": "composer update symfony/validator",
+                "strategy": "lock-refresh",
+                "root_constraint_changes": [],
+                "constraint_drag": null,
+                "blocking_risk": [],
+                "summary": {
+                    "changed": 1,
+                    "added": 0,
+                    "removed": 0,
+                    "total": 1,
+                    "major_change": false,
+                    "downgrade": false,
+                    "prerelease": false
+                },
+                "changes": [
+                    {
+                        "package": "symfony/validator",
+                        "kind": "upgraded",
+                        "step": "patch",
+                        "from": "v6.4.7",
+                        "to": "v6.4.12"
+                    }
+                ]
+            },
+            "candidates": [
+                {
+                    "command": "composer update symfony/validator",
+                    "strategy": "lock-refresh",
+                    "outcome": "valid",
+                    "rank": 1,
+                    "summary": {
+                        "changed": 1,
+                        "added": 0,
+                        "removed": 0,
+                        "total": 1,
+                        "major_change": false,
+                        "downgrade": false,
+                        "prerelease": false
+                    },
+                    "solver_status": "resolved"
+                },
+                {
+                    "command": "composer update symfony/validator -w -m --with 'symfony/validator:>=6.4.11,<7.0.0 || >=7.1.4'",
+                    "strategy": "with-dependencies",
+                    "outcome": "valid",
+                    "rank": 2,
+                    "summary": {
+                        "changed": 1,
+                        "added": 0,
+                        "removed": 0,
+                        "total": 1,
+                        "major_change": false,
+                        "downgrade": false,
+                        "prerelease": false
+                    },
+                    "solver_status": "resolved"
+                },
+                {
+                    "command": "composer update goalgorilla/open_social -W -m --with 'symfony/validator:>=6.4.11,<7.0.0 || >=7.1.4'",
+                    "strategy": "parent-update",
+                    "outcome": "valid",
+                    "rank": 3,
+                    "summary": {
+                        "changed": 7,
+                        "added": 2,
+                        "removed": 0,
+                        "total": 9,
+                        "major_change": true,
+                        "downgrade": false,
+                        "prerelease": false
+                    },
+                    "solver_status": "resolved"
+                },
+                {
+                    "command": "composer require --no-update goalgorilla/open_social:^12.5 && composer update goalgorilla/open_social -W -m --with 'symfony/validator:>=6.4.11,<7.0.0 || >=7.1.4'",
+                    "strategy": "root-constraint-widen",
+                    "outcome": "skipped",
+                    "reason": "a better candidate already exists"
+                }
+            ]
+        }
+    ],
+    "unsolved_findings": []
+}

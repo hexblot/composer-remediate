@@ -57,8 +57,8 @@ final class SubprocessSolverTest extends TestCase
         mkdir($dir, 0700);
         $manifest = $dir . '/alternate.json';
         $lock = $dir . '/alternate.lock';
-        copy($fixture . '/composer.json', $manifest);
-        copy($fixture . '/composer.lock', $lock);
+        copy($fixture . '/composer.fixture.json', $manifest);
+        copy($fixture . '/composer.fixture.lock', $lock);
         array_push($this->cleanup, $manifest, $lock, $dir);
         $lockBefore = (string) file_get_contents($lock);
         Platform::putEnv('COMPOSER', $manifest);

@@ -1,0 +1,2054 @@
+{
+    "schema_version": 1,
+    "analysis_metadata": {
+        "project": "mautic-symfony54-multi",
+        "engine_version": "dev-main",
+        "composer_version": "(fixture)",
+        "php_version": "(fixture)",
+        "advisory_source": "advisory snapshot advisories.json",
+        "solver": "in-process Composer dry-run",
+        "solver_runs": "34",
+        "composer_json_sha256": "18533079f898b12aa3f298794daaccfee6a77b29dfc60bec3a8dc32230a585c0",
+        "composer_lock_sha256": "c47245784bc08d6a02faebde18793701a05281b31605f8901cbe25173ec5f8b3",
+        "analysis_timestamp": "(fixture)",
+        "locked_packages": "256"
+    },
+    "exit_code": 2,
+    "warnings": [],
+    "summary": {
+        "advisories": 16,
+        "packages": 7,
+        "packages_with_fix": 6,
+        "fail_on": null,
+        "packages_gated": 7,
+        "packages_baselined": 0,
+        "packages_with_constraint_drag": 0,
+        "packages_known_exploited": 0,
+        "packages_with_abandoned_dependency": 1,
+        "combined_command": "composer update symfony/http-client symfony/http-foundation symfony/process symfony/security-http symfony/validator twig/twig",
+        "combined_fixes": 7,
+        "combined_total": 16,
+        "combined_fixes_all": false,
+        "combined_changes": {
+            "changed": 6,
+            "added": 0,
+            "removed": 0,
+            "total": 6,
+            "major_change": false,
+            "downgrade": false,
+            "prerelease": false
+        }
+    },
+    "findings": [
+        {
+            "package": "phpoffice/phpspreadsheet",
+            "version": "1.27.1",
+            "version_normalized": "1.27.1.0",
+            "direct": false,
+            "dev": false,
+            "baselined": false,
+            "counts_for_exit": true,
+            "via_replaced_package": null,
+            "advisories": [
+                {
+                    "id": "PKSA-7f9v-sb8k-krfb",
+                    "cve": "CVE-2024-45291",
+                    "title": "PhpSpreadsheet allows absolute path traversal and Server-Side Request Forgery in HTML writer when embedding images is enabled",
+                    "link": "https://github.com/advisories/GHSA-w9xv-qf98-ccq4",
+                    "severity": "medium",
+                    "reported_at": "2024-10-07T15:58:06+00:00",
+                    "affected_versions": ">=2.0.0,<2.1.1|<1.29.2|>=2.2.0,<2.3.0",
+                    "sources": [
+                        {
+                            "name": "GitHub",
+                            "remoteId": "GHSA-w9xv-qf98-ccq4"
+                        }
+                    ],
+                    "epss": null,
+                    "epss_percentile": null,
+                    "kev_added": null
+                },
+                {
+                    "id": "PKSA-dbrb-pvhs-h3st",
+                    "cve": "CVE-2024-47873",
+                    "title": "XmlScanner bypass leads to XXE",
+                    "link": "https://github.com/advisories/GHSA-jw4x-v69f-hh5w",
+                    "severity": "high",
+                    "reported_at": "2024-11-18T20:01:20+00:00",
+                    "affected_versions": ">=3.3.0,<3.4.0|>=2.2.0,<2.3.2|>=2.0.0,<2.1.3|<1.29.4",
+                    "sources": [
+                        {
+                            "name": "GitHub",
+                            "remoteId": "GHSA-jw4x-v69f-hh5w"
+                        }
+                    ],
+                    "epss": null,
+                    "epss_percentile": null,
+                    "kev_added": null
+                },
+                {
+                    "id": "PKSA-dvbq-8ft2-ngrw",
+                    "cve": "CVE-2024-45060",
+                    "title": "PhpSpreadsheet has an Unauthenticated Cross-Site-Scripting (XSS) in sample file",
+                    "link": "https://github.com/advisories/GHSA-v66g-p9x6-v98p",
+                    "severity": "medium",
+                    "reported_at": "2024-10-07T14:43:30+00:00",
+                    "affected_versions": ">=2.0.0,<2.1.1|<1.29.2|>=2.2.0,<2.3.0",
+                    "sources": [
+                        {
+                            "name": "GitHub",
+                            "remoteId": "GHSA-v66g-p9x6-v98p"
+                        }
+                    ],
+                    "epss": null,
+                    "epss_percentile": null,
+                    "kev_added": null
+                },
+                {
+                    "id": "PKSA-gst3-cdk3-bpqt",
+                    "cve": "CVE-2024-48917",
+                    "title": "XXE in PHPSpreadsheet's XLSX reader",
+                    "link": "https://github.com/advisories/GHSA-7cc9-j4mv-vcjp",
+                    "severity": "high",
+                    "reported_at": "2024-11-18T20:01:46+00:00",
+                    "affected_versions": ">=3.3.0,<3.4.0|>=2.2.0,<2.3.2|>=2.0.0,<2.1.3|<1.29.4",
+                    "sources": [
+                        {
+                            "name": "GitHub",
+                            "remoteId": "GHSA-7cc9-j4mv-vcjp"
+                        }
+                    ],
+                    "epss": null,
+                    "epss_percentile": null,
+                    "kev_added": null
+                },
+                {
+                    "id": "PKSA-m4hk-rk8p-4t5p",
+                    "cve": "CVE-2024-45046",
+                    "title": "PhpSpreadsheet HTML writer is vulnerable to Cross-Site Scripting via style information",
+                    "link": "https://github.com/advisories/GHSA-wgmf-q9vr-vww6",
+                    "severity": "medium",
+                    "reported_at": "2024-08-29T17:56:56+00:00",
+                    "affected_versions": "<1.29.1|>=2.0.0,<2.1.0",
+                    "sources": [
+                        {
+                            "name": "GitHub",
+                            "remoteId": "GHSA-wgmf-q9vr-vww6"
+                        }
+                    ],
+                    "epss": null,
+                    "epss_percentile": null,
+                    "kev_added": null
+                },
+                {
+                    "id": "PKSA-mkg2-1wyw-57y7",
+                    "cve": "CVE-2024-45293",
+                    "title": "XXE in PHPSpreadsheet's XLSX reader",
+                    "link": "https://github.com/advisories/GHSA-6hwr-6v2f-3m88",
+                    "severity": "high",
+                    "reported_at": "2024-10-07T15:58:52+00:00",
+                    "affected_versions": ">=2.0.0,<2.1.1|<1.29.1|>=2.2.0,<2.3.0",
+                    "sources": [
+                        {
+                            "name": "GitHub",
+                            "remoteId": "GHSA-6hwr-6v2f-3m88"
+                        }
+                    ],
+                    "epss": null,
+                    "epss_percentile": null,
+                    "kev_added": null
+                },
+                {
+                    "id": "PKSA-p1pj-q951-6f1x",
+                    "cve": "CVE-2024-45292",
+                    "title": "PhpSpreadsheet HTML writer is vulnerable to Cross-Site Scripting via JavaScript hyperlinks",
+                    "link": "https://github.com/advisories/GHSA-r8w8-74ww-j4wh",
+                    "severity": "medium",
+                    "reported_at": "2024-10-07T15:58:25+00:00",
+                    "affected_versions": ">=2.0.0,<2.1.1|<1.29.2|>=2.2.0,<2.3.0",
+                    "sources": [
+                        {
+                            "name": "GitHub",
+                            "remoteId": "GHSA-r8w8-74ww-j4wh"
+                        }
+                    ],
+                    "epss": null,
+                    "epss_percentile": null,
+                    "kev_added": null
+                },
+                {
+                    "id": "PKSA-xk3k-rd1m-pxmg",
+                    "cve": "CVE-2024-45290",
+                    "title": "PhpSpreadsheet allows absolute path traversal and Server-Side Request Forgery when opening XLSX file",
+                    "link": "https://github.com/advisories/GHSA-5gpr-w2p5-6m37",
+                    "severity": "high",
+                    "reported_at": "2024-10-07T15:57:38+00:00",
+                    "affected_versions": ">=2.0.0,<2.1.1|<1.29.2|>=2.2.0,<2.3.0",
+                    "sources": [
+                        {
+                            "name": "GitHub",
+                            "remoteId": "GHSA-5gpr-w2p5-6m37"
+                        }
+                    ],
+                    "epss": null,
+                    "epss_percentile": null,
+                    "kev_added": null
+                },
+                {
+                    "id": "PKSA-xp7t-fbrb-qjv4",
+                    "cve": "CVE-2024-45048",
+                    "title": "XXE in PHPSpreadsheet encoding is returned",
+                    "link": "https://github.com/advisories/GHSA-ghg6-32f9-2jp7",
+                    "severity": "high",
+                    "reported_at": "2024-08-29T17:58:27+00:00",
+                    "affected_versions": ">=2.0.0,<2.1.1|>=2.2.0,<2.2.1|<1.29.1",
+                    "sources": [
+                        {
+                            "name": "GitHub",
+                            "remoteId": "GHSA-ghg6-32f9-2jp7"
+                        }
+                    ],
+                    "epss": null,
+                    "epss_percentile": null,
+                    "kev_added": null
+                }
+            ],
+            "abandoned": [],
+            "paths_total": 1,
+            "paths": [
+                {
+                    "cyclic": false,
+                    "chain": [
+                        {
+                            "package": "root",
+                            "version": null,
+                            "requires": "^5.0"
+                        },
+                        {
+                            "package": "mautic/core-lib",
+                            "version": "5.0.0-dev",
+                            "requires": "^1.15 < 1.28"
+                        }
+                    ],
+                    "target": {
+                        "package": "phpoffice/phpspreadsheet",
+                        "version": "1.27.1"
+                    }
+                }
+            ],
+            "solver_runs": 4,
+            "search_exhausted": false,
+            "remediation": {
+                "status": "none",
+                "outcome": "none",
+                "blocker": null
+            },
+            "candidates": [
+                {
+                    "command": "composer update phpoffice/phpspreadsheet",
+                    "strategy": "lock-refresh",
+                    "outcome": "rejected",
+                    "reason": "resolves, but phpoffice/phpspreadsheet ends at 1.27.1 which is still affected by PKSA-7f9v-sb8k-krfb, PKSA-dbrb-pvhs-h3st, PKSA-dvbq-8ft2-ngrw, PKSA-gst3-cdk3-bpqt, PKSA-m4hk-rk8p-4t5p, PKSA-mkg2-1wyw-57y7, PKSA-p1pj-q951-6f1x, PKSA-xk3k-rd1m-pxmg, PKSA-xp7t-fbrb-qjv4",
+                    "summary": {
+                        "changed": 0,
+                        "added": 0,
+                        "removed": 0,
+                        "total": 0,
+                        "major_change": false,
+                        "downgrade": false,
+                        "prerelease": false
+                    },
+                    "solver_status": "resolved"
+                },
+                {
+                    "command": "composer update phpoffice/phpspreadsheet -w -m --with 'phpoffice/phpspreadsheet:>=1.29.4,<2.0.0 || >=2.1.3,<2.2.0 || >=2.3.2,<3.3.0 || >=3.4.0'",
+                    "strategy": "with-dependencies",
+                    "outcome": "rejected",
+                    "reason": "Composer could not resolve the dependencies: Your requirements could not be resolved to an installable set of packages.\n  Problem 1\n    - Root composer.json requires mautic/core-lib ^5.0 -> satisfiable by mautic/core-lib[5.0.0-dev, ..., 5.1.x-dev].\n    - mautic/core-lib[5.0.0-alpha, ..., 5.1.x-dev] require theofidry/psysh-bundle ~4.4.0 -> found theofidry/psysh-bundle[4.5.0] but it does not match the constraint.\n    - mautic/core-lib 5.0.0-dev requires phpoffice/phpspreadsheet ^1.15 < 1.28 -> found phpoffice/phpspreadsheet[1.27.1] but it conflicts with your temporary update constraint (phpoffice/phpspreadsheet:>=1.29.4,<2.0.0 || >=2.1.3,<2.2.0 || >=2.3.2,<3.3.0 || >=3.4.0).\nUse the option --with-all-dependencies (-W) to allow upgrades, downgrades and removals for packages currently locked to specific versions.",
+                    "solver_status": "conflict"
+                },
+                {
+                    "command": "composer update mautic/core-lib -W -m --with 'phpoffice/phpspreadsheet:>=1.29.4,<2.0.0 || >=2.1.3,<2.2.0 || >=2.3.2,<3.3.0 || >=3.4.0'",
+                    "strategy": "parent-update",
+                    "outcome": "rejected",
+                    "reason": "Composer could not resolve the dependencies: Your requirements could not be resolved to an installable set of packages.\n  Problem 1\n    - Root composer.json requires mautic/core-lib ^5.0 -> satisfiable by mautic/core-lib[5.0.0-dev, ..., 5.1.x-dev].\n    - mautic/core-lib[5.0.0-dev, ..., 5.1.x-dev] require friendsofsymfony/oauth-server-bundle dev-upgrade-2 -> found friendsofsymfony/oauth-server-bundle[1.0.0, ..., 1.7.x-dev, 2.0.0-alpha.0] but these do not match your constraint and are therefore not installable. Make sure you either fix the constraint or avoid updating this package to keep the one present in the lock file (friendsofsymfony/oauth-server-bundle[dev-upgrade-2]).",
+                    "solver_status": "conflict"
+                },
+                {
+                    "command": "composer require --no-update mautic/core-lib:^6.0 && composer update mautic/core-lib -W -m --with 'phpoffice/phpspreadsheet:>=1.29.4,<2.0.0 || >=2.1.3,<2.2.0 || >=2.3.2,<3.3.0 || >=3.4.0'",
+                    "strategy": "root-constraint-widen",
+                    "outcome": "rejected",
+                    "reason": "Composer could not resolve the dependencies: Your requirements could not be resolved to an installable set of packages.\n  Problem 1\n    - Root composer.json requires mautic/core-lib ^6.0, found mautic/core-lib[5.0.0-dev, ..., 5.1.x-dev] but it does not match the constraint.",
+                    "solver_status": "conflict"
+                }
+            ]
+        },
+        {
+            "package": "symfony/process",
+            "version": "v5.4.40",
+            "version_normalized": "5.4.40.0",
+            "direct": false,
+            "dev": false,
+            "baselined": false,
+            "counts_for_exit": true,
+            "via_replaced_package": null,
+            "advisories": [
+                {
+                    "id": "PKSA-wws7-mr54-jsny",
+                    "cve": "CVE-2024-51736",
+                    "title": "CVE-2024-51736: Command execution hijack on Windows with Process class",
+                    "link": "https://symfony.com/cve-2024-51736",
+                    "severity": "high",
+                    "reported_at": "2024-11-05T08:00:00+00:00",
+                    "affected_versions": ">=2.0.0,<3.0.0|>=3.0.0,<4.0.0|>=4.0.0,<5.0.0|>=5.0.0,<5.1.0|>=5.1.0,<5.2.0|>=5.2.0,<5.3.0|>=5.3.0,<5.4.0|>=5.4.0,<5.4.46|>=6.0.0,<6.1.0|>=6.1.0,<6.2.0|>=6.2.0,<6.3.0|>=6.3.0,<6.4.0|>=6.4.0,<6.4.14|>=7.0.0,<7.1.0|>=7.1.0,<7.1.7",
+                    "sources": [
+                        {
+                            "name": "GitHub",
+                            "remoteId": "GHSA-qq5c-677p-737q"
+                        },
+                        {
+                            "name": "FriendsOfPHP/security-advisories",
+                            "remoteId": "symfony/process/CVE-2024-51736.yaml"
+                        }
+                    ],
+                    "epss": null,
+                    "epss_percentile": null,
+                    "kev_added": null
+                }
+            ],
+            "abandoned": [],
+            "paths_total": 5,
+            "paths": [
+                {
+                    "cyclic": false,
+                    "chain": [
+                        {
+                            "package": "root",
+                            "version": null,
+                            "requires": "^5.0"
+                        },
+                        {
+                            "package": "mautic/core-lib",
+                            "version": "5.0.0-dev",
+                            "requires": "^2.2"
+                        },
+                        {
+                            "package": "composer/composer",
+                            "version": "2.7.7",
+                            "requires": "^5.4 || ^6.0 || ^7"
+                        }
+                    ],
+                    "target": {
+                        "package": "symfony/process",
+                        "version": "v5.4.40"
+                    }
+                },
+                {
+                    "cyclic": false,
+                    "chain": [
+                        {
+                            "package": "root",
+                            "version": null,
+                            "requires": "^5.0"
+                        },
+                        {
+                            "package": "mautic/core-lib",
+                            "version": "5.0.0-dev",
+                            "requires": "~5.4.0"
+                        }
+                    ],
+                    "target": {
+                        "package": "symfony/process",
+                        "version": "v5.4.40"
+                    }
+                },
+                {
+                    "cyclic": false,
+                    "chain": [
+                        {
+                            "package": "root",
+                            "version": null,
+                            "requires": "^3.14"
+                        },
+                        {
+                            "package": "friendsofphp/php-cs-fixer",
+                            "version": "v3.53.0",
+                            "requires": "^5.4 || ^6.0 || ^7.0"
+                        }
+                    ],
+                    "target": {
+                        "package": "symfony/process",
+                        "version": "v5.4.40"
+                    }
+                },
+                {
+                    "cyclic": false,
+                    "chain": [
+                        {
+                            "package": "root",
+                            "version": null,
+                            "requires": "^3.2"
+                        },
+                        {
+                            "package": "codeception/module-webdriver",
+                            "version": "3.2.2",
+                            "requires": "^1.14.0"
+                        },
+                        {
+                            "package": "php-webdriver/webdriver",
+                            "version": "1.15.1",
+                            "requires": "^5.0 || ^6.0 || ^7.0"
+                        }
+                    ],
+                    "target": {
+                        "package": "symfony/process",
+                        "version": "v5.4.40"
+                    }
+                },
+                {
+                    "cyclic": false,
+                    "chain": [
+                        {
+                            "package": "root",
+                            "version": null,
+                            "requires": "^1.38"
+                        },
+                        {
+                            "package": "symfony/maker-bundle",
+                            "version": "v1.50.0",
+                            "requires": "^5.4.7|^6.0"
+                        }
+                    ],
+                    "target": {
+                        "package": "symfony/process",
+                        "version": "v5.4.40"
+                    }
+                }
+            ],
+            "solver_runs": 7,
+            "search_exhausted": false,
+            "remediation": {
+                "status": "verified",
+                "command": "composer update symfony/process",
+                "strategy": "lock-refresh",
+                "root_constraint_changes": [],
+                "constraint_drag": null,
+                "blocking_risk": [],
+                "summary": {
+                    "changed": 1,
+                    "added": 0,
+                    "removed": 0,
+                    "total": 1,
+                    "major_change": false,
+                    "downgrade": false,
+                    "prerelease": false
+                },
+                "changes": [
+                    {
+                        "package": "symfony/process",
+                        "kind": "upgraded",
+                        "step": "patch",
+                        "from": "v5.4.40",
+                        "to": "v5.4.47"
+                    }
+                ]
+            },
+            "candidates": [
+                {
+                    "command": "composer update symfony/process",
+                    "strategy": "lock-refresh",
+                    "outcome": "valid",
+                    "rank": 1,
+                    "summary": {
+                        "changed": 1,
+                        "added": 0,
+                        "removed": 0,
+                        "total": 1,
+                        "major_change": false,
+                        "downgrade": false,
+                        "prerelease": false
+                    },
+                    "solver_status": "resolved"
+                },
+                {
+                    "command": "composer update symfony/process -w -m --with 'symfony/process:>=5.4.46,<6.0.0 || >=6.4.14,<7.0.0 || >=7.1.7'",
+                    "strategy": "with-dependencies",
+                    "outcome": "valid",
+                    "rank": 2,
+                    "summary": {
+                        "changed": 1,
+                        "added": 0,
+                        "removed": 0,
+                        "total": 1,
+                        "major_change": false,
+                        "downgrade": false,
+                        "prerelease": false
+                    },
+                    "solver_status": "resolved"
+                },
+                {
+                    "command": "composer update symfony/maker-bundle -W -m --with 'symfony/process:>=5.4.46,<6.0.0 || >=6.4.14,<7.0.0 || >=7.1.7'",
+                    "strategy": "parent-update",
+                    "outcome": "valid",
+                    "rank": 3,
+                    "summary": {
+                        "changed": 1,
+                        "added": 0,
+                        "removed": 0,
+                        "total": 1,
+                        "major_change": false,
+                        "downgrade": false,
+                        "prerelease": false
+                    },
+                    "solver_status": "resolved"
+                },
+                {
+                    "command": "composer update codeception/module-webdriver -W -m --with 'symfony/process:>=5.4.46,<6.0.0 || >=6.4.14,<7.0.0 || >=7.1.7'",
+                    "strategy": "parent-update",
+                    "outcome": "valid",
+                    "rank": 4,
+                    "summary": {
+                        "changed": 1,
+                        "added": 0,
+                        "removed": 0,
+                        "total": 1,
+                        "major_change": false,
+                        "downgrade": false,
+                        "prerelease": false
+                    },
+                    "solver_status": "resolved"
+                },
+                {
+                    "command": "composer update friendsofphp/php-cs-fixer -W -m --with 'symfony/process:>=5.4.46,<6.0.0 || >=6.4.14,<7.0.0 || >=7.1.7'",
+                    "strategy": "parent-update",
+                    "outcome": "valid",
+                    "rank": 5,
+                    "summary": {
+                        "changed": 2,
+                        "added": 9,
+                        "removed": 0,
+                        "total": 11,
+                        "major_change": false,
+                        "downgrade": false,
+                        "prerelease": false
+                    },
+                    "solver_status": "resolved"
+                },
+                {
+                    "command": "composer update mautic/core-lib -W -m --with 'symfony/process:>=5.4.46,<6.0.0 || >=6.4.14,<7.0.0 || >=7.1.7'",
+                    "strategy": "parent-update",
+                    "outcome": "rejected",
+                    "reason": "Composer could not resolve the dependencies: Your requirements could not be resolved to an installable set of packages.\n  Problem 1\n    - Root composer.json requires mautic/core-lib ^5.0 -> satisfiable by mautic/core-lib[5.0.0-dev, ..., 5.1.x-dev].\n    - mautic/core-lib[5.0.0-dev, ..., 5.1.x-dev] require friendsofsymfony/oauth-server-bundle dev-upgrade-2 -> found friendsofsymfony/oauth-server-bundle[1.0.0, ..., 1.7.x-dev, 2.0.0-alpha.0] but these do not match your constraint and are therefore not installable. Make sure you either fix the constraint or avoid updating this package to keep the one present in the lock file (friendsofsymfony/oauth-server-bundle[dev-upgrade-2]).",
+                    "solver_status": "conflict"
+                },
+                {
+                    "command": "composer update mautic/core-lib friendsofphp/php-cs-fixer codeception/module-webdriver symfony/maker-bundle -W -m --with 'symfony/process:>=5.4.46,<6.0.0 || >=6.4.14,<7.0.0 || >=7.1.7'",
+                    "strategy": "parent-update",
+                    "outcome": "rejected",
+                    "reason": "Composer could not resolve the dependencies: Your requirements could not be resolved to an installable set of packages.\n  Problem 1\n    - Root composer.json requires mautic/core-lib ^5.0 -> satisfiable by mautic/core-lib[5.0.0-dev, ..., 5.1.x-dev].\n    - mautic/core-lib[5.0.0-dev, ..., 5.1.x-dev] require friendsofsymfony/oauth-server-bundle dev-upgrade-2 -> found friendsofsymfony/oauth-server-bundle[1.0.0, ..., 1.7.x-dev, 2.0.0-alpha.0] but these do not match your constraint and are therefore not installable. Make sure you either fix the constraint or avoid updating this package to keep the one present in the lock file (friendsofsymfony/oauth-server-bundle[dev-upgrade-2]).",
+                    "solver_status": "conflict"
+                },
+                {
+                    "command": "composer require --no-update mautic/core-lib:^6.0 && composer update mautic/core-lib -W -m --with 'symfony/process:>=5.4.46,<6.0.0 || >=6.4.14,<7.0.0 || >=7.1.7'",
+                    "strategy": "root-constraint-widen",
+                    "outcome": "skipped",
+                    "reason": "a better candidate already exists"
+                },
+                {
+                    "command": "composer require --no-update friendsofphp/php-cs-fixer:^4.0 && composer update friendsofphp/php-cs-fixer -W -m --with 'symfony/process:>=5.4.46,<6.0.0 || >=6.4.14,<7.0.0 || >=7.1.7'",
+                    "strategy": "root-constraint-widen",
+                    "outcome": "skipped",
+                    "reason": "a better candidate already exists"
+                },
+                {
+                    "command": "composer require --no-update symfony/maker-bundle:^2.0 && composer update symfony/maker-bundle -W -m --with 'symfony/process:>=5.4.46,<6.0.0 || >=6.4.14,<7.0.0 || >=7.1.7'",
+                    "strategy": "root-constraint-widen",
+                    "outcome": "skipped",
+                    "reason": "a better candidate already exists"
+                }
+            ]
+        },
+        {
+            "package": "symfony/security-http",
+            "version": "v5.4.35",
+            "version_normalized": "5.4.35.0",
+            "direct": false,
+            "dev": false,
+            "baselined": false,
+            "counts_for_exit": true,
+            "via_replaced_package": null,
+            "advisories": [
+                {
+                    "id": "PKSA-rqvm-b18n-vg69",
+                    "cve": "CVE-2024-51996",
+                    "title": "CVE-2024-51996: Authentication Bypass via persisted RememberMe cookie",
+                    "link": "https://symfony.com/cve-2024-51996",
+                    "severity": "high",
+                    "reported_at": "2024-11-13T08:00:00+00:00",
+                    "affected_versions": ">=5.3.0,<5.4.0|>=5.4.0,<5.4.47|>=6.0.0,<6.1.0|>=6.1.0,<6.2.0|>=6.2.0,<6.3.0|>=6.3.0,<6.4.0|>=6.4.0,<6.4.15|>=7.0.0,<7.1.0|>=7.1.0,<7.1.8",
+                    "sources": [
+                        {
+                            "name": "GitHub",
+                            "remoteId": "GHSA-cg23-qf8f-62rr"
+                        },
+                        {
+                            "name": "FriendsOfPHP/security-advisories",
+                            "remoteId": "symfony/security-http/CVE-2024-51996.yaml"
+                        }
+                    ],
+                    "epss": null,
+                    "epss_percentile": null,
+                    "kev_added": null
+                }
+            ],
+            "abandoned": [],
+            "paths_total": 6,
+            "paths": [
+                {
+                    "cyclic": false,
+                    "chain": [
+                        {
+                            "package": "root",
+                            "version": null,
+                            "requires": "^5.0"
+                        },
+                        {
+                            "package": "mautic/core-lib",
+                            "version": "5.0.0-dev",
+                            "requires": "dev-upgrade-2"
+                        },
+                        {
+                            "package": "friendsofsymfony/oauth-server-bundle",
+                            "version": "dev-upgrade-2",
+                            "requires": "^4.4 || ^5.1"
+                        },
+                        {
+                            "package": "symfony/security-bundle",
+                            "version": "v5.4.35",
+                            "requires": "^5.4.30|^6.3.6"
+                        }
+                    ],
+                    "target": {
+                        "package": "symfony/security-http",
+                        "version": "v5.4.35"
+                    }
+                },
+                {
+                    "cyclic": false,
+                    "chain": [
+                        {
+                            "package": "root",
+                            "version": null,
+                            "requires": "^5.0"
+                        },
+                        {
+                            "package": "mautic/core-lib",
+                            "version": "5.0.0-dev",
+                            "requires": "dev-symfony5"
+                        },
+                        {
+                            "package": "lightsaml/sp-bundle",
+                            "version": "dev-symfony5",
+                            "requires": "~2.7|~3.0|~4.0|~5.0"
+                        },
+                        {
+                            "package": "symfony/security-bundle",
+                            "version": "v5.4.35",
+                            "requires": "^5.4.30|^6.3.6"
+                        }
+                    ],
+                    "target": {
+                        "package": "symfony/security-http",
+                        "version": "v5.4.35"
+                    }
+                },
+                {
+                    "cyclic": false,
+                    "chain": [
+                        {
+                            "package": "root",
+                            "version": null,
+                            "requires": "^5.0"
+                        },
+                        {
+                            "package": "mautic/core-lib",
+                            "version": "5.0.0-dev",
+                            "requires": "~5.4.0"
+                        },
+                        {
+                            "package": "symfony/security-bundle",
+                            "version": "v5.4.35",
+                            "requires": "^5.4.30|^6.3.6"
+                        }
+                    ],
+                    "target": {
+                        "package": "symfony/security-http",
+                        "version": "v5.4.35"
+                    }
+                },
+                {
+                    "cyclic": false,
+                    "chain": [
+                        {
+                            "package": "root",
+                            "version": null,
+                            "requires": "^5.0"
+                        },
+                        {
+                            "package": "mautic/core-lib",
+                            "version": "5.0.0-dev",
+                            "requires": "dev-upgrade-2"
+                        },
+                        {
+                            "package": "friendsofsymfony/oauth-server-bundle",
+                            "version": "dev-upgrade-2",
+                            "requires": "^4.4 || ^5.1"
+                        },
+                        {
+                            "package": "symfony/security-bundle",
+                            "version": "v5.4.35",
+                            "requires": "^5.3"
+                        },
+                        {
+                            "package": "symfony/security-guard",
+                            "version": "v5.4.35",
+                            "requires": "^5.3"
+                        }
+                    ],
+                    "target": {
+                        "package": "symfony/security-http",
+                        "version": "v5.4.35"
+                    }
+                },
+                {
+                    "cyclic": false,
+                    "chain": [
+                        {
+                            "package": "root",
+                            "version": null,
+                            "requires": "^5.0"
+                        },
+                        {
+                            "package": "mautic/core-lib",
+                            "version": "5.0.0-dev",
+                            "requires": "dev-symfony5"
+                        },
+                        {
+                            "package": "lightsaml/sp-bundle",
+                            "version": "dev-symfony5",
+                            "requires": "~2.7|~3.0|~4.0|~5.0"
+                        },
+                        {
+                            "package": "symfony/security-bundle",
+                            "version": "v5.4.35",
+                            "requires": "^5.3"
+                        },
+                        {
+                            "package": "symfony/security-guard",
+                            "version": "v5.4.35",
+                            "requires": "^5.3"
+                        }
+                    ],
+                    "target": {
+                        "package": "symfony/security-http",
+                        "version": "v5.4.35"
+                    }
+                },
+                {
+                    "cyclic": false,
+                    "chain": [
+                        {
+                            "package": "root",
+                            "version": null,
+                            "requires": "^5.0"
+                        },
+                        {
+                            "package": "mautic/core-lib",
+                            "version": "5.0.0-dev",
+                            "requires": "~5.4.0"
+                        },
+                        {
+                            "package": "symfony/security-bundle",
+                            "version": "v5.4.35",
+                            "requires": "^5.3"
+                        },
+                        {
+                            "package": "symfony/security-guard",
+                            "version": "v5.4.35",
+                            "requires": "^5.3"
+                        }
+                    ],
+                    "target": {
+                        "package": "symfony/security-http",
+                        "version": "v5.4.35"
+                    }
+                }
+            ],
+            "solver_runs": 3,
+            "search_exhausted": false,
+            "remediation": {
+                "status": "verified",
+                "command": "composer update symfony/security-http",
+                "strategy": "lock-refresh",
+                "root_constraint_changes": [],
+                "constraint_drag": null,
+                "blocking_risk": [],
+                "summary": {
+                    "changed": 1,
+                    "added": 0,
+                    "removed": 0,
+                    "total": 1,
+                    "major_change": false,
+                    "downgrade": false,
+                    "prerelease": false
+                },
+                "changes": [
+                    {
+                        "package": "symfony/security-http",
+                        "kind": "upgraded",
+                        "step": "patch",
+                        "from": "v5.4.35",
+                        "to": "v5.4.47"
+                    }
+                ]
+            },
+            "candidates": [
+                {
+                    "command": "composer update symfony/security-http",
+                    "strategy": "lock-refresh",
+                    "outcome": "valid",
+                    "rank": 1,
+                    "summary": {
+                        "changed": 1,
+                        "added": 0,
+                        "removed": 0,
+                        "total": 1,
+                        "major_change": false,
+                        "downgrade": false,
+                        "prerelease": false
+                    },
+                    "solver_status": "resolved"
+                },
+                {
+                    "command": "composer update symfony/security-http -w -m --with 'symfony/security-http:>=5.4.47,<6.0.0 || >=6.4.15,<7.0.0 || >=7.1.8'",
+                    "strategy": "with-dependencies",
+                    "outcome": "valid",
+                    "rank": 2,
+                    "summary": {
+                        "changed": 1,
+                        "added": 0,
+                        "removed": 0,
+                        "total": 1,
+                        "major_change": false,
+                        "downgrade": false,
+                        "prerelease": false
+                    },
+                    "solver_status": "resolved"
+                },
+                {
+                    "command": "composer update mautic/core-lib -W -m --with 'symfony/security-http:>=5.4.47,<6.0.0 || >=6.4.15,<7.0.0 || >=7.1.8'",
+                    "strategy": "parent-update",
+                    "outcome": "rejected",
+                    "reason": "Composer could not resolve the dependencies: Your requirements could not be resolved to an installable set of packages.\n  Problem 1\n    - Root composer.json requires mautic/core-lib ^5.0 -> satisfiable by mautic/core-lib[5.0.0-dev, ..., 5.1.x-dev].\n    - mautic/core-lib[5.0.0-dev, ..., 5.1.x-dev] require friendsofsymfony/oauth-server-bundle dev-upgrade-2 -> found friendsofsymfony/oauth-server-bundle[1.0.0, ..., 1.7.x-dev, 2.0.0-alpha.0] but these do not match your constraint and are therefore not installable. Make sure you either fix the constraint or avoid updating this package to keep the one present in the lock file (friendsofsymfony/oauth-server-bundle[dev-upgrade-2]).",
+                    "solver_status": "conflict"
+                },
+                {
+                    "command": "composer require --no-update mautic/core-lib:^6.0 && composer update mautic/core-lib -W -m --with 'symfony/security-http:>=5.4.47,<6.0.0 || >=6.4.15,<7.0.0 || >=7.1.8'",
+                    "strategy": "root-constraint-widen",
+                    "outcome": "skipped",
+                    "reason": "a better candidate already exists"
+                }
+            ]
+        },
+        {
+            "package": "symfony/http-client",
+            "version": "v5.4.35",
+            "version_normalized": "5.4.35.0",
+            "direct": false,
+            "dev": false,
+            "baselined": false,
+            "counts_for_exit": true,
+            "via_replaced_package": null,
+            "advisories": [
+                {
+                    "id": "PKSA-4k7v-pfvw-nqvp",
+                    "cve": "CVE-2024-50342",
+                    "title": "CVE-2024-50342: Internal address and port enumeration allowed by NoPrivateNetworkHttpClient",
+                    "link": "https://symfony.com/cve-2024-50342",
+                    "severity": "low",
+                    "reported_at": "2024-11-13T08:00:00+00:00",
+                    "affected_versions": ">=4.3.0,<4.4.0|>=4.4.0,<5.0.0|>=5.0.0,<5.1.0|>=5.1.0,<5.2.0|>=5.2.0,<5.3.0|>=5.3.0,<5.4.0|>=5.4.0,<5.4.47|>=6.0.0,<6.1.0|>=6.1.0,<6.2.0|>=6.2.0,<6.3.0|>=6.3.0,<6.4.0|>=6.4.0,<6.4.15|>=7.0.0,<7.1.0|>=7.1.0,<7.1.8",
+                    "sources": [
+                        {
+                            "name": "GitHub",
+                            "remoteId": "GHSA-9c3x-r3wp-mgxm"
+                        },
+                        {
+                            "name": "FriendsOfPHP/security-advisories",
+                            "remoteId": "symfony/http-client/CVE-2024-50342.yaml"
+                        }
+                    ],
+                    "epss": null,
+                    "epss_percentile": null,
+                    "kev_added": null
+                }
+            ],
+            "abandoned": [],
+            "paths_total": 1,
+            "paths": [
+                {
+                    "cyclic": false,
+                    "chain": [
+                        {
+                            "package": "root",
+                            "version": null,
+                            "requires": "^5.0"
+                        },
+                        {
+                            "package": "mautic/core-lib",
+                            "version": "5.0.0-dev",
+                            "requires": "~5.4.0"
+                        }
+                    ],
+                    "target": {
+                        "package": "symfony/http-client",
+                        "version": "v5.4.35"
+                    }
+                }
+            ],
+            "solver_runs": 3,
+            "search_exhausted": false,
+            "remediation": {
+                "status": "verified",
+                "command": "composer update symfony/http-client",
+                "strategy": "lock-refresh",
+                "root_constraint_changes": [],
+                "constraint_drag": null,
+                "blocking_risk": [],
+                "summary": {
+                    "changed": 1,
+                    "added": 0,
+                    "removed": 0,
+                    "total": 1,
+                    "major_change": false,
+                    "downgrade": false,
+                    "prerelease": false
+                },
+                "changes": [
+                    {
+                        "package": "symfony/http-client",
+                        "kind": "upgraded",
+                        "step": "patch",
+                        "from": "v5.4.35",
+                        "to": "v5.4.47"
+                    }
+                ]
+            },
+            "candidates": [
+                {
+                    "command": "composer update symfony/http-client",
+                    "strategy": "lock-refresh",
+                    "outcome": "valid",
+                    "rank": 1,
+                    "summary": {
+                        "changed": 1,
+                        "added": 0,
+                        "removed": 0,
+                        "total": 1,
+                        "major_change": false,
+                        "downgrade": false,
+                        "prerelease": false
+                    },
+                    "solver_status": "resolved"
+                },
+                {
+                    "command": "composer update symfony/http-client -w -m --with 'symfony/http-client:>=5.4.47,<6.0.0 || >=6.4.15,<7.0.0 || >=7.1.8'",
+                    "strategy": "with-dependencies",
+                    "outcome": "valid",
+                    "rank": 2,
+                    "summary": {
+                        "changed": 1,
+                        "added": 0,
+                        "removed": 0,
+                        "total": 1,
+                        "major_change": false,
+                        "downgrade": false,
+                        "prerelease": false
+                    },
+                    "solver_status": "resolved"
+                },
+                {
+                    "command": "composer update mautic/core-lib -W -m --with 'symfony/http-client:>=5.4.47,<6.0.0 || >=6.4.15,<7.0.0 || >=7.1.8'",
+                    "strategy": "parent-update",
+                    "outcome": "rejected",
+                    "reason": "Composer could not resolve the dependencies: Your requirements could not be resolved to an installable set of packages.\n  Problem 1\n    - Root composer.json requires mautic/core-lib ^5.0 -> satisfiable by mautic/core-lib[5.0.0-dev, ..., 5.1.x-dev].\n    - mautic/core-lib[5.0.0-dev, ..., 5.1.x-dev] require friendsofsymfony/oauth-server-bundle dev-upgrade-2 -> found friendsofsymfony/oauth-server-bundle[1.0.0, ..., 1.7.x-dev, 2.0.0-alpha.0] but these do not match your constraint and are therefore not installable. Make sure you either fix the constraint or avoid updating this package to keep the one present in the lock file (friendsofsymfony/oauth-server-bundle[dev-upgrade-2]).",
+                    "solver_status": "conflict"
+                },
+                {
+                    "command": "composer require --no-update mautic/core-lib:^6.0 && composer update mautic/core-lib -W -m --with 'symfony/http-client:>=5.4.47,<6.0.0 || >=6.4.15,<7.0.0 || >=7.1.8'",
+                    "strategy": "root-constraint-widen",
+                    "outcome": "skipped",
+                    "reason": "a better candidate already exists"
+                }
+            ]
+        },
+        {
+            "package": "symfony/http-foundation",
+            "version": "v5.4.35",
+            "version_normalized": "5.4.35.0",
+            "direct": false,
+            "dev": false,
+            "baselined": false,
+            "counts_for_exit": true,
+            "via_replaced_package": null,
+            "advisories": [
+                {
+                    "id": "PKSA-b35n-565h-rs4q",
+                    "cve": "CVE-2024-50345",
+                    "title": "CVE-2024-50345: Open redirect via browser-sanitized URLs",
+                    "link": "https://symfony.com/cve-2024-50345",
+                    "severity": "low",
+                    "reported_at": "2024-11-05T08:00:00+00:00",
+                    "affected_versions": ">=2.0.0,<3.0.0|>=3.0.0,<4.0.0|>=4.0.0,<5.0.0|>=5.0.0,<5.1.0|>=5.1.0,<5.2.0|>=5.2.0,<5.3.0|>=5.3.0,<5.4.0|>=5.4.0,<5.4.46|>=6.0.0,<6.1.0|>=6.1.0,<6.2.0|>=6.2.0,<6.3.0|>=6.3.0,<6.4.0|>=6.4.0,<6.4.14|>=7.0.0,<7.1.0|>=7.1.0,<7.1.7",
+                    "sources": [
+                        {
+                            "name": "GitHub",
+                            "remoteId": "GHSA-mrqx-rp3w-jpjp"
+                        },
+                        {
+                            "name": "FriendsOfPHP/security-advisories",
+                            "remoteId": "symfony/http-foundation/CVE-2024-50345.yaml"
+                        }
+                    ],
+                    "epss": null,
+                    "epss_percentile": null,
+                    "kev_added": null
+                }
+            ],
+            "abandoned": [
+                {
+                    "package": "sensio/framework-extra-bundle",
+                    "replacement": "Symfony"
+                },
+                {
+                    "package": "theofidry/psysh-bundle",
+                    "replacement": null
+                }
+            ],
+            "paths_total": 89,
+            "paths": [
+                {
+                    "cyclic": false,
+                    "chain": [
+                        {
+                            "package": "root",
+                            "version": null,
+                            "requires": "^5.0"
+                        },
+                        {
+                            "package": "mautic/core-lib",
+                            "version": "5.0.0-dev",
+                            "requires": "dev-upgrade-2"
+                        },
+                        {
+                            "package": "friendsofsymfony/oauth-server-bundle",
+                            "version": "dev-upgrade-2",
+                            "requires": "~1.1"
+                        },
+                        {
+                            "package": "friendsofsymfony/oauth2-php",
+                            "version": "1.3.1",
+                            "requires": "~3.0|~4.0|~5.0"
+                        }
+                    ],
+                    "target": {
+                        "package": "symfony/http-foundation",
+                        "version": "v5.4.35"
+                    }
+                },
+                {
+                    "cyclic": false,
+                    "chain": [
+                        {
+                            "package": "root",
+                            "version": null,
+                            "requires": "^5.0"
+                        },
+                        {
+                            "package": "mautic/core-lib",
+                            "version": "5.0.0-dev",
+                            "requires": "^3.5.0"
+                        },
+                        {
+                            "package": "friendsofsymfony/rest-bundle",
+                            "version": "3.6.0",
+                            "requires": "^5.4|^6.0"
+                        }
+                    ],
+                    "target": {
+                        "package": "symfony/http-foundation",
+                        "version": "v5.4.35"
+                    }
+                },
+                {
+                    "cyclic": false,
+                    "chain": [
+                        {
+                            "package": "root",
+                            "version": null,
+                            "requires": "^5.0"
+                        },
+                        {
+                            "package": "mautic/core-lib",
+                            "version": "5.0.0-dev",
+                            "requires": "dev-symfony5"
+                        },
+                        {
+                            "package": "lightsaml/sp-bundle",
+                            "version": "dev-symfony5",
+                            "requires": "dev-symfony5"
+                        },
+                        {
+                            "package": "lightsaml/symfony-bridge",
+                            "version": "dev-symfony5",
+                            "requires": "~1.1|~4.1"
+                        },
+                        {
+                            "package": "litesaml/lightsaml",
+                            "version": "v4.1.6",
+                            "requires": "~5.0|~6.0"
+                        }
+                    ],
+                    "target": {
+                        "package": "symfony/http-foundation",
+                        "version": "v5.4.35"
+                    }
+                },
+                {
+                    "cyclic": false,
+                    "chain": [
+                        {
+                            "package": "root",
+                            "version": null,
+                            "requires": "^5.0"
+                        },
+                        {
+                            "package": "mautic/core-lib",
+                            "version": "5.0.0-dev",
+                            "requires": "~5.4.0"
+                        }
+                    ],
+                    "target": {
+                        "package": "symfony/http-foundation",
+                        "version": "v5.4.35"
+                    }
+                },
+                {
+                    "cyclic": false,
+                    "chain": [
+                        {
+                            "package": "root",
+                            "version": null,
+                            "requires": "^5.0"
+                        },
+                        {
+                            "package": "mautic/core-lib",
+                            "version": "5.0.0-dev",
+                            "requires": "^1.0"
+                        },
+                        {
+                            "package": "stack/builder",
+                            "version": "v1.0.6",
+                            "requires": "~2.1|~3.0|~4.0|~5.0"
+                        }
+                    ],
+                    "target": {
+                        "package": "symfony/http-foundation",
+                        "version": "v5.4.35"
+                    }
+                },
+                {
+                    "cyclic": false,
+                    "chain": [
+                        {
+                            "package": "root",
+                            "version": null,
+                            "requires": "^5.0"
+                        },
+                        {
+                            "package": "mautic/core-lib",
+                            "version": "5.0.0-dev",
+                            "requires": "^3.4.4"
+                        },
+                        {
+                            "package": "doctrine/doctrine-fixtures-bundle",
+                            "version": "3.5.1",
+                            "requires": "^2.2"
+                        },
+                        {
+                            "package": "doctrine/doctrine-bundle",
+                            "version": "2.11.1",
+                            "requires": "^5.4 || ^6.0 || ^7.0"
+                        },
+                        {
+                            "package": "symfony/framework-bundle",
+                            "version": "v5.4.35",
+                            "requires": "^5.4.24|^6.2.11"
+                        }
+                    ],
+                    "target": {
+                        "package": "symfony/http-foundation",
+                        "version": "v5.4.35"
+                    }
+                },
+                {
+                    "cyclic": false,
+                    "chain": [
+                        {
+                            "package": "root",
+                            "version": null,
+                            "requires": "^5.0"
+                        },
+                        {
+                            "package": "mautic/core-lib",
+                            "version": "5.0.0-dev",
+                            "requires": "^3.2.2"
+                        },
+                        {
+                            "package": "doctrine/doctrine-migrations-bundle",
+                            "version": "3.3.0",
+                            "requires": "^2.4"
+                        },
+                        {
+                            "package": "doctrine/doctrine-bundle",
+                            "version": "2.11.1",
+                            "requires": "^5.4 || ^6.0 || ^7.0"
+                        },
+                        {
+                            "package": "symfony/framework-bundle",
+                            "version": "v5.4.35",
+                            "requires": "^5.4.24|^6.2.11"
+                        }
+                    ],
+                    "target": {
+                        "package": "symfony/http-foundation",
+                        "version": "v5.4.35"
+                    }
+                },
+                {
+                    "cyclic": false,
+                    "chain": [
+                        {
+                            "package": "root",
+                            "version": null,
+                            "requires": "^5.0"
+                        },
+                        {
+                            "package": "mautic/core-lib",
+                            "version": "5.0.0-dev",
+                            "requires": "^2.7"
+                        },
+                        {
+                            "package": "doctrine/doctrine-bundle",
+                            "version": "2.11.1",
+                            "requires": "^5.4 || ^6.0 || ^7.0"
+                        },
+                        {
+                            "package": "symfony/framework-bundle",
+                            "version": "v5.4.35",
+                            "requires": "^5.4.24|^6.2.11"
+                        }
+                    ],
+                    "target": {
+                        "package": "symfony/http-foundation",
+                        "version": "v5.4.35"
+                    }
+                },
+                {
+                    "cyclic": false,
+                    "chain": [
+                        {
+                            "package": "root",
+                            "version": null,
+                            "requires": "^5.0"
+                        },
+                        {
+                            "package": "mautic/core-lib",
+                            "version": "5.0.0-dev",
+                            "requires": "^3.2.2"
+                        },
+                        {
+                            "package": "doctrine/doctrine-migrations-bundle",
+                            "version": "3.3.0",
+                            "requires": "^5.4 || ^6.0 || ^7.0"
+                        },
+                        {
+                            "package": "symfony/framework-bundle",
+                            "version": "v5.4.35",
+                            "requires": "^5.4.24|^6.2.11"
+                        }
+                    ],
+                    "target": {
+                        "package": "symfony/http-foundation",
+                        "version": "v5.4.35"
+                    }
+                },
+                {
+                    "cyclic": false,
+                    "chain": [
+                        {
+                            "package": "root",
+                            "version": null,
+                            "requires": "^5.0"
+                        },
+                        {
+                            "package": "mautic/core-lib",
+                            "version": "5.0.0-dev",
+                            "requires": "dev-upgrade-2"
+                        },
+                        {
+                            "package": "friendsofsymfony/oauth-server-bundle",
+                            "version": "dev-upgrade-2",
+                            "requires": "^4.4 || ^5.1"
+                        },
+                        {
+                            "package": "symfony/framework-bundle",
+                            "version": "v5.4.35",
+                            "requires": "^5.4.24|^6.2.11"
+                        }
+                    ],
+                    "target": {
+                        "package": "symfony/http-foundation",
+                        "version": "v5.4.35"
+                    }
+                }
+            ],
+            "solver_runs": 8,
+            "search_exhausted": true,
+            "remediation": {
+                "status": "verified",
+                "command": "composer update symfony/http-foundation",
+                "strategy": "lock-refresh",
+                "root_constraint_changes": [],
+                "constraint_drag": null,
+                "blocking_risk": [],
+                "summary": {
+                    "changed": 1,
+                    "added": 0,
+                    "removed": 0,
+                    "total": 1,
+                    "major_change": false,
+                    "downgrade": false,
+                    "prerelease": false
+                },
+                "changes": [
+                    {
+                        "package": "symfony/http-foundation",
+                        "kind": "upgraded",
+                        "step": "patch",
+                        "from": "v5.4.35",
+                        "to": "v5.4.48"
+                    }
+                ]
+            },
+            "candidates": [
+                {
+                    "command": "composer update symfony/http-foundation",
+                    "strategy": "lock-refresh",
+                    "outcome": "valid",
+                    "rank": 1,
+                    "summary": {
+                        "changed": 1,
+                        "added": 0,
+                        "removed": 0,
+                        "total": 1,
+                        "major_change": false,
+                        "downgrade": false,
+                        "prerelease": false
+                    },
+                    "solver_status": "resolved"
+                },
+                {
+                    "command": "composer update symfony/http-foundation -w -m --with 'symfony/http-foundation:>=5.4.46,<6.0.0 || >=6.4.14,<7.0.0 || >=7.1.7'",
+                    "strategy": "with-dependencies",
+                    "outcome": "valid",
+                    "rank": 2,
+                    "summary": {
+                        "changed": 1,
+                        "added": 0,
+                        "removed": 0,
+                        "total": 1,
+                        "major_change": false,
+                        "downgrade": false,
+                        "prerelease": false
+                    },
+                    "solver_status": "resolved"
+                },
+                {
+                    "command": "composer update symfony/maker-bundle -W -m --with 'symfony/http-foundation:>=5.4.46,<6.0.0 || >=6.4.14,<7.0.0 || >=7.1.7'",
+                    "strategy": "parent-update",
+                    "outcome": "valid",
+                    "rank": 3,
+                    "summary": {
+                        "changed": 1,
+                        "added": 0,
+                        "removed": 0,
+                        "total": 1,
+                        "major_change": false,
+                        "downgrade": false,
+                        "prerelease": false
+                    },
+                    "solver_status": "resolved"
+                },
+                {
+                    "command": "composer update symfony/web-profiler-bundle -W -m --with 'symfony/http-foundation:>=5.4.46,<6.0.0 || >=6.4.14,<7.0.0 || >=7.1.7'",
+                    "strategy": "parent-update",
+                    "outcome": "valid",
+                    "rank": 4,
+                    "summary": {
+                        "changed": 2,
+                        "added": 0,
+                        "removed": 0,
+                        "total": 2,
+                        "major_change": false,
+                        "downgrade": false,
+                        "prerelease": false
+                    },
+                    "solver_status": "resolved"
+                },
+                {
+                    "command": "composer update liip/test-fixtures-bundle -W -m --with 'symfony/http-foundation:>=5.4.46,<6.0.0 || >=6.4.14,<7.0.0 || >=7.1.7'",
+                    "strategy": "parent-update",
+                    "outcome": "valid",
+                    "rank": 5,
+                    "summary": {
+                        "changed": 2,
+                        "added": 0,
+                        "removed": 0,
+                        "total": 2,
+                        "major_change": false,
+                        "downgrade": false,
+                        "prerelease": false
+                    },
+                    "solver_status": "resolved"
+                },
+                {
+                    "command": "composer update liip/functional-test-bundle -W -m --with 'symfony/http-foundation:>=5.4.46,<6.0.0 || >=6.4.14,<7.0.0 || >=7.1.7'",
+                    "strategy": "parent-update",
+                    "outcome": "valid",
+                    "rank": 6,
+                    "summary": {
+                        "changed": 13,
+                        "added": 0,
+                        "removed": 5,
+                        "total": 18,
+                        "major_change": false,
+                        "downgrade": false,
+                        "prerelease": false
+                    },
+                    "solver_status": "resolved"
+                },
+                {
+                    "command": "composer update mautic/core-lib -W -m --with 'symfony/http-foundation:>=5.4.46,<6.0.0 || >=6.4.14,<7.0.0 || >=7.1.7'",
+                    "strategy": "parent-update",
+                    "outcome": "rejected",
+                    "reason": "Composer could not resolve the dependencies: Your requirements could not be resolved to an installable set of packages.\n  Problem 1\n    - Root composer.json requires mautic/core-lib ^5.0 -> satisfiable by mautic/core-lib[5.0.0-dev, ..., 5.1.x-dev].\n    - mautic/core-lib[5.0.0-dev, ..., 5.1.x-dev] require friendsofsymfony/oauth-server-bundle dev-upgrade-2 -> found friendsofsymfony/oauth-server-bundle[1.0.0, ..., 1.7.x-dev, 2.0.0-alpha.0] but these do not match your constraint and are therefore not installable. Make sure you either fix the constraint or avoid updating this package to keep the one present in the lock file (friendsofsymfony/oauth-server-bundle[dev-upgrade-2]).",
+                    "solver_status": "conflict"
+                },
+                {
+                    "command": "composer update mautic/core-lib liip/functional-test-bundle liip/test-fixtures-bundle symfony/maker-bundle symfony/web-profiler-bundle -W -m --with 'symfony/http-foundation:>=5.4.46,<6.0.0 || >=6.4.14,<7.0.0 || >=7.1.7'",
+                    "strategy": "parent-update",
+                    "outcome": "rejected",
+                    "reason": "Composer could not resolve the dependencies: Your requirements could not be resolved to an installable set of packages.\n  Problem 1\n    - Root composer.json requires mautic/core-lib ^5.0 -> satisfiable by mautic/core-lib[5.0.0-dev, ..., 5.1.x-dev].\n    - mautic/core-lib[5.0.0-dev, ..., 5.1.x-dev] require friendsofsymfony/oauth-server-bundle dev-upgrade-2 -> found friendsofsymfony/oauth-server-bundle[1.0.0, ..., 1.7.x-dev, 2.0.0-alpha.0] but these do not match your constraint and are therefore not installable. Make sure you either fix the constraint or avoid updating this package to keep the one present in the lock file (friendsofsymfony/oauth-server-bundle[dev-upgrade-2]).",
+                    "solver_status": "conflict"
+                },
+                {
+                    "command": "composer require --no-update mautic/core-lib:^6.0 && composer update mautic/core-lib -W -m --with 'symfony/http-foundation:>=5.4.46,<6.0.0 || >=6.4.14,<7.0.0 || >=7.1.7'",
+                    "strategy": "root-constraint-widen",
+                    "outcome": "skipped",
+                    "reason": "a better candidate already exists"
+                },
+                {
+                    "command": "composer require --no-update liip/functional-test-bundle:^5.0 && composer update liip/functional-test-bundle -W -m --with 'symfony/http-foundation:>=5.4.46,<6.0.0 || >=6.4.14,<7.0.0 || >=7.1.7'",
+                    "strategy": "root-constraint-widen",
+                    "outcome": "skipped",
+                    "reason": "a better candidate already exists"
+                }
+            ]
+        },
+        {
+            "package": "symfony/validator",
+            "version": "v5.4.35",
+            "version_normalized": "5.4.35.0",
+            "direct": false,
+            "dev": false,
+            "baselined": false,
+            "counts_for_exit": true,
+            "via_replaced_package": null,
+            "advisories": [
+                {
+                    "id": "PKSA-w2tw-kmfg-rt9s",
+                    "cve": "CVE-2024-50343",
+                    "title": "CVE-2024-50343: Incorrect response from Validator when input ends with `\n`",
+                    "link": "https://symfony.com/cve-2024-50343",
+                    "severity": "low",
+                    "reported_at": "2024-08-30T08:00:00+00:00",
+                    "affected_versions": ">=2.0.0,<3.0.0|>=3.0.0,<4.0.0|>=4.0.0,<5.0.0|>=5.0.0,<5.1.0|>=5.1.0,<5.2.0|>=5.2.0,<5.3.0|>=5.3.0,<5.4.0|>=5.4.0,<5.4.43|>=6.0.0,<6.1.0|>=6.1.0,<6.2.0|>=6.2.0,<6.3.0|>=6.3.0,<6.4.0|>=6.4.0,<6.4.11|>=7.0.0,<7.1.0|>=7.1.0,<7.1.4",
+                    "sources": [
+                        {
+                            "name": "GitHub",
+                            "remoteId": "GHSA-g3rh-rrhp-jhh9"
+                        },
+                        {
+                            "name": "FriendsOfPHP/security-advisories",
+                            "remoteId": "symfony/validator/CVE-2024-50343.yaml"
+                        }
+                    ],
+                    "epss": null,
+                    "epss_percentile": null,
+                    "kev_added": null
+                }
+            ],
+            "abandoned": [],
+            "paths_total": 1,
+            "paths": [
+                {
+                    "cyclic": false,
+                    "chain": [
+                        {
+                            "package": "root",
+                            "version": null,
+                            "requires": "^5.0"
+                        },
+                        {
+                            "package": "mautic/core-lib",
+                            "version": "5.0.0-dev",
+                            "requires": "~5.4.0"
+                        }
+                    ],
+                    "target": {
+                        "package": "symfony/validator",
+                        "version": "v5.4.35"
+                    }
+                }
+            ],
+            "solver_runs": 3,
+            "search_exhausted": false,
+            "remediation": {
+                "status": "verified",
+                "command": "composer update symfony/validator",
+                "strategy": "lock-refresh",
+                "root_constraint_changes": [],
+                "constraint_drag": null,
+                "blocking_risk": [],
+                "summary": {
+                    "changed": 1,
+                    "added": 0,
+                    "removed": 0,
+                    "total": 1,
+                    "major_change": false,
+                    "downgrade": false,
+                    "prerelease": false
+                },
+                "changes": [
+                    {
+                        "package": "symfony/validator",
+                        "kind": "upgraded",
+                        "step": "patch",
+                        "from": "v5.4.35",
+                        "to": "v5.4.47"
+                    }
+                ]
+            },
+            "candidates": [
+                {
+                    "command": "composer update symfony/validator",
+                    "strategy": "lock-refresh",
+                    "outcome": "valid",
+                    "rank": 1,
+                    "summary": {
+                        "changed": 1,
+                        "added": 0,
+                        "removed": 0,
+                        "total": 1,
+                        "major_change": false,
+                        "downgrade": false,
+                        "prerelease": false
+                    },
+                    "solver_status": "resolved"
+                },
+                {
+                    "command": "composer update symfony/validator -w -m --with 'symfony/validator:>=5.4.43,<6.0.0 || >=6.4.11,<7.0.0 || >=7.1.4'",
+                    "strategy": "with-dependencies",
+                    "outcome": "valid",
+                    "rank": 2,
+                    "summary": {
+                        "changed": 1,
+                        "added": 0,
+                        "removed": 0,
+                        "total": 1,
+                        "major_change": false,
+                        "downgrade": false,
+                        "prerelease": false
+                    },
+                    "solver_status": "resolved"
+                },
+                {
+                    "command": "composer update mautic/core-lib -W -m --with 'symfony/validator:>=5.4.43,<6.0.0 || >=6.4.11,<7.0.0 || >=7.1.4'",
+                    "strategy": "parent-update",
+                    "outcome": "rejected",
+                    "reason": "Composer could not resolve the dependencies: Your requirements could not be resolved to an installable set of packages.\n  Problem 1\n    - Root composer.json requires mautic/core-lib ^5.0 -> satisfiable by mautic/core-lib[5.0.0-dev, ..., 5.1.x-dev].\n    - mautic/core-lib[5.0.0-dev, ..., 5.1.x-dev] require friendsofsymfony/oauth-server-bundle dev-upgrade-2 -> found friendsofsymfony/oauth-server-bundle[1.0.0, ..., 1.7.x-dev, 2.0.0-alpha.0] but these do not match your constraint and are therefore not installable. Make sure you either fix the constraint or avoid updating this package to keep the one present in the lock file (friendsofsymfony/oauth-server-bundle[dev-upgrade-2]).",
+                    "solver_status": "conflict"
+                },
+                {
+                    "command": "composer require --no-update mautic/core-lib:^6.0 && composer update mautic/core-lib -W -m --with 'symfony/validator:>=5.4.43,<6.0.0 || >=6.4.11,<7.0.0 || >=7.1.4'",
+                    "strategy": "root-constraint-widen",
+                    "outcome": "skipped",
+                    "reason": "a better candidate already exists"
+                }
+            ]
+        },
+        {
+            "package": "twig/twig",
+            "version": "v3.14.0",
+            "version_normalized": "3.14.0.0",
+            "direct": false,
+            "dev": false,
+            "baselined": false,
+            "counts_for_exit": true,
+            "via_replaced_package": null,
+            "advisories": [
+                {
+                    "id": "PKSA-2wrf-1xmk-1pky",
+                    "cve": "CVE-2024-51755",
+                    "title": "Unguarded calls to __isset() and to array-accesses when the sandbox is enabled",
+                    "link": "https://symfony.com/blog/cve-2024-51755-unguarded-calls-to-isset-and-to-array-accesses-in-a-sandbox",
+                    "severity": "low",
+                    "reported_at": "2024-11-06T08:00:00+00:00",
+                    "affected_versions": ">=1.0.0,<2.0.0|>=2.0.0,<3.0.0|>=3.0.0,<3.11.2|>=3.12.0,<3.14.1",
+                    "sources": [
+                        {
+                            "name": "GitHub",
+                            "remoteId": "GHSA-jjxq-ff2g-95vh"
+                        },
+                        {
+                            "name": "FriendsOfPHP/security-advisories",
+                            "remoteId": "twig/twig/CVE-2024-51755.yaml"
+                        }
+                    ],
+                    "epss": null,
+                    "epss_percentile": null,
+                    "kev_added": null
+                },
+                {
+                    "id": "PKSA-yhcn-xrg3-68b1",
+                    "cve": "CVE-2024-51754",
+                    "title": "Unguarded calls to __toString() when nesting an object into an array",
+                    "link": "https://symfony.com/blog/cve-2024-51754-unguarded-calls-to-tostring-in-a-sandbox-when-an-object-is-in-an-array-or-an-argument-list",
+                    "severity": "low",
+                    "reported_at": "2024-11-06T08:00:00+00:00",
+                    "affected_versions": ">=1.0.0,<2.0.0|>=2.0.0,<3.0.0|>=3.0.0,<3.11.2|>=3.12.0,<3.14.1",
+                    "sources": [
+                        {
+                            "name": "GitHub",
+                            "remoteId": "GHSA-6377-hfv9-hqf6"
+                        },
+                        {
+                            "name": "FriendsOfPHP/security-advisories",
+                            "remoteId": "twig/twig/CVE-2024-51754.yaml"
+                        }
+                    ],
+                    "epss": null,
+                    "epss_percentile": null,
+                    "kev_added": null
+                }
+            ],
+            "abandoned": [],
+            "paths_total": 10,
+            "paths": [
+                {
+                    "cyclic": false,
+                    "chain": [
+                        {
+                            "package": "root",
+                            "version": null,
+                            "requires": "^5.0"
+                        },
+                        {
+                            "package": "mautic/core-lib",
+                            "version": "5.0.0-dev",
+                            "requires": "^3.1.0"
+                        },
+                        {
+                            "package": "oneup/uploader-bundle",
+                            "version": "3.2.1",
+                            "requires": "^2.4 || ^3.0"
+                        }
+                    ],
+                    "target": {
+                        "package": "twig/twig",
+                        "version": "v3.14.0"
+                    }
+                },
+                {
+                    "cyclic": false,
+                    "chain": [
+                        {
+                            "package": "root",
+                            "version": null,
+                            "requires": "^5.0"
+                        },
+                        {
+                            "package": "mautic/core-lib",
+                            "version": "5.0.0-dev",
+                            "requires": "dev-upgrade-2"
+                        },
+                        {
+                            "package": "friendsofsymfony/oauth-server-bundle",
+                            "version": "dev-upgrade-2",
+                            "requires": "^4.4 || ^5.1"
+                        },
+                        {
+                            "package": "symfony/twig-bundle",
+                            "version": "v5.4.35",
+                            "requires": "^5.3|^6.0"
+                        },
+                        {
+                            "package": "symfony/twig-bridge",
+                            "version": "v5.4.35",
+                            "requires": "^2.13|^3.0.4"
+                        }
+                    ],
+                    "target": {
+                        "package": "twig/twig",
+                        "version": "v3.14.0"
+                    }
+                },
+                {
+                    "cyclic": false,
+                    "chain": [
+                        {
+                            "package": "root",
+                            "version": null,
+                            "requires": "^5.0"
+                        },
+                        {
+                            "package": "mautic/core-lib",
+                            "version": "5.0.0-dev",
+                            "requires": "^12.3"
+                        },
+                        {
+                            "package": "helios-ag/fm-elfinder-bundle",
+                            "version": "12.5",
+                            "requires": "^4.4 || ^5.0 || ^5.2 || ^6.0 || ^7.0"
+                        },
+                        {
+                            "package": "symfony/twig-bundle",
+                            "version": "v5.4.35",
+                            "requires": "^5.3|^6.0"
+                        },
+                        {
+                            "package": "symfony/twig-bridge",
+                            "version": "v5.4.35",
+                            "requires": "^2.13|^3.0.4"
+                        }
+                    ],
+                    "target": {
+                        "package": "twig/twig",
+                        "version": "v3.14.0"
+                    }
+                },
+                {
+                    "cyclic": false,
+                    "chain": [
+                        {
+                            "package": "root",
+                            "version": null,
+                            "requires": "^5.0"
+                        },
+                        {
+                            "package": "mautic/core-lib",
+                            "version": "5.0.0-dev",
+                            "requires": "~5.4.0"
+                        },
+                        {
+                            "package": "symfony/twig-bundle",
+                            "version": "v5.4.35",
+                            "requires": "^5.3|^6.0"
+                        },
+                        {
+                            "package": "symfony/twig-bridge",
+                            "version": "v5.4.35",
+                            "requires": "^2.13|^3.0.4"
+                        }
+                    ],
+                    "target": {
+                        "package": "twig/twig",
+                        "version": "v3.14.0"
+                    }
+                },
+                {
+                    "cyclic": false,
+                    "chain": [
+                        {
+                            "package": "root",
+                            "version": null,
+                            "requires": "~5.4.0"
+                        },
+                        {
+                            "package": "symfony/web-profiler-bundle",
+                            "version": "v5.4.35",
+                            "requires": "^4.4|^5.0|^6.0"
+                        },
+                        {
+                            "package": "symfony/twig-bundle",
+                            "version": "v5.4.35",
+                            "requires": "^5.3|^6.0"
+                        },
+                        {
+                            "package": "symfony/twig-bridge",
+                            "version": "v5.4.35",
+                            "requires": "^2.13|^3.0.4"
+                        }
+                    ],
+                    "target": {
+                        "package": "twig/twig",
+                        "version": "v3.14.0"
+                    }
+                },
+                {
+                    "cyclic": false,
+                    "chain": [
+                        {
+                            "package": "root",
+                            "version": null,
+                            "requires": "^5.0"
+                        },
+                        {
+                            "package": "mautic/core-lib",
+                            "version": "5.0.0-dev",
+                            "requires": "dev-upgrade-2"
+                        },
+                        {
+                            "package": "friendsofsymfony/oauth-server-bundle",
+                            "version": "dev-upgrade-2",
+                            "requires": "^4.4 || ^5.1"
+                        },
+                        {
+                            "package": "symfony/twig-bundle",
+                            "version": "v5.4.35",
+                            "requires": "^2.13|^3.0.4"
+                        }
+                    ],
+                    "target": {
+                        "package": "twig/twig",
+                        "version": "v3.14.0"
+                    }
+                },
+                {
+                    "cyclic": false,
+                    "chain": [
+                        {
+                            "package": "root",
+                            "version": null,
+                            "requires": "^5.0"
+                        },
+                        {
+                            "package": "mautic/core-lib",
+                            "version": "5.0.0-dev",
+                            "requires": "^12.3"
+                        },
+                        {
+                            "package": "helios-ag/fm-elfinder-bundle",
+                            "version": "12.5",
+                            "requires": "^4.4 || ^5.0 || ^5.2 || ^6.0 || ^7.0"
+                        },
+                        {
+                            "package": "symfony/twig-bundle",
+                            "version": "v5.4.35",
+                            "requires": "^2.13|^3.0.4"
+                        }
+                    ],
+                    "target": {
+                        "package": "twig/twig",
+                        "version": "v3.14.0"
+                    }
+                },
+                {
+                    "cyclic": false,
+                    "chain": [
+                        {
+                            "package": "root",
+                            "version": null,
+                            "requires": "^5.0"
+                        },
+                        {
+                            "package": "mautic/core-lib",
+                            "version": "5.0.0-dev",
+                            "requires": "~5.4.0"
+                        },
+                        {
+                            "package": "symfony/twig-bundle",
+                            "version": "v5.4.35",
+                            "requires": "^2.13|^3.0.4"
+                        }
+                    ],
+                    "target": {
+                        "package": "twig/twig",
+                        "version": "v3.14.0"
+                    }
+                },
+                {
+                    "cyclic": false,
+                    "chain": [
+                        {
+                            "package": "root",
+                            "version": null,
+                            "requires": "~5.4.0"
+                        },
+                        {
+                            "package": "symfony/web-profiler-bundle",
+                            "version": "v5.4.35",
+                            "requires": "^4.4|^5.0|^6.0"
+                        },
+                        {
+                            "package": "symfony/twig-bundle",
+                            "version": "v5.4.35",
+                            "requires": "^2.13|^3.0.4"
+                        }
+                    ],
+                    "target": {
+                        "package": "twig/twig",
+                        "version": "v3.14.0"
+                    }
+                },
+                {
+                    "cyclic": false,
+                    "chain": [
+                        {
+                            "package": "root",
+                            "version": null,
+                            "requires": "~5.4.0"
+                        },
+                        {
+                            "package": "symfony/web-profiler-bundle",
+                            "version": "v5.4.35",
+                            "requires": "^2.13|^3.0.4"
+                        }
+                    ],
+                    "target": {
+                        "package": "twig/twig",
+                        "version": "v3.14.0"
+                    }
+                }
+            ],
+            "solver_runs": 5,
+            "search_exhausted": false,
+            "remediation": {
+                "status": "verified",
+                "command": "composer update twig/twig",
+                "strategy": "lock-refresh",
+                "root_constraint_changes": [],
+                "constraint_drag": null,
+                "blocking_risk": [],
+                "summary": {
+                    "changed": 1,
+                    "added": 0,
+                    "removed": 0,
+                    "total": 1,
+                    "major_change": false,
+                    "downgrade": false,
+                    "prerelease": false
+                },
+                "changes": [
+                    {
+                        "package": "twig/twig",
+                        "kind": "upgraded",
+                        "step": "minor",
+                        "from": "v3.14.0",
+                        "to": "v3.15.0"
+                    }
+                ]
+            },
+            "candidates": [
+                {
+                    "command": "composer update twig/twig",
+                    "strategy": "lock-refresh",
+                    "outcome": "valid",
+                    "rank": 1,
+                    "summary": {
+                        "changed": 1,
+                        "added": 0,
+                        "removed": 0,
+                        "total": 1,
+                        "major_change": false,
+                        "downgrade": false,
+                        "prerelease": false
+                    },
+                    "solver_status": "resolved"
+                },
+                {
+                    "command": "composer update twig/twig -w -m --with 'twig/twig:>=3.14.1'",
+                    "strategy": "with-dependencies",
+                    "outcome": "valid",
+                    "rank": 2,
+                    "summary": {
+                        "changed": 1,
+                        "added": 0,
+                        "removed": 0,
+                        "total": 1,
+                        "major_change": false,
+                        "downgrade": false,
+                        "prerelease": false
+                    },
+                    "solver_status": "resolved"
+                },
+                {
+                    "command": "composer update symfony/web-profiler-bundle -W -m --with 'twig/twig:>=3.14.1'",
+                    "strategy": "parent-update",
+                    "outcome": "valid",
+                    "rank": 3,
+                    "summary": {
+                        "changed": 2,
+                        "added": 0,
+                        "removed": 0,
+                        "total": 2,
+                        "major_change": false,
+                        "downgrade": false,
+                        "prerelease": false
+                    },
+                    "solver_status": "resolved"
+                },
+                {
+                    "command": "composer update mautic/core-lib -W -m --with 'twig/twig:>=3.14.1'",
+                    "strategy": "parent-update",
+                    "outcome": "rejected",
+                    "reason": "Composer could not resolve the dependencies: Your requirements could not be resolved to an installable set of packages.\n  Problem 1\n    - Root composer.json requires mautic/core-lib ^5.0 -> satisfiable by mautic/core-lib[5.0.0-dev, ..., 5.1.x-dev].\n    - mautic/core-lib[5.0.0-dev, ..., 5.1.x-dev] require friendsofsymfony/oauth-server-bundle dev-upgrade-2 -> found friendsofsymfony/oauth-server-bundle[1.0.0, ..., 1.7.x-dev, 2.0.0-alpha.0] but these do not match your constraint and are therefore not installable. Make sure you either fix the constraint or avoid updating this package to keep the one present in the lock file (friendsofsymfony/oauth-server-bundle[dev-upgrade-2]).",
+                    "solver_status": "conflict"
+                },
+                {
+                    "command": "composer update mautic/core-lib symfony/web-profiler-bundle -W -m --with 'twig/twig:>=3.14.1'",
+                    "strategy": "parent-update",
+                    "outcome": "rejected",
+                    "reason": "Composer could not resolve the dependencies: Your requirements could not be resolved to an installable set of packages.\n  Problem 1\n    - Root composer.json requires mautic/core-lib ^5.0 -> satisfiable by mautic/core-lib[5.0.0-dev, ..., 5.1.x-dev].\n    - mautic/core-lib[5.0.0-dev, ..., 5.1.x-dev] require friendsofsymfony/oauth-server-bundle dev-upgrade-2 -> found friendsofsymfony/oauth-server-bundle[1.0.0, ..., 1.7.x-dev, 2.0.0-alpha.0] but these do not match your constraint and are therefore not installable. Make sure you either fix the constraint or avoid updating this package to keep the one present in the lock file (friendsofsymfony/oauth-server-bundle[dev-upgrade-2]).",
+                    "solver_status": "conflict"
+                },
+                {
+                    "command": "composer require --no-update symfony/web-profiler-bundle:^5.5 && composer update symfony/web-profiler-bundle -W -m --with 'twig/twig:>=3.14.1'",
+                    "strategy": "root-constraint-widen",
+                    "outcome": "skipped",
+                    "reason": "a better candidate already exists"
+                },
+                {
+                    "command": "composer require --no-update mautic/core-lib:^6.0 && composer update mautic/core-lib -W -m --with 'twig/twig:>=3.14.1'",
+                    "strategy": "root-constraint-widen",
+                    "outcome": "skipped",
+                    "reason": "a better candidate already exists"
+                }
+            ]
+        }
+    ],
+    "unsolved_findings": [
+        "phpoffice/phpspreadsheet"
+    ]
+}

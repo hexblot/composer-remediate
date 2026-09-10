@@ -40,8 +40,8 @@ foreach ($args as $arg) {
         $name = $arg;
     }
 }
-if ($name === null) {
-    fwrite(STDERR, "usage: run-fixture.php <fixture-name> [--allow-direct-require]\n");
+if ($name === null || preg_match('{^[a-z0-9][a-z0-9._-]*$}', $name) !== 1) {
+    fwrite(STDERR, "usage: run-fixture.php <fixture-name> [--allow-direct-require]  (a fixture directory name: lower-case letters, digits, . _ -)\n");
     exit(2);
 }
 $dir = FixtureRunner::FIXTURE_ROOT . '/' . $name;
@@ -69,7 +69,7 @@ if ($writeReports) {
     file_put_contents("$dir/reports/report.md", $markdown);
     file_put_contents("$dir/reports/report.json", ReportFormat::Json->render($stable, true));
     file_put_contents("$dir/reports/report.html", ReportFormat::Html->render($stable, true));
-    file_put_contents("$dir/reports/report.sarif", ReportFormat::Sarif->render($stable, true, false, LockLineIndex::fromFile("$dir/composer.lock")));
+    file_put_contents("$dir/reports/report.sarif", ReportFormat::Sarif->render($stable, true, false, LockLineIndex::fromFile("$dir/composer.fixture.lock")));
     file_put_contents("$dir/reports/report.cdx.json", (new CycloneDxRenderer(true, 'urn:uuid:00000000-0000-4000-8000-000000000000', '2026-01-01T00:00:00+00:00'))->render($stable));
     file_put_contents("$dir/reports/gl-dependency-scanning-report.json", (new GitLabRenderer(true, '2026-01-01T00:00:00', '2026-01-01T00:00:00'))->render($stable));
     fwrite(STDERR, "reports written to $dir/reports\n");

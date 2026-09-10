@@ -1,0 +1,3341 @@
+{
+    "bomFormat": "CycloneDX",
+    "specVersion": "1.6",
+    "serialNumber": "urn:uuid:00000000-0000-4000-8000-000000000000",
+    "version": 1,
+    "metadata": {
+        "timestamp": "2026-01-01T00:00:00+00:00",
+        "tools": {
+            "components": [
+                {
+                    "type": "application",
+                    "name": "composer-remediate",
+                    "version": "dev-main"
+                }
+            ]
+        },
+        "properties": [
+            {
+                "name": "composer-remediate:composer_version",
+                "value": "(fixture)"
+            },
+            {
+                "name": "composer-remediate:advisory_source",
+                "value": "advisory snapshot advisories.json"
+            },
+            {
+                "name": "composer-remediate:composer_lock_sha256",
+                "value": "c47245784bc08d6a02faebde18793701a05281b31605f8901cbe25173ec5f8b3"
+            },
+            {
+                "name": "composer-remediate:combined_command",
+                "value": "composer update symfony/http-client symfony/http-foundation symfony/process symfony/security-http symfony/validator twig/twig"
+            },
+            {
+                "name": "composer-remediate:exit_code",
+                "value": "2"
+            }
+        ]
+    },
+    "components": [
+        {
+            "type": "library",
+            "bom-ref": "pkg:composer/aws/aws-crt-php@1.2.4",
+            "group": "aws",
+            "name": "aws-crt-php",
+            "version": "v1.2.4",
+            "purl": "pkg:composer/aws/aws-crt-php@1.2.4",
+            "scope": "required"
+        },
+        {
+            "type": "library",
+            "bom-ref": "pkg:composer/aws/aws-sdk-php@3.298.2",
+            "group": "aws",
+            "name": "aws-sdk-php",
+            "version": "3.298.2",
+            "purl": "pkg:composer/aws/aws-sdk-php@3.298.2",
+            "scope": "required"
+        },
+        {
+            "type": "library",
+            "bom-ref": "pkg:composer/bandwidth-throttle/token-bucket@2.0.0",
+            "group": "bandwidth-throttle",
+            "name": "token-bucket",
+            "version": "2.0.0",
+            "purl": "pkg:composer/bandwidth-throttle/token-bucket@2.0.0",
+            "scope": "required"
+        },
+        {
+            "type": "library",
+            "bom-ref": "pkg:composer/barryvdh/elfinder-flysystem-driver@0.4.3",
+            "group": "barryvdh",
+            "name": "elfinder-flysystem-driver",
+            "version": "v0.4.3",
+            "purl": "pkg:composer/barryvdh/elfinder-flysystem-driver@0.4.3",
+            "scope": "required"
+        },
+        {
+            "type": "library",
+            "bom-ref": "pkg:composer/beberlei/doctrineextensions@1.3.0",
+            "group": "beberlei",
+            "name": "doctrineextensions",
+            "version": "v1.3.0",
+            "purl": "pkg:composer/beberlei/doctrineextensions@1.3.0",
+            "scope": "required"
+        },
+        {
+            "type": "library",
+            "bom-ref": "pkg:composer/behat/gherkin@4.9.0",
+            "group": "behat",
+            "name": "gherkin",
+            "version": "v4.9.0",
+            "purl": "pkg:composer/behat/gherkin@4.9.0",
+            "scope": "excluded"
+        },
+        {
+            "type": "library",
+            "bom-ref": "pkg:composer/bjeavons/zxcvbn-php@1.3.1",
+            "group": "bjeavons",
+            "name": "zxcvbn-php",
+            "version": "1.3.1",
+            "purl": "pkg:composer/bjeavons/zxcvbn-php@1.3.1",
+            "scope": "required"
+        },
+        {
+            "type": "library",
+            "bom-ref": "pkg:composer/brick/math@0.11.0",
+            "group": "brick",
+            "name": "math",
+            "version": "0.11.0",
+            "purl": "pkg:composer/brick/math@0.11.0",
+            "scope": "required"
+        },
+        {
+            "type": "library",
+            "bom-ref": "pkg:composer/codeception/codeception@5.1.2",
+            "group": "codeception",
+            "name": "codeception",
+            "version": "5.1.2",
+            "purl": "pkg:composer/codeception/codeception@5.1.2",
+            "scope": "excluded"
+        },
+        {
+            "type": "library",
+            "bom-ref": "pkg:composer/codeception/lib-asserts@2.1.0",
+            "group": "codeception",
+            "name": "lib-asserts",
+            "version": "2.1.0",
+            "purl": "pkg:composer/codeception/lib-asserts@2.1.0",
+            "scope": "excluded"
+        },
+        {
+            "type": "library",
+            "bom-ref": "pkg:composer/codeception/lib-web@1.0.6",
+            "group": "codeception",
+            "name": "lib-web",
+            "version": "1.0.6",
+            "purl": "pkg:composer/codeception/lib-web@1.0.6",
+            "scope": "excluded"
+        },
+        {
+            "type": "library",
+            "bom-ref": "pkg:composer/codeception/module-asserts@3.0.0",
+            "group": "codeception",
+            "name": "module-asserts",
+            "version": "3.0.0",
+            "purl": "pkg:composer/codeception/module-asserts@3.0.0",
+            "scope": "excluded"
+        },
+        {
+            "type": "library",
+            "bom-ref": "pkg:composer/codeception/module-db@3.1.4",
+            "group": "codeception",
+            "name": "module-db",
+            "version": "3.1.4",
+            "purl": "pkg:composer/codeception/module-db@3.1.4",
+            "scope": "excluded"
+        },
+        {
+            "type": "library",
+            "bom-ref": "pkg:composer/codeception/module-webdriver@3.2.2",
+            "group": "codeception",
+            "name": "module-webdriver",
+            "version": "3.2.2",
+            "purl": "pkg:composer/codeception/module-webdriver@3.2.2",
+            "scope": "excluded"
+        },
+        {
+            "type": "library",
+            "bom-ref": "pkg:composer/codeception/stub@4.1.3",
+            "group": "codeception",
+            "name": "stub",
+            "version": "4.1.3",
+            "purl": "pkg:composer/codeception/stub@4.1.3",
+            "scope": "excluded"
+        },
+        {
+            "type": "library",
+            "bom-ref": "pkg:composer/composer/ca-bundle@1.5.0",
+            "group": "composer",
+            "name": "ca-bundle",
+            "version": "1.5.0",
+            "purl": "pkg:composer/composer/ca-bundle@1.5.0",
+            "scope": "required"
+        },
+        {
+            "type": "library",
+            "bom-ref": "pkg:composer/composer/class-map-generator@1.3.3",
+            "group": "composer",
+            "name": "class-map-generator",
+            "version": "1.3.3",
+            "purl": "pkg:composer/composer/class-map-generator@1.3.3",
+            "scope": "required"
+        },
+        {
+            "type": "library",
+            "bom-ref": "pkg:composer/composer/composer@2.7.7",
+            "group": "composer",
+            "name": "composer",
+            "version": "2.7.7",
+            "purl": "pkg:composer/composer/composer@2.7.7",
+            "scope": "required"
+        },
+        {
+            "type": "library",
+            "bom-ref": "pkg:composer/composer/installers@1.12.0",
+            "group": "composer",
+            "name": "installers",
+            "version": "v1.12.0",
+            "purl": "pkg:composer/composer/installers@1.12.0",
+            "scope": "required"
+        },
+        {
+            "type": "library",
+            "bom-ref": "pkg:composer/composer/metadata-minifier@1.0.0",
+            "group": "composer",
+            "name": "metadata-minifier",
+            "version": "1.0.0",
+            "purl": "pkg:composer/composer/metadata-minifier@1.0.0",
+            "scope": "required"
+        },
+        {
+            "type": "library",
+            "bom-ref": "pkg:composer/composer/package-versions-deprecated@1.11.99.1",
+            "group": "composer",
+            "name": "package-versions-deprecated",
+            "version": "1.11.99.1",
+            "purl": "pkg:composer/composer/package-versions-deprecated@1.11.99.1",
+            "scope": "required"
+        },
+        {
+            "type": "library",
+            "bom-ref": "pkg:composer/composer/pcre@3.1.4",
+            "group": "composer",
+            "name": "pcre",
+            "version": "3.1.4",
+            "purl": "pkg:composer/composer/pcre@3.1.4",
+            "scope": "required"
+        },
+        {
+            "type": "library",
+            "bom-ref": "pkg:composer/composer/semver@3.4.0",
+            "group": "composer",
+            "name": "semver",
+            "version": "3.4.0",
+            "purl": "pkg:composer/composer/semver@3.4.0",
+            "scope": "required"
+        },
+        {
+            "type": "library",
+            "bom-ref": "pkg:composer/composer/spdx-licenses@1.5.8",
+            "group": "composer",
+            "name": "spdx-licenses",
+            "version": "1.5.8",
+            "purl": "pkg:composer/composer/spdx-licenses@1.5.8",
+            "scope": "required"
+        },
+        {
+            "type": "library",
+            "bom-ref": "pkg:composer/composer/xdebug-handler@3.0.5",
+            "group": "composer",
+            "name": "xdebug-handler",
+            "version": "3.0.5",
+            "purl": "pkg:composer/composer/xdebug-handler@3.0.5",
+            "scope": "required"
+        },
+        {
+            "type": "library",
+            "bom-ref": "pkg:composer/doctrine/annotations@2.0.1",
+            "group": "doctrine",
+            "name": "annotations",
+            "version": "2.0.1",
+            "purl": "pkg:composer/doctrine/annotations@2.0.1",
+            "scope": "required"
+        },
+        {
+            "type": "library",
+            "bom-ref": "pkg:composer/doctrine/cache@2.2.0",
+            "group": "doctrine",
+            "name": "cache",
+            "version": "2.2.0",
+            "purl": "pkg:composer/doctrine/cache@2.2.0",
+            "scope": "required"
+        },
+        {
+            "type": "library",
+            "bom-ref": "pkg:composer/doctrine/collections@1.8.0",
+            "group": "doctrine",
+            "name": "collections",
+            "version": "1.8.0",
+            "purl": "pkg:composer/doctrine/collections@1.8.0",
+            "scope": "required"
+        },
+        {
+            "type": "library",
+            "bom-ref": "pkg:composer/doctrine/common@3.4.3",
+            "group": "doctrine",
+            "name": "common",
+            "version": "3.4.3",
+            "purl": "pkg:composer/doctrine/common@3.4.3",
+            "scope": "required"
+        },
+        {
+            "type": "library",
+            "bom-ref": "pkg:composer/doctrine/data-fixtures@1.7.0",
+            "group": "doctrine",
+            "name": "data-fixtures",
+            "version": "1.7.0",
+            "purl": "pkg:composer/doctrine/data-fixtures@1.7.0",
+            "scope": "required"
+        },
+        {
+            "type": "library",
+            "bom-ref": "pkg:composer/doctrine/dbal@3.7.2",
+            "group": "doctrine",
+            "name": "dbal",
+            "version": "3.7.2",
+            "purl": "pkg:composer/doctrine/dbal@3.7.2",
+            "scope": "required"
+        },
+        {
+            "type": "library",
+            "bom-ref": "pkg:composer/doctrine/deprecations@1.1.3",
+            "group": "doctrine",
+            "name": "deprecations",
+            "version": "1.1.3",
+            "purl": "pkg:composer/doctrine/deprecations@1.1.3",
+            "scope": "required"
+        },
+        {
+            "type": "library",
+            "bom-ref": "pkg:composer/doctrine/doctrine-bundle@2.11.1",
+            "group": "doctrine",
+            "name": "doctrine-bundle",
+            "version": "2.11.1",
+            "purl": "pkg:composer/doctrine/doctrine-bundle@2.11.1",
+            "scope": "required"
+        },
+        {
+            "type": "library",
+            "bom-ref": "pkg:composer/doctrine/doctrine-fixtures-bundle@3.5.1",
+            "group": "doctrine",
+            "name": "doctrine-fixtures-bundle",
+            "version": "3.5.1",
+            "purl": "pkg:composer/doctrine/doctrine-fixtures-bundle@3.5.1",
+            "scope": "required"
+        },
+        {
+            "type": "library",
+            "bom-ref": "pkg:composer/doctrine/doctrine-migrations-bundle@3.3.0",
+            "group": "doctrine",
+            "name": "doctrine-migrations-bundle",
+            "version": "3.3.0",
+            "purl": "pkg:composer/doctrine/doctrine-migrations-bundle@3.3.0",
+            "scope": "required"
+        },
+        {
+            "type": "library",
+            "bom-ref": "pkg:composer/doctrine/event-manager@1.2.0",
+            "group": "doctrine",
+            "name": "event-manager",
+            "version": "1.2.0",
+            "purl": "pkg:composer/doctrine/event-manager@1.2.0",
+            "scope": "required"
+        },
+        {
+            "type": "library",
+            "bom-ref": "pkg:composer/doctrine/inflector@2.0.9",
+            "group": "doctrine",
+            "name": "inflector",
+            "version": "2.0.9",
+            "purl": "pkg:composer/doctrine/inflector@2.0.9",
+            "scope": "required"
+        },
+        {
+            "type": "library",
+            "bom-ref": "pkg:composer/doctrine/instantiator@1.5.0",
+            "group": "doctrine",
+            "name": "instantiator",
+            "version": "1.5.0",
+            "purl": "pkg:composer/doctrine/instantiator@1.5.0",
+            "scope": "required"
+        },
+        {
+            "type": "library",
+            "bom-ref": "pkg:composer/doctrine/lexer@2.1.0",
+            "group": "doctrine",
+            "name": "lexer",
+            "version": "2.1.0",
+            "purl": "pkg:composer/doctrine/lexer@2.1.0",
+            "scope": "required"
+        },
+        {
+            "type": "library",
+            "bom-ref": "pkg:composer/doctrine/migrations@3.5.5",
+            "group": "doctrine",
+            "name": "migrations",
+            "version": "3.5.5",
+            "purl": "pkg:composer/doctrine/migrations@3.5.5",
+            "scope": "required"
+        },
+        {
+            "type": "library",
+            "bom-ref": "pkg:composer/doctrine/orm@2.18.0",
+            "group": "doctrine",
+            "name": "orm",
+            "version": "2.18.0",
+            "purl": "pkg:composer/doctrine/orm@2.18.0",
+            "scope": "required"
+        },
+        {
+            "type": "library",
+            "bom-ref": "pkg:composer/doctrine/persistence@3.2.0",
+            "group": "doctrine",
+            "name": "persistence",
+            "version": "3.2.0",
+            "purl": "pkg:composer/doctrine/persistence@3.2.0",
+            "scope": "required"
+        },
+        {
+            "type": "library",
+            "bom-ref": "pkg:composer/doctrine/sql-formatter@1.1.3",
+            "group": "doctrine",
+            "name": "sql-formatter",
+            "version": "1.1.3",
+            "purl": "pkg:composer/doctrine/sql-formatter@1.1.3",
+            "scope": "required"
+        },
+        {
+            "type": "library",
+            "bom-ref": "pkg:composer/egulias/email-validator@3.2.6",
+            "group": "egulias",
+            "name": "email-validator",
+            "version": "3.2.6",
+            "purl": "pkg:composer/egulias/email-validator@3.2.6",
+            "scope": "required"
+        },
+        {
+            "type": "library",
+            "bom-ref": "pkg:composer/exercise/htmlpurifier-bundle@4.1.2",
+            "group": "exercise",
+            "name": "htmlpurifier-bundle",
+            "version": "4.1.2",
+            "purl": "pkg:composer/exercise/htmlpurifier-bundle@4.1.2",
+            "scope": "required"
+        },
+        {
+            "type": "library",
+            "bom-ref": "pkg:composer/ezyang/htmlpurifier@4.17.0",
+            "group": "ezyang",
+            "name": "htmlpurifier",
+            "version": "v4.17.0",
+            "purl": "pkg:composer/ezyang/htmlpurifier@4.17.0",
+            "scope": "required"
+        },
+        {
+            "type": "library",
+            "bom-ref": "pkg:composer/friendsofphp/php-cs-fixer@3.53.0",
+            "group": "friendsofphp",
+            "name": "php-cs-fixer",
+            "version": "v3.53.0",
+            "purl": "pkg:composer/friendsofphp/php-cs-fixer@3.53.0",
+            "scope": "excluded"
+        },
+        {
+            "type": "library",
+            "bom-ref": "pkg:composer/friendsofphp/proxy-manager-lts@1.0.16",
+            "group": "friendsofphp",
+            "name": "proxy-manager-lts",
+            "version": "v1.0.16",
+            "purl": "pkg:composer/friendsofphp/proxy-manager-lts@1.0.16",
+            "scope": "required"
+        },
+        {
+            "type": "library",
+            "bom-ref": "pkg:composer/friendsofsymfony/oauth-server-bundle@dev-upgrade-2",
+            "group": "friendsofsymfony",
+            "name": "oauth-server-bundle",
+            "version": "dev-upgrade-2",
+            "purl": "pkg:composer/friendsofsymfony/oauth-server-bundle@dev-upgrade-2",
+            "scope": "required"
+        },
+        {
+            "type": "library",
+            "bom-ref": "pkg:composer/friendsofsymfony/oauth2-php@1.3.1",
+            "group": "friendsofsymfony",
+            "name": "oauth2-php",
+            "version": "1.3.1",
+            "purl": "pkg:composer/friendsofsymfony/oauth2-php@1.3.1",
+            "scope": "required"
+        },
+        {
+            "type": "library",
+            "bom-ref": "pkg:composer/friendsofsymfony/rest-bundle@3.6.0",
+            "group": "friendsofsymfony",
+            "name": "rest-bundle",
+            "version": "3.6.0",
+            "purl": "pkg:composer/friendsofsymfony/rest-bundle@3.6.0",
+            "scope": "required"
+        },
+        {
+            "type": "library",
+            "bom-ref": "pkg:composer/gaufrette/aws-s3-adapter@0.4.0",
+            "group": "gaufrette",
+            "name": "aws-s3-adapter",
+            "version": "v0.4.0",
+            "purl": "pkg:composer/gaufrette/aws-s3-adapter@0.4.0",
+            "scope": "required"
+        },
+        {
+            "type": "library",
+            "bom-ref": "pkg:composer/gaufrette/extras@0.1.0",
+            "group": "gaufrette",
+            "name": "extras",
+            "version": "v0.1.0",
+            "purl": "pkg:composer/gaufrette/extras@0.1.0",
+            "scope": "required"
+        },
+        {
+            "type": "library",
+            "bom-ref": "pkg:composer/geoip2/geoip2@2.13.0",
+            "group": "geoip2",
+            "name": "geoip2",
+            "version": "v2.13.0",
+            "purl": "pkg:composer/geoip2/geoip2@2.13.0",
+            "scope": "required"
+        },
+        {
+            "type": "library",
+            "bom-ref": "pkg:composer/giggsey/libphonenumber-for-php@8.13.29",
+            "group": "giggsey",
+            "name": "libphonenumber-for-php",
+            "version": "8.13.29",
+            "purl": "pkg:composer/giggsey/libphonenumber-for-php@8.13.29",
+            "scope": "required"
+        },
+        {
+            "type": "library",
+            "bom-ref": "pkg:composer/giggsey/locale@2.5",
+            "group": "giggsey",
+            "name": "locale",
+            "version": "2.5",
+            "purl": "pkg:composer/giggsey/locale@2.5",
+            "scope": "required"
+        },
+        {
+            "type": "library",
+            "bom-ref": "pkg:composer/guzzlehttp/guzzle@7.8.1",
+            "group": "guzzlehttp",
+            "name": "guzzle",
+            "version": "7.8.1",
+            "purl": "pkg:composer/guzzlehttp/guzzle@7.8.1",
+            "scope": "required"
+        },
+        {
+            "type": "library",
+            "bom-ref": "pkg:composer/guzzlehttp/oauth-subscriber@0.6.0",
+            "group": "guzzlehttp",
+            "name": "oauth-subscriber",
+            "version": "0.6.0",
+            "purl": "pkg:composer/guzzlehttp/oauth-subscriber@0.6.0",
+            "scope": "required"
+        },
+        {
+            "type": "library",
+            "bom-ref": "pkg:composer/guzzlehttp/promises@2.0.2",
+            "group": "guzzlehttp",
+            "name": "promises",
+            "version": "2.0.2",
+            "purl": "pkg:composer/guzzlehttp/promises@2.0.2",
+            "scope": "required"
+        },
+        {
+            "type": "library",
+            "bom-ref": "pkg:composer/guzzlehttp/psr7@2.6.2",
+            "group": "guzzlehttp",
+            "name": "psr7",
+            "version": "2.6.2",
+            "purl": "pkg:composer/guzzlehttp/psr7@2.6.2",
+            "scope": "required"
+        },
+        {
+            "type": "library",
+            "bom-ref": "pkg:composer/helios-ag/fm-elfinder-bundle@12.5",
+            "group": "helios-ag",
+            "name": "fm-elfinder-bundle",
+            "version": "12.5",
+            "purl": "pkg:composer/helios-ag/fm-elfinder-bundle@12.5",
+            "scope": "required"
+        },
+        {
+            "type": "library",
+            "bom-ref": "pkg:composer/http-interop/http-factory-guzzle@1.2.0",
+            "group": "http-interop",
+            "name": "http-factory-guzzle",
+            "version": "1.2.0",
+            "purl": "pkg:composer/http-interop/http-factory-guzzle@1.2.0",
+            "scope": "excluded"
+        },
+        {
+            "type": "library",
+            "bom-ref": "pkg:composer/intervention/image@2.7.2",
+            "group": "intervention",
+            "name": "image",
+            "version": "2.7.2",
+            "purl": "pkg:composer/intervention/image@2.7.2",
+            "scope": "required"
+        },
+        {
+            "type": "library",
+            "bom-ref": "pkg:composer/ip2location/ip2location-php@7.2.5",
+            "group": "ip2location",
+            "name": "ip2location-php",
+            "version": "7.2.5",
+            "purl": "pkg:composer/ip2location/ip2location-php@7.2.5",
+            "scope": "required"
+        },
+        {
+            "type": "library",
+            "bom-ref": "pkg:composer/jbroadway/urlify@1.2.4-stable",
+            "group": "jbroadway",
+            "name": "urlify",
+            "version": "1.2.4-stable",
+            "purl": "pkg:composer/jbroadway/urlify@1.2.4-stable",
+            "scope": "required"
+        },
+        {
+            "type": "library",
+            "bom-ref": "pkg:composer/jms/metadata@2.8.0",
+            "group": "jms",
+            "name": "metadata",
+            "version": "2.8.0",
+            "purl": "pkg:composer/jms/metadata@2.8.0",
+            "scope": "required"
+        },
+        {
+            "type": "library",
+            "bom-ref": "pkg:composer/jms/serializer@3.29.1",
+            "group": "jms",
+            "name": "serializer",
+            "version": "3.29.1",
+            "purl": "pkg:composer/jms/serializer@3.29.1",
+            "scope": "required"
+        },
+        {
+            "type": "library",
+            "bom-ref": "pkg:composer/jms/serializer-bundle@5.4.0",
+            "group": "jms",
+            "name": "serializer-bundle",
+            "version": "5.4.0",
+            "purl": "pkg:composer/jms/serializer-bundle@5.4.0",
+            "scope": "required"
+        },
+        {
+            "type": "library",
+            "bom-ref": "pkg:composer/joomla/filter@1.4.4",
+            "group": "joomla",
+            "name": "filter",
+            "version": "1.4.4",
+            "purl": "pkg:composer/joomla/filter@1.4.4",
+            "scope": "required"
+        },
+        {
+            "type": "library",
+            "bom-ref": "pkg:composer/joomla/string@1.4.6",
+            "group": "joomla",
+            "name": "string",
+            "version": "1.4.6",
+            "purl": "pkg:composer/joomla/string@1.4.6",
+            "scope": "required"
+        },
+        {
+            "type": "library",
+            "bom-ref": "pkg:composer/justinrainbow/json-schema@5.2.13",
+            "group": "justinrainbow",
+            "name": "json-schema",
+            "version": "v5.2.13",
+            "purl": "pkg:composer/justinrainbow/json-schema@5.2.13",
+            "scope": "required"
+        },
+        {
+            "type": "library",
+            "bom-ref": "pkg:composer/kamermans/guzzle-oauth2-subscriber@1.0.13",
+            "group": "kamermans",
+            "name": "guzzle-oauth2-subscriber",
+            "version": "v1.0.13",
+            "purl": "pkg:composer/kamermans/guzzle-oauth2-subscriber@1.0.13",
+            "scope": "required"
+        },
+        {
+            "type": "library",
+            "bom-ref": "pkg:composer/knplabs/gaufrette@0.9.0",
+            "group": "knplabs",
+            "name": "gaufrette",
+            "version": "v0.9.0",
+            "purl": "pkg:composer/knplabs/gaufrette@0.9.0",
+            "scope": "required"
+        },
+        {
+            "type": "library",
+            "bom-ref": "pkg:composer/knplabs/knp-menu@3.4.0",
+            "group": "knplabs",
+            "name": "knp-menu",
+            "version": "v3.4.0",
+            "purl": "pkg:composer/knplabs/knp-menu@3.4.0",
+            "scope": "required"
+        },
+        {
+            "type": "library",
+            "bom-ref": "pkg:composer/knplabs/knp-menu-bundle@3.2.0",
+            "group": "knplabs",
+            "name": "knp-menu-bundle",
+            "version": "v3.2.0",
+            "purl": "pkg:composer/knplabs/knp-menu-bundle@3.2.0",
+            "scope": "required"
+        },
+        {
+            "type": "library",
+            "bom-ref": "pkg:composer/laminas/laminas-code@4.7.1",
+            "group": "laminas",
+            "name": "laminas-code",
+            "version": "4.7.1",
+            "purl": "pkg:composer/laminas/laminas-code@4.7.1",
+            "scope": "required"
+        },
+        {
+            "type": "library",
+            "bom-ref": "pkg:composer/league/flysystem@3.24.0",
+            "group": "league",
+            "name": "flysystem",
+            "version": "3.24.0",
+            "purl": "pkg:composer/league/flysystem@3.24.0",
+            "scope": "required"
+        },
+        {
+            "type": "library",
+            "bom-ref": "pkg:composer/league/flysystem-local@3.23.1",
+            "group": "league",
+            "name": "flysystem-local",
+            "version": "3.23.1",
+            "purl": "pkg:composer/league/flysystem-local@3.23.1",
+            "scope": "required"
+        },
+        {
+            "type": "library",
+            "bom-ref": "pkg:composer/league/mime-type-detection@1.15.0",
+            "group": "league",
+            "name": "mime-type-detection",
+            "version": "1.15.0",
+            "purl": "pkg:composer/league/mime-type-detection@1.15.0",
+            "scope": "required"
+        },
+        {
+            "type": "library",
+            "bom-ref": "pkg:composer/leezy/pheanstalk-bundle@dev-master",
+            "group": "leezy",
+            "name": "pheanstalk-bundle",
+            "version": "dev-master",
+            "purl": "pkg:composer/leezy/pheanstalk-bundle@dev-master",
+            "scope": "required"
+        },
+        {
+            "type": "library",
+            "bom-ref": "pkg:composer/lightsaml/sp-bundle@dev-symfony5",
+            "group": "lightsaml",
+            "name": "sp-bundle",
+            "version": "dev-symfony5",
+            "purl": "pkg:composer/lightsaml/sp-bundle@dev-symfony5",
+            "scope": "required"
+        },
+        {
+            "type": "library",
+            "bom-ref": "pkg:composer/lightsaml/symfony-bridge@dev-symfony5",
+            "group": "lightsaml",
+            "name": "symfony-bridge",
+            "version": "dev-symfony5",
+            "purl": "pkg:composer/lightsaml/symfony-bridge@dev-symfony5",
+            "scope": "required"
+        },
+        {
+            "type": "library",
+            "bom-ref": "pkg:composer/liip/functional-test-bundle@4.9.0",
+            "group": "liip",
+            "name": "functional-test-bundle",
+            "version": "4.9.0",
+            "purl": "pkg:composer/liip/functional-test-bundle@4.9.0",
+            "scope": "excluded"
+        },
+        {
+            "type": "library",
+            "bom-ref": "pkg:composer/liip/test-fixtures-bundle@2.7.2",
+            "group": "liip",
+            "name": "test-fixtures-bundle",
+            "version": "2.7.2",
+            "purl": "pkg:composer/liip/test-fixtures-bundle@2.7.2",
+            "scope": "excluded"
+        },
+        {
+            "type": "library",
+            "bom-ref": "pkg:composer/litesaml/lightsaml@4.1.6",
+            "group": "litesaml",
+            "name": "lightsaml",
+            "version": "v4.1.6",
+            "purl": "pkg:composer/litesaml/lightsaml@4.1.6",
+            "scope": "required"
+        },
+        {
+            "type": "library",
+            "bom-ref": "pkg:composer/maennchen/zipstream-php@2.4.0",
+            "group": "maennchen",
+            "name": "zipstream-php",
+            "version": "2.4.0",
+            "purl": "pkg:composer/maennchen/zipstream-php@2.4.0",
+            "scope": "required"
+        },
+        {
+            "type": "library",
+            "bom-ref": "pkg:composer/malkusch/lock@1.4",
+            "group": "malkusch",
+            "name": "lock",
+            "version": "v1.4",
+            "purl": "pkg:composer/malkusch/lock@1.4",
+            "scope": "required"
+        },
+        {
+            "type": "library",
+            "bom-ref": "pkg:composer/markbaker/complex@3.0.2",
+            "group": "markbaker",
+            "name": "complex",
+            "version": "3.0.2",
+            "purl": "pkg:composer/markbaker/complex@3.0.2",
+            "scope": "required"
+        },
+        {
+            "type": "library",
+            "bom-ref": "pkg:composer/markbaker/matrix@3.0.1",
+            "group": "markbaker",
+            "name": "matrix",
+            "version": "3.0.1",
+            "purl": "pkg:composer/markbaker/matrix@3.0.1",
+            "scope": "required"
+        },
+        {
+            "type": "library",
+            "bom-ref": "pkg:composer/matomo/device-detector@4.3.1",
+            "group": "matomo",
+            "name": "device-detector",
+            "version": "4.3.1",
+            "purl": "pkg:composer/matomo/device-detector@4.3.1",
+            "scope": "required"
+        },
+        {
+            "type": "library",
+            "bom-ref": "pkg:composer/matthiasmullie/minify@1.3.71",
+            "group": "matthiasmullie",
+            "name": "minify",
+            "version": "1.3.71",
+            "purl": "pkg:composer/matthiasmullie/minify@1.3.71",
+            "scope": "required"
+        },
+        {
+            "type": "library",
+            "bom-ref": "pkg:composer/matthiasmullie/path-converter@1.1.3",
+            "group": "matthiasmullie",
+            "name": "path-converter",
+            "version": "1.1.3",
+            "purl": "pkg:composer/matthiasmullie/path-converter@1.1.3",
+            "scope": "required"
+        },
+        {
+            "type": "library",
+            "bom-ref": "pkg:composer/mautic/core-lib@5.0.0-dev",
+            "group": "mautic",
+            "name": "core-lib",
+            "version": "5.0.0-dev",
+            "purl": "pkg:composer/mautic/core-lib@5.0.0-dev",
+            "scope": "required"
+        },
+        {
+            "type": "library",
+            "bom-ref": "pkg:composer/mautic/transifex@5.0.0",
+            "group": "mautic",
+            "name": "transifex",
+            "version": "5.0.0",
+            "purl": "pkg:composer/mautic/transifex@5.0.0",
+            "scope": "excluded"
+        },
+        {
+            "type": "library",
+            "bom-ref": "pkg:composer/maxmind-db/reader@1.11.1",
+            "group": "maxmind-db",
+            "name": "reader",
+            "version": "v1.11.1",
+            "purl": "pkg:composer/maxmind-db/reader@1.11.1",
+            "scope": "required"
+        },
+        {
+            "type": "library",
+            "bom-ref": "pkg:composer/maxmind/web-service-common@0.9.0",
+            "group": "maxmind",
+            "name": "web-service-common",
+            "version": "v0.9.0",
+            "purl": "pkg:composer/maxmind/web-service-common@0.9.0",
+            "scope": "required"
+        },
+        {
+            "type": "library",
+            "bom-ref": "pkg:composer/monolog/monolog@2.9.2",
+            "group": "monolog",
+            "name": "monolog",
+            "version": "2.9.2",
+            "purl": "pkg:composer/monolog/monolog@2.9.2",
+            "scope": "required"
+        },
+        {
+            "type": "library",
+            "bom-ref": "pkg:composer/mtdowling/jmespath.php@2.7.0",
+            "group": "mtdowling",
+            "name": "jmespath.php",
+            "version": "2.7.0",
+            "purl": "pkg:composer/mtdowling/jmespath.php@2.7.0",
+            "scope": "required"
+        },
+        {
+            "type": "library",
+            "bom-ref": "pkg:composer/mustangostang/spyc@0.6.3",
+            "group": "mustangostang",
+            "name": "spyc",
+            "version": "0.6.3",
+            "purl": "pkg:composer/mustangostang/spyc@0.6.3",
+            "scope": "required"
+        },
+        {
+            "type": "library",
+            "bom-ref": "pkg:composer/myclabs/deep-copy@1.11.1",
+            "group": "myclabs",
+            "name": "deep-copy",
+            "version": "1.11.1",
+            "purl": "pkg:composer/myclabs/deep-copy@1.11.1",
+            "scope": "excluded"
+        },
+        {
+            "type": "library",
+            "bom-ref": "pkg:composer/myclabs/php-enum@1.8.4",
+            "group": "myclabs",
+            "name": "php-enum",
+            "version": "1.8.4",
+            "purl": "pkg:composer/myclabs/php-enum@1.8.4",
+            "scope": "required"
+        },
+        {
+            "type": "library",
+            "bom-ref": "pkg:composer/nikic/php-parser@4.18.0",
+            "group": "nikic",
+            "name": "php-parser",
+            "version": "v4.18.0",
+            "purl": "pkg:composer/nikic/php-parser@4.18.0",
+            "scope": "required"
+        },
+        {
+            "type": "library",
+            "bom-ref": "pkg:composer/noxlogic/ratelimit-bundle@1.19.0",
+            "group": "noxlogic",
+            "name": "ratelimit-bundle",
+            "version": "v1.19.0",
+            "purl": "pkg:composer/noxlogic/ratelimit-bundle@1.19.0",
+            "scope": "required"
+        },
+        {
+            "type": "library",
+            "bom-ref": "pkg:composer/oneup/uploader-bundle@3.2.1",
+            "group": "oneup",
+            "name": "uploader-bundle",
+            "version": "3.2.1",
+            "purl": "pkg:composer/oneup/uploader-bundle@3.2.1",
+            "scope": "required"
+        },
+        {
+            "type": "library",
+            "bom-ref": "pkg:composer/paragonie/constant_time_encoding@2.6.3",
+            "group": "paragonie",
+            "name": "constant_time_encoding",
+            "version": "v2.6.3",
+            "purl": "pkg:composer/paragonie/constant_time_encoding@2.6.3",
+            "scope": "required"
+        },
+        {
+            "type": "library",
+            "bom-ref": "pkg:composer/paragonie/random_compat@2.0.21",
+            "group": "paragonie",
+            "name": "random_compat",
+            "version": "v2.0.21",
+            "purl": "pkg:composer/paragonie/random_compat@2.0.21",
+            "scope": "required"
+        },
+        {
+            "type": "library",
+            "bom-ref": "pkg:composer/pda/pheanstalk@4.0.5",
+            "group": "pda",
+            "name": "pheanstalk",
+            "version": "v4.0.5",
+            "purl": "pkg:composer/pda/pheanstalk@4.0.5",
+            "scope": "required"
+        },
+        {
+            "type": "library",
+            "bom-ref": "pkg:composer/phar-io/manifest@2.0.3",
+            "group": "phar-io",
+            "name": "manifest",
+            "version": "2.0.3",
+            "purl": "pkg:composer/phar-io/manifest@2.0.3",
+            "scope": "excluded"
+        },
+        {
+            "type": "library",
+            "bom-ref": "pkg:composer/phar-io/version@3.2.1",
+            "group": "phar-io",
+            "name": "version",
+            "version": "3.2.1",
+            "purl": "pkg:composer/phar-io/version@3.2.1",
+            "scope": "excluded"
+        },
+        {
+            "type": "library",
+            "bom-ref": "pkg:composer/php-amqplib/php-amqplib@3.6.0",
+            "group": "php-amqplib",
+            "name": "php-amqplib",
+            "version": "v3.6.0",
+            "purl": "pkg:composer/php-amqplib/php-amqplib@3.6.0",
+            "scope": "required"
+        },
+        {
+            "type": "library",
+            "bom-ref": "pkg:composer/php-amqplib/rabbitmq-bundle@2.14.0",
+            "group": "php-amqplib",
+            "name": "rabbitmq-bundle",
+            "version": "2.14.0",
+            "purl": "pkg:composer/php-amqplib/rabbitmq-bundle@2.14.0",
+            "scope": "required"
+        },
+        {
+            "type": "library",
+            "bom-ref": "pkg:composer/php-http/guzzle7-adapter@1.0.0",
+            "group": "php-http",
+            "name": "guzzle7-adapter",
+            "version": "1.0.0",
+            "purl": "pkg:composer/php-http/guzzle7-adapter@1.0.0",
+            "scope": "required"
+        },
+        {
+            "type": "library",
+            "bom-ref": "pkg:composer/php-http/httplug@2.4.0",
+            "group": "php-http",
+            "name": "httplug",
+            "version": "2.4.0",
+            "purl": "pkg:composer/php-http/httplug@2.4.0",
+            "scope": "required"
+        },
+        {
+            "type": "library",
+            "bom-ref": "pkg:composer/php-http/promise@1.3.0",
+            "group": "php-http",
+            "name": "promise",
+            "version": "1.3.0",
+            "purl": "pkg:composer/php-http/promise@1.3.0",
+            "scope": "required"
+        },
+        {
+            "type": "library",
+            "bom-ref": "pkg:composer/php-webdriver/webdriver@1.15.1",
+            "group": "php-webdriver",
+            "name": "webdriver",
+            "version": "1.15.1",
+            "purl": "pkg:composer/php-webdriver/webdriver@1.15.1",
+            "scope": "excluded"
+        },
+        {
+            "type": "library",
+            "bom-ref": "pkg:composer/phpdocumentor/reflection-common@2.2.0",
+            "group": "phpdocumentor",
+            "name": "reflection-common",
+            "version": "2.2.0",
+            "purl": "pkg:composer/phpdocumentor/reflection-common@2.2.0",
+            "scope": "excluded"
+        },
+        {
+            "type": "library",
+            "bom-ref": "pkg:composer/phpdocumentor/reflection-docblock@5.3.0",
+            "group": "phpdocumentor",
+            "name": "reflection-docblock",
+            "version": "5.3.0",
+            "purl": "pkg:composer/phpdocumentor/reflection-docblock@5.3.0",
+            "scope": "excluded"
+        },
+        {
+            "type": "library",
+            "bom-ref": "pkg:composer/phpdocumentor/type-resolver@1.8.0",
+            "group": "phpdocumentor",
+            "name": "type-resolver",
+            "version": "1.8.0",
+            "purl": "pkg:composer/phpdocumentor/type-resolver@1.8.0",
+            "scope": "excluded"
+        },
+        {
+            "type": "library",
+            "bom-ref": "pkg:composer/phpoffice/phpspreadsheet@1.27.1",
+            "group": "phpoffice",
+            "name": "phpspreadsheet",
+            "version": "1.27.1",
+            "purl": "pkg:composer/phpoffice/phpspreadsheet@1.27.1",
+            "scope": "required"
+        },
+        {
+            "type": "library",
+            "bom-ref": "pkg:composer/phpseclib/phpseclib@3.0.37",
+            "group": "phpseclib",
+            "name": "phpseclib",
+            "version": "3.0.37",
+            "purl": "pkg:composer/phpseclib/phpseclib@3.0.37",
+            "scope": "required"
+        },
+        {
+            "type": "library",
+            "bom-ref": "pkg:composer/phpspec/prophecy@1.18.0",
+            "group": "phpspec",
+            "name": "prophecy",
+            "version": "v1.18.0",
+            "purl": "pkg:composer/phpspec/prophecy@1.18.0",
+            "scope": "excluded"
+        },
+        {
+            "type": "library",
+            "bom-ref": "pkg:composer/phpstan/extension-installer@1.3.0",
+            "group": "phpstan",
+            "name": "extension-installer",
+            "version": "1.3.0",
+            "purl": "pkg:composer/phpstan/extension-installer@1.3.0",
+            "scope": "excluded"
+        },
+        {
+            "type": "library",
+            "bom-ref": "pkg:composer/phpstan/phpdoc-parser@1.25.0",
+            "group": "phpstan",
+            "name": "phpdoc-parser",
+            "version": "1.25.0",
+            "purl": "pkg:composer/phpstan/phpdoc-parser@1.25.0",
+            "scope": "required"
+        },
+        {
+            "type": "library",
+            "bom-ref": "pkg:composer/phpstan/phpstan@1.10.47",
+            "group": "phpstan",
+            "name": "phpstan",
+            "version": "1.10.47",
+            "purl": "pkg:composer/phpstan/phpstan@1.10.47",
+            "scope": "excluded"
+        },
+        {
+            "type": "library",
+            "bom-ref": "pkg:composer/phpstan/phpstan-deprecation-rules@1.1.3",
+            "group": "phpstan",
+            "name": "phpstan-deprecation-rules",
+            "version": "1.1.3",
+            "purl": "pkg:composer/phpstan/phpstan-deprecation-rules@1.1.3",
+            "scope": "excluded"
+        },
+        {
+            "type": "library",
+            "bom-ref": "pkg:composer/phpstan/phpstan-doctrine@1.3.40",
+            "group": "phpstan",
+            "name": "phpstan-doctrine",
+            "version": "1.3.40",
+            "purl": "pkg:composer/phpstan/phpstan-doctrine@1.3.40",
+            "scope": "excluded"
+        },
+        {
+            "type": "library",
+            "bom-ref": "pkg:composer/phpstan/phpstan-phpunit@1.3.13",
+            "group": "phpstan",
+            "name": "phpstan-phpunit",
+            "version": "1.3.13",
+            "purl": "pkg:composer/phpstan/phpstan-phpunit@1.3.13",
+            "scope": "excluded"
+        },
+        {
+            "type": "library",
+            "bom-ref": "pkg:composer/phpstan/phpstan-symfony@1.3.2",
+            "group": "phpstan",
+            "name": "phpstan-symfony",
+            "version": "1.3.2",
+            "purl": "pkg:composer/phpstan/phpstan-symfony@1.3.2",
+            "scope": "excluded"
+        },
+        {
+            "type": "library",
+            "bom-ref": "pkg:composer/phpunit/php-code-coverage@9.2.15",
+            "group": "phpunit",
+            "name": "php-code-coverage",
+            "version": "9.2.15",
+            "purl": "pkg:composer/phpunit/php-code-coverage@9.2.15",
+            "scope": "excluded"
+        },
+        {
+            "type": "library",
+            "bom-ref": "pkg:composer/phpunit/php-file-iterator@3.0.6",
+            "group": "phpunit",
+            "name": "php-file-iterator",
+            "version": "3.0.6",
+            "purl": "pkg:composer/phpunit/php-file-iterator@3.0.6",
+            "scope": "excluded"
+        },
+        {
+            "type": "library",
+            "bom-ref": "pkg:composer/phpunit/php-invoker@3.1.1",
+            "group": "phpunit",
+            "name": "php-invoker",
+            "version": "3.1.1",
+            "purl": "pkg:composer/phpunit/php-invoker@3.1.1",
+            "scope": "excluded"
+        },
+        {
+            "type": "library",
+            "bom-ref": "pkg:composer/phpunit/php-text-template@2.0.4",
+            "group": "phpunit",
+            "name": "php-text-template",
+            "version": "2.0.4",
+            "purl": "pkg:composer/phpunit/php-text-template@2.0.4",
+            "scope": "excluded"
+        },
+        {
+            "type": "library",
+            "bom-ref": "pkg:composer/phpunit/php-timer@5.0.3",
+            "group": "phpunit",
+            "name": "php-timer",
+            "version": "5.0.3",
+            "purl": "pkg:composer/phpunit/php-timer@5.0.3",
+            "scope": "excluded"
+        },
+        {
+            "type": "library",
+            "bom-ref": "pkg:composer/phpunit/phpunit@9.5.20",
+            "group": "phpunit",
+            "name": "phpunit",
+            "version": "9.5.20",
+            "purl": "pkg:composer/phpunit/phpunit@9.5.20",
+            "scope": "excluded"
+        },
+        {
+            "type": "library",
+            "bom-ref": "pkg:composer/predis/predis@1.1.10",
+            "group": "predis",
+            "name": "predis",
+            "version": "v1.1.10",
+            "purl": "pkg:composer/predis/predis@1.1.10",
+            "scope": "required"
+        },
+        {
+            "type": "library",
+            "bom-ref": "pkg:composer/psr/cache@2.0.0",
+            "group": "psr",
+            "name": "cache",
+            "version": "2.0.0",
+            "purl": "pkg:composer/psr/cache@2.0.0",
+            "scope": "required"
+        },
+        {
+            "type": "library",
+            "bom-ref": "pkg:composer/psr/container@1.1.2",
+            "group": "psr",
+            "name": "container",
+            "version": "1.1.2",
+            "purl": "pkg:composer/psr/container@1.1.2",
+            "scope": "required"
+        },
+        {
+            "type": "library",
+            "bom-ref": "pkg:composer/psr/event-dispatcher@1.0.0",
+            "group": "psr",
+            "name": "event-dispatcher",
+            "version": "1.0.0",
+            "purl": "pkg:composer/psr/event-dispatcher@1.0.0",
+            "scope": "required"
+        },
+        {
+            "type": "library",
+            "bom-ref": "pkg:composer/psr/http-client@1.0.3",
+            "group": "psr",
+            "name": "http-client",
+            "version": "1.0.3",
+            "purl": "pkg:composer/psr/http-client@1.0.3",
+            "scope": "required"
+        },
+        {
+            "type": "library",
+            "bom-ref": "pkg:composer/psr/http-factory@1.0.2",
+            "group": "psr",
+            "name": "http-factory",
+            "version": "1.0.2",
+            "purl": "pkg:composer/psr/http-factory@1.0.2",
+            "scope": "required"
+        },
+        {
+            "type": "library",
+            "bom-ref": "pkg:composer/psr/http-message@1.1",
+            "group": "psr",
+            "name": "http-message",
+            "version": "1.1",
+            "purl": "pkg:composer/psr/http-message@1.1",
+            "scope": "required"
+        },
+        {
+            "type": "library",
+            "bom-ref": "pkg:composer/psr/log@1.1.4",
+            "group": "psr",
+            "name": "log",
+            "version": "1.1.4",
+            "purl": "pkg:composer/psr/log@1.1.4",
+            "scope": "required"
+        },
+        {
+            "type": "library",
+            "bom-ref": "pkg:composer/psr/simple-cache@2.0.0",
+            "group": "psr",
+            "name": "simple-cache",
+            "version": "2.0.0",
+            "purl": "pkg:composer/psr/simple-cache@2.0.0",
+            "scope": "required"
+        },
+        {
+            "type": "library",
+            "bom-ref": "pkg:composer/psy/psysh@0.11.22",
+            "group": "psy",
+            "name": "psysh",
+            "version": "v0.11.22",
+            "purl": "pkg:composer/psy/psysh@0.11.22",
+            "scope": "required"
+        },
+        {
+            "type": "library",
+            "bom-ref": "pkg:composer/ralouphie/getallheaders@3.0.3",
+            "group": "ralouphie",
+            "name": "getallheaders",
+            "version": "3.0.3",
+            "purl": "pkg:composer/ralouphie/getallheaders@3.0.3",
+            "scope": "required"
+        },
+        {
+            "type": "library",
+            "bom-ref": "pkg:composer/ramsey/collection@1.3.0",
+            "group": "ramsey",
+            "name": "collection",
+            "version": "1.3.0",
+            "purl": "pkg:composer/ramsey/collection@1.3.0",
+            "scope": "required"
+        },
+        {
+            "type": "library",
+            "bom-ref": "pkg:composer/ramsey/uuid@4.7.5",
+            "group": "ramsey",
+            "name": "uuid",
+            "version": "4.7.5",
+            "purl": "pkg:composer/ramsey/uuid@4.7.5",
+            "scope": "required"
+        },
+        {
+            "type": "library",
+            "bom-ref": "pkg:composer/react/promise@3.2.0",
+            "group": "react",
+            "name": "promise",
+            "version": "v3.2.0",
+            "purl": "pkg:composer/react/promise@3.2.0",
+            "scope": "required"
+        },
+        {
+            "type": "library",
+            "bom-ref": "pkg:composer/rector/rector@0.18.12",
+            "group": "rector",
+            "name": "rector",
+            "version": "0.18.12",
+            "purl": "pkg:composer/rector/rector@0.18.12",
+            "scope": "excluded"
+        },
+        {
+            "type": "library",
+            "bom-ref": "pkg:composer/robrichards/xmlseclibs@3.1.1",
+            "group": "robrichards",
+            "name": "xmlseclibs",
+            "version": "3.1.1",
+            "purl": "pkg:composer/robrichards/xmlseclibs@3.1.1",
+            "scope": "required"
+        },
+        {
+            "type": "library",
+            "bom-ref": "pkg:composer/sebastian/cli-parser@1.0.1",
+            "group": "sebastian",
+            "name": "cli-parser",
+            "version": "1.0.1",
+            "purl": "pkg:composer/sebastian/cli-parser@1.0.1",
+            "scope": "excluded"
+        },
+        {
+            "type": "library",
+            "bom-ref": "pkg:composer/sebastian/code-unit@1.0.8",
+            "group": "sebastian",
+            "name": "code-unit",
+            "version": "1.0.8",
+            "purl": "pkg:composer/sebastian/code-unit@1.0.8",
+            "scope": "excluded"
+        },
+        {
+            "type": "library",
+            "bom-ref": "pkg:composer/sebastian/code-unit-reverse-lookup@2.0.3",
+            "group": "sebastian",
+            "name": "code-unit-reverse-lookup",
+            "version": "2.0.3",
+            "purl": "pkg:composer/sebastian/code-unit-reverse-lookup@2.0.3",
+            "scope": "excluded"
+        },
+        {
+            "type": "library",
+            "bom-ref": "pkg:composer/sebastian/comparator@4.0.8",
+            "group": "sebastian",
+            "name": "comparator",
+            "version": "4.0.8",
+            "purl": "pkg:composer/sebastian/comparator@4.0.8",
+            "scope": "excluded"
+        },
+        {
+            "type": "library",
+            "bom-ref": "pkg:composer/sebastian/complexity@2.0.3",
+            "group": "sebastian",
+            "name": "complexity",
+            "version": "2.0.3",
+            "purl": "pkg:composer/sebastian/complexity@2.0.3",
+            "scope": "excluded"
+        },
+        {
+            "type": "library",
+            "bom-ref": "pkg:composer/sebastian/diff@4.0.5",
+            "group": "sebastian",
+            "name": "diff",
+            "version": "4.0.5",
+            "purl": "pkg:composer/sebastian/diff@4.0.5",
+            "scope": "excluded"
+        },
+        {
+            "type": "library",
+            "bom-ref": "pkg:composer/sebastian/environment@5.1.5",
+            "group": "sebastian",
+            "name": "environment",
+            "version": "5.1.5",
+            "purl": "pkg:composer/sebastian/environment@5.1.5",
+            "scope": "excluded"
+        },
+        {
+            "type": "library",
+            "bom-ref": "pkg:composer/sebastian/exporter@4.0.5",
+            "group": "sebastian",
+            "name": "exporter",
+            "version": "4.0.5",
+            "purl": "pkg:composer/sebastian/exporter@4.0.5",
+            "scope": "excluded"
+        },
+        {
+            "type": "library",
+            "bom-ref": "pkg:composer/sebastian/global-state@5.0.6",
+            "group": "sebastian",
+            "name": "global-state",
+            "version": "5.0.6",
+            "purl": "pkg:composer/sebastian/global-state@5.0.6",
+            "scope": "excluded"
+        },
+        {
+            "type": "library",
+            "bom-ref": "pkg:composer/sebastian/lines-of-code@1.0.4",
+            "group": "sebastian",
+            "name": "lines-of-code",
+            "version": "1.0.4",
+            "purl": "pkg:composer/sebastian/lines-of-code@1.0.4",
+            "scope": "excluded"
+        },
+        {
+            "type": "library",
+            "bom-ref": "pkg:composer/sebastian/object-enumerator@4.0.4",
+            "group": "sebastian",
+            "name": "object-enumerator",
+            "version": "4.0.4",
+            "purl": "pkg:composer/sebastian/object-enumerator@4.0.4",
+            "scope": "excluded"
+        },
+        {
+            "type": "library",
+            "bom-ref": "pkg:composer/sebastian/object-reflector@2.0.4",
+            "group": "sebastian",
+            "name": "object-reflector",
+            "version": "2.0.4",
+            "purl": "pkg:composer/sebastian/object-reflector@2.0.4",
+            "scope": "excluded"
+        },
+        {
+            "type": "library",
+            "bom-ref": "pkg:composer/sebastian/recursion-context@4.0.5",
+            "group": "sebastian",
+            "name": "recursion-context",
+            "version": "4.0.5",
+            "purl": "pkg:composer/sebastian/recursion-context@4.0.5",
+            "scope": "excluded"
+        },
+        {
+            "type": "library",
+            "bom-ref": "pkg:composer/sebastian/resource-operations@3.0.3",
+            "group": "sebastian",
+            "name": "resource-operations",
+            "version": "3.0.3",
+            "purl": "pkg:composer/sebastian/resource-operations@3.0.3",
+            "scope": "excluded"
+        },
+        {
+            "type": "library",
+            "bom-ref": "pkg:composer/sebastian/type@3.2.1",
+            "group": "sebastian",
+            "name": "type",
+            "version": "3.2.1",
+            "purl": "pkg:composer/sebastian/type@3.2.1",
+            "scope": "excluded"
+        },
+        {
+            "type": "library",
+            "bom-ref": "pkg:composer/sebastian/version@3.0.2",
+            "group": "sebastian",
+            "name": "version",
+            "version": "3.0.2",
+            "purl": "pkg:composer/sebastian/version@3.0.2",
+            "scope": "excluded"
+        },
+        {
+            "type": "library",
+            "bom-ref": "pkg:composer/seld/jsonlint@1.10.2",
+            "group": "seld",
+            "name": "jsonlint",
+            "version": "1.10.2",
+            "purl": "pkg:composer/seld/jsonlint@1.10.2",
+            "scope": "required"
+        },
+        {
+            "type": "library",
+            "bom-ref": "pkg:composer/seld/phar-utils@1.2.1",
+            "group": "seld",
+            "name": "phar-utils",
+            "version": "1.2.1",
+            "purl": "pkg:composer/seld/phar-utils@1.2.1",
+            "scope": "required"
+        },
+        {
+            "type": "library",
+            "bom-ref": "pkg:composer/seld/signal-handler@2.0.2",
+            "group": "seld",
+            "name": "signal-handler",
+            "version": "2.0.2",
+            "purl": "pkg:composer/seld/signal-handler@2.0.2",
+            "scope": "required"
+        },
+        {
+            "type": "library",
+            "bom-ref": "pkg:composer/sensio/framework-extra-bundle@6.2.10",
+            "group": "sensio",
+            "name": "framework-extra-bundle",
+            "version": "v6.2.10",
+            "purl": "pkg:composer/sensio/framework-extra-bundle@6.2.10",
+            "scope": "required"
+        },
+        {
+            "type": "library",
+            "bom-ref": "pkg:composer/simshaun/recurr@5.0.2",
+            "group": "simshaun",
+            "name": "recurr",
+            "version": "v5.0.2",
+            "purl": "pkg:composer/simshaun/recurr@5.0.2",
+            "scope": "required"
+        },
+        {
+            "type": "library",
+            "bom-ref": "pkg:composer/stack/builder@1.0.6",
+            "group": "stack",
+            "name": "builder",
+            "version": "v1.0.6",
+            "purl": "pkg:composer/stack/builder@1.0.6",
+            "scope": "required"
+        },
+        {
+            "type": "library",
+            "bom-ref": "pkg:composer/studio-42/elfinder@2.1.65",
+            "group": "studio-42",
+            "name": "elfinder",
+            "version": "2.1.65",
+            "purl": "pkg:composer/studio-42/elfinder@2.1.65",
+            "scope": "required"
+        },
+        {
+            "type": "library",
+            "bom-ref": "pkg:composer/symfony/amqp-messenger@5.4.35",
+            "group": "symfony",
+            "name": "amqp-messenger",
+            "version": "v5.4.35",
+            "purl": "pkg:composer/symfony/amqp-messenger@5.4.35",
+            "scope": "required"
+        },
+        {
+            "type": "library",
+            "bom-ref": "pkg:composer/symfony/asset@5.4.35",
+            "group": "symfony",
+            "name": "asset",
+            "version": "v5.4.35",
+            "purl": "pkg:composer/symfony/asset@5.4.35",
+            "scope": "required"
+        },
+        {
+            "type": "library",
+            "bom-ref": "pkg:composer/symfony/browser-kit@5.4.35",
+            "group": "symfony",
+            "name": "browser-kit",
+            "version": "v5.4.35",
+            "purl": "pkg:composer/symfony/browser-kit@5.4.35",
+            "scope": "excluded"
+        },
+        {
+            "type": "library",
+            "bom-ref": "pkg:composer/symfony/cache@5.4.35",
+            "group": "symfony",
+            "name": "cache",
+            "version": "v5.4.35",
+            "purl": "pkg:composer/symfony/cache@5.4.35",
+            "scope": "required"
+        },
+        {
+            "type": "library",
+            "bom-ref": "pkg:composer/symfony/cache-contracts@2.5.3",
+            "group": "symfony",
+            "name": "cache-contracts",
+            "version": "v2.5.3",
+            "purl": "pkg:composer/symfony/cache-contracts@2.5.3",
+            "scope": "required"
+        },
+        {
+            "type": "library",
+            "bom-ref": "pkg:composer/symfony/config@5.4.35",
+            "group": "symfony",
+            "name": "config",
+            "version": "v5.4.35",
+            "purl": "pkg:composer/symfony/config@5.4.35",
+            "scope": "required"
+        },
+        {
+            "type": "library",
+            "bom-ref": "pkg:composer/symfony/console@5.4.40",
+            "group": "symfony",
+            "name": "console",
+            "version": "v5.4.40",
+            "purl": "pkg:composer/symfony/console@5.4.40",
+            "scope": "required"
+        },
+        {
+            "type": "library",
+            "bom-ref": "pkg:composer/symfony/css-selector@5.4.35",
+            "group": "symfony",
+            "name": "css-selector",
+            "version": "v5.4.35",
+            "purl": "pkg:composer/symfony/css-selector@5.4.35",
+            "scope": "required"
+        },
+        {
+            "type": "library",
+            "bom-ref": "pkg:composer/symfony/dependency-injection@5.4.35",
+            "group": "symfony",
+            "name": "dependency-injection",
+            "version": "v5.4.35",
+            "purl": "pkg:composer/symfony/dependency-injection@5.4.35",
+            "scope": "required"
+        },
+        {
+            "type": "library",
+            "bom-ref": "pkg:composer/symfony/deprecation-contracts@3.5.0",
+            "group": "symfony",
+            "name": "deprecation-contracts",
+            "version": "v3.5.0",
+            "purl": "pkg:composer/symfony/deprecation-contracts@3.5.0",
+            "scope": "required"
+        },
+        {
+            "type": "library",
+            "bom-ref": "pkg:composer/symfony/doctrine-bridge@5.4.35",
+            "group": "symfony",
+            "name": "doctrine-bridge",
+            "version": "v5.4.35",
+            "purl": "pkg:composer/symfony/doctrine-bridge@5.4.35",
+            "scope": "required"
+        },
+        {
+            "type": "library",
+            "bom-ref": "pkg:composer/symfony/doctrine-messenger@5.4.35",
+            "group": "symfony",
+            "name": "doctrine-messenger",
+            "version": "v5.4.35",
+            "purl": "pkg:composer/symfony/doctrine-messenger@5.4.35",
+            "scope": "required"
+        },
+        {
+            "type": "library",
+            "bom-ref": "pkg:composer/symfony/dom-crawler@5.4.35",
+            "group": "symfony",
+            "name": "dom-crawler",
+            "version": "v5.4.35",
+            "purl": "pkg:composer/symfony/dom-crawler@5.4.35",
+            "scope": "excluded"
+        },
+        {
+            "type": "library",
+            "bom-ref": "pkg:composer/symfony/dotenv@5.4.35",
+            "group": "symfony",
+            "name": "dotenv",
+            "version": "v5.4.35",
+            "purl": "pkg:composer/symfony/dotenv@5.4.35",
+            "scope": "required"
+        },
+        {
+            "type": "library",
+            "bom-ref": "pkg:composer/symfony/error-handler@5.4.35",
+            "group": "symfony",
+            "name": "error-handler",
+            "version": "v5.4.35",
+            "purl": "pkg:composer/symfony/error-handler@5.4.35",
+            "scope": "required"
+        },
+        {
+            "type": "library",
+            "bom-ref": "pkg:composer/symfony/event-dispatcher@5.4.35",
+            "group": "symfony",
+            "name": "event-dispatcher",
+            "version": "v5.4.35",
+            "purl": "pkg:composer/symfony/event-dispatcher@5.4.35",
+            "scope": "required"
+        },
+        {
+            "type": "library",
+            "bom-ref": "pkg:composer/symfony/event-dispatcher-contracts@3.0.2",
+            "group": "symfony",
+            "name": "event-dispatcher-contracts",
+            "version": "v3.0.2",
+            "purl": "pkg:composer/symfony/event-dispatcher-contracts@3.0.2",
+            "scope": "required"
+        },
+        {
+            "type": "library",
+            "bom-ref": "pkg:composer/symfony/expression-language@5.4.35",
+            "group": "symfony",
+            "name": "expression-language",
+            "version": "v5.4.35",
+            "purl": "pkg:composer/symfony/expression-language@5.4.35",
+            "scope": "required"
+        },
+        {
+            "type": "library",
+            "bom-ref": "pkg:composer/symfony/filesystem@5.4.40",
+            "group": "symfony",
+            "name": "filesystem",
+            "version": "v5.4.40",
+            "purl": "pkg:composer/symfony/filesystem@5.4.40",
+            "scope": "required"
+        },
+        {
+            "type": "library",
+            "bom-ref": "pkg:composer/symfony/finder@5.4.40",
+            "group": "symfony",
+            "name": "finder",
+            "version": "v5.4.40",
+            "purl": "pkg:composer/symfony/finder@5.4.40",
+            "scope": "required"
+        },
+        {
+            "type": "library",
+            "bom-ref": "pkg:composer/symfony/form@5.4.35",
+            "group": "symfony",
+            "name": "form",
+            "version": "v5.4.35",
+            "purl": "pkg:composer/symfony/form@5.4.35",
+            "scope": "required"
+        },
+        {
+            "type": "library",
+            "bom-ref": "pkg:composer/symfony/framework-bundle@5.4.35",
+            "group": "symfony",
+            "name": "framework-bundle",
+            "version": "v5.4.35",
+            "purl": "pkg:composer/symfony/framework-bundle@5.4.35",
+            "scope": "required"
+        },
+        {
+            "type": "library",
+            "bom-ref": "pkg:composer/symfony/http-client@5.4.35",
+            "group": "symfony",
+            "name": "http-client",
+            "version": "v5.4.35",
+            "purl": "pkg:composer/symfony/http-client@5.4.35",
+            "scope": "required"
+        },
+        {
+            "type": "library",
+            "bom-ref": "pkg:composer/symfony/http-client-contracts@2.5.3",
+            "group": "symfony",
+            "name": "http-client-contracts",
+            "version": "v2.5.3",
+            "purl": "pkg:composer/symfony/http-client-contracts@2.5.3",
+            "scope": "required"
+        },
+        {
+            "type": "library",
+            "bom-ref": "pkg:composer/symfony/http-foundation@5.4.35",
+            "group": "symfony",
+            "name": "http-foundation",
+            "version": "v5.4.35",
+            "purl": "pkg:composer/symfony/http-foundation@5.4.35",
+            "scope": "required"
+        },
+        {
+            "type": "library",
+            "bom-ref": "pkg:composer/symfony/http-kernel@5.4.35",
+            "group": "symfony",
+            "name": "http-kernel",
+            "version": "v5.4.35",
+            "purl": "pkg:composer/symfony/http-kernel@5.4.35",
+            "scope": "required"
+        },
+        {
+            "type": "library",
+            "bom-ref": "pkg:composer/symfony/intl@5.4.35",
+            "group": "symfony",
+            "name": "intl",
+            "version": "v5.4.35",
+            "purl": "pkg:composer/symfony/intl@5.4.35",
+            "scope": "required"
+        },
+        {
+            "type": "library",
+            "bom-ref": "pkg:composer/symfony/lock@5.4.35",
+            "group": "symfony",
+            "name": "lock",
+            "version": "v5.4.35",
+            "purl": "pkg:composer/symfony/lock@5.4.35",
+            "scope": "required"
+        },
+        {
+            "type": "library",
+            "bom-ref": "pkg:composer/symfony/mailer@5.4.35",
+            "group": "symfony",
+            "name": "mailer",
+            "version": "v5.4.35",
+            "purl": "pkg:composer/symfony/mailer@5.4.35",
+            "scope": "required"
+        },
+        {
+            "type": "library",
+            "bom-ref": "pkg:composer/symfony/maker-bundle@1.50.0",
+            "group": "symfony",
+            "name": "maker-bundle",
+            "version": "v1.50.0",
+            "purl": "pkg:composer/symfony/maker-bundle@1.50.0",
+            "scope": "excluded"
+        },
+        {
+            "type": "library",
+            "bom-ref": "pkg:composer/symfony/messenger@5.4.35",
+            "group": "symfony",
+            "name": "messenger",
+            "version": "v5.4.35",
+            "purl": "pkg:composer/symfony/messenger@5.4.35",
+            "scope": "required"
+        },
+        {
+            "type": "library",
+            "bom-ref": "pkg:composer/symfony/mime@5.4.35",
+            "group": "symfony",
+            "name": "mime",
+            "version": "v5.4.35",
+            "purl": "pkg:composer/symfony/mime@5.4.35",
+            "scope": "required"
+        },
+        {
+            "type": "library",
+            "bom-ref": "pkg:composer/symfony/monolog-bridge@5.4.35",
+            "group": "symfony",
+            "name": "monolog-bridge",
+            "version": "v5.4.35",
+            "purl": "pkg:composer/symfony/monolog-bridge@5.4.35",
+            "scope": "required"
+        },
+        {
+            "type": "library",
+            "bom-ref": "pkg:composer/symfony/monolog-bundle@3.5.0",
+            "group": "symfony",
+            "name": "monolog-bundle",
+            "version": "v3.5.0",
+            "purl": "pkg:composer/symfony/monolog-bundle@3.5.0",
+            "scope": "required"
+        },
+        {
+            "type": "library",
+            "bom-ref": "pkg:composer/symfony/options-resolver@5.4.21",
+            "group": "symfony",
+            "name": "options-resolver",
+            "version": "v5.4.21",
+            "purl": "pkg:composer/symfony/options-resolver@5.4.21",
+            "scope": "required"
+        },
+        {
+            "type": "library",
+            "bom-ref": "pkg:composer/symfony/password-hasher@6.0.19",
+            "group": "symfony",
+            "name": "password-hasher",
+            "version": "v6.0.19",
+            "purl": "pkg:composer/symfony/password-hasher@6.0.19",
+            "scope": "required"
+        },
+        {
+            "type": "library",
+            "bom-ref": "pkg:composer/symfony/phpunit-bridge@5.4.34",
+            "group": "symfony",
+            "name": "phpunit-bridge",
+            "version": "v5.4.34",
+            "purl": "pkg:composer/symfony/phpunit-bridge@5.4.34",
+            "scope": "excluded"
+        },
+        {
+            "type": "library",
+            "bom-ref": "pkg:composer/symfony/polyfill-ctype@1.31.0",
+            "group": "symfony",
+            "name": "polyfill-ctype",
+            "version": "v1.31.0",
+            "purl": "pkg:composer/symfony/polyfill-ctype@1.31.0",
+            "scope": "required"
+        },
+        {
+            "type": "library",
+            "bom-ref": "pkg:composer/symfony/polyfill-intl-grapheme@1.29.0",
+            "group": "symfony",
+            "name": "polyfill-intl-grapheme",
+            "version": "v1.29.0",
+            "purl": "pkg:composer/symfony/polyfill-intl-grapheme@1.29.0",
+            "scope": "required"
+        },
+        {
+            "type": "library",
+            "bom-ref": "pkg:composer/symfony/polyfill-intl-icu@1.28.0",
+            "group": "symfony",
+            "name": "polyfill-intl-icu",
+            "version": "v1.28.0",
+            "purl": "pkg:composer/symfony/polyfill-intl-icu@1.28.0",
+            "scope": "required"
+        },
+        {
+            "type": "library",
+            "bom-ref": "pkg:composer/symfony/polyfill-intl-idn@1.28.0",
+            "group": "symfony",
+            "name": "polyfill-intl-idn",
+            "version": "v1.28.0",
+            "purl": "pkg:composer/symfony/polyfill-intl-idn@1.28.0",
+            "scope": "required"
+        },
+        {
+            "type": "library",
+            "bom-ref": "pkg:composer/symfony/polyfill-intl-normalizer@1.29.0",
+            "group": "symfony",
+            "name": "polyfill-intl-normalizer",
+            "version": "v1.29.0",
+            "purl": "pkg:composer/symfony/polyfill-intl-normalizer@1.29.0",
+            "scope": "required"
+        },
+        {
+            "type": "library",
+            "bom-ref": "pkg:composer/symfony/polyfill-mbstring@1.31.0",
+            "group": "symfony",
+            "name": "polyfill-mbstring",
+            "version": "v1.31.0",
+            "purl": "pkg:composer/symfony/polyfill-mbstring@1.31.0",
+            "scope": "required"
+        },
+        {
+            "type": "library",
+            "bom-ref": "pkg:composer/symfony/polyfill-php72@1.31.0",
+            "group": "symfony",
+            "name": "polyfill-php72",
+            "version": "v1.31.0",
+            "purl": "pkg:composer/symfony/polyfill-php72@1.31.0",
+            "scope": "required"
+        },
+        {
+            "type": "library",
+            "bom-ref": "pkg:composer/symfony/polyfill-php73@1.29.0",
+            "group": "symfony",
+            "name": "polyfill-php73",
+            "version": "v1.29.0",
+            "purl": "pkg:composer/symfony/polyfill-php73@1.29.0",
+            "scope": "required"
+        },
+        {
+            "type": "library",
+            "bom-ref": "pkg:composer/symfony/polyfill-php80@1.31.0",
+            "group": "symfony",
+            "name": "polyfill-php80",
+            "version": "v1.31.0",
+            "purl": "pkg:composer/symfony/polyfill-php80@1.31.0",
+            "scope": "required"
+        },
+        {
+            "type": "library",
+            "bom-ref": "pkg:composer/symfony/polyfill-php81@1.31.0",
+            "group": "symfony",
+            "name": "polyfill-php81",
+            "version": "v1.31.0",
+            "purl": "pkg:composer/symfony/polyfill-php81@1.31.0",
+            "scope": "required"
+        },
+        {
+            "type": "library",
+            "bom-ref": "pkg:composer/symfony/process@5.4.40",
+            "group": "symfony",
+            "name": "process",
+            "version": "v5.4.40",
+            "purl": "pkg:composer/symfony/process@5.4.40",
+            "scope": "required"
+        },
+        {
+            "type": "library",
+            "bom-ref": "pkg:composer/symfony/property-access@5.4.35",
+            "group": "symfony",
+            "name": "property-access",
+            "version": "v5.4.35",
+            "purl": "pkg:composer/symfony/property-access@5.4.35",
+            "scope": "required"
+        },
+        {
+            "type": "library",
+            "bom-ref": "pkg:composer/symfony/property-info@6.0.19",
+            "group": "symfony",
+            "name": "property-info",
+            "version": "v6.0.19",
+            "purl": "pkg:composer/symfony/property-info@6.0.19",
+            "scope": "required"
+        },
+        {
+            "type": "library",
+            "bom-ref": "pkg:composer/symfony/redis-messenger@6.0.19",
+            "group": "symfony",
+            "name": "redis-messenger",
+            "version": "v6.0.19",
+            "purl": "pkg:composer/symfony/redis-messenger@6.0.19",
+            "scope": "required"
+        },
+        {
+            "type": "library",
+            "bom-ref": "pkg:composer/symfony/routing@5.4.35",
+            "group": "symfony",
+            "name": "routing",
+            "version": "v5.4.35",
+            "purl": "pkg:composer/symfony/routing@5.4.35",
+            "scope": "required"
+        },
+        {
+            "type": "library",
+            "bom-ref": "pkg:composer/symfony/security-acl@3.0.4",
+            "group": "symfony",
+            "name": "security-acl",
+            "version": "v3.0.4",
+            "purl": "pkg:composer/symfony/security-acl@3.0.4",
+            "scope": "required"
+        },
+        {
+            "type": "library",
+            "bom-ref": "pkg:composer/symfony/security-bundle@5.4.35",
+            "group": "symfony",
+            "name": "security-bundle",
+            "version": "v5.4.35",
+            "purl": "pkg:composer/symfony/security-bundle@5.4.35",
+            "scope": "required"
+        },
+        {
+            "type": "library",
+            "bom-ref": "pkg:composer/symfony/security-core@5.4.35",
+            "group": "symfony",
+            "name": "security-core",
+            "version": "v5.4.35",
+            "purl": "pkg:composer/symfony/security-core@5.4.35",
+            "scope": "required"
+        },
+        {
+            "type": "library",
+            "bom-ref": "pkg:composer/symfony/security-csrf@5.4.35",
+            "group": "symfony",
+            "name": "security-csrf",
+            "version": "v5.4.35",
+            "purl": "pkg:composer/symfony/security-csrf@5.4.35",
+            "scope": "required"
+        },
+        {
+            "type": "library",
+            "bom-ref": "pkg:composer/symfony/security-guard@5.4.35",
+            "group": "symfony",
+            "name": "security-guard",
+            "version": "v5.4.35",
+            "purl": "pkg:composer/symfony/security-guard@5.4.35",
+            "scope": "required"
+        },
+        {
+            "type": "library",
+            "bom-ref": "pkg:composer/symfony/security-http@5.4.35",
+            "group": "symfony",
+            "name": "security-http",
+            "version": "v5.4.35",
+            "purl": "pkg:composer/symfony/security-http@5.4.35",
+            "scope": "required"
+        },
+        {
+            "type": "library",
+            "bom-ref": "pkg:composer/symfony/service-contracts@2.5.3",
+            "group": "symfony",
+            "name": "service-contracts",
+            "version": "v2.5.3",
+            "purl": "pkg:composer/symfony/service-contracts@2.5.3",
+            "scope": "required"
+        },
+        {
+            "type": "library",
+            "bom-ref": "pkg:composer/symfony/stopwatch@5.4.35",
+            "group": "symfony",
+            "name": "stopwatch",
+            "version": "v5.4.35",
+            "purl": "pkg:composer/symfony/stopwatch@5.4.35",
+            "scope": "required"
+        },
+        {
+            "type": "library",
+            "bom-ref": "pkg:composer/symfony/string@6.0.19",
+            "group": "symfony",
+            "name": "string",
+            "version": "v6.0.19",
+            "purl": "pkg:composer/symfony/string@6.0.19",
+            "scope": "required"
+        },
+        {
+            "type": "library",
+            "bom-ref": "pkg:composer/symfony/templating@5.4.35",
+            "group": "symfony",
+            "name": "templating",
+            "version": "v5.4.35",
+            "purl": "pkg:composer/symfony/templating@5.4.35",
+            "scope": "required"
+        },
+        {
+            "type": "library",
+            "bom-ref": "pkg:composer/symfony/translation@5.4.35",
+            "group": "symfony",
+            "name": "translation",
+            "version": "v5.4.35",
+            "purl": "pkg:composer/symfony/translation@5.4.35",
+            "scope": "required"
+        },
+        {
+            "type": "library",
+            "bom-ref": "pkg:composer/symfony/translation-contracts@2.5.3",
+            "group": "symfony",
+            "name": "translation-contracts",
+            "version": "v2.5.3",
+            "purl": "pkg:composer/symfony/translation-contracts@2.5.3",
+            "scope": "required"
+        },
+        {
+            "type": "library",
+            "bom-ref": "pkg:composer/symfony/twig-bridge@5.4.35",
+            "group": "symfony",
+            "name": "twig-bridge",
+            "version": "v5.4.35",
+            "purl": "pkg:composer/symfony/twig-bridge@5.4.35",
+            "scope": "required"
+        },
+        {
+            "type": "library",
+            "bom-ref": "pkg:composer/symfony/twig-bundle@5.4.35",
+            "group": "symfony",
+            "name": "twig-bundle",
+            "version": "v5.4.35",
+            "purl": "pkg:composer/symfony/twig-bundle@5.4.35",
+            "scope": "required"
+        },
+        {
+            "type": "library",
+            "bom-ref": "pkg:composer/symfony/validator@5.4.35",
+            "group": "symfony",
+            "name": "validator",
+            "version": "v5.4.35",
+            "purl": "pkg:composer/symfony/validator@5.4.35",
+            "scope": "required"
+        },
+        {
+            "type": "library",
+            "bom-ref": "pkg:composer/symfony/var-dumper@5.4.35",
+            "group": "symfony",
+            "name": "var-dumper",
+            "version": "v5.4.35",
+            "purl": "pkg:composer/symfony/var-dumper@5.4.35",
+            "scope": "required"
+        },
+        {
+            "type": "library",
+            "bom-ref": "pkg:composer/symfony/var-exporter@6.0.19",
+            "group": "symfony",
+            "name": "var-exporter",
+            "version": "v6.0.19",
+            "purl": "pkg:composer/symfony/var-exporter@6.0.19",
+            "scope": "required"
+        },
+        {
+            "type": "library",
+            "bom-ref": "pkg:composer/symfony/web-profiler-bundle@5.4.35",
+            "group": "symfony",
+            "name": "web-profiler-bundle",
+            "version": "v5.4.35",
+            "purl": "pkg:composer/symfony/web-profiler-bundle@5.4.35",
+            "scope": "excluded"
+        },
+        {
+            "type": "library",
+            "bom-ref": "pkg:composer/symfony/yaml@5.4.35",
+            "group": "symfony",
+            "name": "yaml",
+            "version": "v5.4.35",
+            "purl": "pkg:composer/symfony/yaml@5.4.35",
+            "scope": "required"
+        },
+        {
+            "type": "library",
+            "bom-ref": "pkg:composer/symplify/easy-coding-standard@12.0.13",
+            "group": "symplify",
+            "name": "easy-coding-standard",
+            "version": "12.0.13",
+            "purl": "pkg:composer/symplify/easy-coding-standard@12.0.13",
+            "scope": "excluded"
+        },
+        {
+            "type": "library",
+            "bom-ref": "pkg:composer/theofidry/psysh-bundle@4.5.0",
+            "group": "theofidry",
+            "name": "psysh-bundle",
+            "version": "4.5.0",
+            "purl": "pkg:composer/theofidry/psysh-bundle@4.5.0",
+            "scope": "required"
+        },
+        {
+            "type": "library",
+            "bom-ref": "pkg:composer/theseer/tokenizer@1.2.2",
+            "group": "theseer",
+            "name": "tokenizer",
+            "version": "1.2.2",
+            "purl": "pkg:composer/theseer/tokenizer@1.2.2",
+            "scope": "excluded"
+        },
+        {
+            "type": "library",
+            "bom-ref": "pkg:composer/tightenco/collect@8.83.27",
+            "group": "tightenco",
+            "name": "collect",
+            "version": "v8.83.27",
+            "purl": "pkg:composer/tightenco/collect@8.83.27",
+            "scope": "required"
+        },
+        {
+            "type": "library",
+            "bom-ref": "pkg:composer/twig/twig@3.14.0",
+            "group": "twig",
+            "name": "twig",
+            "version": "v3.14.0",
+            "purl": "pkg:composer/twig/twig@3.14.0",
+            "scope": "required"
+        },
+        {
+            "type": "library",
+            "bom-ref": "pkg:composer/twilio/sdk@5.42.2",
+            "group": "twilio",
+            "name": "sdk",
+            "version": "5.42.2",
+            "purl": "pkg:composer/twilio/sdk@5.42.2",
+            "scope": "required"
+        },
+        {
+            "type": "library",
+            "bom-ref": "pkg:composer/voku/portable-ascii@2.0.1",
+            "group": "voku",
+            "name": "portable-ascii",
+            "version": "2.0.1",
+            "purl": "pkg:composer/voku/portable-ascii@2.0.1",
+            "scope": "required"
+        },
+        {
+            "type": "library",
+            "bom-ref": "pkg:composer/voku/stop-words@2.0.1",
+            "group": "voku",
+            "name": "stop-words",
+            "version": "2.0.1",
+            "purl": "pkg:composer/voku/stop-words@2.0.1",
+            "scope": "required"
+        },
+        {
+            "type": "library",
+            "bom-ref": "pkg:composer/webmozart/assert@1.11.0",
+            "group": "webmozart",
+            "name": "assert",
+            "version": "1.11.0",
+            "purl": "pkg:composer/webmozart/assert@1.11.0",
+            "scope": "excluded"
+        },
+        {
+            "type": "library",
+            "bom-ref": "pkg:composer/wikimedia/less.php@4.1.1",
+            "group": "wikimedia",
+            "name": "less.php",
+            "version": "v4.1.1",
+            "purl": "pkg:composer/wikimedia/less.php@4.1.1",
+            "scope": "required"
+        },
+        {
+            "type": "library",
+            "bom-ref": "pkg:composer/willdurand/jsonp-callback-validator@2.0.0",
+            "group": "willdurand",
+            "name": "jsonp-callback-validator",
+            "version": "v2.0.0",
+            "purl": "pkg:composer/willdurand/jsonp-callback-validator@2.0.0",
+            "scope": "required"
+        },
+        {
+            "type": "library",
+            "bom-ref": "pkg:composer/willdurand/negotiation@3.1.0",
+            "group": "willdurand",
+            "name": "negotiation",
+            "version": "3.1.0",
+            "purl": "pkg:composer/willdurand/negotiation@3.1.0",
+            "scope": "required"
+        }
+    ],
+    "vulnerabilities": [
+        {
+            "bom-ref": "vuln:PKSA-7f9v-sb8k-krfb@pkg:composer/phpoffice/phpspreadsheet@1.27.1",
+            "id": "PKSA-7f9v-sb8k-krfb",
+            "source": {
+                "name": "Packagist",
+                "url": "https://packagist.org/security-advisories/PKSA-7f9v-sb8k-krfb"
+            },
+            "references": [
+                {
+                    "id": "CVE-2024-45291",
+                    "source": {
+                        "name": "NVD",
+                        "url": "https://nvd.nist.gov/vuln/detail/CVE-2024-45291"
+                    }
+                },
+                {
+                    "id": "CVE-2024-45291",
+                    "source": {
+                        "name": "advisory",
+                        "url": "https://github.com/advisories/GHSA-w9xv-qf98-ccq4"
+                    }
+                }
+            ],
+            "ratings": [
+                {
+                    "severity": "medium",
+                    "method": "other",
+                    "source": {
+                        "name": "Packagist",
+                        "url": "https://packagist.org/security-advisories/PKSA-7f9v-sb8k-krfb"
+                    }
+                }
+            ],
+            "description": "PhpSpreadsheet allows absolute path traversal and Server-Side Request Forgery in HTML writer when embedding images is enabled",
+            "detail": "Affected versions: >=2.0.0,<2.1.1|<1.29.2|>=2.2.0,<2.3.0",
+            "recommendation": "No verified remediation found.",
+            "affects": [
+                {
+                    "ref": "pkg:composer/phpoffice/phpspreadsheet@1.27.1"
+                }
+            ],
+            "properties": [
+                {
+                    "name": "composer-remediate:remediation_status",
+                    "value": "none"
+                },
+                {
+                    "name": "composer-remediate:direct",
+                    "value": "false"
+                },
+                {
+                    "name": "composer-remediate:dev",
+                    "value": "false"
+                }
+            ],
+            "published": "2024-10-07T15:58:06+00:00"
+        },
+        {
+            "bom-ref": "vuln:PKSA-dbrb-pvhs-h3st@pkg:composer/phpoffice/phpspreadsheet@1.27.1",
+            "id": "PKSA-dbrb-pvhs-h3st",
+            "source": {
+                "name": "Packagist",
+                "url": "https://packagist.org/security-advisories/PKSA-dbrb-pvhs-h3st"
+            },
+            "references": [
+                {
+                    "id": "CVE-2024-47873",
+                    "source": {
+                        "name": "NVD",
+                        "url": "https://nvd.nist.gov/vuln/detail/CVE-2024-47873"
+                    }
+                },
+                {
+                    "id": "CVE-2024-47873",
+                    "source": {
+                        "name": "advisory",
+                        "url": "https://github.com/advisories/GHSA-jw4x-v69f-hh5w"
+                    }
+                }
+            ],
+            "ratings": [
+                {
+                    "severity": "high",
+                    "method": "other",
+                    "source": {
+                        "name": "Packagist",
+                        "url": "https://packagist.org/security-advisories/PKSA-dbrb-pvhs-h3st"
+                    }
+                }
+            ],
+            "description": "XmlScanner bypass leads to XXE",
+            "detail": "Affected versions: >=3.3.0,<3.4.0|>=2.2.0,<2.3.2|>=2.0.0,<2.1.3|<1.29.4",
+            "recommendation": "No verified remediation found.",
+            "affects": [
+                {
+                    "ref": "pkg:composer/phpoffice/phpspreadsheet@1.27.1"
+                }
+            ],
+            "properties": [
+                {
+                    "name": "composer-remediate:remediation_status",
+                    "value": "none"
+                },
+                {
+                    "name": "composer-remediate:direct",
+                    "value": "false"
+                },
+                {
+                    "name": "composer-remediate:dev",
+                    "value": "false"
+                }
+            ],
+            "published": "2024-11-18T20:01:20+00:00"
+        },
+        {
+            "bom-ref": "vuln:PKSA-dvbq-8ft2-ngrw@pkg:composer/phpoffice/phpspreadsheet@1.27.1",
+            "id": "PKSA-dvbq-8ft2-ngrw",
+            "source": {
+                "name": "Packagist",
+                "url": "https://packagist.org/security-advisories/PKSA-dvbq-8ft2-ngrw"
+            },
+            "references": [
+                {
+                    "id": "CVE-2024-45060",
+                    "source": {
+                        "name": "NVD",
+                        "url": "https://nvd.nist.gov/vuln/detail/CVE-2024-45060"
+                    }
+                },
+                {
+                    "id": "CVE-2024-45060",
+                    "source": {
+                        "name": "advisory",
+                        "url": "https://github.com/advisories/GHSA-v66g-p9x6-v98p"
+                    }
+                }
+            ],
+            "ratings": [
+                {
+                    "severity": "medium",
+                    "method": "other",
+                    "source": {
+                        "name": "Packagist",
+                        "url": "https://packagist.org/security-advisories/PKSA-dvbq-8ft2-ngrw"
+                    }
+                }
+            ],
+            "description": "PhpSpreadsheet has an Unauthenticated Cross-Site-Scripting (XSS) in sample file",
+            "detail": "Affected versions: >=2.0.0,<2.1.1|<1.29.2|>=2.2.0,<2.3.0",
+            "recommendation": "No verified remediation found.",
+            "affects": [
+                {
+                    "ref": "pkg:composer/phpoffice/phpspreadsheet@1.27.1"
+                }
+            ],
+            "properties": [
+                {
+                    "name": "composer-remediate:remediation_status",
+                    "value": "none"
+                },
+                {
+                    "name": "composer-remediate:direct",
+                    "value": "false"
+                },
+                {
+                    "name": "composer-remediate:dev",
+                    "value": "false"
+                }
+            ],
+            "published": "2024-10-07T14:43:30+00:00"
+        },
+        {
+            "bom-ref": "vuln:PKSA-gst3-cdk3-bpqt@pkg:composer/phpoffice/phpspreadsheet@1.27.1",
+            "id": "PKSA-gst3-cdk3-bpqt",
+            "source": {
+                "name": "Packagist",
+                "url": "https://packagist.org/security-advisories/PKSA-gst3-cdk3-bpqt"
+            },
+            "references": [
+                {
+                    "id": "CVE-2024-48917",
+                    "source": {
+                        "name": "NVD",
+                        "url": "https://nvd.nist.gov/vuln/detail/CVE-2024-48917"
+                    }
+                },
+                {
+                    "id": "CVE-2024-48917",
+                    "source": {
+                        "name": "advisory",
+                        "url": "https://github.com/advisories/GHSA-7cc9-j4mv-vcjp"
+                    }
+                }
+            ],
+            "ratings": [
+                {
+                    "severity": "high",
+                    "method": "other",
+                    "source": {
+                        "name": "Packagist",
+                        "url": "https://packagist.org/security-advisories/PKSA-gst3-cdk3-bpqt"
+                    }
+                }
+            ],
+            "description": "XXE in PHPSpreadsheet's XLSX reader",
+            "detail": "Affected versions: >=3.3.0,<3.4.0|>=2.2.0,<2.3.2|>=2.0.0,<2.1.3|<1.29.4",
+            "recommendation": "No verified remediation found.",
+            "affects": [
+                {
+                    "ref": "pkg:composer/phpoffice/phpspreadsheet@1.27.1"
+                }
+            ],
+            "properties": [
+                {
+                    "name": "composer-remediate:remediation_status",
+                    "value": "none"
+                },
+                {
+                    "name": "composer-remediate:direct",
+                    "value": "false"
+                },
+                {
+                    "name": "composer-remediate:dev",
+                    "value": "false"
+                }
+            ],
+            "published": "2024-11-18T20:01:46+00:00"
+        },
+        {
+            "bom-ref": "vuln:PKSA-m4hk-rk8p-4t5p@pkg:composer/phpoffice/phpspreadsheet@1.27.1",
+            "id": "PKSA-m4hk-rk8p-4t5p",
+            "source": {
+                "name": "Packagist",
+                "url": "https://packagist.org/security-advisories/PKSA-m4hk-rk8p-4t5p"
+            },
+            "references": [
+                {
+                    "id": "CVE-2024-45046",
+                    "source": {
+                        "name": "NVD",
+                        "url": "https://nvd.nist.gov/vuln/detail/CVE-2024-45046"
+                    }
+                },
+                {
+                    "id": "CVE-2024-45046",
+                    "source": {
+                        "name": "advisory",
+                        "url": "https://github.com/advisories/GHSA-wgmf-q9vr-vww6"
+                    }
+                }
+            ],
+            "ratings": [
+                {
+                    "severity": "medium",
+                    "method": "other",
+                    "source": {
+                        "name": "Packagist",
+                        "url": "https://packagist.org/security-advisories/PKSA-m4hk-rk8p-4t5p"
+                    }
+                }
+            ],
+            "description": "PhpSpreadsheet HTML writer is vulnerable to Cross-Site Scripting via style information",
+            "detail": "Affected versions: <1.29.1|>=2.0.0,<2.1.0",
+            "recommendation": "No verified remediation found.",
+            "affects": [
+                {
+                    "ref": "pkg:composer/phpoffice/phpspreadsheet@1.27.1"
+                }
+            ],
+            "properties": [
+                {
+                    "name": "composer-remediate:remediation_status",
+                    "value": "none"
+                },
+                {
+                    "name": "composer-remediate:direct",
+                    "value": "false"
+                },
+                {
+                    "name": "composer-remediate:dev",
+                    "value": "false"
+                }
+            ],
+            "published": "2024-08-29T17:56:56+00:00"
+        },
+        {
+            "bom-ref": "vuln:PKSA-mkg2-1wyw-57y7@pkg:composer/phpoffice/phpspreadsheet@1.27.1",
+            "id": "PKSA-mkg2-1wyw-57y7",
+            "source": {
+                "name": "Packagist",
+                "url": "https://packagist.org/security-advisories/PKSA-mkg2-1wyw-57y7"
+            },
+            "references": [
+                {
+                    "id": "CVE-2024-45293",
+                    "source": {
+                        "name": "NVD",
+                        "url": "https://nvd.nist.gov/vuln/detail/CVE-2024-45293"
+                    }
+                },
+                {
+                    "id": "CVE-2024-45293",
+                    "source": {
+                        "name": "advisory",
+                        "url": "https://github.com/advisories/GHSA-6hwr-6v2f-3m88"
+                    }
+                }
+            ],
+            "ratings": [
+                {
+                    "severity": "high",
+                    "method": "other",
+                    "source": {
+                        "name": "Packagist",
+                        "url": "https://packagist.org/security-advisories/PKSA-mkg2-1wyw-57y7"
+                    }
+                }
+            ],
+            "description": "XXE in PHPSpreadsheet's XLSX reader",
+            "detail": "Affected versions: >=2.0.0,<2.1.1|<1.29.1|>=2.2.0,<2.3.0",
+            "recommendation": "No verified remediation found.",
+            "affects": [
+                {
+                    "ref": "pkg:composer/phpoffice/phpspreadsheet@1.27.1"
+                }
+            ],
+            "properties": [
+                {
+                    "name": "composer-remediate:remediation_status",
+                    "value": "none"
+                },
+                {
+                    "name": "composer-remediate:direct",
+                    "value": "false"
+                },
+                {
+                    "name": "composer-remediate:dev",
+                    "value": "false"
+                }
+            ],
+            "published": "2024-10-07T15:58:52+00:00"
+        },
+        {
+            "bom-ref": "vuln:PKSA-p1pj-q951-6f1x@pkg:composer/phpoffice/phpspreadsheet@1.27.1",
+            "id": "PKSA-p1pj-q951-6f1x",
+            "source": {
+                "name": "Packagist",
+                "url": "https://packagist.org/security-advisories/PKSA-p1pj-q951-6f1x"
+            },
+            "references": [
+                {
+                    "id": "CVE-2024-45292",
+                    "source": {
+                        "name": "NVD",
+                        "url": "https://nvd.nist.gov/vuln/detail/CVE-2024-45292"
+                    }
+                },
+                {
+                    "id": "CVE-2024-45292",
+                    "source": {
+                        "name": "advisory",
+                        "url": "https://github.com/advisories/GHSA-r8w8-74ww-j4wh"
+                    }
+                }
+            ],
+            "ratings": [
+                {
+                    "severity": "medium",
+                    "method": "other",
+                    "source": {
+                        "name": "Packagist",
+                        "url": "https://packagist.org/security-advisories/PKSA-p1pj-q951-6f1x"
+                    }
+                }
+            ],
+            "description": "PhpSpreadsheet HTML writer is vulnerable to Cross-Site Scripting via JavaScript hyperlinks",
+            "detail": "Affected versions: >=2.0.0,<2.1.1|<1.29.2|>=2.2.0,<2.3.0",
+            "recommendation": "No verified remediation found.",
+            "affects": [
+                {
+                    "ref": "pkg:composer/phpoffice/phpspreadsheet@1.27.1"
+                }
+            ],
+            "properties": [
+                {
+                    "name": "composer-remediate:remediation_status",
+                    "value": "none"
+                },
+                {
+                    "name": "composer-remediate:direct",
+                    "value": "false"
+                },
+                {
+                    "name": "composer-remediate:dev",
+                    "value": "false"
+                }
+            ],
+            "published": "2024-10-07T15:58:25+00:00"
+        },
+        {
+            "bom-ref": "vuln:PKSA-xk3k-rd1m-pxmg@pkg:composer/phpoffice/phpspreadsheet@1.27.1",
+            "id": "PKSA-xk3k-rd1m-pxmg",
+            "source": {
+                "name": "Packagist",
+                "url": "https://packagist.org/security-advisories/PKSA-xk3k-rd1m-pxmg"
+            },
+            "references": [
+                {
+                    "id": "CVE-2024-45290",
+                    "source": {
+                        "name": "NVD",
+                        "url": "https://nvd.nist.gov/vuln/detail/CVE-2024-45290"
+                    }
+                },
+                {
+                    "id": "CVE-2024-45290",
+                    "source": {
+                        "name": "advisory",
+                        "url": "https://github.com/advisories/GHSA-5gpr-w2p5-6m37"
+                    }
+                }
+            ],
+            "ratings": [
+                {
+                    "severity": "high",
+                    "method": "other",
+                    "source": {
+                        "name": "Packagist",
+                        "url": "https://packagist.org/security-advisories/PKSA-xk3k-rd1m-pxmg"
+                    }
+                }
+            ],
+            "description": "PhpSpreadsheet allows absolute path traversal and Server-Side Request Forgery when opening XLSX file",
+            "detail": "Affected versions: >=2.0.0,<2.1.1|<1.29.2|>=2.2.0,<2.3.0",
+            "recommendation": "No verified remediation found.",
+            "affects": [
+                {
+                    "ref": "pkg:composer/phpoffice/phpspreadsheet@1.27.1"
+                }
+            ],
+            "properties": [
+                {
+                    "name": "composer-remediate:remediation_status",
+                    "value": "none"
+                },
+                {
+                    "name": "composer-remediate:direct",
+                    "value": "false"
+                },
+                {
+                    "name": "composer-remediate:dev",
+                    "value": "false"
+                }
+            ],
+            "published": "2024-10-07T15:57:38+00:00"
+        },
+        {
+            "bom-ref": "vuln:PKSA-xp7t-fbrb-qjv4@pkg:composer/phpoffice/phpspreadsheet@1.27.1",
+            "id": "PKSA-xp7t-fbrb-qjv4",
+            "source": {
+                "name": "Packagist",
+                "url": "https://packagist.org/security-advisories/PKSA-xp7t-fbrb-qjv4"
+            },
+            "references": [
+                {
+                    "id": "CVE-2024-45048",
+                    "source": {
+                        "name": "NVD",
+                        "url": "https://nvd.nist.gov/vuln/detail/CVE-2024-45048"
+                    }
+                },
+                {
+                    "id": "CVE-2024-45048",
+                    "source": {
+                        "name": "advisory",
+                        "url": "https://github.com/advisories/GHSA-ghg6-32f9-2jp7"
+                    }
+                }
+            ],
+            "ratings": [
+                {
+                    "severity": "high",
+                    "method": "other",
+                    "source": {
+                        "name": "Packagist",
+                        "url": "https://packagist.org/security-advisories/PKSA-xp7t-fbrb-qjv4"
+                    }
+                }
+            ],
+            "description": "XXE in PHPSpreadsheet encoding is returned",
+            "detail": "Affected versions: >=2.0.0,<2.1.1|>=2.2.0,<2.2.1|<1.29.1",
+            "recommendation": "No verified remediation found.",
+            "affects": [
+                {
+                    "ref": "pkg:composer/phpoffice/phpspreadsheet@1.27.1"
+                }
+            ],
+            "properties": [
+                {
+                    "name": "composer-remediate:remediation_status",
+                    "value": "none"
+                },
+                {
+                    "name": "composer-remediate:direct",
+                    "value": "false"
+                },
+                {
+                    "name": "composer-remediate:dev",
+                    "value": "false"
+                }
+            ],
+            "published": "2024-08-29T17:58:27+00:00"
+        },
+        {
+            "bom-ref": "vuln:PKSA-wws7-mr54-jsny@pkg:composer/symfony/process@5.4.40",
+            "id": "PKSA-wws7-mr54-jsny",
+            "source": {
+                "name": "Packagist",
+                "url": "https://packagist.org/security-advisories/PKSA-wws7-mr54-jsny"
+            },
+            "references": [
+                {
+                    "id": "CVE-2024-51736",
+                    "source": {
+                        "name": "NVD",
+                        "url": "https://nvd.nist.gov/vuln/detail/CVE-2024-51736"
+                    }
+                },
+                {
+                    "id": "CVE-2024-51736",
+                    "source": {
+                        "name": "advisory",
+                        "url": "https://symfony.com/cve-2024-51736"
+                    }
+                }
+            ],
+            "ratings": [
+                {
+                    "severity": "high",
+                    "method": "other",
+                    "source": {
+                        "name": "Packagist",
+                        "url": "https://packagist.org/security-advisories/PKSA-wws7-mr54-jsny"
+                    }
+                }
+            ],
+            "description": "CVE-2024-51736: Command execution hijack on Windows with Process class",
+            "detail": "Affected versions: >=2.0.0,<3.0.0|>=3.0.0,<4.0.0|>=4.0.0,<5.0.0|>=5.0.0,<5.1.0|>=5.1.0,<5.2.0|>=5.2.0,<5.3.0|>=5.3.0,<5.4.0|>=5.4.0,<5.4.46|>=6.0.0,<6.1.0|>=6.1.0,<6.2.0|>=6.2.0,<6.3.0|>=6.3.0,<6.4.0|>=6.4.0,<6.4.14|>=7.0.0,<7.1.0|>=7.1.0,<7.1.7",
+            "recommendation": "Run: composer update symfony/process",
+            "affects": [
+                {
+                    "ref": "pkg:composer/symfony/process@5.4.40"
+                }
+            ],
+            "properties": [
+                {
+                    "name": "composer-remediate:remediation_status",
+                    "value": "verified"
+                },
+                {
+                    "name": "composer-remediate:command",
+                    "value": "composer update symfony/process"
+                },
+                {
+                    "name": "composer-remediate:direct",
+                    "value": "false"
+                },
+                {
+                    "name": "composer-remediate:dev",
+                    "value": "false"
+                }
+            ],
+            "published": "2024-11-05T08:00:00+00:00",
+            "analysis": {
+                "state": "exploitable",
+                "response": [
+                    "update"
+                ],
+                "detail": "1 package change(s) verified by Composer's solver."
+            }
+        },
+        {
+            "bom-ref": "vuln:PKSA-rqvm-b18n-vg69@pkg:composer/symfony/security-http@5.4.35",
+            "id": "PKSA-rqvm-b18n-vg69",
+            "source": {
+                "name": "Packagist",
+                "url": "https://packagist.org/security-advisories/PKSA-rqvm-b18n-vg69"
+            },
+            "references": [
+                {
+                    "id": "CVE-2024-51996",
+                    "source": {
+                        "name": "NVD",
+                        "url": "https://nvd.nist.gov/vuln/detail/CVE-2024-51996"
+                    }
+                },
+                {
+                    "id": "CVE-2024-51996",
+                    "source": {
+                        "name": "advisory",
+                        "url": "https://symfony.com/cve-2024-51996"
+                    }
+                }
+            ],
+            "ratings": [
+                {
+                    "severity": "high",
+                    "method": "other",
+                    "source": {
+                        "name": "Packagist",
+                        "url": "https://packagist.org/security-advisories/PKSA-rqvm-b18n-vg69"
+                    }
+                }
+            ],
+            "description": "CVE-2024-51996: Authentication Bypass via persisted RememberMe cookie",
+            "detail": "Affected versions: >=5.3.0,<5.4.0|>=5.4.0,<5.4.47|>=6.0.0,<6.1.0|>=6.1.0,<6.2.0|>=6.2.0,<6.3.0|>=6.3.0,<6.4.0|>=6.4.0,<6.4.15|>=7.0.0,<7.1.0|>=7.1.0,<7.1.8",
+            "recommendation": "Run: composer update symfony/security-http",
+            "affects": [
+                {
+                    "ref": "pkg:composer/symfony/security-http@5.4.35"
+                }
+            ],
+            "properties": [
+                {
+                    "name": "composer-remediate:remediation_status",
+                    "value": "verified"
+                },
+                {
+                    "name": "composer-remediate:command",
+                    "value": "composer update symfony/security-http"
+                },
+                {
+                    "name": "composer-remediate:direct",
+                    "value": "false"
+                },
+                {
+                    "name": "composer-remediate:dev",
+                    "value": "false"
+                }
+            ],
+            "published": "2024-11-13T08:00:00+00:00",
+            "analysis": {
+                "state": "exploitable",
+                "response": [
+                    "update"
+                ],
+                "detail": "1 package change(s) verified by Composer's solver."
+            }
+        },
+        {
+            "bom-ref": "vuln:PKSA-4k7v-pfvw-nqvp@pkg:composer/symfony/http-client@5.4.35",
+            "id": "PKSA-4k7v-pfvw-nqvp",
+            "source": {
+                "name": "Packagist",
+                "url": "https://packagist.org/security-advisories/PKSA-4k7v-pfvw-nqvp"
+            },
+            "references": [
+                {
+                    "id": "CVE-2024-50342",
+                    "source": {
+                        "name": "NVD",
+                        "url": "https://nvd.nist.gov/vuln/detail/CVE-2024-50342"
+                    }
+                },
+                {
+                    "id": "CVE-2024-50342",
+                    "source": {
+                        "name": "advisory",
+                        "url": "https://symfony.com/cve-2024-50342"
+                    }
+                }
+            ],
+            "ratings": [
+                {
+                    "severity": "low",
+                    "method": "other",
+                    "source": {
+                        "name": "Packagist",
+                        "url": "https://packagist.org/security-advisories/PKSA-4k7v-pfvw-nqvp"
+                    }
+                }
+            ],
+            "description": "CVE-2024-50342: Internal address and port enumeration allowed by NoPrivateNetworkHttpClient",
+            "detail": "Affected versions: >=4.3.0,<4.4.0|>=4.4.0,<5.0.0|>=5.0.0,<5.1.0|>=5.1.0,<5.2.0|>=5.2.0,<5.3.0|>=5.3.0,<5.4.0|>=5.4.0,<5.4.47|>=6.0.0,<6.1.0|>=6.1.0,<6.2.0|>=6.2.0,<6.3.0|>=6.3.0,<6.4.0|>=6.4.0,<6.4.15|>=7.0.0,<7.1.0|>=7.1.0,<7.1.8",
+            "recommendation": "Run: composer update symfony/http-client",
+            "affects": [
+                {
+                    "ref": "pkg:composer/symfony/http-client@5.4.35"
+                }
+            ],
+            "properties": [
+                {
+                    "name": "composer-remediate:remediation_status",
+                    "value": "verified"
+                },
+                {
+                    "name": "composer-remediate:command",
+                    "value": "composer update symfony/http-client"
+                },
+                {
+                    "name": "composer-remediate:direct",
+                    "value": "false"
+                },
+                {
+                    "name": "composer-remediate:dev",
+                    "value": "false"
+                }
+            ],
+            "published": "2024-11-13T08:00:00+00:00",
+            "analysis": {
+                "state": "exploitable",
+                "response": [
+                    "update"
+                ],
+                "detail": "1 package change(s) verified by Composer's solver."
+            }
+        },
+        {
+            "bom-ref": "vuln:PKSA-b35n-565h-rs4q@pkg:composer/symfony/http-foundation@5.4.35",
+            "id": "PKSA-b35n-565h-rs4q",
+            "source": {
+                "name": "Packagist",
+                "url": "https://packagist.org/security-advisories/PKSA-b35n-565h-rs4q"
+            },
+            "references": [
+                {
+                    "id": "CVE-2024-50345",
+                    "source": {
+                        "name": "NVD",
+                        "url": "https://nvd.nist.gov/vuln/detail/CVE-2024-50345"
+                    }
+                },
+                {
+                    "id": "CVE-2024-50345",
+                    "source": {
+                        "name": "advisory",
+                        "url": "https://symfony.com/cve-2024-50345"
+                    }
+                }
+            ],
+            "ratings": [
+                {
+                    "severity": "low",
+                    "method": "other",
+                    "source": {
+                        "name": "Packagist",
+                        "url": "https://packagist.org/security-advisories/PKSA-b35n-565h-rs4q"
+                    }
+                }
+            ],
+            "description": "CVE-2024-50345: Open redirect via browser-sanitized URLs",
+            "detail": "Affected versions: >=2.0.0,<3.0.0|>=3.0.0,<4.0.0|>=4.0.0,<5.0.0|>=5.0.0,<5.1.0|>=5.1.0,<5.2.0|>=5.2.0,<5.3.0|>=5.3.0,<5.4.0|>=5.4.0,<5.4.46|>=6.0.0,<6.1.0|>=6.1.0,<6.2.0|>=6.2.0,<6.3.0|>=6.3.0,<6.4.0|>=6.4.0,<6.4.14|>=7.0.0,<7.1.0|>=7.1.0,<7.1.7",
+            "recommendation": "Run: composer update symfony/http-foundation",
+            "affects": [
+                {
+                    "ref": "pkg:composer/symfony/http-foundation@5.4.35"
+                }
+            ],
+            "properties": [
+                {
+                    "name": "composer-remediate:remediation_status",
+                    "value": "verified"
+                },
+                {
+                    "name": "composer-remediate:command",
+                    "value": "composer update symfony/http-foundation"
+                },
+                {
+                    "name": "composer-remediate:direct",
+                    "value": "false"
+                },
+                {
+                    "name": "composer-remediate:dev",
+                    "value": "false"
+                },
+                {
+                    "name": "composer-remediate:abandoned",
+                    "value": "sensio/framework-extra-bundle,theofidry/psysh-bundle"
+                }
+            ],
+            "published": "2024-11-05T08:00:00+00:00",
+            "analysis": {
+                "state": "exploitable",
+                "response": [
+                    "update"
+                ],
+                "detail": "1 package change(s) verified by Composer's solver."
+            }
+        },
+        {
+            "bom-ref": "vuln:PKSA-w2tw-kmfg-rt9s@pkg:composer/symfony/validator@5.4.35",
+            "id": "PKSA-w2tw-kmfg-rt9s",
+            "source": {
+                "name": "Packagist",
+                "url": "https://packagist.org/security-advisories/PKSA-w2tw-kmfg-rt9s"
+            },
+            "references": [
+                {
+                    "id": "CVE-2024-50343",
+                    "source": {
+                        "name": "NVD",
+                        "url": "https://nvd.nist.gov/vuln/detail/CVE-2024-50343"
+                    }
+                },
+                {
+                    "id": "CVE-2024-50343",
+                    "source": {
+                        "name": "advisory",
+                        "url": "https://symfony.com/cve-2024-50343"
+                    }
+                }
+            ],
+            "ratings": [
+                {
+                    "severity": "low",
+                    "method": "other",
+                    "source": {
+                        "name": "Packagist",
+                        "url": "https://packagist.org/security-advisories/PKSA-w2tw-kmfg-rt9s"
+                    }
+                }
+            ],
+            "description": "CVE-2024-50343: Incorrect response from Validator when input ends with `\n`",
+            "detail": "Affected versions: >=2.0.0,<3.0.0|>=3.0.0,<4.0.0|>=4.0.0,<5.0.0|>=5.0.0,<5.1.0|>=5.1.0,<5.2.0|>=5.2.0,<5.3.0|>=5.3.0,<5.4.0|>=5.4.0,<5.4.43|>=6.0.0,<6.1.0|>=6.1.0,<6.2.0|>=6.2.0,<6.3.0|>=6.3.0,<6.4.0|>=6.4.0,<6.4.11|>=7.0.0,<7.1.0|>=7.1.0,<7.1.4",
+            "recommendation": "Run: composer update symfony/validator",
+            "affects": [
+                {
+                    "ref": "pkg:composer/symfony/validator@5.4.35"
+                }
+            ],
+            "properties": [
+                {
+                    "name": "composer-remediate:remediation_status",
+                    "value": "verified"
+                },
+                {
+                    "name": "composer-remediate:command",
+                    "value": "composer update symfony/validator"
+                },
+                {
+                    "name": "composer-remediate:direct",
+                    "value": "false"
+                },
+                {
+                    "name": "composer-remediate:dev",
+                    "value": "false"
+                }
+            ],
+            "published": "2024-08-30T08:00:00+00:00",
+            "analysis": {
+                "state": "exploitable",
+                "response": [
+                    "update"
+                ],
+                "detail": "1 package change(s) verified by Composer's solver."
+            }
+        },
+        {
+            "bom-ref": "vuln:PKSA-2wrf-1xmk-1pky@pkg:composer/twig/twig@3.14.0",
+            "id": "PKSA-2wrf-1xmk-1pky",
+            "source": {
+                "name": "Packagist",
+                "url": "https://packagist.org/security-advisories/PKSA-2wrf-1xmk-1pky"
+            },
+            "references": [
+                {
+                    "id": "CVE-2024-51755",
+                    "source": {
+                        "name": "NVD",
+                        "url": "https://nvd.nist.gov/vuln/detail/CVE-2024-51755"
+                    }
+                },
+                {
+                    "id": "CVE-2024-51755",
+                    "source": {
+                        "name": "advisory",
+                        "url": "https://symfony.com/blog/cve-2024-51755-unguarded-calls-to-isset-and-to-array-accesses-in-a-sandbox"
+                    }
+                }
+            ],
+            "ratings": [
+                {
+                    "severity": "low",
+                    "method": "other",
+                    "source": {
+                        "name": "Packagist",
+                        "url": "https://packagist.org/security-advisories/PKSA-2wrf-1xmk-1pky"
+                    }
+                }
+            ],
+            "description": "Unguarded calls to __isset() and to array-accesses when the sandbox is enabled",
+            "detail": "Affected versions: >=1.0.0,<2.0.0|>=2.0.0,<3.0.0|>=3.0.0,<3.11.2|>=3.12.0,<3.14.1",
+            "recommendation": "Run: composer update twig/twig",
+            "affects": [
+                {
+                    "ref": "pkg:composer/twig/twig@3.14.0"
+                }
+            ],
+            "properties": [
+                {
+                    "name": "composer-remediate:remediation_status",
+                    "value": "verified"
+                },
+                {
+                    "name": "composer-remediate:command",
+                    "value": "composer update twig/twig"
+                },
+                {
+                    "name": "composer-remediate:direct",
+                    "value": "false"
+                },
+                {
+                    "name": "composer-remediate:dev",
+                    "value": "false"
+                }
+            ],
+            "published": "2024-11-06T08:00:00+00:00",
+            "analysis": {
+                "state": "exploitable",
+                "response": [
+                    "update"
+                ],
+                "detail": "1 package change(s) verified by Composer's solver."
+            }
+        },
+        {
+            "bom-ref": "vuln:PKSA-yhcn-xrg3-68b1@pkg:composer/twig/twig@3.14.0",
+            "id": "PKSA-yhcn-xrg3-68b1",
+            "source": {
+                "name": "Packagist",
+                "url": "https://packagist.org/security-advisories/PKSA-yhcn-xrg3-68b1"
+            },
+            "references": [
+                {
+                    "id": "CVE-2024-51754",
+                    "source": {
+                        "name": "NVD",
+                        "url": "https://nvd.nist.gov/vuln/detail/CVE-2024-51754"
+                    }
+                },
+                {
+                    "id": "CVE-2024-51754",
+                    "source": {
+                        "name": "advisory",
+                        "url": "https://symfony.com/blog/cve-2024-51754-unguarded-calls-to-tostring-in-a-sandbox-when-an-object-is-in-an-array-or-an-argument-list"
+                    }
+                }
+            ],
+            "ratings": [
+                {
+                    "severity": "low",
+                    "method": "other",
+                    "source": {
+                        "name": "Packagist",
+                        "url": "https://packagist.org/security-advisories/PKSA-yhcn-xrg3-68b1"
+                    }
+                }
+            ],
+            "description": "Unguarded calls to __toString() when nesting an object into an array",
+            "detail": "Affected versions: >=1.0.0,<2.0.0|>=2.0.0,<3.0.0|>=3.0.0,<3.11.2|>=3.12.0,<3.14.1",
+            "recommendation": "Run: composer update twig/twig",
+            "affects": [
+                {
+                    "ref": "pkg:composer/twig/twig@3.14.0"
+                }
+            ],
+            "properties": [
+                {
+                    "name": "composer-remediate:remediation_status",
+                    "value": "verified"
+                },
+                {
+                    "name": "composer-remediate:command",
+                    "value": "composer update twig/twig"
+                },
+                {
+                    "name": "composer-remediate:direct",
+                    "value": "false"
+                },
+                {
+                    "name": "composer-remediate:dev",
+                    "value": "false"
+                }
+            ],
+            "published": "2024-11-06T08:00:00+00:00",
+            "analysis": {
+                "state": "exploitable",
+                "response": [
+                    "update"
+                ],
+                "detail": "1 package change(s) verified by Composer's solver."
+            }
+        }
+    ]
+}

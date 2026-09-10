@@ -1,0 +1,290 @@
+<!DOCTYPE html><html lang="en"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Composer Remediate — 5 findings</title>
+<style>:root{color-scheme:light dark;--bg:#fff;--fg:#1c1e21;--muted:#5f6b7a;--border:#d9dee5;--panel:#f6f8fa;--ok:#1a7f37;--bad:#b42318;--warn:#9a6700;--accent:#0f6b8a}
+@media(prefers-color-scheme:dark){:root{--bg:#0f1418;--fg:#e6edf3;--muted:#9aa7b4;--border:#2b3640;--panel:#161c22;--ok:#3fb950;--bad:#f0665b;--warn:#d4a72c;--accent:#58b8d8}}
+body{margin:0;background:var(--bg);color:var(--fg);font:15px/1.5 system-ui,-apple-system,Segoe UI,Roboto,sans-serif}
+header{padding:1.5rem 2rem;border-bottom:1px solid var(--border)}header h1{margin:0;font-size:1.4rem}.sub{margin:.25rem 0 0;color:var(--muted)}
+main{max-width:70rem;margin:0 auto;padding:1rem 2rem 3rem}
+section{margin:1.5rem 0}.finding{border:1px solid var(--border);border-radius:8px;padding:1rem 1.25rem;background:var(--panel)}
+h2{font-size:1.15rem;margin:.25rem 0 .5rem}h3{font-size:.95rem;margin:1rem 0 .35rem;color:var(--muted);text-transform:uppercase;letter-spacing:.04em}
+.version{font-weight:400;color:var(--muted)}.state{margin:0;color:var(--muted)}
+code{font:.9em ui-monospace,SFMono-Regular,Menlo,monospace;background:rgba(127,127,127,.12);padding:.1em .35em;border-radius:4px;word-break:break-all}
+pre{font:.85rem ui-monospace,SFMono-Regular,Menlo,monospace;background:rgba(127,127,127,.1);padding:.75rem 1rem;border-radius:6px;overflow-x:auto;margin:.25rem 0}
+pre.reason{white-space:pre-wrap;margin:0;background:none;padding:0}
+.command code{display:block;padding:.6rem .8rem;font-size:.95rem;border-left:4px solid var(--accent)}
+table{border-collapse:collapse;width:100%;font-size:.92rem}th,td{text-align:left;padding:.4rem .6rem;border-bottom:1px solid var(--border);vertical-align:top}th{color:var(--muted);font-weight:600}
+.badge{display:inline-block;font-size:.75rem;font-weight:600;padding:.1rem .5rem;border-radius:999px;border:1px solid currentColor;white-space:nowrap}
+.badge.ok{color:var(--ok)}.badge.none,.badge.rejected{color:var(--bad)}.badge.skipped,.badge.dev{color:var(--muted)}
+.badge.sev-critical,.badge.sev-high{color:var(--bad)}.badge.sev-medium{color:var(--warn)}.badge.sev-low{color:var(--muted)}
+.badge.kev{color:#fff;background:var(--bad);border-color:var(--bad)}.badge.epss{color:var(--warn)}.abandoned{color:var(--warn)}
+.warning{border-left:4px solid var(--warn);padding:.5rem .8rem;background:rgba(212,167,44,.1)}.clean{color:var(--ok);font-weight:600}
+.none-box{border-left:4px solid var(--bad);padding:.5rem .8rem;background:rgba(180,35,24,.08)}
+.advisories{padding-left:1.2rem}.advisories li{margin:.4rem 0}
+details summary{cursor:pointer;color:var(--accent);margin:.5rem 0}
+.meta dl{display:grid;grid-template-columns:max-content 1fr;gap:.2rem 1rem;font-size:.85rem;color:var(--muted)}.meta dt{font-weight:600}.meta dd{margin:0;word-break:break-all}</style></head><body>
+<header><h1>Composer Remediate</h1><p class="sub">Composer Remediate — 5 findings in <code>acquiacms-drupal-core-direct</code></p></header>
+<main>
+<section><h2>Summary</h2><p>6 advisories on 5 packages.</p><p class="command"><span class="badge ok">fixes all 6</span> <code>composer update drupal/core symfony/http-client symfony/http-foundation symfony/process twig/twig</code></p><table class="summary"><thead><tr><th>Package</th><th>Advisories</th><th>Status</th><th>Recommended command</th></tr></thead><tbody><tr><td><a href="#finding-1">symfony/process v6.4.8</a></td><td>CVE-2024-51736</td><td><span class="badge ok">verified</span></td><td><code>composer update symfony/process</code></td></tr><tr><td><a href="#finding-2">drupal/core 10.3.5</a></td><td>CVE-2024-45440</td><td><span class="badge ok">verified</span></td><td><code>composer update drupal/core</code></td></tr><tr><td><a href="#finding-3">symfony/http-client v7.1.4</a></td><td>CVE-2024-50342</td><td><span class="badge ok">verified</span></td><td><code>composer update symfony/http-client</code></td></tr><tr><td><a href="#finding-4">symfony/http-foundation v6.4.10</a></td><td>CVE-2024-50345</td><td><span class="badge ok">verified</span></td><td><code>composer update symfony/http-foundation</code></td></tr><tr><td><a href="#finding-5">twig/twig v3.14.0</a></td><td>CVE-2024-51755, CVE-2024-51754</td><td><span class="badge ok">verified</span></td><td><code>composer update twig/twig</code></td></tr></tbody></table></section>
+<section class="finding" id="finding-1">
+<h2>symfony/process <span class="version">v6.4.8</span></h2>
+<p class="state">Transitive dependency.</p>
+<h3>Advisories</h3><ul class="advisories">
+<li><strong><a href="https://symfony.com/cve-2024-51736" rel="noopener noreferrer">CVE-2024-51736 <small>(PKSA-wws7-mr54-jsny)</small></a></strong> <span class="badge sev-high">high</span><br>CVE-2024-51736: Command execution hijack on Windows with Process class<br><small>affected versions: <code>&gt;=2.0.0,&lt;3.0.0|&gt;=3.0.0,&lt;4.0.0|&gt;=4.0.0,&lt;5.0.0|&gt;=5.0.0,&lt;5.1.0|&gt;=5.1.0,&lt;5.2.0|&gt;=5.2.0,&lt;5.3.0|&gt;=5.3.0,&lt;5.4.0|&gt;=5.4.0,&lt;5.4.46|&gt;=6.0.0,&lt;6.1.0|&gt;=6.1.0,&lt;6.2.0|&gt;=6.2.0,&lt;6.3.0|&gt;=6.3.0,&lt;6.4.0|&gt;=6.4.0,&lt;6.4.14|&gt;=7.0.0,&lt;7.1.0|&gt;=7.1.0,&lt;7.1.7</code></small></li>
+</ul>
+<h3>Introduced by</h3>
+<pre class="tree">root
+└── acquia/acquia-cms-starterkit 1.1.10
+    └── symfony/process v6.4.8  (requires ^6.2 || ^7.0)
+
+root
+└── acquia/acquia-cms-starterkit 1.1.10
+    └── composer/composer 2.7.9
+        └── symfony/process v6.4.8  (requires ^5.4.35 || ^6.3.12 || ^7.0.3)
+
+root
+└── drupal/core-dev 11.0.0-alpha1
+    └── composer/composer 2.7.9
+        └── symfony/process v6.4.8  (requires ^5.4.35 || ^6.3.12 || ^7.0.3)
+
+root
+└── drush/drush 13.0.1
+    └── consolidation/robo 4.0.6
+        └── symfony/process v6.4.8  (requires ^6)
+
+root
+└── drupal/acquia_cms_site_studio 1.x-dev
+    └── acquia/cohesion 8.0.0
+        └── drush/drush 13.0.1
+            └── consolidation/robo 4.0.6
+                └── symfony/process v6.4.8  (requires ^6)</pre>
+<p><small>… and 32 more paths</small></p>
+<h3>Recommended remediation</h3>
+<p class="command"><code>composer update symfony/process</code></p>
+<p class="validation"><span class="badge ok">Composer validation: PASS</span> 1 package changed, 0 added, 0 removed, 0 root constraints changed.</p>
+<details open><summary>Expected changes (1)</summary><table class="changes"><thead><tr><th>Package</th><th>From</th><th>To</th><th>Kind</th></tr></thead><tbody>
+<tr><td>symfony/process</td><td>v6.4.8</td><td>v6.4.15</td><td>upgraded, patch</td></tr>
+</tbody></table></details>
+<details><summary>Other candidates (9)</summary><table class="candidates"><thead><tr><th>Outcome</th><th>Command</th><th>Detail</th></tr></thead><tbody>
+<tr><td><span class="badge ok">valid, rank 2</span></td><td><code>composer update symfony/process -w -m --with &apos;symfony/process:&gt;=6.4.14,&lt;7.0.0 || &gt;=7.1.7&apos;</code></td><td>1 changes</td></tr>
+<tr><td><span class="badge ok">valid, rank 3</span></td><td><code>composer update acquia/acquia-cms-starterkit -W -m --with &apos;symfony/process:&gt;=6.4.14,&lt;7.0.0 || &gt;=7.1.7&apos;</code></td><td>1 changes</td></tr>
+<tr><td><span class="badge ok">valid, rank 4</span></td><td><code>composer update drupal/core-dev -W -m --with &apos;symfony/process:&gt;=6.4.14,&lt;7.0.0 || &gt;=7.1.7&apos;</code></td><td>1 changes</td></tr>
+<tr><td><span class="badge ok">valid, rank 5</span></td><td><code>composer update drupal/acquia_cms_audio -W -m --with &apos;symfony/process:&gt;=6.4.14,&lt;7.0.0 || &gt;=7.1.7&apos;</code></td><td>1 changes</td></tr>
+<tr><td><span class="badge ok">valid, rank 6</span></td><td><code>composer update drupal/acquia_cms_component -W -m --with &apos;symfony/process:&gt;=6.4.14,&lt;7.0.0 || &gt;=7.1.7&apos;</code></td><td>1 changes</td></tr>
+<tr><td><span class="badge ok">valid, rank 7</span></td><td><code>composer update drush/drush -W -m --with &apos;symfony/process:&gt;=6.4.14,&lt;7.0.0 || &gt;=7.1.7&apos;</code></td><td>2 changes</td></tr>
+<tr><td><span class="badge ok">valid, rank 8</span></td><td><code>composer update drupal/acquia_cms_site_studio -W -m --with &apos;symfony/process:&gt;=6.4.14,&lt;7.0.0 || &gt;=7.1.7&apos;</code></td><td>3 changes</td></tr>
+<tr><td><span class="badge ok">valid, rank 9</span></td><td><code>composer update acquia/acquia-cms-starterkit drupal/core-dev drush/drush drupal/acquia_cms_audio drupal/acquia_cms_component drupal/acquia_cms_starter drupal/acquia_cms_dam -W -m --with &apos;symfony/process:&gt;=6.4.14,&lt;7.0.0 || &gt;=7.1.7&apos;</code></td><td>3 changes</td></tr>
+<tr><td><span class="badge skipped">not tried</span></td><td><code>composer require --no-update acquia/acquia-cms-starterkit:^2.0 &amp;&amp; composer update acquia/acquia-cms-starterkit -W -m --with &apos;symfony/process:&gt;=6.4.14,&lt;7.0.0 || &gt;=7.1.7&apos;</code></td><td>a better candidate already exists</td></tr>
+</tbody></table></details>
+</section>
+<section class="finding" id="finding-2">
+<h2>drupal/core <span class="version">10.3.5</span></h2>
+<p class="state">Transitive dependency.</p>
+<h3>Advisories</h3><ul class="advisories">
+<li><strong><a href="https://github.com/advisories/GHSA-mg8j-w93w-xjgc" rel="noopener noreferrer">CVE-2024-45440 <small>(PKSA-styk-3knc-d1bt)</small></a></strong> <span class="badge sev-medium">medium</span><br>Drupal Full Path Disclosure<br><small>affected versions: <code>&gt;=8.0.0,&lt;10.2.9|&gt;=10.3.0,&lt;10.3.6|&gt;=11.0.0,&lt;11.0.5</code></small></li>
+</ul>
+<h3>Introduced by</h3>
+<pre class="tree">root
+└── drupal/acquia_cms_audio 1.x-dev
+    └── drupal/acquia_cms_common 3.x-dev
+        └── drupal/core 10.3.5  (requires ^10.2.2 || ^11)
+
+root
+└── drupal/acquia_cms_audio dev-develop
+    └── drupal/acquia_cms_common 3.x-dev
+        └── drupal/core 10.3.5  (requires ^10.2.2 || ^11)
+
+root
+└── drupal/acquia_cms_component 1.x-dev
+    └── drupal/acquia_cms_common 3.x-dev
+        └── drupal/core 10.3.5  (requires ^10.2.2 || ^11)
+
+root
+└── drupal/acquia_cms_component dev-develop
+    └── drupal/acquia_cms_common 3.x-dev
+        └── drupal/core 10.3.5  (requires ^10.2.2 || ^11)
+
+root
+└── drupal/acquia_cms_starter 1.x-dev
+    └── drupal/acquia_cms_document 1.x-dev
+        └── drupal/acquia_cms_common 3.x-dev
+            └── drupal/core 10.3.5  (requires ^10.2.2 || ^11)</pre>
+<p><small>… and 31 more paths</small></p>
+<h3>Recommended remediation</h3>
+<p class="command"><code>composer update drupal/core</code></p>
+<p class="validation"><span class="badge ok">Composer validation: PASS</span> 1 package changed, 0 added, 0 removed, 0 root constraints changed.</p>
+<details open><summary>Expected changes (1)</summary><table class="changes"><thead><tr><th>Package</th><th>From</th><th>To</th><th>Kind</th></tr></thead><tbody>
+<tr><td>drupal/core</td><td>10.3.5</td><td>10.3.7</td><td>upgraded, patch</td></tr>
+</tbody></table></details>
+<details><summary>Other candidates (6)</summary><table class="candidates"><thead><tr><th>Outcome</th><th>Command</th><th>Detail</th></tr></thead><tbody>
+<tr><td><span class="badge ok">valid, rank 2</span></td><td><code>composer update drupal/core -w -m --with &apos;drupal/core:&gt;=10.3.6,&lt;11.0.0 || &gt;=11.0.5&apos;</code></td><td>2 changes</td></tr>
+<tr><td><span class="badge ok">valid, rank 3</span></td><td><code>composer update drupal/acquia_cms_audio -W -m --with &apos;drupal/core:&gt;=10.3.6,&lt;11.0.0 || &gt;=11.0.5&apos;</code></td><td>2 changes</td></tr>
+<tr><td><span class="badge ok">valid, rank 4</span></td><td><code>composer update drupal/acquia_cms_component -W -m --with &apos;drupal/core:&gt;=10.3.6,&lt;11.0.0 || &gt;=11.0.5&apos;</code></td><td>2 changes</td></tr>
+<tr><td><span class="badge ok">valid, rank 5</span></td><td><code>composer update drupal/acquia_cms_starter -W -m --with &apos;drupal/core:&gt;=10.3.6,&lt;11.0.0 || &gt;=11.0.5&apos;</code></td><td>2 changes</td></tr>
+<tr><td><span class="badge ok">valid, rank 6</span></td><td><code>composer update drupal/acquia_cms_dam -W -m --with &apos;drupal/core:&gt;=10.3.6,&lt;11.0.0 || &gt;=11.0.5&apos;</code></td><td>3 changes</td></tr>
+<tr><td><span class="badge ok">valid, rank 7</span></td><td><code>composer update drupal/acquia_cms_audio drupal/acquia_cms_component drupal/acquia_cms_starter drupal/acquia_cms_dam -W -m --with &apos;drupal/core:&gt;=10.3.6,&lt;11.0.0 || &gt;=11.0.5&apos;</code></td><td>3 changes</td></tr>
+</tbody></table></details>
+</section>
+<section class="finding" id="finding-3">
+<h2>symfony/http-client <span class="version">v7.1.4</span></h2>
+<p class="state">Transitive dependency.</p>
+<h3>Advisories</h3><ul class="advisories">
+<li><strong><a href="https://symfony.com/cve-2024-50342" rel="noopener noreferrer">CVE-2024-50342 <small>(PKSA-4k7v-pfvw-nqvp)</small></a></strong> <span class="badge sev-low">low</span><br>CVE-2024-50342: Internal address and port enumeration allowed by NoPrivateNetworkHttpClient<br><small>affected versions: <code>&gt;=4.3.0,&lt;4.4.0|&gt;=4.4.0,&lt;5.0.0|&gt;=5.0.0,&lt;5.1.0|&gt;=5.1.0,&lt;5.2.0|&gt;=5.2.0,&lt;5.3.0|&gt;=5.3.0,&lt;5.4.0|&gt;=5.4.0,&lt;5.4.47|&gt;=6.0.0,&lt;6.1.0|&gt;=6.1.0,&lt;6.2.0|&gt;=6.2.0,&lt;6.3.0|&gt;=6.3.0,&lt;6.4.0|&gt;=6.4.0,&lt;6.4.15|&gt;=7.0.0,&lt;7.1.0|&gt;=7.1.0,&lt;7.1.8</code></small></li>
+</ul>
+<h3>Introduced by</h3>
+<pre class="tree">root
+└── acquia/acquia-cms-starterkit 1.1.10
+    └── symfony/http-client v7.1.4  (requires ^6.2 || ^7.0)</pre>
+<h3>Recommended remediation</h3>
+<p class="command"><code>composer update symfony/http-client</code></p>
+<p class="validation"><span class="badge ok">Composer validation: PASS</span> 1 package changed, 0 added, 0 removed, 0 root constraints changed.</p>
+<details open><summary>Expected changes (1)</summary><table class="changes"><thead><tr><th>Package</th><th>From</th><th>To</th><th>Kind</th></tr></thead><tbody>
+<tr><td>symfony/http-client</td><td>v7.1.4</td><td>v7.1.8</td><td>upgraded, patch</td></tr>
+</tbody></table></details>
+<details><summary>Other candidates (3)</summary><table class="candidates"><thead><tr><th>Outcome</th><th>Command</th><th>Detail</th></tr></thead><tbody>
+<tr><td><span class="badge ok">valid, rank 2</span></td><td><code>composer update symfony/http-client -w -m --with &apos;symfony/http-client:&gt;=7.1.8&apos;</code></td><td>1 changes</td></tr>
+<tr><td><span class="badge ok">valid, rank 3</span></td><td><code>composer update acquia/acquia-cms-starterkit -W -m --with &apos;symfony/http-client:&gt;=7.1.8&apos;</code></td><td>1 changes</td></tr>
+<tr><td><span class="badge skipped">not tried</span></td><td><code>composer require --no-update acquia/acquia-cms-starterkit:^2.0 &amp;&amp; composer update acquia/acquia-cms-starterkit -W -m --with &apos;symfony/http-client:&gt;=7.1.8&apos;</code></td><td>a better candidate already exists</td></tr>
+</tbody></table></details>
+</section>
+<section class="finding" id="finding-4">
+<h2>symfony/http-foundation <span class="version">v6.4.10</span></h2>
+<p class="state">Transitive dependency.</p>
+<h3>Advisories</h3><ul class="advisories">
+<li><strong><a href="https://symfony.com/cve-2024-50345" rel="noopener noreferrer">CVE-2024-50345 <small>(PKSA-b35n-565h-rs4q)</small></a></strong> <span class="badge sev-low">low</span><br>CVE-2024-50345: Open redirect via browser-sanitized URLs<br><small>affected versions: <code>&gt;=2.0.0,&lt;3.0.0|&gt;=3.0.0,&lt;4.0.0|&gt;=4.0.0,&lt;5.0.0|&gt;=5.0.0,&lt;5.1.0|&gt;=5.1.0,&lt;5.2.0|&gt;=5.2.0,&lt;5.3.0|&gt;=5.3.0,&lt;5.4.0|&gt;=5.4.0,&lt;5.4.46|&gt;=6.0.0,&lt;6.1.0|&gt;=6.1.0,&lt;6.2.0|&gt;=6.2.0,&lt;6.3.0|&gt;=6.3.0,&lt;6.4.0|&gt;=6.4.0,&lt;6.4.14|&gt;=7.0.0,&lt;7.1.0|&gt;=7.1.0,&lt;7.1.7</code></small></li>
+</ul>
+<h3>Introduced by</h3>
+<pre class="tree">root
+└── drupal/acquia_cms_audio 1.x-dev
+    └── drupal/acquia_cms_common 3.x-dev
+        └── drupal/core 10.3.5
+            └── asm89/stack-cors v2.2.0
+                └── symfony/http-foundation v6.4.10  (requires ^5.3|^6|^7)
+
+root
+└── drupal/acquia_cms_audio dev-develop
+    └── drupal/acquia_cms_common 3.x-dev
+        └── drupal/core 10.3.5
+            └── asm89/stack-cors v2.2.0
+                └── symfony/http-foundation v6.4.10  (requires ^5.3|^6|^7)
+
+root
+└── drupal/acquia_cms_component 1.x-dev
+    └── drupal/acquia_cms_common 3.x-dev
+        └── drupal/core 10.3.5
+            └── asm89/stack-cors v2.2.0
+                └── symfony/http-foundation v6.4.10  (requires ^5.3|^6|^7)
+
+root
+└── drupal/acquia_cms_component dev-develop
+    └── drupal/acquia_cms_common 3.x-dev
+        └── drupal/core 10.3.5
+            └── asm89/stack-cors v2.2.0
+                └── symfony/http-foundation v6.4.10  (requires ^5.3|^6|^7)
+
+root
+└── drupal/acquia_cms_starter 1.x-dev
+    └── drupal/acquia_cms_document 1.x-dev
+        └── drupal/acquia_cms_common 3.x-dev
+            └── drupal/core 10.3.5
+                └── asm89/stack-cors v2.2.0
+                    └── symfony/http-foundation v6.4.10  (requires ^5.3|^6|^7)</pre>
+<p><small>… and 31 more paths</small></p>
+<h3>Recommended remediation</h3>
+<p class="command"><code>composer update symfony/http-foundation</code></p>
+<p class="validation"><span class="badge ok">Composer validation: PASS</span> 1 package changed, 0 added, 0 removed, 0 root constraints changed.</p>
+<details open><summary>Expected changes (1)</summary><table class="changes"><thead><tr><th>Package</th><th>From</th><th>To</th><th>Kind</th></tr></thead><tbody>
+<tr><td>symfony/http-foundation</td><td>v6.4.10</td><td>v6.4.16</td><td>upgraded, patch</td></tr>
+</tbody></table></details>
+<details><summary>Other candidates (6)</summary><table class="candidates"><thead><tr><th>Outcome</th><th>Command</th><th>Detail</th></tr></thead><tbody>
+<tr><td><span class="badge ok">valid, rank 2</span></td><td><code>composer update symfony/http-foundation -w -m --with &apos;symfony/http-foundation:&gt;=6.4.14,&lt;7.0.0 || &gt;=7.1.7&apos;</code></td><td>1 changes</td></tr>
+<tr><td><span class="badge ok">valid, rank 3</span></td><td><code>composer update drupal/acquia_cms_audio -W -m --with &apos;symfony/http-foundation:&gt;=6.4.14,&lt;7.0.0 || &gt;=7.1.7&apos;</code></td><td>1 changes</td></tr>
+<tr><td><span class="badge ok">valid, rank 4</span></td><td><code>composer update drupal/acquia_cms_component -W -m --with &apos;symfony/http-foundation:&gt;=6.4.14,&lt;7.0.0 || &gt;=7.1.7&apos;</code></td><td>1 changes</td></tr>
+<tr><td><span class="badge ok">valid, rank 5</span></td><td><code>composer update drupal/acquia_cms_starter -W -m --with &apos;symfony/http-foundation:&gt;=6.4.14,&lt;7.0.0 || &gt;=7.1.7&apos;</code></td><td>1 changes</td></tr>
+<tr><td><span class="badge ok">valid, rank 6</span></td><td><code>composer update drupal/acquia_cms_dam -W -m --with &apos;symfony/http-foundation:&gt;=6.4.14,&lt;7.0.0 || &gt;=7.1.7&apos;</code></td><td>2 changes</td></tr>
+<tr><td><span class="badge ok">valid, rank 7</span></td><td><code>composer update drupal/acquia_cms_audio drupal/acquia_cms_component drupal/acquia_cms_starter drupal/acquia_cms_dam -W -m --with &apos;symfony/http-foundation:&gt;=6.4.14,&lt;7.0.0 || &gt;=7.1.7&apos;</code></td><td>2 changes</td></tr>
+</tbody></table></details>
+</section>
+<section class="finding" id="finding-5">
+<h2>twig/twig <span class="version">v3.14.0</span></h2>
+<p class="state">Transitive dependency.</p>
+<h3>Advisories</h3><ul class="advisories">
+<li><strong><a href="https://symfony.com/blog/cve-2024-51755-unguarded-calls-to-isset-and-to-array-accesses-in-a-sandbox" rel="noopener noreferrer">CVE-2024-51755 <small>(PKSA-2wrf-1xmk-1pky)</small></a></strong> <span class="badge sev-low">low</span><br>Unguarded calls to __isset() and to array-accesses when the sandbox is enabled<br><small>affected versions: <code>&gt;=1.0.0,&lt;2.0.0|&gt;=2.0.0,&lt;3.0.0|&gt;=3.0.0,&lt;3.11.2|&gt;=3.12.0,&lt;3.14.1</code></small></li>
+<li><strong><a href="https://symfony.com/blog/cve-2024-51754-unguarded-calls-to-tostring-in-a-sandbox-when-an-object-is-in-an-array-or-an-argument-list" rel="noopener noreferrer">CVE-2024-51754 <small>(PKSA-yhcn-xrg3-68b1)</small></a></strong> <span class="badge sev-low">low</span><br>Unguarded calls to __toString() when nesting an object into an array<br><small>affected versions: <code>&gt;=1.0.0,&lt;2.0.0|&gt;=2.0.0,&lt;3.0.0|&gt;=3.0.0,&lt;3.11.2|&gt;=3.12.0,&lt;3.14.1</code></small></li>
+</ul>
+<h3>Introduced by</h3>
+<pre class="tree">root
+└── drush/drush 13.0.1
+    └── chi-teck/drupal-code-generator 3.6.1
+        └── twig/twig v3.14.0  (requires ^3.4)
+
+root
+└── drupal/acquia_cms_site_studio 1.x-dev
+    └── acquia/cohesion 8.0.0
+        └── drush/drush 13.0.1
+            └── chi-teck/drupal-code-generator 3.6.1
+                └── twig/twig v3.14.0  (requires ^3.4)
+
+root
+└── drupal/acquia_cms_site_studio dev-develop
+    └── acquia/cohesion 8.0.0
+        └── drush/drush 13.0.1
+            └── chi-teck/drupal-code-generator 3.6.1
+                └── twig/twig v3.14.0  (requires ^3.4)
+
+root
+└── drupal/acquia_cms_site_studio 1.x-dev
+    └── drupal/sitestudio_config_management 1.x-dev
+        └── acquia/cohesion 8.0.0
+            └── drush/drush 13.0.1
+                └── chi-teck/drupal-code-generator 3.6.1
+                    └── twig/twig v3.14.0  (requires ^3.4)
+
+root
+└── drupal/acquia_cms_site_studio dev-develop
+    └── drupal/sitestudio_config_management 1.x-dev
+        └── acquia/cohesion 8.0.0
+            └── drush/drush 13.0.1
+                └── chi-teck/drupal-code-generator 3.6.1
+                    └── twig/twig v3.14.0  (requires ^3.4)</pre>
+<p><small>… and 29 more paths</small></p>
+<h3>Recommended remediation</h3>
+<p class="command"><code>composer update twig/twig</code></p>
+<p class="validation"><span class="badge ok">Composer validation: PASS</span> 1 package changed, 0 added, 0 removed, 0 root constraints changed.</p>
+<details open><summary>Expected changes (1)</summary><table class="changes"><thead><tr><th>Package</th><th>From</th><th>To</th><th>Kind</th></tr></thead><tbody>
+<tr><td>twig/twig</td><td>v3.14.0</td><td>v3.15.0</td><td>upgraded, minor</td></tr>
+</tbody></table></details>
+<details><summary>Other candidates (10)</summary><table class="candidates"><thead><tr><th>Outcome</th><th>Command</th><th>Detail</th></tr></thead><tbody>
+<tr><td><span class="badge ok">valid, rank 2</span></td><td><code>composer update twig/twig -w -m --with &apos;twig/twig:&gt;=3.14.1&apos;</code></td><td>1 changes</td></tr>
+<tr><td><span class="badge ok">valid, rank 3</span></td><td><code>composer update drupal/acquia_cms_audio -W -m --with &apos;twig/twig:&gt;=3.14.1&apos;</code></td><td>1 changes</td></tr>
+<tr><td><span class="badge ok">valid, rank 4</span></td><td><code>composer update drupal/acquia_cms_component -W -m --with &apos;twig/twig:&gt;=3.14.1&apos;</code></td><td>1 changes</td></tr>
+<tr><td><span class="badge ok">valid, rank 5</span></td><td><code>composer update drupal/acquia_cms_starter -W -m --with &apos;twig/twig:&gt;=3.14.1&apos;</code></td><td>1 changes</td></tr>
+<tr><td><span class="badge ok">valid, rank 6</span></td><td><code>composer update drush/drush -W -m --with &apos;twig/twig:&gt;=3.14.1&apos;</code></td><td>2 changes</td></tr>
+<tr><td><span class="badge ok">valid, rank 7</span></td><td><code>composer update drupal/acquia_cms_site_studio -W -m --with &apos;twig/twig:&gt;=3.14.1&apos;</code></td><td>3 changes</td></tr>
+<tr><td><span class="badge ok">valid, rank 8</span></td><td><code>composer update drush/drush drupal/acquia_cms_audio drupal/acquia_cms_component drupal/acquia_cms_starter drupal/acquia_cms_dam -W -m --with &apos;twig/twig:&gt;=3.14.1&apos;</code></td><td>3 changes</td></tr>
+<tr><td><span class="badge rejected">rejected</span></td><td><code>composer update drupal/sitestudio_gin -W -m --with &apos;twig/twig:&gt;=3.14.1&apos;</code></td><td><pre class="reason">Composer could not resolve the dependencies: Your requirements could not be resolved to an installable set of packages.
+  Problem 1
+    - Root composer.json requires drupal/sitestudio_gin dev-3434617-automated-drupal-11, found drupal/sitestudio_gin[1.0.0-alpha1, ..., 1.0.6] but these do not match your constraint and are therefore not installable. Make sure you either fix the constraint or avoid updating this package to keep the one present in the lock file (drupal/sitestudio_gin[dev-3434617-automated-drupal-11]).
+  Problem 2
+    - drupal/shield is locked to version 1.8.0 and an update of this package was not requested.
+    - drupal/core 10.3.5 requires twig/twig ^3.14.0 -&gt; found twig/twig[v3.14.0, v3.14.1, v3.14.2, v3.15.0] but these were not loaded, likely because it conflicts with another require.
+    - drupal/shield 1.8.0 requires drupal/core ^9.2 || ^10 || ^11 -&gt; satisfiable by drupal/core[10.3.5].</pre></td></tr>
+<tr><td><span class="badge rejected">rejected</span></td><td><code>composer update drupal/sitestudio_gin drupal/shield -W -m --with &apos;twig/twig:&gt;=3.14.1&apos;</code></td><td><pre class="reason">Composer could not resolve the dependencies: Your requirements could not be resolved to an installable set of packages.
+  Problem 1
+    - Root composer.json requires drupal/sitestudio_gin dev-3434617-automated-drupal-11, found drupal/sitestudio_gin[1.0.0-alpha1, ..., 1.0.6] but these do not match your constraint and are therefore not installable. Make sure you either fix the constraint or avoid updating this package to keep the one present in the lock file (drupal/sitestudio_gin[dev-3434617-automated-drupal-11]).</pre></td></tr>
+<tr><td><span class="badge skipped">not tried</span></td><td><code>composer require --no-update drush/drush:^14.0 &amp;&amp; composer update drush/drush -W -m --with &apos;twig/twig:&gt;=3.14.1&apos;</code></td><td>a better candidate already exists</td></tr>
+</tbody></table></details>
+</section>
+<section class="meta"><h2>Analysis metadata</h2><dl>
+<dt>project</dt><dd>acquiacms-drupal-core-direct</dd>
+<dt>engine version</dt><dd>dev-main</dd>
+<dt>composer version</dt><dd>(fixture)</dd>
+<dt>php version</dt><dd>(fixture)</dd>
+<dt>advisory source</dt><dd>advisory snapshot advisories.json</dd>
+<dt>solver</dt><dd>in-process Composer dry-run</dd>
+<dt>solver runs</dt><dd>37</dd>
+<dt>composer json sha256</dt><dd>b2e2a05bafbf182b6e15ab859b3679115303aeeabe0e6e591d1eddcaf59d5b89</dd>
+<dt>composer lock sha256</dt><dd>0f6ad98f51db2d2df6b6958636e777c9b134d06b8bd2ac7a3202220e7a9bd7f1</dd>
+<dt>analysis timestamp</dt><dd>(fixture)</dd>
+<dt>locked packages</dt><dd>306</dd>
+</dl></section>
+</main></body></html>

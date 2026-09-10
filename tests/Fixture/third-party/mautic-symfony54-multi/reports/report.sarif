@@ -1,0 +1,969 @@
+{
+    "$schema": "https://json.schemastore.org/sarif-2.1.0.json",
+    "version": "2.1.0",
+    "runs": [
+        {
+            "tool": {
+                "driver": {
+                    "name": "composer-remediate",
+                    "version": "dev-main",
+                    "informationUri": "https://hexblot.github.io/composer-remediate/",
+                    "rules": [
+                        {
+                            "id": "PKSA-7f9v-sb8k-krfb",
+                            "name": "CVE202445291",
+                            "shortDescription": {
+                                "text": "PhpSpreadsheet allows absolute path traversal and Server-Side Request Forgery in HTML writer when embedding images is enabled"
+                            },
+                            "fullDescription": {
+                                "text": "PhpSpreadsheet allows absolute path traversal and Server-Side Request Forgery in HTML writer when embedding images is enabled. Affected versions of phpoffice/phpspreadsheet: >=2.0.0,<2.1.1|<1.29.2|>=2.2.0,<2.3.0."
+                            },
+                            "helpUri": "https://github.com/advisories/GHSA-w9xv-qf98-ccq4",
+                            "help": {
+                                "text": "Advisory PKSA-7f9v-sb8k-krfb (CVE-2024-45291) affects phpoffice/phpspreadsheet >=2.0.0,<2.1.1|<1.29.2|>=2.2.0,<2.3.0. Run composer remediate for the smallest verified upgrade."
+                            },
+                            "defaultConfiguration": {
+                                "level": "warning"
+                            },
+                            "properties": {
+                                "security-severity": "5.0",
+                                "tags": [
+                                    "security",
+                                    "vulnerability",
+                                    "medium"
+                                ]
+                            }
+                        },
+                        {
+                            "id": "PKSA-dbrb-pvhs-h3st",
+                            "name": "CVE202447873",
+                            "shortDescription": {
+                                "text": "XmlScanner bypass leads to XXE"
+                            },
+                            "fullDescription": {
+                                "text": "XmlScanner bypass leads to XXE. Affected versions of phpoffice/phpspreadsheet: >=3.3.0,<3.4.0|>=2.2.0,<2.3.2|>=2.0.0,<2.1.3|<1.29.4."
+                            },
+                            "helpUri": "https://github.com/advisories/GHSA-jw4x-v69f-hh5w",
+                            "help": {
+                                "text": "Advisory PKSA-dbrb-pvhs-h3st (CVE-2024-47873) affects phpoffice/phpspreadsheet >=3.3.0,<3.4.0|>=2.2.0,<2.3.2|>=2.0.0,<2.1.3|<1.29.4. Run composer remediate for the smallest verified upgrade."
+                            },
+                            "defaultConfiguration": {
+                                "level": "error"
+                            },
+                            "properties": {
+                                "security-severity": "7.5",
+                                "tags": [
+                                    "security",
+                                    "vulnerability",
+                                    "high"
+                                ]
+                            }
+                        },
+                        {
+                            "id": "PKSA-dvbq-8ft2-ngrw",
+                            "name": "CVE202445060",
+                            "shortDescription": {
+                                "text": "PhpSpreadsheet has an Unauthenticated Cross-Site-Scripting (XSS) in sample file"
+                            },
+                            "fullDescription": {
+                                "text": "PhpSpreadsheet has an Unauthenticated Cross-Site-Scripting (XSS) in sample file. Affected versions of phpoffice/phpspreadsheet: >=2.0.0,<2.1.1|<1.29.2|>=2.2.0,<2.3.0."
+                            },
+                            "helpUri": "https://github.com/advisories/GHSA-v66g-p9x6-v98p",
+                            "help": {
+                                "text": "Advisory PKSA-dvbq-8ft2-ngrw (CVE-2024-45060) affects phpoffice/phpspreadsheet >=2.0.0,<2.1.1|<1.29.2|>=2.2.0,<2.3.0. Run composer remediate for the smallest verified upgrade."
+                            },
+                            "defaultConfiguration": {
+                                "level": "warning"
+                            },
+                            "properties": {
+                                "security-severity": "5.0",
+                                "tags": [
+                                    "security",
+                                    "vulnerability",
+                                    "medium"
+                                ]
+                            }
+                        },
+                        {
+                            "id": "PKSA-gst3-cdk3-bpqt",
+                            "name": "CVE202448917",
+                            "shortDescription": {
+                                "text": "XXE in PHPSpreadsheet's XLSX reader"
+                            },
+                            "fullDescription": {
+                                "text": "XXE in PHPSpreadsheet's XLSX reader. Affected versions of phpoffice/phpspreadsheet: >=3.3.0,<3.4.0|>=2.2.0,<2.3.2|>=2.0.0,<2.1.3|<1.29.4."
+                            },
+                            "helpUri": "https://github.com/advisories/GHSA-7cc9-j4mv-vcjp",
+                            "help": {
+                                "text": "Advisory PKSA-gst3-cdk3-bpqt (CVE-2024-48917) affects phpoffice/phpspreadsheet >=3.3.0,<3.4.0|>=2.2.0,<2.3.2|>=2.0.0,<2.1.3|<1.29.4. Run composer remediate for the smallest verified upgrade."
+                            },
+                            "defaultConfiguration": {
+                                "level": "error"
+                            },
+                            "properties": {
+                                "security-severity": "7.5",
+                                "tags": [
+                                    "security",
+                                    "vulnerability",
+                                    "high"
+                                ]
+                            }
+                        },
+                        {
+                            "id": "PKSA-m4hk-rk8p-4t5p",
+                            "name": "CVE202445046",
+                            "shortDescription": {
+                                "text": "PhpSpreadsheet HTML writer is vulnerable to Cross-Site Scripting via style information"
+                            },
+                            "fullDescription": {
+                                "text": "PhpSpreadsheet HTML writer is vulnerable to Cross-Site Scripting via style information. Affected versions of phpoffice/phpspreadsheet: <1.29.1|>=2.0.0,<2.1.0."
+                            },
+                            "helpUri": "https://github.com/advisories/GHSA-wgmf-q9vr-vww6",
+                            "help": {
+                                "text": "Advisory PKSA-m4hk-rk8p-4t5p (CVE-2024-45046) affects phpoffice/phpspreadsheet <1.29.1|>=2.0.0,<2.1.0. Run composer remediate for the smallest verified upgrade."
+                            },
+                            "defaultConfiguration": {
+                                "level": "warning"
+                            },
+                            "properties": {
+                                "security-severity": "5.0",
+                                "tags": [
+                                    "security",
+                                    "vulnerability",
+                                    "medium"
+                                ]
+                            }
+                        },
+                        {
+                            "id": "PKSA-mkg2-1wyw-57y7",
+                            "name": "CVE202445293",
+                            "shortDescription": {
+                                "text": "XXE in PHPSpreadsheet's XLSX reader"
+                            },
+                            "fullDescription": {
+                                "text": "XXE in PHPSpreadsheet's XLSX reader. Affected versions of phpoffice/phpspreadsheet: >=2.0.0,<2.1.1|<1.29.1|>=2.2.0,<2.3.0."
+                            },
+                            "helpUri": "https://github.com/advisories/GHSA-6hwr-6v2f-3m88",
+                            "help": {
+                                "text": "Advisory PKSA-mkg2-1wyw-57y7 (CVE-2024-45293) affects phpoffice/phpspreadsheet >=2.0.0,<2.1.1|<1.29.1|>=2.2.0,<2.3.0. Run composer remediate for the smallest verified upgrade."
+                            },
+                            "defaultConfiguration": {
+                                "level": "error"
+                            },
+                            "properties": {
+                                "security-severity": "7.5",
+                                "tags": [
+                                    "security",
+                                    "vulnerability",
+                                    "high"
+                                ]
+                            }
+                        },
+                        {
+                            "id": "PKSA-p1pj-q951-6f1x",
+                            "name": "CVE202445292",
+                            "shortDescription": {
+                                "text": "PhpSpreadsheet HTML writer is vulnerable to Cross-Site Scripting via JavaScript hyperlinks"
+                            },
+                            "fullDescription": {
+                                "text": "PhpSpreadsheet HTML writer is vulnerable to Cross-Site Scripting via JavaScript hyperlinks. Affected versions of phpoffice/phpspreadsheet: >=2.0.0,<2.1.1|<1.29.2|>=2.2.0,<2.3.0."
+                            },
+                            "helpUri": "https://github.com/advisories/GHSA-r8w8-74ww-j4wh",
+                            "help": {
+                                "text": "Advisory PKSA-p1pj-q951-6f1x (CVE-2024-45292) affects phpoffice/phpspreadsheet >=2.0.0,<2.1.1|<1.29.2|>=2.2.0,<2.3.0. Run composer remediate for the smallest verified upgrade."
+                            },
+                            "defaultConfiguration": {
+                                "level": "warning"
+                            },
+                            "properties": {
+                                "security-severity": "5.0",
+                                "tags": [
+                                    "security",
+                                    "vulnerability",
+                                    "medium"
+                                ]
+                            }
+                        },
+                        {
+                            "id": "PKSA-xk3k-rd1m-pxmg",
+                            "name": "CVE202445290",
+                            "shortDescription": {
+                                "text": "PhpSpreadsheet allows absolute path traversal and Server-Side Request Forgery when opening XLSX file"
+                            },
+                            "fullDescription": {
+                                "text": "PhpSpreadsheet allows absolute path traversal and Server-Side Request Forgery when opening XLSX file. Affected versions of phpoffice/phpspreadsheet: >=2.0.0,<2.1.1|<1.29.2|>=2.2.0,<2.3.0."
+                            },
+                            "helpUri": "https://github.com/advisories/GHSA-5gpr-w2p5-6m37",
+                            "help": {
+                                "text": "Advisory PKSA-xk3k-rd1m-pxmg (CVE-2024-45290) affects phpoffice/phpspreadsheet >=2.0.0,<2.1.1|<1.29.2|>=2.2.0,<2.3.0. Run composer remediate for the smallest verified upgrade."
+                            },
+                            "defaultConfiguration": {
+                                "level": "error"
+                            },
+                            "properties": {
+                                "security-severity": "7.5",
+                                "tags": [
+                                    "security",
+                                    "vulnerability",
+                                    "high"
+                                ]
+                            }
+                        },
+                        {
+                            "id": "PKSA-xp7t-fbrb-qjv4",
+                            "name": "CVE202445048",
+                            "shortDescription": {
+                                "text": "XXE in PHPSpreadsheet encoding is returned"
+                            },
+                            "fullDescription": {
+                                "text": "XXE in PHPSpreadsheet encoding is returned. Affected versions of phpoffice/phpspreadsheet: >=2.0.0,<2.1.1|>=2.2.0,<2.2.1|<1.29.1."
+                            },
+                            "helpUri": "https://github.com/advisories/GHSA-ghg6-32f9-2jp7",
+                            "help": {
+                                "text": "Advisory PKSA-xp7t-fbrb-qjv4 (CVE-2024-45048) affects phpoffice/phpspreadsheet >=2.0.0,<2.1.1|>=2.2.0,<2.2.1|<1.29.1. Run composer remediate for the smallest verified upgrade."
+                            },
+                            "defaultConfiguration": {
+                                "level": "error"
+                            },
+                            "properties": {
+                                "security-severity": "7.5",
+                                "tags": [
+                                    "security",
+                                    "vulnerability",
+                                    "high"
+                                ]
+                            }
+                        },
+                        {
+                            "id": "PKSA-wws7-mr54-jsny",
+                            "name": "CVE202451736",
+                            "shortDescription": {
+                                "text": "CVE-2024-51736: Command execution hijack on Windows with Process class"
+                            },
+                            "fullDescription": {
+                                "text": "CVE-2024-51736: Command execution hijack on Windows with Process class. Affected versions of symfony/process: >=2.0.0,<3.0.0|>=3.0.0,<4.0.0|>=4.0.0,<5.0.0|>=5.0.0,<5.1.0|>=5.1.0,<5.2.0|>=5.2.0,<5.3.0|>=5.3.0,<5.4.0|>=5.4.0,<5.4.46|>=6.0.0,<6.1.0|>=6.1.0,<6.2.0|>=6.2.0,<6.3.0|>=6.3.0,<6.4.0|>=6.4.0,<6.4.14|>=7.0.0,<7.1.0|>=7.1.0,<7.1.7."
+                            },
+                            "helpUri": "https://symfony.com/cve-2024-51736",
+                            "help": {
+                                "text": "Advisory PKSA-wws7-mr54-jsny (CVE-2024-51736) affects symfony/process >=2.0.0,<3.0.0|>=3.0.0,<4.0.0|>=4.0.0,<5.0.0|>=5.0.0,<5.1.0|>=5.1.0,<5.2.0|>=5.2.0,<5.3.0|>=5.3.0,<5.4.0|>=5.4.0,<5.4.46|>=6.0.0,<6.1.0|>=6.1.0,<6.2.0|>=6.2.0,<6.3.0|>=6.3.0,<6.4.0|>=6.4.0,<6.4.14|>=7.0.0,<7.1.0|>=7.1.0,<7.1.7. Run composer remediate for the smallest verified upgrade."
+                            },
+                            "defaultConfiguration": {
+                                "level": "error"
+                            },
+                            "properties": {
+                                "security-severity": "7.5",
+                                "tags": [
+                                    "security",
+                                    "vulnerability",
+                                    "high"
+                                ]
+                            }
+                        },
+                        {
+                            "id": "PKSA-rqvm-b18n-vg69",
+                            "name": "CVE202451996",
+                            "shortDescription": {
+                                "text": "CVE-2024-51996: Authentication Bypass via persisted RememberMe cookie"
+                            },
+                            "fullDescription": {
+                                "text": "CVE-2024-51996: Authentication Bypass via persisted RememberMe cookie. Affected versions of symfony/security-http: >=5.3.0,<5.4.0|>=5.4.0,<5.4.47|>=6.0.0,<6.1.0|>=6.1.0,<6.2.0|>=6.2.0,<6.3.0|>=6.3.0,<6.4.0|>=6.4.0,<6.4.15|>=7.0.0,<7.1.0|>=7.1.0,<7.1.8."
+                            },
+                            "helpUri": "https://symfony.com/cve-2024-51996",
+                            "help": {
+                                "text": "Advisory PKSA-rqvm-b18n-vg69 (CVE-2024-51996) affects symfony/security-http >=5.3.0,<5.4.0|>=5.4.0,<5.4.47|>=6.0.0,<6.1.0|>=6.1.0,<6.2.0|>=6.2.0,<6.3.0|>=6.3.0,<6.4.0|>=6.4.0,<6.4.15|>=7.0.0,<7.1.0|>=7.1.0,<7.1.8. Run composer remediate for the smallest verified upgrade."
+                            },
+                            "defaultConfiguration": {
+                                "level": "error"
+                            },
+                            "properties": {
+                                "security-severity": "7.5",
+                                "tags": [
+                                    "security",
+                                    "vulnerability",
+                                    "high"
+                                ]
+                            }
+                        },
+                        {
+                            "id": "PKSA-4k7v-pfvw-nqvp",
+                            "name": "CVE202450342",
+                            "shortDescription": {
+                                "text": "CVE-2024-50342: Internal address and port enumeration allowed by NoPrivateNetworkHttpClient"
+                            },
+                            "fullDescription": {
+                                "text": "CVE-2024-50342: Internal address and port enumeration allowed by NoPrivateNetworkHttpClient. Affected versions of symfony/http-client: >=4.3.0,<4.4.0|>=4.4.0,<5.0.0|>=5.0.0,<5.1.0|>=5.1.0,<5.2.0|>=5.2.0,<5.3.0|>=5.3.0,<5.4.0|>=5.4.0,<5.4.47|>=6.0.0,<6.1.0|>=6.1.0,<6.2.0|>=6.2.0,<6.3.0|>=6.3.0,<6.4.0|>=6.4.0,<6.4.15|>=7.0.0,<7.1.0|>=7.1.0,<7.1.8."
+                            },
+                            "helpUri": "https://symfony.com/cve-2024-50342",
+                            "help": {
+                                "text": "Advisory PKSA-4k7v-pfvw-nqvp (CVE-2024-50342) affects symfony/http-client >=4.3.0,<4.4.0|>=4.4.0,<5.0.0|>=5.0.0,<5.1.0|>=5.1.0,<5.2.0|>=5.2.0,<5.3.0|>=5.3.0,<5.4.0|>=5.4.0,<5.4.47|>=6.0.0,<6.1.0|>=6.1.0,<6.2.0|>=6.2.0,<6.3.0|>=6.3.0,<6.4.0|>=6.4.0,<6.4.15|>=7.0.0,<7.1.0|>=7.1.0,<7.1.8. Run composer remediate for the smallest verified upgrade."
+                            },
+                            "defaultConfiguration": {
+                                "level": "note"
+                            },
+                            "properties": {
+                                "security-severity": "2.5",
+                                "tags": [
+                                    "security",
+                                    "vulnerability",
+                                    "low"
+                                ]
+                            }
+                        },
+                        {
+                            "id": "PKSA-b35n-565h-rs4q",
+                            "name": "CVE202450345",
+                            "shortDescription": {
+                                "text": "CVE-2024-50345: Open redirect via browser-sanitized URLs"
+                            },
+                            "fullDescription": {
+                                "text": "CVE-2024-50345: Open redirect via browser-sanitized URLs. Affected versions of symfony/http-foundation: >=2.0.0,<3.0.0|>=3.0.0,<4.0.0|>=4.0.0,<5.0.0|>=5.0.0,<5.1.0|>=5.1.0,<5.2.0|>=5.2.0,<5.3.0|>=5.3.0,<5.4.0|>=5.4.0,<5.4.46|>=6.0.0,<6.1.0|>=6.1.0,<6.2.0|>=6.2.0,<6.3.0|>=6.3.0,<6.4.0|>=6.4.0,<6.4.14|>=7.0.0,<7.1.0|>=7.1.0,<7.1.7."
+                            },
+                            "helpUri": "https://symfony.com/cve-2024-50345",
+                            "help": {
+                                "text": "Advisory PKSA-b35n-565h-rs4q (CVE-2024-50345) affects symfony/http-foundation >=2.0.0,<3.0.0|>=3.0.0,<4.0.0|>=4.0.0,<5.0.0|>=5.0.0,<5.1.0|>=5.1.0,<5.2.0|>=5.2.0,<5.3.0|>=5.3.0,<5.4.0|>=5.4.0,<5.4.46|>=6.0.0,<6.1.0|>=6.1.0,<6.2.0|>=6.2.0,<6.3.0|>=6.3.0,<6.4.0|>=6.4.0,<6.4.14|>=7.0.0,<7.1.0|>=7.1.0,<7.1.7. Run composer remediate for the smallest verified upgrade."
+                            },
+                            "defaultConfiguration": {
+                                "level": "note"
+                            },
+                            "properties": {
+                                "security-severity": "2.5",
+                                "tags": [
+                                    "security",
+                                    "vulnerability",
+                                    "low"
+                                ]
+                            }
+                        },
+                        {
+                            "id": "PKSA-w2tw-kmfg-rt9s",
+                            "name": "CVE202450343",
+                            "shortDescription": {
+                                "text": "CVE-2024-50343: Incorrect response from Validator when input ends with `\n`"
+                            },
+                            "fullDescription": {
+                                "text": "CVE-2024-50343: Incorrect response from Validator when input ends with `\n`. Affected versions of symfony/validator: >=2.0.0,<3.0.0|>=3.0.0,<4.0.0|>=4.0.0,<5.0.0|>=5.0.0,<5.1.0|>=5.1.0,<5.2.0|>=5.2.0,<5.3.0|>=5.3.0,<5.4.0|>=5.4.0,<5.4.43|>=6.0.0,<6.1.0|>=6.1.0,<6.2.0|>=6.2.0,<6.3.0|>=6.3.0,<6.4.0|>=6.4.0,<6.4.11|>=7.0.0,<7.1.0|>=7.1.0,<7.1.4."
+                            },
+                            "helpUri": "https://symfony.com/cve-2024-50343",
+                            "help": {
+                                "text": "Advisory PKSA-w2tw-kmfg-rt9s (CVE-2024-50343) affects symfony/validator >=2.0.0,<3.0.0|>=3.0.0,<4.0.0|>=4.0.0,<5.0.0|>=5.0.0,<5.1.0|>=5.1.0,<5.2.0|>=5.2.0,<5.3.0|>=5.3.0,<5.4.0|>=5.4.0,<5.4.43|>=6.0.0,<6.1.0|>=6.1.0,<6.2.0|>=6.2.0,<6.3.0|>=6.3.0,<6.4.0|>=6.4.0,<6.4.11|>=7.0.0,<7.1.0|>=7.1.0,<7.1.4. Run composer remediate for the smallest verified upgrade."
+                            },
+                            "defaultConfiguration": {
+                                "level": "note"
+                            },
+                            "properties": {
+                                "security-severity": "2.5",
+                                "tags": [
+                                    "security",
+                                    "vulnerability",
+                                    "low"
+                                ]
+                            }
+                        },
+                        {
+                            "id": "PKSA-2wrf-1xmk-1pky",
+                            "name": "CVE202451755",
+                            "shortDescription": {
+                                "text": "Unguarded calls to __isset() and to array-accesses when the sandbox is enabled"
+                            },
+                            "fullDescription": {
+                                "text": "Unguarded calls to __isset() and to array-accesses when the sandbox is enabled. Affected versions of twig/twig: >=1.0.0,<2.0.0|>=2.0.0,<3.0.0|>=3.0.0,<3.11.2|>=3.12.0,<3.14.1."
+                            },
+                            "helpUri": "https://symfony.com/blog/cve-2024-51755-unguarded-calls-to-isset-and-to-array-accesses-in-a-sandbox",
+                            "help": {
+                                "text": "Advisory PKSA-2wrf-1xmk-1pky (CVE-2024-51755) affects twig/twig >=1.0.0,<2.0.0|>=2.0.0,<3.0.0|>=3.0.0,<3.11.2|>=3.12.0,<3.14.1. Run composer remediate for the smallest verified upgrade."
+                            },
+                            "defaultConfiguration": {
+                                "level": "note"
+                            },
+                            "properties": {
+                                "security-severity": "2.5",
+                                "tags": [
+                                    "security",
+                                    "vulnerability",
+                                    "low"
+                                ]
+                            }
+                        },
+                        {
+                            "id": "PKSA-yhcn-xrg3-68b1",
+                            "name": "CVE202451754",
+                            "shortDescription": {
+                                "text": "Unguarded calls to __toString() when nesting an object into an array"
+                            },
+                            "fullDescription": {
+                                "text": "Unguarded calls to __toString() when nesting an object into an array. Affected versions of twig/twig: >=1.0.0,<2.0.0|>=2.0.0,<3.0.0|>=3.0.0,<3.11.2|>=3.12.0,<3.14.1."
+                            },
+                            "helpUri": "https://symfony.com/blog/cve-2024-51754-unguarded-calls-to-tostring-in-a-sandbox-when-an-object-is-in-an-array-or-an-argument-list",
+                            "help": {
+                                "text": "Advisory PKSA-yhcn-xrg3-68b1 (CVE-2024-51754) affects twig/twig >=1.0.0,<2.0.0|>=2.0.0,<3.0.0|>=3.0.0,<3.11.2|>=3.12.0,<3.14.1. Run composer remediate for the smallest verified upgrade."
+                            },
+                            "defaultConfiguration": {
+                                "level": "note"
+                            },
+                            "properties": {
+                                "security-severity": "2.5",
+                                "tags": [
+                                    "security",
+                                    "vulnerability",
+                                    "low"
+                                ]
+                            }
+                        }
+                    ]
+                }
+            },
+            "invocations": [
+                {
+                    "executionSuccessful": true,
+                    "exitCode": 2,
+                    "properties": {
+                        "composer_version": "(fixture)",
+                        "advisory_source": "advisory snapshot advisories.json",
+                        "combined_command": "composer update symfony/http-client symfony/http-foundation symfony/process symfony/security-http symfony/validator twig/twig"
+                    }
+                }
+            ],
+            "results": [
+                {
+                    "ruleId": "PKSA-7f9v-sb8k-krfb",
+                    "ruleIndex": 0,
+                    "level": "warning",
+                    "message": {
+                        "text": "phpoffice/phpspreadsheet 1.27.1 is affected by CVE-2024-45291: PhpSpreadsheet allows absolute path traversal and Server-Side Request Forgery in HTML writer when embedding images is enabled. No verified remediation found."
+                    },
+                    "locations": [
+                        {
+                            "physicalLocation": {
+                                "artifactLocation": {
+                                    "uri": "composer.lock",
+                                    "uriBaseId": "%SRCROOT%"
+                                },
+                                "region": {
+                                    "startLine": 7275
+                                }
+                            }
+                        }
+                    ],
+                    "partialFingerprints": {
+                        "advisoryPackage/v1": "PKSA-7f9v-sb8k-krfb@phpoffice/phpspreadsheet"
+                    },
+                    "properties": {
+                        "package": "phpoffice/phpspreadsheet",
+                        "version": "1.27.1",
+                        "direct": false,
+                        "dev": false,
+                        "cve": "CVE-2024-45291",
+                        "severity": "medium",
+                        "remediation_status": "none"
+                    }
+                },
+                {
+                    "ruleId": "PKSA-dbrb-pvhs-h3st",
+                    "ruleIndex": 1,
+                    "level": "error",
+                    "message": {
+                        "text": "phpoffice/phpspreadsheet 1.27.1 is affected by CVE-2024-47873: XmlScanner bypass leads to XXE. No verified remediation found."
+                    },
+                    "locations": [
+                        {
+                            "physicalLocation": {
+                                "artifactLocation": {
+                                    "uri": "composer.lock",
+                                    "uriBaseId": "%SRCROOT%"
+                                },
+                                "region": {
+                                    "startLine": 7275
+                                }
+                            }
+                        }
+                    ],
+                    "partialFingerprints": {
+                        "advisoryPackage/v1": "PKSA-dbrb-pvhs-h3st@phpoffice/phpspreadsheet"
+                    },
+                    "properties": {
+                        "package": "phpoffice/phpspreadsheet",
+                        "version": "1.27.1",
+                        "direct": false,
+                        "dev": false,
+                        "cve": "CVE-2024-47873",
+                        "severity": "high",
+                        "remediation_status": "none"
+                    }
+                },
+                {
+                    "ruleId": "PKSA-dvbq-8ft2-ngrw",
+                    "ruleIndex": 2,
+                    "level": "warning",
+                    "message": {
+                        "text": "phpoffice/phpspreadsheet 1.27.1 is affected by CVE-2024-45060: PhpSpreadsheet has an Unauthenticated Cross-Site-Scripting (XSS) in sample file. No verified remediation found."
+                    },
+                    "locations": [
+                        {
+                            "physicalLocation": {
+                                "artifactLocation": {
+                                    "uri": "composer.lock",
+                                    "uriBaseId": "%SRCROOT%"
+                                },
+                                "region": {
+                                    "startLine": 7275
+                                }
+                            }
+                        }
+                    ],
+                    "partialFingerprints": {
+                        "advisoryPackage/v1": "PKSA-dvbq-8ft2-ngrw@phpoffice/phpspreadsheet"
+                    },
+                    "properties": {
+                        "package": "phpoffice/phpspreadsheet",
+                        "version": "1.27.1",
+                        "direct": false,
+                        "dev": false,
+                        "cve": "CVE-2024-45060",
+                        "severity": "medium",
+                        "remediation_status": "none"
+                    }
+                },
+                {
+                    "ruleId": "PKSA-gst3-cdk3-bpqt",
+                    "ruleIndex": 3,
+                    "level": "error",
+                    "message": {
+                        "text": "phpoffice/phpspreadsheet 1.27.1 is affected by CVE-2024-48917: XXE in PHPSpreadsheet's XLSX reader. No verified remediation found."
+                    },
+                    "locations": [
+                        {
+                            "physicalLocation": {
+                                "artifactLocation": {
+                                    "uri": "composer.lock",
+                                    "uriBaseId": "%SRCROOT%"
+                                },
+                                "region": {
+                                    "startLine": 7275
+                                }
+                            }
+                        }
+                    ],
+                    "partialFingerprints": {
+                        "advisoryPackage/v1": "PKSA-gst3-cdk3-bpqt@phpoffice/phpspreadsheet"
+                    },
+                    "properties": {
+                        "package": "phpoffice/phpspreadsheet",
+                        "version": "1.27.1",
+                        "direct": false,
+                        "dev": false,
+                        "cve": "CVE-2024-48917",
+                        "severity": "high",
+                        "remediation_status": "none"
+                    }
+                },
+                {
+                    "ruleId": "PKSA-m4hk-rk8p-4t5p",
+                    "ruleIndex": 4,
+                    "level": "warning",
+                    "message": {
+                        "text": "phpoffice/phpspreadsheet 1.27.1 is affected by CVE-2024-45046: PhpSpreadsheet HTML writer is vulnerable to Cross-Site Scripting via style information. No verified remediation found."
+                    },
+                    "locations": [
+                        {
+                            "physicalLocation": {
+                                "artifactLocation": {
+                                    "uri": "composer.lock",
+                                    "uriBaseId": "%SRCROOT%"
+                                },
+                                "region": {
+                                    "startLine": 7275
+                                }
+                            }
+                        }
+                    ],
+                    "partialFingerprints": {
+                        "advisoryPackage/v1": "PKSA-m4hk-rk8p-4t5p@phpoffice/phpspreadsheet"
+                    },
+                    "properties": {
+                        "package": "phpoffice/phpspreadsheet",
+                        "version": "1.27.1",
+                        "direct": false,
+                        "dev": false,
+                        "cve": "CVE-2024-45046",
+                        "severity": "medium",
+                        "remediation_status": "none"
+                    }
+                },
+                {
+                    "ruleId": "PKSA-mkg2-1wyw-57y7",
+                    "ruleIndex": 5,
+                    "level": "error",
+                    "message": {
+                        "text": "phpoffice/phpspreadsheet 1.27.1 is affected by CVE-2024-45293: XXE in PHPSpreadsheet's XLSX reader. No verified remediation found."
+                    },
+                    "locations": [
+                        {
+                            "physicalLocation": {
+                                "artifactLocation": {
+                                    "uri": "composer.lock",
+                                    "uriBaseId": "%SRCROOT%"
+                                },
+                                "region": {
+                                    "startLine": 7275
+                                }
+                            }
+                        }
+                    ],
+                    "partialFingerprints": {
+                        "advisoryPackage/v1": "PKSA-mkg2-1wyw-57y7@phpoffice/phpspreadsheet"
+                    },
+                    "properties": {
+                        "package": "phpoffice/phpspreadsheet",
+                        "version": "1.27.1",
+                        "direct": false,
+                        "dev": false,
+                        "cve": "CVE-2024-45293",
+                        "severity": "high",
+                        "remediation_status": "none"
+                    }
+                },
+                {
+                    "ruleId": "PKSA-p1pj-q951-6f1x",
+                    "ruleIndex": 6,
+                    "level": "warning",
+                    "message": {
+                        "text": "phpoffice/phpspreadsheet 1.27.1 is affected by CVE-2024-45292: PhpSpreadsheet HTML writer is vulnerable to Cross-Site Scripting via JavaScript hyperlinks. No verified remediation found."
+                    },
+                    "locations": [
+                        {
+                            "physicalLocation": {
+                                "artifactLocation": {
+                                    "uri": "composer.lock",
+                                    "uriBaseId": "%SRCROOT%"
+                                },
+                                "region": {
+                                    "startLine": 7275
+                                }
+                            }
+                        }
+                    ],
+                    "partialFingerprints": {
+                        "advisoryPackage/v1": "PKSA-p1pj-q951-6f1x@phpoffice/phpspreadsheet"
+                    },
+                    "properties": {
+                        "package": "phpoffice/phpspreadsheet",
+                        "version": "1.27.1",
+                        "direct": false,
+                        "dev": false,
+                        "cve": "CVE-2024-45292",
+                        "severity": "medium",
+                        "remediation_status": "none"
+                    }
+                },
+                {
+                    "ruleId": "PKSA-xk3k-rd1m-pxmg",
+                    "ruleIndex": 7,
+                    "level": "error",
+                    "message": {
+                        "text": "phpoffice/phpspreadsheet 1.27.1 is affected by CVE-2024-45290: PhpSpreadsheet allows absolute path traversal and Server-Side Request Forgery when opening XLSX file. No verified remediation found."
+                    },
+                    "locations": [
+                        {
+                            "physicalLocation": {
+                                "artifactLocation": {
+                                    "uri": "composer.lock",
+                                    "uriBaseId": "%SRCROOT%"
+                                },
+                                "region": {
+                                    "startLine": 7275
+                                }
+                            }
+                        }
+                    ],
+                    "partialFingerprints": {
+                        "advisoryPackage/v1": "PKSA-xk3k-rd1m-pxmg@phpoffice/phpspreadsheet"
+                    },
+                    "properties": {
+                        "package": "phpoffice/phpspreadsheet",
+                        "version": "1.27.1",
+                        "direct": false,
+                        "dev": false,
+                        "cve": "CVE-2024-45290",
+                        "severity": "high",
+                        "remediation_status": "none"
+                    }
+                },
+                {
+                    "ruleId": "PKSA-xp7t-fbrb-qjv4",
+                    "ruleIndex": 8,
+                    "level": "error",
+                    "message": {
+                        "text": "phpoffice/phpspreadsheet 1.27.1 is affected by CVE-2024-45048: XXE in PHPSpreadsheet encoding is returned. No verified remediation found."
+                    },
+                    "locations": [
+                        {
+                            "physicalLocation": {
+                                "artifactLocation": {
+                                    "uri": "composer.lock",
+                                    "uriBaseId": "%SRCROOT%"
+                                },
+                                "region": {
+                                    "startLine": 7275
+                                }
+                            }
+                        }
+                    ],
+                    "partialFingerprints": {
+                        "advisoryPackage/v1": "PKSA-xp7t-fbrb-qjv4@phpoffice/phpspreadsheet"
+                    },
+                    "properties": {
+                        "package": "phpoffice/phpspreadsheet",
+                        "version": "1.27.1",
+                        "direct": false,
+                        "dev": false,
+                        "cve": "CVE-2024-45048",
+                        "severity": "high",
+                        "remediation_status": "none"
+                    }
+                },
+                {
+                    "ruleId": "PKSA-wws7-mr54-jsny",
+                    "ruleIndex": 9,
+                    "level": "error",
+                    "message": {
+                        "text": "symfony/process v5.4.40 is affected by CVE-2024-51736: CVE-2024-51736: Command execution hijack on Windows with Process class. Verified fix: composer update symfony/process"
+                    },
+                    "locations": [
+                        {
+                            "physicalLocation": {
+                                "artifactLocation": {
+                                    "uri": "composer.lock",
+                                    "uriBaseId": "%SRCROOT%"
+                                },
+                                "region": {
+                                    "startLine": 12379
+                                }
+                            }
+                        }
+                    ],
+                    "partialFingerprints": {
+                        "advisoryPackage/v1": "PKSA-wws7-mr54-jsny@symfony/process"
+                    },
+                    "properties": {
+                        "package": "symfony/process",
+                        "version": "v5.4.40",
+                        "direct": false,
+                        "dev": false,
+                        "cve": "CVE-2024-51736",
+                        "severity": "high",
+                        "remediation_status": "verified",
+                        "command": "composer update symfony/process"
+                    }
+                },
+                {
+                    "ruleId": "PKSA-rqvm-b18n-vg69",
+                    "ruleIndex": 10,
+                    "level": "error",
+                    "message": {
+                        "text": "symfony/security-http v5.4.35 is affected by CVE-2024-51996: CVE-2024-51996: Authentication Bypass via persisted RememberMe cookie. Verified fix: composer update symfony/security-http"
+                    },
+                    "locations": [
+                        {
+                            "physicalLocation": {
+                                "artifactLocation": {
+                                    "uri": "composer.lock",
+                                    "uriBaseId": "%SRCROOT%"
+                                },
+                                "region": {
+                                    "startLine": 13171
+                                }
+                            }
+                        }
+                    ],
+                    "partialFingerprints": {
+                        "advisoryPackage/v1": "PKSA-rqvm-b18n-vg69@symfony/security-http"
+                    },
+                    "properties": {
+                        "package": "symfony/security-http",
+                        "version": "v5.4.35",
+                        "direct": false,
+                        "dev": false,
+                        "cve": "CVE-2024-51996",
+                        "severity": "high",
+                        "remediation_status": "verified",
+                        "command": "composer update symfony/security-http"
+                    }
+                },
+                {
+                    "ruleId": "PKSA-4k7v-pfvw-nqvp",
+                    "ruleIndex": 11,
+                    "level": "note",
+                    "message": {
+                        "text": "symfony/http-client v5.4.35 is affected by CVE-2024-50342: CVE-2024-50342: Internal address and port enumeration allowed by NoPrivateNetworkHttpClient. Verified fix: composer update symfony/http-client"
+                    },
+                    "locations": [
+                        {
+                            "physicalLocation": {
+                                "artifactLocation": {
+                                    "uri": "composer.lock",
+                                    "uriBaseId": "%SRCROOT%"
+                                },
+                                "region": {
+                                    "startLine": 10523
+                                }
+                            }
+                        }
+                    ],
+                    "partialFingerprints": {
+                        "advisoryPackage/v1": "PKSA-4k7v-pfvw-nqvp@symfony/http-client"
+                    },
+                    "properties": {
+                        "package": "symfony/http-client",
+                        "version": "v5.4.35",
+                        "direct": false,
+                        "dev": false,
+                        "cve": "CVE-2024-50342",
+                        "severity": "low",
+                        "remediation_status": "verified",
+                        "command": "composer update symfony/http-client"
+                    }
+                },
+                {
+                    "ruleId": "PKSA-b35n-565h-rs4q",
+                    "ruleIndex": 12,
+                    "level": "note",
+                    "message": {
+                        "text": "symfony/http-foundation v5.4.35 is affected by CVE-2024-50345: CVE-2024-50345: Open redirect via browser-sanitized URLs. Verified fix: composer update symfony/http-foundation"
+                    },
+                    "locations": [
+                        {
+                            "physicalLocation": {
+                                "artifactLocation": {
+                                    "uri": "composer.lock",
+                                    "uriBaseId": "%SRCROOT%"
+                                },
+                                "region": {
+                                    "startLine": 10692
+                                }
+                            }
+                        }
+                    ],
+                    "partialFingerprints": {
+                        "advisoryPackage/v1": "PKSA-b35n-565h-rs4q@symfony/http-foundation"
+                    },
+                    "properties": {
+                        "package": "symfony/http-foundation",
+                        "version": "v5.4.35",
+                        "direct": false,
+                        "dev": false,
+                        "cve": "CVE-2024-50345",
+                        "severity": "low",
+                        "remediation_status": "verified",
+                        "command": "composer update symfony/http-foundation",
+                        "abandoned": [
+                            "sensio/framework-extra-bundle",
+                            "theofidry/psysh-bundle"
+                        ]
+                    }
+                },
+                {
+                    "ruleId": "PKSA-w2tw-kmfg-rt9s",
+                    "ruleIndex": 13,
+                    "level": "note",
+                    "message": {
+                        "text": "symfony/validator v5.4.35 is affected by CVE-2024-50343: CVE-2024-50343: Incorrect response from Validator when input ends with `\n`. Verified fix: composer update symfony/validator"
+                    },
+                    "locations": [
+                        {
+                            "physicalLocation": {
+                                "artifactLocation": {
+                                    "uri": "composer.lock",
+                                    "uriBaseId": "%SRCROOT%"
+                                },
+                                "region": {
+                                    "startLine": 13941
+                                }
+                            }
+                        }
+                    ],
+                    "partialFingerprints": {
+                        "advisoryPackage/v1": "PKSA-w2tw-kmfg-rt9s@symfony/validator"
+                    },
+                    "properties": {
+                        "package": "symfony/validator",
+                        "version": "v5.4.35",
+                        "direct": false,
+                        "dev": false,
+                        "cve": "CVE-2024-50343",
+                        "severity": "low",
+                        "remediation_status": "verified",
+                        "command": "composer update symfony/validator"
+                    }
+                },
+                {
+                    "ruleId": "PKSA-2wrf-1xmk-1pky",
+                    "ruleIndex": 14,
+                    "level": "note",
+                    "message": {
+                        "text": "twig/twig v3.14.0 is affected by CVE-2024-51755: Unguarded calls to __isset() and to array-accesses when the sandbox is enabled. Verified fix: composer update twig/twig"
+                    },
+                    "locations": [
+                        {
+                            "physicalLocation": {
+                                "artifactLocation": {
+                                    "uri": "composer.lock",
+                                    "uriBaseId": "%SRCROOT%"
+                                },
+                                "region": {
+                                    "startLine": 14414
+                                }
+                            }
+                        }
+                    ],
+                    "partialFingerprints": {
+                        "advisoryPackage/v1": "PKSA-2wrf-1xmk-1pky@twig/twig"
+                    },
+                    "properties": {
+                        "package": "twig/twig",
+                        "version": "v3.14.0",
+                        "direct": false,
+                        "dev": false,
+                        "cve": "CVE-2024-51755",
+                        "severity": "low",
+                        "remediation_status": "verified",
+                        "command": "composer update twig/twig"
+                    }
+                },
+                {
+                    "ruleId": "PKSA-yhcn-xrg3-68b1",
+                    "ruleIndex": 15,
+                    "level": "note",
+                    "message": {
+                        "text": "twig/twig v3.14.0 is affected by CVE-2024-51754: Unguarded calls to __toString() when nesting an object into an array. Verified fix: composer update twig/twig"
+                    },
+                    "locations": [
+                        {
+                            "physicalLocation": {
+                                "artifactLocation": {
+                                    "uri": "composer.lock",
+                                    "uriBaseId": "%SRCROOT%"
+                                },
+                                "region": {
+                                    "startLine": 14414
+                                }
+                            }
+                        }
+                    ],
+                    "partialFingerprints": {
+                        "advisoryPackage/v1": "PKSA-yhcn-xrg3-68b1@twig/twig"
+                    },
+                    "properties": {
+                        "package": "twig/twig",
+                        "version": "v3.14.0",
+                        "direct": false,
+                        "dev": false,
+                        "cve": "CVE-2024-51754",
+                        "severity": "low",
+                        "remediation_status": "verified",
+                        "command": "composer update twig/twig"
+                    }
+                }
+            ]
+        }
+    ]
+}
