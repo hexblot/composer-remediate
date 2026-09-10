@@ -711,9 +711,11 @@ both locked at 6.4.15.1 and both require `twig/twig ~3.3.8`, which excludes 3.4.
 family has to move together.
 
 Human choice: `composer update "shopware/*" twig/twig -w`, landing on 6.4.15.2 everywhere and twig
-3.4.3 (six changes). The planner recommends
+3.4.3 (seven changes: the five Shopware packages, twig, and `shopware/conflicts`, which keeps version
+0.0.1 while its commit moves, the same-version reference change the lock diff counts). The planner
+recommends
 `composer update shopware/storefront:6.4.15.2 shopware/recovery shopware/elasticsearch shopware/administration -W -m`:
-the same six changes, with the parent pinned to the lowest working version rather than 6.4.16.0.
+the same seven changes, with the parent pinned to the lowest working version rather than 6.4.16.0.
 
 `shopwarelabs/dompdf v1.0.3` (a fork that replaces `dompdf/dompdf`) is affected by three advisories
 fixed only in 2.x; every 6.4 release of shopware/core pins it exactly, so no remediation exists as of
