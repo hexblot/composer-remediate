@@ -3,7 +3,13 @@
 All notable changes to this project are documented here. The format follows
 [Keep a Changelog](https://keepachangelog.com/en/1.1.0/); versions follow [Semantic Versioning](https://semver.org/).
 
-## [Unreleased]
+## [0.5.0] - 2026-09-10
+
+A feature release. The advisory database now carries exploit data (FIRST EPSS scores and CISA's
+Known Exploited Vulnerabilities catalogue) and reports order findings by that urgency; abandoned
+packages on a dependency path are named; and the Phase 3 fixture corpus is complete with five Drupal
+and five Symfony cases, seventeen real historical projects in all. The GitHub workflows were hardened
+after a scan.
 
 ### Added
 
@@ -66,7 +72,7 @@ All notable changes to this project are documented here. The format follows
   `third-party` name alone did not exempt them), and does not parse the renamed files.
   `bin/build-fixture.php` writes the new layout by default.
 
-[Unreleased]: https://github.com/hexblot/composer-remediate/compare/v0.4.2...HEAD
+[0.5.0]: https://github.com/hexblot/composer-remediate/releases/tag/v0.5.0
 
 ## [0.4.2] - 2026-09-10
 
