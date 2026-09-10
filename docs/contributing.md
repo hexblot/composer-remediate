@@ -4,12 +4,16 @@
 
 - Every change that affects behaviour comes with a unit test or a fixture.
 - PHPStan level 8 must pass: `ddev composer phpstan`.
-- Coverage: `ddev xdebug on` once, then `ddev composer test:coverage` prints a summary and writes an
-  HTML report to `build/coverage/` (gitignored). Xdebug roughly triples the fixture suite's run time,
-  so leave it off for ordinary runs (`ddev xdebug off`). In CI the PHP 8.4 job measures coverage with
-  PCOV, prints the summary on the run's summary page, uploads the HTML and Clover reports as the
-  `coverage` artifact and, on pushes to `main`, writes the line-coverage badge data to the `badges`
-  branch that the README badge reads; the other matrix jobs run without a coverage driver.
+- Coverage: `ddev composer test:coverage` prints a summary and writes HTML and Clover reports to
+  `build/coverage/` (gitignored). The DDEV web image installs PCOV (`.ddev/web-build/Dockerfile`,
+  settings in `.ddev/php/custom.ini`), the same driver the PHP 8.4 CI job uses, so local figures match
+  the badge; PCOV adds little to the run time and needs no toggling. Keep `ddev xdebug off` for
+  coverage runs: with both extensions loaded PHPUnit still picks PCOV, but Xdebug slows the suite.
+  Outside DDEV, without PCOV, the script falls back to Xdebug (it sets `XDEBUG_MODE=coverage`), whose
+  line counts differ from PCOV's by a fraction of a percent. In CI the PHP 8.4 job prints the summary
+  on the run's summary page, uploads the HTML and Clover reports as the `coverage` artifact and, on
+  pushes to `main`, writes the line-coverage badge data to the `badges` branch that the README badge
+  reads; the other matrix jobs run without a coverage driver.
 - The `ci` workflow does not run for commits that only touch `docs/`, `mkdocs.yml`, root Markdown
   files or the docs pipelines; the `docs` workflow builds and deploys those. A hand edit to a
   generated docs page is therefore caught by the next code push, not immediately.

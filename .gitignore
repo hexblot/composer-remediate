@@ -5,7 +5,13 @@
 /build/
 /site/
 /public/
-/.ddev/**/*
+/.ddev/*
 !/.ddev/config.yaml
+!/.ddev/web-build/
+/.ddev/web-build/*
+!/.ddev/web-build/Dockerfile
+!/.ddev/php/
+/.ddev/php/*
+!/.ddev/php/custom.ini
 .DS_Store
 /tests/Fixture/*/.work/
