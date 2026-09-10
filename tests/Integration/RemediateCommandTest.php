@@ -8,6 +8,7 @@ use Composer\Util\Platform;
 use PHPUnit\Framework\TestCase;
 use Remediate\Engine\Advisory\Db\DatabaseLocator;
 use Remediate\Engine\Plan\Plan;
+use Remediate\Engine\Solver\InProcessSolver;
 use Remediate\Tests\Support\CommandResult;
 use Remediate\Tests\Support\CommandRunner;
 use Remediate\Tests\Support\FixtureRunner;
@@ -22,7 +23,6 @@ final class RemediateCommandTest extends TestCase
     private const FIXTURE = FixtureRunner::FIXTURE_ROOT . '/synthetic-transitive-parent';
     private const ADVISORIES = self::FIXTURE . '/advisories.json';
     private const CVE = 'CVE-2026-00001';
-    private const REMEDIATION = 'composer update acme/app-framework:1.1.0 -W -m';
 
     private CommandRunner $runner;
     private string $project;
@@ -36,6 +36,15 @@ final class RemediateCommandTest extends TestCase
     protected function tearDown(): void
     {
         $this->runner->cleanup();
+    }
+
+    /**
+     * The verified command for the fixture's finding. Composer releases without --minimal-changes
+     * (before 2.9, as in the CI matrix's 2.4 job) recommend the same command without -m.
+     */
+    private static function remediation(): string
+    {
+        return 'composer update acme/app-framework:1.1.0 -W' . ((new InProcessSolver())->supportsMinimalChanges() ? ' -m' : '');
     }
 
     /** @param array<string, mixed> $options */
@@ -86,7 +95,7 @@ final class RemediateCommandTest extends TestCase
         $result = $this->remediate();
         self::assertSame(Plan::EXIT_REMEDIATION_AVAILABLE, $result->exitCode, $result->describe());
         self::assertStringContainsString(self::CVE, $result->stdout);
-        self::assertStringContainsString(self::REMEDIATION, $result->stdout);
+        self::assertStringContainsString(self::remediation(), $result->stdout);
         self::assertStringContainsString('acme/vuln-lib', $result->stdout);
     }
 
@@ -95,7 +104,7 @@ final class RemediateCommandTest extends TestCase
         foreach (['in-process', 'auto'] as $solver) {
             $result = $this->remediate(['--solver' => $solver, '--format' => 'json']);
             self::assertSame(Plan::EXIT_REMEDIATION_AVAILABLE, $result->exitCode, $solver . ': ' . $result->describe());
-            self::assertSame(self::REMEDIATION, $result->json()['findings'][0]['remediation']['command'], $solver);
+            self::assertSame(self::remediation(), $result->json()['findings'][0]['remediation']['command'], $solver);
         }
     }
 
@@ -113,13 +122,13 @@ final class RemediateCommandTest extends TestCase
         self::assertSame(Plan::EXIT_REMEDIATION_AVAILABLE, $report['exit_code']);
         self::assertSame('acme/vuln-lib', $report['findings'][0]['package']);
         self::assertSame('verified', $report['findings'][0]['remediation']['status']);
-        self::assertSame(self::REMEDIATION, $report['findings'][0]['remediation']['command']);
+        self::assertSame(self::remediation(), $report['findings'][0]['remediation']['command']);
 
         self::assertStringStartsWith('<!DOCTYPE html>', (string) file_get_contents($html));
         self::assertSame('2.1.0', json_decode((string) file_get_contents($sarif), true)['version'] ?? null);
         self::assertSame('dependency_scanning', json_decode((string) file_get_contents($gitlab), true)['scan']['type'] ?? null);
         self::assertSame('CycloneDX', json_decode((string) file_get_contents($cyclonedx), true)['bomFormat'] ?? null);
-        self::assertStringContainsString(self::REMEDIATION, (string) file_get_contents($text));
+        self::assertStringContainsString(self::remediation(), (string) file_get_contents($text));
         foreach (['Html', 'Sarif', 'Gitlab', 'Cyclonedx', 'Text'] as $label) {
             self::assertStringContainsString($label . ' report written to', $result->stderr);
         }
@@ -145,7 +154,7 @@ final class RemediateCommandTest extends TestCase
     {
         $result = $this->remediate(['--fail-on' => 'critical']);
         self::assertSame(Plan::EXIT_CLEAN, $result->exitCode, $result->describe());
-        self::assertStringContainsString(self::REMEDIATION, $result->stdout, 'the high-severity finding is still reported');
+        self::assertStringContainsString(self::remediation(), $result->stdout, 'the high-severity finding is still reported');
 
         $result = $this->remediate(['--fail-on' => 'high']);
         self::assertSame(Plan::EXIT_REMEDIATION_AVAILABLE, $result->exitCode, $result->describe());
@@ -195,7 +204,7 @@ final class RemediateCommandTest extends TestCase
         $finding = $result->json()['findings'][0];
         self::assertTrue($finding['baselined']);
         self::assertFalse($finding['counts_for_exit']);
-        self::assertSame(self::REMEDIATION, $finding['remediation']['command'], 'a baselined finding keeps its remediation');
+        self::assertSame(self::remediation(), $finding['remediation']['command'], 'a baselined finding keeps its remediation');
 
         file_put_contents($baseline, '{"not":"a baseline"}');
         $result = $this->remediate(['--baseline' => $baseline]);
@@ -220,7 +229,7 @@ final class RemediateCommandTest extends TestCase
     {
         $result = $this->remediate(['--offline' => true, '--format' => 'json']);
         self::assertSame(Plan::EXIT_REMEDIATION_AVAILABLE, $result->exitCode, $result->describe());
-        self::assertSame(self::REMEDIATION, $result->json()['findings'][0]['remediation']['command']);
+        self::assertSame(self::remediation(), $result->json()['findings'][0]['remediation']['command']);
     }
 
     public function testAMissingDatabaseMeansAdvisoriesUnavailableWhereverItIsConfigured(): void

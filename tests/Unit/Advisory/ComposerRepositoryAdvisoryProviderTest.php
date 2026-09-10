@@ -55,7 +55,7 @@ final class ComposerRepositoryAdvisoryProviderTest extends TestCase
         self::assertSame('CVE-2026-40001', $full->cve);
         self::assertSame('Title of PKSA-1', $full->title);
         self::assertSame('https://example.invalid/PKSA-1', $full->link);
-        self::assertSame('high', $full->severity);
+        self::assertSame(property_exists(SecurityAdvisory::class, 'severity') ? 'high' : null, $full->severity, 'Composer 2.4 has no severity field; the adapter reads it only when it exists');
         self::assertSame('2026-01-15T10:00:00+00:00', $full->reportedAt?->format(DATE_ATOM));
         self::assertSame([['name' => 'GitHub', 'remoteId' => 'GHSA-PKSA-1']], $full->sources);
         self::assertTrue($full->affectsVersion('1.1.0.0'));

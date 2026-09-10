@@ -8,6 +8,7 @@ use Composer\Util\Platform;
 use PHPUnit\Framework\TestCase;
 use Remediate\Engine\Advisory\Db\DatabaseLocator;
 use Remediate\Engine\Plan\Plan;
+use Remediate\Engine\Solver\InProcessSolver;
 use Remediate\Tests\Support\CommandRunner;
 use Remediate\Tests\Support\FixtureRunner;
 
@@ -97,7 +98,7 @@ YAML);
         $report = $remediate->json();
         self::assertCount(1, $report['findings'], 'acme/helper 1.0.x is not in the lock at a vulnerable version, acme/vuln-lib is');
         self::assertSame('acme/vuln-lib', $report['findings'][0]['package']);
-        self::assertSame('composer update acme/app-framework:1.1.0 -W -m', $report['findings'][0]['remediation']['command']);
+        self::assertSame('composer update acme/app-framework:1.1.0 -W' . ((new InProcessSolver())->supportsMinimalChanges() ? ' -m' : ''), $report['findings'][0]['remediation']['command']);
     }
 
     public function testBuildWritesToTheDefaultPathWhichStatusAlsoUsesByDefault(): void
