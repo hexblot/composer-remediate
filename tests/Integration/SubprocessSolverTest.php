@@ -9,6 +9,7 @@ use Composer\Util\Platform;
 use PHPUnit\Framework\TestCase;
 use Remediate\Engine\Candidate\Candidate;
 use Remediate\Engine\Candidate\Strategy;
+use Remediate\Engine\Solver\InProcessSolver;
 use Remediate\Engine\Solver\SolveStatus;
 use Remediate\Engine\Solver\SubprocessSolver;
 use Remediate\Tests\Support\FixtureRunner;
@@ -81,6 +82,7 @@ final class SubprocessSolverTest extends TestCase
         $candidate = new Candidate(Strategy::WithDependencies, ['acme/vuln-lib'], Request::UPDATE_LISTED_WITH_TRANSITIVE_DEPS_NO_ROOT_REQUIRE, ['acme/vuln-lib' => '>=1.1.0'], false, [], 'x');
         $result = $solver->solve($candidate, $workspace);
         self::assertSame(SolveStatus::Conflict, $result->status, $result->output);
-        self::assertTrue($solver->supportsMinimalChanges());
+        // Both routes run the same Composer release, so they must agree on --minimal-changes (2.7+).
+        self::assertSame((new InProcessSolver())->supportsMinimalChanges(), $solver->supportsMinimalChanges());
     }
 }
