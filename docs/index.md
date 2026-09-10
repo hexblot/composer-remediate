@@ -55,18 +55,32 @@ addressed in the changelog's unreleased section with tests for each guarantee. G
 (Phase 4) and `--apply` (Phase 5) are still ahead, so every release so far recommends and never
 modifies your project.
 
+## Start here
+
+- [Getting started](getting-started.md): install as a plugin, run it, the standalone binary.
+- [Reading the report](reading-the-report.md): what each section and term means, exit codes, the
+  other output formats.
+- [CI integration](ci-integration.md): gate policies, GitHub Actions and GitLab CI jobs, SARIF and
+  SBOM output, baselines.
+- [How it works](how-it-works.md): candidates, validation, ranking, budgets.
+- [Advisory database](advisory-database.md): build advisories into a local SQLite file, share it,
+  run offline, coverage gaps.
+- [Privacy and network behaviour](privacy-and-network.md): what leaves the machine, the plugin
+  boundary, `--offline`.
+- [CLI reference](cli-reference.md): every command and option.
+
+## Compare and validate
+
+- [Case studies](case-studies.md): twelve real historical projects (BookStack, koel, Pixelfed,
+  Invoice Ninja, Kimai, Shopware, Drupal) with the human's choice, the planner's recommendation and
+  the stored reports.
+- [Comparison with other tools](comparison.md): `composer audit`, Composer 2.10 blocking, Dependabot
+  and Renovate, Snyk, OSV-Scanner, CVE Lite CLI, and where this tool adds nothing.
+- [Design decisions](design-decisions.md) and the [roadmap](roadmap.md).
+
 ## Inspiration
 
 [CVE Lite CLI](https://github.com/OWASP/cve-lite-cli), an OWASP project, does this for JavaScript and
 TypeScript: local-first scanning of lockfiles with copy-and-run fix commands and parent-aware
 guidance for transitive dependencies. Composer Remediate applies the same idea to PHP and adds solver
 verification of every recommendation.
-
-## Where to go next
-
-- [Getting started](getting-started.md)
-- [How it works](how-it-works.md)
-- [CI integration](ci-integration.md)
-- [Advisory database](advisory-database.md)
-- [CLI reference](cli-reference.md)
-- [Design decisions](design-decisions.md)

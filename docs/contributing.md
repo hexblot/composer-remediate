@@ -7,8 +7,9 @@
 - Documentation is part of the change. If a page in `docs/` describes the code you touched,
   update it in the same commit; `mkdocs build --strict` runs in CI.
 - Design decisions and their reasons are recorded in `docs/design-decisions.md`. Add a section when you change one.
-- `docs/cli-reference.md` is generated: after changing a command, run `ddev composer cli-reference`.
-  CI fails when it is stale.
+- `docs/cli-reference.md` and `docs/case-studies.md` are generated: after changing a command, run
+  `ddev composer cli-reference`; after adding or rebuilding a fixture, run `ddev composer case-studies`.
+  CI fails when either is stale.
 
 ## Commit messages
 

@@ -103,4 +103,6 @@ rather than today's. Without it, later advisories would turn a clean "upgrade th
 | `shopware-6420-twig-no-fix` (Shopware 6.4.20.2, 2023-05) | Symfony / Shopware | Constraint-bound "no fix": last 6.4 release pins twig, 6.5 needs PHP 8.1; 7 of 26 findings fixable |
 
 Each fixture directory has a `README.md` with provenance and the reasoning behind the expected
-command, and a `reports/` directory with the stored console, JSON and HTML output.
+command, and a `reports/` directory with the stored console, JSON, HTML, SARIF, CycloneDX and GitLab
+output. The [Case studies](case-studies.md) page is generated from these files
+(`ddev composer case-studies`).

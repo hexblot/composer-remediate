@@ -25,6 +25,9 @@ jobs:
       - name: CLI reference is up to date
         if: matrix.php == '8.4'
         run: php bin/cli-reference.php | diff -u docs/cli-reference.md - || (echo "::error::docs/cli-reference.md is stale; run php bin/cli-reference.php > docs/cli-reference.md" && exit 1)
+      - name: Case studies page is up to date
+        if: matrix.php == '8.4'
+        run: php bin/case-studies.php | diff -u docs/case-studies.md - || (echo "::error::docs/case-studies.md is stale; run php bin/case-studies.php > docs/case-studies.md" && exit 1)
   composer-matrix:
     name: composer ${{ matrix.composer }} on php ${{ matrix.php }}
     runs-on: ubuntu-latest

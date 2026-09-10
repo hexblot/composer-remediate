@@ -4,9 +4,7 @@
 [![Docs](https://github.com/hexblot/composer-remediate/actions/workflows/docs.yml/badge.svg?branch=main)](https://hexblot.github.io/composer-remediate/)
 [![Advisory database](https://github.com/hexblot/composer-remediate/actions/workflows/advisory-db.yml/badge.svg)](https://github.com/hexblot/composer-remediate/releases/tag/advisory-db-latest)
 [![Latest release](https://img.shields.io/github/v/release/hexblot/composer-remediate?filter=v*&display_name=tag&label=release)](https://github.com/hexblot/composer-remediate/releases)
-[![Packagist](https://img.shields.io/packagist/v/hexblot/composer-remediate)](https://packagist.org/packages/hexblot/composer-remediate)
 [![PHP](https://img.shields.io/packagist/dependency-v/hexblot/composer-remediate/php)](composer.json)
-[![License: MIT](https://img.shields.io/github/license/hexblot/composer-remediate)](LICENSE)
 
 **From vulnerable dependency to verified Composer fix.**
 
@@ -79,7 +77,8 @@ ddev composer check      # phpstan + phpunit
 ```
 
 Documentation is built with MkDocs (`pipx run mkdocs serve`) and published from `main` to GitHub
-Pages. The CLI reference page is generated (`ddev composer cli-reference`) and checked in CI.
+Pages. The CLI reference and case-studies pages are generated (`ddev composer cli-reference`,
+`ddev composer case-studies`) and checked in CI.
 
 ## Acknowledgement
 

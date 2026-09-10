@@ -23,13 +23,21 @@ markdown_extensions:
 
 nav:
   - Home: index.md
-  - Getting started: getting-started.md
-  - How it works: how-it-works.md
-  - Privacy and network behaviour: privacy-and-network.md
-  - CI integration: ci-integration.md
-  - Advisory database: advisory-database.md
-  - CLI reference: cli-reference.md
-  - Test fixtures: fixtures.md
-  - Roadmap: roadmap.md
-  - Contributing: contributing.md
-  - Design decisions: design-decisions.md
+  - Use it:
+      - Getting started: getting-started.md
+      - Reading the report: reading-the-report.md
+      - CLI reference: cli-reference.md
+  - Understand it:
+      - How it works: how-it-works.md
+      - Privacy and network behaviour: privacy-and-network.md
+      - Advisory database: advisory-database.md
+  - Integrate it:
+      - CI integration: ci-integration.md
+  - Evidence:
+      - Case studies: case-studies.md
+      - Comparison with other tools: comparison.md
+  - Project:
+      - Roadmap: roadmap.md
+      - Design decisions: design-decisions.md
+      - Contributing: contributing.md
+      - Test fixtures: fixtures.md
