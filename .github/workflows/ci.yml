@@ -42,6 +42,7 @@ jobs:
       - name: Tests with coverage
         if: matrix.php == '8.4'
         run: |
+          mkdir -p build/coverage
           vendor/bin/phpunit --coverage-text --coverage-clover build/coverage/clover.xml --coverage-html build/coverage/html | tee build/coverage/phpunit.txt
           { echo '### Code coverage (PHP 8.4, PCOV)'; echo; echo '```'; grep -A3 'Code Coverage Report Summary' build/coverage/phpunit.txt; echo '```'; } >> "$GITHUB_STEP_SUMMARY"
       - uses: actions/upload-artifact@v4
