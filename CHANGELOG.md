@@ -5,6 +5,20 @@ All notable changes to this project are documented here. The format follows
 
 ## [Unreleased]
 
+[Unreleased]: https://github.com/hexblot/composer-remediate/compare/v0.6.1...HEAD
+
+## [0.6.1] - 2026-09-10
+
+A housekeeping release so that a tag sits on a green CI run: the 0.6.0 commit shipped with a stale
+generated case-studies page, which failed the PHP 8.4 job's staleness check while every test passed.
+Deptrac now classifies third-party code too, and the README gained an architecture badge.
+
+### Fixed
+
+- `docs/case-studies.md` regenerated for the two combined commands that changed in 0.6.0 (BookStack
+  socialite and Open Social); the CI check that compares the committed page with a fresh render had
+  been failing since the release commit.
+
 ### Changed
 
 - Deptrac classifies third-party code as layers of its own (`Semver`, `ComposerPlugin`,
@@ -14,7 +28,10 @@ All notable changes to this project are documented here. The format follows
   296 uncovered dependencies to zero, with 468 allowed. The README carries an architecture badge fed
   by the PHP 8.4 CI job ("passing", or "failing (n)"), next to the coverage badge.
 
-[Unreleased]: https://github.com/hexblot/composer-remediate/compare/v0.6.0...HEAD
+- The roadmap page records the assurance work alongside the phases (adversarial review and rechecks,
+  the testing sprint, the Aikido answers, Deptrac) and marks Phase 5 as next.
+
+[0.6.1]: https://github.com/hexblot/composer-remediate/releases/tag/v0.6.1
 
 ## [0.6.0] - 2026-09-10
 
