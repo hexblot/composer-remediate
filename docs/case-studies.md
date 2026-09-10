@@ -13,7 +13,7 @@ same fixtures the test suite asserts on, so a case study that stopped being true
 | [acquiacms-drupal-core-direct](#acquiacms-drupal-core-direct) | 6 | 5 | all fixable | <code>composer update drupal/core symfony/http-client symfony/http-foundation symfony/process twig/twig</code> |
 | [bookstack-guzzle-stale-lock](#bookstack-guzzle-stale-lock) | 6 | 2 | all fixable | <code>composer require --no-update barryvdh/laravel-dompdf:^2.0 &amp;&amp; composer update barryvdh/laravel-dompdf guzzlehttp/guzzle -W -m</code> |
 | [bookstack-phpseclib-knpsnappy](#bookstack-phpseclib-knpsnappy) | 2 | 2 | all fixable | <code>composer update knplabs/knp-snappy phpseclib/phpseclib</code> |
-| [bookstack-socialite-phpjwt-parent-minor](#bookstack-socialite-phpjwt-parent-minor) | 12 | 9 | all fixable | <code>composer update aws/aws-sdk-php laravel/framework laravel/socialite:v5.24.1 league/commonmark nesbot/carbon onelogin/php-saml robrichards/xmlseclibs symfony/http-foundation symfony/process -W -m --with &apos;firebase/php-jwt:&gt;=7.0.0&apos;</code> |
+| [bookstack-socialite-phpjwt-parent-minor](#bookstack-socialite-phpjwt-parent-minor) | 12 | 9 | all fixable | <code>composer update aws/aws-sdk-php laravel/framework laravel/socialite:v5.24.1 league/commonmark nesbot/carbon onelogin/php-saml symfony/http-foundation symfony/process -W -m --with &apos;firebase/php-jwt:&gt;=7.0.0&apos;</code> |
 | [bookstack-symfony-php80-no-fix](#bookstack-symfony-php80-no-fix) | 6 | 4 | 2 of 4 packages fixable | <code>composer update phenx/php-svg-lib phpseclib/phpseclib</code> |
 | [invoiceninja-phpjwt-two-level](#invoiceninja-phpjwt-two-level) | 3 | 2 | 1 of 2 packages fixable | <code>composer update google/apiclient:v2.12.2 -W -m --with &apos;firebase/php-jwt:&gt;=6.0.0&apos;</code> |
 | [islandora-drupal-twig-meta-package](#islandora-drupal-twig-meta-package) | 4 | 4 | 2 of 4 packages fixable | <code>composer update drupal/core-recommended:10.3.4 symfony/validator -W -m</code> |
@@ -21,7 +21,7 @@ same fixtures the test suite asserts on, so a case study that stopped being true
 | [koel-symfony-parent-permits](#koel-symfony-parent-permits) | 2 | 2 | all fixable | <code>composer update symfony/http-foundation symfony/process</code> |
 | [mautic-symfony54-multi](#mautic-symfony54-multi) | 16 | 7 | 6 of 7 packages fixable | <code>composer update symfony/http-client symfony/http-foundation symfony/process symfony/security-http symfony/validator twig/twig</code> |
 | [openmass-drupal-tilde-pins](#openmass-drupal-tilde-pins) | 5 | 4 | all fixable | <code>composer update symfony/http-client symfony/http-foundation symfony/process twig/twig</code> |
-| [opensocial-drupal-distribution-pins](#opensocial-drupal-distribution-pins) | 3 | 3 | all fixable | <code>composer update drupal/core symfony/validator twig/twig -w -m</code> |
+| [opensocial-drupal-distribution-pins](#opensocial-drupal-distribution-pins) | 3 | 3 | all fixable | <code>composer update drupal/core symfony/validator -w -m</code> |
 | [pixelfed-laravel11-symfony](#pixelfed-laravel11-symfony) | 2 | 2 | all fixable | <code>composer update symfony/http-foundation symfony/process</code> |
 | [shopware-6420-twig-no-fix](#shopware-6420-twig-no-fix) | 26 | 10 | 4 of 10 packages fixable | <code>composer update aws/aws-sdk-php composer/composer shopware/core symfony/twig-bridge -W -m --with &apos;symfony/validator:&gt;=5.4.43,&lt;6.0.0 &#124;&#124; &gt;=6.4.11,&lt;7.0.0 &#124;&#124; &gt;=7.1.4&apos;</code> |
 | [shopware-twig-parent-pin](#shopware-twig-parent-pin) | 4 | 2 | 1 of 2 packages fixable | <code>composer update shopware/storefront:6.4.15.2 shopware/recovery shopware/elasticsearch shopware/administration -W -m</code> |
@@ -197,7 +197,10 @@ Eleven further advisories in the same lock (laravel/framework, symfony/http-foun
 nesbot/carbon, league/commonmark, aws/aws-sdk-php, robrichards/xmlseclibs via onelogin/php-saml) are
 all fixable by partial updates, so the summary offers one combined command:
 
-    composer update aws/aws-sdk-php laravel/framework laravel/socialite:v5.24.1 league/commonmark nesbot/carbon onelogin/php-saml robrichards/xmlseclibs symfony/http-foundation symfony/process -W -m --with 'firebase/php-jwt:>=7.0.0'
+    composer update aws/aws-sdk-php laravel/framework laravel/socialite:v5.24.1 league/commonmark nesbot/carbon onelogin/php-saml symfony/http-foundation symfony/process -W -m --with 'firebase/php-jwt:>=7.0.0'
+
+`robrichards/xmlseclibs` is not named: the global search found that the `onelogin/php-saml` update
+already moves it past its advisory, and dropping it keeps all twelve findings fixed.
 
 Built with `bin/build-fixture.php --as-of=2026-01-10`.
 
@@ -217,7 +220,7 @@ Built with `bin/build-fixture.php --as-of=2026-01-10`.
 | robrichards/xmlseclibs 3.1.1 | CVE-2025-66578 | <code>composer update robrichards/xmlseclibs</code> | 1 | verified |
 | firebase/php-jwt v6.10.1 | CVE-2025-45769 | <code>composer update laravel/socialite:v5.24.1 -W -m --with &apos;firebase/php-jwt:&gt;=7.0.0&apos;</code> | 3 | verified |
 
-Combined command (12 of 12 findings): `composer update aws/aws-sdk-php laravel/framework laravel/socialite:v5.24.1 league/commonmark nesbot/carbon onelogin/php-saml robrichards/xmlseclibs symfony/http-foundation symfony/process -W -m --with 'firebase/php-jwt:>=7.0.0'`
+Combined command (12 of 12 findings): `composer update aws/aws-sdk-php laravel/framework laravel/socialite:v5.24.1 league/commonmark nesbot/carbon onelogin/php-saml symfony/http-foundation symfony/process -W -m --with 'firebase/php-jwt:>=7.0.0'`
 
 Stored reports: [console](https://github.com/hexblot/composer-remediate/blob/main/tests/Fixture/third-party/bookstack-socialite-phpjwt-parent-minor/reports/report.md), [JSON](https://github.com/hexblot/composer-remediate/blob/main/tests/Fixture/third-party/bookstack-socialite-phpjwt-parent-minor/reports/report.json), [HTML](https://github.com/hexblot/composer-remediate/blob/main/tests/Fixture/third-party/bookstack-socialite-phpjwt-parent-minor/reports/report.html), [SARIF](https://github.com/hexblot/composer-remediate/blob/main/tests/Fixture/third-party/bookstack-socialite-phpjwt-parent-minor/reports/report.sarif), [CycloneDX](https://github.com/hexblot/composer-remediate/blob/main/tests/Fixture/third-party/bookstack-socialite-phpjwt-parent-minor/reports/report.cdx.json), [GitLab](https://github.com/hexblot/composer-remediate/blob/main/tests/Fixture/third-party/bookstack-socialite-phpjwt-parent-minor/reports/gl-dependency-scanning-report.json). Fixture: [bookstack-socialite-phpjwt-parent-minor](https://github.com/hexblot/composer-remediate/blob/main/tests/Fixture/third-party/bookstack-socialite-phpjwt-parent-minor).
 
@@ -579,7 +582,8 @@ core included, arrives through the distribution, which requires `drupal/core ~10
 `composer update drupal/core` alone stops at 10.2.7 (still affected): 10.2.9 requires a newer Twig,
 so `-w` is needed and the planner adds it. Human choice: Drupal's standard
 `composer update drupal/core --with-dependencies`, which is what the planner recommends. The combined
-command `composer update drupal/core symfony/validator twig/twig -w -m` fixes all three.
+command `composer update drupal/core symfony/validator -w -m` fixes all three: the merged winners
+also named `twig/twig`, but the global search found the `drupal/core` update carries it and dropped it.
 
 This fixture also motivated a builder change: Twig 3.11+ requires `symfony/polyfill-php81`, a package
 the locked graph never contained, so a frozen repository built only from what Composer loaded for
@@ -598,7 +602,7 @@ Built with `bin/build-fixture.php --as-of=2024-10-15 --platform-php=8.2.0`.
 | twig/twig v3.10.3 | CVE-2024-45411 | <code>composer update twig/twig</code> | 2 | verified |
 | symfony/validator v6.4.7 | CVE-2024-50343 | <code>composer update symfony/validator</code> | 1 | verified |
 
-Combined command (3 of 3 findings): `composer update drupal/core symfony/validator twig/twig -w -m`
+Combined command (3 of 3 findings): `composer update drupal/core symfony/validator -w -m`
 
 Stored reports: [console](https://github.com/hexblot/composer-remediate/blob/main/tests/Fixture/third-party/opensocial-drupal-distribution-pins/reports/report.md), [JSON](https://github.com/hexblot/composer-remediate/blob/main/tests/Fixture/third-party/opensocial-drupal-distribution-pins/reports/report.json), [HTML](https://github.com/hexblot/composer-remediate/blob/main/tests/Fixture/third-party/opensocial-drupal-distribution-pins/reports/report.html), [SARIF](https://github.com/hexblot/composer-remediate/blob/main/tests/Fixture/third-party/opensocial-drupal-distribution-pins/reports/report.sarif), [CycloneDX](https://github.com/hexblot/composer-remediate/blob/main/tests/Fixture/third-party/opensocial-drupal-distribution-pins/reports/report.cdx.json), [GitLab](https://github.com/hexblot/composer-remediate/blob/main/tests/Fixture/third-party/opensocial-drupal-distribution-pins/reports/gl-dependency-scanning-report.json). Fixture: [opensocial-drupal-distribution-pins](https://github.com/hexblot/composer-remediate/blob/main/tests/Fixture/third-party/opensocial-drupal-distribution-pins).
 
