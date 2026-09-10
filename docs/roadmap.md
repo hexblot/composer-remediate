@@ -101,6 +101,35 @@ Deliberately not adopted: license compliance and usage-based reachability (outsi
 scope), npm-style override hygiene (no Composer equivalent), multi-lockfile monorepo scanning (rare
 for Composer projects).
 
+## Phase 7 — goal-driven planning *(candidate, after Phase 5)*
+
+Motivating case: [composer/composer#12777](https://github.com/composer/composer/discussions/12777).
+A TYPO3 12 project requires `typo3/cms-core` and one extension; the extension requires
+`typo3/cms-dashboard`, which the project never lists. The documented major-upgrade command fails,
+Composer's error names the extension as "locked and not requested" but never the dashboard package,
+and adding it by hand makes the upgrade work. The planner's conflict-expansion step already reads
+those "locked" lines, widens the allow list and retries, and the report prints the resulting command
+with the solver's output as evidence. It does not run here only because nothing in that lock carries
+an advisory. The engine finds the smallest verified change that reaches a goal; a security fix is one
+goal, "this package at this constraint" is another.
+
+- [ ] a goal as input (`package:constraint`, one or several) in place of an advisory: candidate
+  generation takes the target constraint where it now takes the fixed range above the advisory;
+  acceptance becomes "the target is satisfied and no advisories are introduced"
+- [ ] a run with no advisory data at all is valid for a goal (today it exits 4), while the
+  no-new-advisories rule still applies whenever data is available; the fail-closed paths get their own
+  tests for this mode
+- [ ] goal-aware ranking: widening a root constraint is a last resort for a security fix and the point
+  of a major upgrade; constraint drag is reported as the plan, not as a finding
+- [ ] the same reports, exit codes and global combination; several goals are planned jointly
+- [ ] fixtures: the TYPO3 case above built with `bin/build-fixture.php`, and two or three more from
+  Composer's discussions board, with the human-chosen command recorded as for the security fixtures
+- [ ] `--apply` and the batched pull request from Phase 5 accept goals too
+
+Boundary: the goal is a version constraint on a locked package. Interpreting release notes, judging
+breaking changes or choosing the target version is out of scope; the user names the goal and the
+planner finds the smallest verified command that reaches it.
+
 ## Assurance *(ongoing, alongside the phases)*
 
 Work that does not add features but decides whether the recommendations can be trusted. Each item

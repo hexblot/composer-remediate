@@ -311,3 +311,43 @@ one.
 - The Phase 0 evaluation question "does blocking make the tool redundant?" is answered in part: the
   filter picks safe versions once the user has chosen *which* package to update, which is precisely
   the choice this tool makes.
+
+## A security fix is one goal; the engine plans towards goals
+
+Recorded when Phase 7 (goal-driven planning) was added to the roadmap, so the reasoning is kept even
+though the work comes after `--apply`.
+
+### Decision
+
+The planner's input is a goal on a locked package: "leave the advisory's affected range" today,
+"satisfy this constraint" in Phase 7. Candidate generation, conflict expansion, parent descent,
+ranking, global combination, acceptance rules and the reports are shared; only the goal's
+acceptance test and the ranking's view of root-constraint changes differ.
+
+### Reasoning
+
+- The motivating case (composer/composer discussion 12777) is a major TYPO3 upgrade blocked by a
+  transitive `typo3/cms-*` package that Composer's error never names. The conflict-expansion step
+  built for Shopware's sibling pins answers it as it stands. Treating the upgrade as a goal reuses
+  that machinery instead of copying it.
+- A verified upgrade command is the same deliverable as a verified fix command: a dry run by
+  Composer's own solver, the lock diff, the rejected alternatives with the solver's reasons, and the
+  promise that the tool recommends and never modifies.
+- Keeping the security fix as the default goal keeps the project's scope (and its OWASP framing)
+  intact: goal-driven planning is the general form of what `composer remediate` already does, not a
+  second product.
+
+### Alternatives
+
+- **A separate upgrade tool.** It would duplicate the search and the reports and would drift from
+  them; the only genuinely new code is the goal's acceptance test and the ranking preference.
+- **Interpreting release notes or choosing target versions.** Out of scope: the user names the goal.
+
+### Consequences
+
+- A run with no advisory data becomes valid for a goal, so the fail-closed rules (exit 4 without
+  data, no-new-advisories when data exists) need a goal-mode variant with its own tests.
+- Constraint drag changes meaning per goal: last resort for a fix, expected for an upgrade. The
+  ranker and the text renderer must know which goal they serve.
+- Fixtures from Composer's discussions board join the corpus, with the human-chosen command recorded
+  the same way as the security cases.

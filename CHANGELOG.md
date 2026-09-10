@@ -5,6 +5,13 @@ All notable changes to this project are documented here. The format follows
 
 ## [Unreleased]
 
+### Changed
+
+- Roadmap: Phase 7, goal-driven planning, added as a candidate after Phase 5, motivated by
+  composer/composer discussion 12777 (a TYPO3 major upgrade blocked by a transitive package Composer's
+  error never names); the design-decisions page records why a security fix is treated as one goal
+  among others.
+
 [Unreleased]: https://github.com/hexblot/composer-remediate/compare/v0.6.1...HEAD
 
 ## [0.6.1] - 2026-09-10
