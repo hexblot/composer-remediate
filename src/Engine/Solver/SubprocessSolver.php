@@ -95,12 +95,20 @@ final class SubprocessSolver implements SolverInterface
             // The child must solve the scratch copy and nothing else. COMPOSER is inherited from the
             // parent and may name the analysed project's manifest (COMPOSER=/path/alternate.json);
             // pointing it at the scratch manifest keeps the update inside the scratch directory.
-            $process = new Process($args, $project->directory(), [
-                'COMPOSER' => $project->composerJsonPath(),
-                'COMPOSER_NO_INTERACTION' => '1',
-                'COMPOSER_NO_BLOCKING' => '1',
-                'COMPOSER_NO_SECURITY_BLOCKING' => '1',
-            ], null, $this->timeout);
+            // Every other COMPOSER_* variable of this process is passed on explicitly: values set at
+            // runtime with putenv() (COMPOSER_HOME in tests, COMPOSER_DISABLE_NETWORK for --offline)
+            // are not in $_SERVER and would otherwise not reach the child.
+            $env = [];
+            foreach (getenv() as $name => $value) {
+                if (str_starts_with((string) $name, 'COMPOSER')) {
+                    $env[(string) $name] = (string) $value;
+                }
+            }
+            $env['COMPOSER'] = $project->composerJsonPath();
+            $env['COMPOSER_NO_INTERACTION'] = '1';
+            $env['COMPOSER_NO_BLOCKING'] = '1';
+            $env['COMPOSER_NO_SECURITY_BLOCKING'] = '1';
+            $process = new Process($args, $project->directory(), $env, null, $this->timeout);
             $process->run();
             $output = $process->getOutput() . $process->getErrorOutput();
             $code = $process->getExitCode() ?? 1;
