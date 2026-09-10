@@ -18,9 +18,10 @@
   on the run's summary page, uploads the HTML and Clover reports as the `coverage` artifact and, on
   pushes to `main`, writes the line-coverage badge data to the `badges` branch that the README badge
   reads; the other matrix jobs run without a coverage driver.
-- The `ci` workflow does not run for commits that only touch `docs/`, `mkdocs.yml`, root Markdown
-  files or the docs pipelines; the `docs` workflow builds and deploys those. A hand edit to a
-  generated docs page is therefore caught by the next code push, not immediately.
+- The `ci` workflow does not run for commits that only touch hand-written pages under `docs/`,
+  `mkdocs.yml`, root Markdown files or the docs pipelines; the `docs` workflow builds and deploys
+  those. The generated pages (`docs/cli-reference.md`, `docs/case-studies.md`) and the JSON schema do
+  trigger it, because it checks them for staleness. It can also be started by hand from the Actions tab.
 - Documentation is part of the change. If a page in `docs/` describes the code you touched,
   update it in the same commit; `mkdocs build --strict` runs in CI (locally:
   `pipx run --spec mkdocs --pip-args=pymdown-extensions mkdocs build --strict`).

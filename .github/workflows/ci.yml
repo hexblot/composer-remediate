@@ -1,22 +1,32 @@
 name: ci
 
 on:
-  # Documentation-only changes are built and deployed by the docs workflow; the matrix does not run for them.
+  # Documentation-only changes are built and deployed by the docs workflow; the matrix does not run for
+  # them, except for the generated pages and the schema, which this workflow checks for staleness.
   push:
     branches: [main]
-    paths-ignore:
-      - 'docs/**'
-      - 'mkdocs.yml'
-      - '*.md'
-      - '.gitlab-ci.yml'
-      - '.github/workflows/docs.yml'
+    paths:
+      - '**'
+      - '!docs/**'
+      - 'docs/case-studies.md'
+      - 'docs/cli-reference.md'
+      - 'docs/schema/**'
+      - '!mkdocs.yml'
+      - '!*.md'
+      - '!.gitlab-ci.yml'
+      - '!.github/workflows/docs.yml'
   pull_request:
-    paths-ignore:
-      - 'docs/**'
-      - 'mkdocs.yml'
-      - '*.md'
-      - '.gitlab-ci.yml'
-      - '.github/workflows/docs.yml'
+    paths:
+      - '**'
+      - '!docs/**'
+      - 'docs/case-studies.md'
+      - 'docs/cli-reference.md'
+      - 'docs/schema/**'
+      - '!mkdocs.yml'
+      - '!*.md'
+      - '!.gitlab-ci.yml'
+      - '!.github/workflows/docs.yml'
+  workflow_dispatch:
 
 permissions:
   contents: read
