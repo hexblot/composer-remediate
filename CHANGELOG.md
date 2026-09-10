@@ -3,6 +3,19 @@
 All notable changes to this project are documented here. The format follows
 [Keep a Changelog](https://keepachangelog.com/en/1.1.0/); versions follow [Semantic Versioning](https://semver.org/).
 
+## [Unreleased]
+
+### Security
+
+- The advisory-database release job runs in the `advisory-db` GitHub environment, whose
+  deployment-branch policy admits only `main`. A `workflow_dispatch` from another branch executes
+  that branch's copy of the workflow file, so no check inside the file (a pinned checkout ref, a
+  validated input) can stop an actor with write access from running modified code with the
+  release-capable token; the environment policy is enforced by GitHub before the job starts. A
+  `github.ref` guard gives a clearer error for an accidental dispatch from a branch.
+
+[Unreleased]: https://github.com/hexblot/composer-remediate/compare/v0.5.0...HEAD
+
 ## [0.5.0] - 2026-09-10
 
 A feature release. The advisory database now carries exploit data (FIRST EPSS scores and CISA's

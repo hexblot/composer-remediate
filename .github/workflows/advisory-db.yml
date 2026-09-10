@@ -30,6 +30,12 @@ concurrency:
 jobs:
   build:
     runs-on: ubuntu-latest
+    # A workflow_dispatch from another branch runs that branch's copy of this file, so nothing written
+    # here can stop it on its own. The `advisory-db` environment's deployment-branch policy (main only)
+    # is enforced by GitHub before the job starts, whatever the workflow says; the ref check below is
+    # only a clearer error for an accidental dispatch from a branch.
+    if: github.ref == 'refs/heads/main'
+    environment: advisory-db
     permissions:
       contents: write       # gh release create / upload
       id-token: write       # build-provenance attestation
