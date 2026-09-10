@@ -7,8 +7,8 @@
         "php_version": "(fixture)",
         "advisory_source": "advisory snapshot advisories.json",
         "solver": "in-process Composer dry-run",
-        "solver_runs": "139",
-        "composer_json_sha256": "b59632c2c919e783ea9d27aaf0e27315aebaf07a3afb28ea133b1ef691123ea9",
+        "solver_runs": "143",
+        "composer_json_sha256": "84f73135bc01edad1b970211ffcc85fc0b18a5752e0dcd0485a8acf35004a5d0",
         "composer_lock_sha256": "45cb39a5300625dd42fa86f3fdce23fc30203b96a16ccc3ec0c4afbc2bec7455",
         "analysis_timestamp": "(fixture)",
         "locked_packages": "201"
@@ -39,7 +39,54 @@
             "major_change": false,
             "downgrade": false,
             "prerelease": false
-        }
+        },
+        "combined_search": [
+            {
+                "command": "composer update aws/aws-sdk-php composer/composer shopware/core symfony/twig-bridge -W -m --with 'symfony/validator:>=5.4.43,<6.0.0 || >=6.4.11,<7.0.0 || >=7.1.4'",
+                "note": "per-package winners merged",
+                "outcome": "partial",
+                "fixed": 7,
+                "total": 26,
+                "reason": "leaves PKSA-3dsp-r6t7-8xmz@phenx/php-svg-lib, PKSA-cwpj-dtf9-6fg1@phenx/php-svg-lib, PKSA-qsyb-3psh-f1t3@phenx/php-svg-lib, PKSA-4spx-rq41-wk8h@shopware/core, PKSA-6stq-czfs-1nvv@shopware/core, PKSA-kt1g-n1g2-hzb4@shopware/core, PKSA-ktmn-6519-qrdp@shopware/core, PKSA-mm7q-gnjj-tttn@shopware/core, PKSA-s8vz-878v-gv1c@shopware/core, PKSA-wp2c-7yp8-5fvs@shopware/core, PKSA-4jrs-y99s-q8j6@shopwarelabs/dompdf/dompdf/dompdf, PKSA-7ztm-rpt3-qqzk@shopwarelabs/dompdf/dompdf/dompdf, PKSA-872h-8556-2chm@shopwarelabs/dompdf/dompdf/dompdf, PKSA-hbk6-2vfz-8f8n@shopwarelabs/dompdf/dompdf/dompdf, PKSA-kj9c-tr41-t8mj@shopwarelabs/dompdf/dompdf/dompdf, PKSA-pc52-dbxt-c1w6@league/oauth2-server, PKSA-d3g2-dzgm-n74r@tecnickcom/tcpdf, PKSA-jwjn-w3mx-tq38@tecnickcom/tcpdf, PKSA-6319-ffpf-gx66@twig/twig",
+                "chosen": true
+            },
+            {
+                "command": "composer update aws/aws-sdk-php composer/composer shopware/core symfony/twig-bridge -W -m --with 'composer/composer:>=2.2.24,<2.3.0 || >=2.7.7' --with 'symfony/validator:>=5.4.43,<6.0.0 || >=6.4.11,<7.0.0 || >=7.1.4'",
+                "note": "composer/composer: candidate ranked 2 instead of 1",
+                "outcome": "partial",
+                "fixed": 7,
+                "total": 26,
+                "reason": "leaves PKSA-3dsp-r6t7-8xmz@phenx/php-svg-lib, PKSA-cwpj-dtf9-6fg1@phenx/php-svg-lib, PKSA-qsyb-3psh-f1t3@phenx/php-svg-lib, PKSA-4spx-rq41-wk8h@shopware/core, PKSA-6stq-czfs-1nvv@shopware/core, PKSA-kt1g-n1g2-hzb4@shopware/core, PKSA-ktmn-6519-qrdp@shopware/core, PKSA-mm7q-gnjj-tttn@shopware/core, PKSA-s8vz-878v-gv1c@shopware/core, PKSA-wp2c-7yp8-5fvs@shopware/core, PKSA-4jrs-y99s-q8j6@shopwarelabs/dompdf/dompdf/dompdf, PKSA-7ztm-rpt3-qqzk@shopwarelabs/dompdf/dompdf/dompdf, PKSA-872h-8556-2chm@shopwarelabs/dompdf/dompdf/dompdf, PKSA-hbk6-2vfz-8f8n@shopwarelabs/dompdf/dompdf/dompdf, PKSA-kj9c-tr41-t8mj@shopwarelabs/dompdf/dompdf/dompdf, PKSA-pc52-dbxt-c1w6@league/oauth2-server, PKSA-d3g2-dzgm-n74r@tecnickcom/tcpdf, PKSA-jwjn-w3mx-tq38@tecnickcom/tcpdf, PKSA-6319-ffpf-gx66@twig/twig",
+                "chosen": false
+            },
+            {
+                "command": "composer update composer/composer shopware/core symfony/twig-bridge -W -m --with 'aws/aws-sdk-php:>=3.288.1' --with 'symfony/validator:>=5.4.43,<6.0.0 || >=6.4.11,<7.0.0 || >=7.1.4'",
+                "note": "aws/aws-sdk-php: candidate ranked 2 instead of 1",
+                "outcome": "partial",
+                "fixed": 7,
+                "total": 26,
+                "reason": "leaves PKSA-3dsp-r6t7-8xmz@phenx/php-svg-lib, PKSA-cwpj-dtf9-6fg1@phenx/php-svg-lib, PKSA-qsyb-3psh-f1t3@phenx/php-svg-lib, PKSA-4spx-rq41-wk8h@shopware/core, PKSA-6stq-czfs-1nvv@shopware/core, PKSA-kt1g-n1g2-hzb4@shopware/core, PKSA-ktmn-6519-qrdp@shopware/core, PKSA-mm7q-gnjj-tttn@shopware/core, PKSA-s8vz-878v-gv1c@shopware/core, PKSA-wp2c-7yp8-5fvs@shopware/core, PKSA-4jrs-y99s-q8j6@shopwarelabs/dompdf/dompdf/dompdf, PKSA-7ztm-rpt3-qqzk@shopwarelabs/dompdf/dompdf/dompdf, PKSA-872h-8556-2chm@shopwarelabs/dompdf/dompdf/dompdf, PKSA-hbk6-2vfz-8f8n@shopwarelabs/dompdf/dompdf/dompdf, PKSA-kj9c-tr41-t8mj@shopwarelabs/dompdf/dompdf/dompdf, PKSA-pc52-dbxt-c1w6@league/oauth2-server, PKSA-d3g2-dzgm-n74r@tecnickcom/tcpdf, PKSA-jwjn-w3mx-tq38@tecnickcom/tcpdf, PKSA-6319-ffpf-gx66@twig/twig",
+                "chosen": false
+            },
+            {
+                "command": "composer update aws/aws-sdk-php composer/composer shopware/core symfony/twig-bridge -W -m --with 'symfony/twig-bridge:>=5.4.31,<6.0.0 || >=6.3.8' --with 'symfony/validator:>=5.4.43,<6.0.0 || >=6.4.11,<7.0.0 || >=7.1.4'",
+                "note": "symfony/twig-bridge: candidate ranked 2 instead of 1",
+                "outcome": "partial",
+                "fixed": 7,
+                "total": 26,
+                "reason": "leaves PKSA-3dsp-r6t7-8xmz@phenx/php-svg-lib, PKSA-cwpj-dtf9-6fg1@phenx/php-svg-lib, PKSA-qsyb-3psh-f1t3@phenx/php-svg-lib, PKSA-4spx-rq41-wk8h@shopware/core, PKSA-6stq-czfs-1nvv@shopware/core, PKSA-kt1g-n1g2-hzb4@shopware/core, PKSA-ktmn-6519-qrdp@shopware/core, PKSA-mm7q-gnjj-tttn@shopware/core, PKSA-s8vz-878v-gv1c@shopware/core, PKSA-wp2c-7yp8-5fvs@shopware/core, PKSA-4jrs-y99s-q8j6@shopwarelabs/dompdf/dompdf/dompdf, PKSA-7ztm-rpt3-qqzk@shopwarelabs/dompdf/dompdf/dompdf, PKSA-872h-8556-2chm@shopwarelabs/dompdf/dompdf/dompdf, PKSA-hbk6-2vfz-8f8n@shopwarelabs/dompdf/dompdf/dompdf, PKSA-kj9c-tr41-t8mj@shopwarelabs/dompdf/dompdf/dompdf, PKSA-pc52-dbxt-c1w6@league/oauth2-server, PKSA-d3g2-dzgm-n74r@tecnickcom/tcpdf, PKSA-jwjn-w3mx-tq38@tecnickcom/tcpdf, PKSA-6319-ffpf-gx66@twig/twig",
+                "chosen": false
+            },
+            {
+                "command": "composer update aws/aws-sdk-php composer/composer shopware/storefront symfony/twig-bridge -W -m --with 'symfony/validator:>=5.4.43,<6.0.0 || >=6.4.11,<7.0.0 || >=7.1.4'",
+                "note": "symfony/validator: candidate ranked 2 instead of 1",
+                "outcome": "partial",
+                "fixed": 7,
+                "total": 26,
+                "reason": "leaves PKSA-3dsp-r6t7-8xmz@phenx/php-svg-lib, PKSA-cwpj-dtf9-6fg1@phenx/php-svg-lib, PKSA-qsyb-3psh-f1t3@phenx/php-svg-lib, PKSA-4spx-rq41-wk8h@shopware/core, PKSA-6stq-czfs-1nvv@shopware/core, PKSA-kt1g-n1g2-hzb4@shopware/core, PKSA-ktmn-6519-qrdp@shopware/core, PKSA-mm7q-gnjj-tttn@shopware/core, PKSA-s8vz-878v-gv1c@shopware/core, PKSA-wp2c-7yp8-5fvs@shopware/core, PKSA-4jrs-y99s-q8j6@shopwarelabs/dompdf/dompdf/dompdf, PKSA-7ztm-rpt3-qqzk@shopwarelabs/dompdf/dompdf/dompdf, PKSA-872h-8556-2chm@shopwarelabs/dompdf/dompdf/dompdf, PKSA-hbk6-2vfz-8f8n@shopwarelabs/dompdf/dompdf/dompdf, PKSA-kj9c-tr41-t8mj@shopwarelabs/dompdf/dompdf/dompdf, PKSA-pc52-dbxt-c1w6@league/oauth2-server, PKSA-d3g2-dzgm-n74r@tecnickcom/tcpdf, PKSA-jwjn-w3mx-tq38@tecnickcom/tcpdf, PKSA-6319-ffpf-gx66@twig/twig",
+                "chosen": false
+            }
+        ]
     },
     "findings": [
         {

@@ -61,10 +61,13 @@ stands.
   scoped ignore policy; typed infrastructure failures in the exit code (adversarial adoption review,
   see the changelog)
 
-## Phase 4 — global planning
+## Phase 4 — global planning *(complete)*
 
-- [ ] treat all findings jointly and search for the smallest command set that fixes everything
-- [ ] explain why smaller changes were rejected
+- [x] treat all findings jointly and search for the smallest command set that fixes everything: the
+  merged winners, then swaps of lower-ranked candidates for findings in the way, then shrinking by
+  dropping contributions whose package a sibling's fix already moves, within a solve budget
+- [x] explain why smaller changes were rejected: every step of the search is listed in the summary
+  and in `summary.combined_search` of the JSON report, with the solver's reason
 
 ## Phase 5 — optional automation
 

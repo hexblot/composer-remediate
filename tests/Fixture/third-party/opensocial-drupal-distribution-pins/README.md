@@ -25,7 +25,8 @@ core included, arrives through the distribution, which requires `drupal/core ~10
 `composer update drupal/core` alone stops at 10.2.7 (still affected): 10.2.9 requires a newer Twig,
 so `-w` is needed and the planner adds it. Human choice: Drupal's standard
 `composer update drupal/core --with-dependencies`, which is what the planner recommends. The combined
-command `composer update drupal/core symfony/validator twig/twig -w -m` fixes all three.
+command `composer update drupal/core symfony/validator -w -m` fixes all three: the merged winners
+also named `twig/twig`, but the global search found the `drupal/core` update carries it and dropped it.
 
 This fixture also motivated a builder change: Twig 3.11+ requires `symfony/polyfill-php81`, a package
 the locked graph never contained, so a frozen repository built only from what Composer loaded for

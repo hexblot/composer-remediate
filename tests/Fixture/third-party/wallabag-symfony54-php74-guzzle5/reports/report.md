@@ -379,6 +379,23 @@ Summary
   Findings: 16 advisories on 8 packages, 7 packages with a verified fix
   composer update symfony/http-client symfony/http-foundation symfony/process symfony/security-http symfony/validator tecnickcom/tcpdf twig/twig fixes 11 of 16 findings
     (7 packages changed, verified by Composer)
+  Combined command search (8 solves):
+    per-package winners merged: composer update symfony/http-client symfony/http-foundation symfony/process symfony/security-http symfony/validator tecnickcom/tcpdf twig/twig
+      fixes 11 of 16 (leaves PKSA-2z36-j4q9-rsfy@guzzlehttp/guzzle, PKSA-6d8m-6kgw-18zr@guzzlehttp/guzzle, PKSA-fvw5-9t6n-nwvr@guzzlehttp/guzzle, PKSA-k1b4-kshy-xgbh@guzzlehttp/guzzle, PKSA-yfw5-9gnj-n2c7@guzzlehttp/guzzle)
+    symfony/security-http: candidate ranked 2 instead of 1: composer update symfony/http-client symfony/http-foundation symfony/process symfony/security-http symfony/validator tecnickcom/tcpdf twig/twig -w -m --with 'symfony/security-http:>=5.4.47,<6.0.0 || >=6.4.15,<7.0.0 || >=7.1.8'
+      fixes 11 of 16 (leaves PKSA-2z36-j4q9-rsfy@guzzlehttp/guzzle, PKSA-6d8m-6kgw-18zr@guzzlehttp/guzzle, PKSA-fvw5-9t6n-nwvr@guzzlehttp/guzzle, PKSA-k1b4-kshy-xgbh@guzzlehttp/guzzle, PKSA-yfw5-9gnj-n2c7@guzzlehttp/guzzle)
+    tecnickcom/tcpdf: candidate ranked 2 instead of 1: composer update symfony/http-client symfony/http-foundation symfony/process symfony/security-http symfony/validator tecnickcom/tcpdf twig/twig -w -m --with 'tecnickcom/tcpdf:>=6.8.0'
+      fixes 11 of 16 (leaves PKSA-2z36-j4q9-rsfy@guzzlehttp/guzzle, PKSA-6d8m-6kgw-18zr@guzzlehttp/guzzle, PKSA-fvw5-9t6n-nwvr@guzzlehttp/guzzle, PKSA-k1b4-kshy-xgbh@guzzlehttp/guzzle, PKSA-yfw5-9gnj-n2c7@guzzlehttp/guzzle)
+    symfony/http-client: candidate ranked 2 instead of 1: composer update symfony/http-client symfony/http-foundation symfony/process symfony/security-http symfony/validator tecnickcom/tcpdf twig/twig -w -m --with 'symfony/http-client:>=5.4.47,<6.0.0 || >=6.4.15,<7.0.0 || >=7.1.8'
+      fixes 11 of 16 (leaves PKSA-2z36-j4q9-rsfy@guzzlehttp/guzzle, PKSA-6d8m-6kgw-18zr@guzzlehttp/guzzle, PKSA-fvw5-9t6n-nwvr@guzzlehttp/guzzle, PKSA-k1b4-kshy-xgbh@guzzlehttp/guzzle, PKSA-yfw5-9gnj-n2c7@guzzlehttp/guzzle)
+    symfony/http-foundation: candidate ranked 2 instead of 1: composer update symfony/http-client symfony/http-foundation symfony/process symfony/security-http symfony/validator tecnickcom/tcpdf twig/twig -w -m --with 'symfony/http-foundation:>=5.4.46,<6.0.0 || >=6.4.14,<7.0.0 || >=7.1.7'
+      fixes 11 of 16 (leaves PKSA-2z36-j4q9-rsfy@guzzlehttp/guzzle, PKSA-6d8m-6kgw-18zr@guzzlehttp/guzzle, PKSA-fvw5-9t6n-nwvr@guzzlehttp/guzzle, PKSA-k1b4-kshy-xgbh@guzzlehttp/guzzle, PKSA-yfw5-9gnj-n2c7@guzzlehttp/guzzle)
+    symfony/validator: candidate ranked 2 instead of 1: composer update symfony/http-client symfony/http-foundation symfony/process symfony/security-http symfony/validator tecnickcom/tcpdf twig/twig -w -m --with 'symfony/validator:>=5.4.43,<6.0.0 || >=6.4.11,<7.0.0 || >=7.1.4'
+      fixes 11 of 16 (leaves PKSA-2z36-j4q9-rsfy@guzzlehttp/guzzle, PKSA-6d8m-6kgw-18zr@guzzlehttp/guzzle, PKSA-fvw5-9t6n-nwvr@guzzlehttp/guzzle, PKSA-k1b4-kshy-xgbh@guzzlehttp/guzzle, PKSA-yfw5-9gnj-n2c7@guzzlehttp/guzzle)
+    twig/twig: candidate ranked 2 instead of 1: composer update symfony/http-client symfony/http-foundation symfony/process symfony/security-http symfony/validator tecnickcom/tcpdf twig/twig -w -m --with 'twig/twig:>=3.11.2,<3.12.0 || >=3.14.1'
+      fixes 11 of 16 (leaves PKSA-2z36-j4q9-rsfy@guzzlehttp/guzzle, PKSA-6d8m-6kgw-18zr@guzzlehttp/guzzle, PKSA-fvw5-9t6n-nwvr@guzzlehttp/guzzle, PKSA-k1b4-kshy-xgbh@guzzlehttp/guzzle, PKSA-yfw5-9gnj-n2c7@guzzlehttp/guzzle)
+    symfony/process: candidate ranked 2 instead of 1: composer update symfony/http-client symfony/http-foundation symfony/process symfony/security-http symfony/validator tecnickcom/tcpdf twig/twig -w -m --with 'symfony/process:>=5.4.46,<6.0.0 || >=6.4.14,<7.0.0 || >=7.1.7'
+      fixes 11 of 16 (leaves PKSA-2z36-j4q9-rsfy@guzzlehttp/guzzle, PKSA-6d8m-6kgw-18zr@guzzlehttp/guzzle, PKSA-fvw5-9t6n-nwvr@guzzlehttp/guzzle, PKSA-k1b4-kshy-xgbh@guzzlehttp/guzzle, PKSA-yfw5-9gnj-n2c7@guzzlehttp/guzzle)
   No verified fix: CVE-2022-31043, CVE-2022-29248, CVE-2022-31042, CVE-2022-31090, CVE-2022-31091 on guzzlehttp/guzzle
   Abandoned: 5 findings involve a package Packagist marks abandoned (php-http/guzzle5-adapter, scheb/2fa-qr-code, sensio/framework-extra-bundle, symfony/web-server-bundle).
 ```

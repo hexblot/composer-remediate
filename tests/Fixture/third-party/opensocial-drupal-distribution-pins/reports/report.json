@@ -7,8 +7,8 @@
         "php_version": "(fixture)",
         "advisory_source": "advisory snapshot advisories.json",
         "solver": "in-process Composer dry-run",
-        "solver_runs": "21",
-        "composer_json_sha256": "d5d5a7d4e876c1d497f7292cf5f39178188318130a2899186709bf0bb857efd7",
+        "solver_runs": "22",
+        "composer_json_sha256": "95fc46b718f96419b267bea51413530f49a6aecacd745f2d4c834221389823b0",
         "composer_lock_sha256": "d8cca41a495df2e94bca439a93f2b63a4cc3846fdd533404202155bb69ee5b31",
         "analysis_timestamp": "(fixture)",
         "locked_packages": "198"
@@ -27,7 +27,7 @@
         "packages_with_abandoned_dependency": 0,
         "coverage_gaps": 0,
         "coverage_gaps_accepted": false,
-        "combined_command": "composer update drupal/core symfony/validator twig/twig -w -m",
+        "combined_command": "composer update drupal/core symfony/validator -w -m",
         "combined_fixes": 3,
         "combined_total": 3,
         "combined_fixes_all": true,
@@ -39,7 +39,27 @@
             "major_change": false,
             "downgrade": false,
             "prerelease": false
-        }
+        },
+        "combined_search": [
+            {
+                "command": "composer update drupal/core symfony/validator twig/twig -w -m",
+                "note": "per-package winners merged",
+                "outcome": "accepted",
+                "fixed": 3,
+                "total": 3,
+                "reason": null,
+                "chosen": false
+            },
+            {
+                "command": "composer update drupal/core symfony/validator -w -m",
+                "note": "without the command for twig/twig",
+                "outcome": "accepted",
+                "fixed": 3,
+                "total": 3,
+                "reason": null,
+                "chosen": true
+            }
+        ]
     },
     "findings": [
         {

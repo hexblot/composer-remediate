@@ -4,6 +4,7 @@ declare(strict_types=1);
 
 namespace Remediate\Output;
 
+use Remediate\Engine\Plan\CombinedOutcome;
 use Remediate\Engine\Graph\DependencyPath;
 use Remediate\Engine\Plan\EvaluatedCandidate;
 use Remediate\Engine\Plan\FindingPlan;
@@ -86,6 +87,20 @@ final class HtmlRenderer
             $lead .= '<p class="none-box">No verified way to fix any of these findings.</p>';
         } else {
             $lead .= '<p>No single command fixes everything; run the per-package commands below separately.</p>';
+        }
+
+        if (count($plan->combinedAttempts) > 1) {
+            $items = [];
+            foreach ($plan->combinedAttempts as $attempt) {
+                $verdict = match ($attempt->outcome) {
+                    CombinedOutcome::Accepted => $attempt->chosen ? 'fixes all, chosen' : 'fixes all, a smaller command was found',
+                    CombinedOutcome::Partial => sprintf('fixes %d of %d', $attempt->fixed, $attempt->total),
+                    CombinedOutcome::Unresolved => 'does not resolve',
+                    default => 'rejected',
+                };
+                $items[] = '<li>' . self::e($attempt->note) . ': <code>' . self::e($attempt->candidate->commandLine($this->minimalChangesSupported)) . '</code> <span class="badge ' . ($attempt->chosen ? 'ok' : 'skipped') . '">' . self::e($verdict) . '</span>' . ($attempt->reason !== null && $attempt->outcome !== CombinedOutcome::Partial ? '<br><small>' . self::e(explode("\n", trim($attempt->reason))[0]) . '</small>' : '') . '</li>';
+            }
+            $lead .= '<details><summary>Combined command search (' . count($items) . ' solves)</summary><ul class="search">' . implode('', $items) . '</ul></details>';
         }
 
         return '<section><h2>Summary</h2>' . $lead . '<table class="summary"><thead><tr><th>Package</th><th>Advisories</th><th>Status</th><th>Recommended command</th></tr></thead><tbody>' . implode('', $rows) . '</tbody></table></section>';

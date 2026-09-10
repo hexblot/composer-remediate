@@ -145,11 +145,27 @@ locked version, so a newer release affected by a different advisory is never pro
 candidate is valid only when all of them are gone. Ignored advisories do not shrink the range. One
 package, one command.
 
-Across packages, the per-package winners are merged into a single command and validated with one
-more solve, under the same acceptance rules as any candidate: no new advisories, no release younger
-than the cooldown, and the simplest spelling is re-matched rather than assumed. The report's summary then says either "you can fix all N findings with …", or "… fixes
-k of N findings" when some advisories have no reachable fix, or lists the per-package commands when
-no single command resolves.
+Across packages, the planner looks for one command that fixes everything with as little change as
+possible (global planning). The per-package winners are merged into a single command and validated
+with one more solve, under the same acceptance rules as any candidate: no new advisories, no release
+younger than the cooldown. When that merge does not fix everything, because the solver finds no
+solution or because one finding's fix undoes another's, the search swaps in the next-ranked candidate
+of a finding that is in the way and tries again, within a budget of ten further solves; among the
+combinations that resolve it keeps the one fixing the most findings, then the smallest lock diff. A
+combination that fixes everything is then shrunk: the contribution of each finding whose package a
+sibling's fix already moves is dropped in turn and the rest re-verified, and the smaller command is
+kept when it still fixes everything, which is common when a parent update covers a sibling's finding
+(in the BookStack fixture, updating `onelogin/php-saml` moves `robrichards/xmlseclibs` past its
+advisory, so the latter leaves the command). Finally the simplest spelling is re-matched
+rather than assumed.
+
+Every step is recorded. The summary lists the search ("per-package winners merged: … does not
+resolve", "acme/b: candidate ranked 2 instead of 1: … fixes all, chosen", "without the command for
+acme/a: … fixes 1 of 2") so a reader can see why the recommended command is what it is and why
+smaller or different ones were not chosen; the JSON report carries the same list as
+`summary.combined_search`. The summary then says either "you can fix all N findings with …", or "…
+fixes k of N findings" when some advisories have no reachable fix, or lists the per-package commands
+when no combination resolves.
 
 ## 7. Gating, baselines and cooldowns
 

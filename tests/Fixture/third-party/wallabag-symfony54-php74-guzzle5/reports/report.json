@@ -7,8 +7,8 @@
         "php_version": "(fixture)",
         "advisory_source": "advisory snapshot advisories.json",
         "solver": "in-process Composer dry-run",
-        "solver_runs": "55",
-        "composer_json_sha256": "f58dc61a8e3d5d711dc38a4548d58d49b5e1cc71f7acacdd2af663b660cdb295",
+        "solver_runs": "62",
+        "composer_json_sha256": "3c7d96506538104f4de0ab757745d0adb2332e3d633c92100ca1e899c10a8d48",
         "composer_lock_sha256": "5aaa53d7db401cd4701aaccdb488673174e572fdf1a08939479d9022373f788f",
         "analysis_timestamp": "(fixture)",
         "locked_packages": "279"
@@ -39,7 +39,81 @@
             "major_change": false,
             "downgrade": false,
             "prerelease": false
-        }
+        },
+        "combined_search": [
+            {
+                "command": "composer update symfony/http-client symfony/http-foundation symfony/process symfony/security-http symfony/validator tecnickcom/tcpdf twig/twig",
+                "note": "per-package winners merged",
+                "outcome": "partial",
+                "fixed": 11,
+                "total": 16,
+                "reason": "leaves PKSA-2z36-j4q9-rsfy@guzzlehttp/guzzle, PKSA-6d8m-6kgw-18zr@guzzlehttp/guzzle, PKSA-fvw5-9t6n-nwvr@guzzlehttp/guzzle, PKSA-k1b4-kshy-xgbh@guzzlehttp/guzzle, PKSA-yfw5-9gnj-n2c7@guzzlehttp/guzzle",
+                "chosen": true
+            },
+            {
+                "command": "composer update symfony/http-client symfony/http-foundation symfony/process symfony/security-http symfony/validator tecnickcom/tcpdf twig/twig -w -m --with 'symfony/security-http:>=5.4.47,<6.0.0 || >=6.4.15,<7.0.0 || >=7.1.8'",
+                "note": "symfony/security-http: candidate ranked 2 instead of 1",
+                "outcome": "partial",
+                "fixed": 11,
+                "total": 16,
+                "reason": "leaves PKSA-2z36-j4q9-rsfy@guzzlehttp/guzzle, PKSA-6d8m-6kgw-18zr@guzzlehttp/guzzle, PKSA-fvw5-9t6n-nwvr@guzzlehttp/guzzle, PKSA-k1b4-kshy-xgbh@guzzlehttp/guzzle, PKSA-yfw5-9gnj-n2c7@guzzlehttp/guzzle",
+                "chosen": false
+            },
+            {
+                "command": "composer update symfony/http-client symfony/http-foundation symfony/process symfony/security-http symfony/validator tecnickcom/tcpdf twig/twig -w -m --with 'tecnickcom/tcpdf:>=6.8.0'",
+                "note": "tecnickcom/tcpdf: candidate ranked 2 instead of 1",
+                "outcome": "partial",
+                "fixed": 11,
+                "total": 16,
+                "reason": "leaves PKSA-2z36-j4q9-rsfy@guzzlehttp/guzzle, PKSA-6d8m-6kgw-18zr@guzzlehttp/guzzle, PKSA-fvw5-9t6n-nwvr@guzzlehttp/guzzle, PKSA-k1b4-kshy-xgbh@guzzlehttp/guzzle, PKSA-yfw5-9gnj-n2c7@guzzlehttp/guzzle",
+                "chosen": false
+            },
+            {
+                "command": "composer update symfony/http-client symfony/http-foundation symfony/process symfony/security-http symfony/validator tecnickcom/tcpdf twig/twig -w -m --with 'symfony/http-client:>=5.4.47,<6.0.0 || >=6.4.15,<7.0.0 || >=7.1.8'",
+                "note": "symfony/http-client: candidate ranked 2 instead of 1",
+                "outcome": "partial",
+                "fixed": 11,
+                "total": 16,
+                "reason": "leaves PKSA-2z36-j4q9-rsfy@guzzlehttp/guzzle, PKSA-6d8m-6kgw-18zr@guzzlehttp/guzzle, PKSA-fvw5-9t6n-nwvr@guzzlehttp/guzzle, PKSA-k1b4-kshy-xgbh@guzzlehttp/guzzle, PKSA-yfw5-9gnj-n2c7@guzzlehttp/guzzle",
+                "chosen": false
+            },
+            {
+                "command": "composer update symfony/http-client symfony/http-foundation symfony/process symfony/security-http symfony/validator tecnickcom/tcpdf twig/twig -w -m --with 'symfony/http-foundation:>=5.4.46,<6.0.0 || >=6.4.14,<7.0.0 || >=7.1.7'",
+                "note": "symfony/http-foundation: candidate ranked 2 instead of 1",
+                "outcome": "partial",
+                "fixed": 11,
+                "total": 16,
+                "reason": "leaves PKSA-2z36-j4q9-rsfy@guzzlehttp/guzzle, PKSA-6d8m-6kgw-18zr@guzzlehttp/guzzle, PKSA-fvw5-9t6n-nwvr@guzzlehttp/guzzle, PKSA-k1b4-kshy-xgbh@guzzlehttp/guzzle, PKSA-yfw5-9gnj-n2c7@guzzlehttp/guzzle",
+                "chosen": false
+            },
+            {
+                "command": "composer update symfony/http-client symfony/http-foundation symfony/process symfony/security-http symfony/validator tecnickcom/tcpdf twig/twig -w -m --with 'symfony/validator:>=5.4.43,<6.0.0 || >=6.4.11,<7.0.0 || >=7.1.4'",
+                "note": "symfony/validator: candidate ranked 2 instead of 1",
+                "outcome": "partial",
+                "fixed": 11,
+                "total": 16,
+                "reason": "leaves PKSA-2z36-j4q9-rsfy@guzzlehttp/guzzle, PKSA-6d8m-6kgw-18zr@guzzlehttp/guzzle, PKSA-fvw5-9t6n-nwvr@guzzlehttp/guzzle, PKSA-k1b4-kshy-xgbh@guzzlehttp/guzzle, PKSA-yfw5-9gnj-n2c7@guzzlehttp/guzzle",
+                "chosen": false
+            },
+            {
+                "command": "composer update symfony/http-client symfony/http-foundation symfony/process symfony/security-http symfony/validator tecnickcom/tcpdf twig/twig -w -m --with 'twig/twig:>=3.11.2,<3.12.0 || >=3.14.1'",
+                "note": "twig/twig: candidate ranked 2 instead of 1",
+                "outcome": "partial",
+                "fixed": 11,
+                "total": 16,
+                "reason": "leaves PKSA-2z36-j4q9-rsfy@guzzlehttp/guzzle, PKSA-6d8m-6kgw-18zr@guzzlehttp/guzzle, PKSA-fvw5-9t6n-nwvr@guzzlehttp/guzzle, PKSA-k1b4-kshy-xgbh@guzzlehttp/guzzle, PKSA-yfw5-9gnj-n2c7@guzzlehttp/guzzle",
+                "chosen": false
+            },
+            {
+                "command": "composer update symfony/http-client symfony/http-foundation symfony/process symfony/security-http symfony/validator tecnickcom/tcpdf twig/twig -w -m --with 'symfony/process:>=5.4.46,<6.0.0 || >=6.4.14,<7.0.0 || >=7.1.7'",
+                "note": "symfony/process: candidate ranked 2 instead of 1",
+                "outcome": "partial",
+                "fixed": 11,
+                "total": 16,
+                "reason": "leaves PKSA-2z36-j4q9-rsfy@guzzlehttp/guzzle, PKSA-6d8m-6kgw-18zr@guzzlehttp/guzzle, PKSA-fvw5-9t6n-nwvr@guzzlehttp/guzzle, PKSA-k1b4-kshy-xgbh@guzzlehttp/guzzle, PKSA-yfw5-9gnj-n2c7@guzzlehttp/guzzle",
+                "chosen": false
+            }
+        ]
     },
     "findings": [
         {

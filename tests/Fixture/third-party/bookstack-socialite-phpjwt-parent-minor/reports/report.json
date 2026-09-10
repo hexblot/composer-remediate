@@ -7,8 +7,8 @@
         "php_version": "(fixture)",
         "advisory_source": "advisory snapshot advisories.json",
         "solver": "in-process Composer dry-run",
-        "solver_runs": "79",
-        "composer_json_sha256": "8e6e97c9fc4913fa11eebfa9de8ca0be2e7de4e95beb957d9c4605682c2bd5d6",
+        "solver_runs": "80",
+        "composer_json_sha256": "fd59c8f73ca49d7ef3909895d54d8127bac8ca88b30782d0fe99f462dc3fc192",
         "composer_lock_sha256": "a08d622ce079c4260dc4c0e941d5d0bde0544f15efc984d8da29abd2e07e5152",
         "analysis_timestamp": "(fixture)",
         "locked_packages": "147"
@@ -27,7 +27,7 @@
         "packages_with_abandoned_dependency": 0,
         "coverage_gaps": 0,
         "coverage_gaps_accepted": false,
-        "combined_command": "composer update aws/aws-sdk-php laravel/framework laravel/socialite:v5.24.1 league/commonmark nesbot/carbon onelogin/php-saml robrichards/xmlseclibs symfony/http-foundation symfony/process -W -m --with 'firebase/php-jwt:>=7.0.0'",
+        "combined_command": "composer update aws/aws-sdk-php laravel/framework laravel/socialite:v5.24.1 league/commonmark nesbot/carbon onelogin/php-saml symfony/http-foundation symfony/process -W -m --with 'firebase/php-jwt:>=7.0.0'",
         "combined_fixes": 12,
         "combined_total": 12,
         "combined_fixes_all": true,
@@ -39,7 +39,27 @@
             "major_change": true,
             "downgrade": false,
             "prerelease": false
-        }
+        },
+        "combined_search": [
+            {
+                "command": "composer update aws/aws-sdk-php laravel/framework laravel/socialite:v5.24.1 league/commonmark nesbot/carbon onelogin/php-saml robrichards/xmlseclibs symfony/http-foundation symfony/process -W -m --with 'firebase/php-jwt:>=7.0.0'",
+                "note": "per-package winners merged",
+                "outcome": "accepted",
+                "fixed": 12,
+                "total": 12,
+                "reason": null,
+                "chosen": false
+            },
+            {
+                "command": "composer update aws/aws-sdk-php laravel/framework laravel/socialite:v5.24.1 league/commonmark nesbot/carbon onelogin/php-saml symfony/http-foundation symfony/process -W -m --with 'firebase/php-jwt:>=7.0.0'",
+                "note": "without the command for robrichards/xmlseclibs",
+                "outcome": "accepted",
+                "fixed": 12,
+                "total": 12,
+                "reason": null,
+                "chosen": true
+            }
+        ]
     },
     "findings": [
         {

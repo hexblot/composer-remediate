@@ -113,7 +113,7 @@ rather than today's. Without it, later advisories would turn a clean "upgrade th
 | Fixture | Ecosystem | What it exercises |
 |---|---|---|
 | `bookstack-phpseclib-knpsnappy` (BookStack, 2023-02) | Laravel | Direct and transitive fixes in one lock; combined command |
-| `bookstack-socialite-phpjwt-parent-minor` (BookStack, 2024-09, snapshot 2026-01) | Laravel | `firebase/php-jwt` pinned `^6.4` by `laravel/socialite`; descent pins socialite 5.24.1; twelve findings, one combined command |
+| `bookstack-socialite-phpjwt-parent-minor` (BookStack, 2024-09, snapshot 2026-01) | Laravel | `firebase/php-jwt` pinned `^6.4` by `laravel/socialite`; descent pins socialite 5.24.1; twelve findings, one combined command from which the global search drops `robrichards/xmlseclibs` as covered by the `onelogin/php-saml` update |
 | `pixelfed-laravel11-symfony` (Pixelfed, 2024-10) | Laravel 11 | Symfony 7.1 components the parent already permits |
 | `usagov-drupal-core-recommended-twig` (USAGov, 2024-08) | Drupal 10.2 | Second `core-recommended` pin; the project's own next commit made the same upgrade |
 | `invoiceninja-phpjwt-two-level` (Invoice Ninja, 2022-04) | Laravel | Two-level chain: `google/apiclient` and the non-root `google/auth` both pin php-jwt; `-W` moves both |

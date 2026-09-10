@@ -8,7 +8,7 @@
         "advisory_source": "advisory snapshot advisories.json",
         "solver": "in-process Composer dry-run",
         "solver_runs": "7",
-        "composer_json_sha256": "ab694861617f3af703d0d469de45a13f09b7a93d910375245b907394d25ebbcd",
+        "composer_json_sha256": "a6cc09a7a63fb1fe2a4991e2642b064057b630edd8eb50767475783b9e052555",
         "composer_lock_sha256": "b83ee5639d273303f1750c177fe3725eb939c5ef5780f423934677d0ee152feb",
         "analysis_timestamp": "(fixture)",
         "locked_packages": "147"
@@ -39,7 +39,18 @@
             "major_change": false,
             "downgrade": false,
             "prerelease": false
-        }
+        },
+        "combined_search": [
+            {
+                "command": "composer update knplabs/knp-snappy phpseclib/phpseclib",
+                "note": "per-package winners merged",
+                "outcome": "accepted",
+                "fixed": 2,
+                "total": 2,
+                "reason": null,
+                "chosen": true
+            }
+        ]
     },
     "findings": [
         {

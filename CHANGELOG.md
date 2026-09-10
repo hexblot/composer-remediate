@@ -5,6 +5,29 @@ All notable changes to this project are documented here. The format follows
 
 ## [Unreleased]
 
+### Added
+
+- **Global planning (Phase 4).** The planner now searches for one command that fixes every finding
+  with as little change as possible. The per-package winners are merged as before; when that merge
+  does not resolve, or fixes only some findings, the search swaps in the next-ranked candidate of a
+  finding that is in the way and tries again, within a budget of ten further solves, keeping the
+  combination that fixes the most findings, then the smallest diff. A combination that fixes
+  everything is then shrunk by dropping, in turn, each contribution whose package a sibling's fix
+  already moves, and keeping the smaller command when it still fixes everything: in the BookStack
+  socialite fixture `robrichards/xmlseclibs` leaves the command because the `onelogin/php-saml`
+  update carries it, and in the Open Social fixture `twig/twig` leaves because the `drupal/core`
+  update does. Every attempt is listed in the text and HTML summaries and
+  in `summary.combined_search` of the JSON report, with the solver's reason, so the recommended
+  command is explained rather than asserted. Tests: a merge that does not resolve until a
+  lower-ranked candidate is swapped in, a merge that undoes one finding's fix, a shrink to a parent
+  update that covers its sibling, and an exhausted search that keeps the best partial result.
+
+### Changed
+
+- Fixture reports under `tests/Fixture/third-party/*/reports` record the sha256 of the committed
+  `composer.fixture.json` rather than of the scratch copy, whose injected repository path differed on
+  every run; regenerating a report now yields the same bytes.
+
 ### Security
 
 Answers to an Aikido code scan (nine findings), each with a regression test.

@@ -274,5 +274,12 @@ Summary
   Findings: 6 advisories on 4 packages, 2 packages with a verified fix
   composer update phenx/php-svg-lib phpseclib/phpseclib fixes 4 of 6 findings
     (2 packages changed, verified by Composer)
+  Combined command search (3 solves):
+    per-package winners merged: composer update phenx/php-svg-lib phpseclib/phpseclib
+      fixes 4 of 6 (leaves PKSA-wws7-mr54-jsny@symfony/process, PKSA-b35n-565h-rs4q@symfony/http-foundation)
+    phenx/php-svg-lib: candidate ranked 2 instead of 1: composer update phenx/php-svg-lib phpseclib/phpseclib -w -m --with 'phenx/php-svg-lib:>=0.5.2'
+      fixes 4 of 6 (leaves PKSA-wws7-mr54-jsny@symfony/process, PKSA-b35n-565h-rs4q@symfony/http-foundation)
+    phpseclib/phpseclib: candidate ranked 2 instead of 1: composer update phenx/php-svg-lib phpseclib/phpseclib -w -m --with 'phpseclib/phpseclib:>=3.0.36'
+      fixes 4 of 6 (leaves PKSA-wws7-mr54-jsny@symfony/process, PKSA-b35n-565h-rs4q@symfony/http-foundation)
   No verified fix: CVE-2024-51736 on symfony/process; CVE-2024-50345 on symfony/http-foundation
 ```

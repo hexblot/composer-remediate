@@ -7,8 +7,8 @@
         "php_version": "(fixture)",
         "advisory_source": "advisory snapshot advisories.json",
         "solver": "in-process Composer dry-run",
-        "solver_runs": "78",
-        "composer_json_sha256": "1da35eece0e9770be993e4d2b8a2dc4054cc12ebfd24a52ff9d3f0d181a8625e",
+        "solver_runs": "82",
+        "composer_json_sha256": "86c8e5c99e6764b4b910db5e6d22ec8768ffe81198a84369bd07df34fbc85992",
         "composer_lock_sha256": "22fd0acc2517587b38c52afc1c3a03768d5ea1fae006f954fcc185f8abe5b05e",
         "analysis_timestamp": "(fixture)",
         "locked_packages": "192"
@@ -39,7 +39,54 @@
             "major_change": true,
             "downgrade": false,
             "prerelease": false
-        }
+        },
+        "combined_search": [
+            {
+                "command": "composer update symfony/http-foundation symfony/process symfony/twig-bridge twig/twig -w -m --with 'twig/twig:>=3.11.2,<3.12.0 || >=3.14.1'",
+                "note": "per-package winners merged",
+                "outcome": "partial",
+                "fixed": 6,
+                "total": 14,
+                "reason": "leaves PKSA-7f9v-sb8k-krfb@phpoffice/phpspreadsheet, PKSA-dvbq-8ft2-ngrw@phpoffice/phpspreadsheet, PKSA-m4hk-rk8p-4t5p@phpoffice/phpspreadsheet, PKSA-mkg2-1wyw-57y7@phpoffice/phpspreadsheet, PKSA-p1pj-q951-6f1x@phpoffice/phpspreadsheet, PKSA-xk3k-rd1m-pxmg@phpoffice/phpspreadsheet, PKSA-xp7t-fbrb-qjv4@phpoffice/phpspreadsheet, PKSA-w2tw-kmfg-rt9s@symfony/validator",
+                "chosen": true
+            },
+            {
+                "command": "composer update symfony/http-foundation symfony/process symfony/twig-bridge twig/twig -w -m --with 'symfony/twig-bridge:>=4.4.51,<5.0.0 || >=5.4.31,<6.0.0 || >=6.3.8' --with 'twig/twig:>=3.11.2,<3.12.0 || >=3.14.1'",
+                "note": "symfony/twig-bridge: candidate ranked 2 instead of 1",
+                "outcome": "partial",
+                "fixed": 6,
+                "total": 14,
+                "reason": "leaves PKSA-7f9v-sb8k-krfb@phpoffice/phpspreadsheet, PKSA-dvbq-8ft2-ngrw@phpoffice/phpspreadsheet, PKSA-m4hk-rk8p-4t5p@phpoffice/phpspreadsheet, PKSA-mkg2-1wyw-57y7@phpoffice/phpspreadsheet, PKSA-p1pj-q951-6f1x@phpoffice/phpspreadsheet, PKSA-xk3k-rd1m-pxmg@phpoffice/phpspreadsheet, PKSA-xp7t-fbrb-qjv4@phpoffice/phpspreadsheet, PKSA-w2tw-kmfg-rt9s@symfony/validator",
+                "chosen": false
+            },
+            {
+                "command": "composer update kevinpapst/adminlte-bundle symfony/http-foundation symfony/process symfony/twig-bridge -W -m --with 'twig/twig:>=3.11.2,<3.12.0 || >=3.14.1'",
+                "note": "twig/twig: candidate ranked 2 instead of 1",
+                "outcome": "partial",
+                "fixed": 6,
+                "total": 14,
+                "reason": "leaves PKSA-7f9v-sb8k-krfb@phpoffice/phpspreadsheet, PKSA-dvbq-8ft2-ngrw@phpoffice/phpspreadsheet, PKSA-m4hk-rk8p-4t5p@phpoffice/phpspreadsheet, PKSA-mkg2-1wyw-57y7@phpoffice/phpspreadsheet, PKSA-p1pj-q951-6f1x@phpoffice/phpspreadsheet, PKSA-xk3k-rd1m-pxmg@phpoffice/phpspreadsheet, PKSA-xp7t-fbrb-qjv4@phpoffice/phpspreadsheet, PKSA-w2tw-kmfg-rt9s@symfony/validator",
+                "chosen": false
+            },
+            {
+                "command": "composer update symfony/http-foundation symfony/process symfony/twig-bridge twig/twig -w -m --with 'symfony/http-foundation:>=5.4.46,<6.0.0 || >=6.4.14,<7.0.0 || >=7.1.7' --with 'twig/twig:>=3.11.2,<3.12.0 || >=3.14.1'",
+                "note": "symfony/http-foundation: candidate ranked 2 instead of 1",
+                "outcome": "partial",
+                "fixed": 6,
+                "total": 14,
+                "reason": "leaves PKSA-7f9v-sb8k-krfb@phpoffice/phpspreadsheet, PKSA-dvbq-8ft2-ngrw@phpoffice/phpspreadsheet, PKSA-m4hk-rk8p-4t5p@phpoffice/phpspreadsheet, PKSA-mkg2-1wyw-57y7@phpoffice/phpspreadsheet, PKSA-p1pj-q951-6f1x@phpoffice/phpspreadsheet, PKSA-xk3k-rd1m-pxmg@phpoffice/phpspreadsheet, PKSA-xp7t-fbrb-qjv4@phpoffice/phpspreadsheet, PKSA-w2tw-kmfg-rt9s@symfony/validator",
+                "chosen": false
+            },
+            {
+                "command": "composer update symfony/http-foundation symfony/process symfony/twig-bridge twig/twig -w -m --with 'symfony/process:>=5.4.46,<6.0.0 || >=6.4.14,<7.0.0 || >=7.1.7' --with 'twig/twig:>=3.11.2,<3.12.0 || >=3.14.1'",
+                "note": "symfony/process: candidate ranked 2 instead of 1",
+                "outcome": "partial",
+                "fixed": 6,
+                "total": 14,
+                "reason": "leaves PKSA-7f9v-sb8k-krfb@phpoffice/phpspreadsheet, PKSA-dvbq-8ft2-ngrw@phpoffice/phpspreadsheet, PKSA-m4hk-rk8p-4t5p@phpoffice/phpspreadsheet, PKSA-mkg2-1wyw-57y7@phpoffice/phpspreadsheet, PKSA-p1pj-q951-6f1x@phpoffice/phpspreadsheet, PKSA-xk3k-rd1m-pxmg@phpoffice/phpspreadsheet, PKSA-xp7t-fbrb-qjv4@phpoffice/phpspreadsheet, PKSA-w2tw-kmfg-rt9s@symfony/validator",
+                "chosen": false
+            }
+        ]
     },
     "findings": [
         {

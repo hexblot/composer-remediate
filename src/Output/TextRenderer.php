@@ -4,6 +4,7 @@ declare(strict_types=1);
 
 namespace Remediate\Output;
 
+use Remediate\Engine\Plan\CombinedOutcome;
 use Remediate\Engine\Graph\DependencyPath;
 use Remediate\Engine\Plan\EvaluatedCandidate;
 use Remediate\Engine\Matching\Finding;
@@ -102,6 +103,23 @@ final class TextRenderer
         } else {
             $out[] = sprintf('  %s fixes %d of %d findings', $this->tag($combined->candidate->commandLine($this->minimalChangesSupported), 'fg=cyan;options=bold'), $combined->fixedCount(), $combined->totalCount());
             $out[] = sprintf('    (%d package%s changed, verified by Composer)', $combined->diff->count(), $combined->diff->count() === 1 ? '' : 's');
+        }
+
+        if (count($plan->combinedAttempts) > 1) {
+            $out[] = sprintf('  Combined command search (%d solves):', count($plan->combinedAttempts));
+            foreach (array_slice($plan->combinedAttempts, 0, 8) as $attempt) {
+                $verdict = match ($attempt->outcome) {
+                    CombinedOutcome::Accepted => $attempt->chosen ? 'fixes all, chosen' : 'fixes all, a smaller command was found',
+                    CombinedOutcome::Partial => sprintf('fixes %d of %d (%s)', $attempt->fixed, $attempt->total, $attempt->reason ?? ''),
+                    CombinedOutcome::Unresolved => 'does not resolve: ' . $this->text(explode("\n", trim((string) $attempt->reason))[0]),
+                    default => 'rejected: ' . $this->text((string) $attempt->reason),
+                };
+                $out[] = sprintf('    %s: %s', $this->text($attempt->note), $this->tag($attempt->candidate->commandLine($this->minimalChangesSupported), 'fg=cyan'));
+                $out[] = '      ' . $verdict;
+            }
+            if (count($plan->combinedAttempts) > 8) {
+                $out[] = sprintf('    … and %d more attempt%s (see the JSON report)', count($plan->combinedAttempts) - 8, count($plan->combinedAttempts) - 8 === 1 ? '' : 's');
+            }
         }
 
         $unsolved = $plan->unsolved();

@@ -6,6 +6,7 @@ namespace Remediate\Output;
 
 use Remediate\Engine\Graph\DependencyPath;
 use Remediate\Engine\Matching\Finding;
+use Remediate\Engine\Plan\CombinedAttempt;
 use Remediate\Engine\Plan\EvaluatedCandidate;
 use Remediate\Engine\Plan\FindingPlan;
 use Remediate\Engine\Plan\Plan;
@@ -67,6 +68,15 @@ final class JsonRenderer
                 'combined_total' => $combined?->totalCount(),
                 'combined_fixes_all' => $combined?->fixesAll(),
                 'combined_changes' => $combined === null ? null : self::summary($combined->diff),
+                'combined_search' => array_map(fn (CombinedAttempt $a): array => [
+                    'command' => $a->candidate->commandLine($this->minimalChangesSupported),
+                    'note' => $a->note,
+                    'outcome' => $a->outcome->value,
+                    'fixed' => $a->fixed,
+                    'total' => $a->total,
+                    'reason' => $a->reason,
+                    'chosen' => $a->chosen,
+                ], $plan->combinedAttempts),
             ],
             'findings' => $findings,
             'unsolved_findings' => $unsolved,

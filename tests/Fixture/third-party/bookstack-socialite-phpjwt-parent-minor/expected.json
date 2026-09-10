@@ -128,5 +128,5 @@
       "max_changes": 1
     }
   ],
-  "combined_command": "composer update aws/aws-sdk-php laravel/framework laravel/socialite:v5.24.1 league/commonmark nesbot/carbon onelogin/php-saml robrichards/xmlseclibs symfony/http-foundation symfony/process -W -m --with 'firebase/php-jwt:>=7.0.0'"
+  "combined_command": "composer update aws/aws-sdk-php laravel/framework laravel/socialite:v5.24.1 league/commonmark nesbot/carbon onelogin/php-saml symfony/http-foundation symfony/process -W -m --with 'firebase/php-jwt:>=7.0.0'"
 }

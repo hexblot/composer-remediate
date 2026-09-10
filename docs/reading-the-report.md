@@ -126,9 +126,12 @@ Summary
   Gate: --fail-on high, 1 of 2 packages count towards the exit code (1).
 ```
 
-The summary merges the per-package winners into one command and verifies it with a further solve.
-It reads "You can fix all N findings with …", or "… fixes k of N findings" when some have no reachable
-fix, or lists per-package commands when no single command resolves. `[baselined]` marks packages
+The summary merges the per-package winners into one command and verifies it with a further solve;
+when that does not fix everything it tries other combinations and smaller ones (see
+[global planning](how-it-works.md#6-multiple-findings)). It reads "You can fix all N findings with …",
+or "… fixes k of N findings" when some have no reachable fix, or lists per-package commands when no
+combination resolves. When more than one combination was tried, a "Combined command search" block
+lists each attempt with its verdict, so the choice is explained rather than asserted. `[baselined]` marks packages
 accepted through `--baseline`; the Gate line shows how `--fail-on` and the baseline shaped the exit
 code.
 

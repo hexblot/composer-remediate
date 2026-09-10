@@ -29,7 +29,7 @@
             },
             {
                 "name": "composer-remediate:combined_command",
-                "value": "composer update drupal/core symfony/validator twig/twig -w -m"
+                "value": "composer update drupal/core symfony/validator -w -m"
             },
             {
                 "name": "composer-remediate:exit_code",

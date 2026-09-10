@@ -160,6 +160,11 @@ Other candidates
 Summary
   Findings: 3 advisories on 3 packages, 3 packages with a verified fix
   You can fix all 3 findings with:
-    composer update drupal/core symfony/validator twig/twig -w -m
+    composer update drupal/core symfony/validator -w -m
     (4 packages changed, verified by Composer)
+  Combined command search (2 solves):
+    per-package winners merged: composer update drupal/core symfony/validator twig/twig -w -m
+      fixes all, a smaller command was found
+    without the command for twig/twig: composer update drupal/core symfony/validator -w -m
+      fixes all, chosen
 ```

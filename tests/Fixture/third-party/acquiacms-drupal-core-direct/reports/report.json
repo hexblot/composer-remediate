@@ -8,7 +8,7 @@
         "advisory_source": "advisory snapshot advisories.json",
         "solver": "in-process Composer dry-run",
         "solver_runs": "37",
-        "composer_json_sha256": "5fbbb70990c80df5026614f5b29542cf1f5bc953905918ffdca1cd82f82d4df5",
+        "composer_json_sha256": "b943e5500bc2a694affc010d3a054f0f71efc76ef2efb6e74a1a93b4fa8ced73",
         "composer_lock_sha256": "0f6ad98f51db2d2df6b6958636e777c9b134d06b8bd2ac7a3202220e7a9bd7f1",
         "analysis_timestamp": "(fixture)",
         "locked_packages": "306"
@@ -39,7 +39,18 @@
             "major_change": false,
             "downgrade": false,
             "prerelease": false
-        }
+        },
+        "combined_search": [
+            {
+                "command": "composer update drupal/core symfony/http-client symfony/http-foundation symfony/process twig/twig",
+                "note": "per-package winners merged",
+                "outcome": "accepted",
+                "fixed": 6,
+                "total": 6,
+                "reason": null,
+                "chosen": true
+            }
+        ]
     },
     "findings": [
         {

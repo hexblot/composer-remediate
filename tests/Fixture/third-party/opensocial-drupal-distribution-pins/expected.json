@@ -77,7 +77,7 @@
     "ext-zlib": "8.5.5",
     "php": "8.2.0"
   },
-  "combined_command": "composer update drupal/core symfony/validator twig/twig -w -m",
+  "combined_command": "composer update drupal/core symfony/validator -w -m",
   "findings": [
     {
       "package": "drupal/core",

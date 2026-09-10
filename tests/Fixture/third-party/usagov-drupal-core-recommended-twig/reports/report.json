@@ -7,8 +7,8 @@
         "php_version": "(fixture)",
         "advisory_source": "advisory snapshot advisories.json",
         "solver": "in-process Composer dry-run",
-        "solver_runs": "56",
-        "composer_json_sha256": "6db7247fd0703e13b8e078b5c972186e5c5d4bc54124d7958b0130eacbbbbe07",
+        "solver_runs": "58",
+        "composer_json_sha256": "61f487ca545ecc2a73be3a7b6b5aeeaa3f46e033664820a08df464e53c0a01c8",
         "composer_lock_sha256": "b7f5a2dbf068b7d2c712b0b48b4ffebaa46cf09a360f1875741011455cea8c99",
         "analysis_timestamp": "(fixture)",
         "locked_packages": "168"
@@ -41,7 +41,36 @@
             "major_change": false,
             "downgrade": false,
             "prerelease": false
-        }
+        },
+        "combined_search": [
+            {
+                "command": "composer update drupal/core-recommended symfony/validator -W -m",
+                "note": "per-package winners merged",
+                "outcome": "partial",
+                "fixed": 2,
+                "total": 4,
+                "reason": "leaves PKSA-styk-3knc-d1bt@drupal/core, PKSA-35hc-pd1y-zwpc@drupal/core-recommended",
+                "chosen": true
+            },
+            {
+                "command": "composer update drupal/core-recommended drupal/twig_tweak drupal/views_menu_children_filter symfony/validator -W -m --with 'twig/twig:>=3.11.0,<3.12.0 || >=3.14.0'",
+                "note": "twig/twig: candidate ranked 2 instead of 1",
+                "outcome": "partial",
+                "fixed": 2,
+                "total": 4,
+                "reason": "leaves PKSA-styk-3knc-d1bt@drupal/core, PKSA-35hc-pd1y-zwpc@drupal/core-recommended",
+                "chosen": false
+            },
+            {
+                "command": "composer update drupal/core-recommended symfony/validator -W -m --with 'symfony/validator:>=6.4.11,<7.0.0 || >=7.1.4'",
+                "note": "symfony/validator: candidate ranked 2 instead of 1",
+                "outcome": "partial",
+                "fixed": 2,
+                "total": 4,
+                "reason": "leaves PKSA-styk-3knc-d1bt@drupal/core, PKSA-35hc-pd1y-zwpc@drupal/core-recommended",
+                "chosen": false
+            }
+        ]
     },
     "findings": [
         {

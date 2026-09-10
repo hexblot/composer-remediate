@@ -30,6 +30,7 @@ final class Plan
      *                                         below it do not affect the exit code (unknown severity always counts)
      * @param list<array{name: string, version: string, dev: bool}> $inventory every locked package, for SBOM output
      * @param array<string, true> $baseline finding keys (advisory@package) accepted earlier; they are reported but do not affect the exit code
+     * @param list<CombinedAttempt> $combinedAttempts the global search for one command fixing everything, step by step
      * @param list<string> $coverageGaps advisory records about locked packages the advisory source could not read: the
      *                                   lock may be affected by an advisory the source cannot express. Unless accepted,
      *                                   a lock with gaps and no findings exits 4 (advisory data unavailable), not 0.
@@ -44,13 +45,14 @@ final class Plan
         public readonly array $baseline = [],
         public readonly array $coverageGaps = [],
         public readonly bool $coverageGapsAccepted = false,
+        public readonly array $combinedAttempts = [],
     ) {
     }
 
     /** The caller has read the coverage gaps and accepts the lock as clean despite them (--accept-coverage-gaps). */
     public function withAcceptedCoverageGaps(): self
     {
-        return new self($this->findings, $this->metadata, $this->warnings, $this->combined, $this->failOn, $this->inventory, $this->baseline, $this->coverageGaps, true);
+        return new self($this->findings, $this->metadata, $this->warnings, $this->combined, $this->failOn, $this->inventory, $this->baseline, $this->coverageGaps, true, $this->combinedAttempts);
     }
 
     public function withFailOn(?string $severity): self
@@ -59,7 +61,7 @@ final class Plan
             throw new \InvalidArgumentException(sprintf('Unknown severity "%s"; use one of %s.', $severity, implode(', ', array_keys(self::SEVERITIES))));
         }
 
-        return new self($this->findings, $this->metadata, $this->warnings, $this->combined, $severity !== null ? strtolower($severity) : null, $this->inventory, $this->baseline, $this->coverageGaps, $this->coverageGapsAccepted);
+        return new self($this->findings, $this->metadata, $this->warnings, $this->combined, $severity !== null ? strtolower($severity) : null, $this->inventory, $this->baseline, $this->coverageGaps, $this->coverageGapsAccepted, $this->combinedAttempts);
     }
 
     /** @param list<string> $keys finding keys (advisory@package) */
@@ -70,7 +72,7 @@ final class Plan
             $baseline[strtolower($key)] = true;
         }
 
-        return new self($this->findings, $this->metadata, $this->warnings, $this->combined, $this->failOn, $this->inventory, $baseline, $this->coverageGaps, $this->coverageGapsAccepted);
+        return new self($this->findings, $this->metadata, $this->warnings, $this->combined, $this->failOn, $this->inventory, $baseline, $this->coverageGaps, $this->coverageGapsAccepted, $this->combinedAttempts);
     }
 
     /** True when every advisory of the finding is in the baseline. */
@@ -136,7 +138,7 @@ final class Plan
     /** @param list<string> $warnings */
     public function withWarnings(array $warnings): self
     {
-        return new self($this->findings, $this->metadata, [...$this->warnings, ...$warnings], $this->combined, $this->failOn, $this->inventory, $this->baseline, $this->coverageGaps, $this->coverageGapsAccepted);
+        return new self($this->findings, $this->metadata, [...$this->warnings, ...$warnings], $this->combined, $this->failOn, $this->inventory, $this->baseline, $this->coverageGaps, $this->coverageGapsAccepted, $this->combinedAttempts);
     }
 
     /** @return list<FindingPlan> findings that count towards the exit code */
@@ -160,7 +162,7 @@ final class Plan
     /** @param array<string, string> $overrides */
     public function withMetadata(array $overrides): self
     {
-        return new self($this->findings, array_replace($this->metadata, $overrides), $this->warnings, $this->combined, $this->failOn, $this->inventory, $this->baseline, $this->coverageGaps, $this->coverageGapsAccepted);
+        return new self($this->findings, array_replace($this->metadata, $overrides), $this->warnings, $this->combined, $this->failOn, $this->inventory, $this->baseline, $this->coverageGaps, $this->coverageGapsAccepted, $this->combinedAttempts);
     }
 
     public function exitCode(): int

@@ -8,7 +8,7 @@
         "advisory_source": "advisory snapshot advisories.json",
         "solver": "in-process Composer dry-run",
         "solver_runs": "17",
-        "composer_json_sha256": "649770eb0790b021edd2a6b03ff63e1d36e3824740ca352bd13a9aa79834ef70",
+        "composer_json_sha256": "4a0798e5a317540ba99d81d652a4ce768f344f1aa3700790dbd0f409b6d87b8a",
         "composer_lock_sha256": "920a682f7d00cc3136de9c274c03cb9980e591ed30164b6328601b79faa6c5a0",
         "analysis_timestamp": "(fixture)",
         "locked_packages": "180"
@@ -39,7 +39,18 @@
             "major_change": false,
             "downgrade": false,
             "prerelease": false
-        }
+        },
+        "combined_search": [
+            {
+                "command": "composer update symfony/http-foundation symfony/process",
+                "note": "per-package winners merged",
+                "outcome": "accepted",
+                "fixed": 2,
+                "total": 2,
+                "reason": null,
+                "chosen": true
+            }
+        ]
     },
     "findings": [
         {

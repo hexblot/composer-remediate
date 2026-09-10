@@ -430,6 +430,11 @@ Other candidates
 Summary
   Findings: 12 advisories on 9 packages, 9 packages with a verified fix
   You can fix all 12 findings with:
-    composer update aws/aws-sdk-php laravel/framework laravel/socialite:v5.24.1 league/commonmark nesbot/carbon onelogin/php-saml robrichards/xmlseclibs symfony/http-foundation symfony/process -W -m --with 'firebase/php-jwt:>=7.0.0'
+    composer update aws/aws-sdk-php laravel/framework laravel/socialite:v5.24.1 league/commonmark nesbot/carbon onelogin/php-saml symfony/http-foundation symfony/process -W -m --with 'firebase/php-jwt:>=7.0.0'
     (12 packages changed, verified by Composer)
+  Combined command search (2 solves):
+    per-package winners merged: composer update aws/aws-sdk-php laravel/framework laravel/socialite:v5.24.1 league/commonmark nesbot/carbon onelogin/php-saml robrichards/xmlseclibs symfony/http-foundation symfony/process -W -m --with 'firebase/php-jwt:>=7.0.0'
+      fixes all, a smaller command was found
+    without the command for robrichards/xmlseclibs: composer update aws/aws-sdk-php laravel/framework laravel/socialite:v5.24.1 league/commonmark nesbot/carbon onelogin/php-saml symfony/http-foundation symfony/process -W -m --with 'firebase/php-jwt:>=7.0.0'
+      fixes all, chosen
 ```

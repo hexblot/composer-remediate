@@ -7,6 +7,7 @@ namespace Remediate\Tests\Unit\Engine;
 use PHPUnit\Framework\TestCase;
 use Remediate\Engine\Candidate\CandidateGenerator;
 use Remediate\Engine\Matching\IgnorePolicy;
+use Remediate\Engine\Plan\CombinedOutcome;
 use Remediate\Engine\Plan\Plan;
 use Remediate\Engine\Planner;
 use Remediate\Engine\Solver\ReleaseAgeGuard;
@@ -112,6 +113,106 @@ final class PlannerTest extends TestCase
         self::assertTrue($guarded->findings[0]->hasRemediation());
         self::assertTrue($guarded->findings[1]->hasRemediation());
         self::assertNull($guarded->combined, 'the merged lock installs a release younger than the cooldown and must be refused');
+    }
+
+    public function testGlobalSearchSwapsInALowerRankedCandidateWhenTheMergedWinnersDoNotResolve(): void
+    {
+        $project = $this->project(['acme/a' => '^1.0', 'acme/b' => '^1.0'], [['acme/a', '1.0.0'], ['acme/b', '1.0.0']]);
+        $solver = (new FakeSolver())
+            ->resolves('composer update acme/a', ScriptedProject::lock([['acme/a', '1.1.0'], ['acme/b', '1.0.0']]))
+            ->resolves('composer update acme/b', ScriptedProject::lock([['acme/a', '1.0.0'], ['acme/b', '1.1.0']]))
+            ->resolves("composer update acme/b -w -m --with 'acme/b:>=1.1.0'", ScriptedProject::lock([['acme/a', '1.0.0'], ['acme/b', '1.1.0']]))
+            ->on('composer update acme/a acme/b', new SolveResult(SolveStatus::Conflict, null, '', "Your requirements could not be resolved to an installable set of packages.\n  - acme/b 1.1.0 conflicts with acme/a 1.1.0"))
+            ->resolves("composer update acme/a acme/b -w -m --with 'acme/b:>=1.1.0'", ScriptedProject::lock([['acme/a', '1.1.0'], ['acme/b', '1.1.0']]));
+        $advisories = ScriptedProject::advisories([ScriptedProject::advisory('PKSA-A', 'acme/a', '<1.1.0'), ScriptedProject::advisory('PKSA-B', 'acme/b', '<1.1.0')]);
+
+        $plan = (new Planner($advisories, $solver))->plan($project->context(), $project->workspace());
+
+        self::assertNotNull($plan->combined);
+        self::assertTrue($plan->combined->fixesAll());
+        self::assertSame("composer update acme/a acme/b -w -m --with 'acme/b:>=1.1.0'", $plan->combined->candidate->commandLine());
+        self::assertCount(2, $plan->combinedAttempts);
+        self::assertSame(CombinedOutcome::Unresolved, $plan->combinedAttempts[0]->outcome);
+        self::assertStringContainsString('acme/b 1.1.0 conflicts', (string) $plan->combinedAttempts[0]->reason);
+        self::assertFalse($plan->combinedAttempts[0]->chosen);
+        self::assertSame(CombinedOutcome::Accepted, $plan->combinedAttempts[1]->outcome);
+        self::assertTrue($plan->combinedAttempts[1]->chosen);
+        self::assertSame('acme/b: candidate ranked 2 instead of 1', $plan->combinedAttempts[1]->note);
+        self::assertNotContains("composer update acme/a acme/b -w -m --with 'acme/a:>=1.1.0'", $solver->calls, 'the solver named acme/b, so acme/a is not the one to swap');
+    }
+
+    public function testGlobalSearchRepairsAMergeThatUndoesOneFindingsFix(): void
+    {
+        // Updating both roots at once leaves acme/b at its vulnerable version; the second-ranked
+        // candidate for acme/b carries a --with constraint that holds.
+        $project = $this->project(['acme/a' => '^1.0', 'acme/b' => '^1.0'], [['acme/a', '1.0.0'], ['acme/b', '1.0.0']]);
+        $solver = (new FakeSolver())
+            ->resolves('composer update acme/a', ScriptedProject::lock([['acme/a', '1.1.0'], ['acme/b', '1.0.0']]))
+            ->resolves('composer update acme/b', ScriptedProject::lock([['acme/a', '1.0.0'], ['acme/b', '1.1.0']]))
+            ->resolves("composer update acme/b -w -m --with 'acme/b:>=1.1.0'", ScriptedProject::lock([['acme/a', '1.0.0'], ['acme/b', '1.1.0']]))
+            ->resolves('composer update acme/a acme/b', ScriptedProject::lock([['acme/a', '1.1.0'], ['acme/b', '1.0.0']]))
+            ->resolves("composer update acme/a acme/b -w -m --with 'acme/b:>=1.1.0'", ScriptedProject::lock([['acme/a', '1.1.0'], ['acme/b', '1.1.0']]));
+        $advisories = ScriptedProject::advisories([ScriptedProject::advisory('PKSA-A', 'acme/a', '<1.1.0'), ScriptedProject::advisory('PKSA-B', 'acme/b', '<1.1.0')]);
+
+        $plan = (new Planner($advisories, $solver))->plan($project->context(), $project->workspace());
+
+        self::assertNotNull($plan->combined);
+        self::assertTrue($plan->combined->fixesAll());
+        self::assertSame(CombinedOutcome::Partial, $plan->combinedAttempts[0]->outcome);
+        self::assertSame(1, $plan->combinedAttempts[0]->fixed);
+        self::assertSame(2, $plan->combinedAttempts[0]->total);
+        self::assertSame('leaves PKSA-B@acme/b', $plan->combinedAttempts[0]->reason);
+        self::assertSame(CombinedOutcome::Accepted, $plan->combinedAttempts[1]->outcome);
+        self::assertTrue($plan->combinedAttempts[1]->chosen);
+    }
+
+    public function testGlobalSearchDropsAContributionASiblingsFixAlreadyCovers(): void
+    {
+        // acme/a requires acme/b; updating acme/a moves acme/b past its advisory, so the command for
+        // acme/b is redundant and the smaller command is recommended.
+        $project = $this->project(['acme/a' => '^1.0', 'acme/b' => '^1.0'], [['acme/a', '1.0.0'], ['acme/b', '1.0.0']], [], ['acme/a' => ['acme/b' => '^1.0']]);
+        $fixed = ScriptedProject::lock([['acme/a', '1.1.0'], ['acme/b', '1.1.0']]);
+        $solver = (new FakeSolver())
+            ->resolves('composer update acme/a', $fixed)
+            ->resolves('composer update acme/b', ScriptedProject::lock([['acme/a', '1.0.0'], ['acme/b', '1.1.0']]))
+            ->resolves('composer update acme/a acme/b', $fixed);
+        $advisories = ScriptedProject::advisories([ScriptedProject::advisory('PKSA-A', 'acme/a', '<1.1.0'), ScriptedProject::advisory('PKSA-B', 'acme/b', '<1.1.0')]);
+
+        $plan = (new Planner($advisories, $solver))->plan($project->context(), $project->workspace());
+
+        self::assertNotNull($plan->combined);
+        self::assertTrue($plan->combined->fixesAll());
+        self::assertSame('composer update acme/a', $plan->combined->candidate->commandLine());
+        self::assertCount(2, $plan->combinedAttempts);
+        self::assertSame(CombinedOutcome::Accepted, $plan->combinedAttempts[0]->outcome);
+        self::assertFalse($plan->combinedAttempts[0]->chosen, 'the merged command fixes all but a smaller one exists');
+        self::assertSame('without the command for acme/b', $plan->combinedAttempts[1]->note);
+        self::assertTrue($plan->combinedAttempts[1]->chosen);
+        self::assertNotContains('composer update acme/b', array_slice($solver->calls, -1), 'dropping acme/a is not tried: nothing else moves acme/a');
+    }
+
+    public function testGlobalSearchKeepsTheBestPartialResultWhenNoCombinationFixesEverything(): void
+    {
+        $project = $this->project(['acme/a' => '^1.0', 'acme/b' => '^1.0'], [['acme/a', '1.0.0'], ['acme/b', '1.0.0']]);
+        $solver = (new FakeSolver())
+            ->resolves('composer update acme/a', ScriptedProject::lock([['acme/a', '1.1.0'], ['acme/b', '1.0.0']]))
+            ->resolves("composer update acme/a -w -m --with 'acme/a:>=1.1.0'", ScriptedProject::lock([['acme/a', '1.1.0'], ['acme/b', '1.0.0']]))
+            ->resolves('composer update acme/b', ScriptedProject::lock([['acme/a', '1.0.0'], ['acme/b', '1.1.0']]))
+            ->resolves("composer update acme/b -w -m --with 'acme/b:>=1.1.0'", ScriptedProject::lock([['acme/a', '1.0.0'], ['acme/b', '1.1.0']]))
+            ->resolves('composer update acme/a acme/b', ScriptedProject::lock([['acme/a', '1.1.0'], ['acme/b', '1.0.0']]));
+        $advisories = ScriptedProject::advisories([ScriptedProject::advisory('PKSA-A', 'acme/a', '<1.1.0'), ScriptedProject::advisory('PKSA-B', 'acme/b', '<1.1.0')]);
+
+        $plan = (new Planner($advisories, $solver))->plan($project->context(), $project->workspace());
+
+        self::assertNotNull($plan->combined, 'a partial combination is better than none');
+        self::assertFalse($plan->combined->fixesAll());
+        self::assertSame(1, $plan->combined->fixedCount());
+        self::assertSame('composer update acme/a acme/b', $plan->combined->candidate->commandLine());
+        self::assertTrue($plan->combinedAttempts[0]->chosen);
+        self::assertSame(CombinedOutcome::Unresolved, $plan->combinedAttempts[1]->outcome);
+        self::assertStringStartsWith('acme/b: candidate ranked 2 instead of 1', $plan->combinedAttempts[1]->note, 'the unfixed finding is the one swapped first');
+        self::assertGreaterThanOrEqual(2, count($plan->combinedAttempts));
+        self::assertLessThanOrEqual(1 + Planner::GLOBAL_SOLVE_BUDGET, count($plan->combinedAttempts));
     }
 
     public function testReleaseAgeGuardRefusesUnknownReleaseDates(): void

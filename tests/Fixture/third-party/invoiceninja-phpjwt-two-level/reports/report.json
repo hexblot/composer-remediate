@@ -8,7 +8,7 @@
         "advisory_source": "advisory snapshot advisories.json",
         "solver": "in-process Composer dry-run",
         "solver_runs": "16",
-        "composer_json_sha256": "982c95ab2b4703c5a0c47db9abf4b0700db6fa05eab02e7903f40e8e9923f3ed",
+        "composer_json_sha256": "89f2de3d92101bdf86d3d806509ce1c5c477c5e700fa98f74a8844d22686e179",
         "composer_lock_sha256": "2dbaa7b34c4c01d7ef5715f78a6c4dfe11a0a4533a4b8855f22eb8d218f54b2f",
         "analysis_timestamp": "(fixture)",
         "locked_packages": "217"
@@ -39,7 +39,8 @@
             "major_change": true,
             "downgrade": false,
             "prerelease": false
-        }
+        },
+        "combined_search": []
     },
     "findings": [
         {

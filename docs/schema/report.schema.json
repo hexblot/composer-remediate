@@ -17,7 +17,7 @@
     "warnings": {"type": "array", "items": {"type": "string"}},
     "summary": {
       "type": "object",
-      "required": ["advisories", "packages", "packages_with_fix", "fail_on", "packages_gated", "packages_baselined", "packages_with_constraint_drag", "packages_known_exploited", "packages_with_abandoned_dependency", "coverage_gaps", "coverage_gaps_accepted", "combined_command", "combined_fixes", "combined_total", "combined_fixes_all", "combined_changes"],
+      "required": ["advisories", "packages", "packages_with_fix", "fail_on", "packages_gated", "packages_baselined", "packages_with_constraint_drag", "packages_known_exploited", "packages_with_abandoned_dependency", "coverage_gaps", "coverage_gaps_accepted", "combined_command", "combined_fixes", "combined_total", "combined_fixes_all", "combined_changes", "combined_search"],
       "additionalProperties": false,
       "properties": {
         "advisories": {"type": "integer", "minimum": 0},
@@ -35,7 +35,8 @@
         "combined_fixes": {"type": ["integer", "null"]},
         "combined_total": {"type": ["integer", "null"]},
         "combined_fixes_all": {"type": ["boolean", "null"]},
-        "combined_changes": {"oneOf": [{"$ref": "#/definitions/changeSummary"}, {"type": "null"}]}
+        "combined_changes": {"oneOf": [{"$ref": "#/definitions/changeSummary"}, {"type": "null"}]},
+        "combined_search": {"type": "array", "items": {"$ref": "#/definitions/combinedAttempt"}, "description": "The global search for one command fixing everything, step by step: the merged winners, swaps of lower-ranked candidates for findings in the way, and drops of contributions a sibling's fix already covers. Empty when only one package has a fix."}
       }
     },
     "findings": {"type": "array", "items": {"$ref": "#/definitions/finding"}},
@@ -85,6 +86,20 @@
         "epss": {"type": ["number", "null"], "minimum": 0, "maximum": 1, "description": "FIRST EPSS probability of exploitation in the next 30 days; null when the advisory source carries no exploit data"},
         "epss_percentile": {"type": ["number", "null"], "minimum": 0, "maximum": 1},
         "kev_added": {"type": ["string", "null"], "description": "Date (YYYY-MM-DD) CISA added the CVE to the Known Exploited Vulnerabilities catalogue; null when not listed or unknown"}
+      }
+    },
+    "combinedAttempt": {
+      "type": "object",
+      "required": ["command", "note", "outcome", "fixed", "total", "reason", "chosen"],
+      "additionalProperties": false,
+      "properties": {
+        "command": {"type": "string"},
+        "note": {"type": "string", "description": "What this attempt changed compared with the previous one"},
+        "outcome": {"type": "string", "enum": ["accepted", "partial", "unresolved", "rejected"]},
+        "fixed": {"type": "integer", "minimum": 0},
+        "total": {"type": "integer", "minimum": 0},
+        "reason": {"type": ["string", "null"], "description": "The solver's explanation or the acceptance rule that failed; null when the attempt fixed everything"},
+        "chosen": {"type": "boolean", "description": "Whether this is the combination the report recommends"}
       }
     },
     "abandonedPackage": {

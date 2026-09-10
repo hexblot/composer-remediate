@@ -335,5 +335,12 @@ Summary
   Findings: 4 advisories on 4 packages, 2 packages with a verified fix
   composer update drupal/core-recommended:10.3.4 symfony/validator -W -m fixes 2 of 4 findings
     (4 packages changed, verified by Composer)
+  Combined command search (3 solves):
+    per-package winners merged: composer update drupal/core-recommended:10.3.4 symfony/validator -W -m
+      fixes 2 of 4 (leaves PKSA-styk-3knc-d1bt@drupal/core, PKSA-35hc-pd1y-zwpc@drupal/core-recommended)
+    twig/twig: candidate ranked 2 instead of 1: composer update drupal/core-recommended symfony/validator -W -m --with 'twig/twig:>=3.11.0,<3.12.0 || >=3.14.0'
+      fixes 2 of 4 (leaves PKSA-styk-3knc-d1bt@drupal/core, PKSA-35hc-pd1y-zwpc@drupal/core-recommended)
+    symfony/validator: candidate ranked 2 instead of 1: composer update drupal/core-recommended:10.3.4 symfony/validator -W -m --with 'symfony/validator:>=6.4.11,<7.0.0 || >=7.1.4'
+      fixes 2 of 4 (leaves PKSA-styk-3knc-d1bt@drupal/core, PKSA-35hc-pd1y-zwpc@drupal/core-recommended)
   No verified fix: CVE-2024-45440 on drupal/core; CVE-2024-45440 on drupal/core-recommended
 ```

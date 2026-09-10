@@ -94,7 +94,7 @@
                     "properties": {
                         "composer_version": "(fixture)",
                         "advisory_source": "advisory snapshot advisories.json",
-                        "combined_command": "composer update drupal/core symfony/validator twig/twig -w -m"
+                        "combined_command": "composer update drupal/core symfony/validator -w -m"
                     }
                 }
             ],
