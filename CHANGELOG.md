@@ -67,8 +67,13 @@ with a separate harness), each with a regression test.
   environment, the operator's global `config.json`, Composer's defaults). The previous check read
   Composer's merged `config.home`, which the project can set alongside `config.cache-dir`, so a
   repository could hold both sides of the comparison and have its own cache directory accepted as the
-  operator's. Alongside it, TLS settings supplied by the project (`cafile`, `capath`, `disable-tls`)
-  are reported, since Composer verifies the download with them.
+  operator's. The rule now lives in `Engine\Advisory\Db\OperatorConfiguration`, and an audit of every
+  other place the analysed project's configuration reaches the run applied it to two more: TLS settings
+  supplied by the project (`cafile`, `capath`, `disable-tls`), since Composer verifies the download with
+  them, and the advisories the project suppresses through `config.audit.ignore` or
+  `config.policy.advisories`, whose entries are now named in the report as the project's rather than the
+  operator's. Both are disclosures, not refusals: they are the point of those settings for a project you
+  own.
 - **Second recheck (two findings at c17b742).** The default database path follows the operator's
   cache configuration, never a `config.cache-dir` set by the analysed project's composer.json (Composer
   records the source of the value; a project file as the source is set aside with a note in the

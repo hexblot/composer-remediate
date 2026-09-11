@@ -68,6 +68,9 @@ precisely because you do not trust it. Its `extra.remediate` settings are honour
   sets `config.home` cannot make its own files look like the operator's. If you keep the database
   somewhere else, use `--database-path` or `REMEDIATE_DATABASE_PATH` rather than a project
   `config.cache-dir`.
+- `config.audit.ignore` and `config.policy.advisories` set by the project still suppress findings, as
+  they are meant to for a project you own, and the report names the entries the repository supplied so
+  that a scan of one you do not own can be reviewed.
 - `config.cafile`, `config.capath` and `config.disable-tls` set by the project are reported: Composer
   verifies the download with them, and a gate should know when the certificates came from the
   repository being scanned. A source that is not an `https://` URL is refused whatever those say.

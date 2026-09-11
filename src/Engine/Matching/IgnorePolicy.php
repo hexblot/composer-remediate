@@ -20,10 +20,12 @@ use Composer\Semver\VersionParser;
 final class IgnorePolicy
 {
     /**
-     * @param array<string, true>                            $ids      lower-cased advisory ids and CVEs
-     * @param array<string, list<ConstraintInterface|null>> $packages lower-cased package name => constraints (null = any version)
+     * @param array<string, true>                          $ids           lower-cased advisory ids and CVEs
+     * @param array<string, list<ConstraintInterface|null>> $packages     lower-cased package name => constraints
+     * @param array<string, true>                          $fromProject   entries the analysed project's composer.json
+     *                                                                    supplied, rather than the operator
      */
-    public function __construct(public readonly array $ids = [], public readonly array $packages = [])
+    public function __construct(public readonly array $ids = [], public readonly array $packages = [], private readonly array $fromProject = [])
     {
     }
 
@@ -43,7 +45,19 @@ final class IgnorePolicy
             }
         }
 
-        return new self($merged, $this->packages);
+        return new self($merged, $this->packages, $this->fromProject);
+    }
+
+    /**
+     * Entries that came from the analysed project's own composer.json. A repository can suppress its own
+     * advisories that way, which is the point of the setting for a project you own and a disclosure a
+     * gate needs for one you do not.
+     *
+     * @return list<string>
+     */
+    public function projectEntries(): array
+    {
+        return array_keys($this->fromProject);
     }
 
     public function isEmpty(): bool
@@ -77,11 +91,16 @@ final class IgnorePolicy
 
     /**
      * Reads the audit-scoped ignores from a project's Composer configuration.
+     *
+     * @param list<string> $projectKeys which of `audit` and `policy` the analysed project set, so the
+     *                                  entries taken from them can be disclosed in the report
      */
-    public static function fromComposerConfig(Config $config): self
+    public static function fromComposerConfig(Config $config, array $projectKeys = []): self
     {
         $ids = [];
         $packages = [];
+        $auditEntries = [];
+        $policyEntries = [];
         $parser = new VersionParser();
 
         // Legacy config.audit.ignore: ["CVE-..."] or {"CVE-...": "reason"} or {"CVE-...": {"apply": "audit|block|all", "reason": "..."}}.
@@ -100,6 +119,7 @@ final class IgnorePolicy
                 if (!$appliesToAudit) {
                     continue;
                 }
+                $auditEntries[] = strtolower($entry);
                 if (self::looksLikePackage($entry)) {
                     $packages[strtolower($entry)][] = null;
                 } else {
@@ -118,6 +138,7 @@ final class IgnorePolicy
                     continue;
                 }
                 $ids[strtolower($entry)] = true;
+                $policyEntries[] = strtolower($entry);
             }
             foreach (is_array($advisories['ignore'] ?? null) ? $advisories['ignore'] : [] as $key => $value) {
                 $name = is_int($key) ? (is_string($value) ? $value : null) : (string) $key;
@@ -138,11 +159,19 @@ final class IgnorePolicy
                         }
                     }
                     $packages[strtolower($name)][] = $constraint;
+                    $policyEntries[] = strtolower($name);
                 }
             }
         }
 
-        return new self($ids, $packages);
+        $fromProject = [];
+        foreach ($projectKeys as $key) {
+            foreach ($key === 'audit' ? $auditEntries : $policyEntries as $entry) {
+                $fromProject[$entry] = true;
+            }
+        }
+
+        return new self($ids, $packages, $fromProject);
     }
 
     private static function onAudit(mixed $value): bool

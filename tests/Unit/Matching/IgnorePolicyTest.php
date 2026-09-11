@@ -71,4 +71,20 @@ final class IgnorePolicyTest extends TestCase
         self::assertSame('cve-2026-9', $policy->matchedEntry('PKSA-9', 'CVE-2026-9', 'acme/lib', '1.0.0.0'));
         self::assertSame(['cve-2026-9'], $policy->entries());
     }
+
+    public function testEntriesTheAnalysedProjectSuppliedAreRemembered(): void
+    {
+        $config = new \Composer\Config(false);
+        $config->merge(['config' => ['audit' => ['ignore' => ['CVE-2026-1']], 'policy' => ['advisories' => ['ignore-id' => ['PKSA-2'], 'ignore' => ['acme/lib']]]]], 'project/composer.json');
+
+        $operatorSet = IgnorePolicy::fromComposerConfig($config);
+        self::assertSame([], $operatorSet->projectEntries(), 'nothing is attributed to the project unless the caller says so');
+
+        $projectSet = IgnorePolicy::fromComposerConfig($config, ['audit', 'policy']);
+        self::assertSame(['cve-2026-1', 'pksa-2', 'acme/lib'], $projectSet->projectEntries());
+        self::assertSame(['cve-2026-1', 'pksa-2', 'acme/lib'], $projectSet->withIds(['CVE-OPERATOR'])->projectEntries(), 'the operator\'s own --ignore is not the project\'s');
+
+        $auditOnly = IgnorePolicy::fromComposerConfig($config, ['audit']);
+        self::assertSame(['cve-2026-1'], $auditOnly->projectEntries(), 'only the keys the project set');
+    }
 }

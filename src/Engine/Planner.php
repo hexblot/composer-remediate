@@ -113,6 +113,11 @@ final class Planner
             $coverageGaps = $this->advisories->coverageWarnings(Matcher::queriedNames($lock));
             array_push($warnings, ...$coverageGaps);
         }
+        $projectIgnores = $this->ignore?->projectEntries() ?? [];
+        if ($projectIgnores !== []) {
+            sort($projectIgnores);
+            $warnings[] = sprintf('The analysed project\'s composer.json suppresses advisories through config.audit.ignore or config.policy.advisories: %s. Those entries are the project\'s, not yours.', implode(', ', $projectIgnores));
+        }
         if ($matcher->ignoredCount() > 0) {
             $warnings[] = sprintf('%d advisory match%s ignored per configuration (--ignore, config.audit.ignore or config.policy).', $matcher->ignoredCount(), $matcher->ignoredCount() === 1 ? '' : 'es');
         }

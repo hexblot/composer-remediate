@@ -15,6 +15,7 @@ use Remediate\Engine\Advisory\ComposerRepositoryAdvisoryProvider;
 use Remediate\Engine\Advisory\Db\Database;
 use Remediate\Engine\Advisory\Db\DatabaseBuildFactory;
 use Remediate\Engine\Advisory\Db\DatabaseLocator;
+use Remediate\Engine\Advisory\Db\OperatorConfiguration;
 use Remediate\Engine\Advisory\Db\SqliteAdvisoryProvider;
 use Remediate\Engine\Advisory\FallbackAdvisoryProvider;
 use Remediate\Engine\Advisory\JsonFileAdvisoryProvider;
@@ -307,7 +308,7 @@ HELP);
             static function (string $message) use ($io): void {
                 $io->writeError('<comment>' . ConsoleText::safe($message) . '</comment>', true, IOInterface::VERBOSE);
             },
-            IgnorePolicy::fromComposerConfig($this->requireComposer()->getConfig())->withIds($cliIgnores),
+            IgnorePolicy::fromComposerConfig($config = $this->requireComposer()->getConfig(), (new OperatorConfiguration())->keysSetByProject($config, ['audit', 'policy']))->withIds($cliIgnores),
             is_string($minAge) && $minAge !== '' ? new ReleaseAgeGuard((int) $minAge) : null,
             max(1, (int) $input->getOption('solve-budget')),
             (bool) $input->getOption('accept-coverage-gaps'),

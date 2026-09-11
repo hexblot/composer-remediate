@@ -356,6 +356,24 @@ final class PlannerTest extends TestCase
         self::assertContains("composer update acme/lib -w -m --with 'acme/lib:>=1.1.0,<1.2.0 || >=1.3.0'", $solver->calls, 'the --with range must exclude the version affected by the other advisory');
     }
 
+    public function testAdvisoriesTheAnalysedProjectSuppressesAreNamedInTheReport(): void
+    {
+        $project = $this->project(['acme/lib' => '^1.0'], [['acme/lib', '1.0.0']]);
+        $advisories = ScriptedProject::advisories([ScriptedProject::advisory('PKSA-1', 'acme/lib', '<1.1.0')]);
+        $policy = new \Remediate\Engine\Matching\IgnorePolicy(['pksa-1' => true], [], ['pksa-1' => true]);
+
+        $plan = (new Planner($advisories, new FakeSolver(), new CandidateGenerator(), true, 10, null, $policy))->plan($project->context(), $project->workspace());
+
+        self::assertSame([], $plan->findings);
+        self::assertStringContainsString("The analysed project's composer.json suppresses advisories", $plan->warnings[0]);
+        self::assertStringContainsString('pksa-1', $plan->warnings[0]);
+        self::assertStringContainsString("not yours", $plan->warnings[0]);
+
+        // The operator's own --ignore is not reported that way.
+        $operator = (new Planner($advisories, new FakeSolver(), new CandidateGenerator(), true, 10, null, IgnorePolicy::none()->withIds(['PKSA-1'])))->plan($project->context(), $project->workspace());
+        self::assertStringNotContainsString('suppresses advisories', implode("\n", $operator->warnings));
+    }
+
     public function testIgnoredAdvisoriesDoNotShrinkTheFixedRange(): void
     {
         $project = $this->project(['acme/lib' => '^1.0'], [['acme/lib', '1.0.0']]);
