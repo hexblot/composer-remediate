@@ -130,6 +130,24 @@ Boundary: the goal is a version constraint on a locked package. Interpreting rel
 breaking changes or choosing the target version is out of scope; the user names the goal and the
 planner finds the smallest verified command that reaches it.
 
+## Report additions from community feedback *(small, next sprint)*
+
+Suggested in reactions to the project; each is a line in the report, not an engine change.
+
+- [ ] on a constraint-drag finding, say that no fixed release exists within the current major on the
+  branch in use, and that a maintained fork or a backport published under another name, if one
+  exists, is the alternative to the widening the report recommends (the planner already tries the
+  same-branch backport first: advisory ranges are per branch, so a 2.x project gets the 2.x fix before
+  any major bump is considered; what it cannot see is a fix under a different package name)
+- [ ] under every recommendation that relies on a `--with` constraint, the persistent form of the same
+  instruction: the `conflict` entry for `composer.json` (`"twig/twig": "<3.14.0"`, derived from the
+  fixed range already computed) that keeps future updates from falling back below the fix and makes
+  the resolver's error name the reason; Composer has no subcommand for `conflict`, so it stays a
+  follow-up line rather than part of the verified command
+- deliberately not adopted: a root `replace` to pin a transitive dependency (it tells Composer the
+  root provides the package, which then stops being installed) and distro backports (they patch PHP
+  and system packages, not a project's `vendor` directory)
+
 ## Assurance *(ongoing, alongside the phases)*
 
 Work that does not add features but decides whether the recommendations can be trusted. Each item
