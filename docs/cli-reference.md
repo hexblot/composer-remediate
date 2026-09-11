@@ -41,6 +41,7 @@ with the package runs the same command with plugins and scripts disabled from th
 | `--no-dev` | flag | Ignore vulnerabilities in require-dev packages |
 | `--offline` | flag | Refuse all network access; needs a warm Composer cache plus an advisory database already at its path, or --advisories-file (sets COMPOSER_DISABLE_NETWORK=1) |
 | `--ignore`, `-i` | repeatable | Advisory id or CVE to ignore (repeatable); audit-scoped entries of config.audit.ignore and config.policy.advisories are honoured as well |
+| `--no-project-ignores` | flag | Leave out the ignore entries the analysed project's own composer.json carries (config.audit.ignore, config.policy.advisories), so that a repository cannot suppress its own findings; your --ignore entries still apply |
 | `--allow-direct-require` | flag | Also consider adding a transitive package as a direct requirement to force a fixed version |
 | `--advisories-file` | required | Read advisories from a JSON file in the Packagist API shape (or `composer audit --format=json` output) instead of the configured repositories |
 | `--database-location` | required | Where the advisory database comes from: https URL(s) of a published database, comma-separated and tried in order (default: the database this project publishes); `composer` to ask the configured repositories instead; or a local file to read as it is. Also REMEDIATE_DATABASE or extra.remediate.database |

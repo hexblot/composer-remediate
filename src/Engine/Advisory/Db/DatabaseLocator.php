@@ -80,11 +80,10 @@ final class DatabaseLocator
     }
 
     /**
-     * Settings the analysed project changed that decide how the database is fetched and verified, for
-     * the report. Composer's own https rule (`disable-tls`, `secure-http`) never applies here, since a
-     * source that is not an `https://` URL is refused before any request; but the certificates the
-     * download is verified against are Composer's to choose, so a project that supplies its own belongs
-     * in the report where a gate can see it.
+     * TLS settings the analysed project changed, for the report. They do not apply: the database is
+     * fetched with the operator's configuration, so a repository cannot decide which certificates
+     * authenticate a publisher the operator chose. A source that is not an `https://` URL is refused
+     * before any request, whatever `disable-tls` says.
      *
      * @return list<string>
      */
@@ -93,7 +92,7 @@ final class DatabaseLocator
         $config = $this->composer->getConfig();
         $changed = $this->operator->keysSetByProject($config, ['cafile', 'capath', 'disable-tls']);
 
-        return $changed === [] ? [] : [sprintf('The analysed project\'s composer.json changes how TLS certificates are verified (config.%s); the advisory database was fetched with that setting in force.', implode(', config.', $changed))];
+        return $changed === [] ? [] : [sprintf('The analysed project\'s composer.json changes how TLS certificates are verified (config.%s); the advisory database was fetched with your own TLS configuration instead.', implode(', config.', $changed))];
     }
 
     public function defaultBuildPath(): string

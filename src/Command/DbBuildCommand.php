@@ -10,6 +10,7 @@ use Remediate\Engine\Advisory\AdvisoryLookupFailed;
 use Remediate\Engine\Advisory\Db\DatabaseBuildFactory;
 use Remediate\Engine\Advisory\Db\DatabaseBuilder;
 use Remediate\Engine\Advisory\Db\DatabaseLocator;
+use Remediate\Engine\Advisory\Db\OperatorConfiguration;
 use Remediate\Engine\Advisory\Db\Merger;
 use Remediate\Engine\Advisory\Db\DatabaseWriter;
 use Remediate\Engine\Plan\Plan;
@@ -69,7 +70,7 @@ HELP);
 
             return Plan::EXIT_ERROR;
         }
-        $downloader = Factory::createHttpDownloader($io, $composer->getConfig());
+        $downloader = (new OperatorConfiguration())->httpDownloader($io);
         $locator = new DatabaseLocator($composer, $downloader);
         $target = $input->getOption('output');
         $settings = $locator->settings(null, is_string($target) && $target !== '' ? $target : null, null, false, $project === null ? null : dirname((string) realpath(Factory::getComposerFile())));

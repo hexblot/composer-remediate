@@ -70,10 +70,16 @@ precisely because you do not trust it. Its `extra.remediate` settings are honour
   `config.cache-dir`.
 - `config.audit.ignore` and `config.policy.advisories` set by the project still suppress findings, as
   they are meant to for a project you own, and the report names the entries the repository supplied so
-  that a scan of one you do not own can be reviewed.
-- `config.cafile`, `config.capath` and `config.disable-tls` set by the project are reported: Composer
-  verifies the download with them, and a gate should know when the certificates came from the
-  repository being scanned. A source that is not an `https://` URL is refused whatever those say.
+  that a scan of one you do not own can be reviewed. `--no-project-ignores` leaves them out entirely;
+  your own `--ignore` entries still apply.
+- `config.cafile`, `config.capath` and `config.disable-tls` set by the project do not apply to the
+  advisory database: it is fetched with your own TLS configuration and credentials
+  (`COMPOSER_CAFILE`, the global `config.json` and `auth.json`, `COMPOSER_AUTH`), so a repository
+  cannot decide which certificates authenticate a publisher you chose, and the report says when a
+  project's settings were set aside. Package metadata for candidate solves keeps using the project's
+  configuration, where its repositories and their credentials are the point. A source that is not an
+  `https://` URL is refused whatever those settings say. If your own mirror needs credentials, put
+  them in `COMPOSER_AUTH` or the global `auth.json` rather than the project's.
 - `database_path` must be a relative path that stays inside the project directory, with no symbolic
   link among the directories on the way, checked before anything is created. A scan can therefore only
   ever write inside the checkout being scanned; a path elsewhere needs `--database-path` or

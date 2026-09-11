@@ -206,8 +206,10 @@ final class DatabaseLifecycleTest extends TestCase
         self::assertStringEqualsFile($this->project . '/.cache/remediate/advisories.sqlite', $planted, 'the checked-in file is untouched');
     }
 
-    public function testATlsSettingSuppliedByTheProjectIsDisclosed(): void
+    public function testTheProjectCannotDecideWhichCertificatesAuthenticateThePublisher(): void
     {
+        // The publisher's certificate is one the operator does not trust. The project supplying it
+        // must not make the download succeed: the operator's rejection is the operator's to make.
         $this->buildDatabase($this->project . '/published.sqlite', true);
         $url = $this->publisher->publishDatabase($this->project . '/published.sqlite');
         $certificate = $this->publisher->certificate();
@@ -220,8 +222,36 @@ final class DatabaseLifecycleTest extends TestCase
 
         $run = $this->remediate(['--database-location' => $url]);
 
-        self::assertSame(Plan::EXIT_REMEDIATION_AVAILABLE, $run->exitCode, $run->describe());
-        self::assertStringContainsString("changes how TLS certificates are verified (config.cafile)", implode("\n", self::report($run)['warnings']), 'the same certificate through the project rather than the operator is reported');
+        self::assertSame(Plan::EXIT_ADVISORIES_UNAVAILABLE, $run->exitCode, $run->describe() . ' (no database, and this fixture has no advisory-capable repository to fall back to)');
+        self::assertFileDoesNotExist($this->path, 'nothing was downloaded through the project\'s certificate');
+        self::assertStringContainsString('changes how TLS certificates are verified (config.cafile); the advisory database was fetched with your own TLS configuration instead', $run->stderr);
+
+        // The same certificate through the operator's channel does authenticate the publisher.
+        Platform::putEnv('COMPOSER_CAFILE', $certificate);
+        $trusted = $this->remediate(['--database-location' => $url]);
+        self::assertSame(Plan::EXIT_REMEDIATION_AVAILABLE, $trusted->exitCode, $trusted->describe());
+        self::assertFileExists($this->path);
+    }
+
+    public function testTheProjectsOwnIgnoreEntriesAreNamedAndCanBeLeftOut(): void
+    {
+        $this->buildDatabase($this->project . '/published.sqlite', true);
+        $url = $this->publisher->publishDatabase($this->project . '/published.sqlite');
+        CommandRunner::editComposerJson($this->project, static function (array $json): array {
+            $json['config']['audit'] = ['ignore' => ['CVE-2026-00001']];
+
+            return $json;
+        });
+
+        $honoured = $this->remediate(['--database-location' => $url]);
+        self::assertSame(Plan::EXIT_CLEAN, $honoured->exitCode, $honoured->describe() . ' (the project suppressed its own finding, as the setting is meant to)');
+        $warnings = implode("\n", self::report($honoured)['warnings']);
+        self::assertStringContainsString("The analysed project's composer.json suppresses advisories", $warnings);
+        self::assertStringContainsString('cve-2026-00001', $warnings, 'the entry is named, so a gate can review it');
+
+        $refused = $this->remediate(['--database-location' => $url, '--no-project-ignores' => true]);
+        self::assertSame(Plan::EXIT_REMEDIATION_AVAILABLE, $refused->exitCode, $refused->describe() . ' (the finding comes back)');
+        self::assertStringContainsString('--no-project-ignores left those entries out', implode("\n", self::report($refused)['warnings']));
     }
 
     public function testAPinnedDigestIsEnforcedOnTheDownloadAndOnEveryLaterUse(): void

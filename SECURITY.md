@@ -97,10 +97,16 @@ Out of scope:
   content at such a path counts only when it matches what the publisher serves; its `config.cache-dir`
   does not move the default database path, and which configuration counts as the operator's is decided
   from configuration the project never contributed to, so setting `config.home` as well changes
-  nothing; TLS settings it supplies (`cafile`, `capath`, `disable-tls`) and the advisories it suppresses
-  (`config.audit.ignore`, `config.policy.advisories`) are named in the report. The rule behind all of
-  these: the analysed project's `composer.json` can never establish its own trusted origin, and what it
-  does decide is disclosed where a gate can see it. A scan
+  nothing. Everything this tool fetches on the operator's behalf, the advisory database and the feeds a
+  build reads, uses the operator's TLS configuration and credentials, so TLS settings the project
+  supplies (`cafile`, `capath`, `disable-tls`) cannot decide which certificates authenticate a
+  publisher the operator chose; they are named in the report as set aside. The advisories the project
+  suppresses (`config.audit.ignore`, `config.policy.advisories`) still apply, since that is what the
+  setting is for, but the entries are named as the project's and `--no-project-ignores` drops them.
+  The rule behind all of these: the analysed project's `composer.json` can never establish its own
+  trusted origin, and what it does decide is disclosed where a gate can see it. Only Composer's two
+  global files, `config.json` and `auth.json` in the home directory itself, count as the operator's,
+  whatever the checkout's location. A scan
   never writes outside the checkout being scanned unless the operator asked for it (`--database-path`,
   `REMEDIATE_DATABASE_PATH`), never replaces a file that is not an advisory database, and never lets a
   copy downloaded from one source pass as current for another.

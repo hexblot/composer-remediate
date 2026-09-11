@@ -45,6 +45,15 @@ final class RemediateCommand extends BaseCommand
     /** @var list<string> warnings gathered while choosing the advisory source, attached to the plan */
     private array $planWarnings = [];
 
+    /** Composer's configuration as the operator gave it, without the analysed project's contribution. */
+    private readonly OperatorConfiguration $operator;
+
+    public function __construct(?OperatorConfiguration $operator = null)
+    {
+        $this->operator = $operator ?? new OperatorConfiguration();
+        parent::__construct();
+    }
+
     protected function configure(): void
     {
         $this
@@ -60,6 +69,7 @@ final class RemediateCommand extends BaseCommand
                 new InputOption('no-dev', null, InputOption::VALUE_NONE, 'Ignore vulnerabilities in require-dev packages'),
                 new InputOption('offline', null, InputOption::VALUE_NONE, 'Refuse all network access; needs a warm Composer cache plus an advisory database already at its path, or --advisories-file (sets COMPOSER_DISABLE_NETWORK=1)'),
                 new InputOption('ignore', 'i', InputOption::VALUE_REQUIRED | InputOption::VALUE_IS_ARRAY, 'Advisory id or CVE to ignore (repeatable); audit-scoped entries of config.audit.ignore and config.policy.advisories are honoured as well'),
+                new InputOption('no-project-ignores', null, InputOption::VALUE_NONE, 'Leave out the ignore entries the analysed project\'s own composer.json carries (config.audit.ignore, config.policy.advisories), so that a repository cannot suppress its own findings; your --ignore entries still apply'),
                 new InputOption('allow-direct-require', null, InputOption::VALUE_NONE, 'Also consider adding a transitive package as a direct requirement to force a fixed version'),
                 new InputOption('advisories-file', null, InputOption::VALUE_REQUIRED, 'Read advisories from a JSON file in the Packagist API shape (or `composer audit --format=json` output) instead of the configured repositories'),
                 new InputOption('database-location', null, InputOption::VALUE_REQUIRED, 'Where the advisory database comes from: https URL(s) of a published database, comma-separated and tried in order (default: the database this project publishes); `composer` to ask the configured repositories instead; or a local file to read as it is. Also REMEDIATE_DATABASE or extra.remediate.database'),
@@ -229,7 +239,7 @@ HELP);
             return Plan::EXIT_ERROR;
         }
 
-        return new DatabaseLocator($composer, Factory::createHttpDownloader($io, $composer->getConfig()), (bool) $input->getOption('offline'), !(bool) $input->getOption('allow-unverified-database'), is_string($expectedSha) && $expectedSha !== '' ? strtolower($expectedSha) : null);
+        return new DatabaseLocator($composer, $this->operator->httpDownloader($io), (bool) $input->getOption('offline'), !(bool) $input->getOption('allow-unverified-database'), is_string($expectedSha) && $expectedSha !== '' ? strtolower($expectedSha) : null, $this->operator);
     }
 
     /**
@@ -258,7 +268,7 @@ HELP);
         }
         $rebuild = null;
         if ((bool) $input->getOption('rebuild-database')) {
-            $downloader = Factory::createHttpDownloader($io, $composer->getConfig());
+            $downloader = $this->operator->httpDownloader($io);
             $tempDir = $locator->cacheDirectory() . '/tmp';
             $rebuild = static function (string $path) use ($downloader, $tempDir, $io): void {
                 $io->writeError('<comment>Building the advisory database from the sources…</comment>');
@@ -308,11 +318,33 @@ HELP);
             static function (string $message) use ($io): void {
                 $io->writeError('<comment>' . ConsoleText::safe($message) . '</comment>', true, IOInterface::VERBOSE);
             },
-            IgnorePolicy::fromComposerConfig($config = $this->requireComposer()->getConfig(), (new OperatorConfiguration())->keysSetByProject($config, ['audit', 'policy']))->withIds($cliIgnores),
+            $this->ignorePolicy($input, $io)->withIds($cliIgnores),
             is_string($minAge) && $minAge !== '' ? new ReleaseAgeGuard((int) $minAge) : null,
             max(1, (int) $input->getOption('solve-budget')),
             (bool) $input->getOption('accept-coverage-gaps'),
         );
+    }
+
+    /**
+     * Which advisories to leave out. The analysed project's `config.audit.ignore` and
+     * `config.policy.advisories` suppress findings, which is their purpose for a project you own; the
+     * entries are attributed to the project in the report, and --no-project-ignores leaves them out for
+     * a repository whose word you do not take.
+     */
+    private function ignorePolicy(InputInterface $input, IOInterface $io): IgnorePolicy
+    {
+        $config = $this->requireComposer()->getConfig();
+        $fromProject = $this->operator->keysSetByProject($config, ['audit', 'policy']);
+        if (!(bool) $input->getOption('no-project-ignores')) {
+            return IgnorePolicy::fromComposerConfig($config, $fromProject);
+        }
+        $policy = IgnorePolicy::fromComposerConfig($config, $fromProject);
+        if ($policy->projectEntries() !== []) {
+            $this->planWarnings[] = sprintf('The analysed project\'s composer.json suppresses advisories (%s); --no-project-ignores left those entries out of this run.', implode(', ', $policy->projectEntries()));
+            $io->writeError('<comment>' . ConsoleText::safe('--no-project-ignores: ignoring the project\'s own ignore entries (' . implode(', ', $policy->projectEntries()) . ').') . '</comment>');
+        }
+
+        return IgnorePolicy::none();
     }
 
     /** Applies --accept-coverage-gaps, --fail-on and the baseline options to the plan; an exit code when they are malformed. */

@@ -74,6 +74,15 @@ with a separate harness), each with a regression test.
   `config.policy.advisories`, whose entries are now named in the report as the project's rather than the
   operator's. Both are disclosures, not refusals: they are the point of those settings for a project you
   own.
+- **Fourth recheck (three findings).** The origin test accepted any configuration file below the
+  operator's home directory, so a checkout inside `COMPOSER_HOME` had its own `composer.json` (or an
+  `auth.json` beside it) read as the operator's; only Composer's two global files, compared by resolved
+  path, count now. Everything this tool fetches on the operator's behalf, the advisory database and the
+  build's feeds, now uses the operator's TLS configuration and credentials rather than the merged
+  project configuration: a project-supplied `config.cafile` can no longer make a publisher the operator
+  rejected acceptable, which a report warning did not prevent. `--no-project-ignores` drops the ignore
+  entries the analysed project's own composer.json carries, for a gate that does not take a
+  repository's word that a finding is accepted; without it they still apply and the report names them.
 - **Second recheck (two findings at c17b742).** The default database path follows the operator's
   cache configuration, never a `config.cache-dir` set by the analysed project's composer.json (Composer
   records the source of the value; a project file as the source is set aside with a note in the

@@ -640,16 +640,38 @@ final class DatabaseLocatorTest extends TestCase
         self::assertTrue($locatorWithHome->cacheDirSetByProject(), 'the operator home comes from configuration the project never touched');
         self::assertStringStartsNotWith($project, $locatorWithHome->defaultBuildPath());
 
+        // A checkout that happens to sit below COMPOSER_HOME is still the project's: only the two files
+        // Composer reads from the home directory itself are the operator's.
+        $home = (string) \Composer\Util\Platform::getEnv('COMPOSER_HOME');
+        $inside = new Config(false);
+        $inside->merge(['config' => ['cache-dir' => $home . '/checkout/.cache']], $home . '/checkout/composer.json');
+        $insideComposer = new Composer();
+        $insideComposer->setConfig($inside);
+        $insideComposer->setPackage(new RootPackage('test/project', '1.0.0.0', '1.0.0'));
+        $below = new DatabaseLocator($insideComposer, $this->downloader([]));
+        self::assertTrue($below->cacheDirSetByProject(), 'a composer.json below the home directory is not the operator\'s config.json');
+        self::assertStringStartsNotWith($home . '/checkout', $below->defaultBuildPath());
+
+        $localAuth = new Config(false);
+        $localAuth->merge(['config' => ['cache-dir' => $home . '/checkout/.cache']], $home . '/checkout/auth.json');
+        $authComposer = new Composer();
+        $authComposer->setConfig($localAuth);
+        $authComposer->setPackage(new RootPackage('test/project', '1.0.0.0', '1.0.0'));
+        self::assertTrue((new DatabaseLocator($authComposer, $this->downloader([])))->cacheDirSetByProject(), 'nor is an auth.json beside the project');
+
         // The same cache-dir from the operator's global configuration is honoured as before. The only
         // home that counts is the one the environment names, so the file has to sit in that directory.
         $global = new Config(false);
-        $global->merge(['config' => ['cache-dir' => $this->cacheDir]], (string) \Composer\Util\Platform::getEnv('COMPOSER_HOME') . '/config.json');
+        $globalFile = (string) \Composer\Util\Platform::getEnv('COMPOSER_HOME') . '/config.json';
+        file_put_contents($globalFile, '{}'); // the file must exist to be recognised as the one Composer reads
+        $global->merge(['config' => ['cache-dir' => $this->cacheDir]], $globalFile);
         $operatorComposer = new Composer();
         $operatorComposer->setConfig($global);
         $operatorComposer->setPackage(new RootPackage('test/project', '1.0.0.0', '1.0.0'));
         $operator = new DatabaseLocator($operatorComposer, $this->downloader([]));
         self::assertFalse($operator->cacheDirSetByProject());
         self::assertSame($this->path(), $operator->defaultBuildPath());
+        @unlink($globalFile);
         @unlink($settings->path);
         @unlink($settings->path . '.status.json');
         @unlink($project . '/.cache/remediate/advisories.sqlite');
