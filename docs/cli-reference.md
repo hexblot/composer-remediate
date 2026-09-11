@@ -50,7 +50,7 @@ with the package runs the same command with plugins and scripts disabled from th
 | `--rebuild-database` | flag | When the database at its path is missing or not current, build it from the sources (Packagist, OSV, FriendsOfPHP, with EPSS and KEV data) instead of downloading it |
 | `--database-sha256` | required | Expected sha256 of the advisory database (hex); a downloaded or cached copy that differs is refused. The trust anchor for a URL you do not publish yourself |
 | `--allow-unverified-database` | flag | Accept a database URL without a published &lt;url&gt;.sha256 sidecar and without --database-sha256 (refused otherwise); the report says the download was not verified |
-| `--accept-coverage-gaps` | flag | Exit 0 for a lock without findings even when the advisory source could not read records about locked packages (otherwise exit 4); the gaps stay in the report |
+| `--accept-coverage-gaps` | flag | Exit 0 for a lock without findings even when the advisory source could not read records about locked packages (otherwise exit 4), and allow a fix that adds a package with such records (otherwise rejected); the gaps stay in the report |
 | `--max-candidates` | required, default `10` | Maximum number of candidate commands to try per finding |
 | `--solve-budget` | required, default `60` | Maximum number of solver runs per finding, all search phases included (candidates, conflict expansion, parent descent, simplification) |
 | `--solver` | required, default `auto` | How candidates are verified: auto (in-process, falling back to a `composer update` subprocess when the in-process route errors), in-process, or subprocess |

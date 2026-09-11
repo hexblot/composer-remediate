@@ -734,6 +734,7 @@
                 "root_constraint_changes": [],
                 "constraint_drag": null,
                 "blocking_risk": [],
+                "coverage_gaps": [],
                 "summary": {
                     "changed": 7,
                     "added": 0,

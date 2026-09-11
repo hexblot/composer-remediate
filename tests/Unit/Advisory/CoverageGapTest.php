@@ -172,6 +172,38 @@ final class CoverageGapTest extends TestCase
         self::assertTrue($plan->withAcceptedCoverageGaps()->coverageGapsAccepted);
     }
 
+    public function testAGapNobodyCanAttributeToAPackageReachesEveryScan(): void
+    {
+        $db = $this->tmp('.sqlite');
+        $gaps = [new CoverageGap('Upstream', '(malformed document)', null, 'advisories map has a non-string package key', '0')];
+        (new DatabaseBuilder([$this->source([], $gaps)]))->build($db, static function (): void {
+        });
+        $database = Database::open($db);
+        self::assertCount(1, $database->gapsFor(['acme/lib']), 'an unattributable record is part of every answer');
+
+        $project = new ScriptedProject(['acme/lib' => '^1.0'], [['acme/lib', '1.0.0']]);
+        try {
+            $plan = (new Planner(new SqliteAdvisoryProvider($database), new FakeSolver()))->plan($project->context(), $project->workspace());
+        } finally {
+            $project->destroy();
+        }
+        self::assertCount(1, $plan->warnings);
+        self::assertStringContainsString('could not be attributed to any package, so any package in the lock may be affected', $plan->warnings[0]);
+        self::assertSame(Plan::EXIT_ADVISORIES_UNAVAILABLE, $plan->exitCode(), 'recorded uncertainty is never discarded because it cannot be attributed');
+    }
+
+    public function testCoverageGapsArePartOfTheDatasetHash(): void
+    {
+        $advisory = new NormalizedAdvisory('CVE-2026-1', ['CVE-2026-1'], 't', null, 'high', null, null, [new AffectedRange('acme/other', '<9.0', 'Upstream')], [new SourceRecord('Upstream', 'CVE-2026-1')]);
+        $gap = new CoverageGap('Upstream', 'GHSA-bad', 'acme/lib', 'unparsable affectedVersions', 'garbage !!');
+        $clean = \Remediate\Engine\Advisory\Db\DatabaseWriter::datasetHash([$advisory]);
+        $withGap = \Remediate\Engine\Advisory\Db\DatabaseWriter::datasetHash([$advisory], [], [$gap]);
+
+        self::assertNotSame($clean, $withGap, 'a record the build could not read changes whether a scan may pass, so it changes the dataset');
+        self::assertSame($withGap, \Remediate\Engine\Advisory\Db\DatabaseWriter::datasetHash([$advisory], [], [$gap, $gap]), 'stable across duplicates and rebuilds');
+        self::assertNotSame($withGap, \Remediate\Engine\Advisory\Db\DatabaseWriter::datasetHash([$advisory], [], [new CoverageGap('Upstream', 'GHSA-bad', 'acme/lib', 'now a different reason')]));
+    }
+
     public function testAGapInAReplacedPackageIsReportedAgainstTheReplacingPackagesLock(): void
     {
         $db = $this->tmp('.sqlite');

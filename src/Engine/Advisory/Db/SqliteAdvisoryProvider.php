@@ -74,7 +74,9 @@ final class SqliteAdvisoryProvider implements AdvisoryProvider, CoverageAware
         }
         $warnings = [];
         foreach ($this->database->gapsFor($packageNames) as $gap) {
-            $warnings[] = sprintf('Coverage gap: %s; %s is treated as unaffected by that record.', $gap->describe(), $gap->package ?? 'the package');
+            $warnings[] = $gap->package === null
+                ? sprintf('Coverage gap: %s; the record could not be attributed to any package, so any package in the lock may be affected by it.', $gap->describe())
+                : sprintf('Coverage gap: %s; %s is treated as unaffected by that record.', $gap->describe(), $gap->package);
         }
 
         return $warnings;

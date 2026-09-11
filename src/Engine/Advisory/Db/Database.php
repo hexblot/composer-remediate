@@ -126,7 +126,8 @@ final class Database
     }
 
     /**
-     * Upstream records about the given packages that the build could not interpret.
+     * Upstream records about the given packages that the build could not interpret, plus every record it
+     * could not attribute to a package at all.
      *
      * @param list<string>|null $packageNames null for every gap
      *
@@ -151,6 +152,11 @@ final class Database
             $statement->execute($chunk);
             $this->collectGaps($statement, $gaps);
         }
+        // Records the build could not attribute to any package may concern any of them: they are part
+        // of every answer, so uncertainty the build recorded is never filtered away by the question.
+        $statement = $this->pdo->prepare('SELECT source, remote_id, package, reason, raw FROM gap WHERE package IS NULL ORDER BY source, remote_id LIMIT ?');
+        $statement->execute([$limit]);
+        $this->collectGaps($statement, $gaps);
 
         return $gaps;
     }

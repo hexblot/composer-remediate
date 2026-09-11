@@ -145,6 +145,7 @@ final class JsonRenderer
                 'root_constraint_changes' => array_values(array_map(static fn ($c): array => ['package' => $c->packageName, 'from' => $c->fromConstraint, 'to' => $c->toConstraint, 'dev' => $c->isDev], $rec->candidate->rootConstraintChanges)),
                 'constraint_drag' => $fp->constraintDrag(),
                 'blocking_risk' => $rec->blockingRisk,
+                'coverage_gaps' => $rec->coverageGaps,
                 'summary' => $rec->diff === null ? null : self::summary($rec->diff),
                 'changes' => $rec->diff === null ? [] : self::changes($rec->diff),
             ],

@@ -36,7 +36,8 @@ final class DbStatusCommand extends BaseCommand
     protected function execute(InputInterface $input, OutputInterface $output): int
     {
         $io = $this->getIO();
-        $composer = $this->tryComposer() ?? Factory::createGlobal($io, true, true);
+        $project = $this->tryComposer();
+        $composer = $project ?? Factory::createGlobal($io, true, true);
         if ($composer === null) {
             $io->writeError('<error>Could not initialise Composer.</error>');
 
@@ -51,7 +52,7 @@ final class DbStatusCommand extends BaseCommand
         $locator = new DatabaseLocator($composer, Factory::createHttpDownloader($io, $composer->getConfig()), (bool) $input->getOption('offline'), !(bool) $input->getOption('allow-unverified-database'), is_string($expectedSha) && $expectedSha !== '' ? strtolower($expectedSha) : null);
         $option = static fn (string $name): ?string => is_string($v = $input->getOption($name)) && $v !== '' ? $v : null;
         try {
-            $settings = $locator->settings($option('database-location'), $option('database-path'), $option('database-max-age'));
+            $settings = $locator->settings($option('database-location'), $option('database-path'), $option('database-max-age'), false, $project === null ? null : dirname((string) realpath(Factory::getComposerFile())));
         } catch (\InvalidArgumentException $e) {
             $io->writeError('<error>' . ConsoleText::safe($e->getMessage()) . '</error>');
 

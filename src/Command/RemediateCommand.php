@@ -68,7 +68,7 @@ final class RemediateCommand extends BaseCommand
                 new InputOption('rebuild-database', null, InputOption::VALUE_NONE, 'When the database at its path is missing or not current, build it from the sources (Packagist, OSV, FriendsOfPHP, with EPSS and KEV data) instead of downloading it'),
                 new InputOption('database-sha256', null, InputOption::VALUE_REQUIRED, 'Expected sha256 of the advisory database (hex); a downloaded or cached copy that differs is refused. The trust anchor for a URL you do not publish yourself'),
                 new InputOption('allow-unverified-database', null, InputOption::VALUE_NONE, 'Accept a database URL without a published <url>.sha256 sidecar and without --database-sha256 (refused otherwise); the report says the download was not verified'),
-                new InputOption('accept-coverage-gaps', null, InputOption::VALUE_NONE, 'Exit 0 for a lock without findings even when the advisory source could not read records about locked packages (otherwise exit 4); the gaps stay in the report'),
+                new InputOption('accept-coverage-gaps', null, InputOption::VALUE_NONE, 'Exit 0 for a lock without findings even when the advisory source could not read records about locked packages (otherwise exit 4), and allow a fix that adds a package with such records (otherwise rejected); the gaps stay in the report'),
                 new InputOption('max-candidates', null, InputOption::VALUE_REQUIRED, 'Maximum number of candidate commands to try per finding', '10'),
                 new InputOption('solve-budget', null, InputOption::VALUE_REQUIRED, 'Maximum number of solver runs per finding, all search phases included (candidates, conflict expansion, parent descent, simplification)', (string) Planner::DEFAULT_SOLVE_BUDGET),
                 new InputOption('solver', null, InputOption::VALUE_REQUIRED, 'How candidates are verified: auto (in-process, falling back to a `composer update` subprocess when the in-process route errors), in-process, or subprocess', 'auto'),
@@ -246,7 +246,7 @@ HELP);
         }
         $option = static fn (string $name): ?string => is_string($v = $input->getOption($name)) && $v !== '' ? $v : null;
         try {
-            $settings = $locator->settings($option('database-location'), $option('database-path'), $option('database-max-age'), (bool) $input->getOption('no-database'));
+            $settings = $locator->settings($option('database-location'), $option('database-path'), $option('database-max-age'), (bool) $input->getOption('no-database'), $context->directory);
         } catch (\InvalidArgumentException $e) {
             $io->writeError('<error>' . ConsoleText::safe($e->getMessage()) . '</error>');
 
@@ -283,7 +283,9 @@ HELP);
             return Plan::EXIT_ADVISORIES_UNAVAILABLE;
         }
         $this->planWarnings[] = 'Advisory database unavailable; the configured repositories were asked instead, as composer audit does. Exploit data and coverage gaps are not available from that source.';
-        $io->writeError('<comment>' . ConsoleText::safe($why) . ' Asking the configured repositories instead.</comment>');
+        foreach ($locator->warnings() as $warning) {
+            $io->writeError('<comment>' . ConsoleText::safe($warning) . ($warning === $why ? ' Asking the configured repositories instead.' : '') . '</comment>');
+        }
 
         return self::composerAdvisoryProvider($composer, $context);
     }
@@ -308,6 +310,7 @@ HELP);
             IgnorePolicy::fromComposerConfig($this->requireComposer()->getConfig())->withIds($cliIgnores),
             is_string($minAge) && $minAge !== '' ? new ReleaseAgeGuard((int) $minAge) : null,
             max(1, (int) $input->getOption('solve-budget')),
+            (bool) $input->getOption('accept-coverage-gaps'),
         );
     }
 

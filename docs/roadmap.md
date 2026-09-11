@@ -152,5 +152,7 @@ has the details.
 - [ ] remaining long methods (`InProcessSolver::solve`, `DbBuildCommand::execute`,
   `HtmlRenderer::finding`, the planner's per-finding search) and the `PackageChange` kind constants
   as an enum
-- [ ] a fourth adversarial review once `--apply` exists, since that is the first feature that changes
+- [x] a fourth adversarial review (ten findings at c545e91 on filesystem safety, advisory completeness
+  and CI decisions), answered in the release after 0.6.1 with a regression test per finding
+- [ ] a fifth adversarial review once `--apply` exists, since that is the first feature that changes
   a project

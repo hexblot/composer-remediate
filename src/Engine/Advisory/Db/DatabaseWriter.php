@@ -30,7 +30,7 @@ final class DatabaseWriter
         }
         $tmp = $path . '.tmp-' . bin2hex(random_bytes(4));
         @unlink($tmp);
-        $hash = self::datasetHash($advisories, array_keys(array_filter($exploits, static fn (Enrichment\ExploitRecord $r): bool => $r->kevAdded !== null)));
+        $hash = self::datasetHash($advisories, array_keys(array_filter($exploits, static fn (Enrichment\ExploitRecord $r): bool => $r->kevAdded !== null)), $gaps);
 
         $pdo = new \PDO('sqlite:' . $tmp, null, null, [\PDO::ATTR_ERRMODE => \PDO::ERRMODE_EXCEPTION]);
         self::createSchema($pdo);
@@ -159,10 +159,14 @@ final class DatabaseWriter
      * these CVEs CISA lists as exploited. Retrieval timestamps, source metadata and EPSS scores (which
      * move daily for most CVEs) are excluded so an unchanged dataset hashes identically across builds.
      *
+     * Coverage gaps are part of the dataset too: a record the build could not read changes whether a
+     * scan may pass, so a build whose gaps differ must publish and must not be mistaken for the same data.
+     *
      * @param list<NormalizedAdvisory> $advisories
      * @param list<string>             $kevCves    CVEs of these advisories that appear in the KEV catalogue
+     * @param list<CoverageGap>        $gaps       records the build could not interpret
      */
-    public static function datasetHash(array $advisories, array $kevCves = []): string
+    public static function datasetHash(array $advisories, array $kevCves = [], array $gaps = []): string
     {
         $canonical = [];
         foreach ($advisories as $advisory) {
@@ -175,7 +179,12 @@ final class DatabaseWriter
         ksort($canonical);
         $kev = array_values(array_unique(array_map('strtoupper', $kevCves)));
         sort($kev);
+        $gapKeys = array_values(array_unique(array_map(static fn (CoverageGap $g): string => implode("\t", [$g->source, $g->remoteId, strtolower((string) $g->package), $g->reason]), $gaps)));
+        sort($gapKeys);
+        if ($kev === [] && $gapKeys === []) {
+            return hash('sha256', json_encode($canonical, JSON_THROW_ON_ERROR));
+        }
 
-        return hash('sha256', json_encode($kev === [] ? $canonical : ['advisories' => $canonical, 'kev' => $kev], JSON_THROW_ON_ERROR));
+        return hash('sha256', json_encode(['advisories' => $canonical, 'kev' => $kev] + ($gapKeys === [] ? [] : ['gaps' => $gapKeys]), JSON_THROW_ON_ERROR));
     }
 }

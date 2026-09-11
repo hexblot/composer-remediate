@@ -21,7 +21,9 @@ findings do:
 | `Advisory source "…" only knows advisories for the current lock` | The source was a `composer audit` dump; candidate locks could not be checked for other advisories. |
 | `N advisory matches ignored per configuration` | `--ignore`, `config.audit.ignore` or `config.policy` suppressed findings. |
 | `Ignore hygiene: …` | Ignore entries that match nothing in this lock; stale configuration. |
-| `Coverage gap: …` | An advisory database record about a locked package (or one it replaces or provides) could not be interpreted when the database was built; the package is treated as unaffected by that record. A lock with gaps and no findings exits `4`, not `0`, unless `--accept-coverage-gaps` is given. See [Advisory database](advisory-database.md#coverage-gaps). |
+| `Coverage gap: …` | An advisory database record about a locked package (or one it replaces or provides) could not be interpreted when the database was built, or a record could not be attributed to any package at all; the package is treated as unaffected by that record. A lock with gaps and no findings exits `4`, not `0`, unless `--accept-coverage-gaps` is given, and a fix that would add a package with such records is rejected unless they are accepted, in which case the recommendation lists them. See [Advisory database](advisory-database.md#coverage-gaps). |
+| `Advisory source chosen by the analysed project's composer.json …` | The project, not the operator, decided where advisories come from (`extra.remediate.database`); a gate should treat that as the project's claim. |
+| `The advisory database at … is a local build with private advisories … is kept` | A newer public database exists but the local build with `--include` files was not replaced, so those advisories stay in force; public advisories published since are unknown until it is rebuilt. |
 | `Could not confirm that the advisory database at … is current` / `Offline: using the advisory database at …` | The published database could not be asked (or `--offline`); the local copy is used and its build age is given. `--database-max-age` turns this into exit `4` past a chosen age. |
 | `Advisory database unavailable; the configured repositories were asked instead` | No copy at the database path and nothing could be fetched; the run used the repository API as `composer audit` does, without exploit data or coverage gaps. |
 | `… is not a readable advisory database …; it will be replaced` | The file at the database path was not a database (corrupt, foreign); it was replaced by a download. |
@@ -143,7 +145,7 @@ code.
 |---|---|
 | `0` | No known vulnerabilities in the lock (after `--fail-on` and baseline), and no coverage gap about a locked package unless `--accept-coverage-gaps` was given |
 | `1` | Vulnerabilities found and every gated one has a verified fix |
-| `2` | At least one gated vulnerability has no verified fix, and every solve completed |
+| `2` | At least one gated vulnerability has no verified fix (not even through the combined command), and every solve completed |
 | `3` | Tool error: no lock file, bad option, or a solver error left an outcome unknown |
 | `4` | Advisory data unavailable: the source could not be read or fetched, an incomplete source cannot verify candidates, or records about locked packages could not be read (coverage gaps) and were not accepted |
 | `5` | Package metadata could not be fetched while solving |

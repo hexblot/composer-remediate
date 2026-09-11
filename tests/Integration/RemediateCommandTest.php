@@ -268,6 +268,36 @@ final class RemediateCommandTest extends TestCase
         self::assertStringContainsString('None of the configured repositories provides security advisories', $result->stderr, 'the fallback ran and failed for its own reason');
     }
 
+    public function testTheAnalysedProjectCannotPointTheDatabasePathOutsideItself(): void
+    {
+        CommandRunner::editComposerJson($this->project, static function (array $json): array {
+            $json['extra'] = ['remediate' => ['database_path' => '../../etc/remediate.sqlite']];
+
+            return $json;
+        });
+        $result = $this->runner->run(['command' => 'remediate', '--database-location' => 'https://127.0.0.1:9/advisories.sqlite'], $this->project);
+        self::assertSame(Plan::EXIT_ERROR, $result->exitCode, $result->describe());
+        self::assertStringContainsString('extra.remediate.database_path must be a relative path inside the project', $result->stderr);
+    }
+
+    public function testAProjectChosenSourceIsReportedAndKeptApartFromTheSharedFile(): void
+    {
+        $previous = Platform::getEnv(DatabaseLocator::ENV);
+        Platform::clearEnv(DatabaseLocator::ENV);
+        CommandRunner::editComposerJson($this->project, static function (array $json): array {
+            $json['extra'] = ['remediate' => ['database' => 'https://127.0.0.1:9/advisories.sqlite']];
+
+            return $json;
+        });
+        try {
+            $result = $this->runner->run(['command' => 'remediate'], $this->project);
+        } finally {
+            is_string($previous) ? Platform::putEnv(DatabaseLocator::ENV, $previous) : Platform::clearEnv(DatabaseLocator::ENV);
+        }
+        self::assertStringContainsString("Advisory source chosen by the analysed project's composer.json", $result->stderr . $result->stdout);
+        self::assertStringContainsString('/remediate/sources/', $result->stderr, 'its copy lives in a file of its own, not the shared default');
+    }
+
     public function testAPinnedDigestForbidsTheFallback(): void
     {
         $result = $this->runner->run(['command' => 'remediate', '--database-location' => 'https://127.0.0.1:9/advisories.sqlite', '--database-sha256' => str_repeat('a', 64)], $this->project);

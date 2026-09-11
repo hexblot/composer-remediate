@@ -62,7 +62,8 @@ HELP);
     protected function execute(InputInterface $input, OutputInterface $output): int
     {
         $io = $this->getIO();
-        $composer = $this->tryComposer() ?? Factory::createGlobal($io, true, true);
+        $project = $this->tryComposer();
+        $composer = $project ?? Factory::createGlobal($io, true, true);
         if ($composer === null) {
             $io->writeError('<error>Could not initialise Composer.</error>');
 
@@ -71,7 +72,7 @@ HELP);
         $downloader = Factory::createHttpDownloader($io, $composer->getConfig());
         $locator = new DatabaseLocator($composer, $downloader);
         $target = $input->getOption('output');
-        $settings = $locator->settings(null, is_string($target) && $target !== '' ? $target : null);
+        $settings = $locator->settings(null, is_string($target) && $target !== '' ? $target : null, null, false, $project === null ? null : dirname((string) realpath(Factory::getComposerFile())));
         $path = $settings->path;
         $tempDir = $locator->cacheDirectory() . '/tmp';
         $str = static fn (string $name): ?string => is_string($v = $input->getOption($name)) && $v !== '' ? $v : null;
@@ -100,7 +101,7 @@ HELP);
                 $result = null;
                 $located = $locator->locate($settings, static function (string $path) use ($build, &$result): void {
                     $result = $build($path);
-                });
+                }, true);
                 foreach ($locator->warnings() as $warning) {
                     $io->writeError('<warning>' . ConsoleText::safe($warning) . '</warning>');
                 }

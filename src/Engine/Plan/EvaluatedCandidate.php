@@ -22,6 +22,8 @@ final class EvaluatedCandidate
         public readonly bool $valid,
         public readonly ?string $rejectionReason,
         public readonly array $blockingRisk = [],
+        /** @var list<string> coverage-gap warnings about packages this command adds to the lock (accepted gaps only; otherwise the candidate is rejected) */
+        public readonly array $coverageGaps = [],
     ) {
     }
 }

@@ -49,7 +49,30 @@ runs confirm with one small request or download only when the database moved. Se
 [CI integration](ci-integration.md).
 
 A file given as `--database-location` (a local path rather than a URL) is read as it is, without any
-check, which is what that option meant before 0.7.
+freshness check (a `--database-sha256` pin still applies), which is what that option meant before 0.7.
+
+### What the analysed project may configure
+
+The `composer.json` being analysed is untrusted input: it may belong to a repository you scan
+precisely because you do not trust it. Its `extra.remediate` settings are honoured with limits.
+
+- `database` (the source) is honoured, but the copy is kept in a file of its own under the cache
+  directory rather than in the shared default file another project's scan reads, and the report
+  header carries a warning that the project chose the source. `--database-location` or
+  `REMEDIATE_DATABASE` override it.
+- `database_path` must be a relative path that stays inside the project directory (a parent
+  directory that is a symbolic link out of the project does not count). A scan can therefore only ever
+  write inside the checkout being scanned; a path elsewhere needs `--database-path` or
+  `REMEDIATE_DATABASE_PATH` from the operator.
+- Whatever the settings say, a file at the path that is not an advisory database is never replaced
+  (the run fails and says so), a download is validated as a database before it is moved into place, and
+  a copy downloaded from one source is never accepted as current for another: switching sources
+  replaces it.
+- A local build that includes private advisories (`db-build --include=…`) is never replaced by a
+  download, even when the published database is newer: the report says the copy is kept and that
+  public advisories published since are unknown, and `remediate:db-build --if-stale` with the same
+  `--include` files refreshes it. `--rebuild-database` on `remediate`, which builds with the defaults,
+  keeps such a copy too.
 
 ## Build it
 

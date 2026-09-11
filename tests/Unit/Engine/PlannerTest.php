@@ -215,6 +215,80 @@ final class PlannerTest extends TestCase
         self::assertLessThanOrEqual(1 + Planner::GLOBAL_SOLVE_BUDGET, count($plan->combinedAttempts));
     }
 
+    /**
+     * A scripted provider that also knows which packages it could not read records about.
+     *
+     * @param array<string, string> $gapsByPackage package => gap description
+     */
+    private static function coverageAware(\Remediate\Engine\Advisory\AdvisoryProvider $inner, array $gapsByPackage): \Remediate\Engine\Advisory\AdvisoryProvider
+    {
+        return new class($inner, $gapsByPackage) implements \Remediate\Engine\Advisory\AdvisoryProvider, \Remediate\Engine\Advisory\CoverageAware {
+            /** @param array<string, string> $gaps */
+            public function __construct(private readonly \Remediate\Engine\Advisory\AdvisoryProvider $inner, private readonly array $gaps)
+            {
+            }
+
+            public function advisoriesFor(array $packageNames): array
+            {
+                return $this->inner->advisoriesFor($packageNames);
+            }
+
+            public function describe(): string
+            {
+                return $this->inner->describe();
+            }
+
+            public function isComplete(): bool
+            {
+                return true;
+            }
+
+            public function coverageWarnings(array $packageNames): array
+            {
+                return array_values(array_map(static fn (string $g): string => 'Coverage gap: ' . $g, array_intersect_key($this->gaps, array_flip($packageNames))));
+            }
+        };
+    }
+
+    public function testAFixThatAddsAPackageWithUnreadableAdvisoryRecordsIsRejectedUnlessGapsAreAccepted(): void
+    {
+        // The fix for acme/lib pulls in acme/new, about which the source holds a record it could not read.
+        $project = $this->project(['acme/lib' => '^1.0'], [['acme/lib', '1.0.0']]);
+        $solver = (new FakeSolver())->resolves('composer update acme/lib', ScriptedProject::lock([['acme/lib', '1.1.0'], ['acme/new', '2.0.0']]));
+        $advisories = self::coverageAware(ScriptedProject::advisories([ScriptedProject::advisory('PKSA-1', 'acme/lib', '<1.1.0')]), ['acme/new' => 'Upstream record GHSA-x for acme/new could not be interpreted']);
+
+        $strict = (new Planner($advisories, $solver))->plan($project->context(), $project->workspace());
+        self::assertFalse($strict->findings[0]->hasRemediation(), 'the new package cannot be vouched for');
+        self::assertStringContainsString('adds packages whose advisory records the source could not read', $strict->findings[0]->evaluated[0]->rejectionReason ?? '');
+        self::assertStringContainsString('--accept-coverage-gaps', $strict->findings[0]->evaluated[0]->rejectionReason ?? '');
+        self::assertSame([], $strict->coverageGaps, 'the lock itself has no gaps');
+
+        $accepting = (new Planner($advisories, $solver, new CandidateGenerator(), true, 10, null, null, null, Planner::DEFAULT_SOLVE_BUDGET, true))->plan($project->context(), $project->workspace());
+        self::assertTrue($accepting->findings[0]->hasRemediation());
+        $recommended = $accepting->findings[0]->recommended();
+        self::assertNotNull($recommended);
+        self::assertSame(['Coverage gap: Upstream record GHSA-x for acme/new could not be interpreted'], $recommended->coverageGaps, 'disclosed on the recommendation');
+        self::assertSame($recommended->coverageGaps, $accepting->coverageGaps, 'and at plan level');
+        self::assertNotNull($accepting->combined);
+        self::assertSame($recommended->coverageGaps, $accepting->combined->coverageGaps);
+    }
+
+    public function testACombinedCommandThatFixesEverythingCountsForTheExitCode(): void
+    {
+        // acme/child has no fix of its own (every candidate conflicts) but updating acme/parent removes it.
+        $project = $this->project(['acme/parent' => '^1.0'], [['acme/parent', '1.0.0'], ['acme/child', '1.0.0']], [], ['acme/parent' => ['acme/child' => '^1.0']]);
+        $solver = (new FakeSolver())->resolves('composer update acme/parent', ScriptedProject::lock([['acme/parent', '1.1.0'], ['acme/child', '1.1.0']]));
+        $advisories = ScriptedProject::advisories([ScriptedProject::advisory('PKSA-P', 'acme/parent', '<1.1.0'), ScriptedProject::advisory('PKSA-C', 'acme/child', '<1.1.0')]);
+
+        $plan = (new Planner($advisories, $solver))->plan($project->context(), $project->workspace());
+
+        $child = array_values(array_filter($plan->findings, static fn ($p): bool => $p->finding->packageName === 'acme/child'))[0];
+        self::assertFalse($child->hasRemediation(), 'no standalone fix for the child');
+        self::assertNotNull($plan->combined);
+        self::assertTrue($plan->combined->fixesAll());
+        self::assertSame(Plan::EXIT_REMEDIATION_AVAILABLE, $plan->exitCode(), 'a verified command that fixes everything exists');
+    }
+
     public function testReleaseAgeGuardRefusesUnknownReleaseDates(): void
     {
         $project = $this->project(['acme/lib' => '^1.0'], [['acme/lib', '1.0.0']]);

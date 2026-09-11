@@ -5,6 +5,53 @@ All notable changes to this project are documented here. The format follows
 
 ## [Unreleased]
 
+### Security
+
+Answers to a fourth adversarial adoption review (ten findings at c545e91, reproduced by the reviewer
+with a separate harness), each with a regression test.
+
+- **A scan never writes outside the checkout being scanned unless the operator asked.** The
+  analysed project's `extra.remediate.database_path` must be a relative path inside the project (a
+  parent that is a symbolic link out of it does not count); an absolute or escaping path is exit 3.
+  A file at the database path that is not an advisory database is never replaced, and a download is
+  validated as an advisory database before it is moved into place, so matching-checksum arbitrary
+  content from a project-chosen source cannot land on disk. Before, an existing non-database file was
+  treated as replaceable and the bytes were renamed into place unvalidated.
+- **A project cannot poison the shared database.** A source chosen by the project's `composer.json`
+  is kept in a file of its own under the cache directory and the report says the project chose it; a
+  copy downloaded from one source is never accepted as current for another, whatever its build time
+  says (the status file records the source); a local build that claims a build time in the future is
+  not current either. Before, an empty database from one source passed as "confirmed current" for a
+  second source through the newer-build rule.
+- **`--database-sha256` constrains every path that selects a database**, including a local file
+  named as the source, which used to return before the check. A pinned digest also lets a download
+  proceed from a source that publishes no digest of its own, verifying against the pin.
+- **Private advisories are not lost to a refresh.** A local build whose sources include `--include`
+  files is never replaced by a download of the public database, even when that is newer; the report
+  says the copy is kept and that public advisories published since are unknown, and
+  `remediate:db-build --if-stale` with the same `--include` files is the refresh. `--rebuild-database`
+  on `remediate`, which builds with the defaults, keeps such a copy too.
+- **A verified fix cannot add a package the source cannot vouch for.** A candidate whose lock adds
+  packages (or newly replaced or provided names) with unreadable advisory records is rejected with the
+  reason, individually and in the combined command; `--accept-coverage-gaps` allows it and the gaps
+  are listed on the recommendation (`coverage_gaps` in the JSON recommendation) and in the plan's gaps.
+- **Unattributable records reach every scan.** Coverage gaps the build could not attribute to any
+  package (malformed advisory containers) are part of every gap query and are reported with a warning
+  that any package in the lock may be affected; a lock without findings exits 4 unless accepted. Before,
+  scan-time queries selected only named packages and discarded them.
+- **Coverage gaps are part of the dataset hash**, so a build whose gaps changed is published and a
+  local copy with different gaps is not declared current. Before, only advisories and KEV listings
+  hashed.
+- **The exit code counts the combined command.** A finding without a standalone fix that the
+  combined command fixes (a parent update removing the vulnerable child) no longer yields exit 2 when
+  every finding is fixed by that command.
+- **GitLab reports fail honestly.** `scan.status` is `failure` for exit 3, 4 and 5 and
+  `scan.messages` carries the reason and every report warning, so an empty vulnerability list from a
+  scan that could not establish coverage no longer reads as a clean result on the dashboard.
+- Documentation brought in line: SECURITY.md describes the download verification and the limits on
+  what the analysed project may configure; the privacy promise names the publisher request and how to
+  stop it; the report guide lists the new warnings.
+
 ### Changed
 
 - **The advisory database is the default source, kept current at a fixed path.** A run without

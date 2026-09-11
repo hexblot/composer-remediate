@@ -59,6 +59,31 @@ final class GitLabRendererTest extends TestCase
         self::assertMatchesRegularExpression('{^[0-9a-f]{8}-[0-9a-f]{4}-5[0-9a-f]{3}-[89ab][0-9a-f]{3}-[0-9a-f]{12}$}', $v['id']);
     }
 
+    public function testAScanThatCouldNotEstablishCoverageIsAFailedScanNotAnEmptyOne(): void
+    {
+        $gap = 'Coverage gap: Upstream record GHSA-bad for acme/lib could not be interpreted at database build (unparsable); acme/lib is treated as unaffected by that record.';
+        $plan = new Plan([], ['engine_version' => 'test'], [$gap], null, null, [['name' => 'acme/lib', 'version' => '1.4.0', 'dev' => false]], [], [$gap]);
+        self::assertSame(Plan::EXIT_ADVISORIES_UNAVAILABLE, $plan->exitCode());
+
+        $report = json_decode((new GitLabRenderer(true))->render($plan), true, 512, JSON_THROW_ON_ERROR);
+        self::assertIsArray($report);
+        self::assertSame([], $report['vulnerabilities']);
+        self::assertSame('failure', $report['scan']['status'], 'an empty list marked success would read as clean');
+        self::assertSame(['warn', 'warn'], array_column($report['scan']['messages'], 'level'));
+        self::assertStringContainsString('advisory data unavailable or incomplete for this lock (exit 4)', $report['scan']['messages'][0]['value']);
+        self::assertSame($gap, $report['scan']['messages'][1]['value'], 'the coverage warning is carried, not dropped');
+
+        $accepted = json_decode((new GitLabRenderer(true))->render($plan->withAcceptedCoverageGaps()), true, 512, JSON_THROW_ON_ERROR);
+        self::assertIsArray($accepted);
+        self::assertSame('success', $accepted['scan']['status']);
+        self::assertSame([$gap], array_column($accepted['scan']['messages'], 'value'), 'accepted gaps are still disclosed');
+
+        $normal = json_decode((new GitLabRenderer(true))->render($this->plan()), true, 512, JSON_THROW_ON_ERROR);
+        self::assertIsArray($normal);
+        self::assertSame('success', $normal['scan']['status']);
+        self::assertSame([], $normal['scan']['messages']);
+    }
+
     public function testOutputSpecRecognisesGitLabReports(): void
     {
         self::assertSame([ReportFormat::GitLab, 'gl-dependency-scanning-report.json'], ReportFormat::parseOutputSpec('gl-dependency-scanning-report.json'));

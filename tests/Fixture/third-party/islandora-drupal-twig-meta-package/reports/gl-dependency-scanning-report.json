@@ -1296,6 +1296,12 @@
         "type": "dependency_scanning",
         "start_time": "2026-01-01T00:00:00",
         "end_time": "2026-01-01T00:00:00",
-        "status": "success"
+        "status": "success",
+        "messages": [
+            {
+                "level": "warn",
+                "value": "twig/twig: the recommended command moves drupal/core, drupal/core-recommended to a version that still carries another advisory; Composer 2.10+ advisory blocking may refuse it until that advisory is ignored in config.policy or blocking is disabled."
+            }
+        ]
     }
 }

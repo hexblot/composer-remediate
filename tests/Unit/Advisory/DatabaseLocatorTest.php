@@ -38,7 +38,12 @@ final class DatabaseLocatorTest extends TestCase
         foreach (glob($this->cacheDir . '/remediate/*') ?: [] as $file) {
             @unlink($file);
         }
+        foreach (glob($this->cacheDir . '/remediate/sources/*') ?: [] as $file) {
+            @unlink($file);
+        }
+        @rmdir($this->cacheDir . '/remediate/sources');
         @rmdir($this->cacheDir . '/remediate');
+        @rmdir($this->cacheDir . '/var');
         @rmdir($this->cacheDir);
     }
 
@@ -62,7 +67,8 @@ final class DatabaseLocatorTest extends TestCase
     }
 
     /** The bytes of a minimal advisory database with the given metadata. */
-    private static function database(string $datasetHash, string $builtAt): string
+    /** @param list<string> $sourceNames the build's source names as db-build records them (`local:<file>` for --include files) */
+    private static function database(string $datasetHash, string $builtAt, array $sourceNames = ['Packagist']): string
     {
         $tmp = tempnam(sys_get_temp_dir(), 'remediate-db-');
         self::assertNotFalse($tmp);
@@ -70,7 +76,8 @@ final class DatabaseLocatorTest extends TestCase
         $pdo = new \PDO('sqlite:' . $tmp, null, null, [\PDO::ATTR_ERRMODE => \PDO::ERRMODE_EXCEPTION]);
         $pdo->exec('CREATE TABLE meta (key TEXT PRIMARY KEY, value TEXT NOT NULL)');
         $insert = $pdo->prepare('INSERT INTO meta VALUES (?, ?)');
-        foreach (['schema_version' => '1', 'built_at' => $builtAt, 'dataset_hash' => $datasetHash, 'advisory_count' => '1'] as $k => $v) {
+        $sources = json_encode(array_map(static fn (string $n): array => ['name' => $n, 'fetched_at' => $builtAt, 'records' => 1], $sourceNames), JSON_THROW_ON_ERROR);
+        foreach (['schema_version' => '1', 'built_at' => $builtAt, 'dataset_hash' => $datasetHash, 'advisory_count' => '1', 'sources' => $sources] as $k => $v) {
             $insert->execute([$k, $v]);
         }
         $pdo = null;
@@ -396,16 +403,191 @@ final class DatabaseLocatorTest extends TestCase
         self::assertSame('see https://***@h/x and https://***@h/y', DatabaseLocator::redact('see https://a:b@h/x and https://c@h/y'));
     }
 
-    public function testAFileThatIsNotADatabaseIsReplaced(): void
+    public function testAFileThatIsNotADatabaseIsNeverReplaced(): void
     {
+        // The path may have been pointed at something that matters; this tool does not overwrite what it did not write.
         mkdir(dirname($this->path()), 0700, true);
         file_put_contents($this->path(), 'not sqlite');
         $bytes = self::database('h1', self::hoursAgo(1));
-        $locator = new DatabaseLocator($this->composer(), $this->downloader([self::URL => $bytes] + self::published($bytes, 'h1', self::hoursAgo(1))));
+        $locator = new DatabaseLocator($this->composer(), $this->downloader([self::URL => $bytes] + self::published($bytes, 'h1', self::hoursAgo(1)), $requests));
+        try {
+            $locator->locate($this->settings($locator));
+            self::fail('a foreign file at the path must be refused');
+        } catch (AdvisoryLookupFailed $e) {
+            self::assertStringContainsString('is not an advisory database', $e->getMessage());
+            self::assertStringContainsString('is not replaced', $e->getMessage());
+        }
+        self::assertStringEqualsFile($this->path(), 'not sqlite');
+        self::assertSame([], $requests, 'nothing is even fetched');
+    }
+
+    public function testADownloadThatIsNotADatabaseNeverReachesThePath(): void
+    {
+        // A source (or a project's composer.json pointing at one) cannot use the tool to write arbitrary bytes.
+        $payload = "<?php system('id');";
+        $locator = new DatabaseLocator($this->composer(), $this->downloader([self::URL => $payload, self::LATEST => json_encode(['sha256' => hash('sha256', $payload)], JSON_THROW_ON_ERROR)]));
+        try {
+            $locator->locate($this->settings($locator));
+            self::fail('non-database content must be refused even with a matching digest');
+        } catch (AdvisoryLookupFailed $e) {
+            self::assertStringContainsString('is not an advisory database', $e->getMessage());
+            self::assertStringContainsString('nothing was written to ' . $this->path(), $e->getMessage());
+        }
+        self::assertFileDoesNotExist($this->path());
+        self::assertSame([], glob(dirname($this->path()) . '/*.tmp-*') ?: []);
+    }
+
+    public function testACopyDownloadedFromOneSourceIsNeverCurrentForAnother(): void
+    {
+        // Source A publishes an (empty) database; the copy must not pass as current when the source
+        // becomes B, whatever its build time says, so B's data is fetched.
+        $fromA = self::database('empty', self::hoursAgo(0));
+        $locator = new DatabaseLocator($this->composer(), $this->downloader([self::URL => $fromA] + self::published($fromA, 'empty', self::hoursAgo(0))));
+        self::assertSame(Freshness::Downloaded, $locator->locate($this->settings($locator))?->freshness);
+
+        $b = 'https://other.test/advisories.sqlite';
+        $fromB = self::database('real', self::hoursAgo(5));
+        $switched = new DatabaseLocator($this->composer(), $this->downloader([$b => $fromB, $b . '.sha256' => hash('sha256', $fromB), 'https://other.test/latest.json' => json_encode(['sha256' => hash('sha256', $fromB), 'dataset_hash' => 'real', 'published_at' => self::hoursAgo(5)], JSON_THROW_ON_ERROR)]));
+        $located = $switched->locate($this->settings($switched, $b));
+
+        self::assertSame(Freshness::Downloaded, $located?->freshness);
+        self::assertStringEqualsFile($this->path(), $fromB);
+    }
+
+    public function testALocalBuildClaimingToComeFromTheFutureIsNotCurrent(): void
+    {
+        $local = self::database('planted', gmdate(DATE_ATOM, time() + 30 * 86400));
+        $published = self::database('h1', self::hoursAgo(1));
+        mkdir(dirname($this->path()), 0700, true);
+        file_put_contents($this->path(), $local);
+        $locator = new DatabaseLocator($this->composer(), $this->downloader([self::URL => $published] + self::published($published, 'h1', self::hoursAgo(1))));
 
         self::assertSame(Freshness::Downloaded, $locator->locate($this->settings($locator))?->freshness);
-        self::assertStringEqualsFile($this->path(), $bytes);
-        self::assertStringContainsString('is not a readable advisory database', $locator->warnings()[0]);
+        self::assertStringEqualsFile($this->path(), $published);
+    }
+
+    public function testAPinnedDigestAppliesToAFileNamedAsTheSource(): void
+    {
+        $file = $this->cacheDir . '/own.sqlite';
+        $bytes = self::database('h1', self::hoursAgo(1));
+        file_put_contents($file, $bytes);
+        $good = new DatabaseLocator($this->composer(), $this->downloader([]), false, true, hash('sha256', $bytes));
+        self::assertSame(Freshness::Explicit, $good->locate($good->settings($file))?->freshness);
+
+        $bad = new DatabaseLocator($this->composer(), $this->downloader([]), false, true, str_repeat('b', 64));
+        try {
+            $bad->locate($bad->settings($file));
+            self::fail('a pinned digest must constrain every path that selects a database');
+        } catch (AdvisoryLookupFailed $e) {
+            self::assertStringContainsString('does not match the expected sha256', $e->getMessage());
+        }
+        self::assertFileExists($file, 'a file the operator named is not discarded');
+        @unlink($file);
+    }
+
+    public function testALocalBuildWithPrivateAdvisoriesIsKeptRatherThanReplaced(): void
+    {
+        $private = self::database('mine', self::hoursAgo(30), ['Packagist', 'local:internal.json']);
+        $published = self::database('h1', self::hoursAgo(1));
+        mkdir(dirname($this->path()), 0700, true);
+        file_put_contents($this->path(), $private);
+        $responses = [self::URL => $published] + self::published($published, 'h1', self::hoursAgo(1));
+
+        $locator = new DatabaseLocator($this->composer(), $this->downloader($responses, $requests));
+        $located = $locator->locate($this->settings($locator));
+        self::assertSame(Freshness::Unconfirmed, $located?->freshness);
+        self::assertStringContainsString('local build with private advisories, kept', $located->provenance);
+        self::assertStringEqualsFile($this->path(), $private);
+        self::assertNotContains(self::URL, $requests);
+        self::assertStringContainsString('private advisories (internal.json)', $locator->warnings()[0]);
+        self::assertStringContainsString('public advisories published since it was built 30 hours ago are unknown', $locator->warnings()[0]);
+        self::assertStringContainsString('remediate:db-build --if-stale and the same --include files', $locator->warnings()[0]);
+
+        // --rebuild-database builds with the defaults, which would drop the private advisories: kept too.
+        $defaults = new DatabaseLocator($this->composer(), $this->downloader($responses));
+        $rebuilt = false;
+        self::assertSame(Freshness::Unconfirmed, $defaults->locate($this->settings($defaults), static function () use (&$rebuilt): void {
+            $rebuilt = true;
+        })?->freshness);
+        self::assertFalse($rebuilt);
+
+        // db-build --if-stale with the same --include files is the refresh that keeps them.
+        $complete = new DatabaseLocator($this->composer(), $this->downloader($responses));
+        $refreshed = self::database('mine2', self::hoursAgo(0), ['Packagist', 'local:internal.json']);
+        self::assertSame(Freshness::Rebuilt, $complete->locate($this->settings($complete), static function (string $path) use ($refreshed): void {
+            file_put_contents($path, $refreshed);
+        }, true)?->freshness);
+        self::assertStringEqualsFile($this->path(), $refreshed);
+    }
+
+    public function testAPinnedDigestDownloadsEvenWhenThePublisherOffersNoDigest(): void
+    {
+        $bytes = self::database('h1', self::hoursAgo(1));
+        $locator = new DatabaseLocator($this->composer(), $this->downloader([self::URL => $bytes]), false, true, hash('sha256', $bytes));
+
+        $located = $locator->locate($this->settings($locator));
+
+        self::assertSame(Freshness::Downloaded, $located?->freshness);
+        self::assertStringContainsString('verified against the pinned digest', $located->provenance);
+        self::assertSame([], $locator->warnings());
+    }
+
+    public function testAProjectChosenSourceGetsItsOwnFileAndIsReported(): void
+    {
+        $env = \Composer\Util\Platform::getEnv(DatabaseSettings::ENV_LOCATION);
+        \Composer\Util\Platform::clearEnv(DatabaseSettings::ENV_LOCATION);
+        try {
+            $composer = $this->composer(['remediate' => ['database' => 'https://evil.test/advisories.sqlite']]);
+            $locator = new DatabaseLocator($composer, $this->downloader([]));
+            $settings = $locator->settings();
+
+            self::assertSame(['https://evil.test/advisories.sqlite'], $settings->sources);
+            self::assertTrue($settings->sourcesFromProject);
+            self::assertNotSame($this->path(), $settings->path, 'never the shared default file');
+            self::assertStringStartsWith($this->cacheDir . '/remediate/sources/', $settings->path);
+            self::assertCount(1, $settings->notes);
+            self::assertStringContainsString("chosen by the analysed project's composer.json", $settings->notes[0]);
+
+            $locator->locate($settings);
+            self::assertStringContainsString("chosen by the analysed project's composer.json", $locator->warnings()[0], 'the note reaches the report');
+
+            $operator = $locator->settings('https://mirror.test/x.sqlite');
+            self::assertSame($this->path(), $operator->path, 'an operator-chosen source uses the default path');
+            self::assertFalse($operator->sourcesFromProject);
+        } finally {
+            if (is_string($env)) {
+                \Composer\Util\Platform::putEnv(DatabaseSettings::ENV_LOCATION, $env);
+            }
+        }
+    }
+
+    public function testAProjectChosenPathMustStayInsideTheProject(): void
+    {
+        $project = $this->cacheDir . '/project';
+        mkdir($project . '/sub', 0700, true);
+        $outside = $this->cacheDir . '/outside';
+        mkdir($outside, 0700, true);
+        symlink($outside, $project . '/escape');
+        $downloader = $this->downloader([]);
+
+        $fine = new DatabaseLocator($this->composer(['remediate' => ['database_path' => 'sub/adv.sqlite']]), $downloader);
+        self::assertSame(realpath($project . '/sub') . '/adv.sqlite', $fine->settings(self::URL, null, null, false, $project)->path);
+
+        foreach (['/etc/passwd', '../elsewhere.sqlite', 'sub/../../x.sqlite', 'escape/adv.sqlite'] as $bad) {
+            $locator = new DatabaseLocator($this->composer(['remediate' => ['database_path' => $bad]]), $downloader);
+            try {
+                $locator->settings(self::URL, null, null, false, $project);
+                self::fail("$bad must be rejected");
+            } catch (\InvalidArgumentException $e) {
+                self::assertStringContainsString('extra.remediate.database_path', $e->getMessage(), $bad);
+            }
+        }
+        $operator = new DatabaseLocator($this->composer(['remediate' => ['database_path' => '/etc/passwd']]), $downloader);
+        self::assertSame('/tmp/operator.sqlite', $operator->settings(self::URL, '/tmp/operator.sqlite', null, false, $project)->path, 'the operator\'s own path outranks and is unrestricted');
+        @unlink($project . '/escape');
+        @rmdir($project . '/sub');
+        @rmdir($project);
+        @rmdir($outside);
     }
 
     public function testSourcesAreTriedInOrderUntilOneAnswers(): void
@@ -503,16 +685,17 @@ final class DatabaseLocatorTest extends TestCase
 
     public function testComposerJsonProvidesEverySettingIncludingASourceList(): void
     {
-        $composer = $this->composer(['remediate' => ['database' => ['https://a.test/x.sqlite', 'https://b.test/y.sqlite'], 'database_path' => '/srv/adv.sqlite', 'database_max_age' => '48h']]);
+        $composer = $this->composer(['remediate' => ['database' => ['https://a.test/x.sqlite', 'https://b.test/y.sqlite'], 'database_path' => 'var/adv.sqlite', 'database_max_age' => '48h']]);
         $locator = new DatabaseLocator($composer, $this->downloader([]));
 
         // The environment outranks composer.json; the test bootstrap sets it, so it is lifted here.
         $env = \Composer\Util\Platform::getEnv(DatabaseSettings::ENV_LOCATION);
         \Composer\Util\Platform::clearEnv(DatabaseSettings::ENV_LOCATION);
         try {
-            $settings = $locator->settings();
+            $settings = $locator->settings(null, null, null, false, $this->cacheDir);
             self::assertSame(['https://a.test/x.sqlite', 'https://b.test/y.sqlite'], $settings->sources);
-            self::assertSame('/srv/adv.sqlite', $settings->path);
+            self::assertSame(realpath($this->cacheDir) . '/var/adv.sqlite', $settings->path, 'a project path, relative and inside the project');
+            self::assertTrue($settings->sourcesFromProject);
             self::assertSame(48 * 3600, $settings->maxAgeSeconds);
             self::assertSame('https://a.test/x.sqlite,https://b.test/y.sqlite', $locator->configured(null));
             self::assertSame('https://c.test/z.sqlite', $locator->configured('https://c.test/z.sqlite'), 'the option wins');

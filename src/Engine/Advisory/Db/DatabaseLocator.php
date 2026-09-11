@@ -71,9 +71,9 @@ final class DatabaseLocator
      *
      * @throws \InvalidArgumentException for a max age that is not a duration
      */
-    public function settings(?string $location = null, ?string $path = null, ?string $maxAge = null, bool $noDatabase = false): DatabaseSettings
+    public function settings(?string $location = null, ?string $path = null, ?string $maxAge = null, bool $noDatabase = false, ?string $projectDir = null): DatabaseSettings
     {
-        return DatabaseSettings::resolve($this->composer, $this->defaultBuildPath(), $location, $path, $maxAge, $noDatabase);
+        return DatabaseSettings::resolve($this->composer, $this->defaultBuildPath(), $location, $path, $maxAge, $noDatabase, $projectDir);
     }
 
     /** The configured source (option, environment, composer.json), or null when none is configured. */
@@ -94,19 +94,28 @@ final class DatabaseLocator
      * mismatch, an unverifiable download, a symbolic link, a non-https source, a copy older than the
      * maximum age) throw.
      *
-     * @param callable(string): void|null $rebuild builds the database at the given path from the sources instead of
-     *                                             downloading, when the local copy is missing or stale
+     * @param callable(string): void|null $rebuild         builds the database at the given path from the sources instead
+     *                                                     of downloading, when the local copy is missing or stale
+     * @param bool                        $rebuildComplete the rebuild carries every source the current copy was built
+     *                                                     from (db-build with the same --include files); false for a
+     *                                                     rebuild with the defaults, which must not replace a copy that
+     *                                                     holds private advisories
      *
      * @throws AdvisoryLookupFailed
      */
-    public function locate(DatabaseSettings $settings, ?callable $rebuild = null): ?LocatedDatabase
+    public function locate(DatabaseSettings $settings, ?callable $rebuild = null, bool $rebuildComplete = false): ?LocatedDatabase
     {
+        array_push($this->warnings, ...$settings->notes);
         if (!$settings->usesDatabase()) {
             return null;
         }
         $explicit = $settings->localSource();
         if ($explicit !== null) {
-            return new LocatedDatabase($this->resolveLocalPath($explicit), Freshness::Explicit, 'a local file named by --database-location, read as it is');
+            $file = $this->resolveLocalPath($explicit);
+            $digest = hash_file('sha256', $file);
+            $this->requireExpectedDigest($file, $digest === false ? '' : $digest, false);
+
+            return new LocatedDatabase($file, Freshness::Explicit, 'a local file named by --database-location, read as it is');
         }
         $path = $settings->path;
         $dir = dirname($path);
@@ -155,12 +164,13 @@ final class DatabaseLocator
                         }
                         $failures[] = sprintf('rebuild: %s', self::redact(trim(explode("\n", $e->getMessage())[0])));
                     }
-                } elseif ($local === null && !$this->requireChecksum && str_starts_with((string) $reason, 'HTTP 4')) {
-                    // Nothing published to verify against, and the operator accepts that: download anyway, disclosed.
+                } elseif ($local === null && ($this->expectedSha256 !== null || !$this->requireChecksum) && str_starts_with((string) $reason, 'HTTP 4')) {
+                    // Nothing published to verify against, but the operator's pinned digest verifies the download
+                    // on its own; or the operator accepts an unverified download, which is then disclosed.
                     try {
                         $this->download($source, $path, ['sha256' => null, 'datasetHash' => null, 'publishedAt' => null]);
 
-                        return new LocatedDatabase($path, Freshness::Downloaded, sprintf('downloaded from %s without verification (no local copy)', $shown));
+                        return new LocatedDatabase($path, Freshness::Downloaded, sprintf('downloaded from %s (%s, no local copy)', $shown, $this->expectedSha256 !== null ? 'verified against the pinned digest' : 'without verification'));
                     } catch (TransportException $e) {
                         $failures[] = sprintf('%s: %s', $shown, self::shortError($e));
                         continue;
@@ -170,7 +180,7 @@ final class DatabaseLocator
                 continue;
             }
             if ($local !== null) {
-                $why = self::currency($local, $remote);
+                $why = self::currency($local, $remote, $shown);
                 if ($why !== null) {
                     $this->requireExpectedDigest($path, $local['sha256']);
                     if ($why !== 'same sha256 as the published database') {
@@ -178,6 +188,16 @@ final class DatabaseLocator
                     }
 
                     return new LocatedDatabase($path, Freshness::Confirmed, sprintf('confirmed current against %s (%s), built %s', $shown, $why, self::age($local)));
+                }
+                if ($local['privateSources'] !== [] && ($rebuild === null || !$rebuildComplete)) {
+                    // A local build that carries private advisories is the operator's security policy; the
+                    // published database does not contain them, so replacing the file would silently drop
+                    // them. Keep it, say so, and leave the refresh to a rebuild with the same --include files.
+                    $this->requireExpectedDigest($path, $local['sha256']);
+                    $this->enforceMaxAge($local, $settings, 'a local build with private advisories is never replaced by a download');
+                    $this->warnings[] = sprintf('The advisory database at %s is a local build with private advisories (%s) and is older than the published database; it is kept so the private advisories stay in force, but public advisories published since it was built %s are unknown to this run. Refresh it with remediate:db-build --if-stale and the same --include files.', $path, implode(', ', $local['privateSources']), self::age($local));
+
+                    return new LocatedDatabase($path, Freshness::Unconfirmed, sprintf('a local build with private advisories, kept although %s has published a newer database; built %s', $shown, self::age($local)));
                 }
             }
             $reasonToRefresh = $local === null ? 'no local copy' : sprintf('the copy built %s is not the published one', self::age($local));
@@ -274,10 +294,15 @@ final class DatabaseLocator
     }
 
     /**
-     * What is at the path: its digest and, when it is a readable advisory database, its dataset hash and
-     * build time. Null when there is no file; a file that is not a database is reported and treated as absent.
+     * What is at the path: its digest, its dataset hash and build time, which source it was downloaded
+     * from (from the status file; null for a local build) and the private advisory files its build
+     * included. Null when there is no file. A file that is not an advisory database is refused, never
+     * replaced: the path may have been pointed at something else, and this tool does not overwrite what
+     * it did not write.
      *
-     * @return array{sha256: string, datasetHash: ?string, builtAt: ?int, mtime: int}|null
+     * @return array{sha256: string, datasetHash: ?string, builtAt: ?int, mtime: int, downloadedFrom: ?string, privateSources: list<string>}|null
+     *
+     * @throws AdvisoryLookupFailed
      */
     private function inspect(string $path): ?array
     {
@@ -288,13 +313,27 @@ final class DatabaseLocator
         try {
             $meta = Database::open($path)->meta();
         } catch (AdvisoryLookupFailed $e) {
-            $this->warnings[] = sprintf('%s is not a readable advisory database (%s); it will be replaced.', $path, trim(explode("\n", $e->getMessage())[0]));
-
-            return null;
+            throw new AdvisoryLookupFailed(sprintf('%s is not an advisory database (%s) and is not replaced: move it away, or point --database-path elsewhere.', $path, trim(explode("\n", $e->getMessage())[0])), 0, $e);
         }
         $builtAt = isset($meta['built_at']) ? strtotime($meta['built_at']) : false;
+        $private = [];
+        $sources = isset($meta['sources']) ? json_decode($meta['sources'], true) : null;
+        foreach (is_array($sources) ? $sources : [] as $source) {
+            if (is_array($source) && is_string($source['name'] ?? null) && str_starts_with($source['name'], 'local:')) {
+                $private[] = substr($source['name'], 6);
+            }
+        }
+        $status = @file_get_contents(self::statusFile($path));
+        $decoded = is_string($status) ? json_decode($status, true) : null;
 
-        return ['sha256' => $sha === false ? '' : $sha, 'datasetHash' => $meta['dataset_hash'] ?? null, 'builtAt' => $builtAt === false ? null : $builtAt, 'mtime' => (int) filemtime($path)];
+        return [
+            'sha256' => $sha === false ? '' : $sha,
+            'datasetHash' => $meta['dataset_hash'] ?? null,
+            'builtAt' => $builtAt === false ? null : $builtAt,
+            'mtime' => (int) filemtime($path),
+            'downloadedFrom' => is_array($decoded) && is_string($decoded['url'] ?? null) ? $decoded['url'] : null,
+            'privateSources' => $private,
+        ];
     }
 
     /**
@@ -345,11 +384,15 @@ final class DatabaseLocator
 
     /**
      * Why the local copy counts as current against what the publisher says, or null when it does not.
+     * Content decides: the same bytes, or the same dataset. A local build (one this tool did not
+     * download) that is newer than the publication also counts, unless it claims to come from the
+     * future. A copy downloaded from a different source never does, whatever it claims: switching
+     * sources must not carry the previous source's data over.
      *
-     * @param array{sha256: string, datasetHash: ?string, builtAt: ?int, mtime: int} $local
-     * @param array{sha256: ?string, datasetHash: ?string, publishedAt: ?int}        $remote
+     * @param array{sha256: string, datasetHash: ?string, builtAt: ?int, mtime: int, downloadedFrom: ?string, privateSources: list<string>} $local
+     * @param array{sha256: ?string, datasetHash: ?string, publishedAt: ?int}                                                            $remote
      */
-    private static function currency(array $local, array $remote): ?string
+    private static function currency(array $local, array $remote, string $source): ?string
     {
         if ($remote['sha256'] !== null && $local['sha256'] !== '' && hash_equals($remote['sha256'], $local['sha256'])) {
             return 'same sha256 as the published database';
@@ -357,7 +400,10 @@ final class DatabaseLocator
         if ($remote['datasetHash'] !== null && $local['datasetHash'] !== null && $local['datasetHash'] !== '' && hash_equals($remote['datasetHash'], $local['datasetHash'])) {
             return 'same dataset hash as the published database';
         }
-        if ($remote['publishedAt'] !== null && $local['builtAt'] !== null && $local['builtAt'] > $remote['publishedAt']) {
+        if ($local['downloadedFrom'] !== null) {
+            return null; // downloaded from somewhere, and not what this source publishes now
+        }
+        if ($remote['publishedAt'] !== null && $local['builtAt'] !== null && $local['builtAt'] > $remote['publishedAt'] && $local['builtAt'] <= time() + 3600) {
             return 'a local build newer than the published database';
         }
 
@@ -408,6 +454,12 @@ final class DatabaseLocator
             $verified = false;
             $this->warnings[] = sprintf('No checksum published next to %s; the download was not verified against a sha256.', $shown);
         }
+        try {
+            Database::open($tmp);
+        } catch (AdvisoryLookupFailed $e) {
+            @unlink($tmp);
+            throw new AdvisoryLookupFailed(sprintf('The download from %s is not an advisory database (%s); nothing was written to %s.', $shown, trim(explode("\n", $e->getMessage())[0]), $path), 0, $e);
+        }
         if (!@rename($tmp, $path)) {
             @unlink($tmp);
             throw new AdvisoryLookupFailed(sprintf('Could not store the downloaded advisory database in %s.', $path));
@@ -445,23 +497,28 @@ final class DatabaseLocator
         return preg_match('{^([0-9a-f]{64})\b}i', trim($text), $m) === 1 ? strtolower($m[1]) : null;
     }
 
-    /** With an expected digest, a copy is only as good as its bytes: check them on every use. */
-    private function requireExpectedDigest(string $path, string $actual): void
+    /**
+     * With an expected digest, a copy is only as good as its bytes: check them on every use. A copy this
+     * tool keeps is discarded on mismatch; a file the operator named as the source is left alone.
+     */
+    private function requireExpectedDigest(string $path, string $actual, bool $discard = true): void
     {
         if ($this->expectedSha256 === null) {
             return;
         }
         if ($actual === '' || !hash_equals(strtolower($this->expectedSha256), $actual)) {
-            @unlink($path);
-            @unlink(self::statusFile($path));
-            throw new AdvisoryLookupFailed(sprintf('The advisory database at %s does not match the expected sha256 (expected %s, got %s); the copy was discarded.', $path, $this->expectedSha256, $actual === '' ? '?' : $actual));
+            if ($discard) {
+                @unlink($path);
+                @unlink(self::statusFile($path));
+            }
+            throw new AdvisoryLookupFailed(sprintf('The advisory database at %s does not match the expected sha256 (expected %s, got %s)%s.', $path, $this->expectedSha256, $actual === '' ? '?' : $actual, $discard ? '; the copy was discarded' : ''));
         }
     }
 
     /**
      * A copy that could not be confirmed current may not be older than the configured maximum.
      *
-     * @param array{sha256: string, datasetHash: ?string, builtAt: ?int, mtime: int} $local
+     * @param array{sha256: string, datasetHash: ?string, builtAt: ?int, mtime: int, downloadedFrom: ?string, privateSources: list<string>} $local
      */
     private function enforceMaxAge(array $local, DatabaseSettings $settings, string $context): void
     {
@@ -489,7 +546,7 @@ final class DatabaseLocator
         }
     }
 
-    /** @param array{sha256: string, datasetHash: ?string, builtAt: ?int, mtime: int} $local */
+    /** @param array{sha256: string, datasetHash: ?string, builtAt: ?int, mtime: int, downloadedFrom: ?string, privateSources: list<string>} $local */
     private static function age(array $local): string
     {
         $seconds = max(0, time() - ($local['builtAt'] ?? $local['mtime']));

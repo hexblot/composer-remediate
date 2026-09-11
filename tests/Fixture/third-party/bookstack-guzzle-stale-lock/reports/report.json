@@ -442,6 +442,7 @@
                 "root_constraint_changes": [],
                 "constraint_drag": null,
                 "blocking_risk": [],
+                "coverage_gaps": [],
                 "summary": {
                     "changed": 2,
                     "added": 0,
@@ -693,6 +694,7 @@
                 ],
                 "constraint_drag": "composer.json requires barryvdh/laravel-dompdf ^1.0, which blocks every fix within the current constraints; the recommendation widens it to ^2.0.",
                 "blocking_risk": [],
+                "coverage_gaps": [],
                 "summary": {
                     "changed": 2,
                     "added": 1,

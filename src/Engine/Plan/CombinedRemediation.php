@@ -23,6 +23,8 @@ final class CombinedRemediation
         public readonly LockDiff $diff,
         public readonly array $fixedKeys,
         public readonly array $unfixedKeys,
+        /** @var list<string> coverage-gap warnings about packages this command adds (accepted gaps only) */
+        public readonly array $coverageGaps = [],
     ) {
     }
 

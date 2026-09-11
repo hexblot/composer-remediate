@@ -76,11 +76,24 @@ Out of scope:
 - Absence of data is never a clean result: no advisory-capable repository, a malformed advisory
   document or an unparsable range stop the run with exit 4 instead of reporting zero findings, and a
   solver or network failure during the search yields exit 3 or 5 rather than "no fix exists". An
-  advisory database keeps the upstream records its build could not interpret as coverage gaps, and a
-  run warns for every gap that names a package in the lock.
+  advisory database keeps the upstream records its build could not interpret as coverage gaps; a run
+  reports every gap that names a package in the lock and every gap that could not be attributed to any
+  package, exits 4 for a lock without findings unless the gaps are accepted, and rejects a fix that adds
+  a package with such records unless they are accepted. Coverage gaps are part of the dataset hash, so a
+  build whose gaps changed is published and is not mistaken for the same data.
 - Advisory data is treated as untrusted input: it influences which versions are considered fixed,
   and every recommendation is still validated by re-checking the resulting lock against the same
   data. It is never executed or interpolated into commands without quoting.
-- Published database artifacts ship with a sha256 sidecar and a GitHub build-provenance attestation.
-  The client verifies the sha256 of a downloaded database when the sidecar exists and warns when it
-  does not; the attestation is verified with `gh attestation verify`, not by the plugin.
+- Published database artifacts ship with a sha256 sidecar, a `latest.json` (sha256, dataset hash,
+  publication time) and a GitHub build-provenance attestation. The client refuses a download whose
+  digest does not match the published one, does not download at all from a source that publishes no
+  digest unless `--allow-unverified-database` is given (and then says so in every report that uses the
+  copy), and honours `--database-sha256` as the trust anchor on every path that selects a database,
+  including a local file named as the source. The attestation is verified with
+  `gh attestation verify`, not by the plugin.
+- The analysed project's `composer.json` is untrusted input. Its `extra.remediate.database` may choose
+  the advisory source, but that source is kept in a file of its own and the report says the project
+  chose it; its `extra.remediate.database_path` must be a relative path inside the project. A scan
+  never writes outside the checkout being scanned unless the operator asked for it (`--database-path`,
+  `REMEDIATE_DATABASE_PATH`), never replaces a file that is not an advisory database, and never lets a
+  copy downloaded from one source pass as current for another.

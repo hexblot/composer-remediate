@@ -2,8 +2,11 @@
 
 ## The promise
 
-> No third party sees your dependency graph. Network use is exactly what `composer update` itself
-> would do against the repositories you have configured.
+> No third party sees your dependency graph. Beyond the requests `composer update` itself would make
+> against the repositories you have configured, the only network use is keeping the advisory database
+> current: a small request to its publisher (this project's GitHub release by default), and the
+> database download when the copy is missing or stale. That request carries nothing about your
+> project, and `--no-database`, `--offline` or a local file as the source stop it.
 
 This is deliberately narrower than "fully offline". Composer's solver needs package metadata for
 every version it considers, and it fetches that from the repositories in your `composer.json`,

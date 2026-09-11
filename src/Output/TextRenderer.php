@@ -259,6 +259,9 @@ final class TextRenderer
         if ($recommended->blockingRisk !== []) {
             $out[] = '  ' . $this->tag('Blocking risk:', 'fg=yellow') . sprintf(' %s still carr%s another advisory after this update; Composer 2.10+ may refuse the command until that advisory is ignored in config.policy or blocking is disabled.', implode(', ', $recommended->blockingRisk), count($recommended->blockingRisk) === 1 ? 'ies' : 'y');
         }
+        foreach ($recommended->coverageGaps as $gap) {
+            $out[] = '  ' . $this->tag('Coverage gap introduced:', 'fg=yellow') . ' ' . $this->text($gap) . ' (accepted with --accept-coverage-gaps)';
+        }
         if ($diff->prereleaseTargets() !== []) {
             $out[] = '  Note: installs pre-release versions (' . implode(', ', array_map(static fn ($c): string => $c->packageName . ' ' . $c->toPretty, $diff->prereleaseTargets())) . '); no stable release satisfies the constraints yet.';
         }

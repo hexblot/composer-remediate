@@ -29,7 +29,7 @@
         "packages_with_constraint_drag": {"type": "integer", "minimum": 0, "description": "Packages whose only fix requires widening a composer.json constraint"},
         "packages_known_exploited": {"type": "integer", "minimum": 0, "description": "Packages with at least one advisory in CISA's Known Exploited Vulnerabilities catalogue"},
         "packages_with_abandoned_dependency": {"type": "integer", "minimum": 0, "description": "Packages whose dependency paths (themselves included) contain a package Packagist marks abandoned"},
-        "coverage_gaps": {"type": "integer", "minimum": 0, "description": "Advisory records about locked (or replaced/provided) packages the advisory source could not read; unless accepted, a lock with gaps and no findings exits 4"},
+        "coverage_gaps": {"type": "integer", "minimum": 0, "description": "Advisory records about locked (or replaced/provided) packages the advisory source could not read, records it could not attribute to any package, and, when accepted, records about packages the recommended commands add; unless accepted, a lock with gaps and no findings exits 4"},
         "coverage_gaps_accepted": {"type": "boolean", "description": "Whether --accept-coverage-gaps let a lock with gaps exit clean"},
         "combined_command": {"type": ["string", "null"]},
         "combined_fixes": {"type": ["integer", "null"]},
@@ -156,7 +156,7 @@
         },
         {
           "type": "object",
-          "required": ["status", "command", "strategy", "root_constraint_changes", "constraint_drag", "blocking_risk", "summary", "changes"],
+          "required": ["status", "command", "strategy", "root_constraint_changes", "constraint_drag", "blocking_risk", "coverage_gaps", "summary", "changes"],
           "additionalProperties": false,
           "properties": {
             "status": {"const": "verified"},
@@ -165,6 +165,7 @@
             "root_constraint_changes": {"type": "array", "items": {"$ref": "#/definitions/rootConstraintChange"}},
             "constraint_drag": {"type": ["string", "null"], "description": "Explanation when the fix requires widening a composer.json constraint"},
             "blocking_risk": {"type": "array", "items": {"type": "string"}, "description": "Packages this command changes whose new version still carries another advisory; Composer 2.10+ advisory blocking may refuse the update"},
+            "coverage_gaps": {"type": "array", "items": {"type": "string"}, "description": "Coverage-gap warnings about packages this command adds to the lock whose advisory records the source could not read; present only when --accept-coverage-gaps allowed the candidate, which is otherwise rejected"},
             "summary": {"oneOf": [{"$ref": "#/definitions/changeSummary"}, {"type": "null"}]},
             "changes": {"type": "array", "items": {"$ref": "#/definitions/change"}}
           }

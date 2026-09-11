@@ -30,6 +30,8 @@ final class DatabaseSettings
 
     /**
      * @param list<string> $sources
+     * @param list<string> $notes   facts about how the settings were resolved that belong in the report, such as a
+     *                              source chosen by the analysed project's composer.json rather than by the operator
      */
     private function __construct(
         public readonly string $path,
@@ -37,33 +39,98 @@ final class DatabaseSettings
         public readonly ?int $maxAgeSeconds,
         public readonly bool $pathConfigured,
         public readonly bool $sourcesConfigured,
+        public readonly bool $sourcesFromProject = false,
+        public readonly array $notes = [],
     ) {
     }
 
     /**
+     * The analysed project's composer.json is untrusted input: it may be a repository the operator is
+     * scanning precisely because they do not trust it. Its `extra.remediate` settings are therefore
+     * honoured with limits. A source it names is kept in a file of its own under the cache directory,
+     * never in the shared default file another project's scan reads, and the report says the project
+     * chose the source. A path it names must be relative and stay inside the project directory, so a
+     * scan can only ever write inside the checkout being scanned.
+     *
      * @param string|null $location   --database-location: URL(s), `composer`/`none`, or one local path
      * @param string|null $path       --database-path
      * @param string|null $maxAge     --database-max-age: hours, or a number with an h or d suffix
      * @param bool        $noDatabase --no-database
+     * @param string|null $projectDir the directory of the composer.json being analysed; null when there is none
      *
-     * @throws \InvalidArgumentException for a max age that is not a duration
+     * @throws \InvalidArgumentException for a max age that is not a duration, or a project path outside the project
      */
-    public static function resolve(Composer $composer, string $defaultPath, ?string $location, ?string $path, ?string $maxAge, bool $noDatabase = false): self
+    public static function resolve(Composer $composer, string $defaultPath, ?string $location, ?string $path, ?string $maxAge, bool $noDatabase = false, ?string $projectDir = null): self
     {
         $extra = $composer->getPackage()->getExtra();
         $remediate = isset($extra['remediate']) && is_array($extra['remediate']) ? $extra['remediate'] : [];
+        $notes = [];
 
-        $locationValue = $noDatabase ? 'none' : self::first($location, self::ENV_LOCATION, $remediate['database'] ?? null);
-        $pathValue = self::first($path, self::ENV_PATH, $remediate['database_path'] ?? null);
+        $operatorLocation = $noDatabase ? 'none' : self::first($location, self::ENV_LOCATION, null);
+        $projectLocation = $operatorLocation === null ? self::first(null, '', $remediate['database'] ?? null) : null;
+        $locationValue = $operatorLocation ?? $projectLocation;
+        $sources = $locationValue === null ? [self::DEFAULT_SOURCE] : self::sourcesFrom($locationValue);
+        if ($projectLocation !== null && $sources !== []) {
+            $notes[] = sprintf('Advisory source chosen by the analysed project\'s composer.json (extra.remediate.database): %s. Pass --database-location or set REMEDIATE_DATABASE to override it.', implode(', ', $sources));
+        }
+
+        $operatorPath = self::first($path, self::ENV_PATH, null);
+        // Without a project directory (a run from Composer's global configuration) there is no project
+        // whose path could be honoured, and nothing to confine it to: the setting is ignored.
+        $projectPath = $operatorPath === null && $projectDir !== null ? self::first(null, '', $remediate['database_path'] ?? null) : null;
+        if ($projectPath !== null && $projectDir !== null) {
+            $pathValue = self::projectPath($projectPath, $projectDir);
+        } elseif ($operatorPath !== null) {
+            $pathValue = $operatorPath;
+        } elseif ($projectLocation !== null && $sources !== [] && self::localSourceOf($sources) === null) {
+            // A project-chosen source must not write over the shared default file.
+            $pathValue = dirname($defaultPath) . '/sources/' . sha1(implode("\n", $sources)) . '.sqlite';
+        } else {
+            $pathValue = $defaultPath;
+        }
+
         $maxAgeValue = self::first($maxAge, self::ENV_MAX_AGE, $remediate['database_max_age'] ?? null);
 
         return new self(
-            $pathValue ?? $defaultPath,
-            $locationValue === null ? [self::DEFAULT_SOURCE] : self::sourcesFrom($locationValue),
+            $pathValue,
+            $sources,
             $maxAgeValue === null ? null : self::parseMaxAge($maxAgeValue),
-            $pathValue !== null,
+            $operatorPath !== null || $projectPath !== null,
             $locationValue !== null,
+            $projectLocation !== null,
+            $notes,
         );
+    }
+
+    /**
+     * A database path from the project's composer.json: relative, without parent segments, inside the
+     * project directory once resolved (a parent directory that is a symbolic link out of the project
+     * does not count as inside).
+     */
+    private static function projectPath(string $value, string $projectDir): string
+    {
+        if (str_starts_with($value, '/') || preg_match('{^[A-Za-z]:[\\\\/]}', $value) === 1 || in_array('..', preg_split('{[\\\\/]+}', $value) ?: [], true)) {
+            throw new \InvalidArgumentException(sprintf('extra.remediate.database_path must be a relative path inside the project, got "%s"; use --database-path or REMEDIATE_DATABASE_PATH for a path elsewhere.', $value));
+        }
+        $root = realpath($projectDir);
+        $full = rtrim($projectDir, '/') . '/' . ltrim($value, '/');
+        @mkdir(dirname($full), 0700, true);
+        $parent = realpath(dirname($full));
+        if ($root === false || $parent === false || ($parent !== $root && !str_starts_with($parent, $root . '/'))) {
+            throw new \InvalidArgumentException(sprintf('extra.remediate.database_path "%s" resolves outside the project directory.', $value));
+        }
+
+        return $parent . '/' . basename($full);
+    }
+
+    /** @param list<string> $sources */
+    private static function localSourceOf(array $sources): ?string
+    {
+        if (count($sources) !== 1 || preg_match('{^[a-z][a-z0-9+.-]*://}i', $sources[0]) === 1) {
+            return null;
+        }
+
+        return $sources[0];
     }
 
     /** False when the configured repositories are to be asked instead of any database. */
@@ -75,11 +142,7 @@ final class DatabaseSettings
     /** The one local file to read as it is, when --database-location names a path rather than URLs. */
     public function localSource(): ?string
     {
-        if (count($this->sources) !== 1 || preg_match('{^[a-z][a-z0-9+.-]*://}i', $this->sources[0]) === 1) {
-            return null;
-        }
-
-        return $this->sources[0];
+        return self::localSourceOf($this->sources);
     }
 
     /**
@@ -90,7 +153,7 @@ final class DatabaseSettings
         if ($option !== null && $option !== '') {
             return $option;
         }
-        $fromEnv = getenv($env);
+        $fromEnv = $env === '' ? false : getenv($env);
         if (is_string($fromEnv) && $fromEnv !== '') {
             return $fromEnv;
         }

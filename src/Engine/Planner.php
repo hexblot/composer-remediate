@@ -62,6 +62,9 @@ final class Planner
      * @param IgnorePolicy|null    $ignore      advisories to leave out (ids, CVEs, package rules)
      * @param ReleaseAgeGuard|null $releaseAge  reject candidates that install releases younger than a cooldown
      * @param int                  $solveBudget hard ceiling on solver runs per finding; every phase of the search counts
+     * @param bool                 $acceptCoverageGaps a candidate that adds a package whose advisory records the source could
+     *                                                 not read is rejected by default (the new package cannot be vouched
+     *                                                 for); with this, it is accepted and the gaps are reported with it
      */
     public function __construct(
         private readonly AdvisoryProvider $advisories,
@@ -73,6 +76,7 @@ final class Planner
         private readonly ?IgnorePolicy $ignore = null,
         private readonly ?ReleaseAgeGuard $releaseAge = null,
         private readonly int $solveBudget = self::DEFAULT_SOLVE_BUDGET,
+        private readonly bool $acceptCoverageGaps = false,
     ) {
         $this->progress = $progress;
     }
@@ -165,7 +169,7 @@ final class Planner
             'composer_lock_sha256' => self::fileHash($context->lockPath()),
             'analysis_timestamp' => gmdate('c'),
             'locked_packages' => (string) $lock->count(),
-        ], $warnings, $combined, null, self::inventory($lock), [], $coverageGaps, false, $combinedAttempts);
+        ], $warnings, $combined, null, self::inventory($lock), [], array_values(array_unique([...$coverageGaps, ...self::acceptedGapsOf($plans, $combined)])), false, $combinedAttempts);
     }
 
     /**
@@ -386,6 +390,27 @@ final class Planner
         return [$best, $search->attempts];
     }
 
+    /**
+     * Coverage gaps the recommended commands would introduce (only present when the operator accepted
+     * gaps); they join the plan's gaps so the report and the JSON summary list them.
+     *
+     * @param list<FindingPlan> $plans
+     *
+     * @return list<string>
+     */
+    private static function acceptedGapsOf(array $plans, ?CombinedRemediation $combined): array
+    {
+        $gaps = $combined === null ? [] : $combined->coverageGaps;
+        foreach ($plans as $plan) {
+            $recommended = $plan->recommended();
+            if ($recommended !== null) {
+                array_push($gaps, ...$recommended->coverageGaps);
+            }
+        }
+
+        return $gaps;
+    }
+
     /** With one contributing plan there is nothing to merge: its winner is the combined command. */
     private static function soleContribution(CombinedSearch $search, Matcher $matcher): ?CombinedRemediation
     {
@@ -395,7 +420,7 @@ final class Planner
         }
         $afterKeys = $matcher->findingKeys($winner->result->after);
 
-        return new CombinedRemediation($winner->candidate, $winner->result, $winner->diff, array_keys(array_diff_key($search->allKeys, $afterKeys)), array_keys(array_intersect_key($search->allKeys, $afterKeys)));
+        return new CombinedRemediation($winner->candidate, $winner->result, $winner->diff, array_keys(array_diff_key($search->allKeys, $afterKeys)), array_keys(array_intersect_key($search->allKeys, $afterKeys)), $winner->coverageGaps);
     }
 
     /**
@@ -522,10 +547,14 @@ final class Planner
                 return [CombinedOutcome::Rejected, 'installs releases younger than the minimum release age: ' . implode(', ', $young)];
             }
         }
+        $gaps = $this->introducedCoverageGaps($lock, $result->after);
+        if ($gaps !== [] && !$this->acceptCoverageGaps) {
+            return [CombinedOutcome::Rejected, 'adds packages whose advisory records the source could not read: ' . implode(' ', $gaps)];
+        }
         $fixed = array_keys(array_diff_key($allKeys, $afterKeys));
         $unfixed = array_keys(array_intersect_key($allKeys, $afterKeys));
 
-        return new CombinedRemediation($candidate, $result, $diff, $fixed, $unfixed);
+        return new CombinedRemediation($candidate, $result, $diff, $fixed, $unfixed, $gaps);
     }
 
     /** @return list<Candidate> */
@@ -688,8 +717,32 @@ final class Planner
                 return new EvaluatedCandidate($candidate, $result, $diff, false, 'resolves, but installs releases younger than the minimum release age: ' . implode(', ', $young));
             }
         }
+        $gaps = $this->introducedCoverageGaps($lock, $result->after);
+        if ($gaps !== [] && !$this->acceptCoverageGaps) {
+            return new EvaluatedCandidate($candidate, $result, $diff, false, 'resolves, but adds packages whose advisory records the source could not read, so they cannot be vouched for (pass --accept-coverage-gaps to allow this): ' . implode(' ', $gaps));
+        }
 
-        return new EvaluatedCandidate($candidate, $result, $diff, true, null, self::blockingRisk($diff, $afterKeys));
+        return new EvaluatedCandidate($candidate, $result, $diff, true, null, self::blockingRisk($diff, $afterKeys), $gaps);
+    }
+
+    /**
+     * Coverage-gap warnings about packages the candidate lock adds (or newly replaces or provides):
+     * the source read the records about the locked packages, but not about these, so a "verified"
+     * result could hide an advisory on a package the fix itself brought in.
+     *
+     * @return list<string>
+     */
+    private function introducedCoverageGaps(LockSnapshot $before, LockSnapshot $after): array
+    {
+        if (!$this->advisories instanceof CoverageAware) {
+            return [];
+        }
+        $new = array_values(array_diff(Matcher::queriedNames($after), Matcher::queriedNames($before)));
+        if ($new === []) {
+            return [];
+        }
+
+        return $this->advisories->coverageWarnings($new);
     }
 
     /**
