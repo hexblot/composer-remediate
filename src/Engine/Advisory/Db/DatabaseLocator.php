@@ -189,10 +189,12 @@ final class DatabaseLocator
 
                     return new LocatedDatabase($path, Freshness::Confirmed, sprintf('confirmed current against %s (%s), built %s', $shown, $why, self::age($local)));
                 }
-                if ($local['privateSources'] !== [] && ($rebuild === null || !$rebuildComplete)) {
-                    // A local build that carries private advisories is the operator's security policy; the
-                    // published database does not contain them, so replacing the file would silently drop
-                    // them. Keep it, say so, and leave the refresh to a rebuild with the same --include files.
+                if ($local['privateSources'] !== [] && $local['downloadedFrom'] === null && ($rebuild === null || !$rebuildComplete)) {
+                    // A local build (not a download: no status file) that carries private advisories is the
+                    // operator's security policy; the published database does not contain them, so replacing
+                    // the file would silently drop them. Keep it, say so, and leave the refresh to a rebuild
+                    // with the same --include files. A downloaded copy whose publisher used --include is the
+                    // publisher's business and is replaced like any other.
                     $this->requireExpectedDigest($path, $local['sha256']);
                     $this->enforceMaxAge($local, $settings, 'a local build with private advisories is never replaced by a download');
                     $this->warnings[] = sprintf('The advisory database at %s is a local build with private advisories (%s) and is older than the published database; it is kept so the private advisories stay in force, but public advisories published since it was built %s are unknown to this run. Refresh it with remediate:db-build --if-stale and the same --include files.', $path, implode(', ', $local['privateSources']), self::age($local));

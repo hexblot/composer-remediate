@@ -7,6 +7,15 @@
   `tests/Support/CommandRunner`, which runs the plugin's commands via Composer's console application
   against a scratch copy of a fixture; add a case to `tests/Integration/RemediateCommandTest.php` or
   `DbCommandsTest.php` when you add or change an option.
+- The advisory database's life (download, confirm, replace, outage, pin, project-chosen source) is
+  tested end to end in `tests/Integration/DatabaseLifecycleTest.php` against a real HTTPS publisher:
+  `tests/Support/TlsPublisher` starts `tests/Support/tls-server.php`, a PHP TLS stream server on an
+  ephemeral loopback port with a certificate generated for 127.0.0.1, and the project's `cafile`
+  setting makes Composer's curl layer trust it, so the production code path runs unchanged. It needs
+  only the `openssl` and `curl` extensions and runs in a few seconds, locally and on every CI job.
+  When a change touches how the database is chosen, verified or replaced, add the whole-run assertion
+  there as well as the unit test: the security guarantees span settings, locator, planner and
+  renderers, and the layered tests do not catch a disagreement between them.
 - PHPStan level 8 must pass: `ddev composer phpstan`.
 - The layer rules in `deptrac.yaml` must pass: `ddev composer deptrac`. Plugin → Command → Output →
   Engine → Advisory, each layer depending only on those inside it; the advisory code (feed readers,

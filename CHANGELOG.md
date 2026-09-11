@@ -51,6 +51,13 @@ with a separate harness), each with a regression test.
 - Documentation brought in line: SECURITY.md describes the download verification and the limits on
   what the analysed project may configure; the privacy promise names the publisher request and how to
   stop it; the report guide lists the new warnings.
+- **An end-to-end test of the database's life** (`tests/Integration/DatabaseLifecycleTest.php`)
+  runs the real command against a real HTTPS publisher (a PHP TLS server with a generated certificate,
+  trusted through Composer's `cafile`) and asserts exit code, report warnings, provenance line, the file
+  on disk and the publisher's request log together, through download, confirmation, replacement, an
+  outage, a pinned digest and a project-chosen source. Its first run found that a downloaded copy whose
+  publisher had used `--include` was mistaken for a local build with private advisories and kept
+  instead of replaced; fixed (the protection applies to local builds only).
 
 ### Changed
 
