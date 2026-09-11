@@ -124,6 +124,9 @@ final class DatabaseLocator
 
         $local = $this->inspect($path);
         if ($this->offline) {
+            if ($local !== null && !$this->belongsHere($local, $settings, $path)) {
+                $local = null;
+            }
             if ($local === null) {
                 $this->warnings[] = sprintf('Offline mode and no advisory database at %s.', $path);
 
@@ -180,7 +183,7 @@ final class DatabaseLocator
                 continue;
             }
             if ($local !== null) {
-                $why = self::currency($local, $remote, $shown);
+                $why = self::currency($local, $remote, $source, $settings);
                 if ($why !== null) {
                     $this->requireExpectedDigest($path, $local['sha256']);
                     if ($why !== 'same sha256 as the published database') {
@@ -189,7 +192,7 @@ final class DatabaseLocator
 
                     return new LocatedDatabase($path, Freshness::Confirmed, sprintf('confirmed current against %s (%s), built %s', $shown, $why, self::age($local)));
                 }
-                if ($local['privateSources'] !== [] && $local['downloadedFrom'] === null && ($rebuild === null || !$rebuildComplete)) {
+                if ($local['privateSources'] !== [] && $local['downloadedFrom'] === null && !$settings->pathFromProject && ($rebuild === null || !$rebuildComplete)) {
                     // A local build (not a download: no status file) that carries private advisories is the
                     // operator's security policy; the published database does not contain them, so replacing
                     // the file would silently drop them. Keep it, say so, and leave the refresh to a rebuild
@@ -228,6 +231,9 @@ final class DatabaseLocator
         }
 
         $what = implode('; ', $failures);
+        if ($local !== null && !$this->belongsHere($local, $settings, $path)) {
+            $local = null;
+        }
         if ($local !== null) {
             $this->requireExpectedDigest($path, $local['sha256']);
             $this->enforceMaxAge($local, $settings, $what);
@@ -296,6 +302,34 @@ final class DatabaseLocator
     }
 
     /**
+     * Whether a copy may be used without the publisher's confirmation (offline, or every source
+     * unreachable): a copy downloaded from one of the configured sources, or the operator's own local
+     * build at a path the operator chose. A copy from another source, or anything at a path the analysed
+     * project chose, is not: it would carry that source's, or the project's, data into this run.
+     *
+     * @param array{sha256: string, datasetHash: ?string, builtAt: ?int, mtime: int, downloadedFrom: ?string, privateSources: list<string>} $local
+     */
+    private function belongsHere(array $local, DatabaseSettings $settings, string $path): bool
+    {
+        if ($settings->pathFromProject) {
+            $this->warnings[] = sprintf('The advisory database at %s (a path chosen by the analysed project) cannot be confirmed against its source and is not used: content at a project-chosen path counts only when it matches what the publisher serves.', $path);
+
+            return false;
+        }
+        if ($local['downloadedFrom'] === null) {
+            return true;
+        }
+        foreach ($settings->sources as $source) {
+            if ($local['downloadedFrom'] === self::redact($source)) {
+                return true;
+            }
+        }
+        $this->warnings[] = sprintf('The advisory database at %s was downloaded from %s, which is not among the configured sources, and is not used: switching sources does not carry the previous source\'s data over.', $path, $local['downloadedFrom']);
+
+        return false;
+    }
+
+    /**
      * What is at the path: its digest, its dataset hash and build time, which source it was downloaded
      * from (from the status file; null for a local build) and the private advisory files its build
      * included. Null when there is no file. A file that is not an advisory database is refused, never
@@ -327,6 +361,12 @@ final class DatabaseLocator
         }
         $status = @file_get_contents(self::statusFile($path));
         $decoded = is_string($status) ? json_decode($status, true) : null;
+        // A status file older than the database beside it describes a previous file: the database was
+        // rebuilt or replaced in place since (db-build removes the status file too; this covers the rest).
+        $fetchedAt = is_array($decoded) && is_string($decoded['fetched_at'] ?? null) ? strtotime($decoded['fetched_at']) : false;
+        if (is_array($decoded) && $builtAt !== false && $fetchedAt !== false && $builtAt > $fetchedAt) {
+            $decoded = null;
+        }
 
         return [
             'sha256' => $sha === false ? '' : $sha,
@@ -394,16 +434,25 @@ final class DatabaseLocator
      * @param array{sha256: string, datasetHash: ?string, builtAt: ?int, mtime: int, downloadedFrom: ?string, privateSources: list<string>} $local
      * @param array{sha256: ?string, datasetHash: ?string, publishedAt: ?int}                                                            $remote
      */
-    private static function currency(array $local, array $remote, string $source): ?string
+    private static function currency(array $local, array $remote, string $source, DatabaseSettings $settings): ?string
     {
         if ($remote['sha256'] !== null && $local['sha256'] !== '' && hash_equals($remote['sha256'], $local['sha256'])) {
             return 'same sha256 as the published database';
+        }
+        if ($settings->pathFromProject) {
+            // Whatever sits at a path the analysed project chose is the project's content. Only bytes
+            // identical to what the publisher serves count; metadata (dataset hash, build time) is the
+            // project's to write, so it proves nothing.
+            return null;
+        }
+        if ($local['downloadedFrom'] !== null && $local['downloadedFrom'] !== self::redact($source)) {
+            return null; // downloaded from another source; its metadata is that publisher's to write, not proof about this one
         }
         if ($remote['datasetHash'] !== null && $local['datasetHash'] !== null && $local['datasetHash'] !== '' && hash_equals($remote['datasetHash'], $local['datasetHash'])) {
             return 'same dataset hash as the published database';
         }
         if ($local['downloadedFrom'] !== null) {
-            return null; // downloaded from somewhere, and not what this source publishes now
+            return null; // downloaded from this source, and not what it publishes now
         }
         if ($remote['publishedAt'] !== null && $local['builtAt'] !== null && $local['builtAt'] > $remote['publishedAt'] && $local['builtAt'] <= time() + 3600) {
             return 'a local build newer than the published database';

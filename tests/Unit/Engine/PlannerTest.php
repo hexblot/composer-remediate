@@ -289,6 +289,27 @@ final class PlannerTest extends TestCase
         self::assertSame(Plan::EXIT_REMEDIATION_AVAILABLE, $plan->exitCode(), 'a verified command that fixes everything exists');
     }
 
+    public function testTheCombinedCommandCountsPerGatedFindingUnderFailOnAndBaselines(): void
+    {
+        // The high-severity parent's update removes its high-severity child; an unrelated low-severity
+        // package has no fix at all, so the combined command fixes two of three findings.
+        $project = $this->project(['acme/parent' => '^1.0', 'acme/low' => '^1.0'], [['acme/parent', '1.0.0'], ['acme/child', '1.0.0'], ['acme/low', '1.0.0']], [], ['acme/parent' => ['acme/child' => '^1.0']]);
+        $solver = (new FakeSolver())->resolves('composer update acme/parent', ScriptedProject::lock([['acme/parent', '1.1.0'], ['acme/child', '1.1.0'], ['acme/low', '1.0.0']]));
+        $advisories = ScriptedProject::advisories([
+            ScriptedProject::advisory('PKSA-P', 'acme/parent', '<1.1.0', 'high'),
+            ScriptedProject::advisory('PKSA-C', 'acme/child', '<1.1.0', 'high'),
+            ScriptedProject::advisory('PKSA-L', 'acme/low', '<1.1.0', 'low'),
+        ]);
+
+        $plan = (new Planner($advisories, $solver))->plan($project->context(), $project->workspace());
+
+        self::assertNotNull($plan->combined);
+        self::assertFalse($plan->combined->fixesAll());
+        self::assertSame(Plan::EXIT_NO_REMEDIATION, $plan->exitCode(), 'ungated: the low finding has no fix');
+        self::assertSame(Plan::EXIT_REMEDIATION_AVAILABLE, $plan->withFailOn('high')->exitCode(), 'every gated finding is fixed, by the combined command');
+        self::assertSame(Plan::EXIT_REMEDIATION_AVAILABLE, $plan->withBaseline(['PKSA-L@acme/low'])->exitCode(), 'the same with the low finding baselined');
+    }
+
     public function testReleaseAgeGuardRefusesUnknownReleaseDates(): void
     {
         $project = $this->project(['acme/lib' => '^1.0'], [['acme/lib', '1.0.0']]);

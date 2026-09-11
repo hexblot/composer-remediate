@@ -40,7 +40,7 @@
       }
     },
     "findings": {"type": "array", "items": {"$ref": "#/definitions/finding"}},
-    "unsolved_findings": {"type": "array", "items": {"type": "string"}, "description": "Package names without a verified remediation."}
+    "unsolved_findings": {"type": "array", "items": {"type": "string"}, "description": "Package names without a standalone verified remediation (remediation.status is none for them). Such a package may still be fixed by the combined command when summary.combined_fixes_all is true or its advisories appear among the keys the combined command fixes; the exit code counts that."}
   },
   "definitions": {
     "changeSummary": {

@@ -57,6 +57,8 @@ final class DatabaseWriter
             @unlink($tmp);
             throw new \RuntimeException("Cannot write $path");
         }
+        // A download's status file beside the path described the previous file; this one is a local build.
+        @unlink($path . '.status.json');
 
         return ['path' => $path, 'hash' => $hash, 'advisories' => count($advisories), 'conflicts' => $conflicts, 'gaps' => count($gaps), 'exploits' => count($exploits), 'bytes' => (int) filesize($path)];
     }

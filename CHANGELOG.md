@@ -48,6 +48,20 @@ with a separate harness), each with a regression test.
 - **GitLab reports fail honestly.** `scan.status` is `failure` for exit 3, 4 and 5 and
   `scan.messages` carries the reason and every report warning, so an empty vulnerability list from a
   scan that could not establish coverage no longer reads as a clean result on the dashboard.
+- **Recheck (six findings at a031e4a).** Content at a path the analysed project chose counts only
+  when its bytes match what the publisher serves: no dataset-hash or newer-build acceptance, no
+  private-build protection, no use during an outage (a checked-in empty database no longer passes as a
+  newer local build). A dataset hash only counts for a local build or a copy downloaded from the same
+  source, so an untrusted publisher copying a trusted publisher's hash into its metadata no longer
+  survives a source switch; a copy downloaded from a source that is not configured is not used as the
+  outage fallback either. Building a database over a downloaded copy retires the download's status
+  record (and a status record older than the database is ignored), so a private rebuild at the shared
+  path is protected from the first rebuild. The exit code counts the combined command per gated
+  finding, so `--fail-on` and baselines no longer turn a fully fixed gate into exit 2. The
+  project-source disclosure redacts URL credentials. Path confinement is checked before any directory
+  is created, and a symbolic link anywhere on the way is rejected. The schema and the report guide say
+  that `none` and `unsolved_findings` describe standalone remediation and that the combined command may
+  still fix such a finding.
 - Documentation brought in line: SECURITY.md describes the download verification and the limits on
   what the analysed project may configure; the privacy promise names the publisher request and how to
   stop it; the report guide lists the new warnings.

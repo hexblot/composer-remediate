@@ -173,12 +173,16 @@ final class Plan
             // for this lock, and a gate must not read that as clean unless the operator accepted the gaps.
             return $this->coverageGaps !== [] && !$this->coverageGapsAccepted ? self::EXIT_ADVISORIES_UNAVAILABLE : self::EXIT_CLEAN;
         }
-        // A finding without a fix of its own is still remediated when the combined command fixes it
-        // (a parent's update removing the vulnerable child): the gate asks whether a verified fix exists.
-        $fixedByCombined = $this->combined !== null && $this->combined->fixesAll() ? array_flip($this->combined->fixedKeys) : [];
+        // A finding without a fix of its own is still remediated when the verified combined command
+        // fixes every advisory on it (a parent's update removing the vulnerable child): the gate asks
+        // whether a verified fix exists for each gated finding, whatever --fail-on or the baseline left out.
+        $fixedByCombined = $this->combined === null ? [] : array_flip($this->combined->fixedKeys);
         $unsolved = array_values(array_filter($gated, static function (FindingPlan $p) use ($fixedByCombined): bool {
             if ($p->hasRemediation()) {
                 return false;
+            }
+            if ($fixedByCombined === []) {
+                return true;
             }
             foreach ($p->allFindings() as $finding) {
                 if (!isset($fixedByCombined[$finding->key()])) {
@@ -186,7 +190,7 @@ final class Plan
                 }
             }
 
-            return $fixedByCombined === [];
+            return false;
         }));
         if ($unsolved !== []) {
             // A finding without a fix because the tool or the network failed is not "no fix exists":

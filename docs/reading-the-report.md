@@ -111,13 +111,21 @@ The word in parentheses is the outcome, and it matters for gating:
 
 | Outcome | Meaning | Exit code |
 |---|---|---|
-| `none` | Every candidate was solved and none removes the advisory within the current metadata. Usually a platform or constraint bound; the rejected candidates say which. | 2 |
-| `none found within the search budget` | `--max-candidates` or `--solve-budget` cut the search short. A fix may exist outside the bounded search; raise the limits to look further. | 2 |
+| `none` | Every candidate was solved and none removes the advisory within the current metadata. Usually a platform or constraint bound; the rejected candidates say which. | 2, unless the combined command fixes it (below) |
+| `none found within the search budget` | `--max-candidates` or `--solve-budget` cut the search short. A fix may exist outside the bounded search; raise the limits to look further. | 2, unless the combined command fixes it |
 | `unknown: solver error` | At least one solve failed inside Composer. The absence of a fix is not established. | 3 |
 | `unknown: network failure while solving` | Package metadata could not be fetched. Retry, or warm the cache. | 5 |
 
 A finding without a fix is never silently equal to a finding with no vulnerability: exit code 2 is
 only returned when the search completed.
+
+These outcomes describe the finding's *standalone* remediation: the command found for that package on
+its own. A finding with outcome `none` can still be fixed by the combined command in the summary, as
+when updating a vulnerable parent removes its vulnerable child, which has no fix of its own. The exit
+code counts that: a gated finding whose advisories the verified combined command removes does not
+cause exit 2, whatever `--fail-on` or the baseline left out of the gate. In the JSON report such a
+finding keeps `remediation.status: none` and appears in `unsolved_findings`; the summary's
+`combined_command`, `combined_fixes` and `combined_fixes_all` say what the combined command covers.
 
 ## Summary
 

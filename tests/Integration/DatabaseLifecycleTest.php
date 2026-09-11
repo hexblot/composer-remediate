@@ -136,6 +136,36 @@ final class DatabaseLifecycleTest extends TestCase
         self::assertStringContainsString('offline, using the copy built', self::report($offline)['analysis_metadata']['advisory_source']);
     }
 
+    public function testAPrivateRebuildOverADownloadedCopySurvivesANewerPublication(): void
+    {
+        // 1. Download the public database into the path.
+        $this->buildDatabase($this->project . '/public-1.sqlite', false);
+        $url = $this->publisher->publishDatabase($this->project . '/public-1.sqlite');
+        $first = $this->remediate(['--database-location' => $url]);
+        self::assertSame(Plan::EXIT_REMEDIATION_AVAILABLE, $first->exitCode, $first->describe());
+        self::assertFileExists($this->path . '.status.json');
+
+        // 2. The operator rebuilds into the same path with a private advisory file (db-build --include).
+        sleep(1);
+        $this->buildDatabase($this->path, true);
+        self::assertFileDoesNotExist($this->path . '.status.json', 'a build retires the download\'s status record');
+        $privateBuild = (string) file_get_contents($this->path);
+
+        // 3. The publisher moves on: the private build is kept, and the report says what that costs.
+        sleep(1);
+        $this->buildDatabase($this->project . '/public-2.sqlite', false);
+        $this->publisher->publishDatabase($this->project . '/public-2.sqlite');
+        $third = $this->remediate(['--database-location' => $url]);
+        self::assertSame(Plan::EXIT_REMEDIATION_AVAILABLE, $third->exitCode, $third->describe());
+        $report = self::report($third);
+        self::assertStringEqualsFile($this->path, $privateBuild, 'the private build was not replaced');
+        self::assertStringContainsString('a local build with private advisories, kept although', $report['analysis_metadata']['advisory_source']);
+        self::assertCount(1, $report['warnings']);
+        self::assertStringContainsString('private advisories (advisories.json)', $report['warnings'][0]);
+        self::assertStringContainsString('remediate:db-build --if-stale and the same --include files', $report['warnings'][0]);
+        self::assertNotContains('GET /advisories.sqlite', array_slice($this->publisher->requests(), -1));
+    }
+
     public function testAPinnedDigestIsEnforcedOnTheDownloadAndOnEveryLaterUse(): void
     {
         $this->buildDatabase($this->project . '/published.sqlite', true);

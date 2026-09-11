@@ -41,6 +41,8 @@ final class DatabaseSettings
         public readonly bool $sourcesConfigured,
         public readonly bool $sourcesFromProject = false,
         public readonly array $notes = [],
+        /** The path came from the analysed project's composer.json: whatever is there is the project's content, not the operator's. */
+        public readonly bool $pathFromProject = false,
     ) {
     }
 
@@ -71,7 +73,7 @@ final class DatabaseSettings
         $locationValue = $operatorLocation ?? $projectLocation;
         $sources = $locationValue === null ? [self::DEFAULT_SOURCE] : self::sourcesFrom($locationValue);
         if ($projectLocation !== null && $sources !== []) {
-            $notes[] = sprintf('Advisory source chosen by the analysed project\'s composer.json (extra.remediate.database): %s. Pass --database-location or set REMEDIATE_DATABASE to override it.', implode(', ', $sources));
+            $notes[] = sprintf('Advisory source chosen by the analysed project\'s composer.json (extra.remediate.database): %s. Pass --database-location or set REMEDIATE_DATABASE to override it.', DatabaseLocator::redact(implode(', ', $sources)));
         }
 
         $operatorPath = self::first($path, self::ENV_PATH, null);
@@ -99,28 +101,43 @@ final class DatabaseSettings
             $locationValue !== null,
             $projectLocation !== null,
             $notes,
+            $projectPath !== null && $projectDir !== null,
         );
     }
 
     /**
-     * A database path from the project's composer.json: relative, without parent segments, inside the
-     * project directory once resolved (a parent directory that is a symbolic link out of the project
-     * does not count as inside).
+     * A database path from the project's composer.json: relative, without parent segments, and with
+     * no symbolic link among the directories that already exist on the way (a link out of the project
+     * would make a relative path resolve elsewhere). Nothing is created here: the check runs before any
+     * filesystem change, and the locator creates the parent directory afterwards, inside the project.
      */
     private static function projectPath(string $value, string $projectDir): string
     {
-        if (str_starts_with($value, '/') || preg_match('{^[A-Za-z]:[\\\\/]}', $value) === 1 || in_array('..', preg_split('{[\\\\/]+}', $value) ?: [], true)) {
+        $segments = array_values(array_filter(preg_split('{[\\\\/]+}', $value) ?: [], static fn (string $s): bool => $s !== '' && $s !== '.'));
+        if (str_starts_with($value, '/') || preg_match('{^[A-Za-z]:[\\\\/]}', $value) === 1 || $segments === [] || in_array('..', $segments, true)) {
             throw new \InvalidArgumentException(sprintf('extra.remediate.database_path must be a relative path inside the project, got "%s"; use --database-path or REMEDIATE_DATABASE_PATH for a path elsewhere.', $value));
         }
         $root = realpath($projectDir);
-        $full = rtrim($projectDir, '/') . '/' . ltrim($value, '/');
-        @mkdir(dirname($full), 0700, true);
-        $parent = realpath(dirname($full));
-        if ($root === false || $parent === false || ($parent !== $root && !str_starts_with($parent, $root . '/'))) {
-            throw new \InvalidArgumentException(sprintf('extra.remediate.database_path "%s" resolves outside the project directory.', $value));
+        if ($root === false) {
+            throw new \InvalidArgumentException(sprintf('extra.remediate.database_path cannot be resolved: %s is not a directory.', $projectDir));
+        }
+        $current = $root;
+        foreach ($segments as $segment) {
+            $next = $current . '/' . $segment;
+            if (is_link($next)) {
+                throw new \InvalidArgumentException(sprintf('extra.remediate.database_path "%s" passes through a symbolic link (%s); a path inside the project must not.', $value, $next));
+            }
+            if (!file_exists($next)) {
+                break; // the rest does not exist yet and will be created under $current, inside the project
+            }
+            $real = realpath($next);
+            if ($real === false || ($real !== $root && !str_starts_with($real, $root . '/'))) {
+                throw new \InvalidArgumentException(sprintf('extra.remediate.database_path "%s" resolves outside the project directory.', $value));
+            }
+            $current = $real;
         }
 
-        return $parent . '/' . basename($full);
+        return $root . '/' . implode('/', $segments);
     }
 
     /** @param list<string> $sources */
