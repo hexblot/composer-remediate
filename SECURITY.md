@@ -93,7 +93,9 @@ Out of scope:
   `gh attestation verify`, not by the plugin.
 - The analysed project's `composer.json` is untrusted input. Its `extra.remediate.database` may choose
   the advisory source, but that source is kept in a file of its own and the report says the project
-  chose it; its `extra.remediate.database_path` must be a relative path inside the project. A scan
+  chose it; its `extra.remediate.database_path` must be a relative path inside the project, and
+  content at such a path counts only when it matches what the publisher serves; its `config.cache-dir`
+  does not move the default database path. A scan
   never writes outside the checkout being scanned unless the operator asked for it (`--database-path`,
   `REMEDIATE_DATABASE_PATH`), never replaces a file that is not an advisory database, and never lets a
   copy downloaded from one source pass as current for another.

@@ -150,6 +150,11 @@ final class DatabaseSettings
         return $sources[0];
     }
 
+    public function withNote(string $note): self
+    {
+        return new self($this->path, $this->sources, $this->maxAgeSeconds, $this->pathConfigured, $this->sourcesConfigured, $this->sourcesFromProject, [...$this->notes, $note], $this->pathFromProject);
+    }
+
     /** False when the configured repositories are to be asked instead of any database. */
     public function usesDatabase(): bool
     {

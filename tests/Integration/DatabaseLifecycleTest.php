@@ -166,6 +166,42 @@ final class DatabaseLifecycleTest extends TestCase
         self::assertNotContains('GET /advisories.sqlite', array_slice($this->publisher->requests(), -1));
     }
 
+    public function testACheckedInDatabaseUnderAProjectCacheDirIsNeitherReadNorTrusted(): void
+    {
+        // The reviewer's reproduction: the repository ships an empty database where the default path
+        // would fall when the project's composer.json sets config.cache-dir.
+        $this->buildDatabase($this->project . '/published.sqlite', true);
+        $url = $this->publisher->publishDatabase($this->project . '/published.sqlite');
+        mkdir($this->project . '/.cache/remediate', 0700, true);
+        $result = $this->runner->run(['command' => 'remediate:db-build', '--output' => $this->project . '/.cache/remediate/advisories.sqlite', '--source' => ['friendsofphp'], '--friendsofphp-path' => $this->project . '/empty-checkout', '--enrich' => ['none']], $this->project);
+        self::assertSame(0, $result->exitCode, $result->describe());
+        $planted = (string) file_get_contents($this->project . '/.cache/remediate/advisories.sqlite');
+        CommandRunner::editComposerJson($this->project, static function (array $json): array {
+            $json['config']['cache-dir'] = '.cache';
+
+            return $json;
+        });
+
+        // COMPOSER_CACHE_DIR (set by the test bootstrap) would outrank the project's setting in Composer's
+        // own precedence; the reviewer's case is a runner without it, where the project's value applies.
+        $cacheDir = \Composer\Util\Platform::getEnv('COMPOSER_CACHE_DIR');
+        \Composer\Util\Platform::clearEnv('COMPOSER_CACHE_DIR');
+        try {
+            $run = $this->runner->run(['command' => 'remediate', '--format' => 'json', '--database-location' => $url], $this->project);
+        } finally {
+            if (is_string($cacheDir)) {
+                \Composer\Util\Platform::putEnv('COMPOSER_CACHE_DIR', $cacheDir);
+            }
+        }
+
+        self::assertSame(Plan::EXIT_REMEDIATION_AVAILABLE, $run->exitCode, $run->describe() . ' (the trusted publisher\'s advisory is found, not the empty checked-in database)');
+        $report = self::report($run);
+        self::assertStringContainsString("sets config.cache-dir; the advisory database is kept under the operator's cache directory instead", implode("\n", $report['warnings']), $run->describe());
+        self::assertStringNotContainsString($this->project . '/.cache', $report['analysis_metadata']['advisory_source']);
+        self::assertStringContainsString((string) \Composer\Util\Platform::getEnv('COMPOSER_HOME') . '/cache/remediate/advisories.sqlite', $report['analysis_metadata']['advisory_source'], 'the operator\'s default, derived from COMPOSER_HOME once the project\'s cache-dir is set aside');
+        self::assertStringEqualsFile($this->project . '/.cache/remediate/advisories.sqlite', $planted, 'the checked-in file is untouched');
+    }
+
     public function testAPinnedDigestIsEnforcedOnTheDownloadAndOnEveryLaterUse(): void
     {
         $this->buildDatabase($this->project . '/published.sqlite', true);

@@ -5,7 +5,9 @@ declare(strict_types=1);
 namespace Remediate\Engine\Advisory\Db;
 
 use Composer\Composer;
+use Composer\Config;
 use Composer\Downloader\TransportException;
+use Composer\Factory;
 use Composer\Util\HttpDownloader;
 use Remediate\Engine\Advisory\AdvisoryLookupFailed;
 
@@ -53,12 +55,36 @@ final class DatabaseLocator
         return preg_replace('{([a-z][a-z0-9+.-]*://)[^/?#@\s"\']*@}i', '$1***@', $text) ?? $text;
     }
 
-    /** Where the database lives by default and where builds write their temporary files. */
+    /**
+     * Where the database lives by default and where builds write their temporary files: under Composer's
+     * cache directory as the operator configured it (COMPOSER_CACHE_DIR, the global config.json, or
+     * Composer's default). A `config.cache-dir` set by the analysed project's composer.json is the
+     * project's choice, not the operator's, and is not used for that: the default path must not be
+     * somewhere the project can point at or pre-fill.
+     */
     public function cacheDirectory(): string
     {
-        $dir = $this->composer->getConfig()->get('cache-dir');
+        $config = $this->composer->getConfig();
+        $dir = $config->get('cache-dir');
+        if ($this->cacheDirSetByProject($config)) {
+            $dir = Factory::createConfig()->get('cache-dir');
+        }
 
         return rtrim(is_string($dir) && $dir !== '' ? $dir : sys_get_temp_dir(), '/') . '/remediate';
+    }
+
+    /**
+     * Whether the cache directory in effect comes from a composer.json rather than from the environment,
+     * the operator's global configuration or Composer's default. Composer records the source of every
+     * configuration value; a file path means a composer.json or auth.json, and the only such file
+     * carrying `config.cache-dir` into a project's Composer instance is the project's own.
+     */
+    public function cacheDirSetByProject(?Config $config = null): bool
+    {
+        $config ??= $this->composer->getConfig();
+        $source = $config->getSourceOfValue('cache-dir');
+
+        return $source !== Config::SOURCE_DEFAULT && $source !== Config::SOURCE_UNKNOWN && !str_starts_with($source, 'COMPOSER_') && (str_ends_with($source, '.json') || is_file($source)) && realpath(dirname($source)) !== realpath($this->composer->getConfig()->get('home'));
     }
 
     public function defaultBuildPath(): string
@@ -73,7 +99,12 @@ final class DatabaseLocator
      */
     public function settings(?string $location = null, ?string $path = null, ?string $maxAge = null, bool $noDatabase = false, ?string $projectDir = null): DatabaseSettings
     {
-        return DatabaseSettings::resolve($this->composer, $this->defaultBuildPath(), $location, $path, $maxAge, $noDatabase, $projectDir);
+        $settings = DatabaseSettings::resolve($this->composer, $this->defaultBuildPath(), $location, $path, $maxAge, $noDatabase, $projectDir);
+        if (!$settings->pathConfigured && $this->cacheDirSetByProject()) {
+            $settings = $settings->withNote(sprintf('The analysed project\'s composer.json sets config.cache-dir; the advisory database is kept under the operator\'s cache directory instead (%s).', dirname($settings->path)));
+        }
+
+        return $settings;
     }
 
     /** The configured source (option, environment, composer.json), or null when none is configured. */
@@ -361,10 +392,11 @@ final class DatabaseLocator
         }
         $status = @file_get_contents(self::statusFile($path));
         $decoded = is_string($status) ? json_decode($status, true) : null;
-        // A status file older than the database beside it describes a previous file: the database was
-        // rebuilt or replaced in place since (db-build removes the status file too; this covers the rest).
-        $fetchedAt = is_array($decoded) && is_string($decoded['fetched_at'] ?? null) ? strtotime($decoded['fetched_at']) : false;
-        if (is_array($decoded) && $builtAt !== false && $fetchedAt !== false && $builtAt > $fetchedAt) {
+        // The status record names the bytes it describes. A file whose digest differs was rebuilt or
+        // replaced in place since the download (db-build removes the record too; this covers the rest).
+        // Nothing the publisher writes into the database (build time, sources) can retire the record:
+        // only a change to the bytes on disk can, and the publisher has no hand on those.
+        if (is_array($decoded) && is_string($decoded['sha256'] ?? null) && $sha !== false && !hash_equals($decoded['sha256'], $sha)) {
             $decoded = null;
         }
 
@@ -519,7 +551,7 @@ final class DatabaseLocator
         // later run that reuses the copy repeats the disclosure. Written atomically, never through an
         // existing link (checked by the caller), and without the URL's credentials.
         $statusTmp = self::statusFile($path) . '.tmp-' . bin2hex(random_bytes(8));
-        if (@file_put_contents($statusTmp, json_encode(['verified' => $verified, 'url' => $shown, 'fetched_at' => gmdate(DATE_ATOM)], JSON_THROW_ON_ERROR)) !== false) {
+        if (@file_put_contents($statusTmp, json_encode(['verified' => $verified, 'url' => $shown, 'sha256' => $actual, 'fetched_at' => gmdate(DATE_ATOM)], JSON_THROW_ON_ERROR)) !== false) {
             @rename($statusTmp, self::statusFile($path));
         }
         @unlink($statusTmp);

@@ -587,10 +587,8 @@ final class DatabaseLocatorTest extends TestCase
         self::assertSame(Freshness::Downloaded, $first->locate($this->settings($first))?->freshness);
         self::assertFileExists($this->path() . '.status.json');
 
-        // The writer retires the status file; the locator also ignores a status record older than the
-        // database beside it (a rebuild is always newer than the download it replaced). Sequence:
-        // downloaded two hours ago, rebuilt with a private file one hour ago, publisher moved on just now.
-        file_put_contents($this->path() . '.status.json', json_encode(['verified' => true, 'url' => self::URL, 'fetched_at' => self::hoursAgo(2)], JSON_THROW_ON_ERROR));
+        // The writer retires the status file; the locator also ignores a status record whose digest is not
+        // the file's (a rebuild changed the bytes, whatever the record says about when it was fetched).
         $rebuilt = self::database('mine', self::hoursAgo(1), ['Packagist', 'local:internal.json']);
         file_put_contents($this->path(), $rebuilt); // an in-place rebuild that left the status file behind
         $newer = self::database('h2', self::hoursAgo(0));
@@ -601,6 +599,78 @@ final class DatabaseLocatorTest extends TestCase
         self::assertSame(Freshness::Unconfirmed, $located?->freshness, 'a local build with private advisories, kept');
         self::assertStringEqualsFile($this->path(), $rebuilt);
         self::assertStringContainsString('private advisories (internal.json)', implode("\n", $locator->warnings()));
+    }
+
+    public function testACacheDirSetByTheProjectDoesNotDecideWhereTheDatabaseLives(): void
+    {
+        // The project's composer.json sets config.cache-dir and ships an empty database at the path that
+        // would follow from it. Composer records the project file as the source of the value.
+        $project = $this->cacheDir . '/project';
+        mkdir($project . '/.cache/remediate', 0700, true);
+        file_put_contents($project . '/composer.json', '{}');
+        $planted = self::database('empty', self::hoursAgo(0));
+        file_put_contents($project . '/.cache/remediate/advisories.sqlite', $planted);
+        $config = new Config(false);
+        $config->merge(['config' => ['home' => $this->cacheDir . '/home']], 'test-global');
+        $config->merge(['config' => ['cache-dir' => $project . '/.cache']], $project . '/composer.json');
+        $composer = new Composer();
+        $composer->setConfig($config);
+        $composer->setPackage(new RootPackage('test/project', '1.0.0.0', '1.0.0'));
+        $published = self::database('real', self::hoursAgo(5));
+        $locator = new DatabaseLocator($composer, $this->downloader([self::URL => $published] + self::published($published, 'real', self::hoursAgo(5))));
+
+        self::assertTrue($locator->cacheDirSetByProject());
+        $settings = $locator->settings(self::URL, null, null, false, $project);
+        self::assertStringStartsNotWith($project, $settings->path, 'the default path is not under the project\'s cache-dir');
+        self::assertStringContainsString('sets config.cache-dir; the advisory database is kept under the operator\'s cache directory instead', implode("\n", $settings->notes));
+        $located = $locator->locate($settings);
+        self::assertSame(Freshness::Downloaded, $located?->freshness);
+        self::assertStringEqualsFile($project . '/.cache/remediate/advisories.sqlite', $planted, 'the planted file is neither read nor touched');
+
+        // The same cache-dir from the operator's global configuration is honoured as before.
+        $global = new Config(false);
+        $global->merge(['config' => ['home' => $this->cacheDir . '/home']], 'test-global');
+        $global->merge(['config' => ['cache-dir' => $this->cacheDir]], $this->cacheDir . '/home/config.json');
+        $operatorComposer = new Composer();
+        $operatorComposer->setConfig($global);
+        $operatorComposer->setPackage(new RootPackage('test/project', '1.0.0.0', '1.0.0'));
+        $operator = new DatabaseLocator($operatorComposer, $this->downloader([]));
+        self::assertFalse($operator->cacheDirSetByProject());
+        self::assertSame($this->path(), $operator->defaultBuildPath());
+        @unlink($settings->path);
+        @unlink($settings->path . '.status.json');
+        @unlink($project . '/.cache/remediate/advisories.sqlite');
+        @rmdir($project . '/.cache/remediate');
+        @rmdir($project . '/.cache');
+        @unlink($project . '/composer.json');
+        @rmdir($project);
+    }
+
+    public function testPublisherWrittenTimestampsCannotEraseDownloadProvenance(): void
+    {
+        // Publisher A serves a database claiming a build time a day ahead and B's dataset hash.
+        $forged = self::database('trusted-hash', gmdate(DATE_ATOM, time() + 86400));
+        $a = new DatabaseLocator($this->composer(), $this->downloader([self::URL => $forged] + self::published($forged, 'trusted-hash', self::hoursAgo(0))));
+        self::assertSame(Freshness::Downloaded, $a->locate($this->settings($a))?->freshness);
+
+        $b = 'https://trusted.test/advisories.sqlite';
+        $real = self::database('trusted-hash', self::hoursAgo(3));
+        $bResponses = [$b => $real, $b . '.sha256' => hash('sha256', $real), 'https://trusted.test/latest.json' => json_encode(['sha256' => hash('sha256', $real), 'dataset_hash' => 'trusted-hash', 'published_at' => self::hoursAgo(3)], JSON_THROW_ON_ERROR)];
+        $switched = new DatabaseLocator($this->composer(), $this->downloader($bResponses));
+        self::assertSame(Freshness::Downloaded, $switched->locate($this->settings($switched, $b))?->freshness, 'still a download from A: neither the dataset hash nor the build time speaks for B');
+        self::assertStringEqualsFile($this->path(), $real);
+
+        // A sixty-second lead, the other reproduction, with B unreachable: A's copy is not the fallback either.
+        $ahead = self::database('other', gmdate(DATE_ATOM, time() + 60));
+        file_put_contents($this->path(), $ahead);
+        file_put_contents($this->path() . '.status.json', json_encode(['verified' => true, 'url' => self::URL, 'sha256' => hash('sha256', $ahead), 'fetched_at' => self::hoursAgo(0)], JSON_THROW_ON_ERROR));
+        $outage = new DatabaseLocator($this->composer(), $this->downloader([]));
+        self::assertNull($outage->locate($this->settings($outage, $b)));
+
+        // A status record from before digests were recorded still marks the file as a download.
+        file_put_contents($this->path() . '.status.json', json_encode(['verified' => true, 'url' => self::URL, 'fetched_at' => self::hoursAgo(0)], JSON_THROW_ON_ERROR));
+        $legacy = new DatabaseLocator($this->composer(), $this->downloader($bResponses));
+        self::assertSame(Freshness::Downloaded, $legacy->locate($this->settings($legacy, $b))?->freshness);
     }
 
     public function testAPinnedDigestDownloadsEvenWhenThePublisherOffersNoDigest(): void

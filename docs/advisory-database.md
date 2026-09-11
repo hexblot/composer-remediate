@@ -60,6 +60,10 @@ precisely because you do not trust it. Its `extra.remediate` settings are honour
   directory rather than in the shared default file another project's scan reads, and the report
   header carries a warning that the project chose the source. `--database-location` or
   `REMEDIATE_DATABASE` override it.
+- `config.cache-dir` in the project's `composer.json` does not decide where the default database
+  lives: the default path follows the operator's cache configuration (`COMPOSER_CACHE_DIR`, the global
+  `config.json`, or Composer's default), and the report notes when a project's setting was set aside.
+  A repository therefore cannot pre-fill the default path.
 - `database_path` must be a relative path that stays inside the project directory, with no symbolic
   link among the directories on the way, checked before anything is created. A scan can therefore only
   ever write inside the checkout being scanned; a path elsewhere needs `--database-path` or
@@ -72,6 +76,8 @@ precisely because you do not trust it. Its `extra.remediate` settings are honour
   (the run fails and says so), a download is validated as a database before it is moved into place, and
   a copy downloaded from one source is never accepted as current for another, neither through its
   metadata nor as the fallback when the new source cannot be reached: switching sources replaces it.
+  The record that marks a copy as downloaded names the bytes it describes, so nothing a publisher
+  writes into a database (build time, source names) can make its download pass for a local build.
 - A local build that includes private advisories (`db-build --include=…`) is never replaced by a
   download, even when the published database is newer: the report says the copy is kept and that
   public advisories published since are unknown, and `remediate:db-build --if-stale` with the same

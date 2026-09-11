@@ -62,6 +62,13 @@ with a separate harness), each with a regression test.
   is created, and a symbolic link anywhere on the way is rejected. The schema and the report guide say
   that `none` and `unsolved_findings` describe standalone remediation and that the combined command may
   still fix such a finding.
+- **Second recheck (two findings at c17b742).** The default database path follows the operator's
+  cache configuration, never a `config.cache-dir` set by the analysed project's composer.json (Composer
+  records the source of the value; a project file as the source is set aside with a note in the
+  report), so a repository cannot pre-fill the default path. The status record that marks a copy as
+  downloaded carries the digest of the bytes it describes and is retired only when the bytes change;
+  the previous rule, which compared the database's own build time with the fetch time, let a publisher
+  reclassify its download as a local build by writing a later timestamp.
 - Documentation brought in line: SECURITY.md describes the download verification and the limits on
   what the analysed project may configure; the privacy promise names the publisher request and how to
   stop it; the report guide lists the new warnings.
