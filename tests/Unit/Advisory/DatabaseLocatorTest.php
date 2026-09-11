@@ -627,10 +627,23 @@ final class DatabaseLocatorTest extends TestCase
         self::assertSame(Freshness::Downloaded, $located?->freshness);
         self::assertStringEqualsFile($project . '/.cache/remediate/advisories.sqlite', $planted, 'the planted file is neither read nor touched');
 
-        // The same cache-dir from the operator's global configuration is honoured as before.
+        // The reviewer's bypass: the project sets `home` as well, so a comparison against the merged
+        // configuration would find the source's directory and "home" agreeing and call it the operator's.
+        $withHome = new Config(false);
+        $withHome->merge(['config' => ['home' => $this->cacheDir . '/home']], 'test-global');
+        $withHome->merge(['config' => ['cache-dir' => $project . '/.cache', 'home' => $project]], $project . '/composer.json');
+        $hijacked = new Composer();
+        $hijacked->setConfig($withHome);
+        $hijacked->setPackage(new RootPackage('test/project', '1.0.0.0', '1.0.0'));
+        $locatorWithHome = new DatabaseLocator($hijacked, $this->downloader([]));
+        self::assertSame($project, $withHome->get('home'), 'the project did move Composer\'s idea of home');
+        self::assertTrue($locatorWithHome->cacheDirSetByProject(), 'the operator home comes from configuration the project never touched');
+        self::assertStringStartsNotWith($project, $locatorWithHome->defaultBuildPath());
+
+        // The same cache-dir from the operator's global configuration is honoured as before. The only
+        // home that counts is the one the environment names, so the file has to sit in that directory.
         $global = new Config(false);
-        $global->merge(['config' => ['home' => $this->cacheDir . '/home']], 'test-global');
-        $global->merge(['config' => ['cache-dir' => $this->cacheDir]], $this->cacheDir . '/home/config.json');
+        $global->merge(['config' => ['cache-dir' => $this->cacheDir]], (string) \Composer\Util\Platform::getEnv('COMPOSER_HOME') . '/config.json');
         $operatorComposer = new Composer();
         $operatorComposer->setConfig($global);
         $operatorComposer->setPackage(new RootPackage('test/project', '1.0.0.0', '1.0.0'));

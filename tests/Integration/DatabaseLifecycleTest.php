@@ -4,6 +4,7 @@ declare(strict_types=1);
 
 namespace Remediate\Tests\Integration;
 
+use Composer\Util\Platform;
 use PHPUnit\Framework\TestCase;
 use Remediate\Engine\Plan\Plan;
 use Remediate\Tests\Support\CommandResult;
@@ -25,6 +26,7 @@ final class DatabaseLifecycleTest extends TestCase
     private string $project;
     private TlsPublisher $publisher;
     private string $path;
+    private string|false $previousCafile = false;
 
     protected function setUp(): void
     {
@@ -32,16 +34,15 @@ final class DatabaseLifecycleTest extends TestCase
         $this->project = $this->runner->project(self::FIXTURE);
         $this->publisher = new TlsPublisher();
         $this->path = $this->project . '/.cache/advisories.sqlite';
-        $certificate = $this->publisher->certificate();
-        CommandRunner::editComposerJson($this->project, static function (array $json) use ($certificate): array {
-            $json['config'] = ($json['config'] ?? []) + ['cafile' => $certificate];
-
-            return $json;
-        });
+        // The certificate is trusted through the operator's channel, as an operator would: a cafile in
+        // the analysed project's composer.json is the project's choice and the report says so.
+        $this->previousCafile = Platform::getEnv('COMPOSER_CAFILE');
+        Platform::putEnv('COMPOSER_CAFILE', $this->publisher->certificate());
     }
 
     protected function tearDown(): void
     {
+        is_string($this->previousCafile) ? Platform::putEnv('COMPOSER_CAFILE', $this->previousCafile) : Platform::clearEnv('COMPOSER_CAFILE');
         $this->publisher->destroy();
         $this->runner->cleanup();
     }
@@ -176,21 +177,24 @@ final class DatabaseLifecycleTest extends TestCase
         $result = $this->runner->run(['command' => 'remediate:db-build', '--output' => $this->project . '/.cache/remediate/advisories.sqlite', '--source' => ['friendsofphp'], '--friendsofphp-path' => $this->project . '/empty-checkout', '--enrich' => ['none']], $this->project);
         self::assertSame(0, $result->exitCode, $result->describe());
         $planted = (string) file_get_contents($this->project . '/.cache/remediate/advisories.sqlite');
+        // The project sets `home` as well, so that a comparison against Composer's merged configuration
+        // would find both sides agreeing and call the project's cache directory the operator's.
         CommandRunner::editComposerJson($this->project, static function (array $json): array {
             $json['config']['cache-dir'] = '.cache';
+            $json['config']['home'] = '.';
 
             return $json;
         });
 
         // COMPOSER_CACHE_DIR (set by the test bootstrap) would outrank the project's setting in Composer's
         // own precedence; the reviewer's case is a runner without it, where the project's value applies.
-        $cacheDir = \Composer\Util\Platform::getEnv('COMPOSER_CACHE_DIR');
-        \Composer\Util\Platform::clearEnv('COMPOSER_CACHE_DIR');
+        $cacheDir = Platform::getEnv('COMPOSER_CACHE_DIR');
+        Platform::clearEnv('COMPOSER_CACHE_DIR');
         try {
             $run = $this->runner->run(['command' => 'remediate', '--format' => 'json', '--database-location' => $url], $this->project);
         } finally {
             if (is_string($cacheDir)) {
-                \Composer\Util\Platform::putEnv('COMPOSER_CACHE_DIR', $cacheDir);
+                Platform::putEnv('COMPOSER_CACHE_DIR', $cacheDir);
             }
         }
 
@@ -198,8 +202,26 @@ final class DatabaseLifecycleTest extends TestCase
         $report = self::report($run);
         self::assertStringContainsString("sets config.cache-dir; the advisory database is kept under the operator's cache directory instead", implode("\n", $report['warnings']), $run->describe());
         self::assertStringNotContainsString($this->project . '/.cache', $report['analysis_metadata']['advisory_source']);
-        self::assertStringContainsString((string) \Composer\Util\Platform::getEnv('COMPOSER_HOME') . '/cache/remediate/advisories.sqlite', $report['analysis_metadata']['advisory_source'], 'the operator\'s default, derived from COMPOSER_HOME once the project\'s cache-dir is set aside');
+        self::assertStringContainsString((string) Platform::getEnv('COMPOSER_HOME') . '/cache/remediate/advisories.sqlite', $report['analysis_metadata']['advisory_source'], 'the operator\'s default, derived from COMPOSER_HOME once the project\'s cache-dir is set aside');
         self::assertStringEqualsFile($this->project . '/.cache/remediate/advisories.sqlite', $planted, 'the checked-in file is untouched');
+    }
+
+    public function testATlsSettingSuppliedByTheProjectIsDisclosed(): void
+    {
+        $this->buildDatabase($this->project . '/published.sqlite', true);
+        $url = $this->publisher->publishDatabase($this->project . '/published.sqlite');
+        $certificate = $this->publisher->certificate();
+        Platform::clearEnv('COMPOSER_CAFILE');
+        CommandRunner::editComposerJson($this->project, static function (array $json) use ($certificate): array {
+            $json['config']['cafile'] = $certificate;
+
+            return $json;
+        });
+
+        $run = $this->remediate(['--database-location' => $url]);
+
+        self::assertSame(Plan::EXIT_REMEDIATION_AVAILABLE, $run->exitCode, $run->describe());
+        self::assertStringContainsString("changes how TLS certificates are verified (config.cafile)", implode("\n", self::report($run)['warnings']), 'the same certificate through the project rather than the operator is reported');
     }
 
     public function testAPinnedDigestIsEnforcedOnTheDownloadAndOnEveryLaterUse(): void
@@ -234,22 +256,21 @@ final class DatabaseLifecycleTest extends TestCase
             $result = $this->runner->run(['command' => 'remediate:db-build', '--output' => $this->project . '/empty.sqlite', '--source' => ['friendsofphp'], '--friendsofphp-path' => $this->project . '/empty-checkout', '--enrich' => ['none']], $this->project);
             self::assertSame(0, $result->exitCode, $result->describe());
             $projectUrl = $other->publishDatabase($this->project . '/empty.sqlite');
-            $otherCertificate = $other->certificate();
-            // curl takes one cafile: bundle both certificates
+            // curl takes one cafile: bundle both certificates, still through the operator's channel.
             $bundle = $this->project . '/bundle.pem';
-            file_put_contents($bundle, file_get_contents($this->publisher->certificate()) . file_get_contents($otherCertificate));
-            CommandRunner::editComposerJson($this->project, static function (array $json) use ($projectUrl, $bundle): array {
-                $json['config']['cafile'] = $bundle;
+            file_put_contents($bundle, file_get_contents($this->publisher->certificate()) . file_get_contents($other->certificate()));
+            Platform::putEnv('COMPOSER_CAFILE', $bundle);
+            CommandRunner::editComposerJson($this->project, static function (array $json) use ($projectUrl): array {
                 $json['extra'] = ['remediate' => ['database' => $projectUrl]];
 
                 return $json;
             });
-            $previous = \Composer\Util\Platform::getEnv('REMEDIATE_DATABASE');
-            \Composer\Util\Platform::clearEnv('REMEDIATE_DATABASE');
+            $previous = Platform::getEnv('REMEDIATE_DATABASE');
+            Platform::clearEnv('REMEDIATE_DATABASE');
             try {
                 $result = $this->runner->run(['command' => 'remediate', '--format' => 'json'], $this->project);
             } finally {
-                is_string($previous) ? \Composer\Util\Platform::putEnv('REMEDIATE_DATABASE', $previous) : \Composer\Util\Platform::clearEnv('REMEDIATE_DATABASE');
+                is_string($previous) ? Platform::putEnv('REMEDIATE_DATABASE', $previous) : Platform::clearEnv('REMEDIATE_DATABASE');
             }
             self::assertSame(Plan::EXIT_CLEAN, $result->exitCode, $result->describe() . ' (the project-chosen database is empty, so the project looks clean)');
             $report = self::report($result);

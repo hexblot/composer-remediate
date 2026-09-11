@@ -62,6 +62,13 @@ with a separate harness), each with a regression test.
   is created, and a symbolic link anywhere on the way is rejected. The schema and the report guide say
   that `none` and `unsolved_findings` describe standalone remediation and that the combined command may
   still fix such a finding.
+- **Third recheck (one finding at b8bf552).** Which configuration counts as the operator's is now
+  decided from configuration the analysed project never contributed to (`Factory::createConfig()`:
+  environment, the operator's global `config.json`, Composer's defaults). The previous check read
+  Composer's merged `config.home`, which the project can set alongside `config.cache-dir`, so a
+  repository could hold both sides of the comparison and have its own cache directory accepted as the
+  operator's. Alongside it, TLS settings supplied by the project (`cafile`, `capath`, `disable-tls`)
+  are reported, since Composer verifies the download with them.
 - **Second recheck (two findings at c17b742).** The default database path follows the operator's
   cache configuration, never a `config.cache-dir` set by the analysed project's composer.json (Composer
   records the source of the value; a project file as the source is set aside with a note in the

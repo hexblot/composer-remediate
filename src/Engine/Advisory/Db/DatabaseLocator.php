@@ -33,6 +33,8 @@ final class DatabaseLocator
     /** @var list<string> */
     private array $warnings = [];
 
+    private ?Config $operatorConfig = null;
+
     /**
      * @param bool        $requireChecksum refuse a download that no published digest or expected digest verifies (the
      *                                     default); false accepts it with a warning in the report
@@ -65,26 +67,69 @@ final class DatabaseLocator
     public function cacheDirectory(): string
     {
         $config = $this->composer->getConfig();
-        $dir = $config->get('cache-dir');
-        if ($this->cacheDirSetByProject($config)) {
-            $dir = Factory::createConfig()->get('cache-dir');
-        }
+        $dir = $this->setByProject($config, 'cache-dir') ? $this->operatorConfig()->get('cache-dir') : $config->get('cache-dir');
 
         return rtrim(is_string($dir) && $dir !== '' ? $dir : sys_get_temp_dir(), '/') . '/remediate';
     }
 
-    /**
-     * Whether the cache directory in effect comes from a composer.json rather than from the environment,
-     * the operator's global configuration or Composer's default. Composer records the source of every
-     * configuration value; a file path means a composer.json or auth.json, and the only such file
-     * carrying `config.cache-dir` into a project's Composer instance is the project's own.
-     */
+    /** Kept for callers that only ask about the cache directory. */
     public function cacheDirSetByProject(?Config $config = null): bool
     {
-        $config ??= $this->composer->getConfig();
-        $source = $config->getSourceOfValue('cache-dir');
+        return $this->setByProject($config ?? $this->composer->getConfig(), 'cache-dir');
+    }
 
-        return $source !== Config::SOURCE_DEFAULT && $source !== Config::SOURCE_UNKNOWN && !str_starts_with($source, 'COMPOSER_') && (str_ends_with($source, '.json') || is_file($source)) && realpath(dirname($source)) !== realpath($this->composer->getConfig()->get('home'));
+    /**
+     * Configuration as the operator gave it: the environment, their global `config.json` and `auth.json`,
+     * and Composer's defaults. The analysed project's `composer.json` is never merged into it.
+     *
+     * This is the only configuration that may say where the operator's own files live. The merged
+     * configuration cannot: a project that sets `config.home` alongside `config.cache-dir` would
+     * otherwise hold both sides of the comparison and declare its own settings trustworthy. Relative
+     * values resolve against a neutral directory rather than the project, for the same reason.
+     */
+    private function operatorConfig(): Config
+    {
+        return $this->operatorConfig ??= Factory::createConfig(null, sys_get_temp_dir());
+    }
+
+    /**
+     * Whether a configuration value was set by a composer.json or auth.json outside the operator's home
+     * directory, which for a plugin command means the analysed project's own files. Composer records the
+     * source of every value: `SOURCE_DEFAULT`, `SOURCE_UNKNOWN` and the `COMPOSER_*` environment
+     * variables are the operator's; a file is theirs only when it sits in the home directory the
+     * operator's own configuration names. A source that cannot be resolved counts as the project's.
+     */
+    private function setByProject(Config $config, string $key): bool
+    {
+        $source = $config->getSourceOfValue($key);
+        if ($source === Config::SOURCE_DEFAULT || $source === Config::SOURCE_UNKNOWN || str_starts_with($source, 'COMPOSER_')) {
+            return false;
+        }
+        if (!str_ends_with($source, '.json') && !is_file($source)) {
+            return false;
+        }
+        $home = $this->operatorConfig()->get('home');
+        $home = is_string($home) ? realpath($home) : false;
+        $directory = realpath(dirname($source));
+
+        return $home === false || $directory === false || ($directory !== $home && !str_starts_with($directory, $home . '/'));
+    }
+
+    /**
+     * Settings the analysed project changed that decide how the database is fetched and verified, for
+     * the report. Composer's own https rule (`disable-tls`, `secure-http`) never applies here, since a
+     * source that is not an `https://` URL is refused before any request; but the certificates the
+     * download is verified against are Composer's to choose, so a project that supplies its own belongs
+     * in the report where a gate can see it.
+     *
+     * @return list<string>
+     */
+    private function projectTlsNotes(): array
+    {
+        $config = $this->composer->getConfig();
+        $changed = array_values(array_filter(['cafile', 'capath', 'disable-tls'], fn (string $key): bool => $this->setByProject($config, $key)));
+
+        return $changed === [] ? [] : [sprintf('The analysed project\'s composer.json changes how TLS certificates are verified (config.%s); the advisory database was fetched with that setting in force.', implode(', config.', $changed))];
     }
 
     public function defaultBuildPath(): string
@@ -102,6 +147,9 @@ final class DatabaseLocator
         $settings = DatabaseSettings::resolve($this->composer, $this->defaultBuildPath(), $location, $path, $maxAge, $noDatabase, $projectDir);
         if (!$settings->pathConfigured && $this->cacheDirSetByProject()) {
             $settings = $settings->withNote(sprintf('The analysed project\'s composer.json sets config.cache-dir; the advisory database is kept under the operator\'s cache directory instead (%s).', dirname($settings->path)));
+        }
+        foreach ($this->projectTlsNotes() as $note) {
+            $settings = $settings->withNote($note);
         }
 
         return $settings;

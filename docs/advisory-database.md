@@ -63,7 +63,14 @@ precisely because you do not trust it. Its `extra.remediate` settings are honour
 - `config.cache-dir` in the project's `composer.json` does not decide where the default database
   lives: the default path follows the operator's cache configuration (`COMPOSER_CACHE_DIR`, the global
   `config.json`, or Composer's default), and the report notes when a project's setting was set aside.
-  A repository therefore cannot pre-fill the default path.
+  A repository therefore cannot pre-fill the default path. Which configuration counts as the
+  operator's is decided from configuration the project never contributed to, so a project that also
+  sets `config.home` cannot make its own files look like the operator's. If you keep the database
+  somewhere else, use `--database-path` or `REMEDIATE_DATABASE_PATH` rather than a project
+  `config.cache-dir`.
+- `config.cafile`, `config.capath` and `config.disable-tls` set by the project are reported: Composer
+  verifies the download with them, and a gate should know when the certificates came from the
+  repository being scanned. A source that is not an `https://` URL is refused whatever those say.
 - `database_path` must be a relative path that stays inside the project directory, with no symbolic
   link among the directories on the way, checked before anything is created. A scan can therefore only
   ever write inside the checkout being scanned; a path elsewhere needs `--database-path` or
