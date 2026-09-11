@@ -40,7 +40,7 @@ stands.
 - [x] `composer remediate:db-build` producing a SQLite file with a dataset hash; `remediate:db-status`
 - [x] `--database-location` (path or URL), `REMEDIATE_DATABASE`, `extra.remediate.database`
 - [x] private or organisational advisories as an additional source (`--include=<json>`)
-- [x] a reference shared instance published by this project (`.github/workflows/advisory-db.yml`): hourly build, release only when the dataset hash changes, sha256 and build-provenance attestation, `advisory-db-latest` moving pointer
+- [x] a reference shared instance published by this project (`.github/workflows/advisory-db.yml`): build every six hours, release only when the dataset hash changes, sha256 and build-provenance attestation, `advisory-db-latest` moving pointer
 
 ## Phase 3 — ecosystem corpus, CI, version matrix *(complete)*
 

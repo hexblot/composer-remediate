@@ -42,6 +42,12 @@
   on the run's summary page, uploads the HTML and Clover reports as the `coverage` artifact and, on
   pushes to `main`, writes the line-coverage badge data to the `badges` branch that the README badge
   reads; the other matrix jobs run without a coverage driver.
+- CI cost: a push to `main` runs one job (PHP 8.4, Composer latest) that carries PHPStan, Deptrac,
+  PCOV coverage and the badges, the end-to-end tests and the generated-page checks. Pull requests run
+  the full PHP matrix (8.1 to 8.5) and the Composer-version matrix (2.4 to 2.9 on their PHP versions),
+  so a release is cut from a pull request: branch, PR, full matrix and review, merge, tag from `main`.
+  The Actions tab's manual run has a `full` switch for the whole matrix without a PR. The advisory
+  database workflow polls the feeds every six hours and publishes only when the dataset changed.
 - The `ci` workflow does not run for commits that only touch hand-written pages under `docs/`,
   `mkdocs.yml`, root Markdown files or the docs pipelines; the `docs` workflow builds and deploys
   those. The generated pages (`docs/cli-reference.md`, `docs/case-studies.md`) and the JSON schema do

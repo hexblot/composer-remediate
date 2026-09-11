@@ -1,6 +1,6 @@
 # Reference shared advisory database.
 #
-# Builds the SQLite advisory database from Packagist, OSV and FriendsOfPHP on a schedule and publishes
+# Builds the SQLite advisory database from Packagist, OSV and FriendsOfPHP every six hours and publishes
 # it as a GitHub release ONLY when the logical dataset changed (the dataset hash differs from the one
 # in the current `latest.json`). Releases are tagged db-YYYY-MM-DD.HH (a .N suffix disambiguates
 # several publications in one hour). Each release carries the database, its sha256, latest.json, and
@@ -13,7 +13,10 @@ name: advisory-db
 
 on:
   schedule:
-    - cron: '17 * * * *'
+    # Every six hours. Publication only happens when the dataset hash moved, and clients confirm their
+    # copy by content and report its age, so a publication a few hours behind the feeds costs nothing
+    # that hourly polling (about 70 job-minutes a day) would buy back.
+    - cron: '17 */6 * * *'
   workflow_dispatch:
     inputs:
       force:

@@ -81,6 +81,11 @@ with a separate harness), each with a regression test.
   directory is gone; the first run after upgrading downloads once into the new path.
   New network behaviour: a plain run contacts github.com once per run (a few bytes, no package names);
   see the privacy page for the three ways to stop it.
+- CI: a push to `main` runs one canonical job (PHP 8.4, Composer latest, with PHPStan, Deptrac,
+  coverage, badges and the generated-page checks); pull requests run the full PHP and Composer
+  matrices, and a manual run has a `full` switch. Releases are cut from pull requests so the tag's
+  tree has had the full run. The advisory database is polled every six hours instead of hourly; it is
+  still published only when the dataset changed, and clients confirm their copy by content.
 - Roadmap: Phase 7, goal-driven planning, added as a candidate after Phase 5, motivated by
   composer/composer discussion 12777 (a TYPO3 major upgrade blocked by a transitive package Composer's
   error never names); the design-decisions page records why a security fix is treated as one goal

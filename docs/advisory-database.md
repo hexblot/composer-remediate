@@ -221,7 +221,7 @@ fetch timestamps, so an unchanged advisory set produces the same hash across bui
 
 ### The reference instance
 
-This project publishes a database built the same way, refreshed hourly and released **only when the
+This project publishes a database built the same way, refreshed every six hours and released **only when the
 dataset hash changes**, as GitHub releases named `db-YYYY-MM-DD.HH` (a `.N` suffix disambiguates
 several publications within one hour). A moving pointer release, `advisory-db-latest`, always holds
 the newest files:
