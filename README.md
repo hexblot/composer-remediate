@@ -31,12 +31,21 @@ CVE-2026-XXXXX  symfony/http-foundation 6.4.21
     composer update drupal/core-recommended -W -m
 ```
 
+Advisories come from the database this project publishes: a copy is kept at a fixed path under
+Composer's cache directory, checked against the publisher on every run and verified by checksum, so
+reports carry exploit data (FIRST EPSS, CISA KEV) and coverage-gap bookkeeping. A plain run therefore
+makes one small request to GitHub. `--no-database` asks your configured repositories instead, exactly
+as `composer audit` does, and `--offline` uses the copy already on disk. See
+[Advisory database](https://hexblot.github.io/composer-remediate/advisory-database/) and
+[Privacy and network behaviour](https://hexblot.github.io/composer-remediate/privacy-and-network/).
+
 Status: released as **0.x** on [Packagist](https://packagist.org/packages/hexblot/composer-remediate);
-every release so far recommends and never modifies your project. Phases 0 to 3 and 6 of the
+every release so far recommends and never modifies your project. Phases 0 to 4 and 6 of the
 [roadmap](https://hexblot.github.io/composer-remediate/roadmap/) are complete (seventeen real
-historical fixtures); global planning (Phase 4) and `--apply` (Phase 5) are ahead.
-Three rounds of adversarial adoption review are answered in the [changelog](CHANGELOG.md), each finding
-with a test. Current state, fixtures and evidence: [hexblot.github.io/composer-remediate](https://hexblot.github.io/composer-remediate/).
+historical fixtures, and a search for the one command that fixes every finding); `--apply` (Phase 5)
+is ahead. Two adversarial adoption reviews and their rechecks are answered in the
+[changelog](CHANGELOG.md), each finding with a test. Current state, fixtures and evidence:
+[hexblot.github.io/composer-remediate](https://hexblot.github.io/composer-remediate/).
 
 ## Using it as a CI gate
 
@@ -70,8 +79,13 @@ PHP and Composer run inside [ddev](https://ddev.com):
 ```bash
 ddev start
 ddev composer install
-ddev composer check      # phpstan + phpunit
+ddev composer --working-dir=tools/deptrac install   # once: the architecture rules need PHP 8.2+
+ddev composer check      # phpstan + deptrac + phpunit
 ```
+
+Work reaches `main` through a pull request, one branch per unit of work; a draft runs the single
+canonical CI job and marking it ready for review runs the full PHP and Composer matrices. The
+[contributing guide](https://hexblot.github.io/composer-remediate/contributing/) has the ground rules.
 
 Documentation is built with MkDocs (`pipx run --spec mkdocs --pip-args=pymdown-extensions mkdocs serve`) and published from `main` to GitHub
 Pages. The CLI reference and case-studies pages are generated (`ddev composer cli-reference`,

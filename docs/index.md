@@ -45,10 +45,11 @@ CVE-2026-XXXXX  symfony/http-foundation 6.4.21
 
 Released as 0.x on [Packagist](https://packagist.org/packages/hexblot/composer-remediate); the
 current version is listed in the [changelog](https://github.com/hexblot/composer-remediate/blob/main/CHANGELOG.md).
-Of the [roadmap](roadmap.md), Phases 0 to 3 are complete: the planner reproduces the remediation a
+Of the [roadmap](roadmap.md), Phases 0 to 4 are complete: the planner reproduces the remediation a
 competent human would choose on every one of seventeen real historical projects (Laravel, Symfony,
-Drupal, Shopware, two monorepos and a distribution), and the advisory database can be built locally
-or shared. The Phase 6 integrations (SARIF, GitLab and CycloneDX reports, severity gate,
+Drupal, Shopware, two monorepos and a distribution), searches for the single command that fixes every
+finding and explains that search, and the advisory database is kept current from the one this project
+publishes, or built locally and shared. The Phase 6 integrations (SARIF, GitLab and CycloneDX reports, severity gate,
 baselines, release cooldown, EPSS and CISA KEV urgency ordering, abandoned-package flagging) have
 landed. An adversarial adoption review of 0.3.0 (another AI model working from the published
 repository, reproducing each finding) found twenty
@@ -75,8 +76,8 @@ is allowed to decide). `--apply`
 - [CI integration](ci-integration.md): gate policies, GitHub Actions and GitLab CI jobs, SARIF and
   SBOM output, baselines.
 - [How it works](how-it-works.md): candidates, validation, ranking, budgets.
-- [Advisory database](advisory-database.md): build advisories into a local SQLite file, share it,
-  run offline, coverage gaps.
+- [Advisory database](advisory-database.md): where advisories come from by default and how a copy is
+  kept current, building one yourself, private advisories, running offline, coverage gaps.
 - [Privacy and network behaviour](privacy-and-network.md): what leaves the machine, the plugin
   boundary, `--offline`.
 - [CLI reference](cli-reference.md): every command and option.

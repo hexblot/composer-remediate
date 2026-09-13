@@ -11,7 +11,7 @@
 | `1` | Vulnerabilities found **and** a verified fix exists | **fail**: the fix is one command away, apply it |
 | `2` | At least one vulnerability has **no** verified fix, and every solve completed | fail or warn, see below |
 | `3` | Tool error (no lock file, bad option, or a solver error left a finding's outcome unknown) | fail, fix the pipeline |
-| `4` | Advisory data unavailable (network, malformed snapshot, no repository provides advisories) | fail or retry, this is infrastructure |
+| `4` | Advisory data unavailable (no database and no repository provides advisories, a malformed snapshot, a database refused as unverified or too old), or the source could not read records about locked packages and `--accept-coverage-gaps` was not given | fail or retry, this is infrastructure |
 | `5` | Package metadata could not be fetched during solving | fail or retry, this is infrastructure |
 
 Exit `2` is only returned when the planner actually finished its search. A broken tool or an

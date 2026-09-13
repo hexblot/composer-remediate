@@ -169,7 +169,7 @@ has the details.
 
 - [x] adversarial adoption review of 0.3.0 (another AI model working from the published repository)
   and three rechecks, answered in 0.4.0, 0.4.1 and 0.4.2; the reviewer confirmed the last recheck closed
-- [x] command layer, advisory feed readers and both advisory adapters under test; 225 tests, 94% of
+- [x] command layer, advisory feed readers and both advisory adapters under test; 278 tests, 94% of
   lines, with PCOV in CI and in the DDEV image so local and CI figures match
 - [x] Aikido scan of the workflows (SHA-pinned actions, job-scoped permissions, no template injection,
   the database release bound to a protected environment) and of the code (fail closed on incomplete

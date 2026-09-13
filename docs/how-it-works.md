@@ -39,7 +39,10 @@ Root-controlled packages are those named in the project's `require` or `require-
 
 ## 2. Advisory matching
 
-Advisories arrive through an `AdvisoryProvider`. Phase 0 uses the same Packagist advisory API that
+Advisories arrive through an `AdvisoryProvider`. By default that is the
+[advisory database](advisory-database.md) this project publishes, a SQLite file kept current at a
+fixed path, which also carries exploit data and the records its build could not read. When no database
+can be had, or with `--no-database`, the provider is the same Packagist advisory API that
 `composer audit` uses, through Composer's own repository classes; if that `@internal` API breaks at
 runtime, the lookup falls back to a `composer audit --locked` subprocess and the report says so (see
 [design decisions](design-decisions.md#touch-composers-internal-classes-only-inside-adapters)). Each advisory carries an
