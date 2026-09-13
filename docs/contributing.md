@@ -46,7 +46,9 @@
   PCOV coverage and the badges, the end-to-end tests and the generated-page checks. Pull requests run
   the full PHP matrix (8.1 to 8.5) and the Composer-version matrix (2.4 to 2.9 on their PHP versions),
   so a release is cut from a pull request: branch, PR, full matrix and review, merge, tag from `main`.
-  The Actions tab's manual run has a `full` switch for the whole matrix without a PR. The advisory
+  The Actions tab's manual run has a `full` switch for the whole matrix without a PR. Pull requests run
+  the matrix whatever they touch, including a release whose commit is only the changelog and the status
+  paragraph, so the tree that gets tagged has always had a full run. The advisory
   database workflow polls the feeds every six hours and publishes only when the dataset changed.
 - The `ci` workflow does not run for commits that only touch hand-written pages under `docs/`,
   `mkdocs.yml`, root Markdown files or the docs pipelines; the `docs` workflow builds and deploys
