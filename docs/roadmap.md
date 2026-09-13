@@ -144,9 +144,22 @@ Suggested in reactions to the project; each is a line in the report, not an engi
   fixed range already computed) that keeps future updates from falling back below the fix and makes
   the resolver's error name the reason; Composer has no subcommand for `conflict`, so it stays a
   follow-up line rather than part of the verified command
+- [ ] what the upgrade changes about what a package *can do*, as a note on the recommendation: the
+  package type becoming `composer-plugin`, `autoload.files` (which runs on every request) or binaries
+  appearing where there were none, and the source or dist host changing between the locked and the
+  recommended version. All of it comes from metadata already diffed, so nothing is downloaded or
+  unpacked; it is shown rather than folded into the ranking, because the count of changed packages
+  measures review burden and this measures something else
+- [ ] declared consequence hints: a way to say that a package handles untrusted input in this
+  application, so that ordering reflects it. There is a suppressive side already (`--ignore`, the
+  baseline) and no escalating one, and a reader's account of triaging four Dompdf findings ahead of
+  one high-severity Guzzle advisory is the case for it. Declared, never inferred
 - deliberately not adopted: a root `replace` to pin a transitive dependency (it tells Composer the
-  root provides the package, which then stops being installed) and distro backports (they patch PHP
-  and system packages, not a project's `vendor` directory)
+  root provides the package, which then stops being installed), distro backports (they patch PHP
+  and system packages, not a project's `vendor` directory), and reachability analysis, which decides
+  whether an application can actually reach a vulnerable function: a wrong "not reachable" is a silent
+  miss, and PHP's dynamic dispatch, container wiring and string callables make that verdict too
+  unreliable to put in front of a gate
 
 ## Assurance *(ongoing, alongside the phases)*
 

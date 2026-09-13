@@ -60,7 +60,11 @@ limit semantics and coverage-gap bookkeeping), which the reviewer then confirmed
 EPSS and CISA KEV urgency ordering, abandoned-package flagging and the completed fixture corpus; 0.6.0
 adds global planning (Phase 4: one command for every finding, with the search explained), answers an
 Aikido code scan by failing closed on unverified data, and adds Deptrac layer rules; 0.6.1 repairs the
-generated case-studies page that failed 0.6.0's CI run and adds the architecture badge. `--apply`
+generated case-studies page that failed 0.6.0's CI run and adds the architecture badge; 0.7.0 makes the
+published advisory database the default source, kept current at a fixed path and confirmed by content,
+and answers a second adversarial adoption review and its four rechecks (twenty-two findings on
+filesystem safety, advisory completeness, CI decisions and what the analysed project's `composer.json`
+is allowed to decide). `--apply`
 (Phase 5) is still ahead, so every release so far recommends and never modifies your project.
 
 ## Start here

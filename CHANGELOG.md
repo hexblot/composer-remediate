@@ -5,6 +5,29 @@ All notable changes to this project are documented here. The format follows
 
 ## [Unreleased]
 
+[Unreleased]: https://github.com/hexblot/composer-remediate/compare/v0.7.0...HEAD
+
+## [0.7.0] - 2026-09-13
+
+A feature release with changed defaults, and the answers to a second adversarial adoption review and
+its four rechecks.
+
+Advisories now come from the advisory database this project publishes, kept current at a fixed path
+and confirmed by content on every run, so every report carries the same exploit data (EPSS, CISA KEV),
+coverage-gap bookkeeping and merged sources rather than only the reports of users who configured a
+database. A plain run therefore contacts github.com once per run; `--no-database`, `--offline` or a
+local file as the source stop it, and the privacy page says so.
+
+**Upgrading from 0.6.1.** Four of the security fixes below apply to code 0.6.1 actually shipped, and
+one of them matters for anyone consuming the GitLab report: `scan.status` was written as `success`
+even for a scan that exited 4 because advisory data was unavailable, so an empty vulnerability list
+read as a clean result on the dashboard. The other three: a verified fix could add a package whose
+advisory records the source could not read, coverage gaps that could not be attributed to a package
+were dropped before they reached a scan, and a gate could exit 2 although the combined command fixed
+every finding. The rest of the security work fixes the database-handling code introduced in this
+release, which 0.6.1 does not contain. Exit codes can change in both directions, so re-check a gate
+that treats them strictly.
+
 ### Security
 
 Answers to a fourth adversarial adoption review (ten findings at c545e91, reproduced by the reviewer
@@ -62,6 +85,13 @@ with a separate harness), each with a regression test.
   is created, and a symbolic link anywhere on the way is rejected. The schema and the report guide say
   that `none` and `unsolved_findings` describe standalone remediation and that the combined command may
   still fix such a finding.
+- **Second recheck (two findings at c17b742).** The default database path follows the operator's
+  cache configuration, never a `config.cache-dir` set by the analysed project's composer.json (Composer
+  records the source of the value; a project file as the source is set aside with a note in the
+  report), so a repository cannot pre-fill the default path. The status record that marks a copy as
+  downloaded carries the digest of the bytes it describes and is retired only when the bytes change;
+  the previous rule, which compared the database's own build time with the fetch time, let a publisher
+  reclassify its download as a local build by writing a later timestamp.
 - **Third recheck (one finding at b8bf552).** Which configuration counts as the operator's is now
   decided from configuration the analysed project never contributed to (`Factory::createConfig()`:
   environment, the operator's global `config.json`, Composer's defaults). The previous check read
@@ -83,13 +113,6 @@ with a separate harness), each with a regression test.
   rejected acceptable, which a report warning did not prevent. `--no-project-ignores` drops the ignore
   entries the analysed project's own composer.json carries, for a gate that does not take a
   repository's word that a finding is accepted; without it they still apply and the report names them.
-- **Second recheck (two findings at c17b742).** The default database path follows the operator's
-  cache configuration, never a `config.cache-dir` set by the analysed project's composer.json (Composer
-  records the source of the value; a project file as the source is set aside with a note in the
-  report), so a repository cannot pre-fill the default path. The status record that marks a copy as
-  downloaded carries the digest of the bytes it describes and is retired only when the bytes change;
-  the previous rule, which compared the database's own build time with the fetch time, let a publisher
-  reclassify its download as a local build by writing a later timestamp.
 - Documentation brought in line: SECURITY.md describes the download verification and the limits on
   what the analysed project may configure; the privacy promise names the publisher request and how to
   stop it; the report guide lists the new warnings.
@@ -133,7 +156,7 @@ with a separate harness), each with a regression test.
   error never names); the design-decisions page records why a security fix is treated as one goal
   among others.
 
-[Unreleased]: https://github.com/hexblot/composer-remediate/compare/v0.6.1...HEAD
+[0.7.0]: https://github.com/hexblot/composer-remediate/releases/tag/v0.7.0
 
 ## [0.6.1] - 2026-09-10
 
