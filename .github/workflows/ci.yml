@@ -15,17 +15,10 @@ on:
       - '!*.md'
       - '!.gitlab-ci.yml'
       - '!.github/workflows/docs.yml'
+  # Pull requests run the full matrix whatever they touch. They are rare here and one of them is always
+  # the release, whose commit is the changelog and the status paragraph: filtering paths would skip the
+  # matrix on exactly the tree that is about to be tagged.
   pull_request:
-    paths:
-      - '**'
-      - '!docs/**'
-      - 'docs/case-studies.md'
-      - 'docs/cli-reference.md'
-      - 'docs/schema/**'
-      - '!mkdocs.yml'
-      - '!*.md'
-      - '!.gitlab-ci.yml'
-      - '!.github/workflows/docs.yml'
   workflow_dispatch:
     inputs:
       full:
