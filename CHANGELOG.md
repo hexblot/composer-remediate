@@ -5,6 +5,13 @@ All notable changes to this project are documented here. The format follows
 
 ## [Unreleased]
 
+### Changed
+
+- Work reaches `main` through a pull request, one branch per unit of work; see the contributing page.
+  CI follows: a push to `main` and a draft pull request run the single canonical job, and marking a
+  pull request ready for review runs the full PHP and Composer matrices. Iterating in a draft therefore
+  costs what a push used to, and the matrix is paid for once, when the work is done.
+
 [Unreleased]: https://github.com/hexblot/composer-remediate/compare/v0.7.0...HEAD
 
 ## [0.7.0] - 2026-09-13

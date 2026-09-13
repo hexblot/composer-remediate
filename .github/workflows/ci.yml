@@ -17,8 +17,10 @@ on:
       - '!.github/workflows/docs.yml'
   # Pull requests run the full matrix whatever they touch. They are rare here and one of them is always
   # the release, whose commit is the changelog and the status paragraph: filtering paths would skip the
-  # matrix on exactly the tree that is about to be tagged.
+  # matrix on exactly the tree that is about to be tagged. A draft gets the canonical job only, so that
+  # work in progress costs what a push to main costs; marking it ready for review buys the matrix once.
   pull_request:
+    types: [opened, synchronize, reopened, ready_for_review]
   workflow_dispatch:
     inputs:
       full:
@@ -29,11 +31,11 @@ on:
 permissions:
   contents: read
 
-# Cost strategy: a push to main runs one canonical job (PHP 8.4, Composer latest), which carries
-# everything that only needs to run once: PHPStan, Deptrac, PCOV coverage and the badges, the
-# generated-page checks. Pull requests run the full PHP matrix and the Composer-version matrix; a
-# release is cut from a pull request, so the tag's tree has had the full run. workflow_dispatch with
-# `full` runs the full matrix on demand.
+# Cost strategy: a push to main and a draft pull request run one canonical job (PHP 8.4, Composer
+# latest), which carries everything that only needs to run once: PHPStan, Deptrac, PCOV coverage and
+# the badges, the generated-page checks. A pull request marked ready for review runs the full PHP
+# matrix and the Composer-version matrix; work reaches main through one, and a release is cut from one,
+# so the tag's tree has had the full run. workflow_dispatch with `full` runs the full matrix on demand.
 jobs:
   plan:
     runs-on: ubuntu-latest
@@ -44,9 +46,10 @@ jobs:
       - id: plan
         env:
           EVENT: ${{ github.event_name }}
+          DRAFT: ${{ github.event.pull_request.draft }}
           FULL_INPUT: ${{ inputs.full }}
         run: |
-          if [ "$EVENT" = "pull_request" ] || [ "$FULL_INPUT" = "true" ]; then
+          if [ "$FULL_INPUT" = "true" ] || { [ "$EVENT" = "pull_request" ] && [ "$DRAFT" != "true" ]; }; then
             echo 'php=["8.1", "8.2", "8.3", "8.4", "8.5"]' >> "$GITHUB_OUTPUT"; echo 'full=true' >> "$GITHUB_OUTPUT"
           else
             echo 'php=["8.4"]' >> "$GITHUB_OUTPUT"; echo 'full=false' >> "$GITHUB_OUTPUT"

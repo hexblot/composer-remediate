@@ -42,13 +42,18 @@
   on the run's summary page, uploads the HTML and Clover reports as the `coverage` artifact and, on
   pushes to `main`, writes the line-coverage badge data to the `badges` branch that the README badge
   reads; the other matrix jobs run without a coverage driver.
-- CI cost: a push to `main` runs one job (PHP 8.4, Composer latest) that carries PHPStan, Deptrac,
-  PCOV coverage and the badges, the end-to-end tests and the generated-page checks. Pull requests run
-  the full PHP matrix (8.1 to 8.5) and the Composer-version matrix (2.4 to 2.9 on their PHP versions),
-  so a release is cut from a pull request: branch, PR, full matrix and review, merge, tag from `main`.
-  The Actions tab's manual run has a `full` switch for the whole matrix without a PR. Pull requests run
-  the matrix whatever they touch, including a release whose commit is only the changelog and the status
-  paragraph, so the tree that gets tagged has always had a full run. The advisory
+- Work reaches `main` through a pull request, one branch per unit of work: what you would want
+  reviewed and tested as a whole, merged within a day or two rather than kept alive for weeks. Anything
+  under `src` goes that way. Documentation edits, regenerated fixture reports and changelog work can be
+  pushed to `main` directly. A release is the same shape: branch, pull request, full matrix and review,
+  merge, tag from `main`.
+- CI cost follows that. A push to `main` and a draft pull request run one job (PHP 8.4, Composer
+  latest) carrying PHPStan, Deptrac, PCOV coverage and the badges, the end-to-end tests and the
+  generated-page checks. Marking a pull request ready for review runs the full PHP matrix (8.1 to 8.5)
+  and the Composer-version matrix (2.4 to 2.9 on their PHP versions), whatever the diff touches, so the
+  tree that gets merged and tagged has always had a full run. Work in a draft while you iterate and pay
+  for the matrix once. The Actions tab's manual run has a `full` switch for the whole matrix without a
+  pull request. The advisory
   database workflow polls the feeds every six hours and publishes only when the dataset changed.
 - The `ci` workflow does not run for commits that only touch hand-written pages under `docs/`,
   `mkdocs.yml`, root Markdown files or the docs pipelines; the `docs` workflow builds and deploys
