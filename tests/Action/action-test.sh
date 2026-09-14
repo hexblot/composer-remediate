@@ -84,9 +84,10 @@ STUB
 cat > "$stub/git" <<'STUB'
 #!/usr/bin/env bash
 # Records a push to an https URL, then performs it against the local remote instead.
-if [ "${1:-}" = push ]; then
-  printf '%s\n' "$*" >> "$PUSH_LOG"
-fi
+# Every call that talks to the remote is recorded, whatever comes before the subcommand.
+case " $* " in
+  *" push "*|*" fetch "*) printf '%s\n' "$*" >> "$PUSH_LOG" ;;
+esac
 # Records the URL the action sets on the remote, then points it at the local one instead, so the rest
 # of the run is real git against a real repository.
 args=()
@@ -150,8 +151,13 @@ else
   echo "  ok   the file an earlier step had staged was left out"
 fi
 
-contains "the push authenticated with the token it was given" "x-access-token:test-token-value@github.com/acme/app" "$PUSH_LOG"
+contains "the remote was given the token it was told to use" "x-access-token:test-token-value@github.com/acme/app" "$PUSH_LOG"
 contains "the push kept its lease" "--force-with-lease" "$PUSH_LOG"
+# actions/checkout leaves an Authorization header in http.<server>/.extraheader. Credentials in the URL
+# do not displace it, so the server would answer the checkout's identity and a supplied token would have
+# no effect. What this harness can check is that every call talking to the remote resets that header;
+# which credential a server actually receives needs a real HTTP server, and is not covered here.
+contains "the calls that talk to the remote reset the checkout's authorization header" "http.https://github.com/.extraheader=" "$PUSH_LOG"
 
 echo
 echo "A second run, with the branch already on the remote:"

@@ -62,10 +62,21 @@ findings, each with a test.
 - **The token authenticates git as well as the API.** It is set on the remote rather than passed to
   the push, so fetches are authenticated too and `--force-with-lease` still has a remote-tracking ref
   to lease against.
+- **The action's git calls override the checkout's authorization header.** The token went into the
+  remote's URL, but `actions/checkout` leaves an `Authorization` header in `http.<server>/.extraheader`
+  and git sends that instead, so the server answered the checkout's identity and a supplied token had no
+  effect on a push the checkout credential could not make. Every call that talks to the remote now
+  resets that header for the duration of the call, changing nothing in the workflow's own configuration.
+- **A project widening a scoped exception of the operator's is reported as the project's.** Ownership
+  compared rule names, so an operator excepting a package below one version and a project excepting the
+  same package at any version looked like the same rule, and the widening passed undisclosed. Rules now
+  carry their version constraint.
 - **The action's script is a file, `action/run.sh`, with its own test harness**
   (`tests/Action/action-test.sh`, `composer test:action`), which runs that exact script against a local
   git remote with stubbed `composer` and `gh`. Three of the findings above live in decisions the PHP
-  suite cannot reach, and the harness caught a fourth defect introduced by the fix for one of them.
+  suite cannot reach, and the harness caught a fourth defect introduced by the fix for one of them. What
+  it does not cover is which credential a server actually receives, which needs a real HTTP server; it
+  checks that the calls carry the header reset.
 
 Answers to an Aikido scan of the workflows.
 

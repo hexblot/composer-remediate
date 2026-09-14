@@ -87,4 +87,22 @@ final class IgnorePolicyTest extends TestCase
         self::assertSame(['cve-2026-1', 'acme/lib'], $attributed->projectEntries());
         self::assertSame(['cve-2026-1', 'acme/lib'], $attributed->withIds(['CVE-OPERATOR'])->projectEntries(), 'the operator\'s own --ignore is not the project\'s');
     }
+
+    public function testARuleCarriesItsConstraintSoAWideningIsNotTheSameRule(): void
+    {
+        $operator = new \Composer\Config(false);
+        $operator->merge(['config' => ['policy' => ['advisories' => ['ignore' => ['acme/lib' => ['constraint' => '<1.2']]]]]], 'operator');
+        $project = new \Composer\Config(false);
+        $project->merge(['config' => ['policy' => ['advisories' => ['ignore' => ['acme/lib' => ['constraint' => '*']]]]]], 'project');
+
+        $operatorRules = IgnorePolicy::fromComposerConfig($operator)->rules();
+        $projectRules = IgnorePolicy::fromComposerConfig($project)->rules();
+
+        self::assertSame(['acme/lib@<1.2'], $operatorRules);
+        self::assertNotSame($operatorRules, $projectRules, 'the same package at any version is not the rule the operator wrote');
+        self::assertSame($projectRules, array_values(array_diff($projectRules, $operatorRules)), 'so the widening is attributed to whoever added it');
+
+        // The same rule written twice is one rule, and belongs to nobody in particular.
+        self::assertSame([], array_values(array_diff($operatorRules, IgnorePolicy::fromComposerConfig($operator)->rules())));
+    }
 }

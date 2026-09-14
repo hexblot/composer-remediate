@@ -433,13 +433,15 @@ HELP);
      */
     private function ignorePolicy(InputInterface $input, IOInterface $io): IgnorePolicy
     {
-        // Which entries are the project's is decided by reading both configurations and subtracting, not
-        // by asking Composer who wrote a key: it records one source per top-level key, so a project that
-        // adds to `config.audit.ignore` would make the operator's own entries in the same key look like
-        // its own, and dropping "the project's" entries would drop centrally approved exceptions with them.
+        // Which rules are the project's is decided by reading both configurations and subtracting, not by
+        // asking Composer who wrote a key: it records one source per top-level key, so a project that adds
+        // to `config.audit.ignore` would make the operator's own entries in the same key look like its
+        // own, and dropping "the project's" entries would drop centrally approved exceptions with them.
+        // Rules carry their version constraint, so a project widening a scoped exception of the
+        // operator's is a rule the operator did not write, and is reported as the project's.
         $operator = IgnorePolicy::fromComposerConfig($this->operator->config());
         $merged = IgnorePolicy::fromComposerConfig($this->requireComposer()->getConfig());
-        $fromProject = array_values(array_diff($merged->entries(), $operator->entries()));
+        $fromProject = array_values(array_diff($merged->rules(), $operator->rules()));
 
         if (!(bool) $input->getOption('no-project-ignores')) {
             return $merged->withProjectEntries($fromProject);

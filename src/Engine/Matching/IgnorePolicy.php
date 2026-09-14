@@ -71,6 +71,28 @@ final class IgnorePolicy
         return [...array_keys($this->ids), ...array_keys($this->packages)];
     }
 
+    /**
+     * One string per rule, with the version constraint of a package rule included.
+     *
+     * Ownership of an exception is decided by comparing these rather than names: an operator who
+     * excepts a package below one version and a project that excepts the same package at any version
+     * have not written the same rule, and the second is a widening that belongs in the report.
+     *
+     * @return list<string>
+     */
+    public function rules(): array
+    {
+        $rules = array_keys($this->ids);
+        foreach ($this->packages as $name => $constraints) {
+            foreach ($constraints as $constraint) {
+                $rules[] = $name . '@' . ($constraint === null ? '*' : $constraint->getPrettyString());
+            }
+        }
+        sort($rules);
+
+        return $rules;
+    }
+
     /** Returns the matching entry (id, CVE or package name) or null when the finding is not ignored. */
     public function matchedEntry(string $advisoryId, ?string $cve, string $packageName, string $normalizedVersion): ?string
     {
@@ -90,7 +112,7 @@ final class IgnorePolicy
     }
 
     /**
-     * The entries the analysed project's own composer.json contributed, as the caller worked them out by
+     * The rules the analysed project's own composer.json contributed, as the caller worked them out by
      * comparing this configuration with the operator's. Composer records one source per top-level key,
      * so asking it who wrote `config.audit.ignore` cannot separate two contributors to the same key.
      *
