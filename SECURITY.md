@@ -70,7 +70,9 @@ Out of scope:
   `--no-plugins --no-scripts` from the first instruction and never includes a project's
   `vendor/autoload.php` (whose `autoload.files` are project code), so nothing from the analysed
   project executes, including when the binary is installed inside that project. Neither entry point
-  writes to the analysed project; candidate solves run in a temporary copy that is deleted afterwards,
+  writes to the analysed project unless `--apply` is given, which runs the recommended command there
+  and copies `composer.json` and `composer.lock` outside the project before it does; candidate solves
+  run in a temporary copy that is deleted afterwards,
   and the subprocess solver pins `COMPOSER` to that copy so an inherited `COMPOSER` variable cannot
   point an update at the real lock file. Both properties have regression tests.
 - Absence of data is never a clean result: no advisory-capable repository, a malformed advisory

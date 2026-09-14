@@ -79,5 +79,6 @@ same idea to PHP and adds solver verification of every recommendation, which the
   tell you so, after solving it, which costs a few seconds you did not need to spend.
 - Reachability: whether the vulnerable code is actually called. Nothing here does static analysis.
 - Vulnerabilities in PHP itself, extensions, or the operating system.
-- Applying the fix: every release so far recommends and never modifies your project; `--apply` is on
-  the [roadmap](roadmap.md).
+- Applying the fix without being asked: the default is to recommend and write nothing. `--apply`
+  runs the recommended command in your project, and refuses when the recommendation would edit
+  `composer.json` or when that file and the lock are already modified in a git checkout.

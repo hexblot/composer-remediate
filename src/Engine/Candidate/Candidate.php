@@ -98,56 +98,83 @@ final class Candidate
     }
 
     /**
-     * The shell command a developer runs to reproduce this candidate.
+     * The shell command a developer runs to reproduce this candidate, as a reader would type it. Built from the same argument
+     * lists the applier runs, so what the report prints and what `--apply` executes cannot drift apart.
      */
     public function commandLine(bool $minimalChangesSupported = true): string
     {
         $parts = [];
-        if ($this->rootConstraintChanges !== []) {
-            $prod = [];
-            $dev = [];
-            foreach ($this->rootConstraintChanges as $change) {
-                $arg = self::quote($change->packageName . ':' . $change->toConstraint);
-                if ($change->isDev) {
-                    $dev[] = $arg;
-                } else {
-                    $prod[] = $arg;
-                }
-            }
-            if ($prod !== []) {
-                $parts[] = 'composer require --no-update ' . implode(' ', $prod);
-            }
-            if ($dev !== []) {
-                $parts[] = 'composer require --no-update --dev ' . implode(' ', $dev);
-            }
+        foreach ([...$this->requireArgumentLists(), $this->updateArguments($minimalChangesSupported)] as $arguments) {
+            $parts[] = 'composer ' . implode(' ', array_map(self::quote(...), $arguments));
         }
 
-        $update = ['composer update'];
+        return implode(' && ', $parts);
+    }
+
+    /**
+     * The `composer require --no-update` steps a recommendation needs before its update, one argument
+     * list each: none for most candidates, one or two when the fix widens a root constraint
+     * (production and development requirements cannot be written in a single command).
+     *
+     * @return list<list<string>>
+     */
+    public function requireArgumentLists(): array
+    {
+        $prod = [];
+        $dev = [];
+        foreach ($this->rootConstraintChanges as $change) {
+            $argument = $change->packageName . ':' . $change->toConstraint;
+            if ($change->isDev) {
+                $dev[] = $argument;
+            } else {
+                $prod[] = $argument;
+            }
+        }
+        $lists = [];
+        if ($prod !== []) {
+            $lists[] = ['require', '--no-update', ...$prod];
+        }
+        if ($dev !== []) {
+            $lists[] = ['require', '--no-update', '--dev', ...$dev];
+        }
+
+        return $lists;
+    }
+
+    /**
+     * The `composer update` arguments, without the `composer` itself: the packages to update (a pinned
+     * one as `name:version`), the transitive flag, `-m` where it exists, the `--with` constraints and
+     * the platform arguments the analysis ran with.
+     *
+     * @return list<string>
+     */
+    public function updateArguments(bool $minimalChangesSupported = true): array
+    {
+        $arguments = ['update'];
         foreach ($this->allowList as $name) {
-            $update[] = isset($this->pins[$name]) ? self::quote($name . ':' . $this->pins[$name]) : $name;
+            $arguments[] = isset($this->pins[$name]) ? $name . ':' . $this->pins[$name] : $name;
         }
         foreach ($this->pins as $name => $version) {
             if (!in_array($name, $this->allowList, true)) {
-                $update[] = '--with ' . self::quote($name . ':' . $version);
+                $arguments[] = '--with';
+                $arguments[] = $name . ':' . $version;
             }
         }
         if ($this->transitiveMode === Request::UPDATE_LISTED_WITH_TRANSITIVE_DEPS) {
-            $update[] = '-W';
+            $arguments[] = '-W';
         } elseif ($this->transitiveMode === Request::UPDATE_LISTED_WITH_TRANSITIVE_DEPS_NO_ROOT_REQUIRE) {
-            $update[] = '-w';
+            $arguments[] = '-w';
         }
         if ($this->minimalChanges && $minimalChangesSupported) {
-            $update[] = '-m';
+            $arguments[] = '-m';
         }
         foreach ($this->temporaryConstraints as $package => $constraint) {
-            $update[] = '--with ' . self::quote($package . ':' . $constraint);
+            $arguments[] = '--with';
+            $arguments[] = $package . ':' . $constraint;
         }
-        foreach ($this->extraArguments as $argument) {
-            $update[] = self::quote($argument);
-        }
-        $parts[] = implode(' ', $update);
+        array_push($arguments, ...$this->extraArguments);
 
-        return implode(' && ', $parts);
+        return $arguments;
     }
 
     private static function quote(string $value): string

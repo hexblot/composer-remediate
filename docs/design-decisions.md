@@ -402,3 +402,47 @@ report says that too. `--no-database` and a local path as the source keep the ol
   protected environment; `--database-sha256` pins a digest for anyone who wants more.
 - Publishing `latest.json` next to a mirrored database (sha256, dataset_hash, published_at) is what
   lets clients of that mirror recognise their own builds; a `.sha256` sidecar alone still verifies.
+
+## `--apply` runs the printed command and then plans again
+
+### Decision
+
+`--apply` executes the recommendation as a subprocess of the project's own Composer, from the same
+argument lists the report prints, and then runs the whole planner a second time against the changed
+project. The report a reader ends up with describes the state on disk, not the prediction that led to
+it. Before anything runs, `composer.json` and `composer.lock` are copied into a directory outside the
+project, and four conditions are checked: there is a verified command, it does not edit
+`composer.json` (unless permitted), the two files still match the digests the plan was computed from,
+and they are not already modified in a git checkout (unless permitted).
+
+### Reasoning
+
+- The dry run and the real run can disagree. Plugins, scripts, platform overrides and a repository
+  that moved between the two all belong to the real run, and a tool that writes to a project and then
+  reports what it *expected* would be hiding exactly the case worth seeing. Planning again costs one
+  extra pass, and that pass is cheap precisely when the fix worked, because there is then nothing left
+  to solve.
+- Running the printed command, rather than writing the lock the dry run produced, keeps the promise
+  the report makes: the command is the deliverable, and applying it is a convenience, not a second
+  code path with its own behaviour. Building both from one set of argument lists makes that mechanical.
+- Editing `composer.json` is a different kind of consent from updating a lock, so it is a separate
+  flag. Mixing an apply into someone's uncommitted work is a different kind of accident from an apply
+  on a clean tree, so that is another.
+
+### Alternatives
+
+- **Write the lock the dry run computed.** Faster, and wrong: it skips the project's own Composer,
+  leaves `vendor/` inconsistent with the lock, and would report a state nobody verified on disk.
+- **Apply per-finding commands in sequence.** The combined command is the one the global search
+  verified as a whole; applying its parts one at a time would run commands no solve confirmed together.
+- **Refuse a partial fix.** A command that fixes some findings is still worth applying; the second
+  plan then shows exactly what is left, which is more useful than refusing.
+
+### Consequences
+
+- The promise changes from "never modifies your project" to "writes nothing unless you pass
+  `--apply`", and the README, getting-started, privacy, comparison and security pages say so.
+- An apply runs the project's plugins and scripts, because the command it runs is the one the reader
+  would have run. The `composer-remediate` binary's guarantee that nothing from the project executes
+  therefore covers planning, not applying.
+- `--apply` needs its own adversarial review before it is recommended for unattended use.

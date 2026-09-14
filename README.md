@@ -40,7 +40,7 @@ as `composer audit` does, and `--offline` uses the copy already on disk. See
 [Privacy and network behaviour](https://hexblot.github.io/composer-remediate/privacy-and-network/).
 
 Status: released as **0.x** on [Packagist](https://packagist.org/packages/hexblot/composer-remediate);
-every release so far recommends and never modifies your project. Phases 0 to 4 and 6 of the
+nothing is written to your project unless you ask for it with `--apply`. Phases 0 to 5 and 6 of the
 [roadmap](https://hexblot.github.io/composer-remediate/roadmap/) are complete (seventeen real
 historical fixtures, and a search for the one command that fixes every finding); `--apply` (Phase 5)
 is ahead. Two adversarial adoption reviews and their rechecks are answered in the
