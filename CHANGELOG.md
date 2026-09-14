@@ -5,6 +5,34 @@ All notable changes to this project are documented here. The format follows
 
 ## [Unreleased]
 
+### Added
+
+- **`--parallelize=<n>` plans several packages at once.** Almost all of a run is Composer solving, and
+  the packages are planned independently of one another, so they can be planned in parallel. On a
+  201-package lock file with ten findings, four workers take a 45-second run down to about 15. The
+  result does not change: each worker plans its own packages from the same lock file, the same graph
+  and the same advisory data, writes nothing another worker reads, and returns a value; the whole
+  fixture corpus was checked report-for-report against a sequential run. Progress is still reported for
+  every package, in the order the workers finish rather than the order of the list. The default stays 1,
+  one package at a time. `--parallelize=auto` uses one worker per processor core, at most four.
+
+  Each worker runs its own Composer solves, so allow a few hundred megabytes of memory for each; the
+  run above peaks at about 170 MB with one worker. Parallel planning is refused, and the report says
+  so, where it would be unsound: on a machine that cannot fork (Windows, or PHP without `ext-pcntl`
+  and `ext-posix`), and with an advisory source that holds a connection it cannot hand to a child
+  process. The advisory database used by default re-opens itself in each worker; `--no-database`,
+  which asks the configured repositories, plans one package at a time.
+
+  Two optimisations were measured and rejected rather than built: reusing Composer instances between
+  solves (building them is about a tenth of a solve, against sharing state that keeps every solve
+  honest) and caching solves within a run (the commands tried are almost never repeated).
+
+### Changed
+
+- The [roadmap](https://hexblot.github.io/composer-remediate/roadmap/) is now only what is still to
+  come; the seven completed phases and the assurance work behind them moved to
+  [what has been delivered](https://hexblot.github.io/composer-remediate/delivered/).
+
 [Unreleased]: https://github.com/hexblot/composer-remediate/compare/v0.8.0...HEAD
 
 ## [0.8.0] - 2026-09-14
