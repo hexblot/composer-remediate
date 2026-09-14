@@ -5,6 +5,34 @@ All notable changes to this project are documented here. The format follows
 
 ## [Unreleased]
 
+[Unreleased]: https://github.com/hexblot/composer-remediate/compare/v0.8.0...HEAD
+
+## [0.8.0] - 2026-09-14
+
+A feature release: the tool can now apply the fix it recommends, and open one pull request carrying
+every fix it could verify. The default is unchanged and unchanged on purpose: without `--apply` nothing
+in your project is written.
+
+**Upgrading from 0.7.0.** Four of the security fixes below apply to code 0.7.0 shipped, and two of them
+were rated P1 by the reviewer:
+
+- The advisory database was fetched with an IO object carrying the analysed project's authentication,
+  and Composer reads TLS settings out of `http-basic` credentials, so a project could influence which
+  certificates authenticate a publisher you chose.
+- A project could turn the advisory database off through `extra.remediate.database`, and it could do so
+  around a `--database-sha256` pin, which is meant to be the trust anchor.
+- `--no-project-ignores` discarded exceptions from your own configuration along with the project's.
+- A database this tool builds was created world-readable, though a build with `--include` may carry
+  private advisories.
+
+Also fixed for 0.7.0 users: a handled download failure printed `Unhandled promise rejection …` on
+Composer 2.4 to 2.9, which is every supported version but the newest.
+
+The new writing features had a fresh adversarial adoption assessment covering the action, the apply
+path, the security boundary, the reports and the tests. Nine findings across it and its recheck are
+answered, each with a test, and the reviewer confirmed them fixed. They are new all the same: read a
+pull request the action opens before you merge it, as you would anyone's.
+
 ### Added
 
 - **It says what it is doing while it does it.** A run now reports how many locked packages it matched,
@@ -117,7 +145,7 @@ Answers to an Aikido scan of the workflows.
   pull request ready for review runs the full PHP and Composer matrices. Iterating in a draft therefore
   costs what a push used to, and the matrix is paid for once, when the work is done.
 
-[Unreleased]: https://github.com/hexblot/composer-remediate/compare/v0.7.0...HEAD
+[0.8.0]: https://github.com/hexblot/composer-remediate/releases/tag/v0.8.0
 
 ## [0.7.0] - 2026-09-13
 
