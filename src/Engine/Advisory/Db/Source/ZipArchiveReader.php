@@ -5,6 +5,7 @@ declare(strict_types=1);
 namespace Remediate\Engine\Advisory\Db\Source;
 
 use Composer\Util\HttpDownloader;
+use Remediate\Engine\Advisory\Db\Download;
 
 /**
  * Downloads a zip archive to a temporary file and iterates its entries.
@@ -26,7 +27,7 @@ final class ZipArchiveReader
         }
         @mkdir($this->tempDir, 0700, true);
         $file = $this->tempDir . '/' . sha1($url) . '.zip';
-        $this->downloader->copy($url, $file);
+        Download::toFile($this->downloader, $url, $file);
         $zip = new \ZipArchive();
         $status = $zip->open($file);
         if ($status !== true) {
