@@ -183,12 +183,16 @@ has the details.
 - [x] architecture rules with Deptrac (`deptrac.yaml`): project layers and every third-party
   namespace classified, unclassified dependencies fail CI, badge in the README
 - [x] the longest methods split after a reader's review; a Severity enum replaces the last lookup table
-- [ ] SonarQube Cloud for the open-source project (applied for), as an independent view on complexity
-  and duplication
+- [x] an independent review of every pull request: Gitar, from the makers of SonarQube, comments on
+  each one and has found real defects, among them a dirty-checkout guard that skipped silently in a git
+  worktree
+- [ ] SonarQube itself in addition, for the complexity and duplication view a per-pull-request reviewer
+  does not give (asked for, awaiting an answer)
 - [ ] remaining long methods (`InProcessSolver::solve`, `DbBuildCommand::execute`,
   `HtmlRenderer::finding`, the planner's per-finding search) and the `PackageChange` kind constants
   as an enum
 - [x] a fourth adversarial review (ten findings at c545e91 on filesystem safety, advisory completeness
   and CI decisions), answered in the release after 0.6.1 with a regression test per finding
-- [ ] a fifth adversarial review once `--apply` exists, since that is the first feature that changes
-  a project
+- [ ] a fifth adversarial review once Phase 5 is complete, covering `--apply` and the batched pull
+  request together: they are one story from an attacker's point of view, and this is the first work
+  that changes a project rather than describing it
