@@ -468,6 +468,25 @@ final class RemediateCommandTest extends TestCase
         self::assertStringContainsString('can be removed: cve-operator', implode("\n", $report['warnings']), 'and it is still in force, which is why the hygiene check sees it');
     }
 
+    public function testItSaysWhatItIsDoingWhileItWorks(): void
+    {
+        // A large lock file spends minutes in Composer's solver. Silence for minutes reads as a hang,
+        // which is how the first user of this on a real project described it.
+        $quiet = $this->remediate(['--format' => 'none']);
+
+        self::assertStringContainsString('Matching 3 locked packages against', $quiet->stderr);
+        self::assertStringContainsString('1 package to fix', $quiet->stderr);
+        self::assertStringContainsString('[1/1] acme/vuln-lib 1.0.1: searching for a fix…', $quiet->stderr);
+        self::assertStringContainsString('[1/1] acme/vuln-lib: ' . self::remediation(), $quiet->stderr);
+        self::assertStringContainsString('solver runs so far', $quiet->stderr);
+        self::assertSame('', $quiet->stdout, 'and none of it lands on standard output');
+        self::assertStringNotContainsString('  trying ', $quiet->stderr, 'the running commentary stays behind -v');
+
+        $verbose = $this->runner->run(['command' => 'remediate', '--advisories-file' => self::ADVISORIES, '--format' => 'none', '-v' => true], $this->project);
+        self::assertStringContainsString('  trying composer update acme/vuln-lib', $verbose->stderr);
+        self::assertStringContainsString('[1/1] acme/vuln-lib 1.0.1: searching for a fix…', $verbose->stderr, 'the headlines are still there');
+    }
+
     public function testPlatformFlagsAreRepeatedInTheRecommendedCommand(): void
     {
         $result = $this->remediate(['--ignore-platform-reqs' => true, '--format' => 'json']);

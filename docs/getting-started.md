@@ -52,6 +52,12 @@ composer remediate --no-database                                 # ask the confi
 composer remediate -v                      # show every candidate command as it is tried
 ```
 
+While it works it says so: how many packages it matched, how many need fixing, and which one it is
+verifying, with a running count of solver runs. Those lines go to the error stream, so a report on
+standard output stays a report, and `-v` adds every candidate command as it is tried. A large lock file
+spends minutes in Composer's solver, and the progress is there so that is recognisable as work rather
+than a hang. `-q` silences it.
+
 The plugin writes nothing to `composer.json`, `composer.lock` or `vendor/`: every recommendation is a
 plain `composer update` command you run yourself. `--apply` is the exception, and only on request. It
 runs the command it just printed, copies the manifest and lock outside the project first, and then

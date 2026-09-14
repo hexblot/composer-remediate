@@ -57,7 +57,7 @@ putenv('COMPOSER_NO_INTERACTION=1');
 
 $runner = new FixtureRunner();
 $start = microtime(true);
-$plan = $runner->run($dir, $allowDirect, in_array('-v', $args, true) ? static function (string $m): void {
+$plan = $runner->run($dir, $allowDirect, in_array('-v', $args, true) ? static function (string $m, bool $detail = true): void {
     fwrite(STDERR, $m . "\n");
 } : null);
 $runner->cleanup();

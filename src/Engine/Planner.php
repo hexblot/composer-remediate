@@ -49,7 +49,7 @@ final class Planner
     /** Solves held back from the search so the winner's simplification (at most three variants) can always run. */
     public const SIMPLIFY_RESERVE = 3;
 
-    /** @var callable(string): void|null */
+    /** @var callable(string, bool): void|null */
     private $progress;
 
     private int $totalSolves = 0;
@@ -59,6 +59,7 @@ final class Planner
     private bool $budgetExhausted = false;
 
     /**
+     * @param callable(string, bool): void|null $progress receives each progress line and whether it is detail rather than a headline
      * @param IgnorePolicy|null    $ignore      advisories to leave out (ids, CVEs, package rules)
      * @param ReleaseAgeGuard|null $releaseAge  reject candidates that install releases younger than a cooldown
      * @param int                  $solveBudget hard ceiling on solver runs per finding; every phase of the search counts
@@ -104,6 +105,7 @@ final class Planner
             $warnings[] = sprintf('Advisory source "%s" only knows advisories for the current lock; a candidate lock cannot be checked for other advisories, so no remediation is verified or recommended. Use a complete source: --database-location or a full Packagist snapshot.', $this->advisories->describe());
         }
 
+        $this->report(sprintf('Matching %d locked package%s against %s…', count($lock->packages), count($lock->packages) === 1 ? '' : 's', $this->advisories->describe()), false);
         $allFindings = $matcher->match($lock, $isRoot);
         $coverageGaps = [];
         if ($this->advisories instanceof CoverageAware) {
@@ -149,10 +151,22 @@ final class Planner
         }
 
         $plans = [];
+        $total = count($groups);
+        $this->report($total === 0
+            ? 'No advisories match this lock; verifying nothing.'
+            : sprintf('%d package%s to fix. Each candidate command is verified by a real Composer dry run, which is the slow part.', $total, $total === 1 ? '' : 's'), false);
+        $position = 0;
         foreach ($groups as $group) {
+            ++$position;
+            $this->report(sprintf('[%d/%d] %s %s: searching for a fix…', $position, $total, $group[0]->packageName, $group[0]->prettyVersion), false);
             $plans[] = $this->planGroup($group, $graph, $context, $lock, $baseline, $matcher, $ranker, $workspace);
+            $recommended = $plans[$position - 1]->recommended();
+            $this->report(sprintf('[%d/%d] %s: %s (%d solver run%s so far)', $position, $total, $group[0]->packageName, $recommended === null ? 'no verified fix' : $recommended->candidate->commandLine($this->solver->supportsMinimalChanges()), $this->totalSolves, $this->totalSolves === 1 ? '' : 's'), false);
         }
 
+        if ($total > 1) {
+            $this->report('Looking for one command that fixes everything…', false);
+        }
         [$combined, $combinedAttempts] = $this->combine($plans, $lock, $baseline, $matcher, $workspace);
 
         foreach ($plans as $plan) {
@@ -910,10 +924,15 @@ final class Planner
         };
     }
 
-    private function report(string $message): void
+    /**
+     * @param bool $detail true for the running commentary a reader asks for with -v, false for the few
+     *                     lines that say what is happening and how far along it is. A large lock file
+     *                     takes minutes of solving, and silence for minutes reads as a hang.
+     */
+    private function report(string $message, bool $detail = true): void
     {
         if ($this->progress !== null) {
-            ($this->progress)($message);
+            ($this->progress)($message, $detail);
         }
     }
 }

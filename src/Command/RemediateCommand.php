@@ -316,6 +316,11 @@ HELP);
                 }, ['engine_version' => Planner::engineVersion()]);
             };
         }
+        if (!is_file($settings->path) && $settings->localSource() === null) {
+            // The first run fetches several megabytes; later ones confirm the copy with one small
+            // request. Without a word, a slow first run looks like a hang before planning even starts.
+            $io->writeError(sprintf('<comment>Fetching the advisory database into %s; later runs check it with one small request.</comment>', ConsoleText::safe($settings->path)));
+        }
         try {
             $located = $locator->locate($settings, $rebuild);
             if ($located !== null) {
@@ -354,8 +359,11 @@ HELP);
             new CandidateGenerator(allowDirectRequire: (bool) $input->getOption('allow-direct-require'), extraArguments: $platformArguments),
             !(bool) $input->getOption('no-dev'),
             max(1, (int) $input->getOption('max-candidates')),
-            static function (string $message) use ($io): void {
-                $io->writeError('<comment>' . ConsoleText::safe($message) . '</comment>', true, IOInterface::VERBOSE);
+            // A headline goes out as the run makes it, so a large lock file does not plan in silence for
+            // minutes and read as a hang; the running commentary stays behind -v. Both go to the error
+            // stream, so a report on standard output is still only the report.
+            static function (string $message, bool $detail = true) use ($io): void {
+                $io->writeError('<comment>' . ConsoleText::safe($message) . '</comment>', true, $detail ? IOInterface::VERBOSE : IOInterface::NORMAL);
             },
             $this->ignorePolicy($input, $io)->withIds($cliIgnores),
             is_string($minAge) && $minAge !== '' ? new ReleaseAgeGuard((int) $minAge) : null,

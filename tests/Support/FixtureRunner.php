@@ -83,7 +83,7 @@ final class FixtureRunner
     }
 
     /**
-     * @param callable(string): void|null $progress
+     * @param callable(string, bool): void|null $progress
      */
     public function run(string $fixtureDir, bool $allowDirectRequire = false, ?callable $progress = null): Plan
     {

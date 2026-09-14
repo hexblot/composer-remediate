@@ -7,6 +7,13 @@ All notable changes to this project are documented here. The format follows
 
 ### Added
 
+- **It says what it is doing while it does it.** A run now reports how many locked packages it matched,
+  how many packages need fixing, and which one it is working on, with a running count of solver runs;
+  a first run that has to fetch the advisory database says so before it starts. Those lines go to the
+  error stream, so a report on standard output is still only the report, and `-v` still adds every
+  candidate command as it is tried. Reported by the first user to run this on a large lock file, who
+  reasonably took several minutes of silence for a hang.
+
 - **A GitHub Action that opens one pull request with the fixes applied (Phase 5, complete).**
   `action.yml` in this repository plans, applies with `--apply --apply-no-install`, and opens or
   updates a single pull request on one reused branch, rather than one pull request per package. It
