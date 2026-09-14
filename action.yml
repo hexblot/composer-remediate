@@ -1,0 +1,97 @@
+name: Composer Remediate
+description: Plan and apply verified Composer security fixes, and open one pull request for all of them.
+author: hexblot
+
+branding:
+  icon: shield
+  color: blue
+
+inputs:
+  working-directory:
+    description: Directory holding the composer.json to remediate.
+    default: '.'
+  args:
+    description: >-
+      Further arguments for `composer remediate`, such as `--no-dev --fail-on high`. The report
+      formats and the apply options are set by this action and must not be repeated here.
+    default: ''
+  version:
+    description: Version constraint of the plugin to install, for pinning the tool itself.
+    default: '*'
+  skip-install:
+    description: Set to true when the plugin is already installed in the job.
+    default: 'false'
+  branch:
+    description: Branch the fixes are pushed to. One branch, reused, so there is one pull request.
+    default: remediate/advisories
+  base:
+    description: Branch the pull request targets. The repository's default branch when empty.
+    default: ''
+  commit-message:
+    description: Subject of the commit that carries the lock change.
+    default: 'Apply verified Composer security fixes'
+  title:
+    description: Title of the pull request.
+    default: 'Security: apply verified Composer fixes'
+  labels:
+    description: Comma-separated labels for the pull request.
+    default: ''
+  draft:
+    description: Open the pull request as a draft.
+    default: 'false'
+  install:
+    description: >-
+      Run the update with an install, touching vendor/. Off by default: a pull request should carry
+      composer.json and composer.lock, and the branch is not where the project runs.
+    default: 'false'
+  token:
+    description: >-
+      Token used to push the branch and open the pull request. The default GITHUB_TOKEN works, but a
+      pull request it opens does not start other workflows; supply a personal access token or an app
+      token when the pull request must run your CI.
+    default: ${{ github.token }}
+
+outputs:
+  opened:
+    description: Whether a pull request was opened or updated ('true' or 'false').
+    value: ${{ steps.remediate.outputs.opened }}
+  pull-request:
+    description: URL of the pull request, when there is one.
+    value: ${{ steps.remediate.outputs.pull-request }}
+  exit-code-before:
+    description: Exit code of the run that planned the fixes.
+    value: ${{ steps.remediate.outputs.exit-code-before }}
+  exit-code-after:
+    description: Exit code of the run that applied them, empty when nothing was applied.
+    value: ${{ steps.remediate.outputs.exit-code-after }}
+
+runs:
+  using: composite
+  steps:
+    - name: Install composer-remediate
+      if: inputs.skip-install != 'true'
+      shell: bash
+      env:
+        VERSION: ${{ inputs.version }}
+      run: |
+        composer global config --no-plugins allow-plugins.hexblot/composer-remediate true
+        composer global require "hexblot/composer-remediate:${VERSION}" --no-interaction --no-progress --no-scripts
+
+    - name: Plan, apply and open one pull request
+      id: remediate
+      shell: bash
+      working-directory: ${{ inputs.working-directory }}
+      env:
+        # Every input reaches the script through the environment; none is interpolated into it.
+        GH_TOKEN: ${{ inputs.token }}
+        REMEDIATE_ARGS: ${{ inputs.args }}
+        BRANCH: ${{ inputs.branch }}
+        BASE: ${{ inputs.base }}
+        COMMIT_MESSAGE: ${{ inputs.commit-message }}
+        PR_TITLE: ${{ inputs.title }}
+        PR_LABELS: ${{ inputs.labels }}
+        PR_DRAFT: ${{ inputs.draft }}
+        WITH_INSTALL: ${{ inputs.install }}
+        REPOSITORY: ${{ github.repository }}
+        GITHUB_ACTION_PATH: ${{ github.action_path }}
+      run: bash "$GITHUB_ACTION_PATH/action/run.sh"

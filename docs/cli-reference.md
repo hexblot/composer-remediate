@@ -118,6 +118,22 @@ Show where the advisory database comes from and what it contains
 | `--database-sha256` | required | Expected sha256 of the database (hex); a downloaded or cached copy that differs is refused |
 | `--allow-unverified-database` | flag | Accept a database URL without a published &lt;url&gt;.sha256 sidecar and without --database-sha256 |
 
+## `composer remediate:pr-body`
+
+Aliases: `remediate-pr-body`
+
+Render a pull request description from the JSON reports of a planning run and an applying run
+
+Reads two reports written with `--format=json` or `--output=x.json`: the state
+before the fixes were applied and the state after. Writes Markdown on standard output saying which
+advisories closed, which survived, what ran, and what the applying run warned about.
+
+Advisory text is upstream data and reaches a rendered page, so it is escaped rather than trusted.
+
+| Option | Value | Description |
+|---|---|---|
+| `--commands` | required | File listing the commands that ran, one per line |
+
 ## Exit codes
 
 | Code | Meaning |

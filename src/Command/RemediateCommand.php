@@ -262,7 +262,7 @@ HELP);
             return Plan::EXIT_ERROR;
         }
 
-        return new DatabaseLocator($composer, $this->operator->httpDownloader($io), (bool) $input->getOption('offline'), !(bool) $input->getOption('allow-unverified-database'), is_string($expectedSha) && $expectedSha !== '' ? strtolower($expectedSha) : null, $this->operator);
+        return new DatabaseLocator($composer, $this->operator->httpDownloader(), (bool) $input->getOption('offline'), !(bool) $input->getOption('allow-unverified-database'), is_string($expectedSha) && $expectedSha !== '' ? strtolower($expectedSha) : null, $this->operator);
     }
 
     /**
@@ -287,11 +287,27 @@ HELP);
             return Plan::EXIT_ERROR;
         }
         if (!$settings->usesDatabase()) {
+            // Nothing will locate a database, so the notes about how the settings were resolved have to
+            // be carried here; the locator carries them itself on every other path. They also go to the
+            // error stream, because a run that fails afterwards has no report to carry them in, and what
+            // the project decided about the advisory source is worth knowing either way.
+            array_push($this->planWarnings, ...$settings->notes);
+            foreach ($settings->notes as $note) {
+                $io->writeError('<comment>' . ConsoleText::safe($note) . '</comment>');
+            }
+            // A pinned digest says the operator will accept that database and nothing else. Letting the
+            // project's composer.json turn the database off would hand it the gate.
+            if ($option('database-sha256') !== null) {
+                $io->writeError('<error>--database-sha256 was given, so the advisory database cannot be turned off' . ($settings->sourcesFromProject ? " by the analysed project's composer.json" : '') . '.</error>');
+
+                return Plan::EXIT_ADVISORIES_UNAVAILABLE;
+            }
+
             return self::composerAdvisoryProvider($composer, $context);
         }
         $rebuild = null;
         if ((bool) $input->getOption('rebuild-database')) {
-            $downloader = $this->operator->httpDownloader($io);
+            $downloader = $this->operator->httpDownloader();
             $tempDir = $locator->cacheDirectory() . '/tmp';
             $rebuild = static function (string $path) use ($downloader, $tempDir, $io): void {
                 $io->writeError('<comment>Building the advisory database from the sources…</comment>');
@@ -299,6 +315,11 @@ HELP);
                     $io->writeError('<comment>' . ConsoleText::safe($message) . '</comment>', true, IOInterface::VERBOSE);
                 }, ['engine_version' => Planner::engineVersion()]);
             };
+        }
+        if (!is_file($settings->path) && $settings->localSource() === null) {
+            // The first run fetches several megabytes; later ones confirm the copy with one small
+            // request. Without a word, a slow first run looks like a hang before planning even starts.
+            $io->writeError(sprintf('<comment>Fetching the advisory database into %s; later runs check it with one small request.</comment>', ConsoleText::safe($settings->path)));
         }
         try {
             $located = $locator->locate($settings, $rebuild);
@@ -338,8 +359,11 @@ HELP);
             new CandidateGenerator(allowDirectRequire: (bool) $input->getOption('allow-direct-require'), extraArguments: $platformArguments),
             !(bool) $input->getOption('no-dev'),
             max(1, (int) $input->getOption('max-candidates')),
-            static function (string $message) use ($io): void {
-                $io->writeError('<comment>' . ConsoleText::safe($message) . '</comment>', true, IOInterface::VERBOSE);
+            // A headline goes out as the run makes it, so a large lock file does not plan in silence for
+            // minutes and read as a hang; the running commentary stays behind -v. Both go to the error
+            // stream, so a report on standard output is still only the report.
+            static function (string $message, bool $detail = true) use ($io): void {
+                $io->writeError('<comment>' . ConsoleText::safe($message) . '</comment>', true, $detail ? IOInterface::VERBOSE : IOInterface::NORMAL);
             },
             $this->ignorePolicy($input, $io)->withIds($cliIgnores),
             is_string($minAge) && $minAge !== '' ? new ReleaseAgeGuard((int) $minAge) : null,
@@ -403,7 +427,10 @@ HELP);
             return $after;
         }
 
-        return $after->withWarnings([sprintf('Applied: %s. The composer.json and composer.lock from before the run are in %s. The findings below are what is left in the project now, not a prediction.', implode(' && ', $result->commands), (string) $result->backup)]);
+        // The second plan is a fresh object: the disclosures the first run made about where advisories
+        // came from, and who chose that, are not facts about the lock and would otherwise vanish exactly
+        // when a reader is looking at an automated change.
+        return $after->withWarnings([...$this->planWarnings, sprintf('Applied: %s. The composer.json and composer.lock from before the run are in %s. The findings below are what is left in the project now, not a prediction.', implode(' && ', $result->commands), (string) $result->backup)]);
     }
 
     /**
@@ -414,18 +441,25 @@ HELP);
      */
     private function ignorePolicy(InputInterface $input, IOInterface $io): IgnorePolicy
     {
-        $config = $this->requireComposer()->getConfig();
-        $fromProject = $this->operator->keysSetByProject($config, ['audit', 'policy']);
+        // Which rules are the project's is decided by reading both configurations and subtracting, not by
+        // asking Composer who wrote a key: it records one source per top-level key, so a project that adds
+        // to `config.audit.ignore` would make the operator's own entries in the same key look like its
+        // own, and dropping "the project's" entries would drop centrally approved exceptions with them.
+        // Rules carry their version constraint, so a project widening a scoped exception of the
+        // operator's is a rule the operator did not write, and is reported as the project's.
+        $operator = IgnorePolicy::fromComposerConfig($this->operator->config());
+        $merged = IgnorePolicy::fromComposerConfig($this->requireComposer()->getConfig());
+        $fromProject = array_values(array_diff($merged->rules(), $operator->rules()));
+
         if (!(bool) $input->getOption('no-project-ignores')) {
-            return IgnorePolicy::fromComposerConfig($config, $fromProject);
+            return $merged->withProjectEntries($fromProject);
         }
-        $policy = IgnorePolicy::fromComposerConfig($config, $fromProject);
-        if ($policy->projectEntries() !== []) {
-            $this->planWarnings[] = sprintf('The analysed project\'s composer.json suppresses advisories (%s); --no-project-ignores left those entries out of this run.', implode(', ', $policy->projectEntries()));
-            $io->writeError('<comment>' . ConsoleText::safe('--no-project-ignores: ignoring the project\'s own ignore entries (' . implode(', ', $policy->projectEntries()) . ').') . '</comment>');
+        if ($fromProject !== []) {
+            $this->planWarnings[] = sprintf('The analysed project\'s composer.json suppresses advisories (%s); --no-project-ignores left those entries out of this run. Exceptions from your own configuration still apply.', implode(', ', $fromProject));
+            $io->writeError('<comment>' . ConsoleText::safe('--no-project-ignores: ignoring the project\'s own ignore entries (' . implode(', ', $fromProject) . ').') . '</comment>');
         }
 
-        return IgnorePolicy::none();
+        return $operator;
     }
 
     /** Applies --accept-coverage-gaps, --fail-on and the baseline options to the plan; an exit code when they are malformed. */

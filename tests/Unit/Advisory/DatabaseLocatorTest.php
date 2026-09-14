@@ -14,6 +14,7 @@ use PHPUnit\Framework\TestCase;
 use Remediate\Engine\Advisory\AdvisoryLookupFailed;
 use Remediate\Engine\Advisory\Db\DatabaseLocator;
 use Remediate\Engine\Advisory\Db\DatabaseSettings;
+use Remediate\Engine\Advisory\Db\OperatorConfiguration;
 use Remediate\Engine\Advisory\Db\Freshness;
 
 /**
@@ -765,6 +766,28 @@ final class DatabaseLocatorTest extends TestCase
                 \Composer\Util\Platform::putEnv(DatabaseSettings::ENV_LOCATION, $env);
             }
         }
+    }
+
+    public function testTheOperatorDownloaderCarriesNoCredentialsFromTheProject(): void
+    {
+        // Composer keeps authentication on the IO object, and some of it decides TLS: http-basic
+        // credentials can carry a client certificate and a certificate authority. An IO built from the
+        // project's configuration would therefore let the project choose which certificates authenticate
+        // a publisher the operator picked.
+        $operator = new OperatorConfiguration();
+        $reflection = new \ReflectionMethod($operator, 'httpDownloader');
+
+        self::assertSame([], $reflection->getParameters(), 'the caller cannot hand it an IO of its own');
+
+        $project = new Config(false);
+        $project->merge(['config' => ['http-basic' => ['example.test' => ['username' => 'client-certificate', 'password' => '{"cafile":"/tmp/evil.pem"}']]]], $this->cacheDir . '/composer.json');
+        $composer = new Composer();
+        $composer->setConfig($project);
+        $composer->setPackage(new RootPackage('test/project', '1.0.0.0', '1.0.0'));
+
+        $auth = $operator->config()->get('http-basic');
+        self::assertIsArray($auth);
+        self::assertArrayNotHasKey('example.test', $auth, 'the operator configuration never merged the project file');
     }
 
     public function testAProjectChosenPathMustStayInsideTheProject(): void

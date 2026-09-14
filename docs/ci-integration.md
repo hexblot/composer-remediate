@@ -132,6 +132,64 @@ above (or capture it with `set +e` as in the full example).
 as a vulnerability and the verified command in its `recommendation`. Attach it as an artifact or feed
 it to Dependency-Track, Grype or any other CycloneDX consumer.
 
+## One pull request with the fixes already applied
+
+The action shipped with this repository plans, applies and opens a single pull request carrying every
+fix it could verify, rather than one pull request per package. It reuses one branch, so a later run
+updates that pull request instead of adding another.
+
+```yaml
+name: remediate
+on:
+  schedule:
+    - cron: '0 6 * * 1'
+  workflow_dispatch:
+
+permissions:
+  contents: write        # push the branch
+  pull-requests: write   # open or update the pull request
+
+jobs:
+  remediate:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v7
+      - uses: shivammathur/setup-php@v2
+        with:
+          php-version: '8.4'
+          tools: composer:v2
+      - uses: hexblot/composer-remediate@v0.7.0
+        with:
+          args: --no-dev --fail-on high
+```
+
+What it does, in order: plans and writes a JSON report; stops when nothing has a verified fix; creates
+or resets the branch; runs the fixes with `--apply --apply-no-install`, so `composer.lock` moves and
+`vendor/` is left alone; stops if neither `composer.json` nor `composer.lock` changed; commits, pushes,
+and opens or updates the pull request. The description says which advisories closed, which survived
+and with what fix, what ran, and what the applying run warned about. It is rendered by
+`composer remediate:pr-body`, which you can run yourself on any two JSON reports.
+
+| Input | Default | Notes |
+|---|---|---|
+| `args` | empty | Further `composer remediate` arguments. The report format and the apply options are set by the action. |
+| `branch` | `remediate/advisories` | One branch, reused, so there is one pull request. |
+| `base` | the default branch | What the pull request targets. |
+| `install` | `false` | `true` runs the update with an install, touching `vendor/`. A pull request normally carries only the manifest and the lock. |
+| `token` | `GITHUB_TOKEN` | A pull request opened with the default token does not start other workflows. Supply an app or personal token when the pull request must run your CI. |
+| `version` | `*` | Constraint for the plugin itself, for pinning the tool. |
+| `title`, `labels`, `draft`, `commit-message`, `working-directory`, `skip-install` | | |
+
+Outputs: `opened`, `pull-request`, `exit-code-before`, `exit-code-after`.
+
+The branch is the action's. It is rebuilt from the base branch on every run, because the fix is
+planned against what is on the base now, so a commit pushed to that branch by hand is replaced by the
+next run. Keep manual work on a branch of your own.
+
+A fix that would edit `composer.json`, such as widening a root constraint, is reported but not applied:
+`--apply` refuses those without `--apply-root-constraints`, and a bot that rewrites your requirements
+unattended is a different proposition from one that moves a lock. Run those by hand.
+
 ## GitLab CI
 
 ```yaml

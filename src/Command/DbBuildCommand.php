@@ -70,7 +70,7 @@ HELP);
 
             return Plan::EXIT_ERROR;
         }
-        $downloader = (new OperatorConfiguration())->httpDownloader($io);
+        $downloader = (new OperatorConfiguration())->httpDownloader();
         $locator = new DatabaseLocator($composer, $downloader);
         $target = $input->getOption('output');
         $settings = $locator->settings(null, is_string($target) && $target !== '' ? $target : null, null, false, $project === null ? null : dirname((string) realpath(Factory::getComposerFile())));

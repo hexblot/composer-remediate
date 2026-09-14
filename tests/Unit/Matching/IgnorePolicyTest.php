@@ -77,14 +77,32 @@ final class IgnorePolicyTest extends TestCase
         $config = new \Composer\Config(false);
         $config->merge(['config' => ['audit' => ['ignore' => ['CVE-2026-1']], 'policy' => ['advisories' => ['ignore-id' => ['PKSA-2'], 'ignore' => ['acme/lib']]]]], 'project/composer.json');
 
-        $operatorSet = IgnorePolicy::fromComposerConfig($config);
-        self::assertSame([], $operatorSet->projectEntries(), 'nothing is attributed to the project unless the caller says so');
+        $policy = IgnorePolicy::fromComposerConfig($config);
+        self::assertSame([], $policy->projectEntries(), 'nothing is the project\'s until the caller works out which entries are');
+        self::assertEqualsCanonicalizing(['cve-2026-1', 'pksa-2', 'acme/lib'], $policy->entries());
 
-        $projectSet = IgnorePolicy::fromComposerConfig($config, ['audit', 'policy']);
-        self::assertSame(['cve-2026-1', 'pksa-2', 'acme/lib'], $projectSet->projectEntries());
-        self::assertSame(['cve-2026-1', 'pksa-2', 'acme/lib'], $projectSet->withIds(['CVE-OPERATOR'])->projectEntries(), 'the operator\'s own --ignore is not the project\'s');
+        // The caller subtracts the operator's configuration from the merged one; entries are attributed
+        // one by one, so two contributors to the same key are told apart.
+        $attributed = $policy->withProjectEntries(['CVE-2026-1', 'acme/lib']);
+        self::assertSame(['cve-2026-1', 'acme/lib'], $attributed->projectEntries());
+        self::assertSame(['cve-2026-1', 'acme/lib'], $attributed->withIds(['CVE-OPERATOR'])->projectEntries(), 'the operator\'s own --ignore is not the project\'s');
+    }
 
-        $auditOnly = IgnorePolicy::fromComposerConfig($config, ['audit']);
-        self::assertSame(['cve-2026-1'], $auditOnly->projectEntries(), 'only the keys the project set');
+    public function testARuleCarriesItsConstraintSoAWideningIsNotTheSameRule(): void
+    {
+        $operator = new \Composer\Config(false);
+        $operator->merge(['config' => ['policy' => ['advisories' => ['ignore' => ['acme/lib' => ['constraint' => '<1.2']]]]]], 'operator');
+        $project = new \Composer\Config(false);
+        $project->merge(['config' => ['policy' => ['advisories' => ['ignore' => ['acme/lib' => ['constraint' => '*']]]]]], 'project');
+
+        $operatorRules = IgnorePolicy::fromComposerConfig($operator)->rules();
+        $projectRules = IgnorePolicy::fromComposerConfig($project)->rules();
+
+        self::assertSame(['acme/lib@<1.2'], $operatorRules);
+        self::assertNotSame($operatorRules, $projectRules, 'the same package at any version is not the rule the operator wrote');
+        self::assertSame($projectRules, array_values(array_diff($projectRules, $operatorRules)), 'so the widening is attributed to whoever added it');
+
+        // The same rule written twice is one rule, and belongs to nobody in particular.
+        self::assertSame([], array_values(array_diff($operatorRules, IgnorePolicy::fromComposerConfig($operator)->rules())));
     }
 }

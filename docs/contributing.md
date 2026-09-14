@@ -7,6 +7,13 @@
   `tests/Support/CommandRunner`, which runs the plugin's commands via Composer's console application
   against a scratch copy of a fixture; add a case to `tests/Integration/RemediateCommandTest.php` or
   `DbCommandsTest.php` when you add or change an option.
+- The shipped GitHub Action's body is `action/run.sh`, a file rather than a string inside `action.yml`
+  so that `ddev composer test:action` can run that exact script against a local git remote with stubbed
+  `composer` and `gh` commands (`tests/Action/action-test.sh`). Which revision the branch is built from,
+  what goes into the commit and which credential authenticates the push are decisions the PHP suite
+  cannot reach, and every defect that part has had lived in one of them. What the harness cannot cover
+  is GitHub itself: the pull request calls are stubbed, so their arguments are checked and their
+  behaviour is not.
 - The advisory database's life (download, confirm, replace, outage, pin, project-chosen source) is
   tested end to end in `tests/Integration/DatabaseLifecycleTest.php` against a real HTTPS publisher:
   `tests/Support/TlsPublisher` starts `tests/Support/tls-server.php`, a PHP TLS stream server on an

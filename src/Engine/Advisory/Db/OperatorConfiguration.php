@@ -6,7 +6,7 @@ namespace Remediate\Engine\Advisory\Db;
 
 use Composer\Config;
 use Composer\Factory;
-use Composer\IO\IOInterface;
+use Composer\IO\NullIO;
 use Composer\Util\HttpDownloader;
 
 /**
@@ -40,8 +40,17 @@ final class OperatorConfiguration
      * operator chose. Package metadata for candidate solves keeps using the project's configuration,
      * where the project's repositories and their credentials are the point.
      */
-    public function httpDownloader(IOInterface $io): HttpDownloader
+    public function httpDownloader(): HttpDownloader
     {
+        // The caller's IO is not passed on. Composer keeps authentication on the IO object, loaded from
+        // whatever configuration built it, and some of it decides TLS: `http-basic` credentials can carry
+        // a client certificate and a CA file, so a project that sets them would choose which certificates
+        // authenticate a publisher the operator chose. A fresh IO, loaded from the operator's
+        // configuration alone, carries the operator's credentials and nothing else. Downloads here are
+        // silent: the tool reports what it fetched and why in its own words.
+        $io = new NullIO();
+        $io->loadConfiguration($this->config());
+
         return Factory::createHttpDownloader($io, $this->config());
     }
 
