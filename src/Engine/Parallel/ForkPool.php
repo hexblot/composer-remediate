@@ -88,12 +88,7 @@ final class ForkPool
                     $running[$pid] = [$key, $file];
                 }
 
-                $status = 0;
-                $pid = pcntl_waitpid(-1, $status);
-                if ($pid <= 0 || !isset($running[$pid])) {
-                    // No child of ours is left to reap; anything still listed died unobserved.
-                    throw new \RuntimeException('A planning worker could not be waited for.');
-                }
+                [$pid, $status] = self::awaitAny(array_keys($running));
                 [$key, $file] = $running[$pid];
                 unset($running[$pid]);
                 $results[$key] = $this->collect($file, $status);
@@ -119,6 +114,39 @@ final class ForkPool
         }
 
         return $ordered;
+    }
+
+    /**
+     * Waits until one of these workers has finished, and returns which, with its exit status.
+     *
+     * Each is waited for by pid rather than with `pcntl_waitpid(-1)`, which returns any child of this
+     * process. The process this runs inside is somebody else's: Composer's, another plugin's, a
+     * script's, and a child of theirs exiting during this window would be reaped here. That would
+     * both look like a worker we do not recognise and take from its real owner the exit status it is
+     * waiting for. Polling a handful of pids a few times a second costs nothing against solves that
+     * take a third of a second each.
+     *
+     * @param list<int> $pids
+     *
+     * @return array{int, int} the pid that finished, and its raw exit status
+     */
+    private static function awaitAny(array $pids): array
+    {
+        while (true) {
+            foreach ($pids as $pid) {
+                $status = 0;
+                $finished = pcntl_waitpid($pid, $status, WNOHANG);
+                if ($finished === $pid) {
+                    return [$pid, $status];
+                }
+                if ($finished === -1) {
+                    // Gone, and its status already taken by someone else. Whether it did the work is
+                    // a question for the file it was told to leave, which is where the answer is anyway.
+                    return [$pid, 0];
+                }
+            }
+            usleep(20_000);
+        }
     }
 
     /**

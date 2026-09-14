@@ -163,6 +163,35 @@ final class ForkPoolTest extends TestCase
         self::assertCount(6, array_unique($names), 'two workers drawing the same scratch directory name would corrupt each other');
     }
 
+    public function testAnUnrelatedChildOfThisProcessDoesNotDisturbTheRun(): void
+    {
+        // The process this runs inside is somebody else's: Composer's, another plugin's. A child of
+        // theirs exiting mid-run must not be mistaken for a worker, and its exit status must be left
+        // for whoever is waiting on it.
+        $foreign = pcntl_fork();
+        self::assertNotSame(-1, $foreign, 'could not start the unrelated child this test needs');
+        if ($foreign === 0) {
+            usleep(120_000);
+            posix_kill(posix_getpid(), SIGKILL);
+        }
+
+        $jobs = [];
+        foreach (range(1, 4) as $n) {
+            $jobs[] = static function () use ($n): int {
+                usleep(200_000);
+
+                return $n;
+            };
+        }
+        $results = (new ForkPool(2))->run($jobs);
+
+        self::assertSame([1, 2, 3, 4], array_values($results));
+
+        // The pool must not have reaped it: its status is still here to collect.
+        $status = 0;
+        self::assertSame($foreign, pcntl_waitpid($foreign, $status), 'the unrelated child was reaped by the pool, so its own owner could never learn how it ended');
+    }
+
     public function testNoTemporaryFilesAreLeftBehind(): void
     {
         $before = glob(sys_get_temp_dir() . '/remediate-worker-*') ?: [];
