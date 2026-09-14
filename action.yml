@@ -1,0 +1,159 @@
+name: Composer Remediate
+description: Plan and apply verified Composer security fixes, and open one pull request for all of them.
+author: hexblot
+
+branding:
+  icon: shield
+  color: blue
+
+inputs:
+  working-directory:
+    description: Directory holding the composer.json to remediate.
+    default: '.'
+  args:
+    description: >-
+      Further arguments for `composer remediate`, such as `--no-dev --fail-on high`. The report
+      formats and the apply options are set by this action and must not be repeated here.
+    default: ''
+  version:
+    description: Version constraint of the plugin to install, for pinning the tool itself.
+    default: '*'
+  skip-install:
+    description: Set to true when the plugin is already installed in the job.
+    default: 'false'
+  branch:
+    description: Branch the fixes are pushed to. One branch, reused, so there is one pull request.
+    default: remediate/advisories
+  base:
+    description: Branch the pull request targets. The repository's default branch when empty.
+    default: ''
+  commit-message:
+    description: Subject of the commit that carries the lock change.
+    default: 'Apply verified Composer security fixes'
+  title:
+    description: Title of the pull request.
+    default: 'Security: apply verified Composer fixes'
+  labels:
+    description: Comma-separated labels for the pull request.
+    default: ''
+  draft:
+    description: Open the pull request as a draft.
+    default: 'false'
+  install:
+    description: >-
+      Run the update with an install, touching vendor/. Off by default: a pull request should carry
+      composer.json and composer.lock, and the branch is not where the project runs.
+    default: 'false'
+  token:
+    description: >-
+      Token used to push the branch and open the pull request. The default GITHUB_TOKEN works, but a
+      pull request it opens does not start other workflows; supply a personal access token or an app
+      token when the pull request must run your CI.
+    default: ${{ github.token }}
+
+outputs:
+  opened:
+    description: Whether a pull request was opened or updated ('true' or 'false').
+    value: ${{ steps.remediate.outputs.opened }}
+  pull-request:
+    description: URL of the pull request, when there is one.
+    value: ${{ steps.remediate.outputs.pull-request }}
+  exit-code-before:
+    description: Exit code of the run that planned the fixes.
+    value: ${{ steps.remediate.outputs.exit-code-before }}
+  exit-code-after:
+    description: Exit code of the run that applied them, empty when nothing was applied.
+    value: ${{ steps.remediate.outputs.exit-code-after }}
+
+runs:
+  using: composite
+  steps:
+    - name: Install composer-remediate
+      if: inputs.skip-install != 'true'
+      shell: bash
+      env:
+        VERSION: ${{ inputs.version }}
+      run: |
+        composer global config --no-plugins allow-plugins.hexblot/composer-remediate true
+        composer global require "hexblot/composer-remediate:${VERSION}" --no-interaction --no-progress --no-scripts
+
+    - name: Plan, apply and open one pull request
+      id: remediate
+      shell: bash
+      working-directory: ${{ inputs.working-directory }}
+      env:
+        # Every input reaches the script through the environment; none is interpolated into it.
+        GH_TOKEN: ${{ inputs.token }}
+        REMEDIATE_ARGS: ${{ inputs.args }}
+        BRANCH: ${{ inputs.branch }}
+        BASE: ${{ inputs.base }}
+        COMMIT_MESSAGE: ${{ inputs.commit-message }}
+        PR_TITLE: ${{ inputs.title }}
+        PR_LABELS: ${{ inputs.labels }}
+        PR_DRAFT: ${{ inputs.draft }}
+        WITH_INSTALL: ${{ inputs.install }}
+        REPOSITORY: ${{ github.repository }}
+      run: |
+        set -euo pipefail
+        echo "opened=false" >> "$GITHUB_OUTPUT"
+
+        work="$(mktemp -d)"
+        # shellcheck disable=SC2086  # REMEDIATE_ARGS is a deliberate argument list
+        set +e
+        composer remediate --format=json $REMEDIATE_ARGS > "$work/before.json"
+        before=$?
+        set -e
+        echo "exit-code-before=$before" >> "$GITHUB_OUTPUT"
+        if [ "$before" -ge 3 ]; then
+          echo "::error::composer remediate could not complete (exit $before); nothing was applied."
+          jq -r '.warnings[]?' "$work/before.json" 2>/dev/null || true
+          exit "$before"
+        fi
+        if [ "$(jq -r '[.findings[] | select(.remediation.status == "verified")] | length' "$work/before.json")" = "0" ]; then
+          echo "Nothing to apply: no finding has a verified fix."
+          exit 0
+        fi
+
+        git config user.name "github-actions[bot]"
+        git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
+        base="${BASE:-$(gh repo view "$REPOSITORY" --json defaultBranchRef --jq .defaultBranchRef.name)}"
+        git checkout -q -B "$BRANCH"
+
+        apply=(--apply --format=json)
+        if [ "$WITH_INSTALL" != "true" ]; then apply+=(--apply-no-install); fi
+        set +e
+        # shellcheck disable=SC2086
+        composer remediate "${apply[@]}" $REMEDIATE_ARGS > "$work/after.json"
+        after=$?
+        set -e
+        echo "exit-code-after=$after" >> "$GITHUB_OUTPUT"
+        if [ "$after" -ge 3 ]; then
+          echo "::error::the apply did not complete (exit $after)."
+          exit "$after"
+        fi
+
+        if git diff --quiet -- composer.json composer.lock; then
+          echo "The apply changed neither composer.json nor composer.lock; nothing to open."
+          exit 0
+        fi
+
+        jq -r '.warnings[]? | select(startswith("Applied: ")) | sub("^Applied: "; "") | sub("\\. The composer\\.json.*$"; "")' "$work/after.json" \
+          | tr '&' '\n' | sed 's/^ *//; s/ *$//' | grep -v '^$' > "$work/commands.txt" || true
+        composer remediate:pr-body "$work/before.json" "$work/after.json" --commands="$work/commands.txt" > "$work/body.md"
+
+        git add -- composer.json composer.lock
+        git commit -q -m "$COMMIT_MESSAGE"
+        git push -q --force-with-lease origin "$BRANCH"
+
+        url="$(gh pr list --head "$BRANCH" --base "$base" --state open --json url --jq '.[0].url // empty')"
+        if [ -n "$url" ]; then
+          gh pr edit "$url" --title "$PR_TITLE" --body-file "$work/body.md"
+        else
+          create=(--head "$BRANCH" --base "$base" --title "$PR_TITLE" --body-file "$work/body.md")
+          if [ "$PR_DRAFT" = "true" ]; then create+=(--draft); fi
+          if [ -n "$PR_LABELS" ]; then create+=(--label "$PR_LABELS"); fi
+          url="$(gh pr create "${create[@]}")"
+        fi
+        echo "opened=true" >> "$GITHUB_OUTPUT"
+        echo "pull-request=$url" >> "$GITHUB_OUTPUT"
+        echo "Pull request: $url"

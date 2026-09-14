@@ -7,6 +7,17 @@ All notable changes to this project are documented here. The format follows
 
 ### Added
 
+- **A GitHub Action that opens one pull request with the fixes applied (Phase 5, complete).**
+  `action.yml` in this repository plans, applies with `--apply --apply-no-install`, and opens or
+  updates a single pull request on one reused branch, rather than one pull request per package. It
+  stops before touching anything when no finding has a verified fix, and again when the run changed
+  neither the manifest nor the lock. The description is rendered by the new `remediate:pr-body`
+  command from the JSON reports of the planning run and the applying run: which advisories closed,
+  which survived and with what fix, what ran, and what the applying run warned about. It says plainly
+  when a run changed the lock and closed nothing. Advisory text is escaped, since it is upstream data
+  arriving in a rendered page. A fix that would edit `composer.json` is reported and not applied, since
+  `--apply` refuses those without `--apply-root-constraints`.
+
 - **`--apply` (Phase 5).** The recommendation can now be run rather than only printed. It executes the
   command the report shows, in the project, with the project's own Composer, and then plans again, so
   what you read afterwards is the state the run left behind and not a prediction of it. `composer.json`

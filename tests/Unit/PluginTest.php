@@ -11,6 +11,7 @@ use PHPUnit\Framework\TestCase;
 use Remediate\Command\CommandProvider;
 use Remediate\Command\DbBuildCommand;
 use Remediate\Command\DbStatusCommand;
+use Remediate\Command\PullRequestBodyCommand;
 use Remediate\Command\RemediateCommand;
 use Remediate\Plugin;
 
@@ -31,15 +32,21 @@ final class PluginTest extends TestCase
         $plugin->uninstall($composer, $io);
     }
 
-    public function testProvidesTheThreeCommandsUnderTheirDocumentedNames(): void
+    public function testProvidesEveryCommandUnderItsDocumentedName(): void
     {
         $commands = (new CommandProvider())->getCommands();
-        self::assertCount(3, $commands);
+
+        self::assertSame(
+            ['remediate', 'remediate:db-build', 'remediate:db-status', 'remediate:pr-body'],
+            array_map(static fn ($c): string => (string) $c->getName(), $commands),
+            'the names the documentation and the shipped action use',
+        );
         self::assertInstanceOf(RemediateCommand::class, $commands[0]);
         self::assertInstanceOf(DbBuildCommand::class, $commands[1]);
         self::assertInstanceOf(DbStatusCommand::class, $commands[2]);
-        self::assertSame(['remediate', 'remediate:db-build', 'remediate:db-status'], array_map(static fn ($c): string => (string) $c->getName(), $commands));
+        self::assertInstanceOf(PullRequestBodyCommand::class, $commands[3]);
         self::assertSame(['remediate-db-build'], $commands[1]->getAliases());
         self::assertSame(['remediate-db-status'], $commands[2]->getAliases());
+        self::assertSame(['remediate-pr-body'], $commands[3]->getAliases());
     }
 }

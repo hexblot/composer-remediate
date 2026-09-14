@@ -262,4 +262,34 @@ YAML);
         self::assertStringContainsString('Built before coverage gaps were recorded; rebuild', $status->stdout);
         self::assertStringNotContainsString('Coverage gaps (', $status->stdout);
     }
+
+    public function testThePullRequestBodyCommandRendersTwoReports(): void
+    {
+        $before = $this->project . '/before.json';
+        $after = $this->project . '/after.json';
+        file_put_contents($before, json_encode([
+            'exit_code' => 1,
+            'warnings' => [],
+            'summary' => ['packages' => 1, 'advisories' => 1],
+            'findings' => [['package' => 'acme/lib', 'version' => '1.0.0', 'advisories' => [['id' => 'PKSA-1', 'cve' => 'CVE-2026-1', 'severity' => 'high', 'link' => null]], 'remediation' => ['status' => 'verified', 'command' => 'composer update acme/lib']]],
+        ], JSON_THROW_ON_ERROR));
+        file_put_contents($after, json_encode(['exit_code' => 0, 'warnings' => ['Applied: composer update acme/lib. The composer.json and composer.lock from before the run are in /tmp/x.'], 'summary' => ['packages' => 0, 'advisories' => 0], 'findings' => []], JSON_THROW_ON_ERROR));
+        file_put_contents($this->project . '/commands.txt', "composer update acme/lib\n");
+
+        $result = $this->runner->run(['command' => 'remediate:pr-body', 'before' => $before, 'after' => $after, '--commands' => $this->project . '/commands.txt'], $this->project);
+
+        self::assertSame(0, $result->exitCode, $result->describe());
+        self::assertStringContainsString('1 of 1 advisories closed, on 1 of 1 packages.', $result->stdout);
+        self::assertStringContainsString('composer update acme/lib', $result->stdout);
+        self::assertStringContainsString('CVE-2026-1', $result->stdout);
+        self::assertStringNotContainsString('## Still open', $result->stdout);
+    }
+
+    public function testThePullRequestBodyCommandRejectsAReportItCannotRead(): void
+    {
+        $result = $this->runner->run(['command' => 'remediate:pr-body', 'before' => $this->project . '/missing.json', 'after' => $this->project . '/missing.json'], $this->project);
+
+        self::assertSame(Plan::EXIT_ERROR, $result->exitCode, $result->describe());
+        self::assertStringContainsString('is not a readable JSON report', $result->stderr);
+    }
 }
