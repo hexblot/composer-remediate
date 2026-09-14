@@ -117,6 +117,13 @@ runs:
         git config user.name "github-actions[bot]"
         git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
         base="${BASE:-$(gh repo view "$REPOSITORY" --json defaultBranchRef --jq .defaultBranchRef.name)}"
+        # The checkout only fetched the ref that triggered this run, so on every run after the first
+        # there is no remote-tracking ref for the remediation branch and --force-with-lease would refuse
+        # with stale info. Fetching it explicitly gives the lease something to compare against; when the
+        # branch does not exist yet the fetch fails, there is nothing to lease, and the push creates it.
+        git fetch -q origin "+refs/heads/$BRANCH:refs/remotes/origin/$BRANCH" || true
+        # The branch is built from the base every run, not continued: the fix is planned against what is
+        # on the base branch now. A commit pushed to this branch by hand is replaced by the next run.
         git checkout -q -B "$BRANCH"
 
         apply=(--apply --format=json)

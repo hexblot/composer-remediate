@@ -195,9 +195,27 @@ final class PullRequestBody
     private static function identifier(array $advisory): string
     {
         $id = is_string($advisory['cve'] ?? null) && $advisory['cve'] !== '' ? $advisory['cve'] : (is_string($advisory['id'] ?? null) ? $advisory['id'] : '?');
-        $link = is_string($advisory['link'] ?? null) && preg_match('{^https?://}i', $advisory['link']) === 1 ? $advisory['link'] : null;
+        $link = self::url($advisory['link'] ?? null);
 
-        return $link === null ? self::text($id) : sprintf('[%s](%s)', self::text($id), self::text($link));
+        return $link === null ? self::text($id) : sprintf('[%s](%s)', self::text($id), $link);
+    }
+
+    /**
+     * An upstream link, fit to sit in the destination of a Markdown link inside a table cell, or null.
+     *
+     * The destination ends at the first unbalanced `)` and the cell ends at a `|`, so a link carrying
+     * either would close the construct early and spill the rest of itself into the rendered page. Only
+     * an `http`, `https` link without whitespace is accepted at all, and the three characters that end
+     * the constructs around it are percent-encoded rather than escaped, since a backslash means nothing
+     * inside a link destination. An advisory whose link is refused still shows its identifier.
+     */
+    private static function url(mixed $value): ?string
+    {
+        if (!is_string($value) || preg_match('{^https?://\S+$}i', $value) !== 1) {
+            return null;
+        }
+
+        return str_replace(['(', ')', '|'], ['%28', '%29', '%7C'], $value);
     }
 
     /**

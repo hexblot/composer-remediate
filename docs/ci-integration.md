@@ -182,6 +182,10 @@ and with what fix, what ran, and what the applying run warned about. It is rende
 
 Outputs: `opened`, `pull-request`, `exit-code-before`, `exit-code-after`.
 
+The branch is the action's. It is rebuilt from the base branch on every run, because the fix is
+planned against what is on the base now, so a commit pushed to that branch by hand is replaced by the
+next run. Keep manual work on a branch of your own.
+
 A fix that would edit `composer.json`, such as widening a root constraint, is reported but not applied:
 `--apply` refuses those without `--apply-root-constraints`, and a bot that rewrites your requirements
 unattended is a different proposition from one that moves a lock. Run those by hand.

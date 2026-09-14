@@ -89,6 +89,32 @@ final class PullRequestBodyTest extends TestCase
         self::assertStringContainsString('from before the run are in /tmp/x.', $body);
     }
 
+    public function testAnAdvisoryLinkCannotBreakOutOfTheMarkdownItSitsIn(): void
+    {
+        // The destination of a Markdown link ends at a parenthesis and the table cell ends at a pipe.
+        // A parenthesis without whitespace is encoded, so the destination cannot end early.
+        $parens = self::report([['package' => 'acme/lib', 'version' => '1.0.0', 'advisories' => [self::advisory('PKSA-1', 'CVE-2026-1', 'high', 'https://x.test/a)b|c')]]]);
+        $body = PullRequestBody::render($parens, self::report([], 0));
+        self::assertStringContainsString('[CVE-2026-1](https://x.test/a%29b%7Cc)', $body);
+
+        // A link carrying whitespace is not a link at all, so nothing after it can be smuggled in.
+        $hostile = self::report([['package' => 'acme/lib', 'version' => '1.0.0', 'advisories' => [self::advisory('PKSA-9', 'CVE-2026-9', 'high', 'https://x.test) **injected** [and](https://evil.test')]]]);
+        $body = PullRequestBody::render($hostile, self::report([], 0));
+        self::assertStringNotContainsString('**injected**', $body);
+        self::assertStringNotContainsString('](https://evil.test', $body);
+        self::assertStringContainsString('CVE-2026-9', $body, 'the identifier still shows');
+
+        // A link with whitespace is not a link at all; the identifier still shows.
+        $spaced = self::report([['package' => 'acme/lib', 'version' => '1.0.0', 'advisories' => [self::advisory('PKSA-2', 'CVE-2026-2', 'high', 'https://x.test trailing')]]]);
+        $body = PullRequestBody::render($spaced, self::report([], 0));
+        self::assertStringNotContainsString('trailing', $body);
+        self::assertStringContainsString('CVE-2026-2', $body);
+
+        // An ordinary link is left alone.
+        $plain = self::report([['package' => 'acme/lib', 'version' => '1.0.0', 'advisories' => [self::advisory('PKSA-3', 'CVE-2026-3', 'high', 'https://github.com/advisories/GHSA-aaaa-bbbb-cccc')]]]);
+        self::assertStringContainsString('[CVE-2026-3](https://github.com/advisories/GHSA-aaaa-bbbb-cccc)', PullRequestBody::render($plain, self::report([], 0)));
+    }
+
     public function testUpstreamTextCannotBreakOutOfTheTableOrTheMarkdown(): void
     {
         // Advisory data is upstream input and ends up in a rendered pull request description.
