@@ -5,6 +5,17 @@ All notable changes to this project are documented here. The format follows
 
 ## [Unreleased]
 
+### Fixed
+
+- **A handled download failure no longer prints an unhandled promise rejection.** Composer's
+  `HttpDownloader::copy()` discards the rejected promise before Composer 2.10, and react/promise reports
+  it on stderr when that promise is collected, so a run that dealt with an unreachable publisher
+  cleanly, or a mirror that publishes a `.sha256` and no `latest.json`, printed
+  `Unhandled promise rejection with Composer\Downloader\TransportException: ...` next to this tool's own
+  explanation. Downloads now use the asynchronous form with a rejection handler, driven by a loop the
+  locator owns, which behaves the same on every supported Composer version. Noticed in the output of a
+  passing CI job.
+
 ### Changed
 
 - Work reaches `main` through a pull request, one branch per unit of work; see the contributing page.

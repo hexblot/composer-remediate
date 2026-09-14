@@ -5,6 +5,7 @@ declare(strict_types=1);
 namespace Remediate\Engine\Advisory\Db\Enrichment;
 
 use Composer\Util\HttpDownloader;
+use Remediate\Engine\Advisory\Db\Download;
 
 /**
  * FIRST's Exploit Prediction Scoring System: a daily gzip-compressed CSV with one row per scored
@@ -43,7 +44,7 @@ final class EpssSource implements EnrichmentSourceInterface
             @mkdir($this->tempDir, 0700, true);
             $file = $this->tempDir . '/' . sha1($this->url) . '.csv.gz';
             try {
-                $this->downloader->copy($this->url, $file);
+                Download::toFile($this->downloader, $this->url, $file);
                 $raw = (string) file_get_contents($file);
             } finally {
                 @unlink($file);

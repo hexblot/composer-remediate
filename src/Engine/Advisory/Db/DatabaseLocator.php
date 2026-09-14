@@ -439,7 +439,7 @@ final class DatabaseLocator
         try {
             $latest = preg_replace('{/[^/]*$}', '/latest.json', $url) ?? '';
             try {
-                $this->downloader->copy($latest, $tmp);
+                Download::toFile($this->downloader, $latest, $tmp);
                 $decoded = json_decode((string) file_get_contents($tmp), true);
                 if (is_array($decoded) && is_string($decoded['sha256'] ?? null)) {
                     $publishedAt = is_string($decoded['published_at'] ?? null) ? strtotime($decoded['published_at']) : false;
@@ -450,7 +450,7 @@ final class DatabaseLocator
                 // no latest.json: a plain mirror; the sidecar decides
             }
             try {
-                $this->downloader->copy($url . '.sha256', $tmp);
+                Download::toFile($this->downloader, $url . '.sha256', $tmp);
             } catch (TransportException $e) {
                 $reason = self::shortError($e);
 
@@ -520,7 +520,7 @@ final class DatabaseLocator
         $shown = self::redact($url);
         $tmp = $path . '.tmp-' . bin2hex(random_bytes(8));
         try {
-            $this->downloader->copy($url, $tmp);
+            Download::toFile($this->downloader, $url, $tmp);
         } catch (TransportException $e) {
             @unlink($tmp);
             throw $e;
@@ -575,7 +575,7 @@ final class DatabaseLocator
             return null;
         }
         try {
-            $this->downloader->copy($url . '.sha256', $tmp);
+            Download::toFile($this->downloader, $url . '.sha256', $tmp);
 
             return self::digestFrom((string) file_get_contents($tmp));
         } catch (TransportException) {

@@ -134,6 +134,20 @@ final class DatabaseLocatorTest extends TestCase
 
                 return new \Composer\Util\Http\Response(['url' => $url === '' ? 'x' : $url], 200, [], null);
             }
+
+            /** The asynchronous form the locator uses, answering as the real downloader does. */
+            public function addCopy(string $url, string $to, array $options = []): \React\Promise\PromiseInterface
+            {
+                try {
+                    return \React\Promise\resolve($this->copy($url, $to, $options));
+                } catch (TransportException $e) {
+                    return \React\Promise\reject($e);
+                }
+            }
+
+            public function wait(?int $index = null): void
+            {
+            }
         };
     }
 
