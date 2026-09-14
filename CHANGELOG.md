@@ -11,7 +11,8 @@ All notable changes to this project are documented here. The format follows
 
 A feature release: the tool can now apply the fix it recommends, and open one pull request carrying
 every fix it could verify. The default is unchanged and unchanged on purpose: without `--apply` nothing
-in your project is written.
+in your project is written. It also says what it is doing while it works, after a first user on a large
+lock file took several minutes of silent solving for a hang.
 
 **Upgrading from 0.7.0.** Four of the security fixes below apply to code 0.7.0 shipped, and two of them
 were rated P1 by the reviewer:
