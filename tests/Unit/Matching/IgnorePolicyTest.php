@@ -77,14 +77,14 @@ final class IgnorePolicyTest extends TestCase
         $config = new \Composer\Config(false);
         $config->merge(['config' => ['audit' => ['ignore' => ['CVE-2026-1']], 'policy' => ['advisories' => ['ignore-id' => ['PKSA-2'], 'ignore' => ['acme/lib']]]]], 'project/composer.json');
 
-        $operatorSet = IgnorePolicy::fromComposerConfig($config);
-        self::assertSame([], $operatorSet->projectEntries(), 'nothing is attributed to the project unless the caller says so');
+        $policy = IgnorePolicy::fromComposerConfig($config);
+        self::assertSame([], $policy->projectEntries(), 'nothing is the project\'s until the caller works out which entries are');
+        self::assertEqualsCanonicalizing(['cve-2026-1', 'pksa-2', 'acme/lib'], $policy->entries());
 
-        $projectSet = IgnorePolicy::fromComposerConfig($config, ['audit', 'policy']);
-        self::assertSame(['cve-2026-1', 'pksa-2', 'acme/lib'], $projectSet->projectEntries());
-        self::assertSame(['cve-2026-1', 'pksa-2', 'acme/lib'], $projectSet->withIds(['CVE-OPERATOR'])->projectEntries(), 'the operator\'s own --ignore is not the project\'s');
-
-        $auditOnly = IgnorePolicy::fromComposerConfig($config, ['audit']);
-        self::assertSame(['cve-2026-1'], $auditOnly->projectEntries(), 'only the keys the project set');
+        // The caller subtracts the operator's configuration from the merged one; entries are attributed
+        // one by one, so two contributors to the same key are told apart.
+        $attributed = $policy->withProjectEntries(['CVE-2026-1', 'acme/lib']);
+        self::assertSame(['cve-2026-1', 'acme/lib'], $attributed->projectEntries());
+        self::assertSame(['cve-2026-1', 'acme/lib'], $attributed->withIds(['CVE-OPERATOR'])->projectEntries(), 'the operator\'s own --ignore is not the project\'s');
     }
 }

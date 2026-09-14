@@ -72,8 +72,10 @@ final class DatabaseSettings
         $projectLocation = $operatorLocation === null ? self::first(null, '', $remediate['database'] ?? null) : null;
         $locationValue = $operatorLocation ?? $projectLocation;
         $sources = $locationValue === null ? [self::DEFAULT_SOURCE] : self::sourcesFrom($locationValue);
-        if ($projectLocation !== null && $sources !== []) {
-            $notes[] = sprintf('Advisory source chosen by the analysed project\'s composer.json (extra.remediate.database): %s. Pass --database-location or set REMEDIATE_DATABASE to override it.', DatabaseLocator::redact(implode(', ', $sources)));
+        if ($projectLocation !== null) {
+            $notes[] = $sources === []
+                ? 'The analysed project\'s composer.json turns the advisory database off (extra.remediate.database is set to composer or none), so advisories come from the configured repositories and carry no exploit data or coverage-gap bookkeeping. Pass --database-location or set REMEDIATE_DATABASE to override it.'
+                : sprintf('Advisory source chosen by the analysed project\'s composer.json (extra.remediate.database): %s. Pass --database-location or set REMEDIATE_DATABASE to override it.', DatabaseLocator::redact(implode(', ', $sources)));
         }
 
         $operatorPath = self::first($path, self::ENV_PATH, null);

@@ -90,12 +90,26 @@ final class IgnorePolicy
     }
 
     /**
-     * Reads the audit-scoped ignores from a project's Composer configuration.
+     * The entries the analysed project's own composer.json contributed, as the caller worked them out by
+     * comparing this configuration with the operator's. Composer records one source per top-level key,
+     * so asking it who wrote `config.audit.ignore` cannot separate two contributors to the same key.
      *
-     * @param list<string> $projectKeys which of `audit` and `policy` the analysed project set, so the
-     *                                  entries taken from them can be disclosed in the report
+     * @param list<string> $entries
      */
-    public static function fromComposerConfig(Config $config, array $projectKeys = []): self
+    public function withProjectEntries(array $entries): self
+    {
+        $fromProject = [];
+        foreach ($entries as $entry) {
+            $fromProject[strtolower($entry)] = true;
+        }
+
+        return new self($this->ids, $this->packages, $fromProject);
+    }
+
+    /**
+     * Reads the audit-scoped ignores from a Composer configuration.
+     */
+    public static function fromComposerConfig(Config $config): self
     {
         $ids = [];
         $packages = [];
@@ -164,14 +178,9 @@ final class IgnorePolicy
             }
         }
 
-        $fromProject = [];
-        foreach ($projectKeys as $key) {
-            foreach ($key === 'audit' ? $auditEntries : $policyEntries as $entry) {
-                $fromProject[$entry] = true;
-            }
-        }
+        unset($auditEntries, $policyEntries);
 
-        return new self($ids, $packages, $fromProject);
+        return new self($ids, $packages);
     }
 
     private static function onAudit(mixed $value): bool

@@ -386,6 +386,88 @@ final class RemediateCommandTest extends TestCase
         self::assertStringContainsString('Nothing to apply: no findings.', $result->stderr);
     }
 
+    public function testTheProjectCannotTurnTheDatabaseOffWhenADigestIsPinned(): void
+    {
+        $previous = Platform::getEnv(DatabaseLocator::ENV);
+        Platform::clearEnv(DatabaseLocator::ENV);
+        CommandRunner::editComposerJson($this->project, static function (array $json): array {
+            $json['extra'] = ['remediate' => ['database' => 'composer']];
+
+            return $json;
+        });
+        try {
+            $pinned = $this->runner->run(['command' => 'remediate', '--database-sha256' => str_repeat('a', 64)], $this->project);
+            $unpinned = $this->runner->run(['command' => 'remediate', '--format' => 'json'], $this->project);
+        } finally {
+            is_string($previous) ? Platform::putEnv(DatabaseLocator::ENV, $previous) : Platform::clearEnv(DatabaseLocator::ENV);
+        }
+
+        self::assertSame(Plan::EXIT_ADVISORIES_UNAVAILABLE, $pinned->exitCode, $pinned->describe());
+        self::assertStringContainsString('cannot be turned off by the analysed project', $pinned->stderr);
+
+        // Without a pin the project may turn it off, but never quietly. This fixture has no
+        // advisory-capable repository to fall back to, so the run then fails; the disclosure is on the
+        // error stream precisely because a failing run has no report to carry it in.
+        self::assertStringContainsString('turns the advisory database off', $unpinned->stderr, $unpinned->describe());
+    }
+
+    public function testDisclosuresSurviveTheApplyAndTheSecondPlan(): void
+    {
+        // A disclosure the command made about the analysed project, rather than about the lock, must
+        // still be there after the apply: the second plan is a fresh object and would otherwise drop it
+        // exactly where a reviewer is looking at an automated change.
+        $composer = dirname(__DIR__, 2) . '/vendor/bin/composer';
+        $previousBinary = Platform::getEnv('REMEDIATE_COMPOSER_BINARY');
+        Platform::putEnv('REMEDIATE_COMPOSER_BINARY', $composer);
+        CommandRunner::editComposerJson($this->project, static function (array $json): array {
+            $json['config'] = ($json['config'] ?? []) + ['audit' => ['ignore' => ['CVE-SOMETHING-ELSE']]];
+
+            return $json;
+        });
+        try {
+            $result = $this->remediate(['--apply' => true, '--apply-no-install' => true, '--no-project-ignores' => true, '--format' => 'json']);
+        } finally {
+            is_string($previousBinary) ? Platform::putEnv('REMEDIATE_COMPOSER_BINARY', $previousBinary) : Platform::clearEnv('REMEDIATE_COMPOSER_BINARY');
+        }
+
+        self::assertSame(Plan::EXIT_CLEAN, $result->exitCode, $result->describe());
+        $report = json_decode($result->stdout, true);
+        self::assertIsArray($report);
+        $warnings = implode("\n", $report['warnings']);
+        self::assertStringContainsString('Applied: ', $warnings);
+        self::assertStringContainsString('cve-something-else', $warnings, 'what the project suppressed is not lost when the plan is replaced');
+    }
+
+    public function testNoProjectIgnoresKeepsTheOperatorsOwnExceptions(): void
+    {
+        // The operator's exception lives in their global config.json; the project adds one of its own to
+        // the same key, which is where Composer's one-source-per-key bookkeeping cannot tell them apart.
+        $home = (string) Platform::getEnv('COMPOSER_HOME');
+        $globalConfig = $home . '/config.json';
+        file_put_contents($globalConfig, json_encode(['config' => ['audit' => ['ignore' => ['CVE-OPERATOR']]]], JSON_THROW_ON_ERROR));
+        CommandRunner::editComposerJson($this->project, static function (array $json): array {
+            $json['config'] = ($json['config'] ?? []) + ['audit' => ['ignore' => ['CVE-2026-00001']]];
+
+            return $json;
+        });
+        try {
+            $honoured = $this->remediate(['--format' => 'json']);
+            $refused = $this->remediate(['--no-project-ignores' => true, '--format' => 'json']);
+        } finally {
+            @unlink($globalConfig);
+        }
+
+        self::assertSame(Plan::EXIT_CLEAN, $honoured->exitCode, $honoured->describe() . ' (the project suppressed its own finding)');
+        $report = json_decode($refused->stdout, true);
+        self::assertIsArray($report);
+        self::assertSame(Plan::EXIT_REMEDIATION_AVAILABLE, $refused->exitCode, $refused->describe() . ' (the finding comes back)');
+        $attribution = implode("\n", array_filter($report['warnings'], static fn (string $w): bool => str_contains($w, 'suppresses advisories')));
+        self::assertStringContainsString('cve-2026-00001', $attribution, 'the project entry is named as the project\'s');
+        self::assertStringNotContainsString('cve-operator', $attribution, 'the operator\'s own exception is not attributed to the project');
+        self::assertStringContainsString('Exceptions from your own configuration still apply', $attribution);
+        self::assertStringContainsString('can be removed: cve-operator', implode("\n", $report['warnings']), 'and it is still in force, which is why the hygiene check sees it');
+    }
+
     public function testPlatformFlagsAreRepeatedInTheRecommendedCommand(): void
     {
         $result = $this->remediate(['--ignore-platform-reqs' => true, '--format' => 'json']);

@@ -34,6 +34,39 @@ All notable changes to this project are documented here. The format follows
 
 ### Security
 
+Answers to a third adversarial adoption review, this one of `--apply` and the shipped action. Seven
+findings, each with a test.
+
+- **The downloader carries the operator's credentials and nothing else.** It was built from the
+  caller's IO object, which holds authentication loaded from the analysed project; Composer reads TLS
+  settings out of `http-basic` credentials, so a project could still decide which certificates
+  authenticate a publisher the operator chose. A fresh IO is loaded from the operator's configuration
+  alone.
+- **A project cannot turn the advisory database off when a digest is pinned**, and cannot turn it off
+  quietly at all: `extra.remediate.database` set to `composer` or `none` is disclosed like any other
+  source the project chooses, on the error stream as well as in the report, since a run that fails
+  afterwards has no report to carry it.
+- **`--no-project-ignores` keeps the operator's own exceptions.** Which entries belong to the project
+  is decided by reading the operator's configuration and the merged one and subtracting, not by asking
+  Composer who wrote a key: it records one source per top-level key, so a project adding to
+  `config.audit.ignore` made the operator's entries in that key look like its own, and dropping them
+  discarded centrally approved exceptions.
+- **The disclosures a run makes survive `--apply`.** The second plan is a fresh object, so what the
+  first run said about where advisories came from and who chose that used to vanish exactly where a
+  reviewer is looking at an automated change.
+- **The action builds its branch from the base, before planning.** It planned and branched from
+  whatever ref happened to be checked out, so a run on a feature branch carried unrelated commits into
+  the pull request.
+- **The action commits the two files it changed**, not the whole index, so a file staged by an earlier
+  workflow step cannot ride along in a security pull request.
+- **The token authenticates git as well as the API.** It is set on the remote rather than passed to
+  the push, so fetches are authenticated too and `--force-with-lease` still has a remote-tracking ref
+  to lease against.
+- **The action's script is a file, `action/run.sh`, with its own test harness**
+  (`tests/Action/action-test.sh`, `composer test:action`), which runs that exact script against a local
+  git remote with stubbed `composer` and `gh`. Three of the findings above live in decisions the PHP
+  suite cannot reach, and the harness caught a fourth defect introduced by the fix for one of them.
+
 Answers to an Aikido scan of the workflows.
 
 - **No job both runs third-party code and holds a credential that can change the repository.** The

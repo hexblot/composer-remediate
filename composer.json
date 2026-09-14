@@ -71,10 +71,12 @@
         ],
         "phpstan": "phpstan analyse --memory-limit=1G",
         "deptrac": "tools/deptrac/vendor/bin/deptrac analyse --config-file=deptrac.yaml --no-progress --fail-on-uncovered --report-uncovered",
+        "test:action": "tests/Action/action-test.sh",
         "check": [
             "@phpstan",
             "@deptrac",
-            "@test"
+            "@test",
+            "@test:action"
         ],
         "cli-reference": "php bin/cli-reference.php > docs/cli-reference.md",
         "case-studies": "php bin/case-studies.php > docs/case-studies.md"

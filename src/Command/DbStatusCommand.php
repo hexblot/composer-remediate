@@ -50,7 +50,7 @@ final class DbStatusCommand extends BaseCommand
 
             return Plan::EXIT_ERROR;
         }
-        $locator = new DatabaseLocator($composer, (new OperatorConfiguration())->httpDownloader($io), (bool) $input->getOption('offline'), !(bool) $input->getOption('allow-unverified-database'), is_string($expectedSha) && $expectedSha !== '' ? strtolower($expectedSha) : null);
+        $locator = new DatabaseLocator($composer, (new OperatorConfiguration())->httpDownloader(), (bool) $input->getOption('offline'), !(bool) $input->getOption('allow-unverified-database'), is_string($expectedSha) && $expectedSha !== '' ? strtolower($expectedSha) : null);
         $option = static fn (string $name): ?string => is_string($v = $input->getOption($name)) && $v !== '' ? $v : null;
         try {
             $settings = $locator->settings($option('database-location'), $option('database-path'), $option('database-max-age'), false, $project === null ? null : dirname((string) realpath(Factory::getComposerFile())));
