@@ -194,6 +194,14 @@ has the details.
   as an enum
 - [x] a fourth adversarial review (ten findings at c545e91 on filesystem safety, advisory completeness
   and CI decisions), answered in the release after 0.6.1 with a regression test per finding
-- [ ] a fifth adversarial review once Phase 5 is complete, covering `--apply` and the batched pull
-  request together: they are one story from an attacker's point of view, and this is the first work
-  that changes a project rather than describing it
+- [x] a fifth adversarial review of `--apply` and the batched pull request together (seven findings,
+  then two on the recheck): project credentials reaching the downloader's TLS decisions, a project
+  turning the database off around an operator's pin, `--no-project-ignores` discarding the operator's
+  own exceptions and later mis-attributing a widened one, disclosures lost across the apply, and three
+  in the action itself, over the branch it builds from, what it commits and which credential
+  authenticates it. The reviewer's closing position: no longer blocking for an alpha, on a targeted
+  recheck rather than a fresh adoption assessment
+- [x] the action's own script is executable and tested (`action/run.sh`, `composer test:action`), after
+  that review found three defects in decisions the PHP suite cannot reach
+- [ ] a sixth adversarial review as a full adoption assessment, rather than a recheck, once the report
+  additions below have landed

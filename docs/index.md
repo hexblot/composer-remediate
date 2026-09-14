@@ -66,8 +66,9 @@ published advisory database the default source, kept current at a fixed path and
 and answers a second adversarial adoption review and its four rechecks (twenty-two findings on
 filesystem safety, advisory completeness, CI decisions and what the analysed project's `composer.json`
 is allowed to decide). `--apply`
-(Phase 5) applies a recommendation on request: the default is still to recommend and write nothing,
-and `--apply` runs the command it printed and then reports the state that run left behind.
+(Phase 5) is complete: the default is still to recommend and write nothing, `--apply` runs the command
+it printed and then reports the state that run left behind, and the shipped GitHub Action opens one
+pull request carrying every fix it could verify.
 
 ## Start here
 
