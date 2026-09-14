@@ -192,6 +192,17 @@ final class CoverageGapTest extends TestCase
         self::assertSame(Plan::EXIT_ADVISORIES_UNAVAILABLE, $plan->exitCode(), 'recorded uncertainty is never discarded because it cannot be attributed');
     }
 
+    public function testABuiltDatabaseIsReadableByItsOwnerAlone(): void
+    {
+        // A build with --include carries advisories the operator did not publish, and the default path
+        // is a cache directory other users of the machine can often list.
+        $db = $this->tmp('.sqlite');
+        (new DatabaseBuilder([$this->source([], [])]))->build($db, static function (): void {
+        });
+
+        self::assertSame(0600, fileperms($db) & 0777);
+    }
+
     public function testCoverageGapsArePartOfTheDatasetHash(): void
     {
         $advisory = new NormalizedAdvisory('CVE-2026-1', ['CVE-2026-1'], 't', null, 'high', null, null, [new AffectedRange('acme/other', '<9.0', 'Upstream')], [new SourceRecord('Upstream', 'CVE-2026-1')]);

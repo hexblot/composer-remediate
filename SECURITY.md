@@ -84,6 +84,9 @@ Out of scope:
 - Advisory data is treated as untrusted input: it influences which versions are considered fixed,
   and every recommendation is still validated by re-checking the resulting lock against the same
   data. It is never executed or interpolated into commands without quoting.
+- A database this tool builds is written for its owner alone (`0600`, in a `0700` directory when it
+  has to create one), since a build may carry private advisories and the default path is a shared cache
+  directory. Sharing one is a deliberate copy.
 - Published database artifacts ship with a sha256 sidecar, a `latest.json` (sha256, dataset hash,
   publication time) and a GitHub build-provenance attestation. The client refuses a download whose
   digest does not match the published one, does not download at all from a source that publishes no

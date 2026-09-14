@@ -123,6 +123,11 @@ fuzzy matches: false deduplication is worse than duplication.
 Where sources disagree, matching uses the union of their ranges: a version any source calls affected
 is treated as affected.
 
+A built database is created readable by its owner only (`0600`), and a directory the build has to
+create for it is `0700`: a build with `--include` carries private advisories, and the default path is a
+cache directory other users of the machine can often list. A database meant to be shared is copied or
+published deliberately, with whatever permissions that copy should have.
+
 The default output path is the database path above, so `composer remediate` reads the build on its
 next run and the freshness check treats it as a local build. A build takes well under a minute and
 the file is a few megabytes. A build with no options reproduces the database this project publishes:

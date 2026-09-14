@@ -30,19 +30,24 @@ concurrency:
   group: advisory-db
   cancel-in-progress: false
 
+# The build holds no credentials that can change anything. It resolves Composer dependencies, runs this
+# project's own code and reads three upstream feeds, none of which should ever be a step away from the
+# token that publishes a release. Everything it produces is handed to the publish job as an artifact,
+# and that job runs nothing but the attestation action and `gh`.
 jobs:
   build:
     runs-on: ubuntu-latest
     # A workflow_dispatch from another branch runs that branch's copy of this file, so nothing written
     # here can stop it on its own. The `advisory-db` environment's deployment-branch policy (main only)
-    # is enforced by GitHub before the job starts, whatever the workflow says; the ref check below is
-    # only a clearer error for an accidental dispatch from a branch.
+    # is enforced by GitHub before the publish job starts, whatever the workflow says; the ref check
+    # here is only a clearer error for an accidental dispatch from a branch.
     if: github.ref == 'refs/heads/main'
-    environment: advisory-db
     permissions:
-      contents: write       # gh release create / upload
-      id-token: write       # build-provenance attestation
-      attestations: write
+      contents: read
+    outputs:
+      changed: ${{ steps.compare.outputs.changed }}
+      version: ${{ steps.version.outputs.version }}
+      hash: ${{ steps.build.outputs.hash }}
     steps:
       - uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7.0.1
         with:
@@ -56,7 +61,7 @@ jobs:
         run: |
           composer global config --no-plugins repositories.remediate path "$GITHUB_WORKSPACE"
           composer global config --no-plugins allow-plugins.hexblot/composer-remediate true
-          composer global require hexblot/composer-remediate:@dev --no-progress
+          composer global require hexblot/composer-remediate:@dev --no-progress --no-scripts
       - name: Build
         run: |
           mkdir -p out
@@ -110,17 +115,48 @@ jobs:
                   sources: ($m.sources|fromjson), previous: (if $p == "" then null else $p end),
                   url: ("https://github.com/" + $r + "/releases/download/" + $v + "/advisories.sqlite")}' > out/latest.json
           cat out/latest.json
-      - name: Attest provenance
+      - name: Hand the artefacts to the publish job
         if: steps.compare.outputs.changed == 'true'
+        uses: actions/upload-artifact@043fb46d1a93c77aae656e7c1c64a875d1fc6a0a # v7.0.1
+        with:
+          name: advisory-db
+          path: |
+            out/advisories.sqlite
+            out/advisories.sqlite.sha256
+            out/latest.json
+          retention-days: 1
+          if-no-files-found: error
+      - name: Record health
+        env:
+          CHANGED: ${{ steps.compare.outputs.changed }}
+          BUILD_HASH: ${{ steps.build.outputs.hash }}
+        run: echo "last_successful_poll=$(date -u +%FT%TZ) changed=$CHANGED hash=$BUILD_HASH"
+
+  publish:
+    needs: build
+    if: needs.build.outputs.changed == 'true'
+    runs-on: ubuntu-latest
+    # The environment's deployment-branch policy (main only) is enforced by GitHub before this job
+    # starts, and it is the only job that can write to the repository.
+    environment: advisory-db
+    permissions:
+      contents: write       # gh release create / upload
+      id-token: write       # build-provenance attestation
+      attestations: write
+    steps:
+      - uses: actions/download-artifact@37930b1c2abaa49bbe596cd826c3c89aef350131 # v7.0.0
+        with:
+          name: advisory-db
+          path: out
+      - name: Attest provenance
         uses: actions/attest-build-provenance@4d101475d8b20a2381f78447822ac1eab6504dd8 # v4.2.2
         with:
           subject-path: out/advisories.sqlite
       - name: Publish dated release and move the latest pointer
-        if: steps.compare.outputs.changed == 'true'
         env:
           GH_TOKEN: ${{ github.token }}
-          VERSION: ${{ steps.version.outputs.version }}
-          BUILD_HASH: ${{ steps.build.outputs.hash }}
+          VERSION: ${{ needs.build.outputs.version }}
+          BUILD_HASH: ${{ needs.build.outputs.hash }}
           REPOSITORY: ${{ github.repository }}
         run: |
           v="$VERSION"
@@ -135,8 +171,3 @@ jobs:
               --title "Advisory database (latest)" --prerelease \
               --notes "Moving pointer to the newest advisory database ($v). Prefer the dated release URL in pinned CI configurations."
           fi
-      - name: Record health
-        env:
-          CHANGED: ${{ steps.compare.outputs.changed }}
-          BUILD_HASH: ${{ steps.build.outputs.hash }}
-        run: echo "last_successful_poll=$(date -u +%FT%TZ) changed=$CHANGED hash=$BUILD_HASH"

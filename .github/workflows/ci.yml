@@ -57,8 +57,11 @@ jobs:
   test:
     needs: plan
     runs-on: ubuntu-latest
+    # Read only. Every job here resolves Composer dependencies and runs the suite, which executes
+    # third-party code by design; the token that writes the badges branch lives in its own job below,
+    # which runs no dependency and no project code.
     permissions:
-      contents: write   # the PHP 8.4 job publishes the coverage badge to the `badges` branch
+      contents: read
     strategy:
       fail-fast: false
       matrix:
@@ -73,7 +76,7 @@ jobs:
           # PCOV adds little to the run time, unlike Xdebug; one job measures, the others run plain.
           coverage: ${{ matrix.php == '8.4' && 'pcov' || 'none' }}
           tools: composer:v2
-      - run: composer install --no-interaction --no-progress
+      - run: composer install --no-interaction --no-progress --no-plugins --no-scripts
       - run: composer phpstan
       # Deptrac needs PHP 8.2+ and its own dependencies, so it lives in tools/deptrac with a pinned lock.
       # The JSON report feeds the architecture badge and is written first so it exists whatever the
@@ -116,10 +119,8 @@ jobs:
           name: coverage
           path: build/coverage
           retention-days: 14
-      - name: Publish the coverage and architecture badges
-        if: matrix.php == '8.4' && github.event_name == 'push' && github.ref == 'refs/heads/main'
-        env:
-          GITHUB_TOKEN: ${{ github.token }}
+      - name: Coverage badge data
+        if: matrix.php == '8.4'
         run: |
           php -r '
             $m = simplexml_load_file("build/coverage/clover.xml")->project->metrics;
@@ -128,13 +129,16 @@ jobs:
             file_put_contents("coverage.json", json_encode(["schemaVersion" => 1, "label" => "coverage", "message" => sprintf("%.1f%%", $pct), "color" => $color]));
             echo file_get_contents("coverage.json"), PHP_EOL;
           '
-          mkdir -p /tmp/badges && cp coverage.json architecture.json /tmp/badges/ && cd /tmp/badges
-          git init -q -b badges
-          git config user.name "github-actions[bot]"
-          git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
-          git add coverage.json architecture.json
-          git commit -q -m "Badges for ${GITHUB_SHA}"
-          git push -q --force "https://x-access-token:${GITHUB_TOKEN}@github.com/${GITHUB_REPOSITORY}.git" badges
+      - name: Hand the badge data to the publishing job
+        if: matrix.php == '8.4' && github.event_name == 'push' && github.ref == 'refs/heads/main'
+        uses: actions/upload-artifact@043fb46d1a93c77aae656e7c1c64a875d1fc6a0a # v7.0.1
+        with:
+          name: badges
+          path: |
+            coverage.json
+            architecture.json
+          retention-days: 1
+          if-no-files-found: error
       - name: Fail the job when the architecture rules failed
         if: matrix.php == '8.4' && steps.deptrac.outcome == 'failure'
         run: |
@@ -146,6 +150,32 @@ jobs:
       - name: Case studies page is up to date
         if: matrix.php == '8.4'
         run: php bin/case-studies.php | diff -u docs/case-studies.md - || (echo "::error::docs/case-studies.md is stale; run php bin/case-studies.php > docs/case-studies.md" && exit 1)
+  # The only job with a write credential. It runs no dependency code and no project code: it downloads
+  # two small JSON files and pushes them to the `badges` branch.
+  badges:
+    needs: test
+    if: github.event_name == 'push' && github.ref == 'refs/heads/main'
+    runs-on: ubuntu-latest
+    permissions:
+      contents: write
+    steps:
+      - uses: actions/download-artifact@37930b1c2abaa49bbe596cd826c3c89aef350131 # v7.0.0
+        with:
+          name: badges
+          path: badges
+      - name: Push the badge data
+        env:
+          GITHUB_TOKEN: ${{ github.token }}
+        run: |
+          cd badges
+          test -s coverage.json && test -s architecture.json
+          git init -q -b badges
+          git config user.name "github-actions[bot]"
+          git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
+          git add coverage.json architecture.json
+          git commit -q -m "Badges for ${GITHUB_SHA}"
+          git push -q --force "https://x-access-token:${GITHUB_TOKEN}@github.com/${GITHUB_REPOSITORY}.git" badges
+
   composer-matrix:
     name: composer ${{ matrix.composer }} on php ${{ matrix.php }}
     needs: plan
@@ -170,7 +200,7 @@ jobs:
           php-version: ${{ matrix.php }}
           coverage: none
           tools: composer:v2
-      - run: composer install --no-interaction --no-progress
+      - run: composer install --no-interaction --no-progress --no-plugins --no-scripts
       - env:
           COMPOSER_CONSTRAINT: ${{ matrix.composer }}
         run: composer require --dev "composer/composer:${COMPOSER_CONSTRAINT}" --with-all-dependencies --no-interaction --no-progress
