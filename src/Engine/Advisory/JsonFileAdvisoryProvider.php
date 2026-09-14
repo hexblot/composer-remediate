@@ -8,7 +8,7 @@ namespace Remediate\Engine\Advisory;
  * Reads a snapshot in the Packagist API shape from disk. Used by fixtures and by users who want a
  * fully offline run against a file they fetched themselves.
  */
-final class JsonFileAdvisoryProvider implements AdvisoryProvider
+final class JsonFileAdvisoryProvider implements AdvisoryProvider, ForkSafe
 {
     /** @var array<string, list<Advisory>>|null */
     private ?array $advisories = null;
@@ -24,6 +24,11 @@ final class JsonFileAdvisoryProvider implements AdvisoryProvider
         private readonly PackagistAdvisoryJsonParser $parser = new PackagistAdvisoryJsonParser(),
         private ?bool $complete = null,
     ) {
+    }
+
+    public function afterFork(): void
+    {
+        // Nothing to re-establish: the file is read into memory and held as plain arrays.
     }
 
     public function advisoriesFor(array $packageNames): array

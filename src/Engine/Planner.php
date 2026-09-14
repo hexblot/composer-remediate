@@ -10,6 +10,7 @@ use Composer\Semver\Constraint\ConstraintInterface;
 use Composer\Semver\Constraint\MultiConstraint;
 use Remediate\Engine\Advisory\AdvisoryProvider;
 use Remediate\Engine\Advisory\CoverageAware;
+use Remediate\Engine\Advisory\ForkSafe;
 use Remediate\Engine\Candidate\Candidate;
 use Remediate\Engine\Candidate\CandidateGenerator;
 use Remediate\Engine\Candidate\FixedRangeResolver;
@@ -19,6 +20,7 @@ use Remediate\Engine\Lock\LockSnapshot;
 use Remediate\Engine\Matching\Finding;
 use Remediate\Engine\Matching\IgnorePolicy;
 use Remediate\Engine\Matching\Matcher;
+use Remediate\Engine\Parallel\ForkPool;
 use Remediate\Engine\Plan\CombinedAttempt;
 use Remediate\Engine\Plan\CombinedOutcome;
 use Remediate\Engine\Plan\CombinedRemediation;
@@ -66,6 +68,8 @@ final class Planner
      * @param bool                 $acceptCoverageGaps a candidate that adds a package whose advisory records the source could
      *                                                 not read is rejected by default (the new package cannot be vouched
      *                                                 for); with this, it is accepted and the gaps are reported with it
+     * @param int                  $parallelism how many packages may be planned at once, in forked child processes;
+     *                                          1 plans them one after another, which is the default
      */
     public function __construct(
         private readonly AdvisoryProvider $advisories,
@@ -78,6 +82,7 @@ final class Planner
         private readonly ?ReleaseAgeGuard $releaseAge = null,
         private readonly int $solveBudget = self::DEFAULT_SOLVE_BUDGET,
         private readonly bool $acceptCoverageGaps = false,
+        private readonly int $parallelism = 1,
     ) {
         $this->progress = $progress;
     }
@@ -150,19 +155,15 @@ final class Planner
             $groups[$finding->packageName][] = $finding;
         }
 
-        $plans = [];
         $total = count($groups);
         $this->report($total === 0
             ? 'No advisories match this lock; verifying nothing.'
             : sprintf('%d package%s to fix. Each candidate command is verified by a real Composer dry run, which is the slow part.', $total, $total === 1 ? '' : 's'), false);
-        $position = 0;
-        foreach ($groups as $group) {
-            ++$position;
-            $this->report(sprintf('[%d/%d] %s %s: searching for a fix…', $position, $total, $group[0]->packageName, $group[0]->prettyVersion), false);
-            $plans[] = $this->planGroup($group, $graph, $context, $lock, $baseline, $matcher, $ranker, $workspace);
-            $recommended = $plans[$position - 1]->recommended();
-            $this->report(sprintf('[%d/%d] %s: %s (%d solver run%s so far)', $position, $total, $group[0]->packageName, $recommended === null ? 'no verified fix' : $recommended->candidate->commandLine($this->solver->supportsMinimalChanges()), $this->totalSolves, $this->totalSolves === 1 ? '' : 's'), false);
-        }
+        $groups = array_values($groups);
+        $workers = $this->workerCount($total, $warnings);
+        $plans = $workers > 1
+            ? $this->planGroupsInParallel($workers, $groups, $graph, $context, $lock, $baseline, $matcher, $ranker, $workspace)
+            : $this->planGroupsInTurn($groups, $graph, $context, $lock, $baseline, $matcher, $ranker, $workspace);
 
         if ($total > 1) {
             $this->report('Looking for one command that fixes everything…', false);
@@ -218,6 +219,117 @@ final class Planner
         ksort($abandoned);
 
         return $abandoned;
+    }
+
+    /**
+     * How many packages may be planned at once, after the reasons not to.
+     *
+     * Parallel planning is refused rather than attempted where it would be unsound, and every refusal
+     * is reported: a silent fall back to one worker would look like the flag had no effect.
+     *
+     * @param list<string> $warnings
+     */
+    private function workerCount(int $total, array &$warnings): int
+    {
+        if ($this->parallelism <= 1 || $total <= 1) {
+            return 1;
+        }
+        $refuse = static function (string $why) use (&$warnings): int {
+            $warnings[] = 'Planning ran one package at a time: ' . $why . '.';
+
+            return 1;
+        };
+        $reason = ForkPool::unavailableReason();
+        if ($reason !== null) {
+            return $refuse($reason);
+        }
+        if (!$this->advisories instanceof ForkSafe) {
+            // Everything a child holds is inherited, so a source with an open connection or socket
+            // would be shared rather than copied. Only a source that can re-establish its own is forked.
+            return $refuse(sprintf('the advisory source %s cannot be used from a forked process', $this->advisories->describe()));
+        }
+
+        return min($this->parallelism, $total);
+    }
+
+    /**
+     * @param list<non-empty-list<Finding>> $groups
+     * @param array<string, true>           $baseline
+     *
+     * @return list<FindingPlan>
+     */
+    private function planGroupsInTurn(array $groups, DependencyGraph $graph, ProjectContext $context, LockSnapshot $lock, array $baseline, Matcher $matcher, Ranker $ranker, ScratchWorkspace $workspace): array
+    {
+        $plans = [];
+        $total = count($groups);
+        foreach ($groups as $position => $group) {
+            $this->report(sprintf('[%d/%d] %s %s: searching for a fix…', $position + 1, $total, $group[0]->packageName, $group[0]->prettyVersion), false);
+            $plan = $this->planGroup($group, $graph, $context, $lock, $baseline, $matcher, $ranker, $workspace);
+            $plans[] = $plan;
+            $this->report($this->outcomeLine($position + 1, $total, $plan), false);
+        }
+
+        return $plans;
+    }
+
+    /**
+     * Plans each package in a forked child and collects the results in the order the packages were in.
+     *
+     * Planning one package reads the lock, the graph and the advisory source and returns a value; it
+     * writes nothing any other package's planning reads. That is what makes this safe to fork, and it
+     * is also why the result is identical to planning them one at a time: only the wall clock differs.
+     *
+     * @param list<non-empty-list<Finding>> $groups
+     * @param array<string, true>           $baseline
+     *
+     * @return list<FindingPlan>
+     */
+    private function planGroupsInParallel(int $workers, array $groups, DependencyGraph $graph, ProjectContext $context, LockSnapshot $lock, array $baseline, Matcher $matcher, Ranker $ranker, ScratchWorkspace $workspace): array
+    {
+        $total = count($groups);
+        $this->report(sprintf('Planning %d packages %d at a time. Progress is reported as each one finishes, so it does not arrive in order.', $total, $workers), false);
+        $jobs = [];
+        foreach ($groups as $position => $group) {
+            $jobs[$position] = fn (): FindingPlan => $this->planGroup($group, $graph, $context, $lock, $baseline, $matcher, $ranker, $workspace);
+        }
+
+        $done = 0;
+        $plans = (new ForkPool($workers))->run(
+            $jobs,
+            function (int $position, FindingPlan $plan) use (&$done, $total): void {
+                // Counted by completions rather than by position: with several running at once, the
+                // package that finishes third is not the third one in the list.
+                ++$done;
+                $this->totalSolves += $plan->solveCount;
+                $this->report($this->outcomeLine($done, $total, $plan), false);
+            },
+            // The child is about to read from the advisory source the parent opened for itself.
+            function (): void {
+                if ($this->advisories instanceof ForkSafe) {
+                    $this->advisories->afterFork();
+                }
+            },
+        );
+
+        return array_values($plans);
+    }
+
+    /**
+     * The line reported when one package is done: what it will take to fix it, or that nothing was found.
+     */
+    private function outcomeLine(int $done, int $total, FindingPlan $plan): string
+    {
+        $recommended = $plan->recommended();
+
+        return sprintf(
+            '[%d/%d] %s: %s (%d solver run%s so far)',
+            $done,
+            $total,
+            $plan->finding->packageName,
+            $recommended === null ? 'no verified fix' : $recommended->candidate->commandLine($this->solver->supportsMinimalChanges()),
+            $this->totalSolves,
+            $this->totalSolves === 1 ? '' : 's',
+        );
     }
 
     /**

@@ -50,6 +50,7 @@ composer remediate --database-path=.cache/advisories.sqlite      # keep the advi
 composer remediate --offline                                     # no network at all; needs a warm Composer cache and the database already at its path
 composer remediate --no-database                                 # ask the configured repositories instead, as composer audit does
 composer remediate -v                      # show every candidate command as it is tried
+composer remediate --parallelize=4         # plan four packages at once, in worker processes
 ```
 
 While it works it says so: how many packages it matched, how many need fixing, and which one it is
@@ -57,6 +58,12 @@ verifying, with a running count of solver runs. Those lines go to the error stre
 standard output stays a report, and `-v` adds every candidate command as it is tried. A large lock file
 spends minutes in Composer's solver, and the progress is there so that is recognisable as work rather
 than a hang. `-q` silences it.
+
+Most of that time is Composer solving, and the packages are planned independently of each other, so
+`--parallelize=4` plans four at a time and cuts a 45-second run on a 201-package lock file to about
+15. Each worker runs its own solves, so allow a few hundred megabytes of memory for each. The result
+is the same either way; only the wall clock changes. See
+[how long a run takes](how-it-works.md#8a-how-long-a-run-takes-and-using-more-than-one-core).
 
 The plugin writes nothing to `composer.json`, `composer.lock` or `vendor/`: every recommendation is a
 plain `composer update` command you run yourself. `--apply` is the exception, and only on request. It

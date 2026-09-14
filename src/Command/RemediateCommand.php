@@ -88,6 +88,7 @@ final class RemediateCommand extends BaseCommand
                 new InputOption('accept-coverage-gaps', null, InputOption::VALUE_NONE, 'Exit 0 for a lock without findings even when the advisory source could not read records about locked packages (otherwise exit 4), and allow a fix that adds a package with such records (otherwise rejected); the gaps stay in the report'),
                 new InputOption('max-candidates', null, InputOption::VALUE_REQUIRED, 'Maximum number of candidate commands to try per finding', '10'),
                 new InputOption('solve-budget', null, InputOption::VALUE_REQUIRED, 'Maximum number of solver runs per finding, all search phases included (candidates, conflict expansion, parent descent, simplification)', (string) Planner::DEFAULT_SOLVE_BUDGET),
+                new InputOption('parallelize', 'p', InputOption::VALUE_REQUIRED, 'Plan this many packages at once in forked worker processes (default 1, one after another). Each worker runs its own Composer solves, so allow a few hundred MB of memory per worker; `auto` uses the number of processor cores, at most 4', '1'),
                 new InputOption('solver', null, InputOption::VALUE_REQUIRED, 'How candidates are verified: auto (in-process, falling back to a `composer update` subprocess when the in-process route errors), in-process, or subprocess', 'auto'),
                 new InputOption('ignore-platform-req', null, InputOption::VALUE_REQUIRED | InputOption::VALUE_IS_ARRAY, 'Ignore a specific platform requirement (php & ext- packages) when validating candidates; the flag is repeated in the recommended command'),
                 new InputOption('ignore-platform-reqs', null, InputOption::VALUE_NONE, 'Ignore all platform requirements when validating candidates; the flag is repeated in the recommended command'),
@@ -369,7 +370,44 @@ HELP);
             is_string($minAge) && $minAge !== '' ? new ReleaseAgeGuard((int) $minAge) : null,
             max(1, (int) $input->getOption('solve-budget')),
             (bool) $input->getOption('accept-coverage-gaps'),
+            self::parallelism($input, $io),
         );
+    }
+
+    /**
+     * How many packages --parallelize asks to plan at once.
+     *
+     * A bad value is corrected rather than fatal: the number only decides how fast the run is, never
+     * what it concludes, so refusing to start over it would cost the user their run for nothing.
+     */
+    private static function parallelism(InputInterface $input, IOInterface $io): int
+    {
+        $value = trim((string) $input->getOption('parallelize'));
+        if (strtolower($value) === 'auto') {
+            // Four is where the gain flattens on the lock files this was measured against, and it
+            // keeps the memory a default can claim on a shared CI runner to something defensible.
+            return max(1, min(4, self::processorCount()));
+        }
+        if (preg_match('{^[0-9]+$}', $value) !== 1 || (int) $value < 1) {
+            $io->writeError(sprintf('<comment>--parallelize=%s is not a worker count; planning one package at a time. Give a positive whole number, or `auto`.</comment>', ConsoleText::safe($value)));
+
+            return 1;
+        }
+
+        return (int) $value;
+    }
+
+    /** Processor cores available to this machine, or 1 when it will not say. */
+    private static function processorCount(): int
+    {
+        if (function_exists('shell_exec') && !Platform::isWindows()) {
+            $reported = @shell_exec('nproc 2>/dev/null || sysctl -n hw.ncpu 2>/dev/null');
+            if (is_string($reported) && preg_match('{\d+}', $reported, $m) === 1) {
+                return max(1, (int) $m[0]);
+            }
+        }
+
+        return 1;
     }
 
     /**
