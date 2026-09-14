@@ -118,16 +118,19 @@ final class Applier
     }
 
     /**
-     * Which of the manifest and lock a git checkout reports as modified. An empty list when the
-     * project is not a git checkout, or git is not installed: there is nothing to mix into then.
+     * Which of the manifest and lock a git checkout reports as modified, so that an apply is never
+     * mixed into someone's uncommitted work.
+     *
+     * git itself answers whether this is a checkout: asking it covers a worktree or a submodule, where
+     * `.git` is a file rather than a directory, and a project nested below the repository root, where
+     * there is no `.git` entry beside the manifest at all. A directory that is not in a checkout, or a
+     * machine without git, answers with a failure and nothing to mix into. Untracked files are not
+     * modifications: there is no committed state of theirs to disturb.
      *
      * @return list<string>
      */
     private function uncommitted(string $directory): array
     {
-        if (!is_dir($directory . '/.git')) {
-            return [];
-        }
         $process = new Process(['git', 'status', '--porcelain', '--', 'composer.json', 'composer.lock'], $directory, null, null, 30.0);
         try {
             $process->run();
@@ -139,6 +142,9 @@ final class Applier
         }
         $modified = [];
         foreach (explode("\n", trim($process->getOutput())) as $line) {
+            if (str_starts_with($line, '??')) {
+                continue;
+            }
             $name = trim(substr($line, 2));
             if ($name !== '') {
                 $modified[] = $name;

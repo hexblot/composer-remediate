@@ -142,6 +142,51 @@ final class ApplierTest extends TestCase
         self::assertNull($this->applier()->refusal($dirty, $context, false, true), 'unless the operator said to');
     }
 
+    public function testAWorktreeOrSubmoduleCheckoutIsStillAGitCheckout(): void
+    {
+        // In a worktree or a submodule `.git` is a file naming the real git directory elsewhere. A test
+        // for a `.git` directory misses those, and the refusal would be skipped exactly where a user is
+        // most likely to have work in progress.
+        $context = $this->project();
+        $git = new Process(['git', 'init', '-q'], $context->directory);
+        $git->run();
+        if (!$git->isSuccessful()) {
+            self::markTestSkipped('git is not available');
+        }
+        foreach ([['git', 'add', '-A'], ['git', '-c', 'user.email=t@t', '-c', 'user.name=t', 'commit', '-qm', 'x']] as $argv) {
+            (new Process($argv, $context->directory))->run();
+        }
+        rename($context->directory . '/.git', $context->directory . '/.git-real');
+        file_put_contents($context->directory . '/.git', 'gitdir: ' . $context->directory . '/.git-real' . "\n");
+        file_put_contents($context->lockPath(), (string) file_get_contents($context->lockPath()) . "\n");
+
+        $reason = $this->applier()->refusal(self::plan($context, self::candidate()), $context, false, false);
+
+        self::assertNotNull($reason, 'git answers for a worktree as readily as for a plain checkout');
+        self::assertStringContainsString('composer.lock already modified', $reason);
+    }
+
+    public function testAnUntrackedManifestIsNotAModification(): void
+    {
+        // Nothing committed to disturb: a library that keeps composer.lock out of the repository, or a
+        // project added to a checkout but not yet committed, must not be refused.
+        $context = $this->project();
+        $git = new Process(['git', 'init', '-q'], $context->directory);
+        $git->run();
+        if (!$git->isSuccessful()) {
+            self::markTestSkipped('git is not available');
+        }
+
+        self::assertNull($this->applier()->refusal(self::plan($context, self::candidate()), $context, false, false));
+    }
+
+    public function testADirectoryOutsideAnyCheckoutIsNotRefused(): void
+    {
+        $context = $this->project();
+
+        self::assertNull($this->applier()->refusal(self::plan($context, self::candidate()), $context, false, false), 'no checkout, nothing to mix into');
+    }
+
     public function testTheManifestAndLockAreCopiedAsideBeforeAnythingRuns(): void
     {
         $context = $this->project();
