@@ -41,6 +41,7 @@ nav:
       - Comparison with other tools: comparison.md
   - Project:
       - Roadmap: roadmap.md
+      - What has been delivered: delivered.md
       - Design decisions: design-decisions.md
       - Contributing: contributing.md
       - Test fixtures: fixtures.md

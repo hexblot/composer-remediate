@@ -45,13 +45,14 @@ CVE-2026-XXXXX  symfony/http-foundation 6.4.21
 
 Released as 0.x on [Packagist](https://packagist.org/packages/hexblot/composer-remediate); the
 current version is listed in the [changelog](https://github.com/hexblot/composer-remediate/blob/main/CHANGELOG.md).
-Of the [roadmap](roadmap.md), Phases 0 to 4 are complete: the planner reproduces the remediation a
+Phases 0 to 6 of the plan are [delivered](delivered.md): the planner reproduces the remediation a
 competent human would choose on every one of seventeen real historical projects (Laravel, Symfony,
 Drupal, Shopware, two monorepos and a distribution), searches for the single command that fixes every
 finding and explains that search, and the advisory database is kept current from the one this project
-publishes, or built locally and shared. The Phase 6 integrations (SARIF, GitLab and CycloneDX reports, severity gate,
+publishes, or built locally and shared. The integrations (SARIF, GitLab and CycloneDX reports, severity gate,
 baselines, release cooldown, EPSS and CISA KEV urgency ordering, abandoned-package flagging) have
-landed. An adversarial adoption review of 0.3.0 (another AI model working from the published
+landed, as have `--apply` and the batched pull request. What is still to come is on the
+[roadmap](roadmap.md). An adversarial adoption review of 0.3.0 (another AI model working from the published
 repository, reproducing each finding) found twenty
 defects, nine of them able to turn a tool failure or a policy exception into a clean result; 0.4.0
 answers that review and the reviewer's recheck, with a test behind each change, and 0.4.1 puts the
