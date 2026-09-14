@@ -70,7 +70,10 @@ is allowed to decide). `--apply`
 (Phase 5) is complete in 0.8.0: the default is still to recommend and write nothing, `--apply` runs the
 command it printed and then reports the state that run left behind, and the shipped GitHub Action opens
 one pull request carrying every fix it could verify. That release also answers a fresh adversarial
-adoption assessment of those features, nine findings with a test each.
+adoption assessment of those features, nine findings with a test each. 0.8.1 adds `--parallelize`:
+almost all of a run is Composer solving, and the packages are planned independently of one another,
+so planning four at once takes a 45-second run on a 201-package lock file down to about 15, with the
+same report at the end.
 
 ## Start here
 
