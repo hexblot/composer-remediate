@@ -357,13 +357,14 @@ final class RemediateCommandTest extends TestCase
         self::assertStringContainsString('from before the run are in ', $applied);
 
         self::assertStringNotEqualsFile($this->project . '/composer.lock', $before, 'the lock really moved');
-        preg_match('{are in (\S+?)\.\s}', $applied . ' ', $m);
-        self::assertFileExists($m[1] . '/composer.lock', 'the previous lock is where the report says');
-        self::assertStringEqualsFile($m[1] . '/composer.lock', $before);
-        foreach (glob($m[1] . '/*') ?: [] as $file) {
+        $backup = preg_match('{are in (\S+?)\.\s}', $applied . ' ', $m) === 1 ? $m[1] : '';
+        self::assertNotSame('', $backup, 'the report names the directory the previous files are in');
+        self::assertFileExists($backup . '/composer.lock', 'the previous lock is where the report says');
+        self::assertStringEqualsFile($backup . '/composer.lock', $before);
+        foreach (glob($backup . '/*') ?: [] as $file) {
             @unlink($file);
         }
-        @rmdir($m[1]);
+        @rmdir($backup);
     }
 
     public function testApplyRefusesARecommendationThatWouldEditComposerJson(): void
