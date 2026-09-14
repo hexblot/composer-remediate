@@ -10,7 +10,9 @@ use PHPUnit\Framework\TestCase;
 use Remediate\Engine\Advisory\JsonFileAdvisoryProvider;
 use Remediate\Engine\Lock\LockSnapshot;
 use Remediate\Engine\Matching\Matcher;
+use Remediate\Engine\Parallel\ForkPool;
 use Remediate\Engine\Plan\FindingPlan;
+use Remediate\Engine\Plan\Plan;
 use Remediate\Engine\Solver\InProcessSolver;
 use Remediate\Output\HtmlRenderer;
 use Remediate\Output\JsonRenderer;
@@ -63,6 +65,39 @@ final class FixtureTest extends TestCase
         foreach (FixtureRunner::all() as $dir) {
             yield basename($dir) => [$dir];
         }
+    }
+
+    /**
+     * Planning in worker processes must change how long a real fixture takes and nothing else.
+     *
+     * The scripted-solver tests hold the same rule cheaply; this one holds it against real Composer
+     * solves on a real lock file, which is where an inherited handle or a shared temporary directory
+     * would actually show up.
+     */
+    public function testAFixturePlannedInWorkersGivesTheSameReport(): void
+    {
+        $reason = ForkPool::unavailableReason();
+        if ($reason !== null) {
+            self::markTestSkipped($reason);
+        }
+        $fixtureDir = FixtureRunner::FIXTURE_ROOT . '/koel-symfony-parent-permits';
+
+        $strip = static function (Plan $plan): array {
+            $decoded = json_decode((new JsonRenderer())->render($plan), true, 512, JSON_THROW_ON_ERROR);
+            self::assertIsArray($decoded);
+            // The scratch copy a run is planned in is a fresh directory each time, by construction.
+            foreach (['analysis_timestamp', 'project', 'composer_json_sha256'] as $key) {
+                unset($decoded['analysis_metadata'][$key]);
+            }
+
+            return $decoded;
+        };
+
+        $sequential = $strip($this->runner->run($fixtureDir));
+        $parallel = $strip($this->runner->run($fixtureDir, false, null, 3));
+
+        self::assertSame($sequential, $parallel);
+        self::assertNotSame([], $parallel['findings'], 'a fixture with nothing to plan would not test anything');
     }
 
     #[DataProvider('fixtures')]

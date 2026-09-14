@@ -226,6 +226,40 @@ itself uses Composer's recursive `InstalledRepository::getDependents()`; its pat
 apply to the result, not to the cost of computing it, which on a very large lock is the same cost
 `composer why -r -t` pays.
 
+## 8a. How long a run takes, and using more than one core
+
+Almost all of a run is Composer solving. On a 201-package lock file with ten findings, a run takes
+around 45 seconds: 143 solver runs at roughly a third of a second each. Per-solve cost tracks the
+size of the lock file rather than any fixed overhead, so a small project is quick and a large one is
+not. Two things follow. Building each solve's Composer instance is about a tenth of the time, so
+reusing them would buy little for a lot of shared state. And the commands tried are almost never
+repeated, so there is nothing worth caching between them.
+
+What does help is that the packages are planned independently of each other. Searching within one
+finding cannot be split up, because each step reads the previous solver's output: conflict expansion
+widens the allow list using the packages Composer named, and the parent descent is a binary search.
+Across findings there is no such link, and that is where `--parallelize` fans out.
+
+```bash
+composer remediate --parallelize=4     # plan four packages at once
+composer remediate --parallelize=auto  # one worker per processor core, at most four
+```
+
+On the same lock file, four workers bring 45 seconds down to about 15. The result is unchanged:
+each worker plans its own packages from the same lock file, the same graph and the same advisory
+data, writes nothing the others read, and returns a value. Progress is still reported for every
+package, but in the order the workers finish rather than the order of the list.
+
+The cost is memory. Each worker runs its own Composer solves, so budget a few hundred megabytes for
+each; the run above peaks at about 170 MB with one worker. On a shared CI runner, start at 2 and
+measure. The default is 1, which plans one package at a time as before.
+
+Parallel planning is refused, and said so in the report, when the machine cannot fork (Windows, or
+PHP without `ext-pcntl` and `ext-posix`) or when the advisory source holds a connection that cannot
+be handed to a child process. The database that this tool uses by default can, and re-opens itself in
+each worker; asking the configured repositories instead (`--no-database`) cannot, and plans one
+package at a time.
+
 ## 9. Output
 
 Text output is the default:

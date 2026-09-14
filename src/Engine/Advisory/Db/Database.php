@@ -17,7 +17,7 @@ final class Database
 {
     public const SCHEMA_VERSION = 1;
 
-    private function __construct(private readonly \PDO $pdo, public readonly string $path)
+    private function __construct(private \PDO $pdo, public readonly string $path)
     {
     }
 
@@ -26,6 +26,20 @@ final class Database
         if (!is_file($path)) {
             throw new AdvisoryLookupFailed(sprintf('Advisory database %s does not exist.', $path));
         }
+        $db = new self(self::connect($path), $path);
+        $schema = (int) ($db->meta()['schema_version'] ?? 0);
+        if ($schema !== self::SCHEMA_VERSION) {
+            throw new AdvisoryLookupFailed(sprintf('Advisory database %s has schema version %d; this version of the tool reads %d.', $path, $schema, self::SCHEMA_VERSION));
+        }
+
+        return $db;
+    }
+
+    /**
+     * Opens a fresh read-only connection to the file.
+     */
+    private static function connect(string $path): \PDO
+    {
         if (!extension_loaded('pdo_sqlite')) {
             throw new AdvisoryLookupFailed('The pdo_sqlite PHP extension is required to read an advisory database.');
         }
@@ -33,20 +47,24 @@ final class Database
             // PHP 8.5 moved the SQLite driver constants to Pdo\Sqlite; older versions only have the PDO ones.
             $openFlags = class_exists(\Pdo\Sqlite::class) ? \Pdo\Sqlite::ATTR_OPEN_FLAGS : \PDO::SQLITE_ATTR_OPEN_FLAGS;
             $readOnly = class_exists(\Pdo\Sqlite::class) ? \Pdo\Sqlite::OPEN_READONLY : \PDO::SQLITE_OPEN_READONLY;
-            $pdo = new \PDO('sqlite:' . $path, null, null, [
+
+            return new \PDO('sqlite:' . $path, null, null, [
                 \PDO::ATTR_ERRMODE => \PDO::ERRMODE_EXCEPTION,
                 $openFlags => $readOnly,
             ]);
         } catch (\PDOException $e) {
             throw new AdvisoryLookupFailed(sprintf('Cannot open advisory database %s: %s', $path, $e->getMessage()), 0, $e);
         }
-        $db = new self($pdo, $path);
-        $schema = (int) ($db->meta()['schema_version'] ?? 0);
-        if ($schema !== self::SCHEMA_VERSION) {
-            throw new AdvisoryLookupFailed(sprintf('Advisory database %s has schema version %d; this version of the tool reads %d.', $path, $schema, self::SCHEMA_VERSION));
-        }
+    }
 
-        return $db;
+    /**
+     * Drops the inherited connection and opens its own. A SQLite connection must not be carried
+     * across a fork: parent and child would share one file offset and one set of POSIX locks, and
+     * closing it in either releases it for both. Called in the child, before it reads anything.
+     */
+    public function reconnect(): void
+    {
+        $this->pdo = self::connect($this->path);
     }
 
     /** @return array<string, string> */

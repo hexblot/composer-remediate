@@ -85,7 +85,7 @@ final class FixtureRunner
     /**
      * @param callable(string, bool): void|null $progress
      */
-    public function run(string $fixtureDir, bool $allowDirectRequire = false, ?callable $progress = null): Plan
+    public function run(string $fixtureDir, bool $allowDirectRequire = false, ?callable $progress = null, int $parallelism = 1): Plan
     {
         $workspace = $this->workspace($fixtureDir);
         $project = $workspace->materialize();
@@ -99,6 +99,11 @@ final class FixtureRunner
             true,
             10,
             $progress,
+            null,
+            null,
+            Planner::DEFAULT_SOLVE_BUDGET,
+            false,
+            $parallelism,
         );
 
         return $planner->plan($context, $workspace);

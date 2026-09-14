@@ -28,12 +28,15 @@ $args = array_slice(is_array($_SERVER['argv'] ?? null) ? $_SERVER['argv'] : [], 
 $name = null;
 $allowDirect = false;
 $writeReports = false;
+$parallelism = 1;
 $format = ReportFormat::Text;
 foreach ($args as $arg) {
     if ($arg === '--allow-direct-require') {
         $allowDirect = true;
     } elseif ($arg === '--write-reports') {
         $writeReports = true;
+    } elseif (str_starts_with($arg, '--parallelize=')) {
+        $parallelism = max(1, (int) substr($arg, 14));
     } elseif (str_starts_with($arg, '--format=')) {
         $format = ReportFormat::tryFrom(substr($arg, 9)) ?? throw new InvalidArgumentException('unknown format ' . substr($arg, 9));
     } elseif ($arg !== '-v' && $name === null) {
@@ -59,7 +62,7 @@ $runner = new FixtureRunner();
 $start = microtime(true);
 $plan = $runner->run($dir, $allowDirect, in_array('-v', $args, true) ? static function (string $m, bool $detail = true): void {
     fwrite(STDERR, $m . "\n");
-} : null);
+} : null, $parallelism);
 $runner->cleanup();
 if ($writeReports) {
     $stable = $plan->withMetadata(['project' => $name, 'advisory_source' => 'advisory snapshot advisories.json', 'analysis_timestamp' => '(fixture)', 'composer_json_sha256' => hash_file('sha256', $dir . '/composer.fixture.json') ?: '(fixture)', 'php_version' => '(fixture)', 'composer_version' => '(fixture)', 'solver' => 'in-process Composer dry-run']);

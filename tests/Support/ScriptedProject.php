@@ -113,11 +113,40 @@ final class ScriptedProject
     /**
      * @param list<Advisory> $advisories
      */
-    public static function advisories(array $advisories, bool $complete = true): AdvisoryProvider
+    public static function advisories(array $advisories, bool $complete = true, bool $forkSafe = false): AdvisoryProvider
     {
         $byPackage = [];
         foreach ($advisories as $advisory) {
             $byPackage[$advisory->packageName][] = $advisory;
+        }
+        if ($forkSafe) {
+            // Holds nothing but arrays, so a forked child needs no re-establishment; declaring it is
+            // what lets the planner fan out at all.
+            return new class($byPackage, $complete) implements AdvisoryProvider, \Remediate\Engine\Advisory\ForkSafe {
+                /** @param array<string, list<Advisory>> $advisories */
+                public function __construct(private readonly array $advisories, private readonly bool $complete)
+                {
+                }
+
+                public function afterFork(): void
+                {
+                }
+
+                public function advisoriesFor(array $packageNames): array
+                {
+                    return array_intersect_key($this->advisories, array_flip(array_map('strtolower', $packageNames)));
+                }
+
+                public function describe(): string
+                {
+                    return 'scripted advisories';
+                }
+
+                public function isComplete(): bool
+                {
+                    return $this->complete;
+                }
+            };
         }
 
         return new class($byPackage, $complete) implements AdvisoryProvider {

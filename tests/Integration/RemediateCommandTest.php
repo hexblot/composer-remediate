@@ -82,6 +82,39 @@ final class RemediateCommandTest extends TestCase
         self::assertStringContainsString('--min-release-age must be a whole number of days, got "soon"', $result->stderr);
     }
 
+    public function testANonsenseWorkerCountWarnsAndPlansOnePackageAtATime(): void
+    {
+        // How fast the run is must never decide what it concludes, so a bad value is corrected rather
+        // than fatal: refusing to start would cost the user their run for nothing.
+        $result = $this->remediate(['--parallelize' => 'lots']);
+        self::assertSame(Plan::EXIT_REMEDIATION_AVAILABLE, $result->exitCode, $result->describe());
+        self::assertStringContainsString('--parallelize=lots is not a worker count', $result->stderr);
+        self::assertStringContainsString(self::remediation(), $result->stdout);
+    }
+
+    public function testAWorkerCountOfZeroIsCorrectedRatherThanObeyed(): void
+    {
+        $result = $this->remediate(['--parallelize' => '0']);
+        self::assertSame(Plan::EXIT_REMEDIATION_AVAILABLE, $result->exitCode, $result->describe());
+        self::assertStringContainsString('is not a worker count', $result->stderr);
+    }
+
+    public function testPlanningInWorkersReachesTheSameRemediation(): void
+    {
+        $sequential = $this->remediate(['--format' => 'json']);
+        $parallel = $this->remediate(['--parallelize' => '3', '--format' => 'json']);
+        self::assertSame($sequential->exitCode, $parallel->exitCode, $parallel->describe());
+
+        $strip = static function (string $json): array {
+            $decoded = json_decode($json, true);
+            self::assertIsArray($decoded);
+            unset($decoded['analysis_metadata']['analysis_timestamp']);
+
+            return $decoded;
+        };
+        self::assertSame($strip($sequential->stdout), $strip($parallel->stdout), 'workers change how long the run takes and nothing else');
+    }
+
     public function testNeedsALockFile(): void
     {
         unlink($this->project . '/composer.lock');

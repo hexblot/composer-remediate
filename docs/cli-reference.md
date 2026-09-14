@@ -66,6 +66,7 @@ with the package runs the same command with plugins and scripts disabled from th
 | `--accept-coverage-gaps` | flag | Exit 0 for a lock without findings even when the advisory source could not read records about locked packages (otherwise exit 4), and allow a fix that adds a package with such records (otherwise rejected); the gaps stay in the report |
 | `--max-candidates` | required, default `10` | Maximum number of candidate commands to try per finding |
 | `--solve-budget` | required, default `60` | Maximum number of solver runs per finding, all search phases included (candidates, conflict expansion, parent descent, simplification) |
+| `--parallelize`, `-p` | required, default `1` | Plan this many packages at once in forked worker processes (default 1, one after another). Each worker runs its own Composer solves, so allow a few hundred MB of memory per worker; `auto` uses the number of processor cores, at most 4 |
 | `--solver` | required, default `auto` | How candidates are verified: auto (in-process, falling back to a `composer update` subprocess when the in-process route errors), in-process, or subprocess |
 | `--ignore-platform-req` | repeatable | Ignore a specific platform requirement (php &amp; ext- packages) when validating candidates; the flag is repeated in the recommended command |
 | `--ignore-platform-reqs` | flag | Ignore all platform requirements when validating candidates; the flag is repeated in the recommended command |

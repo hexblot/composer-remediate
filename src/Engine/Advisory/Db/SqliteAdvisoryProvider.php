@@ -6,8 +6,9 @@ namespace Remediate\Engine\Advisory\Db;
 
 use Remediate\Engine\Advisory\AdvisoryProvider;
 use Remediate\Engine\Advisory\CoverageAware;
+use Remediate\Engine\Advisory\ForkSafe;
 
-final class SqliteAdvisoryProvider implements AdvisoryProvider, CoverageAware
+final class SqliteAdvisoryProvider implements AdvisoryProvider, CoverageAware, ForkSafe
 {
     /** @var array<string, list<\Remediate\Engine\Advisory\Advisory>> */
     private array $cache = [];
@@ -20,6 +21,13 @@ final class SqliteAdvisoryProvider implements AdvisoryProvider, CoverageAware
      */
     public function __construct(private readonly Database $database, private readonly ?string $provenance = null)
     {
+    }
+
+    public function afterFork(): void
+    {
+        // The advisories already read are kept: they are the same in every child. The connection is
+        // not, because a SQLite handle must not be shared across a fork.
+        $this->database->reconnect();
     }
 
     public function advisoriesFor(array $packageNames): array
