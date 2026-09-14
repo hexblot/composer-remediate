@@ -48,6 +48,20 @@ final class ScriptedDownloader extends HttpDownloader
         return new Response(['url' => $url], 200, [], null);
     }
 
+    /** The asynchronous form, for callers that hand the rejection somewhere rather than catching it. */
+    public function addCopy(string $url, string $to, array $options = []): \React\Promise\PromiseInterface
+    {
+        try {
+            return \React\Promise\resolve($this->copy($url, $to, $options));
+        } catch (TransportException $e) {
+            return \React\Promise\reject($e);
+        }
+    }
+
+    public function wait(?int $index = null): void
+    {
+    }
+
     /** @return list<string> every URL requested, in order */
     public function requested(): array
     {

@@ -8,6 +8,7 @@ use Composer\Composer;
 use Composer\Config;
 use Composer\Downloader\TransportException;
 use Composer\Util\HttpDownloader;
+use Composer\Util\Loop;
 use Remediate\Engine\Advisory\AdvisoryLookupFailed;
 
 /**
@@ -33,6 +34,8 @@ final class DatabaseLocator
     private array $warnings = [];
 
     private readonly OperatorConfiguration $operator;
+
+    private ?Loop $loop = null;
 
     /**
      * @param bool        $requireChecksum refuse a download that no published digest or expected digest verifies (the
@@ -439,7 +442,7 @@ final class DatabaseLocator
         try {
             $latest = preg_replace('{/[^/]*$}', '/latest.json', $url) ?? '';
             try {
-                $this->downloader->copy($latest, $tmp);
+                $this->fetch($latest, $tmp);
                 $decoded = json_decode((string) file_get_contents($tmp), true);
                 if (is_array($decoded) && is_string($decoded['sha256'] ?? null)) {
                     $publishedAt = is_string($decoded['published_at'] ?? null) ? strtotime($decoded['published_at']) : false;
@@ -450,7 +453,7 @@ final class DatabaseLocator
                 // no latest.json: a plain mirror; the sidecar decides
             }
             try {
-                $this->downloader->copy($url . '.sha256', $tmp);
+                $this->fetch($url . '.sha256', $tmp);
             } catch (TransportException $e) {
                 $reason = self::shortError($e);
 
@@ -520,7 +523,7 @@ final class DatabaseLocator
         $shown = self::redact($url);
         $tmp = $path . '.tmp-' . bin2hex(random_bytes(8));
         try {
-            $this->downloader->copy($url, $tmp);
+            $this->fetch($url, $tmp);
         } catch (TransportException $e) {
             @unlink($tmp);
             throw $e;
@@ -575,13 +578,42 @@ final class DatabaseLocator
             return null;
         }
         try {
-            $this->downloader->copy($url . '.sha256', $tmp);
+            $this->fetch($url . '.sha256', $tmp);
 
             return self::digestFrom((string) file_get_contents($tmp));
         } catch (TransportException) {
             return null;
         } finally {
             @unlink($tmp);
+        }
+    }
+
+    /**
+     * Downloads a file, handing a failure back as an exception on every supported Composer version.
+     *
+     * `HttpDownloader::copy()` attaches no rejection handler to the promise it discards before Composer
+     * 2.10, so react/promise reports the failure on stderr as an unhandled rejection when that promise
+     * is collected. A run that handles an unreachable publisher cleanly, or a mirror that publishes a
+     * `.sha256` and no `latest.json`, would still print an alarming line next to the tool's own
+     * explanation. The asynchronous form gives the rejection somewhere to go.
+     *
+     * @throws TransportException
+     */
+    private function fetch(string $url, string $to): void
+    {
+        // An asynchronous request has to be allowed before it is queued and driven afterwards, which is
+        // what a loop around the downloader does. Allowing it takes nothing away from the synchronous
+        // callers that may share this downloader: the flag only decides whether a non-blocking request
+        // is refused.
+        $this->loop ??= new Loop($this->downloader);
+        $failure = null;
+        $promise = $this->downloader->addCopy($url, $to);
+        $promise->then(null, static function (\Throwable $e) use (&$failure): void {
+            $failure = $e;
+        });
+        $this->loop->wait([$promise]);
+        if ($failure instanceof \Throwable) {
+            throw $failure;
         }
     }
 
