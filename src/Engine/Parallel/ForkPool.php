@@ -28,7 +28,7 @@ final class ForkPool
      */
     public static function unavailableReason(): ?string
     {
-        foreach (['pcntl_fork', 'pcntl_waitpid', 'pcntl_wifsignaled', 'posix_kill', 'posix_getpid'] as $function) {
+        foreach (['pcntl_fork', 'pcntl_waitpid', 'pcntl_wifsignaled', 'pcntl_wtermsig', 'posix_kill', 'posix_getpid'] as $function) {
             // Functions disabled through disable_functions still exist; they cannot be called.
             if (!function_exists($function) || in_array($function, self::disabledFunctions(), true)) {
                 return sprintf('PHP here cannot fork (%s is unavailable); the ext-pcntl and ext-posix extensions are required, and Windows has no equivalent', $function);
