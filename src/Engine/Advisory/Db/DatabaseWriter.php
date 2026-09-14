@@ -25,7 +25,10 @@ final class DatabaseWriter
             throw new \RuntimeException('The pdo_sqlite PHP extension is required to build an advisory database.');
         }
         $dir = dirname($path);
-        if (!is_dir($dir) && !@mkdir($dir, 0755, true)) {
+        // A database may carry private advisories (--include) and is written into a cache directory that
+        // other users of the machine can often list. It is created for its owner alone; a database meant
+        // to be shared is copied or published deliberately, with the permissions that copy should have.
+        if (!is_dir($dir) && !@mkdir($dir, 0700, true)) {
             throw new \RuntimeException("Cannot create $dir");
         }
         $tmp = $path . '.tmp-' . bin2hex(random_bytes(4));
@@ -53,6 +56,7 @@ final class DatabaseWriter
         $pdo->exec('VACUUM');
         $pdo = null;
 
+        @chmod($tmp, 0600);
         if (!@rename($tmp, $path)) {
             @unlink($tmp);
             throw new \RuntimeException("Cannot write $path");

@@ -5,6 +5,22 @@ All notable changes to this project are documented here. The format follows
 
 ## [Unreleased]
 
+### Security
+
+Answers to an Aikido scan of the workflows.
+
+- **No job both runs third-party code and holds a credential that can change the repository.** The
+  advisory-database workflow is split: the build resolves Composer dependencies, runs this project's
+  code and reads three upstream feeds with a read-only token, and hands its artefacts to a publish job
+  that runs nothing but the attestation action and `gh`. Only that job has `contents: write`, and only
+  it is bound to the `advisory-db` environment whose deployment-branch policy GitHub enforces. The CI
+  matrix is read-only for the same reason, and the badges are pushed by a separate job that downloads
+  two JSON files and nothing else. Composer installs run with `--no-plugins --no-scripts` in both
+  workflows and in the GitLab template.
+- **A database this tool builds is created readable by its owner alone** (`0600`, in a `0700` directory
+  when it has to create one). A build with `--include` carries private advisories, and the default path
+  is a cache directory other users of the machine can often list; sharing one is now a deliberate copy.
+
 ### Fixed
 
 - **A handled download failure no longer prints an unhandled promise rejection.** Composer's
