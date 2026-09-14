@@ -353,7 +353,7 @@ final class RemediateCommandTest extends TestCase
         self::assertSame([], $report['findings'], 'the report is the state after the run, not a prediction');
         $applied = implode("
 ", $report['warnings']);
-        self::assertStringContainsString('Applied: composer update acme/app-framework:1.1.0 -W -m --no-install --no-interaction', $applied);
+        self::assertStringContainsString('Applied: ' . self::remediation() . ' --no-install --no-interaction', $applied, 'what ran is recorded in full, and the command itself is the one the report printed');
         self::assertStringContainsString('from before the run are in ', $applied);
 
         self::assertStringNotEqualsFile($this->project . '/composer.lock', $before, 'the lock really moved');
