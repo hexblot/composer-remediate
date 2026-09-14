@@ -5,12 +5,16 @@
     "license": "MIT",
     "keywords": [
         "composer",
+        "composer-plugin",
         "plugin",
         "security",
         "vulnerability",
         "remediation",
         "audit",
-        "dependencies"
+        "dependencies",
+        "cve",
+        "advisories",
+        "supply-chain"
     ],
     "homepage": "https://github.com/hexblot/composer-remediate",
     "authors": [
