@@ -5,6 +5,22 @@ All notable changes to this project are documented here. The format follows
 
 ## [Unreleased]
 
+### Added
+
+- **`--apply` (Phase 5).** The recommendation can now be run rather than only printed. It executes the
+  command the report shows, in the project, with the project's own Composer, and then plans again, so
+  what you read afterwards is the state the run left behind and not a prediction of it. `composer.json`
+  and `composer.lock` are copied outside the project before anything runs and the report says where.
+  It refuses when there is no verified command to run, when the recommendation would edit
+  `composer.json` (`--apply-root-constraints` permits it), when those files changed while the plan was
+  being computed, and when they are already modified in a git checkout (`--apply-allow-dirty`
+  permits it). `--apply-no-install` writes the lock and leaves `vendor/` alone, which is the shape a
+  pull-request workflow wants. Nothing is applied without the flag: the default remains to recommend
+  and write nothing.
+- `Candidate` builds its command from argument lists (`requireArgumentLists()`, `updateArguments()`)
+  that both the printed command and the applier use, so what a report promises and what `--apply` runs
+  cannot drift apart.
+
 ### Security
 
 Answers to an Aikido scan of the workflows.

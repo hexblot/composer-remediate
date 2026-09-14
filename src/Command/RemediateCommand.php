@@ -16,6 +16,8 @@ use Remediate\Engine\Advisory\Db\Database;
 use Remediate\Engine\Advisory\Db\DatabaseBuildFactory;
 use Remediate\Engine\Advisory\Db\DatabaseLocator;
 use Remediate\Engine\Advisory\Db\OperatorConfiguration;
+use Remediate\Engine\Apply\Applier;
+use Remediate\Engine\Apply\ApplyOutcome;
 use Remediate\Engine\Advisory\Db\SqliteAdvisoryProvider;
 use Remediate\Engine\Advisory\FallbackAdvisoryProvider;
 use Remediate\Engine\Advisory\JsonFileAdvisoryProvider;
@@ -69,6 +71,10 @@ final class RemediateCommand extends BaseCommand
                 new InputOption('no-dev', null, InputOption::VALUE_NONE, 'Ignore vulnerabilities in require-dev packages'),
                 new InputOption('offline', null, InputOption::VALUE_NONE, 'Refuse all network access; needs a warm Composer cache plus an advisory database already at its path, or --advisories-file (sets COMPOSER_DISABLE_NETWORK=1)'),
                 new InputOption('ignore', 'i', InputOption::VALUE_REQUIRED | InputOption::VALUE_IS_ARRAY, 'Advisory id or CVE to ignore (repeatable); audit-scoped entries of config.audit.ignore and config.policy.advisories are honoured as well'),
+                new InputOption('apply', null, InputOption::VALUE_NONE, 'Run the recommended command in this project instead of only printing it, then report the state it leaves behind. The composer.json and composer.lock from before the run are copied outside the project first and the report says where'),
+                new InputOption('apply-root-constraints', null, InputOption::VALUE_NONE, 'Let --apply run a recommendation that edits composer.json (a widened root constraint), which it refuses to do on its own'),
+                new InputOption('apply-no-install', null, InputOption::VALUE_NONE, 'With --apply, write composer.lock and leave vendor/ alone (adds --no-install to the update), for a workflow that commits the lock rather than running the project'),
+                new InputOption('apply-allow-dirty', null, InputOption::VALUE_NONE, 'Let --apply run although composer.json or composer.lock are already modified in this git checkout, mixing its changes into yours'),
                 new InputOption('no-project-ignores', null, InputOption::VALUE_NONE, 'Leave out the ignore entries the analysed project\'s own composer.json carries (config.audit.ignore, config.policy.advisories), so that a repository cannot suppress its own findings; your --ignore entries still apply'),
                 new InputOption('allow-direct-require', null, InputOption::VALUE_NONE, 'Also consider adding a transitive package as a direct requirement to force a fixed version'),
                 new InputOption('advisories-file', null, InputOption::VALUE_REQUIRED, 'Read advisories from a JSON file in the Packagist API shape (or `composer audit --format=json` output) instead of the configured repositories'),
@@ -91,6 +97,14 @@ Reads composer.json and composer.lock, matches the locked packages against secur
 and for every finding tries a series of <info>composer update</info> commands in a dry-run, from
 least to most invasive. Only commands whose resulting lock file no longer contains the
 vulnerability are recommended. Nothing in the project is modified.
+
+<info>--apply</info> runs the recommended command here rather than printing it for you to run, and then
+plans again, so what the report shows is the state the run left behind and not a prediction of it. It
+copies composer.json and composer.lock outside the project first and says where. It refuses when there
+is no verified command, when the recommendation would edit composer.json (pass
+<info>--apply-root-constraints</info>), when those files changed while the plan was being computed, and
+when they are already modified in a git checkout (pass <info>--apply-allow-dirty</info>). Everything
+else the tool does leaves your project untouched.
 
 Exit codes: 0 no vulnerabilities, 1 vulnerabilities with a verified remediation,
 2 at least one vulnerability without a verified remediation (and no tool failure), 3 error (also
@@ -157,6 +171,15 @@ HELP);
         $plan = $this->gate($plan, $input, $io);
         if (is_int($plan)) {
             return $plan;
+        }
+
+        if ((bool) $input->getOption('apply')) {
+            $applied = $this->applyPlan($plan, $context, $advisories, $solver, $platformArguments, $input, $io);
+            if (is_int($applied)) {
+                return $applied;
+            }
+            $plan = $applied;
+            $context = ProjectContext::fromComposer($this->requireComposer());
         }
 
         return $this->emit($plan, $format, $files, $solver->supportsMinimalChanges(), LockLineIndex::fromFile($context->lockPath()), $output, $io);
@@ -323,6 +346,64 @@ HELP);
             max(1, (int) $input->getOption('solve-budget')),
             (bool) $input->getOption('accept-coverage-gaps'),
         );
+    }
+
+    /**
+     * Runs the recommended command in the project, then plans again so that what the report shows is
+     * the state the run actually left behind rather than a prediction of it. Returns the new plan, or
+     * an exit code when nothing ran or Composer failed. A project with no findings is left alone.
+     *
+     * @param list<string> $platformArguments
+     */
+    private function applyPlan(Plan $plan, ProjectContext $context, AdvisoryProvider $advisories, SolverInterface $solver, array $platformArguments, InputInterface $input, IOInterface $io): Plan|int
+    {
+        if ($plan->findings === []) {
+            $io->writeError('<comment>Nothing to apply: no findings.</comment>');
+
+            return $plan;
+        }
+        $applier = new Applier(SubprocessSolver::forRunningComposer()->composerCommand());
+        $refusal = $applier->refusal($plan, $context, (bool) $input->getOption('apply-root-constraints'), (bool) $input->getOption('apply-allow-dirty'));
+        if ($refusal !== null) {
+            $io->writeError('<error>--apply refused: ' . ConsoleText::safe($refusal) . '</error>');
+
+            return Plan::EXIT_ERROR;
+        }
+        $combined = $plan->combined;
+        \assert($combined !== null); // refusal() returns a reason when there is nothing verified to run
+        try {
+            $result = $applier->apply($combined->candidate, $context, $solver->supportsMinimalChanges(), (bool) $input->getOption('apply-no-install'), static function (string $line) use ($io): void {
+                $io->writeError(ConsoleText::safe($line));
+            });
+        } catch (\RuntimeException $e) {
+            $io->writeError('<error>--apply: ' . ConsoleText::safe($e->getMessage()) . '</error>');
+
+            return Plan::EXIT_ERROR;
+        }
+        if ($result->outcome !== ApplyOutcome::Applied) {
+            $io->writeError('<error>--apply failed: ' . ConsoleText::safe((string) $result->reason) . '</error>');
+
+            return Plan::EXIT_ERROR;
+        }
+
+        // composer.json and composer.lock have moved; Composer's cached instance describes the state
+        // from before the run, so the second plan is built on a fresh one.
+        $this->resetComposer();
+        $fresh = ProjectContext::fromComposer($this->requireComposer());
+        $planner = $this->planner($input, $advisories, $solver, $platformArguments, $io);
+        try {
+            $after = $planner->plan($fresh, ScratchWorkspace::fromProject($fresh));
+        } catch (AdvisoryLookupFailed $e) {
+            $io->writeError('<error>Applied, but the state it left could not be checked: ' . ConsoleText::safe($e->getMessage()) . '</error>');
+
+            return Plan::EXIT_ADVISORIES_UNAVAILABLE;
+        }
+        $after = $this->gate($after, $input, $io);
+        if (is_int($after)) {
+            return $after;
+        }
+
+        return $after->withWarnings([sprintf('Applied: %s. The composer.json and composer.lock from before the run are in %s. The findings below are what is left in the project now, not a prediction.', implode(' && ', $result->commands), (string) $result->backup)]);
     }
 
     /**

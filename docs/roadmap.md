@@ -69,9 +69,14 @@ stands.
 - [x] explain why smaller changes were rejected: every step of the search is listed in the summary
   and in `summary.combined_search` of the JSON report, with the solver's reason
 
-## Phase 5 — optional automation *(next)*
+## Phase 5 — optional automation
 
-- [ ] `--apply`, only after the planner has earned trust
+- [x] `--apply`, only after the planner has earned trust: it runs the command the report printed,
+  built from the same argument lists so the two cannot drift apart, and then plans again so the report
+  is the state the run left behind rather than a prediction of it. It copies `composer.json` and
+  `composer.lock` outside the project first, and refuses when there is no verified command, when the
+  recommendation would edit `composer.json`, when those files changed while the plan was computed, or
+  when they are already modified in a git checkout
 - [ ] a GitHub Action wrapper that runs `--apply` on a schedule and opens **one batched pull request**
   with advisory ids, before/after finding counts and the verified commands (the shape CVE Lite CLI
   uses, rather than one PR per package)

@@ -52,8 +52,13 @@ composer remediate --no-database                                 # ask the confi
 composer remediate -v                      # show every candidate command as it is tried
 ```
 
-The plugin never writes to `composer.json`, `composer.lock` or `vendor/`. Every recommendation is a
-plain `composer update` command you run yourself. The report ends with a summary: how many
+The plugin writes nothing to `composer.json`, `composer.lock` or `vendor/`: every recommendation is a
+plain `composer update` command you run yourself. `--apply` is the exception, and only on request. It
+runs the command it just printed, copies the manifest and lock outside the project first, and then
+plans again so the report is the state that run left behind. It refuses when the recommendation would
+edit `composer.json` (`--apply-root-constraints` allows it), when those files changed while the plan
+was being computed, or when they are already modified in a git checkout (`--apply-allow-dirty`).
+`--apply-no-install` writes the lock and leaves `vendor/` alone, for a workflow that commits the lock. The report ends with a summary: how many
 advisories were found, and the single command that fixes all of them, or how many of them it fixes.
 
 See [CI integration](ci-integration.md) for gating pipelines on these results.

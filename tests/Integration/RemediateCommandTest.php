@@ -332,6 +332,60 @@ final class RemediateCommandTest extends TestCase
         self::assertStringNotContainsString('composer audit', $result->stderr);
     }
 
+    public function testApplyRunsTheRecommendationAndReportsWhatItLeftBehind(): void
+    {
+        $composer = dirname(__DIR__, 2) . '/vendor/bin/composer';
+        self::assertFileExists($composer, 'composer/composer must be installed as a dev dependency');
+        $before = (string) file_get_contents($this->project . '/composer.lock');
+        $previous = Platform::getEnv('REMEDIATE_COMPOSER_BINARY');
+        Platform::putEnv('REMEDIATE_COMPOSER_BINARY', $composer);
+        try {
+            // --apply-no-install: the fixture's dist URLs are not fetchable, and a lock-only run is the
+            // shape a pull-request workflow wants anyway.
+            $result = $this->remediate(['--apply' => true, '--apply-no-install' => true, '--format' => 'json']);
+        } finally {
+            is_string($previous) ? Platform::putEnv('REMEDIATE_COMPOSER_BINARY', $previous) : Platform::clearEnv('REMEDIATE_COMPOSER_BINARY');
+        }
+
+        self::assertSame(Plan::EXIT_CLEAN, $result->exitCode, $result->describe() . ' (the advisory is gone from the project now)');
+        $report = json_decode($result->stdout, true);
+        self::assertIsArray($report);
+        self::assertSame([], $report['findings'], 'the report is the state after the run, not a prediction');
+        $applied = implode("
+", $report['warnings']);
+        self::assertStringContainsString('Applied: ' . self::remediation() . ' --no-install --no-interaction', $applied, 'what ran is recorded in full, and the command itself is the one the report printed');
+        self::assertStringContainsString('from before the run are in ', $applied);
+
+        self::assertStringNotEqualsFile($this->project . '/composer.lock', $before, 'the lock really moved');
+        $backup = preg_match('{are in (\S+?)\.\s}', $applied . ' ', $m) === 1 ? $m[1] : '';
+        self::assertNotSame('', $backup, 'the report names the directory the previous files are in');
+        self::assertFileExists($backup . '/composer.lock', 'the previous lock is where the report says');
+        self::assertStringEqualsFile($backup . '/composer.lock', $before);
+        foreach (glob($backup . '/*') ?: [] as $file) {
+            @unlink($file);
+        }
+        @rmdir($backup);
+    }
+
+    public function testApplyRefusesARecommendationThatWouldEditComposerJson(): void
+    {
+        // --allow-direct-require makes the planner consider adding the vulnerable package as a direct
+        // requirement, which is a composer.json edit; --apply does not make those on its own.
+        $result = $this->remediate(['--apply' => true, '--allow-direct-require' => true, '--min-release-age' => '36500']);
+
+        self::assertSame(Plan::EXIT_ERROR, $result->exitCode, $result->describe());
+        self::assertStringContainsString('--apply refused', $result->stderr);
+    }
+
+    public function testApplyOnACleanProjectDoesNothing(): void
+    {
+        file_put_contents($this->project . '/empty-advisories.json', '{"advisories": {}}');
+        $result = $this->runner->run(['command' => 'remediate', '--advisories-file' => $this->project . '/empty-advisories.json', '--apply' => true], $this->project);
+
+        self::assertSame(Plan::EXIT_CLEAN, $result->exitCode, $result->describe());
+        self::assertStringContainsString('Nothing to apply: no findings.', $result->stderr);
+    }
+
     public function testPlatformFlagsAreRepeatedInTheRecommendedCommand(): void
     {
         $result = $this->remediate(['--ignore-platform-reqs' => true, '--format' => 'json']);

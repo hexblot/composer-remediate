@@ -12,6 +12,14 @@ and for every finding tries a series of `composer update` commands in a dry-run,
 least to most invasive. Only commands whose resulting lock file no longer contains the
 vulnerability are recommended. Nothing in the project is modified.
 
+`--apply` runs the recommended command here rather than printing it for you to run, and then
+plans again, so what the report shows is the state the run left behind and not a prediction of it. It
+copies composer.json and composer.lock outside the project first and says where. It refuses when there
+is no verified command, when the recommendation would edit composer.json (pass
+`--apply-root-constraints`), when those files changed while the plan was being computed, and
+when they are already modified in a git checkout (pass `--apply-allow-dirty`). Everything
+else the tool does leaves your project untouched.
+
 Exit codes: 0 no vulnerabilities, 1 vulnerabilities with a verified remediation,
 2 at least one vulnerability without a verified remediation (and no tool failure), 3 error (also
 when a solver error prevented the search from completing), 4 advisory data unavailable (also when
@@ -41,6 +49,10 @@ with the package runs the same command with plugins and scripts disabled from th
 | `--no-dev` | flag | Ignore vulnerabilities in require-dev packages |
 | `--offline` | flag | Refuse all network access; needs a warm Composer cache plus an advisory database already at its path, or --advisories-file (sets COMPOSER_DISABLE_NETWORK=1) |
 | `--ignore`, `-i` | repeatable | Advisory id or CVE to ignore (repeatable); audit-scoped entries of config.audit.ignore and config.policy.advisories are honoured as well |
+| `--apply` | flag | Run the recommended command in this project instead of only printing it, then report the state it leaves behind. The composer.json and composer.lock from before the run are copied outside the project first and the report says where |
+| `--apply-root-constraints` | flag | Let --apply run a recommendation that edits composer.json (a widened root constraint), which it refuses to do on its own |
+| `--apply-no-install` | flag | With --apply, write composer.lock and leave vendor/ alone (adds --no-install to the update), for a workflow that commits the lock rather than running the project |
+| `--apply-allow-dirty` | flag | Let --apply run although composer.json or composer.lock are already modified in this git checkout, mixing its changes into yours |
 | `--no-project-ignores` | flag | Leave out the ignore entries the analysed project's own composer.json carries (config.audit.ignore, config.policy.advisories), so that a repository cannot suppress its own findings; your --ignore entries still apply |
 | `--allow-direct-require` | flag | Also consider adding a transitive package as a direct requirement to force a fixed version |
 | `--advisories-file` | required | Read advisories from a JSON file in the Packagist API shape (or `composer audit --format=json` output) instead of the configured repositories |
