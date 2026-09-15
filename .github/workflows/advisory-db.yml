@@ -75,6 +75,7 @@ jobs:
         id: compare
         env:
           GH_TOKEN: ${{ github.token }}
+          GH_REPO: ${{ github.repository }}
           # Expressions are passed through the environment, never interpolated into the script.
           BUILD_HASH: ${{ steps.build.outputs.hash }}
           FORCE_INPUT: ${{ inputs.force }}
@@ -94,6 +95,7 @@ jobs:
         id: version
         env:
           GH_TOKEN: ${{ github.token }}
+          GH_REPO: ${{ github.repository }}
         run: |
           base="db-$(date -u +%Y-%m-%d.%H)"
           version="$base"; n=1
@@ -155,6 +157,9 @@ jobs:
       - name: Publish dated release and move the latest pointer
         env:
           GH_TOKEN: ${{ github.token }}
+          # This job never checks the repository out, so gh cannot read the remote to learn which
+          # repository it is acting on. Without this it fails with "not a git repository".
+          GH_REPO: ${{ github.repository }}
           VERSION: ${{ needs.build.outputs.version }}
           BUILD_HASH: ${{ needs.build.outputs.hash }}
           REPOSITORY: ${{ github.repository }}
