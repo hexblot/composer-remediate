@@ -49,7 +49,7 @@
   on the run's summary page, uploads the HTML and Clover reports as the `coverage` artifact and, on
   pushes to `main`, writes the line-coverage badge data to the `badges` branch that the README badge
   reads; the other matrix jobs run without a coverage driver.
-- Work reaches `main` through a pull request, one branch per unit of work: what you would want
+- Changes go to `main` through a pull request, one branch per change: what you would want
   reviewed and tested as a whole, merged within a day or two rather than kept alive for weeks. Anything
   under `src` goes that way. Documentation edits, regenerated fixture reports and changelog work can be
   pushed to `main` directly. A release is the same shape: branch, pull request, full matrix and review,

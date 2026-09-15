@@ -33,7 +33,7 @@ CVE-2026-XXXXX  symfony/http-foundation 6.4.21
 
 Advisories come from the database this project publishes: a copy is kept at a fixed path under
 Composer's cache directory, checked against the publisher on every run and verified by checksum, so
-reports carry exploit data (FIRST EPSS, CISA KEV) and coverage-gap bookkeeping. A plain run therefore
+reports carry exploit data (FIRST EPSS, CISA KEV) and say where the advisory data has gaps. A plain run therefore
 makes one small request to GitHub. `--no-database` asks your configured repositories instead, exactly
 as `composer audit` does, and `--offline` uses the copy already on disk. See
 [Advisory database](https://hexblot.github.io/composer-remediate/advisory-database/) and
@@ -66,9 +66,8 @@ Add `--fail-on high` to let low and medium findings pass, `--output=results.sari
 Scanning annotations, or `--output=sbom.cdx.json` for a CycloneDX SBOM with the fixes attached.
 
 For a project you do not trust, run the shipped `composer-remediate` binary instead of
-`composer remediate`: it boots Composer with plugins and scripts disabled from the first
-instruction and never includes a project's autoloader, so nothing from the analysed project executes
-during planning.
+`composer remediate`: it starts Composer with plugins and scripts disabled and never loads the
+project's autoloader, so no code from the analysed project runs.
 
 Ready-made GitHub Actions and GitLab CI jobs, and `jq` recipes for severity-based gates, are in the
 [CI integration guide](https://hexblot.github.io/composer-remediate/ci-integration/). Every command
@@ -85,9 +84,11 @@ ddev composer --working-dir=tools/deptrac install   # once: the architecture rul
 ddev composer check      # phpstan + deptrac + phpunit
 ```
 
-Work reaches `main` through a pull request, one branch per unit of work; a draft runs the single
-canonical CI job and marking it ready for review runs the full PHP and Composer matrices. The
-[contributing guide](https://hexblot.github.io/composer-remediate/contributing/) has the ground rules.
+Changes under `src` go through a pull request, one branch per change; documentation and changelog
+edits can go straight to `main`. While a pull request is a draft, CI runs a single job on PHP 8.4.
+Marking it ready for review runs the tests against every supported version: PHP 8.1 to 8.5, and
+Composer 2.4 to 2.9. The
+[contributing guide](https://hexblot.github.io/composer-remediate/contributing/) has the rest.
 
 Documentation is built with MkDocs (`pipx run --spec mkdocs --pip-args=pymdown-extensions mkdocs serve`) and published from `main` to GitHub
 Pages. The CLI reference and case-studies pages are generated (`ddev composer cli-reference`,
