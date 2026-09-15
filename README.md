@@ -40,13 +40,15 @@ as `composer audit` does, and `--offline` uses the copy already on disk. See
 [Privacy and network behaviour](https://hexblot.github.io/composer-remediate/privacy-and-network/).
 
 Status: released as **0.x** on [Packagist](https://packagist.org/packages/hexblot/composer-remediate);
-nothing is written to your project unless you ask for it with `--apply`. Phases 0 to 6 are
-[delivered](https://hexblot.github.io/composer-remediate/delivered/): seventeen real historical
-fixtures, a search for the one command that fixes every finding, and, since 0.8.0, `--apply` and a
-GitHub Action that opens one batched pull request. What is still to come is on the
-[roadmap](https://hexblot.github.io/composer-remediate/roadmap/). The adversarial adoption reviews
-and their rechecks are answered in the [changelog](CHANGELOG.md), each finding with a test. Current
-state, fixtures and evidence:
+nothing is written to your project unless you ask for it with `--apply`. Most of the original roadmap
+is now [delivered](https://hexblot.github.io/composer-remediate/delivered/): the search for the one
+command that fixes every finding, `--apply` to run that command for you, and a GitHub Action that
+opens a single pull request with the fixes applied. What is still to come is on the
+[roadmap](https://hexblot.github.io/composer-remediate/roadmap/).
+
+It is tested against seventeen real historical projects, and the independent reviews and their
+rechecks are answered in the [changelog](CHANGELOG.md), each finding with a test. Current state,
+fixtures and evidence:
 [hexblot.github.io/composer-remediate](https://hexblot.github.io/composer-remediate/).
 
 ## Using it as a CI gate
@@ -96,11 +98,11 @@ Pages. The CLI reference and case-studies pages are generated (`ddev composer cl
 
 ## Acknowledgement
 
-This project was inspired by [CVE Lite CLI](https://github.com/OWASP/cve-lite-cli), an OWASP project
-that gives JavaScript and TypeScript developers local-first, lockfile-based vulnerability scanning
-with copy-and-run fix commands and parent-aware guidance for transitive dependencies. Composer
-Remediate brings the same idea to the PHP ecosystem, with the addition that every recommendation is
-proven by Composer's own dependency solver before it is shown.
+[CVE Lite CLI](https://github.com/OWASP/cve-lite-cli) is an OWASP project that gives JavaScript and
+TypeScript developers local-first, lockfile-based vulnerability scanning with copy-and-run fix
+commands and parent-aware guidance for transitive dependencies. Composer Remediate was inspired by
+that approach, applying it to Composer's dependency model and using Composer's own solver to prove
+each recommendation before it is shown.
 
 ## License
 

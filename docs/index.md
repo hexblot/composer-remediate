@@ -102,5 +102,6 @@ same report at the end.
 
 [CVE Lite CLI](https://github.com/OWASP/cve-lite-cli), an OWASP project, does this for JavaScript and
 TypeScript: local-first scanning of lockfiles with copy-and-run fix commands and parent-aware
-guidance for transitive dependencies. Composer Remediate applies the same idea to PHP and adds solver
-verification of every recommendation.
+guidance for transitive dependencies. Composer Remediate was inspired by that approach, applying it
+to Composer's dependency model and using Composer's own solver to prove each recommendation before it
+is shown.

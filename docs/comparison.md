@@ -67,11 +67,12 @@ advisory data is available offline (see [Advisory database](advisory-database.md
 
 ## CVE Lite CLI
 
-[CVE Lite CLI](https://github.com/OWASP/cve-lite-cli), an OWASP project, is the inspiration for this
-tool: local-first scanning of lockfiles with copy-and-run fix commands and parent-aware guidance for
-transitive dependencies, for the JavaScript and TypeScript ecosystem. Composer Remediate applies the
-same idea to PHP and adds solver verification of every recommendation, which the npm ecosystem's
-`overrides` mechanism makes less necessary there and Composer's constraint model makes essential here.
+[CVE Lite CLI](https://github.com/OWASP/cve-lite-cli), an OWASP project, does this for the JavaScript
+and TypeScript ecosystem: local-first scanning of lockfiles with copy-and-run fix commands and
+parent-aware guidance for transitive dependencies. Composer Remediate was inspired by that approach
+rather than ported from it. Composer has no equivalent of npm's `overrides`, so a fix cannot be
+imposed on the resolver and has to come out of it: every candidate here is proved by
+Composer's own solver, the search is bounded and ranked, and all findings are planned together.
 
 ## Where this tool adds nothing
 
