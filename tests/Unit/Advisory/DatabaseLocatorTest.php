@@ -942,7 +942,7 @@ final class DatabaseLocatorTest extends TestCase
         try {
             $settings = $locator->settings(null, null, null, false, $this->cacheDir);
             self::assertSame(['https://a.test/x.sqlite', 'https://b.test/y.sqlite'], $settings->sources);
-            self::assertSame(realpath($this->cacheDir) . '/var/adv.sqlite', $settings->path, 'a project path, relative and inside the project');
+            self::assertSame(str_replace('\\', '/', (string) realpath($this->cacheDir)) . '/var/adv.sqlite', $settings->path, 'a project path, relative and inside the project');
             self::assertTrue($settings->sourcesFromProject);
             self::assertSame(48 * 3600, $settings->maxAgeSeconds);
             self::assertSame('https://a.test/x.sqlite,https://b.test/y.sqlite', $locator->configured(null));
