@@ -67,7 +67,22 @@ final class SqliteAdvisoryProvider implements AdvisoryProvider, CoverageAware, F
             $exploit = $parts === [] ? 'exploit data for ' . ($meta['exploit_count'] ?? '0') . ' CVEs' : implode(', ', $parts);
         }
 
-        return sprintf('advisory database %s (%s advisories, built %s, dataset %s, %s)%s', $this->database->path, $meta['advisory_count'] ?? '?', $meta['built_at'] ?? '?', substr($meta['dataset_hash'] ?? '', 0, 12), $exploit, $this->provenance !== null ? '; ' . $this->provenance : '');
+        // Sources that disagree about which versions an advisory affects are unioned: a version any
+        // source calls affected is affected. That is the safe direction, and it also means one feed
+        // can widen a range on its own, so how often the sources disagreed is worth saying out loud
+        // rather than leaving in a column nobody reads.
+        $conflicts = (int) ($meta['conflict_count'] ?? 0);
+
+        return sprintf(
+            'advisory database %s (%s advisories%s, built %s, dataset %s, %s)%s',
+            $this->database->path,
+            $meta['advisory_count'] ?? '?',
+            $conflicts > 0 ? sprintf(', %d with sources disagreeing on the affected range', $conflicts) : '',
+            $meta['built_at'] ?? '?',
+            substr($meta['dataset_hash'] ?? '', 0, 12),
+            $exploit,
+            $this->provenance !== null ? '; ' . $this->provenance : '',
+        );
     }
 
     public function isComplete(): bool

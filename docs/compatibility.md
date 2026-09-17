@@ -27,12 +27,17 @@ is reassigned. A new code may be added in a minor release only for a condition t
 an option is a minor release. Removing or renaming one, or changing what a value means, is a major
 release, and never happens without the deprecation period below.
 
-**The JSON report.** The document is described by a [published schema](schema/report.schema.json) and
-carries a `schema_version`. That schema rejects unknown properties, so a consumer validating strictly
-would break on a field that simply appeared; `schema_version` therefore increases on any change to
-the document's shape, additions included. The schema for a given `schema_version` stays published at
-its URL. Every report the test suite renders is validated against the schema, so the two cannot drift
-apart.
+**The JSON report.** The document carries a `schema_version` and is described by a published schema.
+That schema rejects unknown properties, so a consumer validating strictly would break on a field that
+simply appeared; `schema_version` therefore increases on any change to the document's shape,
+additions included.
+
+Two URLs, and which you use matters. [`report-v1.schema.json`](schema/report-v1.schema.json)
+describes `schema_version` 1 and will not change: pin that one.
+[`report.schema.json`](schema/report.schema.json) always describes the version the tool emits today,
+so it moves when `schema_version` does. Every report the test suite renders is validated against the
+schema, and the two files are checked against each other, so neither can drift from the code or from
+the other.
 
 **The other report formats.** SARIF 2.1.0, CycloneDX 1.6 and the GitLab dependency-scanning report
 conform to their own specifications. What is promised here is which specification version is emitted,

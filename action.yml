@@ -44,6 +44,13 @@ inputs:
       Run the update with an install, touching vendor/. Off by default: a pull request should carry
       composer.json and composer.lock, and the branch is not where the project runs.
     default: 'false'
+  verify-database:
+    description: >-
+      Repository whose build-provenance attestation must cover the advisory database before it is
+      trusted, for example `hexblot/composer-remediate`. Empty, the default, skips the check. The
+      database is fetched into a path this run controls first, so the file that is verified is the
+      file that is used. Needs `gh` on the runner, which GitHub-hosted runners have.
+    default: ''
   token:
     description: >-
       Token used to push the branch and open the pull request. The default GITHUB_TOKEN works, but a
@@ -92,6 +99,7 @@ runs:
         PR_LABELS: ${{ inputs.labels }}
         PR_DRAFT: ${{ inputs.draft }}
         WITH_INSTALL: ${{ inputs.install }}
+        VERIFY_DATABASE: ${{ inputs.verify-database }}
         REPOSITORY: ${{ github.repository }}
         GITHUB_ACTION_PATH: ${{ github.action_path }}
       run: bash "$GITHUB_ACTION_PATH/action/run.sh"

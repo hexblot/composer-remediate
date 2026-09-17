@@ -330,11 +330,22 @@ from the feeds yourself instead of waiting.
 
 **Verifying what you downloaded.** Every release carries the database, a `.sha256` sidecar and a
 GitHub build-provenance attestation. The checksum is verified on every download without being asked.
-To check the attestation yourself:
+The sidecar and the attestation are served from the same release as the database, so on their own
+they establish that a download arrived intact, not that the publisher was honest. The attestation is
+the part that answers the second question, and checking it is opt in:
 
 ```bash
-gh attestation verify advisories.sqlite --repo hexblot/composer-remediate
+composer remediate:db-status --database-path=./advisories.sqlite
+gh attestation verify ./advisories.sqlite --repo hexblot/composer-remediate
+composer remediate --database-path=./advisories.sqlite
 ```
+
+The path is given explicitly so that the file verified is the file used. The shipped GitHub Action
+does this for you with its `verify-database` input, which takes the repository whose attestation must
+cover the database and is empty by default.
+
+For a stricter anchor still, `--database-sha256` accepts one digest and refuses anything else, which
+means pinning a dated release rather than the moving pointer and re-pinning when you choose to move.
 
 **On Windows.** A database this tool builds is created readable by its owner alone, which matters for
 a build with `--include`, because that file carries advisories you did not publish. File modes are a

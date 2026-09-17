@@ -37,6 +37,16 @@ git remote set-url origin "https://x-access-token:${GH_TOKEN}@${host}/${REPOSITO
 base="${BASE:-$(gh repo view "$REPOSITORY" --json defaultBranchRef --jq .defaultBranchRef.name)}"
 git "${git_remote[@]}" fetch -q origin "+refs/heads/$base:refs/remotes/origin/$base"
 git checkout -q --detach "refs/remotes/origin/$base"
+# The advisory database decides what counts as a vulnerability, so when asked, its build provenance is
+# checked before anything it says is acted on. It is fetched into a path this run controls: leaving the
+# tool to pick its own cache path would verify one file and then plan with whatever was at that path.
+if [ -n "${VERIFY_DATABASE:-}" ]; then
+  echo "Verifying the advisory database's build provenance against $VERIFY_DATABASE…"
+  composer remediate:db-status --database-path="$work/advisories.sqlite" > /dev/null
+  gh attestation verify "$work/advisories.sqlite" --repo "$VERIFY_DATABASE"
+  REMEDIATE_ARGS="--database-path=$work/advisories.sqlite ${REMEDIATE_ARGS:-}"
+fi
+
 # shellcheck disable=SC2086  # REMEDIATE_ARGS is a deliberate argument list
 set +e
 composer remediate --format=json $REMEDIATE_ARGS > "$work/before.json"

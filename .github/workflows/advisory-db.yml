@@ -189,6 +189,14 @@ jobs:
         with:
           name: advisory-db
           path: out
+      # The build job is the one that runs third-party code, so what it hands over is checked before
+      # anything vouches for it. Attesting first would put a valid provenance signature on whatever
+      # arrived, which makes a bad artefact look more trustworthy than an unsigned one, not less.
+      - name: Check the artefact against its own checksum
+        working-directory: out
+        run: |
+          sha256sum -c advisories.sqlite.sha256
+          test "$(jq -r .sha256 latest.json)" = "$(cut -d' ' -f1 advisories.sqlite.sha256)"
       - name: Attest provenance
         uses: actions/attest-build-provenance@4d101475d8b20a2381f78447822ac1eab6504dd8 # v4.2.2
         with:

@@ -97,13 +97,15 @@ final class ForkPool
                 }
             }
         } finally {
-            // A job that could not be started leaves its siblings solving in the background. They are
-            // waited for rather than abandoned: a stray worker would go on running Composer and
-            // writing scratch directories long after the run that started it reported a failure.
+            // Siblings are waited for rather than killed. A worker signalled mid-solve dies without
+            // running the solver's own cleanup, leaving its scratch directory behind; letting it
+            // finish costs one more solve and leaves nothing. What must not happen is abandoning
+            // them, which would leave Composer running long after the run reported a failure.
             foreach ($running as $pid => [, $file]) {
                 $ignored = 0;
                 pcntl_waitpid($pid, $ignored);
                 @unlink($file);
+                @unlink($file . '.part');
             }
         }
 
@@ -219,6 +221,10 @@ final class ForkPool
             $raw = is_file($file) ? @file_get_contents($file) : false;
         } finally {
             @unlink($file);
+            // The child writes beside the target and renames into place. One killed between the two
+            // leaves the half-written file behind, and that is the documented failure mode: the
+            // out-of-memory killer on a large lock file. Nothing else ever sweeps it up.
+            @unlink($file . '.part');
         }
 
         // The result is the file, not the exit status: a worker stops itself with a signal on purpose,

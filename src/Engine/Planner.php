@@ -162,7 +162,7 @@ final class Planner
         $groups = array_values($groups);
         $workers = $this->workerCount($total, $warnings);
         $plans = $workers > 1
-            ? $this->planGroupsInParallel($workers, $groups, $graph, $context, $lock, $baseline, $matcher, $ranker, $workspace)
+            ? $this->planGroupsInParallel($workers, $groups, $graph, $context, $lock, $baseline, $matcher, $ranker, $workspace, $warnings)
             : $this->planGroupsInTurn($groups, $graph, $context, $lock, $baseline, $matcher, $ranker, $workspace);
 
         if ($total > 1) {
@@ -279,12 +279,18 @@ final class Planner
      * writes nothing any other package's planning reads. That is what makes this safe to fork, and it
      * is also why the result is identical to planning them one at a time: only the wall clock differs.
      *
+     * A worker that dies, which on a large lock file usually means the out-of-memory killer, does not
+     * cost the run. The packages it had already finished are kept, and whatever is left is planned
+     * here one at a time, with a warning saying so. Losing an hour of solving because one worker was
+     * killed would be a poor trade for a speed-up.
+     *
      * @param list<non-empty-list<Finding>> $groups
      * @param array<string, true>           $baseline
+     * @param list<string>                  $warnings
      *
      * @return list<FindingPlan>
      */
-    private function planGroupsInParallel(int $workers, array $groups, DependencyGraph $graph, ProjectContext $context, LockSnapshot $lock, array $baseline, Matcher $matcher, Ranker $ranker, ScratchWorkspace $workspace): array
+    private function planGroupsInParallel(int $workers, array $groups, DependencyGraph $graph, ProjectContext $context, LockSnapshot $lock, array $baseline, Matcher $matcher, Ranker $ranker, ScratchWorkspace $workspace, array &$warnings): array
     {
         $total = count($groups);
         $this->report(sprintf('Planning %d packages %d at a time. Progress is reported as each one finishes, so it does not arrive in order.', $total, $workers), false);
@@ -293,23 +299,39 @@ final class Planner
             $jobs[$position] = fn (): FindingPlan => $this->planGroup($group, $graph, $context, $lock, $baseline, $matcher, $ranker, $workspace);
         }
 
+        $plans = [];
         $done = 0;
-        $plans = (new ForkPool($workers))->run(
-            $jobs,
-            function (int $position, FindingPlan $plan) use (&$done, $total): void {
-                // Counted by completions rather than by position: with several running at once, the
-                // package that finishes third is not the third one in the list.
-                ++$done;
-                $this->totalSolves += $plan->solveCount;
-                $this->report($this->outcomeLine($done, $total, $plan), false);
-            },
-            // The child is about to read from the advisory source the parent opened for itself.
-            function (): void {
-                if ($this->advisories instanceof ForkSafe) {
-                    $this->advisories->afterFork();
+        $keep = function (int $position, FindingPlan $plan) use (&$plans, &$done, $total): void {
+            // Counted by completions rather than by position: with several running at once, the
+            // package that finishes third is not the third one in the list.
+            $plans[$position] = $plan;
+            ++$done;
+            $this->totalSolves += $plan->solveCount;
+            $this->report($this->outcomeLine($done, $total, $plan), false);
+        };
+
+        try {
+            (new ForkPool($workers))->run(
+                $jobs,
+                $keep,
+                // The child is about to read from the advisory source the parent opened for itself.
+                function (): void {
+                    if ($this->advisories instanceof ForkSafe) {
+                        $this->advisories->afterFork();
+                    }
+                },
+            );
+        } catch (\RuntimeException $e) {
+            $warnings[] = sprintf('A planning worker did not finish (%s). The %d package%s it had not reached %s planned one at a time instead; the result is the same either way, it only took longer.', $e->getMessage(), $total - count($plans), $total - count($plans) === 1 ? '' : 's', $total - count($plans) === 1 ? 'was' : 'were');
+            $this->report('A planning worker did not finish; planning what is left one at a time.', false);
+            foreach ($groups as $position => $group) {
+                if (!isset($plans[$position])) {
+                    $keep($position, $this->planGroup($group, $graph, $context, $lock, $baseline, $matcher, $ranker, $workspace));
                 }
-            },
-        );
+            }
+        }
+
+        ksort($plans);
 
         return array_values($plans);
     }
