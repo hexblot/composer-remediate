@@ -40,6 +40,7 @@ nav:
       - Case studies: case-studies.md
       - Comparison with other tools: comparison.md
   - Project:
+      - Compatibility: compatibility.md
       - Roadmap: roadmap.md
       - What has been delivered: delivered.md
       - Design decisions: design-decisions.md

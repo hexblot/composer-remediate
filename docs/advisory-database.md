@@ -298,6 +298,44 @@ warning with the age of the copy so a stale database is never mistaken for curre
 `--database-max-age` turns that warning into a failure past a chosen age. `--offline` uses the copy
 unconditionally and warns in the same way.
 
+## How the published database is operated
+
+If you use the default source, this project's build pipeline is part of yours, so here is what
+watches it and what to do when it stops.
+
+**What runs.** A scheduled job rebuilds the database from the feeds every six hours and publishes a
+release only when the dataset hash moved. Publishing is a separate job from building: the job that
+resolves dependencies and reads three upstream feeds holds no credential that can change anything,
+and the job that can write a release runs nothing but the attestation action and `gh`.
+
+**What is watched.** Two failures are possible and both are made loud. A job that fails opens an
+issue on this repository, labelled `advisory-db`, and keeps commenting on that same issue rather than
+filing a new one every six hours. The subtler failure is a pipeline that keeps reporting success and
+quietly publishes nothing, which is what happened for three days in September 2026; a run that finds
+nothing new now also checks how old the published copy is, and fails if it has passed two days.
+Either way the signal is a red run and an open issue, not a user noticing.
+
+**What to do if it is stale anyway.** Nothing here can tell you a stale database is current: your
+copy is confirmed by content on every run, and its age is reported when it cannot be confirmed.
+`--database-max-age` turns that age into a failure at a threshold you choose, which is the setting to
+reach for if you would rather a pipeline stop than proceed on old data. `--rebuild-database` builds
+from the feeds yourself instead of waiting.
+
+**Verifying what you downloaded.** Every release carries the database, a `.sha256` sidecar and a
+GitHub build-provenance attestation. The checksum is verified on every download without being asked.
+To check the attestation yourself:
+
+```bash
+gh attestation verify advisories.sqlite --repo hexblot/composer-remediate
+```
+
+**If this project stops publishing.** Nothing in the tool requires the database to come from here.
+`composer remediate:db-build` builds the same file from the same public feeds, and
+`--database-location` takes any https URL or local path, so an organisation can publish its own and
+point at it. [Sharing a database](#sharing-a-database) is that setup. The format is documented by its
+own `schema_version`, and a reader refuses a file whose version it does not understand rather than
+guessing.
+
 ## Data licences
 
 The database is aggregated data, not code, and the project's MIT licence does not cover it. GitHub

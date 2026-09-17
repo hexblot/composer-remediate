@@ -128,11 +128,27 @@ jobs:
             out/latest.json
           retention-days: 1
           if-no-files-found: error
-      - name: Record health
+      # A build that succeeds and publishes nothing is indistinguishable from a build that succeeds
+      # and has nothing to publish, and the second is normal. What is not normal is the published copy
+      # ageing past two days while this keeps reporting success: either publication is broken, or all
+      # three feeds have stopped moving. Both are worth a red run, because the alternative is finding
+      # out from a user. A run that is about to publish repairs the situation itself and says nothing.
+      - name: Refuse to go quiet
+        if: steps.compare.outputs.changed != 'true'
         env:
-          CHANGED: ${{ steps.compare.outputs.changed }}
-          BUILD_HASH: ${{ steps.build.outputs.hash }}
-        run: echo "last_successful_poll=$(date -u +%FT%TZ) changed=$CHANGED hash=$BUILD_HASH"
+          MAX_AGE_HOURS: '48'
+        run: |
+          published=$(jq -r '.published_at // empty' prev/latest.json 2>/dev/null || true)
+          if [ -z "$published" ]; then
+            echo "::warning::No published latest.json to compare against; nothing has been published yet."
+            exit 0
+          fi
+          age=$(( ( $(date -u +%s) - $(date -u -d "$published" +%s) ) / 3600 ))
+          echo "Published database is ${age}h old (${published}); the dataset has not changed."
+          if [ "$age" -gt "$MAX_AGE_HOURS" ]; then
+            echo "::error::The published advisory database is ${age}h old and this run found nothing new to publish. Either publication is broken or the upstream feeds have stopped moving."
+            exit 1
+          fi
 
   publish:
     needs: build
@@ -175,4 +191,38 @@ jobs:
             gh release create advisory-db-latest out/advisories.sqlite out/advisories.sqlite.sha256 out/latest.json \
               --title "Advisory database (latest)" --prerelease \
               --notes "Moving pointer to the newest advisory database ($v). Prefer the dated release URL in pinned CI configurations."
+          fi
+
+  # A scheduled workflow fails quietly: nobody is watching the Actions tab at 04:00, and GitHub's own
+  # notification for a failed cron run is easy to miss. This turns any failure above into an issue,
+  # and keeps using the same one rather than filing a fresh issue every six hours.
+  alert:
+    needs: [build, publish]
+    if: always() && (needs.build.result == 'failure' || needs.publish.result == 'failure')
+    runs-on: ubuntu-latest
+    permissions:
+      issues: write
+    steps:
+      - name: Open or update the alert issue
+        env:
+          GH_TOKEN: ${{ github.token }}
+          GH_REPO: ${{ github.repository }}
+          RUN_URL: ${{ github.server_url }}/${{ github.repository }}/actions/runs/${{ github.run_id }}
+          BUILD_RESULT: ${{ needs.build.result }}
+          PUBLISH_RESULT: ${{ needs.publish.result }}
+        run: |
+          title="Advisory database publishing is failing"
+          body="The \`advisory-db\` workflow failed: build \`$BUILD_RESULT\`, publish \`$PUBLISH_RESULT\`.
+
+          $RUN_URL
+
+          Until this is fixed the published database stops being updated. Clients confirm their copy by
+          content and report its age, so nobody is told a stale database is current, but it does go stale.
+          Close this issue once a run has published again."
+          existing=$(gh issue list --state open --label advisory-db --json number --jq '.[0].number')
+          if [ -n "$existing" ]; then
+            gh issue comment "$existing" --body "$body"
+          else
+            gh label create advisory-db --description "Advisory database publishing" --color B60205 2>/dev/null || true
+            gh issue create --title "$title" --label advisory-db --body "$body"
           fi
