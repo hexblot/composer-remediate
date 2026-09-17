@@ -54,6 +54,38 @@ jobs:
           else
             echo 'php=["8.4"]' >> "$GITHUB_OUTPUT"; echo 'full=false' >> "$GITHUB_OUTPUT"
           fi
+  # Everything else here runs on Linux. This job exists because what the tool actually does is
+  # filesystem work, subprocess execution and, since 0.8.1, process forking, and all three differ
+  # between operating systems in ways no amount of Linux testing reaches: replacing an open file by
+  # rename, the meaning of 0700, path separators, whether fork exists at all. Composer has a large
+  # Windows userbase, so "it was never run there" is not a defensible answer.
+  platform:
+    needs: plan
+    if: needs.plan.outputs.full == 'true'
+    runs-on: ${{ matrix.os }}
+    permissions:
+      contents: read
+    strategy:
+      fail-fast: false
+      matrix:
+        os: [windows-latest, macos-latest]
+    steps:
+      - uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7.0.1
+        with:
+          persist-credentials: false
+      - uses: shivammathur/setup-php@f3e473d116dcccaddc5834248c87452386958240 # 2.37.2
+        with:
+          php-version: '8.4'
+          extensions: pdo_sqlite, zip
+          coverage: none
+          tools: composer:v2
+      - run: composer install --no-interaction --no-progress --no-plugins --no-scripts
+      # The whole suite, not just the unit tests: the fixture and command tests are the ones that
+      # materialise scratch directories, shell out and solve, which is where a platform difference
+      # shows up. Static analysis and the action harness stay on Linux, being platform-independent
+      # and bash respectively.
+      - run: composer test
+
   test:
     needs: plan
     runs-on: ubuntu-latest
