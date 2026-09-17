@@ -26,7 +26,12 @@ $name = stream_socket_get_name($server, false);
 echo 'PORT ', substr((string) $name, strrpos((string) $name, ':') + 1), "\n";
 flush();
 
+// Separators are normalised before any containment check: realpath answers in the platform's own
+// separator, so on Windows a file resolves to C:\docroot\file, which does not begin with C:\docroot/,
+// and every request would be answered 404.
+$slash = static fn (string $path): string => str_replace('\\', '/', $path);
 $root = realpath($docroot);
+$root = $root === false ? false : rtrim($slash($root), '/');
 while (true) {
     $client = @stream_socket_accept($server, 1.0);
     if ($client === false) {
@@ -52,6 +57,7 @@ while (true) {
     $target = is_string($target) ? $target : '/';
     @file_put_contents($docroot . '/.requests', $method . ' ' . $target . "\n", FILE_APPEND);
     $file = realpath($docroot . $target);
+    $file = $file === false ? false : $slash($file);
     $respond = static function (string $status, string $body, bool $head) use ($client): void {
         fwrite($client, "HTTP/1.1 $status\r\nContent-Type: application/octet-stream\r\nContent-Length: " . strlen($body) . "\r\nConnection: close\r\n\r\n" . ($head ? '' : $body));
     };

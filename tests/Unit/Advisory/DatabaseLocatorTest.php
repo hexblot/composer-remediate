@@ -398,7 +398,11 @@ final class DatabaseLocatorTest extends TestCase
     public function testASymbolicLinkAtThePathIsRefused(): void
     {
         mkdir(dirname($this->path()), 0700, true);
-        symlink('/etc/hostname', $this->path());
+        // Creating a symbolic link on Windows needs a privilege an ordinary CI account does not have,
+        // so the condition under test cannot be set up there at all.
+        if (!@symlink('/etc/hostname', $this->path())) {
+            self::markTestSkipped('this account cannot create a symbolic link, so the case under test cannot be built');
+        }
         $locator = new DatabaseLocator($this->composer(), $this->downloader([]));
         try {
             $locator->locate($this->settings($locator));
@@ -796,16 +800,25 @@ final class DatabaseLocatorTest extends TestCase
         mkdir($project . '/sub', 0700, true);
         $outside = $this->cacheDir . '/outside';
         mkdir($outside, 0700, true);
-        symlink($outside, $project . '/escape');
+        // The escape cases need a symbolic link, which an ordinary Windows account cannot create; the
+        // rest of the rule is checked everywhere.
+        $linked = @symlink($outside, $project . '/escape');
         $downloader = $this->downloader([]);
 
         $fine = new DatabaseLocator($this->composer(['remediate' => ['database_path' => 'sub/adv.sqlite']]), $downloader);
-        self::assertSame(realpath($project . '/sub') . '/adv.sqlite', $fine->settings(self::URL, null, null, false, $project)->path);
+        $slash = static fn (string|false $path): string => str_replace('\\', '/', (string) $path);
+        // The resolved path uses one separator throughout, so it reads the same and compares the same
+        // on every platform; realpath alone would answer in backslashes on Windows.
+        self::assertSame($slash(realpath($project . '/sub')) . '/adv.sqlite', $fine->settings(self::URL, null, null, false, $project)->path);
         $deep = new DatabaseLocator($this->composer(['remediate' => ['database_path' => 'new/dirs/adv.sqlite']]), $downloader);
-        self::assertSame(realpath($project) . '/new/dirs/adv.sqlite', $deep->settings(self::URL, null, null, false, $project)->path);
+        self::assertSame($slash(realpath($project)) . '/new/dirs/adv.sqlite', $deep->settings(self::URL, null, null, false, $project)->path);
         self::assertDirectoryDoesNotExist($project . '/new', 'resolving a setting creates nothing');
 
-        foreach (['/etc/passwd', '../elsewhere.sqlite', 'sub/../../x.sqlite', 'escape/adv.sqlite', 'escape/deeper/adv.sqlite'] as $bad) {
+        $rejected = ['/etc/passwd', 'C:\\Windows\\win.ini', '../elsewhere.sqlite', 'sub/../../x.sqlite'];
+        if ($linked) {
+            array_push($rejected, 'escape/adv.sqlite', 'escape/deeper/adv.sqlite');
+        }
+        foreach ($rejected as $bad) {
             $locator = new DatabaseLocator($this->composer(['remediate' => ['database_path' => $bad]]), $downloader);
             try {
                 $locator->settings(self::URL, null, null, false, $project);
@@ -814,7 +827,9 @@ final class DatabaseLocatorTest extends TestCase
                 self::assertStringContainsString('extra.remediate.database_path', $e->getMessage(), $bad);
             }
         }
-        self::assertDirectoryDoesNotExist($outside . '/deeper', 'nothing was created through the link before the rejection');
+        if ($linked) {
+            self::assertDirectoryDoesNotExist($outside . '/deeper', 'nothing was created through the link before the rejection');
+        }
         $operator = new DatabaseLocator($this->composer(['remediate' => ['database_path' => '/etc/passwd']]), $downloader);
         self::assertSame('/tmp/operator.sqlite', $operator->settings(self::URL, '/tmp/operator.sqlite', null, false, $project)->path, 'the operator\'s own path outranks and is unrestricted');
         @unlink($project . '/escape');
@@ -927,7 +942,7 @@ final class DatabaseLocatorTest extends TestCase
         try {
             $settings = $locator->settings(null, null, null, false, $this->cacheDir);
             self::assertSame(['https://a.test/x.sqlite', 'https://b.test/y.sqlite'], $settings->sources);
-            self::assertSame(realpath($this->cacheDir) . '/var/adv.sqlite', $settings->path, 'a project path, relative and inside the project');
+            self::assertSame(str_replace('\\', '/', (string) realpath($this->cacheDir)) . '/var/adv.sqlite', $settings->path, 'a project path, relative and inside the project');
             self::assertTrue($settings->sourcesFromProject);
             self::assertSame(48 * 3600, $settings->maxAgeSeconds);
             self::assertSame('https://a.test/x.sqlite,https://b.test/y.sqlite', $locator->configured(null));

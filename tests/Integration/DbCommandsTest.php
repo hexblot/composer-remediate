@@ -135,7 +135,11 @@ YAML);
         $status = $this->runner->run(['command' => 'remediate:db-status', '--database-location' => $db], $this->project);
         self::assertSame(0, $status->exitCode, $status->describe());
         self::assertStringContainsString('Path: ' . $db, $status->stdout);
-        self::assertStringContainsString('File: ' . $db, $status->stdout);
+        // "File" is the resolved path, which is not always the one that was asked for: on macOS the
+        // temporary directory is reached through a symbolic link (/var -> /private/var), and on
+        // Windows realpath answers in backslashes. Reporting where the file really is, is the point
+        // of the line, so the assertion resolves it too rather than the report leaving it alone.
+        self::assertStringContainsString('File: ' . (realpath($db) ?: $db), $status->stdout);
         self::assertStringContainsString('source: FriendsOfPHP, 1 records, fetched ', $status->stdout);
         self::assertStringContainsString('source: local:advisories.json, 1 records', $status->stdout);
         self::assertStringContainsString('Coverage gaps (1, showing up to 50)', $status->stdout);
