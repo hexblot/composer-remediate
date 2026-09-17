@@ -106,11 +106,23 @@ YAML;
         self::assertNotNull($gaps[0]->raw);
     }
 
+    public function testAnArchiveWithNothingInItIsAnOutageNotAnEmptyWorld(): void
+    {
+        $source = new FriendsOfPhpSource(new ScriptedDownloader([FriendsOfPhpSource::URL => Zips::build([])]), $this->tempDir);
+        $this->expectException(\RuntimeException::class);
+        $this->expectExceptionMessage('FriendsOfPHP returned no advisories at all');
+        $source->fetch(static function (): void {});
+    }
+
     public function testACustomUrlIsHonoured(): void
     {
         $url = 'https://mirror.test/security-advisories.zip';
-        $downloader = new ScriptedDownloader([$url => Zips::build([])]);
-        self::assertSame([], (new FriendsOfPhpSource($downloader, $this->tempDir, url: $url))->fetch(static function (): void {}));
+        // The archive carries one unreadable file: an archive with nothing in it is refused now, and
+        // this test is about which URL was asked for.
+        $downloader = new ScriptedDownloader([$url => Zips::build(['security-advisories-master/acme/broken/B.yaml' => "branches: [\n"])]);
+        $source = new FriendsOfPhpSource($downloader, $this->tempDir, url: $url);
+        self::assertSame([], $source->fetch(static function (): void {}));
+        self::assertCount(1, $source->gaps());
         self::assertSame([$url], $downloader->requested());
     }
 }

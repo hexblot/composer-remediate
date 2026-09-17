@@ -74,6 +74,17 @@ final class PackagistApiSourceTest extends TestCase
         $source->fetch(static function (): void {});
     }
 
+    public function testAnEmptyAdvisoryMapIsAnOutageNotAnEmptyWorld(): void
+    {
+        // A well-formed document carrying no advisories is what a mirror serving a placeholder, or a
+        // feed mid-incident, answers with. Accepting it would build a database missing this source
+        // entirely and publish it looking perfectly healthy.
+        $source = new PackagistApiSource(new ScriptedDownloader([PackagistApiSource::URL => '{"advisories": {}}']));
+        $this->expectException(\RuntimeException::class);
+        $this->expectExceptionMessage('Packagist returned no advisories at all');
+        $source->fetch(static function (): void {});
+    }
+
     public function testADownloadFailurePropagatesAndACustomUrlIsHonoured(): void
     {
         $url = 'https://mirror.test/security-advisories';
