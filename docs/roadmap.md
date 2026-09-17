@@ -90,7 +90,14 @@ advisory database this project publishes is watched rather than assumed to be wo
 - [ ] soak time on `--apply`, which is the only thing that writes to a project and is the feature a
   1.0 invites people to run unattended on a schedule; this is a reason to wait rather than something
   to build
-- [ ] the sixth adversarial review, and the first one of the advisory database's own supply chain
+- [x] the sixth adversarial review, taken as the first review of the advisory database's own supply
+  chain and of the parallel planning code. Seven findings, all answered: a feed answering with no data
+  built a database missing that source and nothing noticed, a dead worker discarded the whole run, the
+  count of disagreeing sources was computed and never shown, the published database's provenance was
+  never checked by anything an adopter ran, the publish job attested bytes it had not verified, and the
+  compatibility page promised a schema URL per version that one unversioned file could not honour. One
+  reported finding was a false positive and is recorded as such below
+- [ ] a seventh review once the report additions above have landed
 - deliberately not in 1.0: Phase 7 below. It is a new capability, not a hole in this one
 
 ## Assurance *(ongoing, alongside the phases)*

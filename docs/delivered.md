@@ -116,6 +116,18 @@ has a regression test behind it; the
 [changelog](https://github.com/hexblot/composer-remediate/blob/main/CHANGELOG.md) has the details.
 What is still open is on the [roadmap](roadmap.md).
 
+- [x] a sixth adversarial review, the first to take the advisory database's own supply chain and the
+  parallel planning code as its subject. The finding that mattered: an advisory feed answering with a
+  well-formed but empty response built a database missing that source and published it, checksum
+  verified, attested and minutes old, so a lock carrying a vulnerability only that source knew about
+  reported clean. No attacker required. Also answered: a dead planning worker discarding the whole
+  run, the count of disagreeing sources being computed and never shown, provenance that nothing an
+  adopter ran ever checked, a publish job attesting bytes it had not verified, and a promised
+  per-version schema URL that one unversioned file could not honour. One reported finding, that the
+  database watchdog could not file its first issue, was a false positive: `gh`'s own `--jq` returns an
+  empty string for an empty list where plain `jq` prints `null`, which was measured rather than
+  assumed.
+
 - [x] adversarial adoption review of 0.3.0 (another AI model working from the published repository)
   and three rechecks, answered in 0.4.0, 0.4.1 and 0.4.2; the reviewer confirmed the last recheck closed
 - [x] command layer, advisory feed readers and both advisory adapters under test; 278 tests, 94% of
