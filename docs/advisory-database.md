@@ -329,6 +329,11 @@ To check the attestation yourself:
 gh attestation verify advisories.sqlite --repo hexblot/composer-remediate
 ```
 
+**On Windows.** A database this tool builds is created readable by its owner alone, which matters for
+a build with `--include`, because that file carries advisories you did not publish. File modes are a
+POSIX concept: on Windows `chmod` does nothing and the file is left at whatever its directory grants.
+If you build a private database there, put it somewhere the filesystem's own permissions protect.
+
 **If this project stops publishing.** Nothing in the tool requires the database to come from here.
 `composer remediate:db-build` builds the same file from the same public feeds, and
 `--database-location` takes any https URL or local path, so an organisation can publish its own and
