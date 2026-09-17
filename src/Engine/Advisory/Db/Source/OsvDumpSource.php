@@ -80,7 +80,30 @@ final class OsvDumpSource implements AdvisorySourceInterface
             $partial > 0 ? sprintf(', %d package entr%s unreadable inside kept records (recorded as coverage gaps)', $partial, $partial === 1 ? 'y' : 'ies') : '',
         ));
 
+        self::refuseEmpty($records, $this->gaps, 'OSV');
+
         return $records;
+    }
+
+    /**
+     * A public advisory feed always has thousands of records. Nothing at all means the feed answered
+     * without its data: an empty document, an archive with nothing inside, a mirror serving a
+     * placeholder. That is an outage wearing a success, and accepting it would build a database
+     * missing a whole source, publish it checksum-verified and attested, and report locks clean that
+     * are not.
+     *
+     * Records the source read and could not interpret are a different thing: they come back as
+     * coverage gaps, which are reported and gate a clean result on their own. A feed is only refused
+     * when it produced neither.
+     *
+     * @param list<\Remediate\Engine\Advisory\Db\NormalizedAdvisory> $records
+     * @param list<\Remediate\Engine\Advisory\Db\CoverageGap>        $gaps
+     */
+    private static function refuseEmpty(array $records, array $gaps, string $source): void
+    {
+        if ($records === [] && $gaps === []) {
+            throw new \RuntimeException(sprintf('%s returned no advisories at all, and nothing it could not read either. A feed that answers successfully with no data is an outage, not an empty world; the build stops rather than publish a database missing this source.', $source));
+        }
     }
 
     public function gaps(): array

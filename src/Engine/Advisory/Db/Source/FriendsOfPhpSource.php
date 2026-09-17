@@ -78,7 +78,34 @@ final class FriendsOfPhpSource implements AdvisorySourceInterface
         }
         $log(sprintf('FriendsOfPHP: %d files, %d records%s', $count, count($records), $skipped > 0 ? sprintf(', %d skipped (recorded as coverage gaps)', $skipped) : ''));
 
+        if ($this->localCheckout === null) {
+            // Only the downloaded feed is held to this. A checkout the operator pointed at is their
+            // own directory, and an empty one is a statement about their machine, not an outage.
+            self::refuseEmpty($records, $this->gaps, 'FriendsOfPHP');
+        }
+
         return $records;
+    }
+
+    /**
+     * A public advisory feed always has thousands of records. Nothing at all means the feed answered
+     * without its data: an empty document, an archive with nothing inside, a mirror serving a
+     * placeholder. That is an outage wearing a success, and accepting it would build a database
+     * missing a whole source, publish it checksum-verified and attested, and report locks clean that
+     * are not.
+     *
+     * Records the source read and could not interpret are a different thing: they come back as
+     * coverage gaps, which are reported and gate a clean result on their own. A feed is only refused
+     * when it produced neither.
+     *
+     * @param list<\Remediate\Engine\Advisory\Db\NormalizedAdvisory> $records
+     * @param list<\Remediate\Engine\Advisory\Db\CoverageGap>        $gaps
+     */
+    private static function refuseEmpty(array $records, array $gaps, string $source): void
+    {
+        if ($records === [] && $gaps === []) {
+            throw new \RuntimeException(sprintf('%s returned no advisories at all, and nothing it could not read either. A feed that answers successfully with no data is an outage, not an empty world; the build stops rather than publish a database missing this source.', $source));
+        }
     }
 
     public function gaps(): array

@@ -10,6 +10,17 @@ for what a version number will promise.
 
 ### Fixed
 
+- **A feed that answered with no data built a database missing that source, and nothing noticed.** An
+  advisory feed returning a well-formed but empty answer, which is what a mirror serving a placeholder
+  or a feed mid-incident does, produced no records and no error. The build published the result: a
+  smaller database, checksum-verified, attested, fresh by every measure a client has, and missing a
+  whole source. A lock with a vulnerability only that source knew about reported clean and exited `0`.
+  Each downloaded feed now refuses an answer carrying neither advisories nor records it could not
+  read, and the publishing workflow refuses to publish a dataset more than 5% smaller than the one it
+  would replace. Records a feed sends that cannot be interpreted are unaffected: those are coverage
+  gaps, which are reported and gate a clean result already. Found by an adversarial review of the
+  advisory database's supply chain, which no previous review had taken as its subject.
+
 - **A project could not name its own database path on Windows.** The guard that keeps
   `extra.remediate.database_path` inside the project compared a resolved path against the project root
   with a forward slash, and `realpath()` answers in the platform's own separator, so `C:\project\var`

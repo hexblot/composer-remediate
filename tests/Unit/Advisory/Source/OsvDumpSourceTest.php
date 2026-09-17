@@ -182,12 +182,25 @@ final class OsvDumpSourceTest extends TestCase
         self::assertCount(1, $source->gaps(), 'gaps describe the last fetch, they do not accumulate');
     }
 
+    public function testAnArchiveWithNothingInItIsAnOutageNotAnEmptyWorld(): void
+    {
+        // Zero records and zero gaps means the feed answered without its data. Accepting it would
+        // build a database missing this source and publish it looking perfectly healthy.
+        $source = new OsvDumpSource(new ScriptedDownloader([OsvDumpSource::URL => Zips::build([])]), $this->tempDir);
+        $this->expectException(\RuntimeException::class);
+        $this->expectExceptionMessage('OSV returned no advisories at all');
+        $source->fetch(static function (): void {});
+    }
+
     public function testACustomUrlIsHonoured(): void
     {
         $url = 'https://mirror.test/packagist/all.zip';
-        $downloader = new ScriptedDownloader([$url => Zips::build([])]);
-        $records = (new OsvDumpSource($downloader, $this->tempDir, url: $url))->fetch(static function (): void {});
-        self::assertSame([], $records);
+        // The archive carries one readable record: an archive with nothing in it is refused now, and
+        // this test is about which URL was asked for.
+        $downloader = new ScriptedDownloader([$url => Zips::build(['broken.json' => '{'])]);
+        $source = new OsvDumpSource($downloader, $this->tempDir, url: $url);
+        self::assertSame([], $source->fetch(static function (): void {}));
+        self::assertCount(1, $source->gaps());
         self::assertSame([$url], $downloader->requested());
     }
 

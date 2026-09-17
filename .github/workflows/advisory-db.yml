@@ -90,6 +90,29 @@ jobs:
           else
             echo "changed=true" >> "$GITHUB_OUTPUT"
           fi
+      # The per-source guards refuse a feed that answers with nothing at all. This catches the case
+      # they cannot: a feed that answers with *some* of its data. The count that would have been
+      # published is compared against the count that is published now, and a material drop stops the
+      # build rather than shipping a shrunken database, which would be checksum-verified, attested,
+      # fresh by every measure a client has, and quietly report vulnerable locks clean. A drop that is
+      # real (an upstream withdrawing records) is published by dispatching this workflow with `force`.
+      - name: Refuse to publish a shrinking dataset
+        if: steps.compare.outputs.changed == 'true' && inputs.force != true
+        env:
+          MAX_DROP_PERCENT: '5'
+        run: |
+          previous=$(jq -r '.advisory_count // empty' prev/latest.json 2>/dev/null || true)
+          current=$(jq -r '.advisory_count' out/meta.json)
+          if [ -z "$previous" ] || [ "$previous" -le 0 ]; then
+            echo "No published advisory_count to compare against; publishing $current."
+            exit 0
+          fi
+          floor=$(( previous - (previous * MAX_DROP_PERCENT / 100) ))
+          echo "Published $previous advisories, built $current, floor $floor."
+          if [ "$current" -lt "$floor" ]; then
+            echo "::error::The build produced $current advisories against $previous published, a drop of more than ${MAX_DROP_PERCENT}%. A feed has probably answered with part of its data. Nothing is published; the current database stays current. Dispatch with force=true if the drop is real."
+            exit 1
+          fi
       - name: Choose the release version
         if: steps.compare.outputs.changed == 'true'
         id: version

@@ -315,6 +315,13 @@ quietly publishes nothing, which is what happened for three days in September 20
 nothing new now also checks how old the published copy is, and fails if it has passed two days.
 Either way the signal is a red run and an open issue, not a user noticing.
 
+**What stops a bad build.** Each downloaded feed refuses an answer that carries neither advisories
+nor records it could not read: a public feed always has thousands, so nothing at all means the feed
+answered without its data rather than that the world is empty. Above that, the workflow refuses to
+publish a dataset more than 5% smaller than the one it would replace, because a feed can also answer
+with *part* of its data. Both exist because a shrunken database is the one bad outcome with no
+symptom: it is checksum-verified, attested and fresh, and it reports vulnerable locks clean.
+
 **What to do if it is stale anyway.** Nothing here can tell you a stale database is current: your
 copy is confirmed by content on every run, and its age is reported when it cannot be confirmed.
 `--database-max-age` turns that age into a failure at a threshold you choose, which is the setting to
