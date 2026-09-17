@@ -133,13 +133,37 @@ final class DatabaseSettings
                 break; // the rest does not exist yet and will be created under $current, inside the project
             }
             $real = realpath($next);
-            if ($real === false || ($real !== $root && !str_starts_with($real, $root . '/'))) {
+            if ($real === false || !self::within($real, $root)) {
                 throw new \InvalidArgumentException(sprintf('extra.remediate.database_path "%s" resolves outside the project directory.', $value));
             }
             $current = $real;
         }
 
-        return $root . '/' . implode('/', $segments);
+        // One separator throughout: joining a realpath (backslashes on Windows) to forward-slash
+        // segments would hand back a mixed path that works but reads badly in the report and compares
+        // unequal to the same location written any other way.
+        return self::slash($root) . '/' . implode('/', $segments);
+    }
+
+    /**
+     * Whether a resolved path is the given root or sits underneath it.
+     *
+     * Compared with separators normalised, because `realpath()` answers in the platform's own
+     * separator: on Windows it returns `C:\\project\\var`, which does not begin with `C:\\project/`,
+     * and a containment check written with a forward slash rejects every path inside the project.
+     */
+    private static function within(string $path, string $root): bool
+    {
+        $path = self::slash($path);
+        $root = rtrim(self::slash($root), '/');
+
+        return $path === $root || str_starts_with($path, $root . '/');
+    }
+
+    /** The same path written with forward slashes, whatever the platform gave back. */
+    private static function slash(string $path): string
+    {
+        return str_replace('\\', '/', $path);
     }
 
     /** @param list<string> $sources */

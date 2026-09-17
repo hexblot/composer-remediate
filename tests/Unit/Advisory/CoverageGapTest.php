@@ -196,6 +196,12 @@ final class CoverageGapTest extends TestCase
     {
         // A build with --include carries advisories the operator did not publish, and the default path
         // is a cache directory other users of the machine can often list.
+        if (\Composer\Util\Platform::isWindows()) {
+            // Windows has no POSIX mode bits: chmod does nothing and fileperms reports 0666 whatever
+            // was asked for. The guarantee this test states cannot be made there, and pretending
+            // otherwise would be worse than saying so. See docs/advisory-database.md.
+            self::markTestSkipped('file modes are a POSIX concept; Windows cannot make a file owner-only this way');
+        }
         $db = $this->tmp('.sqlite');
         (new DatabaseBuilder([$this->source([], [])]))->build($db, static function (): void {
         });
