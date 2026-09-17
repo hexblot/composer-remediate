@@ -5,10 +5,18 @@ declare(strict_types=1);
 namespace Remediate\Tests\Unit\Engine;
 
 use PHPUnit\Framework\TestCase;
+use Remediate\Engine\Advisory\Db\AffectedRange;
+use Remediate\Engine\Advisory\Db\Database;
+use Remediate\Engine\Advisory\Db\DatabaseBuilder;
+use Remediate\Engine\Advisory\Db\NormalizedAdvisory;
+use Remediate\Engine\Advisory\Db\Source\AdvisorySourceInterface;
+use Remediate\Engine\Advisory\Db\SourceRecord;
+use Remediate\Engine\Advisory\Db\SqliteAdvisoryProvider;
 use Remediate\Engine\Parallel\ForkPool;
 use Remediate\Engine\Planner;
 use Remediate\Output\JsonRenderer;
 use Remediate\Tests\Support\FakeSolver;
+use Remediate\Tests\Support\KilledOnceSolver;
 use Remediate\Tests\Support\ScriptedProject;
 
 /**
@@ -131,6 +139,103 @@ final class ParallelPlanningTest extends TestCase
         $plan = $this->plan(1);
 
         self::assertStringNotContainsString('one package at a time', implode("\n", $plan->warnings), 'the default must not explain itself');
+    }
+
+    public function testAWorkerThatDiesDoesNotCostTheRun(): void
+    {
+        // What the out-of-memory killer does to a worker on a large lock file. The packages already
+        // finished are kept and the rest are planned here, rather than an hour of solving being lost.
+        $project = $this->project();
+        $solver = (new FakeSolver())
+            ->resolves('composer update acme/a', ScriptedProject::lock([['acme/a', '1.1.0'], ['acme/b', '1.0.0'], ['acme/c', '1.0.0']]))
+            ->resolves('composer update acme/b', ScriptedProject::lock([['acme/a', '1.0.0'], ['acme/b', '1.1.0'], ['acme/c', '1.0.0']]))
+            ->resolves('composer update acme/c', ScriptedProject::lock([['acme/a', '1.0.0'], ['acme/b', '1.0.0'], ['acme/c', '1.1.0']]));
+        $planner = new Planner(
+            ScriptedProject::advisories(self::advisoryList(), true, true),
+            new KilledOnceSolver($solver),
+            parallelism: 3,
+        );
+        $plan = $planner->plan($project->context(), $project->workspace());
+
+        self::assertCount(3, $plan->findings, 'every package is planned, one way or the other');
+        foreach ($plan->findings as $finding) {
+            self::assertNotNull($finding->recommended(), $finding->finding->packageName);
+        }
+        self::assertStringContainsString('planned one at a time instead', implode("\n", $plan->warnings), 'the report has to say the run degraded');
+    }
+
+    public function testTheSqliteAdvisoryDatabaseSurvivesTheFork(): void
+    {
+        // The configuration every real user runs: the published SQLite database plus --parallelize.
+        // It had no coverage at all, which is what this closes.
+        //
+        // It does not prove that the reconnect in afterFork() is what makes it work: the test still
+        // passes with that line removed, because a read-only SQLite handle inherited across a fork
+        // usually appears to work. That is precisely why the reconnect is there. SQLite's own
+        // documentation says not to carry a connection across a fork, and the failure it warns about
+        // is nondeterministic and platform-dependent, so the reconnect answers the documented rule
+        // rather than an observed crash.
+        $file = sys_get_temp_dir() . '/composer-remediate-parallel-db-' . bin2hex(random_bytes(4)) . '.sqlite';
+        $advisories = [];
+        foreach (['acme/a', 'acme/b', 'acme/c'] as $package) {
+            $advisories[] = new NormalizedAdvisory(
+                'CVE-2026-' . substr($package, -1),
+                ['CVE-2026-' . substr($package, -1)],
+                'vulnerable',
+                null,
+                'high',
+                null,
+                null,
+                [new AffectedRange($package, '<1.1.0', 'Upstream')],
+                [new SourceRecord('Upstream', 'CVE-2026-' . substr($package, -1))],
+            );
+        }
+        (new DatabaseBuilder([$this->fixedSource($advisories)]))->build($file, static function (): void {
+        });
+
+        try {
+            $project = $this->project();
+            $planner = new Planner(
+                new SqliteAdvisoryProvider(Database::open($file)),
+                $this->solver(),
+                parallelism: 3,
+            );
+            $plan = $planner->plan($project->context(), $project->workspace());
+
+            self::assertCount(3, $plan->findings, 'the database answered in every worker');
+            foreach ($plan->findings as $finding) {
+                self::assertNotNull($finding->recommended(), $finding->finding->packageName);
+            }
+            self::assertSame([], array_values(array_filter($plan->warnings, static fn (string $w): bool => str_contains($w, 'one package at a time'))), 'a database-backed run must actually fan out');
+        } finally {
+            @unlink($file);
+        }
+    }
+
+    /** @param list<NormalizedAdvisory> $records */
+    private function fixedSource(array $records): AdvisorySourceInterface
+    {
+        return new class($records) implements AdvisorySourceInterface {
+            /** @param list<NormalizedAdvisory> $records */
+            public function __construct(private readonly array $records)
+            {
+            }
+
+            public function name(): string
+            {
+                return 'Upstream';
+            }
+
+            public function fetch(callable $log): array
+            {
+                return $this->records;
+            }
+
+            public function gaps(): array
+            {
+                return [];
+            }
+        };
     }
 
     public function testProgressIsReportedForEveryPackageAsItFinishes(): void

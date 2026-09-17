@@ -33,4 +33,20 @@ final class JsonSchemaTest extends TestCase
         $errors = array_map(static fn (array $e): string => sprintf('%s: %s', $e['property'], $e['message']), $validator->getErrors());
         self::assertTrue($validator->isValid(), "Schema violations in $file:\n" . implode("\n", $errors));
     }
+
+    public function testTheVersionedSchemaMatchesTheCurrentOne(): void
+    {
+        // report.schema.json describes whatever the tool emits today; report-v1.schema.json describes
+        // schema_version 1 for good, and is the one a consumer is told to pin. While the tool emits
+        // version 1 they must say the same thing apart from their own identity, or a consumer that
+        // followed the advice would be validating against something the tool no longer produces.
+        $current = json_decode((string) file_get_contents(__DIR__ . '/../../../docs/schema/report.schema.json'), true, 512, JSON_THROW_ON_ERROR);
+        $versioned = json_decode((string) file_get_contents(__DIR__ . '/../../../docs/schema/report-v1.schema.json'), true, 512, JSON_THROW_ON_ERROR);
+        self::assertIsArray($current);
+        self::assertIsArray($versioned);
+        self::assertSame('https://hexblot.github.io/composer-remediate/schema/report-v1.schema.json', $versioned['$id']);
+        unset($current['$id'], $versioned['$id']);
+        self::assertSame($current, $versioned);
+        self::assertSame(1, $current['properties']['schema_version']['const'] ?? null, 'when this stops being 1, report-v1 stops tracking report and must be frozen');
+    }
 }

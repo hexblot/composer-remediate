@@ -10,6 +10,12 @@ for what a version number will promise.
 
 ### Fixed
 
+- **A worker that died took the whole run with it.** A planning worker killed by the out-of-memory
+  killer, which is what happens on a large lock file with too many workers, failed the run and
+  discarded every package already planned. What it had finished is kept now, and whatever it had not
+  reached is planned one at a time, with a warning in the report saying the run degraded. A killed
+  worker also left a half-written result file behind, which nothing ever swept up.
+
 - **A feed that answered with no data built a database missing that source, and nothing noticed.** An
   advisory feed returning a well-formed but empty answer, which is what a mirror serving a placeholder
   or a feed mid-incident does, produced no records and no error. The build published the result: a
@@ -45,6 +51,24 @@ for what a version number will promise.
   are covered. Every PHP class in the namespace is internal, the recommendation itself moves when the
   advisory data moves, and anything written for a person to read may be reworded. The deprecation
   period is stated, so removing an option has a defined shape. Not in force while the version is 0.x.
+
+- **The advisory database says how often its sources disagreed.** Sources that disagree about which
+  versions an advisory affects are unioned, so a version any source calls affected is affected. That is
+  the safe direction, and it also means one feed can widen a range on its own. The build has always
+  counted how often that happened and then kept the number to itself; the report's source line now
+  carries it.
+
+- **The GitHub Action can verify the advisory database's build provenance.** Its new `verify-database`
+  input takes the repository whose attestation must cover the database, and is empty by default. The
+  database is fetched into a path the run controls first, so the file that is verified is the file that
+  is used, and the same recipe by hand is in the documentation. The publish job also checks the
+  artefact against its own checksum before attesting it, rather than putting a valid provenance
+  signature on whatever arrived from the job that runs third-party code.
+
+- **A schema URL that will not move.** `report-v1.schema.json` describes `schema_version` 1 and stays
+  that way; `report.schema.json` continues to describe whatever the tool emits today. The
+  compatibility page told consumers a version's schema stays published at its URL, which a single
+  unversioned file could not have honoured.
 
 - **Monitoring for the advisory database this project publishes.** It published nothing for three days
   this month and surfaced only because someone looked. A failed build or publish now opens an issue
