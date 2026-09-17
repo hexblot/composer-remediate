@@ -80,6 +80,19 @@ Suggested in reactions to the project; each is a line in the report, not an engi
   miss, and PHP's dynamic dispatch, container wiring and string callables make that verdict too
   unreliable to put in front of a gate
 
+## Before a stable 1.0
+
+1.0 is a promise about stability rather than a feature count, so what stands in the way is not on the
+lists above. Done so far: the suite runs on [Windows and macOS](contributing.md), a
+[compatibility policy](compatibility.md) says which surfaces a version number covers, and the
+advisory database this project publishes is watched rather than assumed to be working.
+
+- [ ] soak time on `--apply`, which is the only thing that writes to a project and is the feature a
+  1.0 invites people to run unattended on a schedule; this is a reason to wait rather than something
+  to build
+- [ ] the sixth adversarial review, and the first one of the advisory database's own supply chain
+- deliberately not in 1.0: Phase 7 below. It is a new capability, not a hole in this one
+
 ## Assurance *(ongoing, alongside the phases)*
 
 Work that does not add features but decides whether the recommendations can be trusted. What has

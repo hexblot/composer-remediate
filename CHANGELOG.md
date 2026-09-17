@@ -5,6 +5,43 @@ All notable changes to this project are documented here. The format follows
 
 ## [Unreleased]
 
+Groundwork for a stable 1.0. See [compatibility](https://hexblot.github.io/composer-remediate/compatibility/)
+for what a version number will promise.
+
+### Fixed
+
+- **A project could not name its own database path on Windows.** The guard that keeps
+  `extra.remediate.database_path` inside the project compared a resolved path against the project root
+  with a forward slash, and `realpath()` answers in the platform's own separator, so `C:\project\var`
+  did not begin with `C:\project/` and every relative path was rejected as escaping. The comparison
+  normalises separators now, and the resolved path comes back with one separator throughout instead of
+  a `realpath()` joined to forward-slash segments. Found by running the suite on Windows for the first
+  time.
+
+### Added
+
+- **The suite runs on Windows and macOS.** Every job had run on Linux, while what this tool does is
+  filesystem work, subprocess execution and process forking, all of which differ elsewhere. The first
+  run failed on both platforms and found the defect above, the same defect in the test server that
+  stands in for a publisher, and three assumptions the tests were making about POSIX. A file mode of
+  `0600` and a symbolic link cannot be had on Windows, so those cases are skipped there with the
+  reason given; the limitation is documented, because a database built with `--include` carries
+  advisories you did not publish and on Windows is left at whatever its directory grants.
+
+- **A compatibility policy.** Which surfaces a version number covers, and which it does not. Exit
+  codes, command and option names, the JSON report and its `schema_version`, the SARIF, CycloneDX and
+  GitLab shapes, the published database URLs and `latest.json`, and the action's inputs and outputs
+  are covered. Every PHP class in the namespace is internal, the recommendation itself moves when the
+  advisory data moves, and anything written for a person to read may be reworded. The deprecation
+  period is stated, so removing an option has a defined shape. Not in force while the version is 0.x.
+
+- **Monitoring for the advisory database this project publishes.** It published nothing for three days
+  this month and surfaced only because someone looked. A failed build or publish now opens an issue
+  and comments on that one rather than filing another every six hours, and a run that finds nothing
+  new checks how old the published copy is, failing past two days, so a pipeline reporting success
+  while publishing nothing is no longer silent. The documentation says what watches it, how to verify
+  the build attestation, and how to publish your own if this project stops.
+
 [Unreleased]: https://github.com/hexblot/composer-remediate/compare/v0.8.1...HEAD
 
 ## [0.8.1] - 2026-09-14

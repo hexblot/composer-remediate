@@ -62,6 +62,13 @@
   for the matrix once. The Actions tab's manual run has a `full` switch for the whole matrix without a
   pull request. The advisory
   database workflow polls the feeds every six hours and publishes only when the dataset changed.
+- The full run also executes the suite on Windows and macOS with PHP 8.4. What this tool does is
+  filesystem work, subprocess execution and process forking, and all three differ between operating
+  systems: replacing an open file by rename, the meaning of `0700`, path separators, whether `fork`
+  exists at all. Two things cannot be asserted on Windows and are skipped there with the reason given
+  in the test: a file mode of `0600`, which has no meaning without POSIX mode bits, and creating a
+  symbolic link, which needs a privilege an ordinary account does not have. Static analysis, Deptrac
+  and the action harness stay on Linux, being platform-independent and bash respectively.
 - The `ci` workflow does not run for commits that only touch hand-written pages under `docs/`,
   `mkdocs.yml`, root Markdown files or the docs pipelines; the `docs` workflow builds and deploys
   those. The generated pages (`docs/cli-reference.md`, `docs/case-studies.md`) and the JSON schema do
