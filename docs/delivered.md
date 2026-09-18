@@ -116,6 +116,15 @@ has a regression test behind it; the
 [changelog](https://github.com/hexblot/composer-remediate/blob/main/CHANGELOG.md) has the details.
 What is still open is on the [roadmap](roadmap.md).
 
+- [x] a seventh adversarial review, the first to come with runnable reproductions of every finding.
+  The one that mattered: advisory data this tool could read only in part became complete coverage, so
+  a lock could be reported clean, with no coverage gaps and no warnings, against data read in part.
+  Also answered: verification that bound a scan to a pathname rather than to the bytes it had checked,
+  two report formats calling an incomplete scan successful, a baselined advisory gating through a
+  severity it had been accepted at, a recorded command that meant something else when pasted into a
+  shell, files created world-readable and tightened afterwards, and guidance overstating what
+  `--database-max-age` covers
+
 - [x] a sixth adversarial review, the first to take the advisory database's own supply chain and the
   parallel planning code as its subject. The finding that mattered: an advisory feed answering with a
   well-formed but empty response built a database missing that source and published it, checksum

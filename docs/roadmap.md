@@ -97,7 +97,12 @@ advisory database this project publishes is watched rather than assumed to be wo
   never checked by anything an adopter ran, the publish job attested bytes it had not verified, and the
   compatibility page promised a schema URL per version that one unversioned file could not honour. One
   reported finding was a false positive and is recorded as such below
-- [ ] a seventh review once the report additions above have landed
+- [x] a seventh adversarial review, which found that advisory data readable only in part became
+  complete coverage: a lock could be reported clean, with no gaps and no warnings, against data read
+  in part. Six more answered with it, including verification that bound a scan to a pathname rather
+  than to the bytes it had checked. All seven came with runnable reproductions
+- [ ] an eighth review once the report additions above have landed, taking the contract suite as a
+  claim to attack rather than a reassurance
 - deliberately not in 1.0: Phase 7 below. It is a new capability, not a hole in this one
 
 ## Assurance *(ongoing, alongside the phases)*
