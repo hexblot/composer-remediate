@@ -16,13 +16,20 @@ for what a version number will promise.
   records that are simply about another ecosystem. A lock could be reported clean, with no coverage
   gaps and no warnings, against data that had been read in part. Anything unreadable is now a gap,
   attributed to its package where the record says which, and to none where it does not. That holds
-  wherever the unreadable part sits: a range that is not a range, an event that is not an event, a
-  version list with something else in it, an affected list that cannot be read at all, and a document
-  where nothing survived, which must not be filed as belonging to another ecosystem since that is the
-  one classification that records nothing. A commit range is still skipped silently, because every
-  record carrying one also carries the version range that matters. Measured against the real OSV feed
-  before and after the change: 5 coverage gaps in 6532 advisories either way, so nothing here cries
-  wolf.
+  wherever the unreadable part sits, in either source. In an OSV record: a range that is not a range, an
+  event that is not an event, an event boundary that is not a version, an event naming a boundary this
+  does not know, a ranges or versions container that is not a container, a listed version that cannot
+  be placed, an affected list that cannot be read at all, and a document where nothing survived, which
+  must not be filed as belonging to another ecosystem since that is the one classification that records
+  nothing. In a FriendsOfPHP advisory: a branch that cannot be read beside one that can, which was
+  never looked at before. Where a record fails to be read in two ways at once, the part that named no
+  package stays its own gap rather than being replaced by the packages the other parts happened to
+  name, so a scan of some third package cannot read clean on it.
+
+  A commit range is still skipped silently, because every record carrying one also carries the version
+  range that matters. Measured against both real feeds before and after: 5 coverage gaps in 6542 OSV
+  advisories and none in 1147 FriendsOfPHP advisories, either way. These shapes do not occur upstream
+  today, which is exactly why they went unnoticed.
 
 - **Verifying the advisory database did not bind the scan to what was verified.** The action checked a
   file's build provenance and then named it by path, and a path stays refreshable: the scan that

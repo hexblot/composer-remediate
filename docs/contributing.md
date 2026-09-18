@@ -70,6 +70,12 @@
   a printed command parses back to the arguments it was built from. Each is checked over a range of
   inputs rather than the one case that first broke it. A new report format, advisory source or
   temporary file belongs in the relevant invariant rather than only in its own test.
+- The coverage invariant is the one to be strict with. Advisory normalisation reads documents written
+  by other people, so every place it decides it cannot read something is a place that can quietly
+  narrow what the tool knows, and a narrower advisory looks exactly like a smaller one. Three rounds of
+  review found paths that had been left silent one at a time. When touching a reader, the question is
+  not "does this parse the shapes I have seen" but "can anything here be dropped without a gap being
+  recorded", and the answer belongs in the invariant before the code.
 - The full run also executes the suite on Windows and macOS with PHP 8.4. What this tool does is
   filesystem work, subprocess execution and process forking, and all three differ between operating
   systems: replacing an open file by rename, the meaning of `0700`, path separators, whether `fork`

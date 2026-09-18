@@ -54,10 +54,20 @@ final class OsvDumpSource implements AdvisorySourceInterface
             if ($record === null) {
                 $skipped[$reason ?? 'no usable range'] = ($skipped[$reason ?? 'no usable range'] ?? 0) + 1;
                 if ($reason !== 'no Packagist package') {
-                    // A record about a Packagist package that could not be read is a coverage gap for that package.
+                    // A record about a Packagist package that could not be read is a coverage gap for
+                    // that package. Where the record said which parts it could not read, those are the
+                    // gaps: a part that named no package is its own uncertainty and must not be
+                    // replaced by the packages other parts happened to name, because nothing then
+                    // records that something unattributable was lost.
                     $id = is_string($doc['id'] ?? null) ? $doc['id'] : basename($name, '.json');
-                    foreach ($packages === [] ? [null] : $packages as $package) {
-                        $this->gaps[] = new CoverageGap('OSV', $id, $package, $reason ?? 'no usable range');
+                    $targets = $unreadable;
+                    if ($targets === []) {
+                        foreach ($packages === [] ? [null] : $packages as $package) {
+                            $targets[] = [$package, $reason ?? 'no usable range'];
+                        }
+                    }
+                    foreach ($targets as [$package, $why]) {
+                        $this->gaps[] = new CoverageGap('OSV', $id, $package, $why);
                     }
                 }
 
@@ -164,13 +174,17 @@ final class OsvDumpSource implements AdvisorySourceInterface
             // Anything in these lists that is not the shape it should be is not filtered away: dropping
             // it here would hand normalisation a list that looks complete, and the record would come
             // back with narrower coverage and nothing to say so.
+            // A container that is there but is not a list is not an absent one. Turning it into an
+            // empty list is how "this entry names ranges I could not read" became "this entry names no
+            // ranges", which reads as complete coverage.
+            $malformed = (isset($entry['ranges']) && !is_array($entry['ranges'])) || (isset($entry['versions']) && !is_array($entry['versions']));
             $rawRanges = is_array($entry['ranges'] ?? null) ? array_values($entry['ranges']) : [];
             $rawVersions = is_array($entry['versions'] ?? null) ? array_values($entry['versions']) : [];
             /** @var list<array<string, mixed>> $ranges */
             $ranges = array_values(array_filter($rawRanges, 'is_array'));
             /** @var list<string> $versions */
             $versions = array_values(array_filter($rawVersions, 'is_string'));
-            $malformed = count($ranges) !== count($rawRanges) || count($versions) !== count($rawVersions);
+            $malformed = $malformed || count($ranges) !== count($rawRanges) || count($versions) !== count($rawVersions);
             $expression = $malformed ? null : $this->ranges->fromOsv($ranges, $versions);
             if ($expression !== null) {
                 $perPackage[strtolower($package['name'])][] = $expression;
