@@ -140,7 +140,10 @@ final class RangeNormalizer
         $unlimited = false;
         foreach ($rawEvents as $event) {
             if (!is_array($event)) {
-                continue;
+                // An event this cannot read may be the boundary that matters. Refusing the range is
+                // what turns the record into a coverage gap instead of a narrower range that reads
+                // as the whole truth.
+                return null;
             }
             foreach (['introduced', 'fixed', 'last_affected', 'limit'] as $kind) {
                 if (!isset($event[$kind]) || !is_string($event[$kind])) {

@@ -161,11 +161,17 @@ final class OsvDumpSource implements AdvisorySourceInterface
             }
             $sawPackagist = true;
             $packages[] = strtolower($package['name']);
+            // Anything in these lists that is not the shape it should be is not filtered away: dropping
+            // it here would hand normalisation a list that looks complete, and the record would come
+            // back with narrower coverage and nothing to say so.
+            $rawRanges = is_array($entry['ranges'] ?? null) ? array_values($entry['ranges']) : [];
+            $rawVersions = is_array($entry['versions'] ?? null) ? array_values($entry['versions']) : [];
             /** @var list<array<string, mixed>> $ranges */
-            $ranges = is_array($entry['ranges'] ?? null) ? array_values(array_filter($entry['ranges'], 'is_array')) : [];
+            $ranges = array_values(array_filter($rawRanges, 'is_array'));
             /** @var list<string> $versions */
-            $versions = is_array($entry['versions'] ?? null) ? array_values(array_filter($entry['versions'], 'is_string')) : [];
-            $expression = $this->ranges->fromOsv($ranges, $versions);
+            $versions = array_values(array_filter($rawVersions, 'is_string'));
+            $malformed = count($ranges) !== count($rawRanges) || count($versions) !== count($rawVersions);
+            $expression = $malformed ? null : $this->ranges->fromOsv($ranges, $versions);
             if ($expression !== null) {
                 $perPackage[strtolower($package['name'])][] = $expression;
             } else {
@@ -177,7 +183,15 @@ final class OsvDumpSource implements AdvisorySourceInterface
             $affected[] = new AffectedRange($name, implode('|', array_unique($expressions)), 'OSV');
         }
         if ($affected === []) {
-            $reason = $sawPackagist ? 'no usable range' : 'no Packagist package';
+            // "No Packagist package" is the one reason that records no gap, because most of this feed
+            // is about other ecosystems. A document that had something this could not read is never
+            // filed under it, whatever else did or did not survive: that would throw away the very
+            // uncertainty the unreadable parts were noted for.
+            $reason = match (true) {
+                $unreadable !== [] => (string) $unreadable[0][1],
+                $sawPackagist => 'no usable range',
+                default => 'no Packagist package',
+            };
 
             return null;
         }

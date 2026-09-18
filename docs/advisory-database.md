@@ -352,10 +352,14 @@ the part that answers the second question, and checking it is opt in:
 ```bash
 composer remediate:db-status --database-path=./advisories.sqlite
 gh attestation verify ./advisories.sqlite --repo hexblot/composer-remediate
-composer remediate --database-path=./advisories.sqlite
+digest=$(sha256sum ./advisories.sqlite | cut -d' ' -f1)
+composer remediate --database-location=./advisories.sqlite --database-sha256="$digest"
 ```
 
-The path is given explicitly so that the file verified is the file used. The shipped GitHub Action
+The last line names the digest, not just the path. A path on its own stays refreshable: the scan
+would be entitled to replace the file you verified with a newer publication and read bytes nobody
+checked. The digest binds the run to the bytes, and a run that cannot have them stops with exit 4
+rather than proceeding on others. The shipped GitHub Action
 does this for you with its `verify-database` input, which takes the repository whose attestation must
 cover the database and is empty by default.
 

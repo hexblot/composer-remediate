@@ -275,11 +275,21 @@ HELP);
      */
     private function advisoryProvider(InputInterface $input, \Composer\Composer $composer, ProjectContext $context, DatabaseLocator $locator, IOInterface $io): AdvisoryProvider|int
     {
+        $option = static fn (string $name): ?string => is_string($v = $input->getOption($name)) && $v !== '' ? $v : null;
         $advisoriesFile = $input->getOption('advisories-file');
         if (is_string($advisoriesFile) && $advisoriesFile !== '') {
+            // A pinned digest says the operator will accept that database and nothing else. Reading
+            // advisories from somewhere else instead is not a different way of honouring that, it is
+            // ignoring it: the pin would go unchecked and a file naming no advisories would report the
+            // lock clean. The two cannot both be meant, so the run stops rather than choosing one.
+            if ($option('database-sha256') !== null) {
+                $io->writeError('<error>--database-sha256 pins the advisory database, so --advisories-file cannot be used in the same run: it would read advisories from somewhere the pin does not cover.</error>');
+
+                return Plan::EXIT_ADVISORIES_UNAVAILABLE;
+            }
+
             return new JsonFileAdvisoryProvider($advisoriesFile);
         }
-        $option = static fn (string $name): ?string => is_string($v = $input->getOption($name)) && $v !== '' ? $v : null;
         try {
             $settings = $locator->settings($option('database-location'), $option('database-path'), $option('database-max-age'), (bool) $input->getOption('no-database'), $context->directory);
         } catch (\InvalidArgumentException $e) {

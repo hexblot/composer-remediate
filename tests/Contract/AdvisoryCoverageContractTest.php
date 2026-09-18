@@ -50,6 +50,18 @@ final class AdvisoryCoverageContractTest extends TestCase
         yield 'an affected entry whose package is not a package' => [[
             'id' => 'OSV-PACKAGE', 'affected' => [['package' => $package, 'ranges' => [$goodRange]], ['package' => 'acme/lib']],
         ]];
+        yield 'a range that is not a range, beside one that is' => [[
+            'id' => 'OSV-SCALAR-RANGE', 'affected' => [['package' => $package, 'ranges' => [$goodRange, 'unreadable']]],
+        ]];
+        yield 'an event that is not an event, beside ones that are' => [[
+            'id' => 'OSV-SCALAR-EVENT', 'affected' => [['package' => $package, 'ranges' => [['type' => 'ECOSYSTEM', 'events' => [['introduced' => '0'], ['fixed' => '0.5.0'], 'unreadable']]]]],
+        ]];
+        yield 'a version list holding something that is not a version' => [[
+            'id' => 'OSV-SCALAR-VERSION', 'affected' => [['package' => $package, 'ranges' => [$goodRange], 'versions' => ['1.0.0', ['nested']]]],
+        ]];
+        yield 'every affected entry unreadable' => [[
+            'id' => 'OSV-ALL-BAD', 'affected' => ['unreadable', 'also unreadable'],
+        ]];
         yield 'a version the ecosystem cannot express' => [[
             'id' => 'OSV-VERSION', 'affected' => [['package' => $package, 'ranges' => [['type' => 'ECOSYSTEM', 'events' => [['introduced' => 'not a version']]]]]],
         ]];
@@ -72,6 +84,9 @@ final class AdvisoryCoverageContractTest extends TestCase
 
             // The build itself must have noticed. Either nothing survived, or something did and the
             // part that did not is recorded beside it; what must not happen is records and no gaps.
+            // This holds whether or not anything in the document survived: a document discarded after
+            // something in it could not be read must not be filed as simply belonging to another
+            // ecosystem, which is the one classification that records nothing.
             self::assertNotSame([], $gaps, 'the build read this document only partly and said nothing about the rest');
 
             $path = $project->directory . '/partial.sqlite';
