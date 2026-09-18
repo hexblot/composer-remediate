@@ -43,8 +43,16 @@ final class RangeNormalizer
         $parts = [];
         foreach ($ranges as $range) {
             $type = $range['type'] ?? null;
-            if (!in_array($type, ['ECOSYSTEM', 'SEMVER'], true) || !is_array($range['events'] ?? null)) {
+            // A GIT range expresses commit boundaries, which say nothing about package versions; every
+            // OSV record that has one also carries the ecosystem range that does. Skipping it loses
+            // nothing. Anything else unrecognised is a different matter: a range this cannot read may
+            // cover versions the ones it can read do not, so the record becomes a coverage gap rather
+            // than quietly narrower coverage that reads as complete.
+            if ($type === 'GIT') {
                 continue;
+            }
+            if (!in_array($type, ['ECOSYSTEM', 'SEMVER'], true) || !is_array($range['events'] ?? null)) {
+                return null;
             }
             $pieces = $this->osvRangePieces($range['events']);
             if ($pieces === null) {

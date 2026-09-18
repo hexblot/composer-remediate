@@ -84,7 +84,10 @@ final class Applier
             // command, and what is recorded is the whole of what ran, appended flags included.
             $arguments[] = '--no-interaction';
             $argv = [...$this->composerCommand, ...$arguments];
-            $ran[] = 'composer ' . implode(' ', $arguments);
+            // Rendered the same way the recommendation is printed, so what the report says ran can be
+            // pasted back and mean the same thing. Joining with spaces would drop the quoting a
+            // constraint needs and quietly change the command.
+            $ran[] = Candidate::render($arguments);
             $process = new Process($argv, $context->directory, $this->environment(), null, $this->timeout);
             $log('running: ' . end($ran));
             $process->run(static function (string $type, string $buffer) use ($log): void {

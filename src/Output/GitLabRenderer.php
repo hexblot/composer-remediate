@@ -59,19 +59,10 @@ final class GitLabRenderer
                 'end_time' => $this->endTime ?? $now,
                 // A scan that could not establish coverage (exit 3, 4 or 5) is a failed scan, not an empty
                 // one: an empty vulnerability list marked "success" would read as clean on the dashboard.
-                'status' => $plan->exitCode() >= Plan::EXIT_ERROR ? 'failure' : 'success',
-                'messages' => array_map(static fn (string $w): array => ['level' => 'warn', 'value' => $w], [...($plan->exitCode() >= Plan::EXIT_ERROR ? [self::failureMessage($plan)] : []), ...$plan->warnings]),
+                'status' => ScanOutcome::succeeded($plan) ? 'success' : 'failure',
+                'messages' => array_map(static fn (string $w): array => ['level' => 'warn', 'value' => $w], array_values(array_filter([ScanOutcome::failureMessage($plan), ...$plan->warnings]))),
             ],
         ];
-    }
-
-    private static function failureMessage(Plan $plan): string
-    {
-        return match ($plan->exitCode()) {
-            Plan::EXIT_ADVISORIES_UNAVAILABLE => 'Scan failed: advisory data unavailable or incomplete for this lock (exit 4); the vulnerability list is not a clean result.',
-            Plan::EXIT_SOLVER_FAILURE => 'Scan failed: package metadata could not be fetched while verifying fixes (exit 5).',
-            default => 'Scan failed: a tool or solver error left at least one outcome unknown (exit 3).',
-        };
     }
 
     /** @return array<string, mixed> */

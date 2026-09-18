@@ -188,7 +188,14 @@ final class ForkPool
         }
         // A partial file must not read as a result, so it is written beside the target and moved into
         // place, which is atomic on the same filesystem.
+        //
+        // The payload is a serialized plan: the package names, versions and advisory ids of a project
+        // that is probably private. It is created owner-only rather than created and then chmodded,
+        // because between those two steps anyone on the machine can read it, and because the rename
+        // carries the new file's permissions over the protected one it replaces.
+        $umask = umask(0077);
         $written = @file_put_contents($file . '.part', $payload);
+        umask($umask);
         if ($written !== strlen($payload) || !@rename($file . '.part', $file)) {
             @unlink($file . '.part');
         }

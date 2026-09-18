@@ -73,6 +73,11 @@ final class CycloneDxRenderer
                     'version' => $plan->metadata['engine_version'] ?? 'dev',
                 ]]],
                 'properties' => array_values(array_filter([
+                    // A bill of materials has nowhere to say "this scan did not finish", and an empty
+                    // vulnerability list is otherwise indistinguishable from a clean one. Whoever
+                    // consumes this has to be able to tell that the list is not an answer.
+                    self::property('composer-remediate:scan_status', ScanOutcome::succeeded($plan) ? 'complete' : 'incomplete'),
+                    self::property('composer-remediate:scan_incomplete_reason', ScanOutcome::failureMessage($plan)),
                     self::property('composer-remediate:composer_version', $plan->metadata['composer_version'] ?? null),
                     self::property('composer-remediate:advisory_source', $plan->metadata['advisory_source'] ?? null),
                     self::property('composer-remediate:composer_lock_sha256', $plan->metadata['composer_lock_sha256'] ?? null),

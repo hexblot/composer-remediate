@@ -44,7 +44,14 @@ if [ -n "${VERIFY_DATABASE:-}" ]; then
   echo "Verifying the advisory database's build provenance against $VERIFY_DATABASE…"
   composer remediate:db-status --database-path="$work/advisories.sqlite" > /dev/null
   gh attestation verify "$work/advisories.sqlite" --repo "$VERIFY_DATABASE"
-  REMEDIATE_ARGS="--database-path=$work/advisories.sqlite ${REMEDIATE_ARGS:-}"
+  database_digest="$(sha256sum "$work/advisories.sqlite" | cut -d' ' -f1)"
+  echo "Verified sha256 $database_digest; every later command is pinned to it."
+  # Pinned by content, not by pathname. A path on its own stays refreshable: the scan that follows
+  # would happily replace the verified file with a newer publication and read bytes nothing checked.
+  # --database-location reads the file as it is, and --database-sha256 refuses anything whose bytes
+  # differ. They go after the caller's own arguments so an --database-location in `args` cannot
+  # quietly select a different source than the one that was verified.
+  REMEDIATE_ARGS="${REMEDIATE_ARGS:-} --database-location=$work/advisories.sqlite --database-sha256=$database_digest"
 fi
 
 # shellcheck disable=SC2086  # REMEDIATE_ARGS is a deliberate argument list

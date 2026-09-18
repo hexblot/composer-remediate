@@ -59,8 +59,15 @@ final class SarifRenderer
                     ],
                 ],
                 'invocations' => [[
-                    'executionSuccessful' => true,
+                    // SARIF distinguishes a run that completed from one that did not, and consumers
+                    // read it: an empty result list on a successful invocation is a clean bill of
+                    // health. A run that could not establish coverage has not given one.
+                    'executionSuccessful' => ScanOutcome::succeeded($plan),
                     'exitCode' => $plan->exitCode(),
+                    'toolExecutionNotifications' => array_values(array_filter([
+                        ...(ScanOutcome::failureMessage($plan) !== null ? [self::notification('error', (string) ScanOutcome::failureMessage($plan))] : []),
+                        ...array_map(static fn (string $w): array => self::notification('warning', $w), $plan->warnings),
+                    ])),
                     'properties' => array_filter([
                         'composer_version' => $plan->metadata['composer_version'] ?? null,
                         'advisory_source' => $plan->metadata['advisory_source'] ?? null,
@@ -69,6 +76,20 @@ final class SarifRenderer
                 ]],
                 'results' => $results,
             ]],
+        ];
+    }
+
+    /** @return array<string, mixed> */
+    /**
+     * One entry for the invocation's notification list: what the run could not do, or was unsure of.
+     *
+     * @return array<string, mixed>
+     */
+    private static function notification(string $level, string $text): array
+    {
+        return [
+            'level' => $level,
+            'message' => ['text' => $text],
         ];
     }
 

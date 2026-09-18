@@ -14,6 +14,11 @@
         <testsuite name="fixtures">
             <directory>tests/Integration</directory>
         </testsuite>
+        <!-- Invariants the tool has to hold whatever else changes, stated once and checked over a
+             range of inputs rather than the single case that first broke each of them. -->
+        <testsuite name="contract">
+            <directory>tests/Contract</directory>
+        </testsuite>
     </testsuites>
     <source>
         <include>
