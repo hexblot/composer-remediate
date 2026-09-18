@@ -15,16 +15,29 @@ for what a version number will promise.
   had been dropped; a document whose affected list was unreadable altogether was counted with the
   records that are simply about another ecosystem. A lock could be reported clean, with no coverage
   gaps and no warnings, against data that had been read in part. Anything unreadable is now a gap,
-  attributed to its package where the record says which, and to none where it does not. A commit range
-  is still skipped silently, because every record carrying one also carries the version range that
-  matters; on the real OSV feed the change adds no gaps to 6532 advisories.
+  attributed to its package where the record says which, and to none where it does not. That holds
+  wherever the unreadable part sits: a range that is not a range, an event that is not an event, a
+  version list with something else in it, an affected list that cannot be read at all, and a document
+  where nothing survived, which must not be filed as belonging to another ecosystem since that is the
+  one classification that records nothing. A commit range is still skipped silently, because every
+  record carrying one also carries the version range that matters. Measured against the real OSV feed
+  before and after the change: 5 coverage gaps in 6532 advisories either way, so nothing here cries
+  wolf.
 
 - **Verifying the advisory database did not bind the scan to what was verified.** The action checked a
   file's build provenance and then named it by path, and a path stays refreshable: the scan that
   followed could replace the verified copy with a newer publication and read bytes nothing had
   checked. It now pins the verified digest, and the pin goes after the caller's own arguments so that
   an argument naming another source cannot select one that was never verified. Both the planning run
-  and the applying run carry it.
+  and the applying run carry it, and the documented recipe for doing this by hand pins the digest too
+  rather than naming the path alone.
+
+- **A pinned digest could be sidestepped by naming a different advisory source.** `--advisories-file`
+  was honoured before the database was looked at, so a run carrying both it and `--database-sha256`
+  read the file and never checked the pin: an empty snapshot reported the lock clean, with or without
+  `--apply`, and an incorrect digest went unnoticed. A pin is a statement that the operator will accept
+  that database and nothing else, so naming another source in the same run is refused rather than one
+  of the two being chosen silently. `--no-database` was already refused this way.
 
 - **SARIF and CycloneDX called an incomplete scan successful.** A run that could not establish
   coverage exits 4, but its SARIF said `executionSuccessful` with an empty result list and no
@@ -98,6 +111,11 @@ for what a version number will promise.
   parses back to the arguments it was built from. Each is checked over a range of inputs rather than
   the single case that first broke it, and writing them found one fault the review had not: CycloneDX
   reporting an incomplete scan as an empty bill of materials.
+
+  The two invariants that describe a file's whole lifetime watch it while it is being written rather
+  than inspecting it once it is finished, because a file created readable and tightened afterwards
+  looks identical at the end and anyone on the machine could have read it in between. Both were
+  checked against a deliberately reintroduced fault to confirm they notice.
 
 - **The advisory database says how often its sources disagreed.** Sources that disagree about which
   versions an advisory affects are unioned, so a version any source calls affected is affected. That is

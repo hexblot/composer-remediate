@@ -73,6 +73,47 @@ final class VerifiedDatabaseContractTest extends TestCase
         }
     }
 
+    public function testNothingCanReadAdvisoriesFromOutsideThePinWhileThePinIsInForce(): void
+    {
+        // Binding a run to particular bytes is only worth anything if nothing else can answer the same
+        // question. An option that selects a different advisory source is not another way of honouring
+        // the pin, it is ignoring it: the pin goes unchecked and a source naming no advisories reports
+        // the lock clean. Whatever is added later that can answer "which advisories apply", it belongs
+        // in this list.
+        $project = new ScriptedProject(['acme/lib' => '^1'], [['acme/lib', '1.0.0']]);
+        try {
+            $path = $project->directory . '/verified.sqlite';
+            (new DatabaseWriter())->write([self::advisory()], [], $path);
+            $digest = hash_file('sha256', $path);
+            self::assertIsString($digest);
+            $runner = new CommandRunner();
+            $pinned = ['--database-location' => $path, '--database-sha256' => $digest];
+
+            // With the pin alone the advisory is found, which is what the alternatives must not undo.
+            $control = $runner->run(['command' => 'remediate', '--format' => 'json'] + $pinned, $project->directory);
+            self::assertSame(2, $control->exitCode, $control->describe());
+
+            $empty = $project->directory . '/empty.json';
+            file_put_contents($empty, '{"advisories":{}}');
+            $elsewhere = [
+                'a file of advisories' => ['--advisories-file' => $empty],
+                'the configured repositories' => ['--no-database' => true],
+            ];
+            foreach ($elsewhere as $what => $option) {
+                foreach ([[], ['--apply' => true]] as $extra) {
+                    $run = $runner->run(['command' => 'remediate', '--format' => 'json'] + $option + $extra + $pinned, $project->directory);
+                    self::assertSame(
+                        4,
+                        $run->exitCode,
+                        sprintf('%s answered instead of the pinned database%s', $what, $extra === [] ? '' : ', while applying') . "\n" . $run->describe(),
+                    );
+                }
+            }
+        } finally {
+            $project->destroy();
+        }
+    }
+
     public function testTheActionPinsEveryCommandToWhatItVerified(): void
     {
         // The action is the path most adopters take, and it is bash rather than PHP, so the guarantee
