@@ -70,7 +70,11 @@ final class RangeNormalizer
                 return null;
             }
         }
-        array_push($parts, ...$this->explicitVersionPieces($versions, $rangeConstraint));
+        $explicit = $this->explicitVersionPieces($versions, $rangeConstraint);
+        if ($explicit === null) {
+            return null;
+        }
+        array_push($parts, ...$explicit);
 
         return $this->validate(implode('|', array_unique($parts)));
     }
@@ -145,10 +149,18 @@ final class RangeNormalizer
                 // as the whole truth.
                 return null;
             }
+            // Every event has to be recognised. One naming a boundary this does not know, or naming a
+            // known one with something other than a version in it, is a boundary going unread: the
+            // range would come back looking like the whole truth with one of its edges missing.
+            $recognised = false;
             foreach (['introduced', 'fixed', 'last_affected', 'limit'] as $kind) {
-                if (!isset($event[$kind]) || !is_string($event[$kind])) {
+                if (!isset($event[$kind])) {
                     continue;
                 }
+                if (!is_string($event[$kind])) {
+                    return null;
+                }
+                $recognised = true;
                 $raw = $event[$kind];
                 if ($kind === 'limit' && $raw === '*') {
                     $unlimited = true;
@@ -169,6 +181,9 @@ final class RangeNormalizer
                 $events[] = ['kind' => $kind, 'version' => $version, 'normalized' => $normalized];
                 break;
             }
+            if (!$recognised) {
+                return null;
+            }
         }
 
         return [$events, $unlimited ? null : $limit]; // "below any limit" is always true once one limit is infinite
@@ -180,9 +195,9 @@ final class RangeNormalizer
      *
      * @param list<string> $versions
      *
-     * @return list<string>
+     * @return list<string>|null null when a listed version cannot be placed at all
      */
-    private function explicitVersionPieces(array $versions, ?ConstraintInterface $covered): array
+    private function explicitVersionPieces(array $versions, ?ConstraintInterface $covered): ?array
     {
         $pieces = [];
         foreach ($versions as $version) {
@@ -190,7 +205,9 @@ final class RangeNormalizer
             try {
                 $normalized = $this->parser->normalize($version);
             } catch (\UnexpectedValueException) {
-                continue;
+                // A version named as affected that cannot be understood is not a version to leave out;
+                // it is one this cannot rule in or out, which is what a coverage gap is for.
+                return null;
             }
             if ($covered !== null && $covered->matches(new Constraint('==', $normalized))) {
                 continue;
@@ -236,10 +253,17 @@ final class RangeNormalizer
     {
         $parts = [];
         foreach ($branches as $branch) {
+            // A branch this cannot read covers versions the readable branches may not. Skipping it
+            // would hand back the readable branches as though they were the whole advisory, which is
+            // the same silent narrowing the OSV path refuses.
             if (!is_array($branch) || !is_array($branch['versions'] ?? null)) {
-                continue;
+                return null;
             }
-            $constraints = array_values(array_filter(array_map(static fn ($v): string => is_string($v) ? trim($v) : '', $branch['versions']), static fn (string $v): bool => $v !== ''));
+            $versions = array_values($branch['versions']);
+            $constraints = array_values(array_filter(array_map(static fn ($v): string => is_string($v) ? trim($v) : '', $versions), static fn (string $v): bool => $v !== ''));
+            if (count($constraints) !== count($versions)) {
+                return null;
+            }
             if ($constraints !== []) {
                 $parts[] = implode(',', $constraints);
             }
