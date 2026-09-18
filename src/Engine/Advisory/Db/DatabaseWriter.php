@@ -35,7 +35,16 @@ final class DatabaseWriter
         @unlink($tmp);
         $hash = self::datasetHash($advisories, array_keys(array_filter($exploits, static fn (Enrichment\ExploitRecord $r): bool => $r->kevAdded !== null)), $gaps);
 
-        $pdo = new \PDO('sqlite:' . $tmp, null, null, [\PDO::ATTR_ERRMODE => \PDO::ERRMODE_EXCEPTION]);
+        // A build with --include carries advisories the operator did not publish, and the file is
+        // built beside its final path, which is often a shared cache directory. It is created
+        // owner-only rather than created and then chmodded: between those two steps anyone on the
+        // machine can read it, and the rename carries these permissions over to the final file.
+        $umask = umask(0077);
+        try {
+            $pdo = new \PDO('sqlite:' . $tmp, null, null, [\PDO::ATTR_ERRMODE => \PDO::ERRMODE_EXCEPTION]);
+        } finally {
+            umask($umask);
+        }
         self::createSchema($pdo);
         $pdo->beginTransaction();
         $conflicts = self::insertAdvisories($pdo, $advisories);

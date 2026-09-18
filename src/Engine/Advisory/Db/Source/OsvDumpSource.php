@@ -52,7 +52,7 @@ final class OsvDumpSource implements AdvisorySourceInterface
             }
             $record = $this->record($doc, $reason, $packages, $unreadable);
             if ($record === null) {
-                ++$skipped[$reason ?? 'no usable range'];
+                $skipped[$reason ?? 'no usable range'] = ($skipped[$reason ?? 'no usable range'] ?? 0) + 1;
                 if ($reason !== 'no Packagist package') {
                     // A record about a Packagist package that could not be read is a coverage gap for that package.
                     $id = is_string($doc['id'] ?? null) ? $doc['id'] : basename($name, '.json');
@@ -66,9 +66,9 @@ final class OsvDumpSource implements AdvisorySourceInterface
             $records[] = $record;
             // A readable document may still carry a package entry whose range cannot be expressed; that
             // package's coverage is incomplete even though the record is kept for the others.
-            foreach ($unreadable as $package) {
+            foreach ($unreadable as [$package, $why]) {
                 ++$partial;
-                $this->gaps[] = new CoverageGap('OSV', $record->sources[0]->remoteId, $package, 'no usable range');
+                $this->gaps[] = new CoverageGap('OSV', $record->sources[0]->remoteId, $package, $why);
             }
         });
         $reasons = array_filter($skipped);
@@ -114,10 +114,10 @@ final class OsvDumpSource implements AdvisorySourceInterface
     /**
      * @param array<mixed>      $doc
      * @param list<string>|null $packages
-     * @param list<string>|null $unreadable
+     * @param list<array{string|null, string}>|null $unreadable
      * @param-out string|null $reason
      * @param-out list<string> $packages   Packagist packages the document names, for gap reporting
-     * @param-out list<string> $unreadable Packagist packages whose range could not be expressed although the record is kept
+     * @param-out list<array{string|null, string}> $unreadable package and reason for each part of the record that could not be read although the record is kept; the package is null when the entry did not say which it was about
      */
     private function record(array $doc, ?string &$reason = null, ?array &$packages = null, ?array &$unreadable = null): ?NormalizedAdvisory
     {
@@ -133,8 +133,26 @@ final class OsvDumpSource implements AdvisorySourceInterface
         $affected = [];
         $perPackage = [];
         $sawPackagist = false;
-        foreach (is_array($doc['affected'] ?? null) ? $doc['affected'] : [] as $entry) {
-            if (!is_array($entry) || !is_array($entry['package'] ?? null)) {
+        // A document with no affected list is about nothing this cares about. A document whose affected
+        // list is there but cannot be read is a different thing: it might have been about a Packagist
+        // package, and nothing here can say which, so it becomes a gap attributed to no package rather
+        // than being counted with the records that are simply about another ecosystem.
+        $affectedList = $doc['affected'] ?? null;
+        if ($affectedList !== null && !is_array($affectedList)) {
+            $reason = 'unreadable affected list';
+
+            return null;
+        }
+        foreach (is_array($affectedList) ? $affectedList : [] as $entry) {
+            // An entry that cannot be read at all might have been about a Packagist package. The rest
+            // of the document is still worth keeping, so the record survives and the unreadable entry
+            // becomes a gap attributed to no package, the same way a range that cannot be expressed
+            // becomes one attributed to its package.
+            if (!is_array($entry) || (isset($entry['package']) && !is_array($entry['package']))) {
+                $unreadable[] = [null, 'unreadable affected entry'];
+                continue;
+            }
+            if (!is_array($entry['package'] ?? null)) {
                 continue;
             }
             $package = $entry['package'];
@@ -151,10 +169,10 @@ final class OsvDumpSource implements AdvisorySourceInterface
             if ($expression !== null) {
                 $perPackage[strtolower($package['name'])][] = $expression;
             } else {
-                $unreadable[] = strtolower($package['name']);
+                $unreadable[] = [strtolower($package['name']), 'no usable range'];
             }
         }
-        $unreadable = array_values(array_unique($unreadable));
+        $unreadable = array_values(array_unique($unreadable, SORT_REGULAR));
         foreach ($perPackage as $name => $expressions) {
             $affected[] = new AffectedRange($name, implode('|', array_unique($expressions)), 'OSV');
         }

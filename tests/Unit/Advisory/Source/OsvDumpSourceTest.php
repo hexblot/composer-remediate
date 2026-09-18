@@ -98,7 +98,7 @@ final class OsvDumpSourceTest extends TestCase
         self::assertCount(2, $records);
         self::assertSame([
             'OSV: downloading the Packagist ecosystem archive…',
-            'OSV: 6 documents, 2 records, skipped: 2 invalid JSON, 1 no Packagist package, 1 no usable range (Packagist records recorded as coverage gaps)',
+            'OSV: 6 documents, 2 records, skipped: 2 invalid JSON, 1 no Packagist package, 1 no usable range (Packagist records recorded as coverage gaps), 1 package entry unreadable inside kept records (recorded as coverage gaps)',
         ], $log);
 
         $ghsa = $records[0];
@@ -130,12 +130,16 @@ final class OsvDumpSourceTest extends TestCase
         self::assertFalse(self::affects($withdrawn->affected[0]->constraint, '3.0.1'));
 
         $gaps = $source->gaps();
-        self::assertCount(3, $gaps);
+        self::assertCount(4, $gaps);
         $byId = [];
         foreach ($gaps as $gap) {
             $byId[$gap->remoteId] = $gap;
         }
-        self::assertSame(['GHSA-bad-version', 'broken', 'noid'], array_keys($byId));
+        // The kept record carries an affected entry that is not readable at all. It might have been
+        // about a Packagist package, so it is a gap attributed to no package rather than nothing.
+        self::assertSame(['GHSA-aaaa-bbbb-cccc', 'GHSA-bad-version', 'broken', 'noid'], array_keys($byId));
+        self::assertNull($byId['GHSA-aaaa-bbbb-cccc']->package);
+        self::assertSame('unreadable affected entry', $byId['GHSA-aaaa-bbbb-cccc']->reason);
         self::assertSame('acme/unreadable', $byId['GHSA-bad-version']->package);
         self::assertSame('no usable range', $byId['GHSA-bad-version']->reason);
         self::assertNull($byId['broken']->package);

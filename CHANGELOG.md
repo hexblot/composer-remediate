@@ -10,6 +10,44 @@ for what a version number will promise.
 
 ### Fixed
 
+- **Advisory data that could only be read in part became complete coverage.** A record with one range
+  this could read and one it could not survived with the part that parsed, and nothing said the rest
+  had been dropped; a document whose affected list was unreadable altogether was counted with the
+  records that are simply about another ecosystem. A lock could be reported clean, with no coverage
+  gaps and no warnings, against data that had been read in part. Anything unreadable is now a gap,
+  attributed to its package where the record says which, and to none where it does not. A commit range
+  is still skipped silently, because every record carrying one also carries the version range that
+  matters; on the real OSV feed the change adds no gaps to 6532 advisories.
+
+- **Verifying the advisory database did not bind the scan to what was verified.** The action checked a
+  file's build provenance and then named it by path, and a path stays refreshable: the scan that
+  followed could replace the verified copy with a newer publication and read bytes nothing had
+  checked. It now pins the verified digest, and the pin goes after the caller's own arguments so that
+  an argument naming another source cannot select one that was never verified. Both the planning run
+  and the applying run carry it.
+
+- **SARIF and CycloneDX called an incomplete scan successful.** A run that could not establish
+  coverage exits 4, but its SARIF said `executionSuccessful` with an empty result list and no
+  notification, and its CycloneDX carried an empty vulnerability list with nothing to say the scan had
+  not finished. To anything reading those, that is a clean bill of health. Every format now takes its
+  answer from one place, so none can call a run successful that another calls failed. The GitLab
+  report was already right and is unchanged.
+
+- **A baselined advisory went on gating the run through a severity it was accepted at.** Acceptance was
+  checked against the package as a whole and the severity threshold against every advisory on it,
+  including accepted ones, so a package with an accepted high-severity advisory and a new low-severity
+  one gated under `--fail-on high`. Both tests now apply to the same individual advisory.
+
+- **A reported command could mean something else when pasted into a shell.** What `--apply` records as
+  having run was built by joining arguments with spaces, so a constraint like `--with acme/lib:>=1.2`
+  became a redirection: a shell would write a file called `=1.2` and hand Composer no constraint.
+  Recorded commands are rendered the same way printed recommendations always were.
+
+- **Worker results and freshly built databases were created world-readable.** Both were written and
+  then tightened, which leaves a window, and on a rename it is the new file's permissions that
+  survive. Both are created owner-only now. They hold the shape of a private project, and a build with
+  `--include` holds advisories the operator has not published.
+
 - **A worker that died took the whole run with it.** A planning worker killed by the out-of-memory
   killer, which is what happens on a large lock file with too many workers, failed the run and
   discarded every package already planned. What it had finished is kept now, and whatever it had not
@@ -51,6 +89,15 @@ for what a version number will promise.
   are covered. Every PHP class in the namespace is internal, the recommendation itself moves when the
   advisory data moves, and anything written for a person to read may be reworded. The deprecation
   period is stated, so removing an option has a defined shape. Not in force while the version is 0.x.
+
+- **A contract test suite** (`composer test:contract`), for the guarantees that hold the tool together
+  rather than the behaviour of any one class. Advisory data that cannot be fully read never yields a
+  clean result; what a scan consumes is what was verified; an incomplete run is never presented as
+  successful by any format; files holding private data are owner-only from the moment they exist;
+  acceptance and severity compose to the same answer however they are combined; a printed command
+  parses back to the arguments it was built from. Each is checked over a range of inputs rather than
+  the single case that first broke it, and writing them found one fault the review had not: CycloneDX
+  reporting an incomplete scan as an empty bill of materials.
 
 - **The advisory database says how often its sources disagreed.** Sources that disagree about which
   versions an advisory affects are unioned, so a version any source calls affected is affected. That is

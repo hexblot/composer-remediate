@@ -105,10 +105,25 @@ final class Candidate
     {
         $parts = [];
         foreach ([...$this->requireArgumentLists(), $this->updateArguments($minimalChangesSupported)] as $arguments) {
-            $parts[] = 'composer ' . implode(' ', array_map(self::quote(...), $arguments));
+            $parts[] = self::render($arguments);
         }
 
         return implode(' && ', $parts);
+    }
+
+    /**
+     * One argument list as a command someone can paste into a shell and get these arguments back.
+     *
+     * Every place that shows a command has to come through here. A constraint like
+     * `--with acme/lib:>=1.2` pasted unquoted is a redirection: the shell writes a file called `=1.2`
+     * and Composer never sees the constraint, so a report that renders arguments by joining them with
+     * spaces is not describing the command that ran.
+     *
+     * @param list<string> $arguments
+     */
+    public static function render(array $arguments): string
+    {
+        return 'composer ' . implode(' ', array_map(self::quote(...), $arguments));
     }
 
     /**

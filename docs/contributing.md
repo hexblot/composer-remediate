@@ -62,6 +62,14 @@
   for the matrix once. The Actions tab's manual run has a `full` switch for the whole matrix without a
   pull request. The advisory
   database workflow polls the feeds every six hours and publishes only when the dataset changed.
+- `composer test:contract` is a suite apart from the others. It states the guarantees the tool has to
+  hold whatever else changes, rather than the behaviour of any one class: advisory data that cannot be
+  fully read never yields a clean result, what a scan consumes is what was verified, an incomplete run
+  is never presented as successful by any report format, files holding private data are owner-only
+  from the moment they exist, acceptance and severity compose to the same answer however combined, and
+  a printed command parses back to the arguments it was built from. Each is checked over a range of
+  inputs rather than the one case that first broke it. A new report format, advisory source or
+  temporary file belongs in the relevant invariant rather than only in its own test.
 - The full run also executes the suite on Windows and macOS with PHP 8.4. What this tool does is
   filesystem work, subprocess execution and process forking, and all three differ between operating
   systems: replacing an open file by rename, the meaning of `0700`, path separators, whether `fork`

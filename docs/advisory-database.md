@@ -322,11 +322,26 @@ publish a dataset more than 5% smaller than the one it would replace, because a 
 with *part* of its data. Both exist because a shrunken database is the one bad outcome with no
 symptom: it is checksum-verified, attested and fresh, and it reports vulnerable locks clean.
 
-**What to do if it is stale anyway.** Nothing here can tell you a stale database is current: your
-copy is confirmed by content on every run, and its age is reported when it cannot be confirmed.
-`--database-max-age` turns that age into a failure at a threshold you choose, which is the setting to
-reach for if you would rather a pipeline stop than proceed on old data. `--rebuild-database` builds
-from the feeds yourself instead of waiting.
+**What to do if it is stale anyway.** Two different things can be old, and only one of them has a
+switch.
+
+Your *copy* can be old, which happens when the publisher cannot be reached and the copy at your path
+is used unconfirmed. Its age is reported when that happens, and `--database-max-age` turns that age
+into a failure at a threshold you choose. That is the setting for an unreachable publisher, and it is
+all it covers.
+
+The *publication* can be old, which is this project's pipeline having stopped while still answering.
+`--database-max-age` does not cover that: a reachable publisher serving a database built years ago
+passes it, because the copy was confirmed current against what the publisher offers. Nothing about a
+successful confirmation says the publisher is still building. To police that, read `built_at`
+yourself:
+
+```bash
+composer remediate:db-status | grep built_at
+```
+
+and fail your pipeline on it, or pin `--database-sha256` to a build you chose so that a change has to
+be a decision. `--rebuild-database` sidesteps the question by building from the feeds yourself.
 
 **Verifying what you downloaded.** Every release carries the database, a `.sha256` sidecar and a
 GitHub build-provenance attestation. The checksum is verified on every download without being asked.

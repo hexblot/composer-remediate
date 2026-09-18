@@ -114,17 +114,25 @@ final class Plan
         return $keys;
     }
 
-    /** Whether a finding counts towards the exit code under the severity threshold and the baseline. */
+    /**
+     * Whether a package counts towards the exit code under the severity threshold and the baseline.
+     *
+     * Both tests apply to the same individual advisory, and that is the whole of the rule. Asking
+     * whether the package as a whole was accepted and then asking whether any of its advisories meets
+     * the threshold answers about two different sets: an accepted advisory would go on gating the run
+     * through a severity it was accepted at, as soon as anything else on that package was not
+     * accepted. An advisory gates only if it was not accepted and it meets the threshold.
+     */
     public function countsForExit(FindingPlan $plan): bool
     {
-        if ($this->isBaselined($plan)) {
-            return false;
-        }
-        if ($this->failOn === null) {
-            return true;
-        }
-        $threshold = Severity::fromLabel($this->failOn)?->rank() ?? 0;
+        $threshold = $this->failOn === null ? null : (Severity::fromLabel($this->failOn)?->rank() ?? 0);
         foreach ($plan->allFindings() as $finding) {
+            if ($this->baseline !== [] && isset($this->baseline[strtolower($finding->key())])) {
+                continue;
+            }
+            if ($threshold === null) {
+                return true;
+            }
             $rank = Severity::fromLabel($finding->advisory->severity)?->rank();
             // Missing or unrecognised severities are unknown, and unknown always counts.
             if ($rank === null || $rank >= $threshold) {
