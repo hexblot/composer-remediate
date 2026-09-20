@@ -5,8 +5,23 @@ All notable changes to this project are documented here. The format follows
 
 ## [Unreleased]
 
+[Unreleased]: https://github.com/hexblot/composer-remediate/compare/v0.9.0...HEAD
+
+## [0.9.0] - 2026-09-20
+
 Groundwork for a stable 1.0. See [compatibility](https://hexblot.github.io/composer-remediate/compatibility/)
 for what a version number will promise.
+
+The release that makes a clean result mean something. Every reader of advisory data now refuses
+rather than skips: anything a source could not interpret is recorded as a coverage gap, and a lock
+carrying gaps is not called clean until they are read and accepted. That came out of a seventh
+adversarial review and four rechecks of the answers to it, each of which found another way for data
+read in part to read as complete: a range, an event, a container, a whole reader nothing had looked
+at, and finally the identity a record is filed under.
+
+What it costs: a run against a database with a gap about your lock exits `4` rather than `0` until
+`--accept-coverage-gaps` is given. What it does not change: nothing is written to a project without
+`--apply`, and no recommendation is made that a solve did not verify.
 
 Adversarial testing of this tool uncovered malformed package metadata in a live GitHub Advisory
 Database record, which kept the advisory from matching the Composer package it was about; the
@@ -209,8 +224,6 @@ explains what to do with one.
   while publishing nothing is no longer silent. The documentation says what watches it, how to verify
   the build attestation, and how to publish your own if this project stops.
 
-[Unreleased]: https://github.com/hexblot/composer-remediate/compare/v0.8.1...HEAD
-
 ## [0.8.1] - 2026-09-14
 
 A performance release, and nothing about what a run concludes changes. Almost all of a run is
@@ -389,6 +402,7 @@ Answers to an Aikido scan of the workflows.
   pull request ready for review runs the full PHP and Composer matrices. Iterating in a draft therefore
   costs what a push used to, and the matrix is paid for once, when the work is done.
 
+[0.9.0]: https://github.com/hexblot/composer-remediate/releases/tag/v0.9.0
 [0.8.1]: https://github.com/hexblot/composer-remediate/releases/tag/v0.8.1
 [0.8.0]: https://github.com/hexblot/composer-remediate/releases/tag/v0.8.0
 
