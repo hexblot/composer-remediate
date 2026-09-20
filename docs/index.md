@@ -73,7 +73,13 @@ one pull request carrying every fix it could verify. That release also answers a
 adoption assessment of those features, nine findings with a test each. 0.8.1 adds `--parallelize`:
 almost all of a run is Composer solving, and the packages are planned independently of one another,
 so planning four at once takes a 45-second run on a 201-package lock file down to about 15, with the
-same report at the end.
+same report at the end. 0.9.0 is an assurance release, answering a seventh adversarial review and four
+rechecks of the answers to it, all on one theme: advisory data that could be read only in part was
+reading as complete coverage, so a lock could be called clean against records the build had failed to
+interpret. Every reader now refuses rather than skips, a contract suite states that guarantee over all
+three of them, the suite runs on Windows and macOS, and a compatibility policy says what a version
+number covers. The rule that a package's identity has to be readable before a record is filed under it
+found a malformed record in the live GitHub Advisory Database, whose correction is filed upstream.
 
 ## Start here
 
