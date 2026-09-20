@@ -74,9 +74,13 @@ esac
 STUB
 cat > "$stub/gh" <<'STUB'
 #!/usr/bin/env bash
+# Every call is recorded, so the checks can see what the action asked for and not merely that it
+# did not fail. `pr list` answers with EXISTING_PR, which is how the second run meets a pull
+# request that is already open and takes the edit path a scheduled job takes every day but the first.
+printf '%s\n' "$*" >> "$GH_LOG"
 case "$1 ${2:-}" in
   "repo view") echo main ;;
-  "pr list") echo "" ;;
+  "pr list") printf '%s' "${EXISTING_PR:-}" ;;
   "pr create") echo "https://github.test/acme/app/pull/1" ;;
   "pr edit") ;;
 esac
@@ -106,6 +110,8 @@ export REAL_GIT="$(command -v git)"
 export LOCAL_REMOTE="$remote"
 export PUSH_LOG="$sandbox/push.log"
 : > "$PUSH_LOG"
+export GH_LOG="$sandbox/gh.log"
+: > "$GH_LOG"
 export PATH="$stub:$PATH"
 export GITHUB_OUTPUT="$sandbox/output.txt"
 : > "$GITHUB_OUTPUT"
@@ -115,8 +121,8 @@ export BRANCH='remediate/advisories'
 export BASE='main'
 export COMMIT_MESSAGE='Apply verified Composer security fixes'
 export PR_TITLE='Security: apply verified Composer fixes'
-export PR_LABELS=''
-export PR_DRAFT='false'
+export PR_LABELS='security,dependencies'
+export PR_DRAFT='true'
 export WITH_INSTALL='false'
 export REPOSITORY='acme/app'
 
@@ -158,20 +164,32 @@ contains "the push kept its lease" "--force-with-lease" "$PUSH_LOG"
 # no effect. What this harness can check is that every call talking to the remote resets that header;
 # which credential a server actually receives needs a real HTTP server, and is not covered here.
 contains "the calls that talk to the remote reset the checkout's authorization header" "http.https://github.com/.extraheader=" "$PUSH_LOG"
+contains "the pull request was opened with the labels it was given" "--label security,dependencies" "$GH_LOG"
+contains "and as a draft, because that is what was asked for" "--draft" "$GH_LOG"
 
 echo
-echo "A second run, with the branch already on the remote:"
+echo "A second run, meeting the pull request the first one opened:"
 cd "$work"
 "$REAL_GIT" checkout -q feature
 printf '{"packages":[{"name":"acme/lib","version":"1.0.0"}]}\n' > composer.lock
 "$REAL_GIT" checkout -q -- . 2>/dev/null || true
 : > "$GITHUB_OUTPUT"
+: > "$GH_LOG"
+export EXISTING_PR='https://github.test/acme/app/pull/1'
 bash "$root/action/run.sh" > "$sandbox/run2.out" 2> "$sandbox/run2.err" || {
   echo "  the second run failed, which is the failure a scheduled job hides:" >&2
   tail -5 "$sandbox/run2.err" >&2
   failures=$((failures + 1))
 }
 check "the second run also opened or updated a pull request" "$(grep -c 'opened=true' "$GITHUB_OUTPUT")" "1"
+check "it updated the open pull request rather than opening a second one" "$(grep -c 'pr create' "$GH_LOG")" "0"
+contains "the update carried the labels too, so a label added later still arrives" "--add-label security,dependencies" "$GH_LOG"
+if grep -qE 'pr edit.*(--draft|--ready)' "$GH_LOG"; then
+  echo "  FAIL the update argued with whoever marked the pull request ready for review" >&2
+  failures=$((failures + 1))
+else
+  echo "  ok   the update left ready-for-review alone, which is a person's decision once the pull request exists"
+fi
 
 echo
 if [ "$failures" -eq 0 ]; then

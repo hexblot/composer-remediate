@@ -34,10 +34,15 @@ inputs:
     description: Title of the pull request.
     default: 'Security: apply verified Composer fixes'
   labels:
-    description: Comma-separated labels for the pull request.
+    description: >-
+      Comma-separated labels for the pull request. Applied on every run, so a label added here later
+      reaches the pull request that is already open.
     default: ''
   draft:
-    description: Open the pull request as a draft.
+    description: >-
+      Open the pull request as a draft. Applies when the pull request is created; one that is already
+      open is left as it is, because whether it is ready for review is a decision somebody made after
+      it was opened.
     default: 'false'
   install:
     description: >-

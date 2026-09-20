@@ -178,7 +178,9 @@ and with what fix, what ran, and what the applying run warned about. It is rende
 | `install` | `false` | `true` runs the update with an install, touching `vendor/`. A pull request normally carries only the manifest and the lock. |
 | `token` | `GITHUB_TOKEN` | A pull request opened with the default token does not start other workflows. Supply an app or personal token when the pull request must run your CI. |
 | `version` | `*` | Constraint for the plugin itself, for pinning the tool. |
-| `title`, `labels`, `draft`, `commit-message`, `working-directory`, `skip-install` | | |
+| `labels` | empty | Comma-separated, applied on every run, so a label added later reaches the pull request already open. |
+| `draft` | `false` | Applies when the pull request is created. One already open is left as it is: whether it is ready for review is your decision, not a scheduled run's. |
+| `title`, `commit-message`, `working-directory`, `skip-install` | | |
 
 Outputs: `opened`, `pull-request`, `exit-code-before`, `exit-code-after`.
 

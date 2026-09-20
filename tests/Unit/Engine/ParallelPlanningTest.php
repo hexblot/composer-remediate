@@ -145,23 +145,41 @@ final class ParallelPlanningTest extends TestCase
     {
         // What the out-of-memory killer does to a worker on a large lock file. The packages already
         // finished are kept and the rest are planned here, rather than an hour of solving being lost.
-        $project = $this->project();
-        $solver = (new FakeSolver())
-            ->resolves('composer update acme/a', ScriptedProject::lock([['acme/a', '1.1.0'], ['acme/b', '1.0.0'], ['acme/c', '1.0.0']]))
-            ->resolves('composer update acme/b', ScriptedProject::lock([['acme/a', '1.0.0'], ['acme/b', '1.1.0'], ['acme/c', '1.0.0']]))
-            ->resolves('composer update acme/c', ScriptedProject::lock([['acme/a', '1.0.0'], ['acme/b', '1.0.0'], ['acme/c', '1.1.0']]));
-        $planner = new Planner(
-            ScriptedProject::advisories(self::advisoryList(), true, true),
-            new KilledOnceSolver($solver),
-            parallelism: 3,
-        );
-        $plan = $planner->plan($project->context(), $project->workspace());
+        $plan = $this->planWithAWorkerThatDies();
 
         self::assertCount(3, $plan->findings, 'every package is planned, one way or the other');
         foreach ($plan->findings as $finding) {
             self::assertNotNull($finding->recommended(), $finding->finding->packageName);
         }
         self::assertStringContainsString('planned one at a time instead', implode("\n", $plan->warnings), 'the report has to say the run degraded');
+    }
+
+    public function testADegradedRunDoesNotCountTheWorkItRedoesTwice(): void
+    {
+        // The worker is killed before it finishes a single solve, so a degraded run does exactly the
+        // work a healthy one does. The count has to say so. A package re-planned in this process has
+        // already counted its own solves; counting its total again reported solver runs that never
+        // happened, in the metadata whose whole purpose is to let someone reproduce the run.
+        $healthy = $this->plan(3);
+        $degraded = $this->planWithAWorkerThatDies();
+
+        self::assertSame(
+            $healthy->metadata['solver_runs'],
+            $degraded->metadata['solver_runs'],
+            'the same work, counted twice because a worker died',
+        );
+    }
+
+    private function planWithAWorkerThatDies(): \Remediate\Engine\Plan\Plan
+    {
+        $project = $this->project();
+        $planner = new Planner(
+            ScriptedProject::advisories(self::advisoryList(), true, true),
+            new KilledOnceSolver($this->solver()),
+            parallelism: 3,
+        );
+
+        return $planner->plan($project->context(), $project->workspace());
     }
 
     public function testTheSqliteAdvisoryDatabaseSurvivesTheFork(): void

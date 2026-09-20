@@ -301,12 +301,17 @@ final class Planner
 
         $plans = [];
         $done = 0;
-        $keep = function (int $position, FindingPlan $plan) use (&$plans, &$done, $total): void {
+        $keep = function (int $position, FindingPlan $plan, bool $countSolves = true) use (&$plans, &$done, $total): void {
             // Counted by completions rather than by position: with several running at once, the
             // package that finishes third is not the third one in the list.
             $plans[$position] = $plan;
             ++$done;
-            $this->totalSolves += $plan->solveCount;
+            // A plan made in a worker brings its solve count home with it, because the tally the
+            // child kept died with the child. A plan made in this process has already counted itself,
+            // one solve at a time, so adding its total here as well would report work nobody did.
+            if ($countSolves) {
+                $this->totalSolves += $plan->solveCount;
+            }
             $this->report($this->outcomeLine($done, $total, $plan), false);
         };
 
@@ -326,7 +331,8 @@ final class Planner
             $this->report('A planning worker did not finish; planning what is left one at a time.', false);
             foreach ($groups as $position => $group) {
                 if (!isset($plans[$position])) {
-                    $keep($position, $this->planGroup($group, $graph, $context, $lock, $baseline, $matcher, $ranker, $workspace));
+                    // Planned here rather than in a worker, so its solves have counted themselves.
+                    $keep($position, $this->planGroup($group, $graph, $context, $lock, $baseline, $matcher, $ranker, $workspace), false);
                 }
             }
         }

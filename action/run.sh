@@ -109,7 +109,13 @@ git "${git_remote[@]}" push -q --force-with-lease origin "$BRANCH"
 
 url="$(gh pr list --head "$BRANCH" --base "$base" --state open --json url --jq '.[0].url // empty')"
 if [ -n "$url" ]; then
-  gh pr edit "$url" --title "$PR_TITLE" --body-file "$work/body.md"
+  edit=(--title "$PR_TITLE" --body-file "$work/body.md")
+  # Labels are re-applied every run: one added to the inputs after the pull request was opened is
+  # still meant for it, and adding a label it already carries changes nothing. Draft is not
+  # re-applied. Once a pull request exists, whether it is ready for review is a decision somebody
+  # made about it, and a scheduled run that flipped that back every night would be arguing with them.
+  if [ -n "$PR_LABELS" ]; then edit+=(--add-label "$PR_LABELS"); fi
+  gh pr edit "$url" "${edit[@]}"
 else
   create=(--head "$BRANCH" --base "$base" --title "$PR_TITLE" --body-file "$work/body.md")
   if [ "$PR_DRAFT" = "true" ]; then create+=(--draft); fi
