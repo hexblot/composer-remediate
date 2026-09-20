@@ -10,6 +10,26 @@ for what a version number will promise.
 
 ### Fixed
 
+- **A run that lost a worker reported solver runs nobody did.** When a planning worker dies, the
+  packages it had not reached are planned in the main process instead. Each solve there counts itself
+  as it happens, and the bookkeeping that carries a worker's count home then added the package's total
+  a second time, because a plan made in a child has to be counted by the parent and a plan made by the
+  parent has already counted itself. On the three-package run the regression test uses, a degraded run
+  reported 19 solver runs for the 10 a healthy one does. Nothing was ever planned differently: the
+  search budgets are counted per finding and were never fed from this number, which exists so that
+  someone can reproduce a run and would have had them looking for work that never happened.
+
+- **The pull-request action ignored `labels` and `draft` once the pull request existed.** Both inputs
+  were honoured when the branch's pull request was created and never again, so a label added to the
+  workflow later never reached the pull request the action keeps open. Labels are now re-applied on
+  every run, where adding one it already carries changes nothing. `draft` is deliberately not
+  re-applied: once a pull request is open, whether it is ready for review is a decision somebody made
+  about it, and a nightly run that flipped it back would be arguing with them. Both inputs now say
+  when they apply, in the action's own metadata and on the CI page. The action's test harness had the
+  same blind spot: its `gh` stub reported no open pull request, so both of its runs took the create
+  path and the update path shipped untested. Its second run now meets the pull request the first one
+  opened.
+
 - **Advisory data that could only be read in part became complete coverage.** A record with one range
   this could read and one it could not survived with the part that parsed, and nothing said the rest
   had been dropped; a document whose affected list was unreadable altogether was counted with the
