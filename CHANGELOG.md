@@ -8,6 +8,15 @@ All notable changes to this project are documented here. The format follows
 Groundwork for a stable 1.0. See [compatibility](https://hexblot.github.io/composer-remediate/compatibility/)
 for what a version number will promise.
 
+Adversarial testing of this tool uncovered malformed package metadata in a live GitHub Advisory
+Database record, which kept the advisory from matching the Composer package it was about; the
+correction was submitted upstream as
+[github/advisory-database#9639](https://github.com/github/advisory-database/pull/9639). Until that is
+merged and the feed rebuilt, the published database carries the record as a coverage gap naming no
+package, which gates a scan that would otherwise be clean;
+[coverage gaps](https://hexblot.github.io/composer-remediate/advisory-database/#coverage-gaps)
+explains what to do with one.
+
 ### Fixed
 
 - **Advisory data that could only be read in part became complete coverage.** A record with one range
@@ -26,10 +35,41 @@ for what a version number will promise.
   package stays its own gap rather than being replaced by the packages the other parts happened to
   name, so a scan of some third package cannot read clean on it.
 
+  The same rule now decides whose package a record is about, in all three readers. Only an identity the
+  reader can read and finds to be another ecosystem's is out of scope. An OSV entry with no package at
+  all, with no ecosystem, or with an ecosystem that is not text; a FriendsOfPHP advisory whose
+  `reference` is missing, is not text, or is text naming no scheme; and, in either reader or in the
+  Packagist shape that serves the API, `--include` files and `--advisories-file`, a name that is not a
+  package name a lock could hold: each may be about a locked package, and each is now a gap. It is
+  attributed to the package where something readable names it and to none where nothing does, because a
+  name nothing can match attributes nothing. There is one definition of a package name now
+  (`PackageName`, Composer's own syntax), and the readers share it.
+
+  An npm entry and a `drupal://` advisory are still read as somebody else's and recorded as nothing, and
+  the FriendsOfPHP reader now takes only the files laid out as `<vendor>/<package>/*.yaml`, so the
+  repository's own workflow files are not advisories with unreadable packages.
+
+  The name rule found a live one. The OSV feed's `GHSA-q97c-8qh3-fpc6` (CVE-2026-84308, private-key
+  recovery in phpseclib) names its package `phpseclib`, with no vendor: it was being stored as an
+  affected range under an identity no lock file can hold, so it matched nothing and said nothing, in
+  every database this project has published. It is now a coverage gap, and since nothing in the record
+  says which package it meant, it is an unattributed one, which gates any scan until the upstream
+  record is fixed or the run passes `--accept-coverage-gaps`. The fix for the record itself is
+  [github/advisory-database#9639](https://github.com/github/advisory-database/pull/9639).
+
+  Two more ways a part could state nothing and be taken for a part stating that nothing is affected. A
+  `ranges` or `versions` container present as null, which is not an absent one. And a part that
+  constrains nothing at all: an OSV range whose event list is empty or never opens an interval, a
+  FriendsOfPHP branch listing no versions. Each was silent whenever a readable sibling sat beside it.
+  An event is also read whole rather than only as far as its first recognised key, so
+  `{"introduced": "0", "fixed": ["unreadable"]}` no longer passes on the strength of its first half.
+
   A commit range is still skipped silently, because every record carrying one also carries the version
-  range that matters. Measured against both real feeds before and after: 5 coverage gaps in 6542 OSV
-  advisories and none in 1147 FriendsOfPHP advisories, either way. These shapes do not occur upstream
-  today, which is exactly why they went unnoticed.
+  range that matters. Measured against both real feeds before and after: the shape fixes cost nothing
+  at all (5 coverage gaps in 6610 OSV records, none in 1648 FriendsOfPHP advisories, the same dataset
+  hash either way), and the name rule costs exactly the one record above, 6 gaps in 6609 records. Every
+  other shape answered here is one the public feeds do not currently contain, which is exactly why they
+  went unnoticed.
 
 - **Verifying the advisory database did not bind the scan to what was verified.** The action checked a
   file's build provenance and then named it by path, and a path stays refreshable: the scan that

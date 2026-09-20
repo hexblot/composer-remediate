@@ -8,6 +8,7 @@ use Composer\Util\HttpDownloader;
 use Remediate\Engine\Advisory\Db\AffectedRange;
 use Remediate\Engine\Advisory\Db\CoverageGap;
 use Remediate\Engine\Advisory\Db\NormalizedAdvisory;
+use Remediate\Engine\Advisory\Db\PackageName;
 use Remediate\Engine\Advisory\Db\RangeNormalizer;
 use Remediate\Engine\Advisory\Db\SourceRecord;
 use Symfony\Component\Yaml\Exception\ParseException;
@@ -20,6 +21,8 @@ use Symfony\Component\Yaml\Yaml;
 final class FriendsOfPhpSource implements AdvisorySourceInterface
 {
     public const URL = 'https://codeload.github.com/FriendsOfPHP/security-advisories/zip/refs/heads/master';
+
+    private const SCHEME = 'composer://';
 
     /** @var list<CoverageGap> */
     private array $gaps = [];
@@ -59,9 +62,12 @@ final class FriendsOfPhpSource implements AdvisorySourceInterface
         if ($this->localCheckout !== null) {
             $log('FriendsOfPHP: reading ' . $this->localCheckout);
             $root = rtrim($this->localCheckout, '/');
-            $files = glob($root . '/*/*/*.yaml') ?: [];
-            foreach ($files as $file) {
-                $visit(substr($file, strlen($root) + 1), (string) file_get_contents($file));
+            $files = array_values(array_filter(
+                array_map(static fn (string $file): string => substr($file, strlen($root) + 1), glob($root . '/*/*/*.yaml') ?: []),
+                static fn (string $path): bool => self::isAdvisoryFile($path),
+            ));
+            foreach ($files as $path) {
+                $visit($path, (string) file_get_contents($root . '/' . $path));
             }
             $count = count($files);
         } else {
@@ -69,7 +75,11 @@ final class FriendsOfPhpSource implements AdvisorySourceInterface
             $reader = new ZipArchiveReader($this->downloader, $this->tempDir);
             $count = $reader->each(
                 $this->url,
-                static fn (string $name): bool => str_ends_with($name, '.yaml') && preg_match('{^[^/]+/[^/]+/[^/]+/[^/]+\.yaml$}', $name) === 1,
+                static function (string $name): bool {
+                    $slash = strpos($name, '/');
+
+                    return $slash !== false && self::isAdvisoryFile(substr($name, $slash + 1));
+                },
                 static function (string $name, string $contents) use ($visit): void {
                     // strip the archive's top-level directory (security-advisories-master/)
                     $visit(substr($name, strpos($name, '/') + 1), $contents);
@@ -113,12 +123,34 @@ final class FriendsOfPhpSource implements AdvisorySourceInterface
         return $this->gaps;
     }
 
+    /**
+     * Whether a path inside the repository is one of its advisory files: one advisory per file under
+     * <vendor>/<package>/, where the directory pair is a package name.
+     *
+     * The layout is the only thing that says which package a file is about, so a file outside it is
+     * not an advisory whose package could not be read; it is not an advisory. The repository keeps its
+     * own CI workflows under .github/, and reading those as advisories would file each of them as a
+     * coverage gap that gates scans over nothing.
+     */
+    private static function isAdvisoryFile(string $path): bool
+    {
+        $parts = explode('/', $path);
+
+        return count($parts) === 3 && str_ends_with($parts[2], '.yaml') && self::packageOfPath($path) !== null;
+    }
+
+    /** The package the repository's layout says a file is about, null when the path does not say. */
+    private static function packageOfPath(string $path): ?string
+    {
+        return preg_match('{^([^/]+/[^/]+)/}', $path, $m) === 1 ? PackageName::canonical($m[1]) : null;
+    }
+
     /** @param-out CoverageGap|null $gap */
     private function record(string $path, string $contents, ?CoverageGap &$gap = null): ?NormalizedAdvisory
     {
         $gap = null;
         // The directory layout names the package even when the file cannot be read.
-        $fromPath = preg_match('{^([^/]+/[^/]+)/}', $path, $m) === 1 ? strtolower($m[1]) : null;
+        $fromPath = self::packageOfPath($path);
         try {
             $doc = Yaml::parse($contents);
         } catch (ParseException $e) {
@@ -131,11 +163,25 @@ final class FriendsOfPhpSource implements AdvisorySourceInterface
 
             return null;
         }
+        // A reference this can read that names another ecosystem is out of scope. One it cannot read
+        // is not: this file sits under <vendor>/<package>/ in a repository of Composer advisories, so
+        // the path already says which package it is about, and calling it somebody else's advisory
+        // would drop a record about a package that may well be locked. Reading it means reading both
+        // halves: a scheme that says whose ecosystem this is, and a name that says which package.
+        // Arbitrary text has neither, and `composer://` followed by something that is not a package
+        // name has only the first.
         $reference = $doc['reference'] ?? null;
-        if (!is_string($reference) || !str_starts_with($reference, 'composer://')) {
-            return null; // not a Composer package (e.g. a Drupal or WordPress advisory): not a gap
+        $package = is_string($reference) && str_starts_with($reference, self::SCHEME)
+            ? PackageName::canonical(substr($reference, strlen(self::SCHEME)))
+            : null;
+        if ($package === null) {
+            if (is_string($reference) && !str_starts_with($reference, self::SCHEME) && preg_match('{^[a-z][a-z0-9+.-]*://}i', $reference) === 1) {
+                return null; // another ecosystem's scheme (drupal://, wordpress://): not a gap
+            }
+            $gap = new CoverageGap('FriendsOfPHP', $path, $fromPath, 'unreadable package reference', is_string($reference) ? $reference : null);
+
+            return null;
         }
-        $package = strtolower(substr($reference, strlen('composer://')));
         $branches = is_array($doc['branches'] ?? null) ? $doc['branches'] : [];
         $expression = $this->ranges->fromFriendsOfPhp($branches);
         if ($expression === null) {

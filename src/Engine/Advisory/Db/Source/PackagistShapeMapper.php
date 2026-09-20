@@ -7,6 +7,7 @@ namespace Remediate\Engine\Advisory\Db\Source;
 use Remediate\Engine\Advisory\Db\AffectedRange;
 use Remediate\Engine\Advisory\Db\CoverageGap;
 use Remediate\Engine\Advisory\Db\NormalizedAdvisory;
+use Remediate\Engine\Advisory\Db\PackageName;
 use Remediate\Engine\Advisory\Db\RangeNormalizer;
 use Remediate\Engine\Advisory\Db\SourceRecord;
 
@@ -30,19 +31,30 @@ final class PackagistShapeMapper
         $gap = null;
         $id = $entry['advisoryId'] ?? null;
         $affected = $entry['affectedVersions'] ?? null;
+        // Whose advisory this is has to be readable before anything else about it matters. A name no
+        // package could be called cannot be matched against a lock, so keeping the record would file
+        // its range under an identity nothing reaches, and attributing a gap to that name would hide
+        // the gap the same way. Both become one unattributed gap: something was lost, about a package
+        // this cannot name.
+        $name = PackageName::canonical($package);
+        if ($name === null) {
+            $gap = new CoverageGap($sourceName, is_string($id) && $id !== '' ? $id : '(unreadable package name)', null, 'advisory names no package this can read', $package);
+
+            return null;
+        }
         if (!is_string($id) || $id === '') {
-            $gap = new CoverageGap($sourceName, '(no advisoryId)', strtolower($package), 'record has no advisoryId');
+            $gap = new CoverageGap($sourceName, '(no advisoryId)', $name, 'record has no advisoryId');
 
             return null;
         }
         if (!is_string($affected)) {
-            $gap = new CoverageGap($sourceName, $id, strtolower($package), 'record has no affectedVersions');
+            $gap = new CoverageGap($sourceName, $id, $name, 'record has no affectedVersions');
 
             return null;
         }
         $expression = $this->ranges->validate($affected);
         if ($expression === null) {
-            $gap = new CoverageGap($sourceName, $id, strtolower($package), 'unparsable affectedVersions', $affected);
+            $gap = new CoverageGap($sourceName, $id, $name, 'unparsable affectedVersions', $affected);
 
             return null;
         }
@@ -81,7 +93,7 @@ final class PackagistShapeMapper
             is_string($entry['severity'] ?? null) ? strtolower($entry['severity']) : null,
             $reportedAt,
             null,
-            [new AffectedRange(strtolower($package), $expression, $sourceName)],
+            [new AffectedRange($name, $expression, $sourceName)],
             $sources,
         );
     }
@@ -109,15 +121,23 @@ final class PackagistShapeMapper
                 $gaps[] = new CoverageGap($sourceName, '(malformed document)', null, 'advisories map has a non-string package key', (string) $packageName);
                 continue;
             }
+            // The key is the only thing naming the package these entries are about, so a key that is
+            // not a package name leaves everything under it unattributable, whatever else it holds.
+            $name = PackageName::canonical($packageName);
+            if ($name === null) {
+                ++$skipped;
+                $gaps[] = new CoverageGap($sourceName, '(unreadable package name)', null, 'advisories map has a key that is not a package name', $packageName);
+                continue;
+            }
             if (!is_array($list)) {
                 ++$skipped;
-                $gaps[] = new CoverageGap($sourceName, '(malformed package entry)', strtolower($packageName), 'package value is not a list of advisories', is_scalar($list) ? (string) $list : gettype($list));
+                $gaps[] = new CoverageGap($sourceName, '(malformed package entry)', $name, 'package value is not a list of advisories', is_scalar($list) ? (string) $list : gettype($list));
                 continue;
             }
             foreach ($list as $entry) {
                 if (!is_array($entry)) {
                     ++$skipped;
-                    $gaps[] = new CoverageGap($sourceName, '(malformed entry)', strtolower($packageName), 'advisory entry is not an object');
+                    $gaps[] = new CoverageGap($sourceName, '(malformed entry)', $name, 'advisory entry is not an object');
                     continue;
                 }
                 $record = $this->map($packageName, $entry, $sourceName, $gap);

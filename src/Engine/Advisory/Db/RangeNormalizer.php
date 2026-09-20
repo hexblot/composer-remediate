@@ -95,6 +95,14 @@ final class RangeNormalizer
             return null;
         }
         [$events, $limit] = $parsed;
+        // Every OSV range opens with an `introduced` event. One with none, whether its event list is
+        // empty or holds only closing events, states no affected interval at all; contributing nothing
+        // for it narrows the record silently whenever a readable range sits beside it, so it becomes a
+        // coverage gap instead. A range that does open intervals and has them all cut away by its limit
+        // is a different thing: that emptiness is a reading, not a failure to read.
+        if (!in_array('introduced', array_column($events, 'kind'), true)) {
+            return null;
+        }
         // Sort by version; at equal versions a closing event precedes the next opening one.
         usort($events, static function (array $a, array $b): int {
             if ($a['normalized'] === $b['normalized']) {
@@ -149,41 +157,40 @@ final class RangeNormalizer
                 // as the whole truth.
                 return null;
             }
-            // Every event has to be recognised. One naming a boundary this does not know, or naming a
-            // known one with something other than a version in it, is a boundary going unread: the
-            // range would come back looking like the whole truth with one of its edges missing.
-            $recognised = false;
-            foreach (['introduced', 'fixed', 'last_affected', 'limit'] as $kind) {
-                if (!isset($event[$kind])) {
-                    continue;
-                }
-                if (!is_string($event[$kind])) {
+            // Every key of the event has to be recognised, not just the first one that is: stopping at
+            // a readable `introduced` would let the `fixed` beside it go unread, whether it holds
+            // something other than a version or names a boundary this does not know. Either way the
+            // range would come back looking like the whole truth with one of its edges missing. An OSV
+            // event carries exactly one boundary, so an event with several is as unreadable as one with
+            // none: which edge it means is a guess.
+            $boundaries = [];
+            foreach ($event as $kind => $value) {
+                if (!in_array($kind, ['introduced', 'fixed', 'last_affected', 'limit'], true) || !is_string($value)) {
                     return null;
                 }
-                $recognised = true;
-                $raw = $event[$kind];
-                if ($kind === 'limit' && $raw === '*') {
-                    $unlimited = true;
-                    break;
-                }
-                $version = $kind === 'introduced' && $raw === '0' ? '0' : self::clean($raw);
-                try {
-                    $normalized = $version === '0' ? '0.0.0.0' : $this->parser->normalize($version);
-                } catch (\UnexpectedValueException) {
-                    return null;
-                }
-                if ($kind === 'limit') {
-                    if ($limit === null || Comparator::greaterThan($normalized, $limit['normalized'])) {
-                        $limit = ['version' => $version, 'normalized' => $normalized];
-                    }
-                    break;
-                }
-                $events[] = ['kind' => $kind, 'version' => $version, 'normalized' => $normalized];
-                break;
+                $boundaries[] = [$kind, $value];
             }
-            if (!$recognised) {
+            if (count($boundaries) !== 1) {
                 return null;
             }
+            [$kind, $raw] = $boundaries[0];
+            if ($kind === 'limit' && $raw === '*') {
+                $unlimited = true;
+                continue;
+            }
+            $version = $kind === 'introduced' && $raw === '0' ? '0' : self::clean($raw);
+            try {
+                $normalized = $version === '0' ? '0.0.0.0' : $this->parser->normalize($version);
+            } catch (\UnexpectedValueException) {
+                return null;
+            }
+            if ($kind === 'limit') {
+                if ($limit === null || Comparator::greaterThan($normalized, $limit['normalized'])) {
+                    $limit = ['version' => $version, 'normalized' => $normalized];
+                }
+                continue;
+            }
+            $events[] = ['kind' => $kind, 'version' => $version, 'normalized' => $normalized];
         }
 
         return [$events, $unlimited ? null : $limit]; // "below any limit" is always true once one limit is infinite
@@ -264,9 +271,14 @@ final class RangeNormalizer
             if (count($constraints) !== count($versions)) {
                 return null;
             }
-            if ($constraints !== []) {
-                $parts[] = implode(',', $constraints);
+            // A branch listing no versions constrains nothing, so it covers everything or nothing and
+            // there is no telling which. Dropping it leaves the readable branches reading as the whole
+            // advisory; the reader already treats it as a gap when it stands alone, and a readable
+            // branch beside it must not erase that.
+            if ($constraints === []) {
+                return null;
             }
+            $parts[] = implode(',', $constraints);
         }
 
         return $this->validate(implode('|', array_unique($parts)));
