@@ -8,6 +8,7 @@ use Composer\Util\HttpDownloader;
 use Remediate\Engine\Advisory\Db\AffectedRange;
 use Remediate\Engine\Advisory\Db\CoverageGap;
 use Remediate\Engine\Advisory\Db\NormalizedAdvisory;
+use Remediate\Engine\Advisory\Db\PackageName;
 use Remediate\Engine\Advisory\Db\RangeNormalizer;
 use Remediate\Engine\Advisory\Db\SourceRecord;
 
@@ -158,26 +159,41 @@ final class OsvDumpSource implements AdvisorySourceInterface
             // of the document is still worth keeping, so the record survives and the unreadable entry
             // becomes a gap attributed to no package, the same way a range that cannot be expressed
             // becomes one attributed to its package.
-            if (!is_array($entry) || (isset($entry['package']) && !is_array($entry['package']))) {
+            // An entry carrying no readable package object, whether the key is absent, null or not an
+            // object, says nothing about which package it is for. Saying nothing is not saying "another
+            // ecosystem's": the entry may well be about a locked package, and the rest of the document
+            // is still worth keeping, so the record survives and the entry becomes an unattributed gap.
+            if (!is_array($entry) || !is_array($entry['package'] ?? null)) {
                 $unreadable[] = [null, 'unreadable affected entry'];
                 continue;
             }
-            if (!is_array($entry['package'] ?? null)) {
+            $package = $entry['package'];
+            // Only an identity positively read as another ecosystem's is out of scope. One this cannot
+            // read (no ecosystem, an ecosystem that is not text, or a name that is missing, not text,
+            // or not a package name a lock could hold) may well be about a locked package, and
+            // classifying it as somebody else's ecosystem is a guess that reads as complete coverage.
+            // It becomes a gap instead, attributed to the name when the name itself was readable and
+            // to no package when it was not, since a name nothing can match attributes nothing.
+            $ecosystem = $package['ecosystem'] ?? null;
+            $name = PackageName::canonical($package['name'] ?? null);
+            if (is_string($ecosystem) && $ecosystem !== '' && strtolower($ecosystem) !== 'packagist') {
                 continue;
             }
-            $package = $entry['package'];
-            if (strtolower((string) ($package['ecosystem'] ?? '')) !== 'packagist' || !is_string($package['name'] ?? null)) {
+            if (!is_string($ecosystem) || $ecosystem === '' || $name === null) {
+                $unreadable[] = [$name, 'unreadable package identity'];
                 continue;
             }
             $sawPackagist = true;
-            $packages[] = strtolower($package['name']);
+            $packages[] = $name;
             // Anything in these lists that is not the shape it should be is not filtered away: dropping
             // it here would hand normalisation a list that looks complete, and the record would come
             // back with narrower coverage and nothing to say so.
             // A container that is there but is not a list is not an absent one. Turning it into an
             // empty list is how "this entry names ranges I could not read" became "this entry names no
             // ranges", which reads as complete coverage.
-            $malformed = (isset($entry['ranges']) && !is_array($entry['ranges'])) || (isset($entry['versions']) && !is_array($entry['versions']));
+            // A container present as null is not an absent one either: `ranges: null` is the feed
+            // saying nothing readable where ranges belong, so it is treated the same as a scalar there.
+            $malformed = (array_key_exists('ranges', $entry) && !is_array($entry['ranges'])) || (array_key_exists('versions', $entry) && !is_array($entry['versions']));
             $rawRanges = is_array($entry['ranges'] ?? null) ? array_values($entry['ranges']) : [];
             $rawVersions = is_array($entry['versions'] ?? null) ? array_values($entry['versions']) : [];
             /** @var list<array<string, mixed>> $ranges */
@@ -187,9 +203,9 @@ final class OsvDumpSource implements AdvisorySourceInterface
             $malformed = $malformed || count($ranges) !== count($rawRanges) || count($versions) !== count($rawVersions);
             $expression = $malformed ? null : $this->ranges->fromOsv($ranges, $versions);
             if ($expression !== null) {
-                $perPackage[strtolower($package['name'])][] = $expression;
+                $perPackage[$name][] = $expression;
             } else {
-                $unreadable[] = [strtolower($package['name']), 'no usable range'];
+                $unreadable[] = [$name, 'no usable range'];
             }
         }
         $unreadable = array_values(array_unique($unreadable, SORT_REGULAR));

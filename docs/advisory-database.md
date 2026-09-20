@@ -239,6 +239,24 @@ and no findings exits `4` (advisory data unavailable) rather than `0`: the sourc
 `coverage_gaps` and `coverage_gaps_accepted`. `remediate:db-status` lists the gaps. Databases built
 before gap tracking existed are flagged as such and count as a gap; rebuild them.
 
+A gap can also name no package at all. A record whose subject cannot be read, because it names no
+package or names one no lock file could hold, might have been about anything you depend on, so it is
+stored without a package and warns on every scan against that database. That is deliberate: the
+alternative is filing it under a name nothing matches, where it would warn nobody and the lock would
+read clean. When you meet one, the warning names the record. Read it, decide whether it could concern
+your lock, and pass `--accept-coverage-gaps` when it cannot; nothing this tool does can recover what
+a feed did not say.
+
+The reference database carries one such gap today. OSV's `GHSA-q97c-8qh3-fpc6` (CVE-2026-84308,
+private-key recovery in phpseclib) names its package `phpseclib`, with no vendor, so it can never
+match the `phpseclib/phpseclib` a lock file holds. This project found it while testing its own
+readers against the live feed and submitted the correction upstream as
+[github/advisory-database#9639](https://github.com/github/advisory-database/pull/9639). When that is
+merged and the feed rebuilt, the record matches the package it was always about and the gap goes
+away on its own. Until then a scan of any lock exits `4` rather than `0` unless the gaps are
+accepted, and a lock holding `phpseclib/phpseclib` below 3.0.57, or at 4.0.0, should be treated as
+affected on the strength of the advisory itself: those are the ranges the record states.
+
 Private advisories are different: a record in an `--include` file that cannot be interpreted fails
 the build, the same way an unparsable `--advisories-file` fails a run, because that data is yours to
 fix. Every option of both commands is listed

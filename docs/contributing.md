@@ -72,10 +72,19 @@
   temporary file belongs in the relevant invariant rather than only in its own test.
 - The coverage invariant is the one to be strict with. Advisory normalisation reads documents written
   by other people, so every place it decides it cannot read something is a place that can quietly
-  narrow what the tool knows, and a narrower advisory looks exactly like a smaller one. Three rounds of
+  narrow what the tool knows, and a narrower advisory looks exactly like a smaller one. Four rounds of
   review found paths that had been left silent one at a time. When touching a reader, the question is
   not "does this parse the shapes I have seen" but "can anything here be dropped without a gap being
-  recorded", and the answer belongs in the invariant before the code.
+  recorded", and the answer belongs in the invariant before the code. Two distinctions carry most of
+  it: a record is another ecosystem's only when the reader positively read it as such, never because
+  its identity could not be read; and a part that says nothing readable is not a part saying nothing
+  is affected, whether it is absent, null, empty or unrecognised. Reading an identity means reading
+  all of it, the ecosystem and the name, and a name is read only when it is one a lock could hold
+  (`PackageName`, which is Composer's own syntax): a range filed under a name nothing can match is
+  lost as completely as one that was dropped, and there are three readers, so the rule lives in one
+  place and all three call it. The one thing a reader may drop in
+  silence is a shape it can read and knows to be redundant, like OSV's commit ranges, and a file that
+  is not an advisory at all, which the layout rather than the contents has to decide.
 - The full run also executes the suite on Windows and macOS with PHP 8.4. What this tool does is
   filesystem work, subprocess execution and process forking, and all three differ between operating
   systems: replacing an open file by rename, the meaning of `0700`, path separators, whether `fork`

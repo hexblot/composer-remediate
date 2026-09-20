@@ -35,6 +35,12 @@ findings do:
 
 A gate that wants to be strict about any of these can read the `warnings` array of the JSON report.
 
+A `Coverage gap:` warning that names no package is the one to read closely: the record could not be
+attributed to anything, so it may have been about any package in the lock and it gates every scan
+until it is accepted. The warning quotes the record's source and identifier, which is enough to look
+it up and judge it. See [coverage gaps](advisory-database.md#coverage-gaps), which also names the one
+the reference database carries today and the upstream fix for it.
+
 ## One finding
 
 ```text

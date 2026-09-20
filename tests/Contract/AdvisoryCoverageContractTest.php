@@ -9,6 +9,7 @@ use PHPUnit\Framework\TestCase;
 use Remediate\Engine\Advisory\Db\DatabaseWriter;
 use Remediate\Engine\Advisory\Db\Source\FriendsOfPhpSource;
 use Remediate\Engine\Advisory\Db\Source\OsvDumpSource;
+use Remediate\Engine\Advisory\Db\Source\PackagistShapeMapper;
 use Remediate\Tests\Support\CommandRunner;
 use Remediate\Tests\Support\ScriptedDownloader;
 use Remediate\Tests\Support\ScriptedProject;
@@ -80,6 +81,55 @@ final class AdvisoryCoverageContractTest extends TestCase
         ]];
         yield 'a version the ecosystem cannot express' => [[
             'id' => 'OSV-VERSION', 'affected' => [['package' => $package, 'ranges' => [['type' => 'ECOSYSTEM', 'events' => [['introduced' => 'not a version']]]]]],
+        ]];
+
+        // An identity that cannot be read is not an identity belonging to another ecosystem. Each of
+        // these entries might be about a locked package; only a reader that says so positively may
+        // treat the entry as out of scope.
+        $good = ['package' => $package, 'ranges' => [$goodRange]];
+        yield 'a Packagist package whose name is not a name' => [[
+            'id' => 'OSV-NAME-SHAPE', 'affected' => [$good, ['package' => ['ecosystem' => 'Packagist', 'name' => ['acme/lib']], 'versions' => ['1.0.0']]],
+        ]];
+        yield 'a Packagist package with no name at all' => [[
+            'id' => 'OSV-NO-NAME', 'affected' => [$good, ['package' => ['ecosystem' => 'Packagist'], 'versions' => ['1.0.0']]],
+        ]];
+        yield 'an affected entry whose package is null' => [[
+            'id' => 'OSV-NULL-PACKAGE', 'affected' => [$good, ['package' => null, 'versions' => ['1.0.0']]],
+        ]];
+        yield 'a package that does not say which ecosystem it is from' => [[
+            'id' => 'OSV-NO-ECOSYSTEM', 'affected' => [$good, ['package' => ['name' => 'acme/lib'], 'versions' => ['1.0.0']]],
+        ]];
+        yield 'an affected entry with no package at all' => [[
+            'id' => 'OSV-NO-PACKAGE', 'affected' => [$good, ['versions' => ['1.0.0']]],
+        ]];
+        // A name no package could be called is not an identity either. Kept, it would file a range
+        // under something no lock can ever match, which is the quietest loss of all.
+        yield 'a name no package could be called' => [[
+            'id' => 'OSV-BAD-NAME', 'affected' => [$good, ['package' => ['ecosystem' => 'Packagist', 'name' => 'acme lib'], 'versions' => ['1.0.0']]],
+        ]];
+
+        // A container present as null is not an absent one, and a part that states nothing is not a
+        // part stating that nothing is affected.
+        yield 'a ranges container present as null' => [[
+            'id' => 'OSV-NULL-RANGES', 'affected' => [['package' => $package, 'ranges' => null, 'versions' => ['0.1.0']]],
+        ]];
+        yield 'a versions container present as null' => [[
+            'id' => 'OSV-NULL-VERSIONS', 'affected' => [['package' => $package, 'ranges' => [$goodRange], 'versions' => null]],
+        ]];
+        yield 'a range with an empty event list, beside a readable range' => [[
+            'id' => 'OSV-NO-EVENTS', 'affected' => [['package' => $package, 'ranges' => [$goodRange, ['type' => 'ECOSYSTEM', 'events' => []]]]],
+        ]];
+        yield 'a range whose events close without opening' => [[
+            'id' => 'OSV-NO-INTRODUCED', 'affected' => [['package' => $package, 'ranges' => [$goodRange, ['type' => 'ECOSYSTEM', 'events' => [['fixed' => '0.8.0']]]]]],
+        ]];
+
+        // A readable boundary in the same event as an unreadable one: whichever is looked at first,
+        // the other still has to be read.
+        yield 'an event whose second boundary is not a version string' => [[
+            'id' => 'OSV-SECOND-BOUND', 'affected' => [['package' => $package, 'ranges' => [['type' => 'ECOSYSTEM', 'events' => [['introduced' => '0', 'fixed' => ['unreadable']], ['fixed' => '0.5.0']]]]]],
+        ]];
+        yield 'an event naming an unknown boundary beside a known one' => [[
+            'id' => 'OSV-SECOND-UNKNOWN', 'affected' => [['package' => $package, 'ranges' => [['type' => 'ECOSYSTEM', 'events' => [['introduced' => '0', 'future_boundary' => '2.0.0'], ['fixed' => '0.5.0']]]]]],
         ]];
     }
 
@@ -163,6 +213,14 @@ final class AdvisoryCoverageContractTest extends TestCase
         yield 'a branch that is not a branch' => ["title: t\nreference: composer://acme/lib\nbranches:\n" . $good . "        2.x: 'unreadable'\n"];
         yield 'a branch with no versions list' => ["title: t\nreference: composer://acme/lib\nbranches:\n" . $good . "        2.x:\n            time: 2026-01-01 00:00:00\n"];
         yield 'a versions list holding something that is not a constraint' => ["title: t\nreference: composer://acme/lib\nbranches:\n" . $good . "        2.x:\n            versions: ['>=2.0.0', {nested: thing}]\n"];
+        yield 'a branch listing no versions at all' => ["title: t\nreference: composer://acme/lib\nbranches:\n" . $good . "        2.x:\n            versions: []\n"];
+        // The file sits under acme/lib/ in a repository of Composer advisories, so a reference that
+        // cannot be read is not an advisory about some other packaging ecosystem.
+        yield 'a reference that is not text' => ["title: t\nreference: {unreadable: value}\nbranches:\n" . $good];
+        yield 'a file with no reference at all' => ["title: t\nbranches:\n" . $good];
+        yield 'a reference naming no package' => ["title: t\nreference: 'composer://'\nbranches:\n" . $good];
+        yield 'a reference that is neither a scheme nor a package' => ["title: t\nreference: 'not a reference'\nbranches:\n" . $good];
+        yield 'a reference naming something no package could be called' => ["title: t\nreference: 'composer://acme lib'\nbranches:\n" . $good];
     }
 
     /**
@@ -196,6 +254,47 @@ final class AdvisoryCoverageContractTest extends TestCase
         }
     }
 
+    /** @return iterable<string, array{array<mixed>}> */
+    public static function partiallyUnreadablePackagistDocuments(): iterable
+    {
+        $good = ['advisoryId' => 'PKSA-1111-2222-3333-4444', 'affectedVersions' => '>=1.0.0,<1.0.5'];
+
+        yield 'a key that is not a package name' => [['advisories' => ['other/lib' => [$good], 'acme lib' => [$good]]]];
+        yield 'a key that is not a string' => [['advisories' => ['other/lib' => [$good], 7 => [$good]]]];
+        yield 'a package whose advisories are not a list' => [['advisories' => ['other/lib' => [$good], 'acme/lib' => 'unreadable']]];
+        yield 'an entry that is not an entry' => [['advisories' => ['acme/lib' => [$good, 'unreadable']]]];
+        yield 'an entry with no version range' => [['advisories' => ['acme/lib' => [$good, ['advisoryId' => 'PKSA-no-range']]]]];
+        yield 'an entry whose range cannot be parsed' => [['advisories' => ['acme/lib' => [$good, ['advisoryId' => 'PKSA-bad', 'affectedVersions' => 'unreadable']]]]];
+    }
+
+    /**
+     * And in the third reader, which serves Packagist's API, `--include` files and `--advisories-file`.
+     * The same invariant again, because a database built from three readers is only as complete as the
+     * least careful of them.
+     *
+     * @param array<mixed> $document
+     */
+    #[DataProvider('partiallyUnreadablePackagistDocuments')]
+    public function testTheThirdReaderAlsoKeepsWhatItCouldNotRead(array $document): void
+    {
+        $project = new ScriptedProject(['acme/lib' => '^1'], [['acme/lib', '1.0.0']]);
+        try {
+            $result = (new PackagistShapeMapper())->mapDocument($document, 'Test');
+
+            self::assertNotSame([], $result['gaps'], 'something in this document was dropped without a word');
+
+            $path = $project->directory . '/packagist.sqlite';
+            (new DatabaseWriter())->write($result['records'], [], $path, [], $result['gaps']);
+            $run = (new CommandRunner())->run(['command' => 'remediate', '--format' => 'json', '--database-location' => $path], $project->directory);
+            self::assertFalse(
+                $run->exitCode === 0 && $run->json()['summary']['coverage_gaps'] === 0,
+                "a lock was called clean on advisory data that could not be fully read\n" . $run->describe(),
+            );
+        } finally {
+            $project->destroy();
+        }
+    }
+
     public function testDataThatIsFullyReadableStillProducesNoGaps(): void
     {
         // The other half of the contract. A guard that turned everything into a gap would satisfy the
@@ -221,6 +320,41 @@ final class AdvisoryCoverageContractTest extends TestCase
 
             self::assertCount(1, $records);
             self::assertSame([], $source->gaps(), 'a commit range is not something missing; every record that has one also has the version range');
+        } finally {
+            $project->destroy();
+        }
+    }
+
+    public function testAnEcosystemThisCanReadIsStillNotAGap(): void
+    {
+        // The boundary the rule above turns on. Unreadable identity becomes a gap, so the reader has
+        // to keep saying "this is npm's, not mine" about the identities it can read: the Packagist
+        // dump carries plenty, and a gap for each would gate every scan on nothing.
+        $project = new ScriptedProject(['acme/lib' => '^1'], [['acme/lib', '1.0.0']]);
+        try {
+            $document = [
+                'id' => 'OSV-OTHER-ECOSYSTEM',
+                'affected' => [
+                    ['package' => ['ecosystem' => 'Packagist', 'name' => 'acme/lib'], 'ranges' => [['type' => 'ECOSYSTEM', 'events' => [['introduced' => '0'], ['fixed' => '0.5.0']]]]],
+                    ['package' => ['ecosystem' => 'npm', 'name' => 'left-pad'], 'ranges' => [['type' => 'SEMVER', 'events' => [['introduced' => '0'], ['fixed' => '1.0.0']]]]],
+                ],
+            ];
+            $osv = new OsvDumpSource(
+                new ScriptedDownloader([OsvDumpSource::URL => Zips::build(['doc.json' => json_encode($document, JSON_THROW_ON_ERROR)])]),
+                $project->directory . '/zip',
+            );
+            self::assertCount(1, $osv->fetch(static function (): void {}));
+            self::assertSame([], $osv->gaps(), 'an npm entry is read, and read as somebody else\'s');
+
+            $fop = new FriendsOfPhpSource(
+                new ScriptedDownloader([FriendsOfPhpSource::URL => Zips::build([
+                    'security-advisories-master/drupal/core/SA-CORE-2026-1.yaml' => "title: t\nreference: drupal://core\nbranches:\n    1.x:\n        versions: ['>=1.0.0']\n",
+                    'security-advisories-master/acme/lib/CVE-2026-1.yaml' => "title: t\nreference: composer://acme/lib\nbranches:\n    1.x:\n        versions: ['>=1.0.0', '<1.0.5']\n",
+                ])]),
+                $project->directory . '/fop-zip',
+            );
+            self::assertCount(1, $fop->fetch(static function (): void {}));
+            self::assertSame([], $fop->gaps(), 'a Drupal advisory says which ecosystem it is about');
         } finally {
             $project->destroy();
         }
