@@ -49,21 +49,24 @@ Boundary: the goal is a version constraint on a locked package. Interpreting rel
 breaking changes or choosing the target version is out of scope; the user names the goal and the
 planner finds the smallest verified command that reaches it.
 
-## Report additions from community feedback *(small, next sprint)*
+## Report additions from community feedback *(three delivered in 0.9.1)*
 
-Suggested in reactions to the project; each is a line in the report, not an engine change.
+Suggested in reactions to the project; each is a line in the report, not an engine change. The three
+delivered in 0.9.1 are in the **text and HTML reports only**. Surfacing them in the JSON report is
+held for 0.10.0, because the JSON document's shape is a covered surface and any addition to it
+increases `schema_version` (see [compatibility](compatibility.md)).
 
-- [ ] on a constraint-drag finding, say that no fixed release exists within the current major on the
+- [x] on a constraint-drag finding, say that no fixed release exists within the current major on the
   branch in use, and that a maintained fork or a backport published under another name, if one
   exists, is the alternative to the widening the report recommends (the planner already tries the
   same-branch backport first: advisory ranges are per branch, so a 2.x project gets the 2.x fix before
   any major bump is considered; what it cannot see is a fix under a different package name)
-- [ ] under every recommendation that relies on a `--with` constraint, the persistent form of the same
+- [x] under every recommendation that relies on a `--with` constraint, the persistent form of the same
   instruction: the `conflict` entry for `composer.json` (`"twig/twig": "<3.14.0"`, derived from the
   fixed range already computed) that keeps future updates from falling back below the fix and makes
   the resolver's error name the reason; Composer has no subcommand for `conflict`, so it stays a
   follow-up line rather than part of the verified command
-- [ ] what the upgrade changes about what a package *can do*, as a note on the recommendation: the
+- [x] what the upgrade changes about what a package *can do*, as a note on the recommendation: the
   package type becoming `composer-plugin`, `autoload.files` (which runs on every request) or binaries
   appearing where there were none, and the source or dist host changing between the locked and the
   recommended version. All of it comes from metadata already diffed, so nothing is downloaded or
@@ -73,6 +76,9 @@ Suggested in reactions to the project; each is a line in the report, not an engi
   application, so that ordering reflects it. There is a suppressive side already (`--ignore`, the
   baseline) and no escalating one, and a reader's account of triaging four Dompdf findings ahead of
   one high-severity Guzzle advisory is the case for it. Declared, never inferred
+- [ ] the three above in the JSON report, for 0.10.0: `schema_version` 2, `report-v2.schema.json`
+  published alongside the pinned `report-v1.schema.json`, and the CI recipes updated so a gate can
+  read the conflict entry and the capability changes
 - deliberately not adopted: a root `replace` to pin a transitive dependency (it tells Composer the
   root provides the package, which then stops being installed), distro backports (they patch PHP
   and system packages, not a project's `vendor` directory), and reachability analysis, which decides

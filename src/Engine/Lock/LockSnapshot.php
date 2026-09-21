@@ -87,6 +87,13 @@ final class LockSnapshot
         $copy->setSourceReference($package->getSourceReference());
         $copy->setDistReference($package->getDistReference());
         $copy->setType($package->getType());
+        // What the installed code is allowed to do, for the capability notes on a recommendation:
+        // autoload.files runs on every request, binaries land in the bin directory, and the host a
+        // package is fetched from decides who serves it. All of it is plain data already in the lock.
+        $copy->setAutoload($package->getAutoload());
+        $copy->setBinaries($package->getBinaries());
+        $copy->setSourceUrl($package->getSourceUrl());
+        $copy->setDistUrl($package->getDistUrl());
         $released = $package->getReleaseDate();
         if ($released !== null) {
             $copy->setReleaseDate(\DateTime::createFromInterface($released));

@@ -95,6 +95,12 @@ Other candidates
 - **Expected changes**: the full lock diff the command produces (first thirty entries).
 - **Recommended command**: the exact command to run. It is the request that was verified, including
   any `--with` constraint, `-m`, and platform flags the analysis was run with.
+- **Keep the fix**: shown whenever the recommendation rests on a `--with` constraint. A `--with`
+  constraint lives for exactly one command, and nothing in the lock file records why the version went
+  up, so a later `composer update` may resolve straight back into the affected range. The `conflict`
+  entry printed here says it once and for good, and makes the resolver name it when something tries.
+  Composer has no subcommand that writes one, so it is an edit to `composer.json` rather than part of
+  the verified command above.
 - **Other candidates**: what else was tried and why it lost or was rejected, with the solver's own
   explanation. Candidates listed as "not tried" were skipped because a better one already existed or
   the solve budget ran out.
@@ -104,6 +110,18 @@ Notes that may appear between remediation and validation:
 - **Constraint drag**: the only fix requires widening a constraint in `composer.json`; the note names
   the root requirement that blocks every fix within the current constraints and the constraint the
   recommendation widens it to. The command then starts with `composer require --no-update …`.
+- **No fix on this branch**: follows a constraint drag whose fix also leaves the locked major behind.
+  Advisory ranges are per branch, so a 2.x project is offered the 2.x fix before any major bump is
+  considered; this note means no such release was published. The alternative the planner cannot see
+  is a fix carried by a maintained fork or a backport under a *different package name* — it searches
+  by the name in your lock file, so a rename is invisible to it.
+- **Capability changes**: what the update changes about what a package is allowed to do, as opposed
+  to how much it changes: a package type becoming `composer-plugin`, `autoload.files` entries (which
+  run on every request) or binaries appearing where there were none, and the source or dist host a
+  package is fetched from changing. All of it is read from metadata the lock file and the solve
+  already carry, so nothing is downloaded or unpacked to produce it. It is shown rather than folded
+  into the ranking, because the count of changed packages measures review burden and this measures
+  reach.
 - **Blocking risk**: the command moves a package to a version that still carries another, already
   present, advisory. Composer 2.10 and newer refuse such updates by default (advisory blocking); the
   command may need that advisory ignored in `config.policy` or blocking disabled to run.

@@ -4,6 +4,7 @@ declare(strict_types=1);
 
 namespace Remediate\Engine\Solver;
 
+use Composer\Package\PackageInterface;
 use Remediate\Engine\Lock\LockSnapshot;
 
 /**
@@ -12,10 +13,14 @@ use Remediate\Engine\Lock\LockSnapshot;
 final class LockDiff
 {
     /**
-     * @param list<PackageChange> $changes
+     * @param list<PackageChange>     $changes
+     * @param list<CapabilityChange>  $capabilityChanges what the update changes about what a package
+     *                                                   can do, ordered by package name
      */
-    private function __construct(public readonly array $changes)
-    {
+    private function __construct(
+        public readonly array $changes,
+        public readonly array $capabilityChanges = [],
+    ) {
     }
 
     public static function between(LockSnapshot $before, LockSnapshot $after): self
@@ -47,7 +52,113 @@ final class LockDiff
         }
         usort($changes, static fn (PackageChange $a, PackageChange $b): int => strcmp($a->packageName, $b->packageName));
 
-        return new self($changes);
+        return new self($changes, self::capabilities($before, $after, $changes));
+    }
+
+    /**
+     * What each changed package gains or moves in terms of what it can do. Read from metadata the
+     * snapshots already carry: nothing is downloaded and no archive is opened.
+     *
+     * A package that is only removed cannot gain anything, so removals are skipped. A package that
+     * is added is reported only for the two capabilities that run code without being called, since
+     * every new package brings its own everything and listing all of it would say nothing.
+     *
+     * @param list<PackageChange> $changes
+     *
+     * @return list<CapabilityChange>
+     */
+    private static function capabilities(LockSnapshot $before, LockSnapshot $after, array $changes): array
+    {
+        $capabilities = [];
+        foreach ($changes as $change) {
+            if ($change->kind === PackageChange::REMOVED) {
+                continue;
+            }
+            $new = $after->get($change->packageName);
+            if ($new === null) {
+                continue;
+            }
+            $old = $change->kind === PackageChange::ADDED ? null : $before->get($change->packageName);
+            array_push($capabilities, ...self::forPackage($change->packageName, $old, $new));
+        }
+
+        return $capabilities;
+    }
+
+    /** @return list<CapabilityChange> */
+    private static function forPackage(string $name, ?PackageInterface $old, PackageInterface $new): array
+    {
+        $out = [];
+        $newFiles = self::autoloadFiles($new);
+        $newBinaries = self::binaries($new);
+
+        if ($old === null) {
+            // A package that was not there before: only what runs unasked is worth a line.
+            if ($new->getType() === 'composer-plugin') {
+                $out[] = new CapabilityChange($name, CapabilityKind::Type, null, $new->getType());
+            }
+            if ($newFiles !== '') {
+                $out[] = new CapabilityChange($name, CapabilityKind::AutoloadFiles, null, $newFiles);
+            }
+
+            return $out;
+        }
+
+        if ($old->getType() !== $new->getType()) {
+            $out[] = new CapabilityChange($name, CapabilityKind::Type, $old->getType(), $new->getType());
+        }
+        $oldFiles = self::autoloadFiles($old);
+        if ($oldFiles !== $newFiles && $newFiles !== '') {
+            $out[] = new CapabilityChange($name, CapabilityKind::AutoloadFiles, $oldFiles === '' ? null : $oldFiles, $newFiles);
+        }
+        $oldBinaries = self::binaries($old);
+        if ($oldBinaries !== $newBinaries && $newBinaries !== '') {
+            $out[] = new CapabilityChange($name, CapabilityKind::Binaries, $oldBinaries === '' ? null : $oldBinaries, $newBinaries);
+        }
+        $oldSource = self::host($old->getSourceUrl());
+        $newSource = self::host($new->getSourceUrl());
+        if ($oldSource !== $newSource && $newSource !== null) {
+            $out[] = new CapabilityChange($name, CapabilityKind::SourceHost, $oldSource, $newSource);
+        }
+        $oldDist = self::host($old->getDistUrl());
+        $newDist = self::host($new->getDistUrl());
+        if ($oldDist !== $newDist && $newDist !== null) {
+            $out[] = new CapabilityChange($name, CapabilityKind::DistHost, $oldDist, $newDist);
+        }
+
+        return $out;
+    }
+
+    /** The `autoload.files` entries as one comparable, printable string. */
+    private static function autoloadFiles(PackageInterface $package): string
+    {
+        $files = $package->getAutoload()['files'] ?? [];
+        if (!is_array($files)) {
+            return '';
+        }
+        $files = array_values(array_filter($files, 'is_string'));
+        sort($files);
+
+        return implode(', ', $files);
+    }
+
+    private static function binaries(PackageInterface $package): string
+    {
+        $binaries = $package->getBinaries();
+        sort($binaries);
+
+        return implode(', ', $binaries);
+    }
+
+    /** The host a URL is served from, or null when there is no URL or it names no host. */
+    private static function host(?string $url): ?string
+    {
+        if ($url === null || $url === '') {
+            return null;
+        }
+        $host = parse_url($url, PHP_URL_HOST);
+
+        return is_string($host) && $host !== '' ? $host : null;
     }
 
     public function count(): int
@@ -115,6 +226,12 @@ final class LockDiff
         }
 
         return $total;
+    }
+
+    /** @return list<CapabilityChange> the ones that let code run which could not run before */
+    public function newCodeCapabilities(): array
+    {
+        return array_values(array_filter($this->capabilityChanges, static fn (CapabilityChange $c): bool => $c->runsNewCode()));
     }
 
     public function changeFor(string $packageName): ?PackageChange
