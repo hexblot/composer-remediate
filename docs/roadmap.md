@@ -118,5 +118,7 @@ Still open:
 - [ ] remaining long methods (`InProcessSolver::solve`, `DbBuildCommand::execute`,
   `HtmlRenderer::finding`, the planner's per-finding search) and the `PackageChange` kind constants
   as an enum
-- [ ] a sixth adversarial review once the report additions above have landed, and a first one of the
-  advisory database's own supply chain, which no review has taken as its subject yet
+- [ ] the eighth adversarial review, listed under [Before a stable 1.0](#before-a-stable-10) because
+  it is what stands between this work and that release. The sixth and seventh are done: the sixth took
+  the advisory database's own supply chain and the parallel planning code as its subject, the seventh
+  the completeness of advisory coverage. Both are on [what has been delivered](delivered.md)
