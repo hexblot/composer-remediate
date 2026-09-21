@@ -256,11 +256,24 @@ final class TextRenderer
         if ($drag !== null) {
             $out[] = '  ' . $this->tag('Constraint drag:', 'fg=yellow') . ' ' . $drag;
         }
+        $noFix = $plan->noFixWithinLockedMajor();
+        if ($noFix !== null) {
+            $out[] = '  ' . $this->tag('No fix on this branch:', 'fg=yellow') . ' ' . $noFix;
+        }
         if ($recommended->blockingRisk !== []) {
             $out[] = '  ' . $this->tag('Blocking risk:', 'fg=yellow') . sprintf(' %s still carr%s another advisory after this update; Composer 2.10+ may refuse the command until that advisory is ignored in config.policy or blocking is disabled.', implode(', ', $recommended->blockingRisk), count($recommended->blockingRisk) === 1 ? 'ies' : 'y');
         }
         foreach ($recommended->coverageGaps as $gap) {
             $out[] = '  ' . $this->tag('Coverage gap introduced:', 'fg=yellow') . ' ' . $this->text($gap) . ' (accepted with --accept-coverage-gaps)';
+        }
+        if ($diff->capabilityChanges !== []) {
+            $out[] = '  ' . $this->tag('Capability changes:', 'fg=yellow') . ' what this update changes about what a package can do.';
+            foreach (array_slice($diff->capabilityChanges, 0, 10) as $capability) {
+                $out[] = '    ' . $this->text($capability->describe());
+            }
+            if (count($diff->capabilityChanges) > 10) {
+                $out[] = sprintf('    … and %d more', count($diff->capabilityChanges) - 10);
+            }
         }
         if ($diff->prereleaseTargets() !== []) {
             $out[] = '  Note: installs pre-release versions (' . implode(', ', array_map(static fn ($c): string => $c->packageName . ' ' . $c->toPretty, $diff->prereleaseTargets())) . '); no stable release satisfies the constraints yet.';
@@ -285,6 +298,33 @@ final class TextRenderer
         }
         $out[] = $this->heading('Recommended command');
         $out[] = '  ' . $this->tag($recommended->candidate->commandLine($this->minimalChangesSupported), 'fg=cyan;options=bold');
+        array_push($out, ...$this->keepTheFixSection($recommended));
+
+        return $out;
+    }
+
+    /**
+     * The `conflict` entry that makes the recommendation's `--with` constraints permanent. A `--with`
+     * lasts one command; without this a later update may resolve back below the fix.
+     *
+     * @return list<string>
+     */
+    private function keepTheFixSection(EvaluatedCandidate $recommended): array
+    {
+        $entries = ConflictEntry::forCandidate($recommended->candidate);
+        if ($entries === []) {
+            return [];
+        }
+        $lines = ConflictEntry::asJsonLines($entries);
+        $out = [$this->heading('Keep the fix')];
+        $out[] = '  Add to composer.json, so a later update cannot fall back below it:';
+        $out[] = '    "conflict": {';
+        foreach ($lines as $index => $line) {
+            $out[] = '      ' . $line . ($index === count($lines) - 1 ? '' : ',');
+        }
+        $out[] = '    }';
+        $out[] = '  Composer has no subcommand for this, so it is an edit rather than part of the command above.';
+        $out[] = '  With it in place the resolver refuses the affected versions and names this entry as the reason.';
 
         return $out;
     }

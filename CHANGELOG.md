@@ -5,6 +5,33 @@ All notable changes to this project are documented here. The format follows
 
 ## [Unreleased]
 
+### Added
+
+Three additions to the report, asked for in reactions to the project. All three are in the text and
+HTML reports; the JSON document is unchanged, because its shape is a covered surface and an addition
+to it increases `schema_version`. That is held for 0.10.0.
+
+- **No fix on this branch**, under a constraint drag whose fix also leaves the locked major behind.
+  Advisory ranges are per branch, so a fix on the locked branch would have been preferred over any
+  major bump; the note says none was published, and names the alternative the planner cannot see — a
+  maintained fork or a backport carrying the fix under a different package name. It is not shown when
+  the fix stays within the locked major, where the widening is about the constraint that was written
+  rather than the branch running out of releases.
+- **Keep the fix**, under every recommendation that rests on a `--with` constraint: the `conflict`
+  entry for `composer.json`, derived by inverting the fixed range the planner already computed
+  (`>=3.14.0` becomes `"twig/twig": "<3.14.0"`). A `--with` constraint lives for one command and
+  nothing in the lock records why the version went up, so a later update may resolve back into the
+  affected range. Composer has no subcommand that writes a `conflict` entry, so it is shown as an edit
+  rather than folded into the verified command.
+- **Capability changes**, on a recommendation: a package type becoming `composer-plugin`,
+  `autoload.files` or binaries appearing where there were none, and the source or dist host changing.
+  Read from metadata the lock file and the solve already carry, so nothing is downloaded or unpacked.
+  Shown rather than ranked on: the count of changed packages measures review burden, this measures
+  reach. A package the command *adds* is reported only for the two capabilities that run without
+  being called, since every new package brings its own everything.
+
+The HTML report also gains the constraint-drag note, which until now appeared only in the text report.
+
 [Unreleased]: https://github.com/hexblot/composer-remediate/compare/v0.9.0...HEAD
 
 ## [0.9.0] - 2026-09-20

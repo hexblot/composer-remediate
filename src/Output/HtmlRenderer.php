@@ -163,8 +163,32 @@ final class HtmlRenderer
             foreach ($rec->candidate->rootConstraintChanges as $change) {
                 $h[] = '<p>composer.json: <code>' . self::e($change->packageName) . '</code> ' . self::e($change->fromConstraint ?? '(new)') . ' → <code>' . self::e($change->toConstraint) . '</code></p>';
             }
+            $drag = $plan->constraintDrag();
+            if ($drag !== null) {
+                $h[] = '<p class="warning"><strong>Constraint drag:</strong> ' . self::e($drag) . '</p>';
+            }
+            $noFix = $plan->noFixWithinLockedMajor();
+            if ($noFix !== null) {
+                $h[] = '<p class="warning"><strong>No fix on this branch:</strong> ' . self::e($noFix) . '</p>';
+            }
+            if ($diff->capabilityChanges !== []) {
+                $h[] = '<h4>Capability changes</h4>';
+                $h[] = '<p><small>What this update changes about what a package can do, read from metadata already in the lock.</small></p>';
+                $h[] = '<ul class="capabilities">';
+                foreach ($diff->capabilityChanges as $capability) {
+                    $h[] = '<li' . ($capability->runsNewCode() ? ' class="runs-code"' : '') . '>' . self::e($capability->describe()) . '</li>';
+                }
+                $h[] = '</ul>';
+            }
             if ($diff->prereleaseTargets() !== []) {
                 $h[] = '<p class="warning">Installs pre-release versions: ' . self::e(implode(', ', array_map(static fn ($c): string => $c->packageName . ' ' . $c->toPretty, $diff->prereleaseTargets()))) . '. No stable release satisfies the constraints yet.</p>';
+            }
+            $entries = ConflictEntry::forCandidate($rec->candidate);
+            if ($entries !== []) {
+                $h[] = '<h4>Keep the fix</h4>';
+                $h[] = '<p>Add to <code>composer.json</code>, so a later update cannot fall back below it:</p>';
+                $h[] = '<pre class="conflict">' . self::e("\"conflict\": {\n" . implode(",\n", array_map(static fn (string $l): string => '    ' . $l, ConflictEntry::asJsonLines($entries))) . "\n}") . '</pre>';
+                $h[] = '<p><small>Composer has no subcommand for this, so it is an edit rather than part of the command above. With it in place the resolver refuses the affected versions and names this entry as the reason.</small></p>';
             }
             $h[] = '<details open><summary>Expected changes (' . $diff->count() . ')</summary><table class="changes"><thead><tr><th>Package</th><th>From</th><th>To</th><th>Kind</th></tr></thead><tbody>';
             foreach ($diff->changes as $change) {
@@ -255,11 +279,13 @@ body{margin:0;background:var(--bg);color:var(--fg);font:15px/1.5 system-ui,-appl
 header{padding:1.5rem 2rem;border-bottom:1px solid var(--border)}header h1{margin:0;font-size:1.4rem}.sub{margin:.25rem 0 0;color:var(--muted)}
 main{max-width:70rem;margin:0 auto;padding:1rem 2rem 3rem}
 section{margin:1.5rem 0}.finding{border:1px solid var(--border);border-radius:8px;padding:1rem 1.25rem;background:var(--panel)}
-h2{font-size:1.15rem;margin:.25rem 0 .5rem}h3{font-size:.95rem;margin:1rem 0 .35rem;color:var(--muted);text-transform:uppercase;letter-spacing:.04em}
+h2{font-size:1.15rem;margin:.25rem 0 .5rem}h3,h4{font-size:.95rem;margin:1rem 0 .35rem;color:var(--muted);text-transform:uppercase;letter-spacing:.04em}h4{font-size:.9rem}
 .version{font-weight:400;color:var(--muted)}.state{margin:0;color:var(--muted)}
 code{font:.9em ui-monospace,SFMono-Regular,Menlo,monospace;background:rgba(127,127,127,.12);padding:.1em .35em;border-radius:4px;word-break:break-all}
 pre{font:.85rem ui-monospace,SFMono-Regular,Menlo,monospace;background:rgba(127,127,127,.1);padding:.75rem 1rem;border-radius:6px;overflow-x:auto;margin:.25rem 0}
 pre.reason{white-space:pre-wrap;margin:0;background:none;padding:0}
+pre.conflict{border-left:4px solid var(--accent)}
+ul.capabilities{margin:.25rem 0;padding-left:1.2rem}ul.capabilities li.runs-code{color:var(--warn)}
 .command code{display:block;padding:.6rem .8rem;font-size:.95rem;border-left:4px solid var(--accent)}
 table{border-collapse:collapse;width:100%;font-size:.92rem}th,td{text-align:left;padding:.4rem .6rem;border-bottom:1px solid var(--border);vertical-align:top}th{color:var(--muted);font-weight:600}
 .badge{display:inline-block;font-size:.75rem;font-weight:600;padding:.1rem .5rem;border-radius:999px;border:1px solid currentColor;white-space:nowrap}

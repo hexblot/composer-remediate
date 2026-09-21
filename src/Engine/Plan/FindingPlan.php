@@ -7,6 +7,7 @@ namespace Remediate\Engine\Plan;
 use Remediate\Engine\Candidate\Candidate;
 use Remediate\Engine\Matching\Finding;
 use Remediate\Engine\Solver\SolveStatus;
+use Remediate\Engine\Solver\VersionStep;
 
 final class FindingPlan
 {
@@ -79,6 +80,42 @@ final class FindingPlan
         }
 
         return sprintf('composer.json requires %s, which blocks every fix within the current constraints; the recommendation widens %s to %s.', implode(' and ', $parts), count($parts) === 1 ? 'it' : 'them', implode(', ', array_map(static fn ($c): string => $c->toConstraint, $recommended->candidate->rootConstraintChanges)));
+    }
+
+    /**
+     * On a constraint-drag finding whose fix leaves the locked major behind: no release within that
+     * major carries the fix, so widening the constraint is the only route the planner can verify.
+     * Names the one alternative it cannot see, a fix published under a different package name.
+     *
+     * Null when there is no drag, or when the fix stays within the locked major: there the widening
+     * is about the constraint that was written, not about the branch running out of releases.
+     */
+    public function noFixWithinLockedMajor(): ?string
+    {
+        if ($this->constraintDrag() === null) {
+            return null;
+        }
+        $change = $this->recommended()?->diff?->changeFor($this->finding->packageName);
+        if ($change === null || $change->step !== VersionStep::Major) {
+            return null;
+        }
+        $branch = self::majorLabel($change->fromNormalized);
+
+        return sprintf(
+            'No fixed release of %s exists %s. Advisory ranges are per branch, so a fix on the locked branch would have been preferred over any major bump; none was published. If a maintained fork or a backport carries the fix under a different package name, switching to it is the alternative to the widening above — the planner cannot find a fix that is published under another name.',
+            $this->finding->packageName,
+            $branch === null ? 'on the locked branch' : 'within ' . $branch,
+        );
+    }
+
+    /** "6.x" from a normalized version, or null when it carries no numeric major. */
+    private static function majorLabel(?string $normalized): ?string
+    {
+        if ($normalized === null || preg_match('{^(\d+)\.}', $normalized, $m) !== 1) {
+            return null;
+        }
+
+        return $m[1] . '.x';
     }
 
     /** How the absence of a remediation should be read, for reports. */

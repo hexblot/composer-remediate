@@ -7,6 +7,7 @@ namespace Remediate\Tests\Unit\Solver;
 use Composer\Package\Package;
 use PHPUnit\Framework\TestCase;
 use Remediate\Engine\Lock\LockSnapshot;
+use Remediate\Engine\Solver\CapabilityChange;
 use Remediate\Engine\Solver\LockDiff;
 use Remediate\Engine\Solver\PackageChange;
 use Remediate\Engine\Solver\VersionStep;
@@ -85,5 +86,69 @@ final class LockDiffTest extends TestCase
         self::assertSame(VersionStep::Other, $change->step);
         self::assertSame(PackageChange::CHANGED, $change->kind);
         self::assertFalse($diff->hasMajorChange());
+    }
+
+    public function testCapabilityChangesAreReadFromMetadataTheSnapshotsAlreadyCarry(): void
+    {
+        $old = new Package('a/lib', '1.0.0.0', '1.0.0');
+        $old->setType('library');
+        $old->setSourceUrl('https://github.com/a/lib.git');
+        $new = new Package('a/lib', '2.0.0.0', '2.0.0');
+        $new->setType('composer-plugin');
+        $new->setAutoload(['files' => ['src/boot.php'], 'psr-4' => ['A\\' => 'src/']]);
+        $new->setBinaries(['bin/a']);
+        $new->setSourceUrl('https://git.a.test/lib.git');
+
+        $diff = LockDiff::between(LockSnapshot::fromPackages([$old], []), LockSnapshot::fromPackages([$new], []));
+
+        self::assertSame([
+            'a/lib changes type: library -> composer-plugin',
+            'a/lib autoloads files on every request: src/boot.php',
+            'a/lib installs binaries: bin/a',
+            'a/lib is fetched from a different source host: github.com -> git.a.test',
+        ], array_map(static fn (CapabilityChange $c): string => $c->describe(), $diff->capabilityChanges));
+        self::assertCount(3, $diff->newCodeCapabilities(), 'the host change does not itself run new code');
+    }
+
+    public function testAnUnchangedPackageAndAPurelyNumericUpgradeCarryNoCapabilityChange(): void
+    {
+        $before = new Package('a/lib', '1.0.0.0', '1.0.0');
+        $before->setType('library');
+        $before->setBinaries(['bin/a']);
+        $after = new Package('a/lib', '1.0.1.0', '1.0.1');
+        $after->setType('library');
+        $after->setBinaries(['bin/a']);
+
+        $diff = LockDiff::between(LockSnapshot::fromPackages([$before], []), LockSnapshot::fromPackages([$after], []));
+
+        self::assertSame([], $diff->capabilityChanges);
+    }
+
+    public function testAnAddedPackageIsReportedOnlyForWhatRunsWithoutBeingCalled(): void
+    {
+        $plugin = new Package('a/plugin', '1.0.0.0', '1.0.0');
+        $plugin->setType('composer-plugin');
+        $plugin->setAutoload(['files' => ['boot.php']]);
+        $plugin->setBinaries(['bin/noisy']);
+        $ordinary = new Package('a/ordinary', '1.0.0.0', '1.0.0');
+        $ordinary->setType('library');
+        $ordinary->setBinaries(['bin/quiet']);
+
+        $diff = LockDiff::between(LockSnapshot::fromPackages([], []), LockSnapshot::fromPackages([$plugin, $ordinary], []));
+
+        self::assertSame([
+            'a/plugin is a composer-plugin',
+            'a/plugin autoloads files on every request: boot.php',
+        ], array_map(static fn (CapabilityChange $c): string => $c->describe(), $diff->capabilityChanges));
+    }
+
+    public function testARemovedPackageGainsNothing(): void
+    {
+        $gone = new Package('a/gone', '1.0.0.0', '1.0.0');
+        $gone->setType('composer-plugin');
+
+        $diff = LockDiff::between(LockSnapshot::fromPackages([$gone], []), LockSnapshot::fromPackages([], []));
+
+        self::assertSame([], $diff->capabilityChanges);
     }
 }
