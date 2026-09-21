@@ -80,6 +80,12 @@ interpret. Every reader now refuses rather than skips, a contract suite states t
 three of them, the suite runs on Windows and macOS, and a compatibility policy says what a version
 number covers. The rule that a package's identity has to be readable before a record is filed under it
 found a malformed record in the live GitHub Advisory Database, whose correction is filed upstream.
+0.9.1 answers three requests about the report itself: why a widening is the only route left when a
+branch has published no fix at all, the `conflict` entry that makes a one-command `--with` constraint
+permanent, and what an update changes about what a package is *allowed* to do — a type becoming
+`composer-plugin`, `autoload.files` or binaries appearing, the source or dist host moving. All three
+are in the text and HTML reports; the JSON document is unchanged, because its shape is a covered
+surface and any addition to it increases `schema_version`.
 
 ## Start here
 
