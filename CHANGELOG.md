@@ -5,6 +5,10 @@ All notable changes to this project are documented here. The format follows
 
 ## [Unreleased]
 
+[Unreleased]: https://github.com/hexblot/composer-remediate/compare/v0.9.1...HEAD
+
+## [0.9.1] - 2026-09-21
+
 ### Added
 
 Three additions to the report, asked for in reactions to the project. All three are in the text and
@@ -31,8 +35,6 @@ to it increases `schema_version`. That is held for 0.10.0.
   being called, since every new package brings its own everything.
 
 The HTML report also gains the constraint-drag note, which until now appeared only in the text report.
-
-[Unreleased]: https://github.com/hexblot/composer-remediate/compare/v0.9.0...HEAD
 
 ## [0.9.0] - 2026-09-20
 
@@ -429,6 +431,7 @@ Answers to an Aikido scan of the workflows.
   pull request ready for review runs the full PHP and Composer matrices. Iterating in a draft therefore
   costs what a push used to, and the matrix is paid for once, when the work is done.
 
+[0.9.1]: https://github.com/hexblot/composer-remediate/releases/tag/v0.9.1
 [0.9.0]: https://github.com/hexblot/composer-remediate/releases/tag/v0.9.0
 [0.8.1]: https://github.com/hexblot/composer-remediate/releases/tag/v0.8.1
 [0.8.0]: https://github.com/hexblot/composer-remediate/releases/tag/v0.8.0
