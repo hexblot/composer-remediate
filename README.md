@@ -96,6 +96,12 @@ Documentation is built with MkDocs (`pipx run --spec mkdocs --pip-args=pymdown-e
 Pages. The CLI reference and case-studies pages are generated (`ddev composer cli-reference`,
 `ddev composer case-studies`) and checked in CI.
 
+## Sponsor
+
+Development of Composer Remediate is sponsored by [Lambda Twelve](https://www.lambda-twelve.com),
+which funds the maintainer's time and the tooling costs behind the work, including the AI assistance
+used during development. The project takes no money from users and has no commercial tier.
+
 ## Acknowledgement
 
 [CVE Lite CLI](https://github.com/OWASP/cve-lite-cli) is an OWASP project that gives JavaScript and

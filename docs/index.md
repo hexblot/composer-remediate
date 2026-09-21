@@ -111,3 +111,9 @@ TypeScript: local-first scanning of lockfiles with copy-and-run fix commands and
 guidance for transitive dependencies. Composer Remediate was inspired by that approach, applying it
 to Composer's dependency model and using Composer's own solver to prove each recommendation before it
 is shown.
+
+## Sponsor
+
+Development of Composer Remediate is sponsored by [Lambda Twelve](https://www.lambda-twelve.com),
+which funds the maintainer's time and the tooling costs behind the work, including the AI assistance
+used during development. The project takes no money from users and has no commercial tier.
