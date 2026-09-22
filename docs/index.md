@@ -86,6 +86,17 @@ permanent, and what an update changes about what a package is *allowed* to do â€
 `composer-plugin`, `autoload.files` or binaries appearing, the source or dist host moving. All three
 are in the text and HTML reports; the JSON document is unchanged, because its shape is a covered
 surface and any addition to it increases `schema_version`.
+0.10.0 answers an eighth adversarial review and three rechecks of the answers to it: ten findings, nine
+fixed, every one reproduced and none a false positive. They shared a shape â€” safety state that changes
+between components, each of which was correct on its own terms. The apply now inherits the restrictions
+the run was started with, so the standalone binary's promise that no project code runs survives
+`--apply`; nothing leaves the command without writing its reports, so a failed scan can no longer leave
+a CI step publishing the last successful one; and the advisory database is read from a private copy of
+the bytes that were verified, because four attempts at checking the file at the right moment each left
+a window between the check and the read. What the rechecks kept showing is that a rule made structural
+holds and a rule merely tested comes back. One finding is open and documented: the dependency-path
+limits still bound what the search returns rather than the work of finding it, and two attempts at that
+changed which command the planner recommends, which is worth more than the seconds saved.
 
 ## Start here
 
