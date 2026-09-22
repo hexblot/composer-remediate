@@ -13,6 +13,7 @@ use Remediate\Engine\Advisory\Db\DatabaseWriter;
 use Remediate\Engine\Advisory\Db\NormalizedAdvisory;
 use Remediate\Engine\Advisory\Db\SqliteAdvisoryProvider;
 use Remediate\Tests\Support\CommandRunner;
+use Remediate\Tests\Support\ScriptedDownloader;
 use Remediate\Tests\Support\ScriptedProject;
 use Remediate\Tests\Support\TlsPublisher;
 
@@ -208,5 +209,62 @@ final class VerifiedDatabaseContractTest extends TestCase
             [new AffectedRange($package, '<2.0.0', 'test')],
             [],
         );
+    }
+
+    /**
+     * Invariant: bytes accepted without verification never become evidence about themselves.
+     *
+     * Eighth adversarial review, finding 8. Currency is settled partly by the dataset hash, and that
+     * field is read out of the database file. For a copy taken with --allow-unverified-database the
+     * field is whoever served it's to write, so a match says only that they claim to be the
+     * publisher's data. An empty database declaring the real publisher's dataset hash was then held
+     * as "confirmed current" by a later run that did require a checksum, while the publisher was
+     * serving a database containing an advisory the local copy did not have. The unverified warning
+     * stayed on, but the statement that the copy was current was false.
+     */
+    public function testAnUnverifiedCopyCannotDeclareItselfCurrent(): void
+    {
+        $project = new ScriptedProject(['acme/lib' => '^1'], [['acme/lib', '1.0.0']]);
+        $dir = $project->directory;
+        try {
+            // What the publisher actually serves: one advisory.
+            $published = $dir . '/published.sqlite';
+            (new DatabaseWriter())->write([self::advisoryFor('acme/lib')], [], $published);
+            $publishedDataset = Database::open($published)->meta()['dataset_hash'];
+
+            // What a mirror serves instead: nothing, wearing the publisher's dataset hash.
+            $forged = $dir . '/forged.sqlite';
+            (new DatabaseWriter())->write([], [], $forged);
+            $pdo = new \PDO('sqlite:' . $forged);
+            $pdo->prepare("UPDATE meta SET value=? WHERE key='dataset_hash'")->execute([$publishedDataset]);
+            $pdo = null;
+            $forgedBytes = (string) file_get_contents($forged);
+            unlink($forged);
+
+            $url = 'https://mirror.example/advisories.sqlite';
+            $path = $dir . '/advisories.sqlite';
+
+            // Taken knowingly without verification.
+            $lenient = new \Remediate\Engine\Advisory\Db\DatabaseLocator($project->context()->composer, new ScriptedDownloader([$url => $forgedBytes]), false, false);
+            $lenient->locate($lenient->settings($url, $path));
+            self::assertSame(0, Database::open($path)->advisoryCount(), 'the unverified copy is empty, as served');
+
+            // A later run that does require a checksum meets the publisher's real digest and database.
+            $strict = new \Remediate\Engine\Advisory\Db\DatabaseLocator($project->context()->composer, new ScriptedDownloader([
+                'https://mirror.example/latest.json' => (string) json_encode(['sha256' => hash_file('sha256', $published), 'dataset_hash' => $publishedDataset]),
+                $url => (string) file_get_contents($published),
+            ]), false, true);
+            $located = $strict->locate($strict->settings($url, $path));
+            self::assertNotNull($located);
+
+            self::assertNotSame('confirmed', $located->freshness->value, 'an unverified copy declared itself current on its own metadata');
+            self::assertSame(
+                Database::open($published)->advisoryCount(),
+                Database::open($path)->advisoryCount(),
+                'the run ended up with the advisories the publisher actually serves',
+            );
+        } finally {
+            $project->destroy();
+        }
     }
 }

@@ -349,7 +349,7 @@ final class DatabaseLocator
      * build at a path the operator chose. A copy from another source, or anything at a path the analysed
      * project chose, is not: it would carry that source's, or the project's, data into this run.
      *
-     * @param array{sha256: string, datasetHash: ?string, builtAt: ?int, mtime: int, downloadedFrom: ?string, privateSources: list<string>} $local
+     * @param array{sha256: string, datasetHash: ?string, builtAt: ?int, mtime: int, downloadedFrom: ?string, verified: bool, privateSources: list<string>} $local
      */
     private function belongsHere(array $local, DatabaseSettings $settings, string $path): bool
     {
@@ -378,7 +378,7 @@ final class DatabaseLocator
      * replaced: the path may have been pointed at something else, and this tool does not overwrite what
      * it did not write.
      *
-     * @return array{sha256: string, datasetHash: ?string, builtAt: ?int, mtime: int, downloadedFrom: ?string, privateSources: list<string>}|null
+     * @return array{sha256: string, datasetHash: ?string, builtAt: ?int, mtime: int, downloadedFrom: ?string, verified: bool, privateSources: list<string>}|null
      *
      * @throws AdvisoryLookupFailed
      */
@@ -417,6 +417,9 @@ final class DatabaseLocator
             'builtAt' => $builtAt === false ? null : $builtAt,
             'mtime' => (int) filemtime($path),
             'downloadedFrom' => is_array($decoded) && is_string($decoded['url'] ?? null) ? $decoded['url'] : null,
+            // Whether these bytes were ever checked against a digest. Only a verified copy may offer
+            // its own metadata as evidence about itself.
+            'verified' => is_array($decoded) && ($decoded['verified'] ?? null) === true,
             'privateSources' => $private,
         ];
     }
@@ -474,7 +477,7 @@ final class DatabaseLocator
      * future. A copy downloaded from a different source never does, whatever it claims: switching
      * sources must not carry the previous source's data over.
      *
-     * @param array{sha256: string, datasetHash: ?string, builtAt: ?int, mtime: int, downloadedFrom: ?string, privateSources: list<string>} $local
+     * @param array{sha256: string, datasetHash: ?string, builtAt: ?int, mtime: int, downloadedFrom: ?string, verified: bool, privateSources: list<string>} $local
      * @param array{sha256: ?string, datasetHash: ?string, publishedAt: ?int}                                                            $remote
      */
     private static function currency(array $local, array $remote, string $source, DatabaseSettings $settings): ?string
@@ -490,6 +493,20 @@ final class DatabaseLocator
         }
         if ($local['downloadedFrom'] !== null && $local['downloadedFrom'] !== self::redact($source)) {
             return null; // downloaded from another source; its metadata is that publisher's to write, not proof about this one
+        }
+        if ($local['downloadedFrom'] !== null && !$local['verified']) {
+            // Eighth adversarial review, finding 8. The dataset hash below is read out of the database
+            // itself. For a copy accepted without a digest (--allow-unverified-database) that field is
+            // whoever served the file's to write, so matching the publisher's dataset hash says only
+            // that they claim to be the publisher's data. An empty database declaring the real
+            // publisher's dataset hash was held as "confirmed current" while the publisher served an
+            // advisory it did not contain. Having once accepted unverified bytes must not turn their
+            // self-declared identity into evidence of what they are.
+            //
+            // Scoped to downloads. A database this machine built has no such provenance to forge: it
+            // is the operator's own file, and the rule below that accepts a newer local build is about
+            // exactly that case.
+            return null;
         }
         if ($remote['datasetHash'] !== null && $local['datasetHash'] !== null && $local['datasetHash'] !== '' && hash_equals($remote['datasetHash'], $local['datasetHash'])) {
             return 'same dataset hash as the published database';
@@ -612,7 +629,7 @@ final class DatabaseLocator
     /**
      * A copy that could not be confirmed current may not be older than the configured maximum.
      *
-     * @param array{sha256: string, datasetHash: ?string, builtAt: ?int, mtime: int, downloadedFrom: ?string, privateSources: list<string>} $local
+     * @param array{sha256: string, datasetHash: ?string, builtAt: ?int, mtime: int, downloadedFrom: ?string, verified: bool, privateSources: list<string>} $local
      */
     private function enforceMaxAge(array $local, DatabaseSettings $settings, string $context): void
     {
@@ -640,7 +657,7 @@ final class DatabaseLocator
         }
     }
 
-    /** @param array{sha256: string, datasetHash: ?string, builtAt: ?int, mtime: int, downloadedFrom: ?string, privateSources: list<string>} $local */
+    /** @param array{sha256: string, datasetHash: ?string, builtAt: ?int, mtime: int, downloadedFrom: ?string, verified: bool, privateSources: list<string>} $local */
     private static function age(array $local): string
     {
         $seconds = max(0, time() - ($local['builtAt'] ?? $local['mtime']));
