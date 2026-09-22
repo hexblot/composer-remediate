@@ -7,11 +7,11 @@ All notable changes to this project are documented here. The format follows
 
 ### Fixed
 
-An eighth adversarial review and two rechecks of the answers to it: ten findings, nine fixed, each with
-a reproduction the reviewer supplied and a regression test here that fails without the fix. Every one
-reproduced; none was a false positive. The first recheck found four of the original fixes incomplete
-and the second found three more — one of them a defect introduced by the repair before it. Each is
-listed below with what actually closed it. They cluster around safety state that changes
+An eighth adversarial review and three rechecks of the answers to it: ten findings, nine fixed, each
+with a reproduction the reviewer supplied and a regression test here that fails without the fix. Every
+one reproduced; none was a false positive. Each recheck found the previous round's repairs incomplete —
+four, then three, then one — and one of those was a defect introduced by the repair before it. Each is
+listed below with what finally closed it. They cluster around safety state that changes
 between components — what the run is allowed to do, which database it is reading, which files it
 planned from, whether the advisory source can still answer — so several of the tests are contracts
 rather than unit tests, because the defect was two components each being right on their own terms.
@@ -53,6 +53,17 @@ rather than unit tests, because the defect was two components each being right o
   mode answers partly out of a `-wal` sidecar that no digest of the file covers: rows deleted into the
   WAL were invisible to the pin and a pinned database scanned clean. Such a database is refused, and the
   refusal names the checkpoint command that settles it.
+
+  What all of those repairs had in common was checking the file at a moment — when it was located, when
+  it was opened, when a worker reopened it — and a check at a moment says nothing about the planning
+  that follows. The third recheck used that directly: a concurrent writer deleting a package's advisory
+  rows between the first scan and candidate verification got the planner to approve a command
+  introducing a package it had been told was vulnerable, a verified recommendation at exit `1` drawn
+  from a database nobody had verified. Rechecking before every query would narrow that window without
+  closing it, because the gap is between the check and the read. **A run now reads a private copy of the
+  verified file**, made once and known only to that run, so the bytes that were verified are the bytes
+  every later query and every forked worker sees. The published database is about 7 MB, so this is one
+  copy per run.
 - **An unreadable archive entry vanished from coverage.** Encrypted, corrupt or truncated members were
   skipped in silence, so a partial archive counted as complete. They are recorded as coverage gaps,
   and a reader with nowhere to record one refuses.

@@ -158,18 +158,24 @@ final class VerifiedDatabaseContractTest extends TestCase
     }
 
     /**
-     * Invariant: the database a worker reads after forking is the database this run verified.
+     * Invariant: every read in a run answers from the bytes that run verified, however long the run
+     * lasts and whatever happens to the file it came from.
      *
-     * Eighth adversarial review, finding 4. Parallel planning forks, and a SQLite handle cannot be
-     * carried across a fork, so each child reopens the file. Reopening named the path, and a path is
-     * not a file: a cache refresh landing between the run's verification and that call — a concurrent
-     * process, or this tool's own download — put a different database there and the child read it as
-     * the verified one. An earlier --database-sha256 check does not reach a connection opened later.
-     * The probe found one advisory through the original connection and none after replacement.
+     * Third recheck of the eighth review. Each repair before this one checked the file at a moment —
+     * when it was located, when it was opened, when a worker reopened it — and a check at a moment
+     * cannot say anything about the twenty seconds of planning that follow. A concurrent writer
+     * deleting a package's advisory rows between the first scan and candidate verification got the
+     * planner to approve a command introducing a package it had been told was vulnerable: a verified
+     * recommendation, exit 1, out of a database nobody had verified. Checking again before each query
+     * would have narrowed that window and not closed it, because the gap is between the check and the
+     * read.
      *
-     * This contract already checked verification between commands; the gap was replacement during one.
+     * So the run reads a copy that only it knows the path of. This test used to assert that a worker
+     * refused a replaced database, which was the best that could be said when the run read the file
+     * everyone else could write to. What holds now is stronger and simpler: the replacement is beside
+     * the point.
      */
-    public function testAWorkerRefusesADatabaseThatWasReplacedAfterTheRunVerifiedIt(): void
+    public function testEveryReadAnswersFromTheVerifiedBytesHoweverLongTheRunLasts(): void
     {
         $dir = sys_get_temp_dir() . '/composer-remediate-fork-' . bin2hex(random_bytes(4));
         mkdir($dir, 0700, true);
@@ -177,24 +183,26 @@ final class VerifiedDatabaseContractTest extends TestCase
 
         try {
             (new DatabaseWriter())->write([self::advisoryFor('acme/lib')], [], $path);
-            $database = Database::open($path);
-            $provider = new SqliteAdvisoryProvider($database);
+            $provider = new SqliteAdvisoryProvider(Database::open($path, (string) hash_file('sha256', $path)));
             self::assertNotSame([], $provider->advisoriesFor(['acme/lib']), 'the verified database answers');
 
-            // Not a different database — the same one with its advisories deleted and every field it
-            // reports about itself untouched. The first version of this check compared schema_version,
-            // dataset_hash and built_at, which are rows inside the file, so whoever could replace it
-            // could also write the fields it was judged by. This replacement passed that check and the
-            // worker read the lock as clean against an empty database.
+            // Everything a concurrent writer can do to the file the run was pointed at: replace it
+            // wholesale, and commit a deletion into a write-ahead log beside it.
             copy($path, $dir . '/replacement.sqlite');
             $pdo = new \PDO('sqlite:' . $dir . '/replacement.sqlite');
             $pdo->exec('DELETE FROM affected');
             $pdo = null;
             rename($dir . '/replacement.sqlite', $path);
 
-            $this->expectException(AdvisoryLookupFailed::class);
-            $this->expectExceptionMessageMatches('{is not the file this run verified}');
+            $writer = new \PDO('sqlite:' . $path);
+            $writer->exec('PRAGMA journal_mode = WAL');
+            $writer->exec('DELETE FROM affected');
+
+            // A package not asked about before, so the answer comes from a query rather than the cache.
+            self::assertSame([], $provider->advisoriesFor(['acme/unrelated']), 'a later lookup still works');
             $provider->afterFork();
+            self::assertNotSame([], $provider->advisoriesFor(['acme/lib']), 'and still answers from the bytes that were verified');
+            $writer = null;
         } finally {
             foreach (glob($dir . '/*') ?: [] as $file) {
                 @unlink($file);
