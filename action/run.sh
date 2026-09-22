@@ -35,6 +35,15 @@ git remote set-url origin "https://x-access-token:${GH_TOKEN}@${host}/${REPOSITO
 # be applied to, and the branch this run produces has to contain that and nothing else; planning
 # on whatever ref happened to be checked out would carry unrelated commits into the pull request.
 base="${BASE:-$(gh repo view "$REPOSITORY" --json defaultBranchRef --jq .defaultBranchRef.name)}"
+# This action opens a pull request; it is never a way to write to the branch it is opening against.
+# With branch and base the same, everything downstream still reads as ordinary: the remediation is
+# committed, force-pushed to "the branch", and only then does the pull request come back invalid with
+# head and base identical -- by which point the base has already been written to. Refuse up front,
+# while a refusal still costs nothing.
+if [ "$BRANCH" = "$base" ]; then
+  echo "::error::branch and base are both '$base'. This action opens a pull request from branch into base, so they must differ; set the 'branch' input to something else." >&2
+  exit 1
+fi
 git "${git_remote[@]}" fetch -q origin "+refs/heads/$base:refs/remotes/origin/$base"
 git checkout -q --detach "refs/remotes/origin/$base"
 # The advisory database decides what counts as a vulnerability, so when asked, its build provenance is

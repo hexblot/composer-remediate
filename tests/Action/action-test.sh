@@ -191,6 +191,33 @@ else
   echo "  ok   the update left ready-for-review alone, which is a person's decision once the pull request exists"
 fi
 
+echo "A run misconfigured so that the branch it writes is the branch it targets:"
+(
+  export BRANCH="$BASE"
+  base_before="$("$REAL_GIT" --git-dir="$remote" rev-parse "refs/heads/$BASE")"
+  rm -f "$GH_LOG"
+  if bash "$root/action/run.sh" > "$sandbox/collide.out" 2> "$sandbox/collide.err"; then
+    echo "  FAIL the action ran to completion with branch and base the same" >&2
+    exit 1
+  fi
+  base_after="$("$REAL_GIT" --git-dir="$remote" rev-parse "refs/heads/$BASE")"
+  if [ "$base_before" != "$base_after" ]; then
+    echo "  FAIL the base branch was written to before the invalid pull request was detected" >&2
+    exit 1
+  fi
+  echo "  ok   it refuses rather than pushing the remediation onto its own base"
+  if [ -s "$GH_LOG" ] && grep -q 'pr create' "$GH_LOG"; then
+    echo "  FAIL it still asked for a pull request with head and base the same" >&2
+    exit 1
+  fi
+  echo "  ok   and asks for no pull request it could not have opened"
+  if ! grep -q 'branch and base are both' "$sandbox/collide.err"; then
+    echo "  FAIL the refusal does not say what is wrong" >&2
+    exit 1
+  fi
+  echo "  ok   the refusal names the input to change"
+) || failures=$((failures + 1))
+
 echo
 if [ "$failures" -eq 0 ]; then
   echo "action: all checks passed"
