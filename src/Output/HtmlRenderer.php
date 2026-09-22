@@ -38,7 +38,10 @@ final class HtmlRenderer
         }
 
         if ($plan->findings === []) {
-            $h[] = '<p class="clean">No known vulnerabilities in the locked dependencies.</p>';
+            $failure = ScanOutcome::failureMessage($plan);
+            $h[] = $failure !== null
+                ? '<p class="none-box">' . self::e($failure) . '</p>'
+                : '<p class="clean">No known vulnerabilities in the locked dependencies.</p>';
         } else {
             $h[] = $this->summary($plan);
             foreach ($plan->findings as $index => $findingPlan) {

@@ -137,22 +137,22 @@ HELP);
         [$format, $files] = $targets;
         $error = $this->checkRuntime($input, $io);
         if ($error !== null) {
-            return $error;
+            return $this->emitFailure($error, $format, $files, $output, $io);
         }
         $composer = $this->requireComposer();
         $context = ProjectContext::fromComposer($composer);
         if (!$context->isLocked()) {
             $io->writeError('<error>No composer.lock found. Run composer install or composer update first.</error>');
 
-            return Plan::EXIT_ERROR;
+            return $this->emitFailure(Plan::EXIT_ERROR, $format, $files, $output, $io);
         }
         $locator = $this->databaseLocator($input, $composer, $io);
         if (is_int($locator)) {
-            return $locator;
+            return $this->emitFailure($locator, $format, $files, $output, $io, $context->lockPath());
         }
         $advisories = $this->advisoryProvider($input, $composer, $context, $locator, $io);
         if (is_int($advisories)) {
-            return $advisories;
+            return $this->emitFailure($advisories, $format, $files, $output, $io, $context->lockPath());
         }
         $this->planWarnings = [...$locator->warnings(), ...$this->planWarnings];
         $platformArguments = self::platformArguments($input);
@@ -166,7 +166,7 @@ HELP);
                 $io->writeError('<comment>Offline mode: the advisory database must already be at its path (see remediate:db-status), or pass --advisories-file=<json>.</comment>');
             }
 
-            return Plan::EXIT_ADVISORIES_UNAVAILABLE;
+            return $this->emitFailure(Plan::EXIT_ADVISORIES_UNAVAILABLE, $format, $files, $output, $io, $context->lockPath(), 'Advisory data unavailable: ' . $e->getMessage());
         }
         $plan = $plan->withWarnings([...$this->planWarnings, ...($advisories instanceof FallbackAdvisoryProvider ? $advisories->warnings() : [])]);
         $plan = $this->gate($plan, $input, $io);
@@ -177,13 +177,39 @@ HELP);
         if ((bool) $input->getOption('apply')) {
             $applied = $this->applyPlan($plan, $context, $advisories, $solver, $platformArguments, $input, $io);
             if (is_int($applied)) {
-                return $applied;
+                return $this->emitFailure($applied, $format, $files, $output, $io, $context->lockPath());
             }
             $plan = $applied;
             $context = ProjectContext::fromComposer($this->requireComposer());
         }
 
         return $this->emit($plan, $format, $files, $solver->supportsMinimalChanges(), LockLineIndex::fromFile($context->lockPath()), $output, $io);
+    }
+
+    /**
+     * Writes the declared reports for a run that could not answer, and returns its exit code.
+     *
+     * Eighth adversarial review, finding 3. A failure used to return before anything was rendered, so
+     * `--output=scan.sarif` kept whatever the last successful run had written: a CI step uploading that
+     * file published a clean result, `executionSuccessful` and all, for a scan that never ran. A report
+     * that is not written is not a report that is absent; it is the previous one, still read as this
+     * one's.
+     *
+     * The plan carries the failure, so ScanOutcome makes every format say the run did not complete
+     * rather than show an empty vulnerability list.
+     *
+     * @param list<array{ReportFormat, ?string}> $files
+     */
+    private function emitFailure(int $exitCode, ReportFormat $format, array $files, OutputInterface $output, IOInterface $io, ?string $lockPath = null, ?string $reason = null): int
+    {
+        $warnings = $this->planWarnings;
+        if ($reason !== null && $reason !== '') {
+            $warnings[] = $reason;
+        }
+        $plan = Plan::failed($exitCode, ['engine_version' => Planner::engineVersion(), 'analysis_timestamp' => gmdate('c')], $warnings);
+        $emitted = $this->emit($plan, $format, $files, true, $lockPath !== null ? LockLineIndex::fromFile($lockPath) : LockLineIndex::empty(), $output, $io);
+
+        return $emitted === Plan::EXIT_ERROR ? Plan::EXIT_ERROR : $exitCode;
     }
 
     /**

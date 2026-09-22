@@ -89,7 +89,7 @@ final class CycloneDxRenderer
                     // an empty vulnerability list and none of that disclosed cannot tell what the
                     // emptiness means. The other formats have carried these all along.
                     ...array_map(
-                        static fn (int $i, string $warning): array => self::property('composer-remediate:warning.' . ($i + 1), $warning),
+                        static fn (int $i, string $warning): ?array => self::property('composer-remediate:warning.' . ($i + 1), $warning),
                         array_keys(array_values($plan->warnings)),
                         array_values($plan->warnings),
                     ),
