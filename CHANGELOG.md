@@ -41,9 +41,16 @@ components each being right on their own terms.
   publisher's hash was held as confirmed while the publisher served an advisory it lacked.
 - **The GitHub Action pushed to its own base** when `branch` and `base` matched, before the invalid
   pull request was refused. It now refuses first.
-- **`MAX_PATHS` and `MAX_DEPTH` bounded the output, not the search.** The whole recursive ancestor tree
-  was expanded first: six extra packages cost six seconds and 144 MiB for the same 200 paths. The walk
-  is now expanded a level at a time.
+
+### Known
+
+- **`MAX_PATHS` and `MAX_DEPTH` bound the returned paths, not the work of finding them** (finding 10,
+  not fixed here). The whole recursive ancestor tree is expanded before either applies, so a layered
+  graph costs far more than the result suggests: six extra packages took the same 200 paths from
+  0.007 seconds to six seconds and 144 MiB. Two attempts at walking it a level at a time each changed
+  which command the planner recommends on a real fixture, because the path set Composer's recursive
+  expansion produces, and the order of it, decides which ancestors become candidates. A narrower
+  recommendation is worth more than the saved seconds, so this stays open.
 
 ### Changed
 
