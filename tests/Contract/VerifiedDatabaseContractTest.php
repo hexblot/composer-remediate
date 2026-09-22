@@ -318,4 +318,119 @@ final class VerifiedDatabaseContractTest extends TestCase
             @rmdir($dir);
         }
     }
+
+    /**
+     * Invariant: the digest a located database carries is the one the decision was made against, never
+     * a fresh hash of the path taken afterwards.
+     *
+     * Second recheck of the eighth review. The consolidation that closed the previous seam opened this
+     * one: it hashed the pathname once `choose()` had finished, so the operator's pin was checked
+     * against the copy inspected before the publisher request, and then stamped with whatever was at
+     * the path after it. A replacement arriving during that request — an ordinary concurrent cache
+     * refresh, not a won race — was checked as the old file and trusted as the new one. Rehashing the
+     * path asks the file who it is a second time and believes the second answer.
+     */
+    public function testTheDigestCarriedIsTheOneThatWasVerified(): void
+    {
+        $project = new ScriptedProject(['acme/lib' => '^1'], [['acme/lib', '1.0.0']]);
+        $path = $project->directory . '/advisories.sqlite';
+        try {
+            (new DatabaseWriter())->write([self::advisoryFor('acme/lib')], [], $path);
+            $pinned = (string) hash_file('sha256', $path);
+
+            // The replacement a refresh would land: same name, no advisories.
+            copy($path, $path . '.replacement');
+            $pdo = new \PDO('sqlite:' . $path . '.replacement');
+            $pdo->exec('DELETE FROM affected');
+            $pdo = null;
+
+            $http = new class($path, $pinned) extends \Composer\Util\HttpDownloader {
+                public function __construct(private string $path, private string $pinned)
+                {
+                    parent::__construct(new \Composer\IO\NullIO(), new \Composer\Config(false));
+                }
+
+                public function copy(string $url, string $to, array $options = []): \Composer\Util\Http\Response
+                {
+                    // The publisher answers honestly with the pinned digest; the file changes underneath.
+                    rename($this->path . '.replacement', $this->path);
+                    file_put_contents($to, (string) json_encode(['sha256' => $this->pinned]));
+
+                    \assert($url !== '');
+
+                    return new \Composer\Util\Http\Response(['url' => $url], 200, [], null);
+                }
+
+                public function addCopy(string $url, string $to, array $options = []): \React\Promise\PromiseInterface
+                {
+                    return \React\Promise\resolve($this->copy($url, $to, $options));
+                }
+
+                public function wait(?int $index = null): void
+                {
+                }
+            };
+
+            $locator = new \Remediate\Engine\Advisory\Db\DatabaseLocator($project->context()->composer, $http, expectedSha256: $pinned);
+            $located = $locator->locate($locator->settings('https://publisher.example/advisories.sqlite', $path));
+            self::assertNotNull($located);
+
+            self::assertSame($pinned, $located->digest, 'the located digest names the bytes that were verified, not the ones now at the path');
+            self::assertNotSame($pinned, hash_file('sha256', $path), 'the file really was replaced, or this test proves nothing');
+
+            $this->expectException(AdvisoryLookupFailed::class);
+            $this->expectExceptionMessageMatches('{is not the file that was verified for this run}');
+            Database::open($located->path, $located->digest);
+        } finally {
+            $project->destroy();
+        }
+    }
+
+    /**
+     * Invariant: nothing is read from a database whose answers are not wholly in the file that is
+     * verified.
+     *
+     * Second recheck of the eighth review. In WAL mode SQLite serves committed rows from the `-wal`
+     * sidecar, so rows can be deleted and a reader see them gone while the main file does not change by
+     * a byte. The reviewer pinned a database holding one advisory, deleted its rows into the WAL, and
+     * the same explicit pin scanned clean. Hashing the sidecar too is no answer: it changes under any
+     * concurrent writer. This tool writes its databases with the journal off, so the refusal only meets
+     * a file someone else prepared, and it names the command that settles it.
+     */
+    public function testADatabaseWhoseAnswersLiveOutsideTheVerifiedFileIsRefused(): void
+    {
+        $dir = sys_get_temp_dir() . '/composer-remediate-wal-' . bin2hex(random_bytes(4));
+        mkdir($dir, 0700, true);
+        $path = $dir . '/advisories.sqlite';
+
+        try {
+            (new DatabaseWriter())->write([self::advisoryFor('acme/lib')], [], $path);
+            self::assertSame(1, Database::open($path, (string) hash_file('sha256', $path))->advisoryCount(), 'an ordinary database is still read');
+
+            $writer = new \PDO('sqlite:' . $path);
+            $writer->exec('PRAGMA journal_mode = WAL');
+            $writer->exec('PRAGMA wal_checkpoint(TRUNCATE)');
+            $writer = null;
+            $pin = (string) hash_file('sha256', $path);
+
+            // Committed into the WAL and never checkpointed: the pinned file is untouched.
+            $mutator = new \PDO('sqlite:' . $path);
+            $mutator->exec('DELETE FROM affected');
+            self::assertSame($pin, hash_file('sha256', $path), 'the main file is unchanged, which is the whole difficulty');
+
+            try {
+                Database::open($path, $pin);
+                self::fail('a database answering out of an unverifiable sidecar was accepted');
+            } catch (AdvisoryLookupFailed $e) {
+                self::assertStringContainsString('WAL mode', $e->getMessage());
+                self::assertStringContainsString('wal_checkpoint', $e->getMessage(), 'the refusal names the way out');
+            }
+            $mutator = null;
+        } finally {
+            foreach (glob($dir . '/*') ?: [] as $file) {
+                @unlink($file);
+            }
+            @rmdir($dir);
+        }
+    }
 }

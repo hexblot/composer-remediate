@@ -632,14 +632,21 @@ HELP);
      */
     private function emit(Plan $plan, ReportFormat $format, array $files, bool $minimal, LockLineIndex $lockLines, OutputInterface $output, IOInterface $io): int
     {
+        // Every destination is attempted, whatever the others do. Returning at the first one that
+        // cannot be written left the rest holding whatever the last successful run put there, which is
+        // the failure this is supposed to prevent: one unwritable path (a directory that does not
+        // exist, a full disk) and a CI step goes on uploading a clean report for a run that failed.
+        // A destination that cannot be written is reported and makes the run a tool error; it does not
+        // decide anything for the destinations that can.
+        $unwritable = [];
         foreach ($files as [$fileFormat, $path]) {
             if ($path === null || $fileFormat === ReportFormat::None) {
                 continue;
             }
             if (@file_put_contents($path, $fileFormat->render($plan, $minimal, false, $lockLines)) === false) {
                 $io->writeError(sprintf('<error>Could not write %s report to %s</error>', $fileFormat->value, $path));
-
-                return Plan::EXIT_ERROR;
+                $unwritable[] = $path;
+                continue;
             }
             $io->writeError(sprintf('%s report written to %s', ucfirst($fileFormat->value), $path));
         }
@@ -648,7 +655,7 @@ HELP);
             $output->write($format->render($plan, $minimal, $decorated, $lockLines), false, $decorated ? OutputInterface::OUTPUT_NORMAL : OutputInterface::OUTPUT_RAW);
         }
 
-        return $plan->exitCode();
+        return $unwritable !== [] ? Plan::EXIT_ERROR : $plan->exitCode();
     }
 
     /**

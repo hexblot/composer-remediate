@@ -33,6 +33,41 @@ final class Database
     {
     }
 
+    /**
+     * Refuses a database whose contents are not wholly in the file that gets hashed.
+     *
+     * In WAL mode, SQLite serves committed rows out of the `-wal` sidecar, and a reader sees them
+     * without the main file changing by a byte. A digest over the main file then says nothing about
+     * what a query returns: the reviewer pinned a database with one advisory, deleted the rows into
+     * the WAL without checkpointing, and the same pinned digest scanned clean. Rolling the sidecar into
+     * the digest is no answer either, because it changes under any concurrent writer.
+     *
+     * The databases this tool builds are written with `journal_mode = OFF`, so this only ever rejects a
+     * file someone else prepared, and it tells them the one command that fixes it.
+     */
+    private function refuseExternalJournal(): void
+    {
+        try {
+            $statement = $this->pdo->query('PRAGMA journal_mode');
+            $mode = $statement === false ? null : $statement->fetchColumn();
+        } catch (\PDOException $e) {
+            throw new AdvisoryLookupFailed(sprintf('Cannot read the journal mode of advisory database %s: %s', $this->path, $e->getMessage()), 0, $e);
+        }
+        $wal = is_string($mode) && strtolower($mode) === 'wal';
+        clearstatcache(true, $this->path . '-wal');
+        $sidecar = @filesize($this->path . '-wal');
+        if (!$wal && ($sidecar === false || $sidecar === 0)) {
+            return;
+        }
+
+        throw new AdvisoryLookupFailed(sprintf(
+            'Advisory database %s is in WAL mode, so part of what it answers lives in %s-wal and is outside anything that can be verified about the file. Check it in first (sqlite3 %s "PRAGMA wal_checkpoint(TRUNCATE); PRAGMA journal_mode=DELETE;") and run again.',
+            $this->path,
+            $this->path,
+            $this->path,
+        ));
+    }
+
     /** The digest of the file behind this connection, or null when it cannot be read. */
     private function digestOf(): ?string
     {
@@ -55,6 +90,7 @@ final class Database
             throw new AdvisoryLookupFailed(sprintf('Advisory database %s does not exist.', $path));
         }
         $db = new self(self::connect($path), $path);
+        $db->refuseExternalJournal();
         $actual = $db->digestOf();
         if ($expectedDigest !== null && ($actual === null || !hash_equals($expectedDigest, $actual))) {
             throw new AdvisoryLookupFailed(sprintf(

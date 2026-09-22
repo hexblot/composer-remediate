@@ -7,10 +7,11 @@ All notable changes to this project are documented here. The format follows
 
 ### Fixed
 
-An eighth adversarial review and a recheck of the answers to it: ten findings, nine fixed, each with a
-reproduction the reviewer supplied and a regression test here that fails without the fix. Every one
-reproduced; none was a false positive. The recheck found four of the first round's fixes incomplete,
-and those are listed with what actually closed them. They cluster around safety state that changes
+An eighth adversarial review and two rechecks of the answers to it: ten findings, nine fixed, each with
+a reproduction the reviewer supplied and a regression test here that fails without the fix. Every one
+reproduced; none was a false positive. The first recheck found four of the original fixes incomplete
+and the second found three more — one of them a defect introduced by the repair before it. Each is
+listed below with what actually closed it. They cluster around safety state that changes
 between components — what the run is allowed to do, which database it is reading, which files it
 planned from, whether the advisory source can still answer — so several of the tests are contracts
 rather than unit tests, because the defect was two components each being right on their own terms.
@@ -33,12 +34,25 @@ rather than unit tests, because the defect was two components each being right o
   `--fail-on`, and an advisory database missing a table. The last escaped as an uncaught exception,
   which Symfony turns into exit `1`, the code for "vulnerabilities, every one with a verified fix", and
   the shipped action read that as success and carried on. Nothing now leaves the command without its
-  reports, and the action refuses a report it cannot read.
+  reports, and the action refuses a report it cannot read. The second recheck found `emit()` still
+  returning at the first destination it could not write, skipping every later one and stdout with them:
+  one path under a missing directory was enough to leave a second `--output` holding the previous
+  successful report. Every destination is now attempted; an unwritable one makes the run a tool error
+  and decides nothing for the rest.
 - **A forked worker could read a database that was swapped underneath it.** Reopening after a fork
   named the path, and a path is not a file. The first fix compared the database's `schema_version`,
   `dataset_hash` and `built_at`, which the recheck defeated by replacing the file with one that kept all
   three and had every advisory deleted: whoever can replace the file can write the fields it is judged
   by. It is now the digest of the bytes.
+
+  The second recheck then found two more ways past that. The repair that tied the locator's decision to
+  the reader hashed the path *after* deciding, so a replacement arriving during the publisher request
+  was checked as the old file and trusted as the new one — rehashing asks the file who it is a second
+  time and believes the second answer. Every way of settling on a database now states the digest it
+  settled on, and the type system requires it, so no route can omit one. Separately, a database in WAL
+  mode answers partly out of a `-wal` sidecar that no digest of the file covers: rows deleted into the
+  WAL were invisible to the pin and a pinned database scanned clean. Such a database is refused, and the
+  refusal names the checkpoint command that settles it.
 - **An unreadable archive entry vanished from coverage.** Encrypted, corrupt or truncated members were
   skipped in silence, so a partial archive counted as complete. They are recorded as coverage gaps,
   and a reader with nowhere to record one refuses.

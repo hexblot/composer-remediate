@@ -8,6 +8,7 @@ use PHPUnit\Framework\Attributes\DataProvider;
 use PHPUnit\Framework\TestCase;
 use Remediate\Engine\Advisory\Db\CoverageGap;
 use Remediate\Engine\Advisory\Db\DatabaseWriter;
+use Remediate\Engine\Plan\Plan;
 use Remediate\Output\ReportFormat;
 use Remediate\Tests\Support\CommandRunner;
 use Remediate\Tests\Support\ScriptedProject;
@@ -267,6 +268,52 @@ final class ReportStatusContractTest extends TestCase
 
             self::assertSame($expectedExit, $failed->exitCode, $failed->describe());
             self::assertNotSame($successful, (string) file_get_contents($report), 'the previous successful report survived a failed run');
+            $this->assertFormatSaysTheRunFailed(ReportFormat::Sarif, (string) file_get_contents($report), $failed->describe());
+        } finally {
+            $project->destroy();
+        }
+    }
+
+    /**
+     * Invariant: one destination that cannot be written decides nothing for the destinations that can.
+     *
+     * Second recheck of the eighth review. `emit()` returned at the first output it could not write,
+     * skipping every later one and stdout with them. A path under a directory that does not exist, or a
+     * full disk, was therefore enough to leave a second `--output` holding the last successful run's
+     * report — and a CI artifact step goes on publishing that clean result for a run that failed. The
+     * unwritable destination still makes the run a tool error; it does not get to speak for the others.
+     */
+    public function testAnUnwritableDestinationDoesNotLeaveTheOthersStale(): void
+    {
+        $project = new ScriptedProject(['acme/lib' => '^1'], [['acme/lib', '1.0.0']]);
+        try {
+            $runner = new CommandRunner();
+            $report = $project->directory . '/scan.sarif';
+            $advisories = $project->directory . '/advisories.json';
+            file_put_contents($advisories, (string) json_encode(['advisories' => []]));
+
+            $clean = $runner->run([
+                'command' => 'remediate',
+                '--format' => 'none',
+                '--advisories-file' => $advisories,
+                '--output' => ['sarif:' . $report],
+            ], $project->directory);
+            self::assertSame(0, $clean->exitCode, $clean->describe());
+            $successful = (string) file_get_contents($report);
+
+            // A failing run asked for two files, the first of which cannot be written, plus stdout.
+            file_put_contents($project->directory . '/baseline.json', '{ not a baseline');
+            $failed = $runner->run([
+                'command' => 'remediate',
+                '--format' => 'json',
+                '--advisories-file' => $advisories,
+                '--baseline' => $project->directory . '/baseline.json',
+                '--output' => ['json:' . $project->directory . '/no-such-dir/scan.json', 'sarif:' . $report],
+            ], $project->directory);
+
+            self::assertSame(Plan::EXIT_ERROR, $failed->exitCode, $failed->describe());
+            self::assertNotSame('', $failed->stdout, 'stdout was skipped because an earlier file could not be written');
+            self::assertNotSame($successful, (string) file_get_contents($report), 'the writable report still holds the previous successful run');
             $this->assertFormatSaysTheRunFailed(ReportFormat::Sarif, (string) file_get_contents($report), $failed->describe());
         } finally {
             $project->destroy();

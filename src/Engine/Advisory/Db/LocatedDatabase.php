@@ -13,16 +13,14 @@ final class LocatedDatabase
         /** One sentence for the report header, e.g. "confirmed current against …, built 3 hours ago". */
         public readonly string $provenance,
         /**
-         * The sha256 of the bytes this decision was made about. Whatever reads the file afterwards has
-         * to arrive at these, or it is reading something nobody decided anything about: verifying a
-         * download and then opening a path are two statements, and only this ties them together.
+         * The sha256 of the bytes this decision was made about — the ones that were inspected or
+         * verified, never a fresh hash of the path afterwards. Rehashing the path asks the file who it
+         * is a second time, and a file replaced between the two answers is believed on the second: the
+         * check runs against the old bytes and the pin is then stamped with the new ones.
+         *
+         * Required, so that a decision cannot be made without saying which bytes it is about.
          */
-        public readonly ?string $digest = null,
+        public readonly string $digest,
     ) {
-    }
-
-    public function withDigest(?string $digest): self
-    {
-        return new self($this->path, $this->freshness, $this->provenance, $digest);
     }
 }
