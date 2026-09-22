@@ -326,12 +326,19 @@ release only when the dataset hash moved. Publishing is a separate job from buil
 resolves dependencies and reads three upstream feeds holds no credential that can change anything,
 and the job that can write a release runs nothing but the attestation action and `gh`.
 
-**What is watched.** Two failures are possible and both are made loud. A job that fails opens an
-issue on this repository, labelled `advisory-db`, and keeps commenting on that same issue rather than
-filing a new one every six hours. The subtler failure is a pipeline that keeps reporting success and
-quietly publishes nothing, which is what happened for three days in September 2026; a run that finds
-nothing new now also checks how old the published copy is, and fails if it has passed two days.
-Either way the signal is a red run and an open issue, not a user noticing.
+**What is watched.** A job that fails opens an issue on this repository, labelled `advisory-db`, and
+keeps commenting on that same issue rather than filing a new one every six hours. That covers a
+publication that breaks: a changed dataset goes to the publish job, and a publish job that fails is a
+red run.
+
+The subtler failure is a pipeline that keeps reporting success and quietly publishes nothing, which is
+what happened for three days in September 2026. A run that finds nothing new therefore checks how old
+the published copy is — but carefully, because two different things end in an ageing database and only
+one of them is wrong. A run that reaches that check has read all three feeds, built a database and
+compared it against the published copy, so the pipeline has just demonstrated that it works; it found
+the same dataset because upstream published nothing new, and a weekend without a PHP advisory is
+ordinary. So an ageing copy is a warning after two days, and a failure only after a fortnight, where
+three feeds standing still is less likely than this build no longer seeing them.
 
 **What stops a bad build.** Each downloaded feed refuses an answer that carries neither advisories
 nor records it could not read: a public feed always has thousands, so nothing at all means the feed

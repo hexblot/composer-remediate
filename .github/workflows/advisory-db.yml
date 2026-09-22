@@ -151,15 +151,26 @@ jobs:
             out/latest.json
           retention-days: 1
           if-no-files-found: error
-      # A build that succeeds and publishes nothing is indistinguishable from a build that succeeds
-      # and has nothing to publish, and the second is normal. What is not normal is the published copy
-      # ageing past two days while this keeps reporting success: either publication is broken, or all
-      # three feeds have stopped moving. Both are worth a red run, because the alternative is finding
-      # out from a user. A run that is about to publish repairs the situation itself and says nothing.
+      # This step used to read two different facts off one number. "Publication is broken" and "the
+      # feeds have not moved" both end in an ageing published database, and only the second is normal.
+      #
+      # The first of them cannot reach here. Broken publication means the dataset changed, and a
+      # changed dataset sends the publish job, whose failure is already a red run. What reaches this
+      # step is a build that read all three feeds, built a database and compared it against the
+      # published copy it fetched — positive evidence that the pipeline works, arriving at the same
+      # dataset because upstream published nothing new. A weekend without a PHP advisory is ordinary,
+      # and failing on it taught whoever reads these runs to close the issue without looking, which
+      # costs more than the signal was worth.
+      #
+      # What stays worth a red run is a quiet spell long enough to be implausible: three feeds standing
+      # still for a fortnight is likelier to mean this build has stopped seeing them than that the
+      # ecosystem has stopped publishing. Between the two, a warning, which says the data is ageing
+      # without claiming anything is broken.
       - name: Refuse to go quiet
         if: steps.compare.outputs.changed != 'true'
         env:
-          MAX_AGE_HOURS: '48'
+          WARN_AGE_HOURS: '48'
+          MAX_AGE_HOURS: '336'
         run: |
           published=$(jq -r '.published_at // empty' prev/latest.json 2>/dev/null || true)
           if [ -z "$published" ]; then
@@ -167,10 +178,13 @@ jobs:
             exit 0
           fi
           age=$(( ( $(date -u +%s) - $(date -u -d "$published" +%s) ) / 3600 ))
-          echo "Published database is ${age}h old (${published}); the dataset has not changed."
+          echo "Published database is ${age}h old (${published}). This run read the feeds and built the same dataset, so there is nothing to publish."
           if [ "$age" -gt "$MAX_AGE_HOURS" ]; then
-            echo "::error::The published advisory database is ${age}h old and this run found nothing new to publish. Either publication is broken or the upstream feeds have stopped moving."
+            echo "::error::The published advisory database is ${age}h old and every run since has built the same dataset from the feeds. Three feeds standing still for this long is less likely than this build no longer seeing them."
             exit 1
+          fi
+          if [ "$age" -gt "$WARN_AGE_HOURS" ]; then
+            echo "::warning::The published advisory database is ${age}h old; the feeds have published nothing new since. The pipeline is working: this run rebuilt the same dataset."
           fi
 
   publish:
