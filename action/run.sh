@@ -64,6 +64,17 @@ if [ -n "${VERIFY_DATABASE:-}" ]; then
 fi
 
 # shellcheck disable=SC2086  # REMEDIATE_ARGS is a deliberate argument list
+# A report the action cannot read is not a report saying nothing is wrong. The exit code alone is not
+# enough to tell the difference: a failure that escaped as an exception used to exit 1 -- the code for
+# "vulnerabilities, all with verified fixes" -- having written nothing, and this script carried on
+# through an empty file to the point of opening a pull request for an apply that never happened.
+require_report() {
+  if ! jq -e 'has("findings") and has("exit_code")' "$1" > /dev/null 2>&1; then
+    echo "::error::composer remediate wrote no usable JSON report to $1 (exit $2); nothing was applied." >&2
+    exit 3
+  fi
+}
+
 set +e
 composer remediate --format=json $REMEDIATE_ARGS > "$work/before.json"
 before=$?
@@ -74,6 +85,7 @@ if [ "$before" -ge 3 ]; then
   jq -r '.warnings[]?' "$work/before.json" 2>/dev/null || true
   exit "$before"
 fi
+require_report "$work/before.json" "$before"
 if [ "$(jq -r '[.findings[] | select(.remediation.status == "verified")] | length' "$work/before.json")" = "0" ]; then
   echo "Nothing to apply: no finding has a verified fix."
   exit 0
@@ -100,6 +112,7 @@ if [ "$after" -ge 3 ]; then
   echo "::error::the apply did not complete (exit $after)."
   exit "$after"
 fi
+require_report "$work/after.json" "$after"
 
 if git diff --quiet -- composer.json composer.lock; then
   echo "The apply changed neither composer.json nor composer.lock; nothing to open."

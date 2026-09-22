@@ -192,4 +192,84 @@ final class ReportStatusContractTest extends TestCase
             $project->destroy();
         }
     }
+
+    /**
+     * Recheck of the eighth review, finding 2. The test above covers one way to fail — advisory data
+     * that will not parse. It passed while three others still returned before rendering: a corrupt
+     * baseline, an invalid --fail-on, and an advisory database missing a table. The last escaped as an
+     * uncaught exception, which Symfony turns into exit 1: the code for "vulnerabilities, every one
+     * with a verified fix". The shipped action read that as success and carried on.
+     *
+     * The trigger is not the point; that a failure writes its report is. So this states it once over
+     * every way in.
+     *
+     * @return iterable<string, array{callable(string): array<string, mixed>, int}>
+     */
+    public static function failureTriggers(): iterable
+    {
+        yield 'advisory data that will not parse' => [static function (string $dir): array {
+            file_put_contents($dir . '/advisories.json', '{ this is not json');
+
+            return ['--advisories-file' => $dir . '/advisories.json'];
+        }, 4];
+
+        yield 'a corrupt baseline' => [static function (string $dir): array {
+            file_put_contents($dir . '/advisories.json', (string) json_encode(['advisories' => []]));
+            file_put_contents($dir . '/baseline.json', '{ not a baseline');
+
+            return ['--advisories-file' => $dir . '/advisories.json', '--baseline' => $dir . '/baseline.json'];
+        }, 3];
+
+        yield 'a severity that is not one' => [static function (string $dir): array {
+            file_put_contents($dir . '/advisories.json', (string) json_encode(['advisories' => []]));
+
+            return ['--advisories-file' => $dir . '/advisories.json', '--fail-on' => 'catastrophic'];
+        }, 3];
+
+        yield 'an advisory database missing a table' => [static function (string $dir): array {
+            $path = $dir . '/broken.sqlite';
+            (new DatabaseWriter())->write([], [], $path);
+            $pdo = new \PDO('sqlite:' . $path);
+            $pdo->exec('DROP TABLE affected');
+            $pdo = null;
+
+            return ['--database-location' => $path];
+        }, 4];
+    }
+
+    /**
+     * @param callable(string): array<string, mixed> $arrange
+     */
+    #[DataProvider('failureTriggers')]
+    public function testEveryWayOfFailingStillReplacesTheReport(callable $arrange, int $expectedExit): void
+    {
+        $project = new ScriptedProject(['acme/lib' => '^1'], [['acme/lib', '1.0.0']]);
+        try {
+            $runner = new CommandRunner();
+            $report = $project->directory . '/scan.out';
+            $clean = $project->directory . '/clean-advisories.json';
+            file_put_contents($clean, (string) json_encode(['advisories' => []]));
+
+            $first = $runner->run([
+                'command' => 'remediate',
+                '--format' => 'none',
+                '--advisories-file' => $clean,
+                '--output' => ['sarif:' . $report],
+            ], $project->directory);
+            self::assertSame(0, $first->exitCode, $first->describe());
+            $successful = (string) file_get_contents($report);
+
+            $failed = $runner->run([
+                'command' => 'remediate',
+                '--format' => 'sarif',
+                '--output' => ['sarif:' . $report],
+            ] + $arrange($project->directory), $project->directory);
+
+            self::assertSame($expectedExit, $failed->exitCode, $failed->describe());
+            self::assertNotSame($successful, (string) file_get_contents($report), 'the previous successful report survived a failed run');
+            $this->assertFormatSaysTheRunFailed(ReportFormat::Sarif, (string) file_get_contents($report), $failed->describe());
+        } finally {
+            $project->destroy();
+        }
+    }
 }

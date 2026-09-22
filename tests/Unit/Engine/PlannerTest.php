@@ -503,7 +503,11 @@ final class PlannerTest extends TestCase
         self::assertSame([], $plan->findings[0]->evaluated, 'nothing was even solved');
         self::assertStringContainsString('no remediation can be verified', (string) $plan->findings[0]->blocker);
         self::assertNull($plan->combined);
-        self::assertSame(Plan::EXIT_NO_REMEDIATION, $plan->exitCode(), 'fail closed: a gate sees an unfixed vulnerability, not a verified fix');
+        // Exit 4, not 2. Both fail closed, but 2 says "there is a vulnerability and nothing can fix it",
+        // which is an answer, and at 2 the SARIF and GitLab reports call the scan successful. The
+        // exit-code table has always assigned "an incomplete source cannot verify candidates" to 4.
+        self::assertSame(Plan::EXIT_ADVISORIES_UNAVAILABLE, $plan->exitCode(), 'a source that cannot vouch for a candidate lock is an advisory failure');
+        self::assertFalse(\Remediate\Output\ScanOutcome::succeeded($plan), 'so no format calls the run successful');
     }
 
     /**

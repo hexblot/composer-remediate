@@ -69,6 +69,16 @@ final class Plan
         return new self([], $metadata, $warnings, null, null, [], [], [], false, [], $exitCode);
     }
 
+    /**
+     * The same plan, reported as a run that could not answer. Its findings and recommendations stay:
+     * what changes is that the exit code, and every format that asks ScanOutcome, stop calling it a
+     * completed run.
+     */
+    public function withFailure(int $exitCode): self
+    {
+        return new self($this->findings, $this->metadata, $this->warnings, $this->combined, $this->failOn, $this->inventory, $this->baseline, $this->coverageGaps, $this->coverageGapsAccepted, $this->combinedAttempts, $exitCode);
+    }
+
     /** The caller has read the coverage gaps and accepts the lock as clean despite them (--accept-coverage-gaps). */
     public function withAcceptedCoverageGaps(): self
     {

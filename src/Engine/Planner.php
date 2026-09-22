@@ -183,7 +183,7 @@ final class Planner
             }
         }
 
-        return new Plan($plans, [
+        $plan = new Plan($plans, [
             'project' => $context->directory,
             'engine_version' => self::engineVersion(),
             'composer_version' => $context->composerVersion(),
@@ -196,6 +196,12 @@ final class Planner
             'analysis_timestamp' => gmdate('c'),
             'locked_packages' => (string) $lock->count(),
         ], $warnings, $combined, null, self::inventory($lock), [], array_values(array_unique([...$coverageGaps, ...self::acceptedGapsOf($plans, $combined)])), false, $combinedAttempts);
+
+        // A source that cannot answer for a lock other than the current one is advisory data
+        // unavailable, which the exit-code table has always called 4. Reporting it as 2 said "there is
+        // a vulnerability nothing can fix", which is an answer; the truth is that the run could not
+        // find out. SARIF and GitLab took 2 for a completed scan and marked the run successful.
+        return $this->advisories->isComplete() ? $plan : $plan->withFailure(Plan::EXIT_ADVISORIES_UNAVAILABLE);
     }
 
     /**

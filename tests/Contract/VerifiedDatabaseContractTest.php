@@ -181,12 +181,19 @@ final class VerifiedDatabaseContractTest extends TestCase
             $provider = new SqliteAdvisoryProvider($database);
             self::assertNotSame([], $provider->advisoriesFor(['acme/lib']), 'the verified database answers');
 
-            // What a concurrent refresh does: same path, different database.
-            (new DatabaseWriter())->write([], [], $dir . '/replacement.sqlite');
+            // Not a different database — the same one with its advisories deleted and every field it
+            // reports about itself untouched. The first version of this check compared schema_version,
+            // dataset_hash and built_at, which are rows inside the file, so whoever could replace it
+            // could also write the fields it was judged by. This replacement passed that check and the
+            // worker read the lock as clean against an empty database.
+            copy($path, $dir . '/replacement.sqlite');
+            $pdo = new \PDO('sqlite:' . $dir . '/replacement.sqlite');
+            $pdo->exec('DELETE FROM affected');
+            $pdo = null;
             rename($dir . '/replacement.sqlite', $path);
 
             $this->expectException(AdvisoryLookupFailed::class);
-            $this->expectExceptionMessageMatches('{was replaced while this run was using it}');
+            $this->expectExceptionMessageMatches('{is not the file this run verified}');
             $provider->afterFork();
         } finally {
             foreach (glob($dir . '/*') ?: [] as $file) {

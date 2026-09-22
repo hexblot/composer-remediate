@@ -135,6 +135,29 @@ HELP);
             return $targets;
         }
         [$format, $files] = $targets;
+
+        try {
+            return $this->scan($input, $output, $io, $format, $files);
+        } catch (\Throwable $e) {
+            // Nothing may leave this command without its reports being written. An exception used to
+            // escape to Symfony, which reports it and exits 1 — the code that means "vulnerabilities,
+            // every one with a verified fix". A broken advisory database reached a pipeline that way:
+            // exit 1, no report written, the previous successful one still on disk, and the shipped
+            // action carrying on to open a pull request.
+            $io->writeError('<error>' . ConsoleText::safe($e->getMessage()) . '</error>');
+
+            return $this->emitFailure(Plan::EXIT_ERROR, $format, $files, $output, $io, null, sprintf('%s: %s', (new \ReflectionClass($e))->getShortName(), $e->getMessage()));
+        }
+    }
+
+    /**
+     * The run itself. Every exit from here is either a report or an exit code that execute() turns into
+     * one.
+     *
+     * @param list<array{ReportFormat, ?string}> $files
+     */
+    private function scan(InputInterface $input, OutputInterface $output, IOInterface $io, ReportFormat $format, array $files): int
+    {
         $error = $this->checkRuntime($input, $io);
         if ($error !== null) {
             return $this->emitFailure($error, $format, $files, $output, $io);
@@ -171,7 +194,7 @@ HELP);
         $plan = $plan->withWarnings([...$this->planWarnings, ...($advisories instanceof FallbackAdvisoryProvider ? $advisories->warnings() : [])]);
         $plan = $this->gate($plan, $input, $io);
         if (is_int($plan)) {
-            return $plan;
+            return $this->emitFailure($plan, $format, $files, $output, $io, $context->lockPath());
         }
 
         if ((bool) $input->getOption('apply')) {

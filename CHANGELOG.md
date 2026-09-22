@@ -7,12 +7,13 @@ All notable changes to this project are documented here. The format follows
 
 ### Fixed
 
-An eighth adversarial review, answered in full: ten findings, each with a reproduction the reviewer
-supplied and a regression test here that fails without the fix. Every one reproduced; none was a false
-positive. They cluster around safety state that changes between components — what the run is allowed to
-do, which database it is reading, which files it planned from, whether the advisory source can still
-answer — so several of the tests are contracts rather than unit tests, because the defect was two
-components each being right on their own terms.
+An eighth adversarial review and a recheck of the answers to it: ten findings, nine fixed, each with a
+reproduction the reviewer supplied and a regression test here that fails without the fix. Every one
+reproduced; none was a false positive. The recheck found four of the first round's fixes incomplete,
+and those are listed with what actually closed them. They cluster around safety state that changes
+between components — what the run is allowed to do, which database it is reading, which files it
+planned from, whether the advisory source can still answer — so several of the tests are contracts
+rather than unit tests, because the defect was two components each being right on their own terms.
 
 - **`--apply` under the standalone binary ran the project's code.** The binary forces
   `--no-plugins --no-scripts` so that nothing from an untrusted project executes; the apply subprocess
@@ -21,19 +22,30 @@ components each being right on their own terms.
 - **A fix stayed "verified" after the advisory source stopped being able to check it.** Completeness
   was established once, before planning; a source that degrades mid-run left "introduces no new
   advisories" being decided by data that only knows the current lock. The check now sits at each use.
+  The recheck then found the run still reporting itself complete: rejecting the recommendation left
+  exit `2`, which says "a vulnerability nothing can fix" — an answer — where the truth was that the run
+  could not find out, and at `2` the SARIF and GitLab reports called the scan successful.
 - **A failed scan left the previous report on disk.** Failures returned before rendering, so a CI step
   uploading `--output=scan.sarif` published the last successful run's clean result for a scan that
-  never ran. Every failure path now writes its reports, and all six formats say the run did not
-  complete. The text and HTML reports no longer say "No known vulnerabilities" for a run that could
-  not look.
+  never ran. All six formats now say the run did not complete, and the text and HTML reports no longer
+  say "No known vulnerabilities" for a run that could not look. The first fix covered the paths that
+  return an exit code; the recheck found three more that did not — a corrupt baseline, an invalid
+  `--fail-on`, and an advisory database missing a table. The last escaped as an uncaught exception,
+  which Symfony turns into exit `1`, the code for "vulnerabilities, every one with a verified fix", and
+  the shipped action read that as success and carried on. Nothing now leaves the command without its
+  reports, and the action refuses a report it cannot read.
 - **A forked worker could read a database that was swapped underneath it.** Reopening after a fork
-  named the path; it now requires the file's identity to be the one the run verified, and refuses
-  otherwise.
+  named the path, and a path is not a file. The first fix compared the database's `schema_version`,
+  `dataset_hash` and `built_at`, which the recheck defeated by replacing the file with one that kept all
+  three and had every advisory deleted: whoever can replace the file can write the fields it is judged
+  by. It is now the digest of the bytes.
 - **An unreadable archive entry vanished from coverage.** Encrypted, corrupt or truncated members were
   skipped in silence, so a partial archive counted as complete. They are recorded as coverage gaps,
   and a reader with nowhere to record one refuses.
 - **The `--apply` guard hashed the files after planning**, so an edit made during the search matched
-  its own hash. Hashed before the search now.
+  its own hash. Hashed before the search now. The recheck then deleted `composer.lock` during the
+  search: the comparison was skipped when the file could not be read, treating the strongest evidence
+  of interference as agreement. A missing input is a refusal.
 - **CycloneDX dropped the warnings every other format carries**, including the analysed project's own
   advisory suppressions — the disclosure that explains an empty vulnerability list.
 - **An unverified download vouched for itself.** A copy taken with `--allow-unverified-database` had
@@ -53,6 +65,11 @@ components each being right on their own terms.
   recommendation is worth more than the saved seconds, so this stays open.
 
 ### Changed
+
+- **A run whose advisory source cannot verify candidate locks now exits `4`, not `2`.** This is what
+  the exit-code table has always documented for an incomplete source; the code did not follow it, in
+  the case where the source starts incomplete as well as where it degrades mid-run. A pipeline treating
+  `2` as "no fix available, warn" will now see `4`, "advisory data unavailable".
 
 - `docs/reading-the-report.md` said every format carries the same content. It says what every format
   carries, and where a format carries less.

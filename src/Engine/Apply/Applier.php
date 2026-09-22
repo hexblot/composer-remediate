@@ -54,8 +54,17 @@ final class Applier
         }
         foreach ([['composer.json', $context->composerJsonPath()], ['composer.lock', $context->lockPath()]] as [$label, $path]) {
             $expected = $plan->metadata[str_replace('.', '_', $label) . '_sha256'] ?? null;
+            if (!is_string($expected) || $expected === '') {
+                continue;
+            }
             $actual = is_file($path) ? hash_file('sha256', $path) : false;
-            if (is_string($expected) && $expected !== '' && $actual !== false && !hash_equals($expected, $actual)) {
+            if ($actual === false) {
+                // The plan was computed from this file and it is no longer readable. Skipping the
+                // comparison when it cannot be made treats the strongest evidence of interference —
+                // the input being gone — as though it were agreement.
+                return sprintf('%s is missing or unreadable; the plan was computed from it, so nothing was applied. Run the command again.', $label);
+            }
+            if (!hash_equals($expected, $actual)) {
                 return sprintf('%s changed while the plan was being computed; nothing was applied. Run the command again.', $label);
             }
         }

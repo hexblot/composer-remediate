@@ -10,6 +10,8 @@ use Remediate\Engine\Advisory\Db\DatabaseWriter;
 use Remediate\Engine\Advisory\Db\Source\FriendsOfPhpSource;
 use Remediate\Engine\Advisory\Db\Source\OsvDumpSource;
 use Remediate\Engine\Advisory\Db\Source\PackagistShapeMapper;
+use Remediate\Engine\Plan\Plan;
+use Remediate\Output\ScanOutcome;
 use Remediate\Tests\Support\CommandRunner;
 use Remediate\Tests\Support\ScriptedDownloader;
 use Remediate\Tests\Support\ScriptedProject;
@@ -415,7 +417,11 @@ final class AdvisoryCoverageContractTest extends TestCase
             self::assertFalse($provider->isComplete(), 'the source degraded, as it must for this test to mean anything');
             self::assertFalse($plan->findings[0]->hasRemediation(), 'a fix cannot be verified against advisories the source can no longer see');
             self::assertNull($plan->combined, 'nor can a combined command');
-            self::assertSame(2, $plan->exitCode(), 'a finding with no verifiable fix is exit 2, not a verified exit 1');
+            // Not exit 2. Exit 2 says "there is a vulnerability and nothing can fix it", which is an
+            // answer; the truth here is that the run could not find out, and the exit-code table has
+            // always called that 4. At 2, SARIF and GitLab called the scan successful.
+            self::assertSame(Plan::EXIT_ADVISORIES_UNAVAILABLE, $plan->exitCode(), 'a source that cannot verify candidates is an advisory failure, not an ordinary no-fix result');
+            self::assertFalse(ScanOutcome::succeeded($plan), 'and no format may call that run successful');
         } finally {
             $project->destroy();
         }

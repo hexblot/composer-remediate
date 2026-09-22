@@ -18,28 +18,28 @@ final class Database
     public const SCHEMA_VERSION = 1;
 
     /**
-     * What this connection was opened against, as the file's own identity: the dataset it holds, when
-     * it was built and under which schema. Recorded once, and required to still hold every time the
-     * connection is reopened — see reconnect().
+     * The digest of the bytes this connection was opened against. Recorded once, and required to still
+     * hold every time the connection is reopened — see reconnect().
      *
-     * @var array<string, string>|null
+     * It is a digest of the file and not anything the file says about itself. The first version of this
+     * check compared schema_version, dataset_hash and built_at, which are rows inside the database:
+     * a replacement that kept those three and dropped every advisory passed it, and the worker read a
+     * lock as clean against a database with nothing in it. Whoever can replace the file can write the
+     * fields it is judged by, so the only thing worth comparing is the content itself.
      */
-    private ?array $identity = null;
+    private ?string $digest = null;
 
     private function __construct(private \PDO $pdo, public readonly string $path)
     {
     }
 
-    /** @return array<string, string> the fields that say which database this is */
-    private function identityOf(): array
+    /** The digest of the file behind this connection, or null when it cannot be read. */
+    private function digestOf(): ?string
     {
-        $meta = $this->meta();
+        clearstatcache(true, $this->path);
+        $digest = @hash_file('sha256', $this->path);
 
-        return [
-            'schema_version' => $meta['schema_version'] ?? '',
-            'dataset_hash' => $meta['dataset_hash'] ?? '',
-            'built_at' => $meta['built_at'] ?? '',
-        ];
+        return $digest === false ? null : $digest;
     }
 
     public static function open(string $path): self
@@ -48,7 +48,7 @@ final class Database
             throw new AdvisoryLookupFailed(sprintf('Advisory database %s does not exist.', $path));
         }
         $db = new self(self::connect($path), $path);
-        $db->identity = $db->identityOf();
+        $db->digest = $db->digestOf();
         $schema = (int) ($db->meta()['schema_version'] ?? 0);
         if ($schema !== self::SCHEMA_VERSION) {
             throw new AdvisoryLookupFailed(sprintf('Advisory database %s has schema version %d; this version of the tool reads %d.', $path, $schema, self::SCHEMA_VERSION));
@@ -95,15 +95,13 @@ final class Database
     public function reconnect(): void
     {
         $this->pdo = self::connect($this->path);
-        $now = $this->identityOf();
-        if ($this->identity !== null && $now !== $this->identity) {
+        $now = $this->digestOf();
+        if ($this->digest !== null && ($now === null || !hash_equals($this->digest, $now))) {
             throw new AdvisoryLookupFailed(sprintf(
-                'The advisory database at %s was replaced while this run was using it (it now holds dataset %s built %s, rather than %s built %s). Nothing was read from the new file; run again.',
+                'The advisory database at %s is not the file this run verified (sha256 %s, now %s). Nothing was read from it; run again.',
                 $this->path,
-                $now['dataset_hash'] !== '' ? substr($now['dataset_hash'], 0, 12) : '(none)',
-                $now['built_at'] !== '' ? $now['built_at'] : '(unknown)',
-                $this->identity['dataset_hash'] !== '' ? substr($this->identity['dataset_hash'], 0, 12) : '(none)',
-                $this->identity['built_at'] !== '' ? $this->identity['built_at'] : '(unknown)',
+                substr($this->digest, 0, 12),
+                $now === null ? 'unreadable' : substr($now, 0, 12),
             ));
         }
     }
@@ -252,6 +250,24 @@ final class Database
         }
         $parser = new PackagistAdvisoryJsonParser();
         $result = [];
+        try {
+            return $this->lookUp($names, $parser, $result);
+        } catch (\PDOException $e) {
+            // A database that cannot answer is advisory data unavailable, which the caller turns into
+            // exit 4 and a report saying the run did not complete. Left to escape, it reached Symfony
+            // as an uncaught exception and became exit 1 — "vulnerabilities, all with verified fixes".
+            throw new AdvisoryLookupFailed(sprintf('Advisory database %s could not be queried: %s', $this->path, $e->getMessage()), 0, $e);
+        }
+    }
+
+    /**
+     * @param list<string>              $names
+     * @param array<string, list<Advisory>> $result
+     *
+     * @return array<string, list<Advisory>>
+     */
+    private function lookUp(array $names, PackagistAdvisoryJsonParser $parser, array $result): array
+    {
         foreach (array_chunk($names, 400) as $chunk) {
             $placeholders = implode(',', array_fill(0, count($chunk), '?'));
             $statement = $this->pdo->prepare(

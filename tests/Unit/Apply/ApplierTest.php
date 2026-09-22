@@ -15,6 +15,8 @@ use Remediate\Engine\Lock\LockSnapshot;
 use Remediate\Engine\Plan\CombinedRemediation;
 use Remediate\Engine\Plan\Plan;
 use Remediate\Engine\Project\ProjectContext;
+use Remediate\Tests\Support\FakeSolver;
+use Remediate\Engine\Planner;
 use Remediate\Engine\Solver\LockDiff;
 use Remediate\Engine\Solver\SolveResult;
 use Remediate\Engine\Solver\SolveStatus;
@@ -217,5 +219,32 @@ final class ApplierTest extends TestCase
         $this->backups[] = $backup;
         self::assertStringContainsString('exited 1', (string) $result->reason);
         self::assertStringContainsString($backup, (string) $result->reason);
+    }
+
+    /**
+     * Recheck of the eighth review, finding 3. The hash comparison was skipped when the file could not
+     * be read at all, so deleting composer.lock while the search ran passed the guard: the strongest
+     * evidence that something interfered was treated as agreement.
+     */
+    public function testAPlanningInputThatDisappearedIsARefusal(): void
+    {
+        $project = new ScriptedProject(['acme/pkg' => '^1.0'], [['acme/pkg', '1.0.0']]);
+        try {
+            $context = $project->context();
+            $plan = (new Planner(
+                ScriptedProject::advisories([ScriptedProject::advisory('TEST-1', 'acme/pkg', '<1.1.0')]),
+                new FakeSolver(new SolveResult(SolveStatus::Resolved, ScriptedProject::lock([['acme/pkg', '1.1.0']]), '')),
+            ))->plan($context, $project->workspace());
+            self::assertNotNull($plan->combined, 'there is something to apply, so the guard is what stands in the way');
+
+            unlink($context->lockPath());
+
+            self::assertSame(
+                'composer.lock is missing or unreadable; the plan was computed from it, so nothing was applied. Run the command again.',
+                (new Applier(['composer']))->refusal($plan, $context, false, true),
+            );
+        } finally {
+            $project->destroy();
+        }
     }
 }
