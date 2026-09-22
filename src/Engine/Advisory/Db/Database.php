@@ -17,8 +17,29 @@ final class Database
 {
     public const SCHEMA_VERSION = 1;
 
+    /**
+     * What this connection was opened against, as the file's own identity: the dataset it holds, when
+     * it was built and under which schema. Recorded once, and required to still hold every time the
+     * connection is reopened — see reconnect().
+     *
+     * @var array<string, string>|null
+     */
+    private ?array $identity = null;
+
     private function __construct(private \PDO $pdo, public readonly string $path)
     {
+    }
+
+    /** @return array<string, string> the fields that say which database this is */
+    private function identityOf(): array
+    {
+        $meta = $this->meta();
+
+        return [
+            'schema_version' => $meta['schema_version'] ?? '',
+            'dataset_hash' => $meta['dataset_hash'] ?? '',
+            'built_at' => $meta['built_at'] ?? '',
+        ];
     }
 
     public static function open(string $path): self
@@ -27,6 +48,7 @@ final class Database
             throw new AdvisoryLookupFailed(sprintf('Advisory database %s does not exist.', $path));
         }
         $db = new self(self::connect($path), $path);
+        $db->identity = $db->identityOf();
         $schema = (int) ($db->meta()['schema_version'] ?? 0);
         if ($schema !== self::SCHEMA_VERSION) {
             throw new AdvisoryLookupFailed(sprintf('Advisory database %s has schema version %d; this version of the tool reads %d.', $path, $schema, self::SCHEMA_VERSION));
@@ -61,10 +83,29 @@ final class Database
      * Drops the inherited connection and opens its own. A SQLite connection must not be carried
      * across a fork: parent and child would share one file offset and one set of POSIX locks, and
      * closing it in either releases it for both. Called in the child, before it reads anything.
+     *
+     * Eighth adversarial review, finding 4. Reopening named the path, and a path is not a file. A cache
+     * refresh landing between the run's verification and this call — a concurrent process, or this
+     * tool's own download — put a different database there, and the child read it as if it were the one
+     * checked for this run. Because the answers already fetched survive the fork, one run could also
+     * mix records from two databases. What was verified was a set of bytes, so reopening has to arrive
+     * at the same ones: the file's own identity is required to be what it was, and a child that finds
+     * anything else refuses rather than answering from a database nobody vouched for.
      */
     public function reconnect(): void
     {
         $this->pdo = self::connect($this->path);
+        $now = $this->identityOf();
+        if ($this->identity !== null && $now !== $this->identity) {
+            throw new AdvisoryLookupFailed(sprintf(
+                'The advisory database at %s was replaced while this run was using it (it now holds dataset %s built %s, rather than %s built %s). Nothing was read from the new file; run again.',
+                $this->path,
+                $now['dataset_hash'] !== '' ? substr($now['dataset_hash'], 0, 12) : '(none)',
+                $now['built_at'] !== '' ? $now['built_at'] : '(unknown)',
+                $this->identity['dataset_hash'] !== '' ? substr($this->identity['dataset_hash'], 0, 12) : '(none)',
+                $this->identity['built_at'] !== '' ? $this->identity['built_at'] : '(unknown)',
+            ));
+        }
     }
 
     /** @return array<string, string> */

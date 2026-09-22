@@ -6,7 +6,12 @@ namespace Remediate\Tests\Contract;
 
 use Composer\Util\Platform;
 use PHPUnit\Framework\TestCase;
+use Remediate\Engine\Advisory\AdvisoryLookupFailed;
+use Remediate\Engine\Advisory\Db\AffectedRange;
+use Remediate\Engine\Advisory\Db\Database;
 use Remediate\Engine\Advisory\Db\DatabaseWriter;
+use Remediate\Engine\Advisory\Db\NormalizedAdvisory;
+use Remediate\Engine\Advisory\Db\SqliteAdvisoryProvider;
 use Remediate\Tests\Support\CommandRunner;
 use Remediate\Tests\Support\ScriptedProject;
 use Remediate\Tests\Support\TlsPublisher;
@@ -148,6 +153,60 @@ final class VerifiedDatabaseContractTest extends TestCase
             null,
             [new \Remediate\Engine\Advisory\Db\AffectedRange('acme/lib', '<2.0.0', 'contract')],
             [new \Remediate\Engine\Advisory\Db\SourceRecord('contract', 'CVE-2026-0002')],
+        );
+    }
+
+    /**
+     * Invariant: the database a worker reads after forking is the database this run verified.
+     *
+     * Eighth adversarial review, finding 4. Parallel planning forks, and a SQLite handle cannot be
+     * carried across a fork, so each child reopens the file. Reopening named the path, and a path is
+     * not a file: a cache refresh landing between the run's verification and that call — a concurrent
+     * process, or this tool's own download — put a different database there and the child read it as
+     * the verified one. An earlier --database-sha256 check does not reach a connection opened later.
+     * The probe found one advisory through the original connection and none after replacement.
+     *
+     * This contract already checked verification between commands; the gap was replacement during one.
+     */
+    public function testAWorkerRefusesADatabaseThatWasReplacedAfterTheRunVerifiedIt(): void
+    {
+        $dir = sys_get_temp_dir() . '/composer-remediate-fork-' . bin2hex(random_bytes(4));
+        mkdir($dir, 0700, true);
+        $path = $dir . '/advisories.sqlite';
+
+        try {
+            (new DatabaseWriter())->write([self::advisoryFor('acme/lib')], [], $path);
+            $database = Database::open($path);
+            $provider = new SqliteAdvisoryProvider($database);
+            self::assertNotSame([], $provider->advisoriesFor(['acme/lib']), 'the verified database answers');
+
+            // What a concurrent refresh does: same path, different database.
+            (new DatabaseWriter())->write([], [], $dir . '/replacement.sqlite');
+            rename($dir . '/replacement.sqlite', $path);
+
+            $this->expectException(AdvisoryLookupFailed::class);
+            $this->expectExceptionMessageMatches('{was replaced while this run was using it}');
+            $provider->afterFork();
+        } finally {
+            foreach (glob($dir . '/*') ?: [] as $file) {
+                @unlink($file);
+            }
+            @rmdir($dir);
+        }
+    }
+
+    private static function advisoryFor(string $package): NormalizedAdvisory
+    {
+        return new NormalizedAdvisory(
+            'TEST-FORK-1',
+            ['TEST-FORK-1'],
+            'Synthetic',
+            null,
+            'high',
+            null,
+            null,
+            [new AffectedRange($package, '<2.0.0', 'test')],
+            [],
         );
     }
 }
