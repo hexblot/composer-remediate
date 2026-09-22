@@ -42,13 +42,29 @@ final class Database
         return $digest === false ? null : $digest;
     }
 
-    public static function open(string $path): self
+    /**
+     * @param string|null $expectedDigest the sha256 the caller established for this file, when it
+     *                                    established one. Given, it is required here and at every
+     *                                    reopen; absent, whatever is read now is pinned for the rest
+     *                                    of the run. Opening is the first read, so it is the first
+     *                                    place the file can be something other than what was verified.
+     */
+    public static function open(string $path, ?string $expectedDigest = null): self
     {
         if (!is_file($path)) {
             throw new AdvisoryLookupFailed(sprintf('Advisory database %s does not exist.', $path));
         }
         $db = new self(self::connect($path), $path);
-        $db->digest = $db->digestOf();
+        $actual = $db->digestOf();
+        if ($expectedDigest !== null && ($actual === null || !hash_equals($expectedDigest, $actual))) {
+            throw new AdvisoryLookupFailed(sprintf(
+                'The advisory database at %s is not the file that was verified for this run (sha256 %s, now %s).',
+                $path,
+                substr($expectedDigest, 0, 12),
+                $actual === null ? 'unreadable' : substr($actual, 0, 12),
+            ));
+        }
+        $db->digest = $expectedDigest ?? $actual;
         $schema = (int) ($db->meta()['schema_version'] ?? 0);
         if ($schema !== self::SCHEMA_VERSION) {
             throw new AdvisoryLookupFailed(sprintf('Advisory database %s has schema version %d; this version of the tool reads %d.', $path, $schema, self::SCHEMA_VERSION));

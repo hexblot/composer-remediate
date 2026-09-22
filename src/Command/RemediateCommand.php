@@ -384,7 +384,7 @@ HELP);
         try {
             $located = $locator->locate($settings, $rebuild);
             if ($located !== null) {
-                return new SqliteAdvisoryProvider(Database::open($located->path), $located->provenance);
+                return new SqliteAdvisoryProvider(Database::open($located->path, $located->digest), $located->provenance);
             }
         } catch (AdvisoryLookupFailed $e) {
             $io->writeError('<error>Advisory database unavailable: ' . ConsoleText::safe($e->getMessage()) . '</error>');

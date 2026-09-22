@@ -66,6 +66,16 @@ rather than unit tests, because the defect was two components each being right o
 
 ### Changed
 
+- **Four invariants are now stated and enforced once, rather than defended case by case.** Both review
+  rounds landed on the same shape of defect: two components each correct on their own terms, with the
+  safety state between them held by convention. What the run may do, which database it is reading,
+  which files it planned from, and whether the advisory source can still answer are now settled in one
+  place each and inherited everywhere — the apply repeats the run's restrictions, the locator names the
+  bytes and every reader is held to them, the plan carries its own failure and every renderer asks it.
+  Where the rule could be made structural it was, so that the defect cannot be written again rather
+  than being caught when it is; where it could not, a contract test states the invariant instead of the
+  symptom.
+
 - **A run whose advisory source cannot verify candidate locks now exits `4`, not `2`.** This is what
   the exit-code table has always documented for an incomplete source; the code did not follow it, in
   the case where the source starts incomplete as well as where it degrades mid-run. A pipeline treating

@@ -147,6 +147,21 @@ final class DatabaseLocator
      */
     public function locate(DatabaseSettings $settings, ?callable $rebuild = null, bool $rebuildComplete = false): ?LocatedDatabase
     {
+        $located = $this->choose($settings, $rebuild, $rebuildComplete);
+        if ($located === null) {
+            return null;
+        }
+        // Stamped once, here, rather than at each of the places below that can settle on a file. The
+        // digest is of the bytes as they were when the decision was made, and every later reader is
+        // held to it, so "this file was verified" and "this file was opened" cannot come apart.
+        clearstatcache(true, $located->path);
+        $digest = @hash_file('sha256', $located->path);
+
+        return $located->withDigest($digest === false ? null : $digest);
+    }
+
+    private function choose(DatabaseSettings $settings, ?callable $rebuild = null, bool $rebuildComplete = false): ?LocatedDatabase
+    {
         array_push($this->warnings, ...$settings->notes);
         if (!$settings->usesDatabase()) {
             return null;

@@ -274,4 +274,48 @@ final class VerifiedDatabaseContractTest extends TestCase
             $project->destroy();
         }
     }
+
+    /**
+     * Invariant: every read of the advisory database in a run is a read of the bytes that run
+     * verified — at the first open as much as at every reopen after a fork.
+     *
+     * Recheck of the eighth review. The pieces were each right and did not meet: the locator verified
+     * a download against a digest, and the connection separately pinned whatever it happened to read
+     * first. Between those two statements was a gap with nothing in it, and "this file was verified"
+     * and "this file was opened" were only ever true of the same bytes by convention. The locator now
+     * says which bytes it settled on and every reader is held to them, so the gap has no room to exist.
+     */
+    public function testTheBytesTheLocatorSettledOnAreTheBytesEveryReaderGets(): void
+    {
+        $dir = sys_get_temp_dir() . '/composer-remediate-seam-' . bin2hex(random_bytes(4));
+        mkdir($dir, 0700, true);
+        $path = $dir . '/advisories.sqlite';
+
+        try {
+            (new DatabaseWriter())->write([self::advisoryFor('acme/lib')], [], $path);
+            $located = new \Remediate\Engine\Advisory\Db\LocatedDatabase(
+                $path,
+                \Remediate\Engine\Advisory\Db\Freshness::Explicit,
+                'verified for this test',
+                (string) hash_file('sha256', $path),
+            );
+
+            // Replaced between the decision and the first read: the file keeps its name, its schema and
+            // everything it says about itself, and has no advisories left.
+            copy($path, $dir . '/replacement.sqlite');
+            $pdo = new \PDO('sqlite:' . $dir . '/replacement.sqlite');
+            $pdo->exec('DELETE FROM affected');
+            $pdo = null;
+            rename($dir . '/replacement.sqlite', $path);
+
+            $this->expectException(AdvisoryLookupFailed::class);
+            $this->expectExceptionMessageMatches('{is not the file that was verified for this run}');
+            Database::open($located->path, $located->digest);
+        } finally {
+            foreach (glob($dir . '/*') ?: [] as $file) {
+                @unlink($file);
+            }
+            @rmdir($dir);
+        }
+    }
 }
