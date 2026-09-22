@@ -367,6 +367,27 @@ final class Planner
     }
 
     /**
+     * Whether the advisory source can still answer for a lock that is not the current one.
+     *
+     * Eighth adversarial review, finding 2. Completeness was established once, before a package was
+     * planned, and a source can lose it afterwards: the in-process advisory API breaking on a later
+     * lookup switches the provider to `composer audit --locked`, which only knows the current lock.
+     * Every acceptance rule downstream of that — above all "introduces no new advisories" — is then
+     * being decided by something that cannot see advisories on the packages a candidate adds, while
+     * the recommendation still says verified. The check belongs next to each use, not once at the
+     * start, because what it licenses is each use.
+     */
+    private function sourceCanStillAnswerForCandidateLocks(): bool
+    {
+        return $this->advisories->isComplete();
+    }
+
+    private function degradedSourceReason(): string
+    {
+        return sprintf('the advisory source stopped being able to answer for candidate locks while this was being checked (%s), so it could not be established that this introduces no new advisories', $this->advisories->describe());
+    }
+
+    /**
      * @param non-empty-list<Finding> $group
      * @param array<string, true>     $baseline
      */
@@ -701,6 +722,9 @@ final class Planner
             return [CombinedOutcome::Unresolved, $result->status === SolveStatus::Conflict ? $result->explanation() : self::describeFailure($result->status)];
         }
         $afterKeys = $matcher->findingKeys($result->after);
+        if (!$this->sourceCanStillAnswerForCandidateLocks()) {
+            return [CombinedOutcome::Rejected, $this->degradedSourceReason()];
+        }
         $introduced = array_keys(array_diff_key($afterKeys, $baseline));
         if ($introduced !== []) {
             return [CombinedOutcome::Rejected, 'introduces new advisories: ' . implode(', ', $introduced)];
@@ -863,6 +887,9 @@ final class Planner
 
         $diff = LockDiff::between($lock, $result->after);
         $afterKeys = $matcher->findingKeys($result->after);
+        if (!$this->sourceCanStillAnswerForCandidateLocks()) {
+            return new EvaluatedCandidate($candidate, $result, $diff, false, $this->degradedSourceReason());
+        }
         $remaining = array_keys(array_intersect_key($afterKeys, $groupKeys));
         if ($remaining !== []) {
             $after = $result->after->get($finding->packageName);
