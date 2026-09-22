@@ -1,7 +1,14 @@
 # Reading the report
 
-Every format (text, HTML, JSON, SARIF, CycloneDX, GitLab) carries the same content. This page walks
-through the text report section by section and defines the terms that appear in all of them.
+This page walks through the text report section by section and defines the terms that appear in every
+format (text, HTML, JSON, SARIF, CycloneDX, GitLab).
+
+What every format carries: whether the run completed, the findings, the recommendation and the
+warnings — anything that changes how a result should be read. What they do not all carry is the same
+level of detail. Each machine-readable format is shaped by its own specification, and three notes
+added in 0.9.1 (**No fix on this branch**, **Keep the fix** and **Capability changes**) are so far
+written only for a person, in the text and HTML reports; they reach the JSON report in 0.10.0, when
+its `schema_version` next increases. Where a format omits something, it is said below.
 
 ## Header and warnings
 

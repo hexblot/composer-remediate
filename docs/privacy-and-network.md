@@ -32,14 +32,20 @@ uses them, because the plugin runs inside your Composer.
 allows while it discovers plugin commands, so by the time `remediate` runs those plugins have
 already executed, exactly as they do for `composer install` or `composer show`. The planner itself
 then builds fresh Composer instances with plugins and scripts disabled for every candidate solve and
-writes nothing to the project. `--apply` is the exception and is never implied: it runs the
-recommended `composer update` in the project, with the project's own plugins and scripts, because that
-is what the command it printed would do in your hands, and it downloads what that update installs
-unless `--apply-no-install` is given. For a project you maintain, that is the expected behaviour of any
-Composer command. For a project you do not trust, use the `composer-remediate` binary installed
-alongside the plugin: it boots Composer with `--no-plugins --no-scripts` forced from the first
-instruction, so nothing from the analysed project runs, and it applies `--offline` before any HTTP
-client exists.
+writes nothing to the project. `--apply` is the exception and is never implied: run as
+`composer remediate --apply`, it runs the recommended `composer update` in the project with the
+project's own plugins and scripts, because that is what the command it printed would do in your hands,
+and it downloads what that update installs unless `--apply-no-install` is given. For a project you
+maintain, that is the expected behaviour of any Composer command. For a project you do not trust, use
+the `composer-remediate` binary installed alongside the plugin: it boots Composer with
+`--no-plugins --no-scripts` forced from the first instruction, so nothing from the analysed project
+runs, and it applies `--offline` before any HTTP client exists.
+
+Those restrictions extend to what `--apply` runs. An apply starts a second Composer, and it repeats
+whatever the run was started with, so under the binary the applied `composer update` also carries
+`--no-plugins --no-scripts` and the project's scripts do not run. The promise is the binary's, not the
+flag's: under `composer remediate --apply` the project's plugins and scripts run, as they would if you
+typed the command yourself.
 
 What "nothing from the analysed project runs" rests on: the binary never includes a project's
 `vendor/autoload.php` (Composer's autoloader executes every `autoload.files` entry, which is project
