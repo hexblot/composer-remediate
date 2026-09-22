@@ -5,6 +5,10 @@ All notable changes to this project are documented here. The format follows
 
 ## [Unreleased]
 
+[Unreleased]: https://github.com/hexblot/composer-remediate/compare/v0.10.0...HEAD
+
+## [0.10.0] - 2026-09-22
+
 ### Fixed
 
 An eighth adversarial review and three rechecks of the answers to it: ten findings, nine fixed, each
@@ -110,8 +114,6 @@ rather than unit tests, because the defect was two components each being right o
   carries, and where a format carries less.
 - `docs/privacy-and-network.md` repeated the standalone binary's safety claim without saying that it
   covers `--apply` too. It now distinguishes the binary's promise from the flag's.
-
-[Unreleased]: https://github.com/hexblot/composer-remediate/compare/v0.9.1...HEAD
 
 ## [0.9.1] - 2026-09-21
 
@@ -537,6 +539,7 @@ Answers to an Aikido scan of the workflows.
   pull request ready for review runs the full PHP and Composer matrices. Iterating in a draft therefore
   costs what a push used to, and the matrix is paid for once, when the work is done.
 
+[0.10.0]: https://github.com/hexblot/composer-remediate/releases/tag/v0.10.0
 [0.9.1]: https://github.com/hexblot/composer-remediate/releases/tag/v0.9.1
 [0.9.0]: https://github.com/hexblot/composer-remediate/releases/tag/v0.9.0
 [0.8.1]: https://github.com/hexblot/composer-remediate/releases/tag/v0.8.1
