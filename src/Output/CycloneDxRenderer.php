@@ -83,6 +83,16 @@ final class CycloneDxRenderer
                     self::property('composer-remediate:composer_lock_sha256', $plan->metadata['composer_lock_sha256'] ?? null),
                     self::property('composer-remediate:combined_command', $plan->combined?->candidate->commandLine($this->minimalChangesSupported)),
                     self::property('composer-remediate:exit_code', (string) $plan->exitCode()),
+                    // Every warning, one property each. A clean-looking bill of materials can be the
+                    // result of the analysed project suppressing advisories through its own
+                    // config.audit.ignore, or of a database accepted without a checksum; a reader with
+                    // an empty vulnerability list and none of that disclosed cannot tell what the
+                    // emptiness means. The other formats have carried these all along.
+                    ...array_map(
+                        static fn (int $i, string $warning): array => self::property('composer-remediate:warning.' . ($i + 1), $warning),
+                        array_keys(array_values($plan->warnings)),
+                        array_values($plan->warnings),
+                    ),
                 ])),
             ],
             'components' => $components,
