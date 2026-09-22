@@ -135,24 +135,47 @@ HELP);
             return $targets;
         }
         [$format, $files] = $targets;
+
+        try {
+            return $this->scan($input, $output, $io, $format, $files);
+        } catch (\Throwable $e) {
+            // Nothing may leave this command without its reports being written. An exception used to
+            // escape to Symfony, which reports it and exits 1 — the code that means "vulnerabilities,
+            // every one with a verified fix". A broken advisory database reached a pipeline that way:
+            // exit 1, no report written, the previous successful one still on disk, and the shipped
+            // action carrying on to open a pull request.
+            $io->writeError('<error>' . ConsoleText::safe($e->getMessage()) . '</error>');
+
+            return $this->emitFailure(Plan::EXIT_ERROR, $format, $files, $output, $io, null, sprintf('%s: %s', (new \ReflectionClass($e))->getShortName(), $e->getMessage()));
+        }
+    }
+
+    /**
+     * The run itself. Every exit from here is either a report or an exit code that execute() turns into
+     * one.
+     *
+     * @param list<array{ReportFormat, ?string}> $files
+     */
+    private function scan(InputInterface $input, OutputInterface $output, IOInterface $io, ReportFormat $format, array $files): int
+    {
         $error = $this->checkRuntime($input, $io);
         if ($error !== null) {
-            return $error;
+            return $this->emitFailure($error, $format, $files, $output, $io);
         }
         $composer = $this->requireComposer();
         $context = ProjectContext::fromComposer($composer);
         if (!$context->isLocked()) {
             $io->writeError('<error>No composer.lock found. Run composer install or composer update first.</error>');
 
-            return Plan::EXIT_ERROR;
+            return $this->emitFailure(Plan::EXIT_ERROR, $format, $files, $output, $io);
         }
         $locator = $this->databaseLocator($input, $composer, $io);
         if (is_int($locator)) {
-            return $locator;
+            return $this->emitFailure($locator, $format, $files, $output, $io, $context->lockPath());
         }
         $advisories = $this->advisoryProvider($input, $composer, $context, $locator, $io);
         if (is_int($advisories)) {
-            return $advisories;
+            return $this->emitFailure($advisories, $format, $files, $output, $io, $context->lockPath());
         }
         $this->planWarnings = [...$locator->warnings(), ...$this->planWarnings];
         $platformArguments = self::platformArguments($input);
@@ -166,24 +189,50 @@ HELP);
                 $io->writeError('<comment>Offline mode: the advisory database must already be at its path (see remediate:db-status), or pass --advisories-file=<json>.</comment>');
             }
 
-            return Plan::EXIT_ADVISORIES_UNAVAILABLE;
+            return $this->emitFailure(Plan::EXIT_ADVISORIES_UNAVAILABLE, $format, $files, $output, $io, $context->lockPath(), 'Advisory data unavailable: ' . $e->getMessage());
         }
         $plan = $plan->withWarnings([...$this->planWarnings, ...($advisories instanceof FallbackAdvisoryProvider ? $advisories->warnings() : [])]);
         $plan = $this->gate($plan, $input, $io);
         if (is_int($plan)) {
-            return $plan;
+            return $this->emitFailure($plan, $format, $files, $output, $io, $context->lockPath());
         }
 
         if ((bool) $input->getOption('apply')) {
             $applied = $this->applyPlan($plan, $context, $advisories, $solver, $platformArguments, $input, $io);
             if (is_int($applied)) {
-                return $applied;
+                return $this->emitFailure($applied, $format, $files, $output, $io, $context->lockPath());
             }
             $plan = $applied;
             $context = ProjectContext::fromComposer($this->requireComposer());
         }
 
         return $this->emit($plan, $format, $files, $solver->supportsMinimalChanges(), LockLineIndex::fromFile($context->lockPath()), $output, $io);
+    }
+
+    /**
+     * Writes the declared reports for a run that could not answer, and returns its exit code.
+     *
+     * Eighth adversarial review, finding 3. A failure used to return before anything was rendered, so
+     * `--output=scan.sarif` kept whatever the last successful run had written: a CI step uploading that
+     * file published a clean result, `executionSuccessful` and all, for a scan that never ran. A report
+     * that is not written is not a report that is absent; it is the previous one, still read as this
+     * one's.
+     *
+     * The plan carries the failure, so ScanOutcome makes every format say the run did not complete
+     * rather than show an empty vulnerability list.
+     *
+     * @param list<array{ReportFormat, ?string}> $files
+     */
+    private function emitFailure(int $exitCode, ReportFormat $format, array $files, OutputInterface $output, IOInterface $io, ?string $lockPath = null, ?string $reason = null): int
+    {
+        $warnings = $this->planWarnings;
+        if ($reason !== null && $reason !== '') {
+            $warnings[] = $reason;
+        }
+        $plan = Plan::failed($exitCode, ['engine_version' => Planner::engineVersion(), 'analysis_timestamp' => gmdate('c')], $warnings);
+        $emitted = $this->emit($plan, $format, $files, true, $lockPath !== null ? LockLineIndex::fromFile($lockPath) : LockLineIndex::empty(), $output, $io);
+
+        return $emitted === Plan::EXIT_ERROR ? Plan::EXIT_ERROR : $exitCode;
     }
 
     /**
@@ -335,7 +384,7 @@ HELP);
         try {
             $located = $locator->locate($settings, $rebuild);
             if ($located !== null) {
-                return new SqliteAdvisoryProvider(Database::open($located->path), $located->provenance);
+                return new SqliteAdvisoryProvider(Database::open($located->path, $located->digest), $located->provenance);
             }
         } catch (AdvisoryLookupFailed $e) {
             $io->writeError('<error>Advisory database unavailable: ' . ConsoleText::safe($e->getMessage()) . '</error>');
@@ -421,6 +470,28 @@ HELP);
     }
 
     /**
+     * The restrictions this run was started with, to be repeated on every command `--apply` runs.
+     *
+     * The standalone binary forces `--no-plugins --no-scripts` onto its own input so that no code from
+     * the analysed project runs; the apply subprocess is a second Composer, and without these it would
+     * run that project's scripts and plugins while the documentation says nothing of the project runs.
+     * The rule is the same in plugin mode: an apply inherits whatever the caller restricted.
+     *
+     * @return list<string>
+     */
+    private static function safetyArguments(InputInterface $input): array
+    {
+        $arguments = [];
+        foreach (['--no-plugins', '--no-scripts'] as $flag) {
+            if ($input->hasParameterOption($flag, true)) {
+                $arguments[] = $flag;
+            }
+        }
+
+        return $arguments;
+    }
+
+    /**
      * Runs the recommended command in the project, then plans again so that what the report shows is
      * the state the run actually left behind rather than a prediction of it. Returns the new plan, or
      * an exit code when nothing ran or Composer failed. A project with no findings is left alone.
@@ -434,7 +505,7 @@ HELP);
 
             return $plan;
         }
-        $applier = new Applier(SubprocessSolver::forRunningComposer()->composerCommand());
+        $applier = new Applier(SubprocessSolver::forRunningComposer()->composerCommand(), safetyArguments: self::safetyArguments($input));
         $refusal = $applier->refusal($plan, $context, (bool) $input->getOption('apply-root-constraints'), (bool) $input->getOption('apply-allow-dirty'));
         if ($refusal !== null) {
             $io->writeError('<error>--apply refused: ' . ConsoleText::safe($refusal) . '</error>');
@@ -561,14 +632,21 @@ HELP);
      */
     private function emit(Plan $plan, ReportFormat $format, array $files, bool $minimal, LockLineIndex $lockLines, OutputInterface $output, IOInterface $io): int
     {
+        // Every destination is attempted, whatever the others do. Returning at the first one that
+        // cannot be written left the rest holding whatever the last successful run put there, which is
+        // the failure this is supposed to prevent: one unwritable path (a directory that does not
+        // exist, a full disk) and a CI step goes on uploading a clean report for a run that failed.
+        // A destination that cannot be written is reported and makes the run a tool error; it does not
+        // decide anything for the destinations that can.
+        $unwritable = [];
         foreach ($files as [$fileFormat, $path]) {
             if ($path === null || $fileFormat === ReportFormat::None) {
                 continue;
             }
             if (@file_put_contents($path, $fileFormat->render($plan, $minimal, false, $lockLines)) === false) {
                 $io->writeError(sprintf('<error>Could not write %s report to %s</error>', $fileFormat->value, $path));
-
-                return Plan::EXIT_ERROR;
+                $unwritable[] = $path;
+                continue;
             }
             $io->writeError(sprintf('%s report written to %s', ucfirst($fileFormat->value), $path));
         }
@@ -577,7 +655,7 @@ HELP);
             $output->write($format->render($plan, $minimal, $decorated, $lockLines), false, $decorated ? OutputInterface::OUTPUT_NORMAL : OutputInterface::OUTPUT_RAW);
         }
 
-        return $plan->exitCode();
+        return $unwritable !== [] ? Plan::EXIT_ERROR : $plan->exitCode();
     }
 
     /**

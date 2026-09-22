@@ -5,6 +5,112 @@ All notable changes to this project are documented here. The format follows
 
 ## [Unreleased]
 
+### Fixed
+
+An eighth adversarial review and three rechecks of the answers to it: ten findings, nine fixed, each
+with a reproduction the reviewer supplied and a regression test here that fails without the fix. Every
+one reproduced; none was a false positive. Each recheck found the previous round's repairs incomplete —
+four, then three, then one — and one of those was a defect introduced by the repair before it. Each is
+listed below with what finally closed it. They cluster around safety state that changes
+between components — what the run is allowed to do, which database it is reading, which files it
+planned from, whether the advisory source can still answer — so several of the tests are contracts
+rather than unit tests, because the defect was two components each being right on their own terms.
+
+- **`--apply` under the standalone binary ran the project's code.** The binary forces
+  `--no-plugins --no-scripts` so that nothing from an untrusted project executes; the apply subprocess
+  is a second Composer and inherited neither, so a `pre-update-cmd` ran and the run exited `0`. An
+  apply now repeats whatever restrictions the run was started with.
+- **A fix stayed "verified" after the advisory source stopped being able to check it.** Completeness
+  was established once, before planning; a source that degrades mid-run left "introduces no new
+  advisories" being decided by data that only knows the current lock. The check now sits at each use.
+  The recheck then found the run still reporting itself complete: rejecting the recommendation left
+  exit `2`, which says "a vulnerability nothing can fix" — an answer — where the truth was that the run
+  could not find out, and at `2` the SARIF and GitLab reports called the scan successful.
+- **A failed scan left the previous report on disk.** Failures returned before rendering, so a CI step
+  uploading `--output=scan.sarif` published the last successful run's clean result for a scan that
+  never ran. All six formats now say the run did not complete, and the text and HTML reports no longer
+  say "No known vulnerabilities" for a run that could not look. The first fix covered the paths that
+  return an exit code; the recheck found three more that did not — a corrupt baseline, an invalid
+  `--fail-on`, and an advisory database missing a table. The last escaped as an uncaught exception,
+  which Symfony turns into exit `1`, the code for "vulnerabilities, every one with a verified fix", and
+  the shipped action read that as success and carried on. Nothing now leaves the command without its
+  reports, and the action refuses a report it cannot read. The second recheck found `emit()` still
+  returning at the first destination it could not write, skipping every later one and stdout with them:
+  one path under a missing directory was enough to leave a second `--output` holding the previous
+  successful report. Every destination is now attempted; an unwritable one makes the run a tool error
+  and decides nothing for the rest.
+- **A forked worker could read a database that was swapped underneath it.** Reopening after a fork
+  named the path, and a path is not a file. The first fix compared the database's `schema_version`,
+  `dataset_hash` and `built_at`, which the recheck defeated by replacing the file with one that kept all
+  three and had every advisory deleted: whoever can replace the file can write the fields it is judged
+  by. It is now the digest of the bytes.
+
+  The second recheck then found two more ways past that. The repair that tied the locator's decision to
+  the reader hashed the path *after* deciding, so a replacement arriving during the publisher request
+  was checked as the old file and trusted as the new one — rehashing asks the file who it is a second
+  time and believes the second answer. Every way of settling on a database now states the digest it
+  settled on, and the type system requires it, so no route can omit one. Separately, a database in WAL
+  mode answers partly out of a `-wal` sidecar that no digest of the file covers: rows deleted into the
+  WAL were invisible to the pin and a pinned database scanned clean. Such a database is refused, and the
+  refusal names the checkpoint command that settles it.
+
+  What all of those repairs had in common was checking the file at a moment — when it was located, when
+  it was opened, when a worker reopened it — and a check at a moment says nothing about the planning
+  that follows. The third recheck used that directly: a concurrent writer deleting a package's advisory
+  rows between the first scan and candidate verification got the planner to approve a command
+  introducing a package it had been told was vulnerable, a verified recommendation at exit `1` drawn
+  from a database nobody had verified. Rechecking before every query would narrow that window without
+  closing it, because the gap is between the check and the read. **A run now reads a private copy of the
+  verified file**, made once and known only to that run, so the bytes that were verified are the bytes
+  every later query and every forked worker sees. The published database is about 7 MB, so this is one
+  copy per run.
+- **An unreadable archive entry vanished from coverage.** Encrypted, corrupt or truncated members were
+  skipped in silence, so a partial archive counted as complete. They are recorded as coverage gaps,
+  and a reader with nowhere to record one refuses.
+- **The `--apply` guard hashed the files after planning**, so an edit made during the search matched
+  its own hash. Hashed before the search now. The recheck then deleted `composer.lock` during the
+  search: the comparison was skipped when the file could not be read, treating the strongest evidence
+  of interference as agreement. A missing input is a refusal.
+- **CycloneDX dropped the warnings every other format carries**, including the analysed project's own
+  advisory suppressions — the disclosure that explains an empty vulnerability list.
+- **An unverified download vouched for itself.** A copy taken with `--allow-unverified-database` had
+  its self-declared dataset hash accepted as proof it was current, so an empty database wearing the
+  publisher's hash was held as confirmed while the publisher served an advisory it lacked.
+- **The GitHub Action pushed to its own base** when `branch` and `base` matched, before the invalid
+  pull request was refused. It now refuses first.
+
+### Known
+
+- **`MAX_PATHS` and `MAX_DEPTH` bound the returned paths, not the work of finding them** (finding 10,
+  not fixed here). The whole recursive ancestor tree is expanded before either applies, so a layered
+  graph costs far more than the result suggests: six extra packages took the same 200 paths from
+  0.007 seconds to six seconds and 144 MiB. Two attempts at walking it a level at a time each changed
+  which command the planner recommends on a real fixture, because the path set Composer's recursive
+  expansion produces, and the order of it, decides which ancestors become candidates. A narrower
+  recommendation is worth more than the saved seconds, so this stays open.
+
+### Changed
+
+- **Four invariants are now stated and enforced once, rather than defended case by case.** Both review
+  rounds landed on the same shape of defect: two components each correct on their own terms, with the
+  safety state between them held by convention. What the run may do, which database it is reading,
+  which files it planned from, and whether the advisory source can still answer are now settled in one
+  place each and inherited everywhere — the apply repeats the run's restrictions, the locator names the
+  bytes and every reader is held to them, the plan carries its own failure and every renderer asks it.
+  Where the rule could be made structural it was, so that the defect cannot be written again rather
+  than being caught when it is; where it could not, a contract test states the invariant instead of the
+  symptom.
+
+- **A run whose advisory source cannot verify candidate locks now exits `4`, not `2`.** This is what
+  the exit-code table has always documented for an incomplete source; the code did not follow it, in
+  the case where the source starts incomplete as well as where it degrades mid-run. A pipeline treating
+  `2` as "no fix available, warn" will now see `4`, "advisory data unavailable".
+
+- `docs/reading-the-report.md` said every format carries the same content. It says what every format
+  carries, and where a format carries less.
+- `docs/privacy-and-network.md` repeated the standalone binary's safety claim without saying that it
+  covers `--apply` too. It now distinguishes the binary's promise from the flag's.
+
 [Unreleased]: https://github.com/hexblot/composer-remediate/compare/v0.9.1...HEAD
 
 ## [0.9.1] - 2026-09-21

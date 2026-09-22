@@ -15,6 +15,8 @@ use Remediate\Engine\Lock\LockSnapshot;
 use Remediate\Engine\Plan\CombinedRemediation;
 use Remediate\Engine\Plan\Plan;
 use Remediate\Engine\Project\ProjectContext;
+use Remediate\Tests\Support\FakeSolver;
+use Remediate\Engine\Planner;
 use Remediate\Engine\Solver\LockDiff;
 use Remediate\Engine\Solver\SolveResult;
 use Remediate\Engine\Solver\SolveStatus;

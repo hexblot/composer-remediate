@@ -24,11 +24,17 @@ use Symfony\Component\Process\Process;
 final class Applier
 {
     /**
-     * @param list<string> $composerCommand the command prefix that runs Composer (the same one the subprocess solver uses)
+     * @param list<string> $composerCommand   the command prefix that runs Composer (the same one the subprocess solver uses)
+     * @param list<string> $safetyArguments   restrictions the run was started with (`--no-plugins`, `--no-scripts`), repeated
+     *                                        on every command this applies. An apply must never hold more privilege than the
+     *                                        run that planned it: the standalone binary forces both flags precisely so that no
+     *                                        code from the analysed project runs, and a subprocess that dropped them would
+     *                                        execute that project's scripts and plugins under a promise that it does not.
      */
     public function __construct(
         private readonly array $composerCommand,
         private readonly float $timeout = 900.0,
+        private readonly array $safetyArguments = [],
     ) {
     }
 
@@ -48,8 +54,17 @@ final class Applier
         }
         foreach ([['composer.json', $context->composerJsonPath()], ['composer.lock', $context->lockPath()]] as [$label, $path]) {
             $expected = $plan->metadata[str_replace('.', '_', $label) . '_sha256'] ?? null;
+            if (!is_string($expected) || $expected === '') {
+                continue;
+            }
             $actual = is_file($path) ? hash_file('sha256', $path) : false;
-            if (is_string($expected) && $expected !== '' && $actual !== false && !hash_equals($expected, $actual)) {
+            if ($actual === false) {
+                // The plan was computed from this file and it is no longer readable. Skipping the
+                // comparison when it cannot be made treats the strongest evidence of interference —
+                // the input being gone — as though it were agreement.
+                return sprintf('%s is missing or unreadable; the plan was computed from it, so nothing was applied. Run the command again.', $label);
+            }
+            if (!hash_equals($expected, $actual)) {
                 return sprintf('%s changed while the plan was being computed; nothing was applied. Run the command again.', $label);
             }
         }
@@ -83,6 +98,7 @@ final class Applier
             // --no-interaction so an apply never blocks on a prompt; everything else is the printed
             // command, and what is recorded is the whole of what ran, appended flags included.
             $arguments[] = '--no-interaction';
+            array_push($arguments, ...$this->safetyArguments);
             $argv = [...$this->composerCommand, ...$arguments];
             // Rendered the same way the recommendation is printed, so what the report says ran can be
             // pasted back and mean the same thing. Joining with spaces would drop the quoting a

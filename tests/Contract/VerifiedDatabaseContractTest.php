@@ -6,8 +6,14 @@ namespace Remediate\Tests\Contract;
 
 use Composer\Util\Platform;
 use PHPUnit\Framework\TestCase;
+use Remediate\Engine\Advisory\AdvisoryLookupFailed;
+use Remediate\Engine\Advisory\Db\AffectedRange;
+use Remediate\Engine\Advisory\Db\Database;
 use Remediate\Engine\Advisory\Db\DatabaseWriter;
+use Remediate\Engine\Advisory\Db\NormalizedAdvisory;
+use Remediate\Engine\Advisory\Db\SqliteAdvisoryProvider;
 use Remediate\Tests\Support\CommandRunner;
+use Remediate\Tests\Support\ScriptedDownloader;
 use Remediate\Tests\Support\ScriptedProject;
 use Remediate\Tests\Support\TlsPublisher;
 
@@ -149,5 +155,290 @@ final class VerifiedDatabaseContractTest extends TestCase
             [new \Remediate\Engine\Advisory\Db\AffectedRange('acme/lib', '<2.0.0', 'contract')],
             [new \Remediate\Engine\Advisory\Db\SourceRecord('contract', 'CVE-2026-0002')],
         );
+    }
+
+    /**
+     * Invariant: every read in a run answers from the bytes that run verified, however long the run
+     * lasts and whatever happens to the file it came from.
+     *
+     * Third recheck of the eighth review. Each repair before this one checked the file at a moment —
+     * when it was located, when it was opened, when a worker reopened it — and a check at a moment
+     * cannot say anything about the twenty seconds of planning that follow. A concurrent writer
+     * deleting a package's advisory rows between the first scan and candidate verification got the
+     * planner to approve a command introducing a package it had been told was vulnerable: a verified
+     * recommendation, exit 1, out of a database nobody had verified. Checking again before each query
+     * would have narrowed that window and not closed it, because the gap is between the check and the
+     * read.
+     *
+     * So the run reads a copy that only it knows the path of. This test used to assert that a worker
+     * refused a replaced database, which was the best that could be said when the run read the file
+     * everyone else could write to. What holds now is stronger and simpler: the replacement is beside
+     * the point.
+     */
+    public function testEveryReadAnswersFromTheVerifiedBytesHoweverLongTheRunLasts(): void
+    {
+        $dir = sys_get_temp_dir() . '/composer-remediate-fork-' . bin2hex(random_bytes(4));
+        mkdir($dir, 0700, true);
+        $path = $dir . '/advisories.sqlite';
+
+        try {
+            (new DatabaseWriter())->write([self::advisoryFor('acme/lib')], [], $path);
+            $provider = new SqliteAdvisoryProvider(Database::open($path, (string) hash_file('sha256', $path)));
+            self::assertNotSame([], $provider->advisoriesFor(['acme/lib']), 'the verified database answers');
+
+            // Everything a concurrent writer can do to the file the run was pointed at: replace it
+            // wholesale, and commit a deletion into a write-ahead log beside it.
+            copy($path, $dir . '/replacement.sqlite');
+            $pdo = new \PDO('sqlite:' . $dir . '/replacement.sqlite');
+            $pdo->exec('DELETE FROM affected');
+            $pdo = null;
+            rename($dir . '/replacement.sqlite', $path);
+
+            $writer = new \PDO('sqlite:' . $path);
+            $writer->exec('PRAGMA journal_mode = WAL');
+            $writer->exec('DELETE FROM affected');
+
+            // A package not asked about before, so the answer comes from a query rather than the cache.
+            self::assertSame([], $provider->advisoriesFor(['acme/unrelated']), 'a later lookup still works');
+            $provider->afterFork();
+            self::assertNotSame([], $provider->advisoriesFor(['acme/lib']), 'and still answers from the bytes that were verified');
+            $writer = null;
+        } finally {
+            foreach (glob($dir . '/*') ?: [] as $file) {
+                @unlink($file);
+            }
+            @rmdir($dir);
+        }
+    }
+
+    private static function advisoryFor(string $package): NormalizedAdvisory
+    {
+        return new NormalizedAdvisory(
+            'TEST-FORK-1',
+            ['TEST-FORK-1'],
+            'Synthetic',
+            null,
+            'high',
+            null,
+            null,
+            [new AffectedRange($package, '<2.0.0', 'test')],
+            [],
+        );
+    }
+
+    /**
+     * Invariant: bytes accepted without verification never become evidence about themselves.
+     *
+     * Eighth adversarial review, finding 8. Currency is settled partly by the dataset hash, and that
+     * field is read out of the database file. For a copy taken with --allow-unverified-database the
+     * field is whoever served it's to write, so a match says only that they claim to be the
+     * publisher's data. An empty database declaring the real publisher's dataset hash was then held
+     * as "confirmed current" by a later run that did require a checksum, while the publisher was
+     * serving a database containing an advisory the local copy did not have. The unverified warning
+     * stayed on, but the statement that the copy was current was false.
+     */
+    public function testAnUnverifiedCopyCannotDeclareItselfCurrent(): void
+    {
+        $project = new ScriptedProject(['acme/lib' => '^1'], [['acme/lib', '1.0.0']]);
+        $dir = $project->directory;
+        try {
+            // What the publisher actually serves: one advisory.
+            $published = $dir . '/published.sqlite';
+            (new DatabaseWriter())->write([self::advisoryFor('acme/lib')], [], $published);
+            $publishedDataset = Database::open($published)->meta()['dataset_hash'];
+
+            // What a mirror serves instead: nothing, wearing the publisher's dataset hash.
+            $forged = $dir . '/forged.sqlite';
+            (new DatabaseWriter())->write([], [], $forged);
+            $pdo = new \PDO('sqlite:' . $forged);
+            $pdo->prepare("UPDATE meta SET value=? WHERE key='dataset_hash'")->execute([$publishedDataset]);
+            $pdo = null;
+            $forgedBytes = (string) file_get_contents($forged);
+            unlink($forged);
+
+            $url = 'https://mirror.example/advisories.sqlite';
+            $path = $dir . '/advisories.sqlite';
+
+            // Taken knowingly without verification.
+            $lenient = new \Remediate\Engine\Advisory\Db\DatabaseLocator($project->context()->composer, new ScriptedDownloader([$url => $forgedBytes]), false, false);
+            $lenient->locate($lenient->settings($url, $path));
+            self::assertSame(0, Database::open($path)->advisoryCount(), 'the unverified copy is empty, as served');
+
+            // A later run that does require a checksum meets the publisher's real digest and database.
+            $strict = new \Remediate\Engine\Advisory\Db\DatabaseLocator($project->context()->composer, new ScriptedDownloader([
+                'https://mirror.example/latest.json' => (string) json_encode(['sha256' => hash_file('sha256', $published), 'dataset_hash' => $publishedDataset]),
+                $url => (string) file_get_contents($published),
+            ]), false, true);
+            $located = $strict->locate($strict->settings($url, $path));
+            self::assertNotNull($located);
+
+            self::assertNotSame('confirmed', $located->freshness->value, 'an unverified copy declared itself current on its own metadata');
+            self::assertSame(
+                Database::open($published)->advisoryCount(),
+                Database::open($path)->advisoryCount(),
+                'the run ended up with the advisories the publisher actually serves',
+            );
+        } finally {
+            $project->destroy();
+        }
+    }
+
+    /**
+     * Invariant: every read of the advisory database in a run is a read of the bytes that run
+     * verified — at the first open as much as at every reopen after a fork.
+     *
+     * Recheck of the eighth review. The pieces were each right and did not meet: the locator verified
+     * a download against a digest, and the connection separately pinned whatever it happened to read
+     * first. Between those two statements was a gap with nothing in it, and "this file was verified"
+     * and "this file was opened" were only ever true of the same bytes by convention. The locator now
+     * says which bytes it settled on and every reader is held to them, so the gap has no room to exist.
+     */
+    public function testTheBytesTheLocatorSettledOnAreTheBytesEveryReaderGets(): void
+    {
+        $dir = sys_get_temp_dir() . '/composer-remediate-seam-' . bin2hex(random_bytes(4));
+        mkdir($dir, 0700, true);
+        $path = $dir . '/advisories.sqlite';
+
+        try {
+            (new DatabaseWriter())->write([self::advisoryFor('acme/lib')], [], $path);
+            $located = new \Remediate\Engine\Advisory\Db\LocatedDatabase(
+                $path,
+                \Remediate\Engine\Advisory\Db\Freshness::Explicit,
+                'verified for this test',
+                (string) hash_file('sha256', $path),
+            );
+
+            // Replaced between the decision and the first read: the file keeps its name, its schema and
+            // everything it says about itself, and has no advisories left.
+            copy($path, $dir . '/replacement.sqlite');
+            $pdo = new \PDO('sqlite:' . $dir . '/replacement.sqlite');
+            $pdo->exec('DELETE FROM affected');
+            $pdo = null;
+            rename($dir . '/replacement.sqlite', $path);
+
+            $this->expectException(AdvisoryLookupFailed::class);
+            $this->expectExceptionMessageMatches('{is not the file that was verified for this run}');
+            Database::open($located->path, $located->digest);
+        } finally {
+            foreach (glob($dir . '/*') ?: [] as $file) {
+                @unlink($file);
+            }
+            @rmdir($dir);
+        }
+    }
+
+    /**
+     * Invariant: the digest a located database carries is the one the decision was made against, never
+     * a fresh hash of the path taken afterwards.
+     *
+     * Second recheck of the eighth review. The consolidation that closed the previous seam opened this
+     * one: it hashed the pathname once `choose()` had finished, so the operator's pin was checked
+     * against the copy inspected before the publisher request, and then stamped with whatever was at
+     * the path after it. A replacement arriving during that request — an ordinary concurrent cache
+     * refresh, not a won race — was checked as the old file and trusted as the new one. Rehashing the
+     * path asks the file who it is a second time and believes the second answer.
+     */
+    public function testTheDigestCarriedIsTheOneThatWasVerified(): void
+    {
+        $project = new ScriptedProject(['acme/lib' => '^1'], [['acme/lib', '1.0.0']]);
+        $path = $project->directory . '/advisories.sqlite';
+        try {
+            (new DatabaseWriter())->write([self::advisoryFor('acme/lib')], [], $path);
+            $pinned = (string) hash_file('sha256', $path);
+
+            // The replacement a refresh would land: same name, no advisories.
+            copy($path, $path . '.replacement');
+            $pdo = new \PDO('sqlite:' . $path . '.replacement');
+            $pdo->exec('DELETE FROM affected');
+            $pdo = null;
+
+            $http = new class($path, $pinned) extends \Composer\Util\HttpDownloader {
+                public function __construct(private string $path, private string $pinned)
+                {
+                    parent::__construct(new \Composer\IO\NullIO(), new \Composer\Config(false));
+                }
+
+                public function copy(string $url, string $to, array $options = []): \Composer\Util\Http\Response
+                {
+                    // The publisher answers honestly with the pinned digest; the file changes underneath.
+                    rename($this->path . '.replacement', $this->path);
+                    file_put_contents($to, (string) json_encode(['sha256' => $this->pinned]));
+
+                    \assert($url !== '');
+
+                    return new \Composer\Util\Http\Response(['url' => $url], 200, [], null);
+                }
+
+                public function addCopy(string $url, string $to, array $options = []): \React\Promise\PromiseInterface
+                {
+                    return \React\Promise\resolve($this->copy($url, $to, $options));
+                }
+
+                public function wait(?int $index = null): void
+                {
+                }
+            };
+
+            $locator = new \Remediate\Engine\Advisory\Db\DatabaseLocator($project->context()->composer, $http, expectedSha256: $pinned);
+            $located = $locator->locate($locator->settings('https://publisher.example/advisories.sqlite', $path));
+            self::assertNotNull($located);
+
+            self::assertSame($pinned, $located->digest, 'the located digest names the bytes that were verified, not the ones now at the path');
+            self::assertNotSame($pinned, hash_file('sha256', $path), 'the file really was replaced, or this test proves nothing');
+
+            $this->expectException(AdvisoryLookupFailed::class);
+            $this->expectExceptionMessageMatches('{is not the file that was verified for this run}');
+            Database::open($located->path, $located->digest);
+        } finally {
+            $project->destroy();
+        }
+    }
+
+    /**
+     * Invariant: nothing is read from a database whose answers are not wholly in the file that is
+     * verified.
+     *
+     * Second recheck of the eighth review. In WAL mode SQLite serves committed rows from the `-wal`
+     * sidecar, so rows can be deleted and a reader see them gone while the main file does not change by
+     * a byte. The reviewer pinned a database holding one advisory, deleted its rows into the WAL, and
+     * the same explicit pin scanned clean. Hashing the sidecar too is no answer: it changes under any
+     * concurrent writer. This tool writes its databases with the journal off, so the refusal only meets
+     * a file someone else prepared, and it names the command that settles it.
+     */
+    public function testADatabaseWhoseAnswersLiveOutsideTheVerifiedFileIsRefused(): void
+    {
+        $dir = sys_get_temp_dir() . '/composer-remediate-wal-' . bin2hex(random_bytes(4));
+        mkdir($dir, 0700, true);
+        $path = $dir . '/advisories.sqlite';
+
+        try {
+            (new DatabaseWriter())->write([self::advisoryFor('acme/lib')], [], $path);
+            self::assertSame(1, Database::open($path, (string) hash_file('sha256', $path))->advisoryCount(), 'an ordinary database is still read');
+
+            $writer = new \PDO('sqlite:' . $path);
+            $writer->exec('PRAGMA journal_mode = WAL');
+            $writer->exec('PRAGMA wal_checkpoint(TRUNCATE)');
+            $writer = null;
+            $pin = (string) hash_file('sha256', $path);
+
+            // Committed into the WAL and never checkpointed: the pinned file is untouched.
+            $mutator = new \PDO('sqlite:' . $path);
+            $mutator->exec('DELETE FROM affected');
+            self::assertSame($pin, hash_file('sha256', $path), 'the main file is unchanged, which is the whole difficulty');
+
+            try {
+                Database::open($path, $pin);
+                self::fail('a database answering out of an unverifiable sidecar was accepted');
+            } catch (AdvisoryLookupFailed $e) {
+                self::assertStringContainsString('WAL mode', $e->getMessage());
+                self::assertStringContainsString('wal_checkpoint', $e->getMessage(), 'the refusal names the way out');
+            }
+            $mutator = null;
+        } finally {
+            foreach (glob($dir . '/*') ?: [] as $file) {
+                @unlink($file);
+            }
+            @rmdir($dir);
+        }
     }
 }

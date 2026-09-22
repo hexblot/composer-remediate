@@ -46,13 +46,43 @@ final class Plan
         public readonly array $coverageGaps = [],
         public readonly bool $coverageGapsAccepted = false,
         public readonly array $combinedAttempts = [],
+        /**
+         * A terminal failure this run hit before it could produce findings, as the exit code that
+         * describes it. Set, it *is* the exit code: there is nothing to gate on, and every format asks
+         * ScanOutcome, so a report built from this plan says the run did not complete rather than
+         * showing an empty vulnerability list that reads as clean.
+         */
+        public readonly ?int $failure = null,
     ) {
+    }
+
+    /**
+     * The plan for a run that failed before it could look: advisory data that could not be read, an
+     * apply that Composer refused. It exists so the failure still goes through the renderers, because
+     * a run that writes no report leaves the last successful one on disk for a CI step to publish.
+     *
+     * @param array<string, string> $metadata
+     * @param list<string>          $warnings
+     */
+    public static function failed(int $exitCode, array $metadata = [], array $warnings = []): self
+    {
+        return new self([], $metadata, $warnings, null, null, [], [], [], false, [], $exitCode);
+    }
+
+    /**
+     * The same plan, reported as a run that could not answer. Its findings and recommendations stay:
+     * what changes is that the exit code, and every format that asks ScanOutcome, stop calling it a
+     * completed run.
+     */
+    public function withFailure(int $exitCode): self
+    {
+        return new self($this->findings, $this->metadata, $this->warnings, $this->combined, $this->failOn, $this->inventory, $this->baseline, $this->coverageGaps, $this->coverageGapsAccepted, $this->combinedAttempts, $exitCode);
     }
 
     /** The caller has read the coverage gaps and accepts the lock as clean despite them (--accept-coverage-gaps). */
     public function withAcceptedCoverageGaps(): self
     {
-        return new self($this->findings, $this->metadata, $this->warnings, $this->combined, $this->failOn, $this->inventory, $this->baseline, $this->coverageGaps, true, $this->combinedAttempts);
+        return new self($this->findings, $this->metadata, $this->warnings, $this->combined, $this->failOn, $this->inventory, $this->baseline, $this->coverageGaps, true, $this->combinedAttempts, $this->failure);
     }
 
     public function withFailOn(?string $severity): self
@@ -61,7 +91,7 @@ final class Plan
             throw new \InvalidArgumentException(sprintf('Unknown severity "%s"; use one of %s.', $severity, Severity::labels()));
         }
 
-        return new self($this->findings, $this->metadata, $this->warnings, $this->combined, $severity !== null ? strtolower($severity) : null, $this->inventory, $this->baseline, $this->coverageGaps, $this->coverageGapsAccepted, $this->combinedAttempts);
+        return new self($this->findings, $this->metadata, $this->warnings, $this->combined, $severity !== null ? strtolower($severity) : null, $this->inventory, $this->baseline, $this->coverageGaps, $this->coverageGapsAccepted, $this->combinedAttempts, $this->failure);
     }
 
     /** @param list<string> $keys finding keys (advisory@package) */
@@ -72,7 +102,7 @@ final class Plan
             $baseline[strtolower($key)] = true;
         }
 
-        return new self($this->findings, $this->metadata, $this->warnings, $this->combined, $this->failOn, $this->inventory, $baseline, $this->coverageGaps, $this->coverageGapsAccepted, $this->combinedAttempts);
+        return new self($this->findings, $this->metadata, $this->warnings, $this->combined, $this->failOn, $this->inventory, $baseline, $this->coverageGaps, $this->coverageGapsAccepted, $this->combinedAttempts, $this->failure);
     }
 
     /** True when every advisory of the finding is in the baseline. */
@@ -146,7 +176,7 @@ final class Plan
     /** @param list<string> $warnings */
     public function withWarnings(array $warnings): self
     {
-        return new self($this->findings, $this->metadata, [...$this->warnings, ...$warnings], $this->combined, $this->failOn, $this->inventory, $this->baseline, $this->coverageGaps, $this->coverageGapsAccepted, $this->combinedAttempts);
+        return new self($this->findings, $this->metadata, [...$this->warnings, ...$warnings], $this->combined, $this->failOn, $this->inventory, $this->baseline, $this->coverageGaps, $this->coverageGapsAccepted, $this->combinedAttempts, $this->failure);
     }
 
     /** @return list<FindingPlan> findings that count towards the exit code */
@@ -170,11 +200,14 @@ final class Plan
     /** @param array<string, string> $overrides */
     public function withMetadata(array $overrides): self
     {
-        return new self($this->findings, array_replace($this->metadata, $overrides), $this->warnings, $this->combined, $this->failOn, $this->inventory, $this->baseline, $this->coverageGaps, $this->coverageGapsAccepted, $this->combinedAttempts);
+        return new self($this->findings, array_replace($this->metadata, $overrides), $this->warnings, $this->combined, $this->failOn, $this->inventory, $this->baseline, $this->coverageGaps, $this->coverageGapsAccepted, $this->combinedAttempts, $this->failure);
     }
 
     public function exitCode(): int
     {
+        if ($this->failure !== null) {
+            return $this->failure;
+        }
         $gated = $this->gated();
         if ($gated === []) {
             // Nothing found, but records about locked packages could not be read: the source cannot vouch

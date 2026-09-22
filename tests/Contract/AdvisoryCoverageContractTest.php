@@ -10,6 +10,8 @@ use Remediate\Engine\Advisory\Db\DatabaseWriter;
 use Remediate\Engine\Advisory\Db\Source\FriendsOfPhpSource;
 use Remediate\Engine\Advisory\Db\Source\OsvDumpSource;
 use Remediate\Engine\Advisory\Db\Source\PackagistShapeMapper;
+use Remediate\Engine\Plan\Plan;
+use Remediate\Output\ScanOutcome;
 use Remediate\Tests\Support\CommandRunner;
 use Remediate\Tests\Support\ScriptedDownloader;
 use Remediate\Tests\Support\ScriptedProject;
@@ -355,6 +357,71 @@ final class AdvisoryCoverageContractTest extends TestCase
             );
             self::assertCount(1, $fop->fetch(static function (): void {}));
             self::assertSame([], $fop->gaps(), 'a Drupal advisory says which ecosystem it is about');
+        } finally {
+            $project->destroy();
+        }
+    }
+
+    /**
+     * Invariant: a recommendation is never called verified by a source that cannot answer for a lock
+     * other than the current one.
+     *
+     * Eighth adversarial review, finding 2. Completeness was established once, before a package was
+     * planned. A source can lose it afterwards — the in-process advisory API breaking on a later
+     * lookup switches the provider to `composer audit --locked`, which only knows the current lock —
+     * and every acceptance rule after that point, "introduces no new advisories" above all, was then
+     * decided by something that could not see advisories on the packages the candidate adds. The run
+     * reported a verified fix, a combined command and exit 1, next to a warning admitting it could no
+     * longer check.
+     */
+    public function testAFixIsNotVerifiedByASourceThatStoppedBeingAbleToAnswer(): void
+    {
+        $project = new ScriptedProject(['acme/pkg' => '^1.0'], [['acme/pkg', '1.0.0']]);
+        try {
+            $advisory = ScriptedProject::advisory('TEST-1', 'acme/pkg', '<1.1.0');
+            // Complete until something asks about the package the fix introduces, which is the moment
+            // its answer starts to matter.
+            $primary = new class($advisory) implements \Remediate\Engine\Advisory\AdvisoryProvider {
+                public function __construct(private \Remediate\Engine\Advisory\Advisory $advisory)
+                {
+                }
+
+                public function advisoriesFor(array $packageNames): array
+                {
+                    if (in_array('acme/new', $packageNames, true)) {
+                        throw new \TypeError('upstream API changed on uncached lookup');
+                    }
+
+                    return ['acme/pkg' => [$this->advisory]];
+                }
+
+                public function describe(): string
+                {
+                    return 'an API that stops answering';
+                }
+
+                public function isComplete(): bool
+                {
+                    return true;
+                }
+            };
+            $provider = new \Remediate\Engine\Advisory\FallbackAdvisoryProvider($primary, ScriptedProject::advisories([$advisory], false));
+            $solver = new \Remediate\Tests\Support\FakeSolver(new \Remediate\Engine\Solver\SolveResult(
+                \Remediate\Engine\Solver\SolveStatus::Resolved,
+                ScriptedProject::lock([['acme/pkg', '1.1.0'], ['acme/new', '1.0.0']]),
+                '',
+            ));
+
+            $plan = (new \Remediate\Engine\Planner($provider, $solver))->plan($project->context(), $project->workspace());
+
+            self::assertFalse($provider->isComplete(), 'the source degraded, as it must for this test to mean anything');
+            self::assertFalse($plan->findings[0]->hasRemediation(), 'a fix cannot be verified against advisories the source can no longer see');
+            self::assertNull($plan->combined, 'nor can a combined command');
+            // Not exit 2. Exit 2 says "there is a vulnerability and nothing can fix it", which is an
+            // answer; the truth here is that the run could not find out, and the exit-code table has
+            // always called that 4. At 2, SARIF and GitLab called the scan successful.
+            self::assertSame(Plan::EXIT_ADVISORIES_UNAVAILABLE, $plan->exitCode(), 'a source that cannot verify candidates is an advisory failure, not an ordinary no-fix result');
+            self::assertFalse(ScanOutcome::succeeded($plan), 'and no format may call that run successful');
         } finally {
             $project->destroy();
         }

@@ -99,6 +99,12 @@ final class Planner
     public function plan(ProjectContext $context, ScratchWorkspace $workspace): Plan
     {
         $this->totalSolves = 0;
+        // Hashed before anything is read or solved, because --apply compares against these to decide
+        // whether the files it is about to change are the ones the plan was computed from. Taken at the
+        // end of planning they described whatever the files had become while the search ran, so an
+        // edit made during the search was blessed by the guard meant to catch it.
+        $composerJsonHash = self::fileHash($context->composerJsonPath());
+        $lockHash = self::fileHash($context->lockPath());
         $lock = $context->lockSnapshot();
         $graph = new DependencyGraph($context->rootPackage(), $context->lockedRepository());
         $matcher = (new Matcher($this->advisories))->withIgnorePolicy($this->ignore ?? IgnorePolicy::none());
@@ -177,7 +183,7 @@ final class Planner
             }
         }
 
-        return new Plan($plans, [
+        $plan = new Plan($plans, [
             'project' => $context->directory,
             'engine_version' => self::engineVersion(),
             'composer_version' => $context->composerVersion(),
@@ -185,11 +191,17 @@ final class Planner
             'advisory_source' => $this->advisories->describe(),
             'solver' => $this->solver->describe(),
             'solver_runs' => (string) $this->totalSolves,
-            'composer_json_sha256' => self::fileHash($context->composerJsonPath()),
-            'composer_lock_sha256' => self::fileHash($context->lockPath()),
+            'composer_json_sha256' => $composerJsonHash,
+            'composer_lock_sha256' => $lockHash,
             'analysis_timestamp' => gmdate('c'),
             'locked_packages' => (string) $lock->count(),
         ], $warnings, $combined, null, self::inventory($lock), [], array_values(array_unique([...$coverageGaps, ...self::acceptedGapsOf($plans, $combined)])), false, $combinedAttempts);
+
+        // A source that cannot answer for a lock other than the current one is advisory data
+        // unavailable, which the exit-code table has always called 4. Reporting it as 2 said "there is
+        // a vulnerability nothing can fix", which is an answer; the truth is that the run could not
+        // find out. SARIF and GitLab took 2 for a completed scan and marked the run successful.
+        return $this->advisories->isComplete() ? $plan : $plan->withFailure(Plan::EXIT_ADVISORIES_UNAVAILABLE);
     }
 
     /**
@@ -358,6 +370,27 @@ final class Planner
             $this->totalSolves,
             $this->totalSolves === 1 ? '' : 's',
         );
+    }
+
+    /**
+     * Whether the advisory source can still answer for a lock that is not the current one.
+     *
+     * Eighth adversarial review, finding 2. Completeness was established once, before a package was
+     * planned, and a source can lose it afterwards: the in-process advisory API breaking on a later
+     * lookup switches the provider to `composer audit --locked`, which only knows the current lock.
+     * Every acceptance rule downstream of that — above all "introduces no new advisories" — is then
+     * being decided by something that cannot see advisories on the packages a candidate adds, while
+     * the recommendation still says verified. The check belongs next to each use, not once at the
+     * start, because what it licenses is each use.
+     */
+    private function sourceCanStillAnswerForCandidateLocks(): bool
+    {
+        return $this->advisories->isComplete();
+    }
+
+    private function degradedSourceReason(): string
+    {
+        return sprintf('the advisory source stopped being able to answer for candidate locks while this was being checked (%s), so it could not be established that this introduces no new advisories', $this->advisories->describe());
     }
 
     /**
@@ -695,6 +728,9 @@ final class Planner
             return [CombinedOutcome::Unresolved, $result->status === SolveStatus::Conflict ? $result->explanation() : self::describeFailure($result->status)];
         }
         $afterKeys = $matcher->findingKeys($result->after);
+        if (!$this->sourceCanStillAnswerForCandidateLocks()) {
+            return [CombinedOutcome::Rejected, $this->degradedSourceReason()];
+        }
         $introduced = array_keys(array_diff_key($afterKeys, $baseline));
         if ($introduced !== []) {
             return [CombinedOutcome::Rejected, 'introduces new advisories: ' . implode(', ', $introduced)];
@@ -857,6 +893,9 @@ final class Planner
 
         $diff = LockDiff::between($lock, $result->after);
         $afterKeys = $matcher->findingKeys($result->after);
+        if (!$this->sourceCanStillAnswerForCandidateLocks()) {
+            return new EvaluatedCandidate($candidate, $result, $diff, false, $this->degradedSourceReason());
+        }
         $remaining = array_keys(array_intersect_key($afterKeys, $groupKeys));
         if ($remaining !== []) {
             $after = $result->after->get($finding->packageName);

@@ -503,6 +503,61 @@ final class PlannerTest extends TestCase
         self::assertSame([], $plan->findings[0]->evaluated, 'nothing was even solved');
         self::assertStringContainsString('no remediation can be verified', (string) $plan->findings[0]->blocker);
         self::assertNull($plan->combined);
-        self::assertSame(Plan::EXIT_NO_REMEDIATION, $plan->exitCode(), 'fail closed: a gate sees an unfixed vulnerability, not a verified fix');
+        // Exit 4, not 2. Both fail closed, but 2 says "there is a vulnerability and nothing can fix it",
+        // which is an answer, and at 2 the SARIF and GitLab reports call the scan successful. The
+        // exit-code table has always assigned "an incomplete source cannot verify candidates" to 4.
+        self::assertSame(Plan::EXIT_ADVISORIES_UNAVAILABLE, $plan->exitCode(), 'a source that cannot vouch for a candidate lock is an advisory failure');
+        self::assertFalse(\Remediate\Output\ScanOutcome::succeeded($plan), 'so no format calls the run successful');
+    }
+
+    /**
+     * Eighth adversarial review, finding 6. The manifest and lock hashes that `--apply` checks are the
+     * plan's statement of which files it was computed from. Taken after the candidate search they
+     * described whatever the files had become while it ran, so a manifest edited during the search
+     * matched its own hash and the guard let the apply proceed. They are now taken before anything is
+     * read, so the hash names the input, not the outcome.
+     */
+    public function testTheInputHashesDescribeTheFilesPlanningStartedFrom(): void
+    {
+        $project = new ScriptedProject(['acme/pkg' => '^1.0'], [['acme/pkg', '1.0.0']]);
+        $this->projects[] = $project;
+        $context = $project->context();
+        $original = hash_file('sha256', $context->composerJsonPath());
+
+        $solver = new class($project->directory) implements \Remediate\Engine\Solver\SolverInterface {
+            public function __construct(private string $dir)
+            {
+            }
+
+            public function supportsMinimalChanges(): bool
+            {
+                return true;
+            }
+
+            public function describe(): string
+            {
+                return 'a solver that changes the manifest while the search runs';
+            }
+
+            public function solve(\Remediate\Engine\Candidate\Candidate $candidate, \Remediate\Engine\Solver\ScratchWorkspace $workspace): SolveResult
+            {
+                $path = $this->dir . '/composer.json';
+                $json = json_decode((string) file_get_contents($path), true);
+                $json['description'] = 'changed during planning';
+                file_put_contents($path, (string) json_encode($json));
+
+                return new SolveResult(SolveStatus::Resolved, ScriptedProject::lock([['acme/pkg', '1.1.0']]), '');
+            }
+        };
+
+        $plan = (new Planner(ScriptedProject::advisories([ScriptedProject::advisory('TEST-1', 'acme/pkg', '<1.1.0')]), $solver))->plan($context, $project->workspace());
+
+        self::assertNotSame($original, hash_file('sha256', $context->composerJsonPath()), 'the probe changed the manifest, as it must for this test to mean anything');
+        self::assertSame($original, $plan->metadata['composer_json_sha256'], 'the plan records the manifest it was computed from');
+        self::assertNotNull($plan->combined, 'there is something to apply, so the guard is what stands in the way');
+        self::assertSame(
+            'composer.json changed while the plan was being computed; nothing was applied. Run the command again.',
+            (new \Remediate\Engine\Apply\Applier(['composer']))->refusal($plan, $context, false, false),
+        );
     }
 }

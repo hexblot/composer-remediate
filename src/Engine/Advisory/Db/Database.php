@@ -17,16 +17,163 @@ final class Database
 {
     public const SCHEMA_VERSION = 1;
 
+    /**
+     * The digest of the bytes this connection was opened against. Recorded once, and required to still
+     * hold every time the connection is reopened — see reconnect().
+     *
+     * It is a digest of the file and not anything the file says about itself. The first version of this
+     * check compared schema_version, dataset_hash and built_at, which are rows inside the database:
+     * a replacement that kept those three and dropped every advisory passed it, and the worker read a
+     * lock as clean against a database with nothing in it. Whoever can replace the file can write the
+     * fields it is judged by, so the only thing worth comparing is the content itself.
+     */
+    private ?string $digest = null;
+
+    /** The private copy this connection reads, and the process that owns it (a fork must not delete it). */
+    private ?string $snapshot = null;
+
+    private int $ownerPid = 0;
+
     private function __construct(private \PDO $pdo, public readonly string $path)
     {
     }
 
-    public static function open(string $path): self
+    /**
+     * Copies the verified file somewhere only this run knows about, and reads from there.
+     *
+     * The digest and journal checks establish what the file is at the moment it is opened. They cannot
+     * establish what it will be during the next twenty seconds of planning, and planning is when the
+     * answers matter: the reviewer let a concurrent writer delete a package's advisory rows between the
+     * initial scan and candidate verification, and the run then approved a command that introduced a
+     * package it had been told was vulnerable — a verified recommendation, exit 1, derived from a
+     * database nobody had verified. Checking again before every query would narrow the window and not
+     * close it, because the gap is between the check and the read.
+     *
+     * A copy has no such window. Nothing else knows the path, so nothing else can write to it, and the
+     * bytes that were verified are the bytes every later query sees. The published database is a few
+     * megabytes, so this costs a copy once per run.
+     */
+    private static function snapshot(string $source, string $expectedDigest): string
+    {
+        $snapshot = @tempnam(sys_get_temp_dir(), 'remediate-adv-');
+        if ($snapshot === false) {
+            throw new AdvisoryLookupFailed('Could not create a private copy of the advisory database to read from.');
+        }
+        @chmod($snapshot, 0600);
+        if (!@copy($source, $snapshot)) {
+            @unlink($snapshot);
+
+            throw new AdvisoryLookupFailed(sprintf('Could not copy the advisory database %s to read it.', $source));
+        }
+        clearstatcache(true, $snapshot);
+        $copied = @hash_file('sha256', $snapshot);
+        if ($copied === false || !hash_equals($expectedDigest, $copied)) {
+            // The source changed while it was being copied, so the copy is of nothing in particular.
+            @unlink($snapshot);
+
+            throw new AdvisoryLookupFailed(sprintf('The advisory database %s changed while it was being read; nothing was taken from it. Run again.', $source));
+        }
+
+        return $snapshot;
+    }
+
+    public function __destruct()
+    {
+        if ($this->snapshot !== null && $this->ownerPid === getmypid()) {
+            @unlink($this->snapshot);
+        }
+    }
+
+    /**
+     * Refuses a database whose contents are not wholly in the file that gets hashed.
+     *
+     * In WAL mode, SQLite serves committed rows out of the `-wal` sidecar, and a reader sees them
+     * without the main file changing by a byte. A digest over the main file then says nothing about
+     * what a query returns: the reviewer pinned a database with one advisory, deleted the rows into
+     * the WAL without checkpointing, and the same pinned digest scanned clean. Rolling the sidecar into
+     * the digest is no answer either, because it changes under any concurrent writer.
+     *
+     * The databases this tool builds are written with `journal_mode = OFF`, so this only ever rejects a
+     * file someone else prepared, and it tells them the one command that fixes it.
+     */
+    private function refuseExternalJournal(): void
+    {
+        try {
+            $statement = $this->pdo->query('PRAGMA journal_mode');
+            $mode = $statement === false ? null : $statement->fetchColumn();
+        } catch (\PDOException $e) {
+            throw new AdvisoryLookupFailed(sprintf('Cannot read the journal mode of advisory database %s: %s', $this->path, $e->getMessage()), 0, $e);
+        }
+        if (is_string($mode) && strtolower($mode) === 'wal') {
+            throw self::journalRefusal($this->path);
+        }
+    }
+
+    /** The same rule applied to a file nothing has opened yet: a `-wal` beside it is data the copy would lose. */
+    private static function refuseExternalJournalAt(string $path): void
+    {
+        clearstatcache(true, $path . '-wal');
+        $sidecar = @filesize($path . '-wal');
+        if ($sidecar !== false && $sidecar > 0) {
+            throw self::journalRefusal($path);
+        }
+    }
+
+    private static function journalRefusal(string $path): AdvisoryLookupFailed
+    {
+        return new AdvisoryLookupFailed(sprintf(
+            'Advisory database %s is in WAL mode, so part of what it answers lives in %s-wal and is outside anything that can be verified about the file. Check it in first (sqlite3 %s "PRAGMA wal_checkpoint(TRUNCATE); PRAGMA journal_mode=DELETE;") and run again.',
+            $path,
+            $path,
+            $path,
+        ));
+    }
+
+    /** The digest of the file behind this connection, or null when it cannot be read. */
+    private function digestOf(): ?string
+    {
+        $file = $this->snapshot ?? $this->path;
+        clearstatcache(true, $file);
+        $digest = @hash_file('sha256', $file);
+
+        return $digest === false ? null : $digest;
+    }
+
+    /**
+     * @param string|null $expectedDigest the sha256 the caller established for this file, when it
+     *                                    established one. Given, it is required here and at every
+     *                                    reopen; absent, whatever is read now is pinned for the rest
+     *                                    of the run. Opening is the first read, so it is the first
+     *                                    place the file can be something other than what was verified.
+     */
+    public static function open(string $path, ?string $expectedDigest = null): self
     {
         if (!is_file($path)) {
             throw new AdvisoryLookupFailed(sprintf('Advisory database %s does not exist.', $path));
         }
-        $db = new self(self::connect($path), $path);
+        // Before copying anything: a file whose contents are partly in a sidecar cannot be copied by
+        // taking the file, and cannot be verified by hashing it either. Refused at the source.
+        self::refuseExternalJournalAt($path);
+        clearstatcache(true, $path);
+        $actual = @hash_file('sha256', $path);
+        if ($actual === false) {
+            throw new AdvisoryLookupFailed(sprintf('Advisory database %s could not be read.', $path));
+        }
+        if ($expectedDigest !== null && !hash_equals($expectedDigest, $actual)) {
+            throw new AdvisoryLookupFailed(sprintf(
+                'The advisory database at %s is not the file that was verified for this run (sha256 %s, now %s).',
+                $path,
+                substr($expectedDigest, 0, 12),
+                substr($actual, 0, 12),
+            ));
+        }
+
+        $snapshot = self::snapshot($path, $actual);
+        $db = new self(self::connect($snapshot), $path);
+        $db->snapshot = $snapshot;
+        $db->ownerPid = getmypid() === false ? 0 : getmypid();
+        $db->digest = $actual;
+        $db->refuseExternalJournal();
         $schema = (int) ($db->meta()['schema_version'] ?? 0);
         if ($schema !== self::SCHEMA_VERSION) {
             throw new AdvisoryLookupFailed(sprintf('Advisory database %s has schema version %d; this version of the tool reads %d.', $path, $schema, self::SCHEMA_VERSION));
@@ -61,10 +208,27 @@ final class Database
      * Drops the inherited connection and opens its own. A SQLite connection must not be carried
      * across a fork: parent and child would share one file offset and one set of POSIX locks, and
      * closing it in either releases it for both. Called in the child, before it reads anything.
+     *
+     * Eighth adversarial review, finding 4. Reopening named the path, and a path is not a file. A cache
+     * refresh landing between the run's verification and this call — a concurrent process, or this
+     * tool's own download — put a different database there, and the child read it as if it were the one
+     * checked for this run. Because the answers already fetched survive the fork, one run could also
+     * mix records from two databases. What was verified was a set of bytes, so reopening has to arrive
+     * at the same ones: the file's own identity is required to be what it was, and a child that finds
+     * anything else refuses rather than answering from a database nobody vouched for.
      */
     public function reconnect(): void
     {
-        $this->pdo = self::connect($this->path);
+        $this->pdo = self::connect($this->snapshot ?? $this->path);
+        $now = $this->digestOf();
+        if ($this->digest !== null && ($now === null || !hash_equals($this->digest, $now))) {
+            throw new AdvisoryLookupFailed(sprintf(
+                'The advisory database at %s is not the file this run verified (sha256 %s, now %s). Nothing was read from it; run again.',
+                $this->path,
+                substr($this->digest, 0, 12),
+                $now === null ? 'unreadable' : substr($now, 0, 12),
+            ));
+        }
     }
 
     /** @return array<string, string> */
@@ -211,6 +375,24 @@ final class Database
         }
         $parser = new PackagistAdvisoryJsonParser();
         $result = [];
+        try {
+            return $this->lookUp($names, $parser, $result);
+        } catch (\PDOException $e) {
+            // A database that cannot answer is advisory data unavailable, which the caller turns into
+            // exit 4 and a report saying the run did not complete. Left to escape, it reached Symfony
+            // as an uncaught exception and became exit 1 — "vulnerabilities, all with verified fixes".
+            throw new AdvisoryLookupFailed(sprintf('Advisory database %s could not be queried: %s', $this->path, $e->getMessage()), 0, $e);
+        }
+    }
+
+    /**
+     * @param list<string>              $names
+     * @param array<string, list<Advisory>> $result
+     *
+     * @return array<string, list<Advisory>>
+     */
+    private function lookUp(array $names, PackagistAdvisoryJsonParser $parser, array $result): array
+    {
         foreach (array_chunk($names, 400) as $chunk) {
             $placeholders = implode(',', array_fill(0, count($chunk), '?'));
             $statement = $this->pdo->prepare(

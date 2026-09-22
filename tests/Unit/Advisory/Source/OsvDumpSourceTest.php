@@ -212,4 +212,68 @@ final class OsvDumpSourceTest extends TestCase
     {
         self::assertSame([0, 1, 2, 3], array_map([NormalizedAdvisory::class, 'rankId'], ['cve-2026-1', 'GHSA-x', 'PKSA-y', 'OSV-2026-1']));
     }
+
+    /**
+     * Eighth adversarial review, finding 5. An archive entry whose bytes cannot be read (encrypted,
+     * corrupt, truncated) was skipped without a word, so an archive delivered in part was counted as
+     * complete: every advisory in the unreadable members left coverage silently. It is a gap, and a
+     * gap attributed to no package, because nothing can say which packages the lost document named.
+     */
+    public function testAnEntryWhoseBytesCannotBeReadIsAGapRatherThanASilentSkip(): void
+    {
+        $document = static fn (string $id, string $package): string => (string) json_encode([
+            'id' => $id,
+            'affected' => [[
+                'package' => ['ecosystem' => 'Packagist', 'name' => $package],
+                'ranges' => [['type' => 'ECOSYSTEM', 'events' => [['introduced' => '0'], ['fixed' => '2.0.0']]]],
+            ]],
+        ]);
+
+        $archive = $this->tempDir . '/partial.zip';
+        @mkdir($this->tempDir, 0700, true);
+        $zip = new \ZipArchive();
+        $zip->open($archive, \ZipArchive::CREATE | \ZipArchive::OVERWRITE);
+        $zip->addFromString('READABLE.json', $document('READABLE', 'acme/readable'));
+        $zip->addFromString('LOST.json', $document('LOST', 'acme/lost'));
+        $zip->setPassword('a password the reader does not have');
+        $zip->setEncryptionName('LOST.json', \ZipArchive::EM_AES_256);
+        $zip->close();
+
+        $url = 'https://source.example/all.zip';
+        $source = new OsvDumpSource(new ScriptedDownloader([$url => (string) file_get_contents($archive)]), $this->tempDir, url: $url);
+        $records = $source->fetch(static function (string $line): void {});
+
+        self::assertCount(1, $records, 'the readable document is still read');
+        $gaps = $source->gaps();
+        self::assertCount(1, $gaps, 'the unreadable document is a coverage gap, not an absence');
+        self::assertSame('LOST', $gaps[0]->remoteId);
+        self::assertNull($gaps[0]->package, 'nothing can say which package the unreadable document named');
+        self::assertSame('archive entry could not be read', $gaps[0]->reason);
+    }
+
+    /**
+     * A caller with nowhere to record an unreadable entry must not receive a short archive as a
+     * complete one, so the reader refuses by default rather than dropping it.
+     */
+    public function testTheReaderRefusesAnUnreadableEntryWhenTheCallerCannotRecordIt(): void
+    {
+        $archive = $this->tempDir . '/refused.zip';
+        @mkdir($this->tempDir, 0700, true);
+        $zip = new \ZipArchive();
+        $zip->open($archive, \ZipArchive::CREATE | \ZipArchive::OVERWRITE);
+        $zip->addFromString('LOST.json', '{}');
+        $zip->setPassword('a password the reader does not have');
+        $zip->setEncryptionName('LOST.json', \ZipArchive::EM_AES_256);
+        $zip->close();
+
+        $url = 'https://source.example/refused.zip';
+        $reader = new \Remediate\Engine\Advisory\Db\Source\ZipArchiveReader(
+            new ScriptedDownloader([$url => (string) file_get_contents($archive)]),
+            $this->tempDir,
+        );
+
+        $this->expectException(\RuntimeException::class);
+        $this->expectExceptionMessage('could not be read');
+        $reader->each($url, static fn (string $name): bool => true, static function (string $name, string $contents): void {});
+    }
 }

@@ -61,7 +61,12 @@ final class TextRenderer
         $out[] = '';
 
         if ($plan->findings === []) {
-            $out[] = $this->tag('No known vulnerabilities in the locked dependencies.', 'fg=green');
+            // An empty list is only good news when the run finished. A run that could not read its
+            // advisory data has an empty list too, and must never be able to borrow this sentence.
+            $failure = ScanOutcome::failureMessage($plan);
+            $out[] = $failure !== null
+                ? $this->tag($failure, 'fg=red;options=bold')
+                : $this->tag('No known vulnerabilities in the locked dependencies.', 'fg=green');
 
             return implode("\n", $out) . "\n";
         }

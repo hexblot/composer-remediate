@@ -5,6 +5,7 @@ declare(strict_types=1);
 namespace Remediate\Tests\Integration;
 
 use PHPUnit\Framework\TestCase;
+use Remediate\Tests\Support\CommandRunner;
 use Remediate\Tests\Support\ComposerPhar;
 use Symfony\Component\Process\Process;
 
@@ -74,5 +75,48 @@ final class EntryPointTest extends TestCase
         self::assertIsArray($report);
         self::assertSame(0, $report['exit_code']);
         self::assertFileDoesNotExist($this->project . '/PROBE_EXECUTED');
+    }
+
+    /**
+     * The promise has to survive `--apply`, which is the one thing that runs Composer against the real
+     * project. The binary forces `--no-plugins --no-scripts` onto its own input; before this test the
+     * apply subprocess was a second Composer that inherited neither, so a project's `pre-update-cmd`
+     * ran under a binary documented as running no code from the analysed project.
+     */
+    public function testApplyDoesNotRunTheProjectsComposerScripts(): void
+    {
+        $phar = ComposerPhar::find() ?? self::markTestSkipped('no Composer phar available to run an apply');
+        $root = dirname(__DIR__, 2);
+        $fixture = $root . '/tests/Fixture/third-party/synthetic-transitive-parent';
+        $runner = new CommandRunner();
+        $project = $runner->project($fixture);
+        CommandRunner::editComposerJson($project, static function (array $json): array {
+            $json['scripts']['pre-update-cmd'] = '@php -r \'file_put_contents("PROJECT_CODE_RAN", "yes");\'';
+
+            return $json;
+        });
+
+        $process = new Process([
+            PHP_BINARY,
+            $root . '/bin/composer-remediate',
+            '--working-dir=' . $project,
+            '--advisories-file=' . $fixture . '/advisories.json',
+            '--apply',
+            '--apply-no-install',
+            '--format=json',
+        ], $root, [
+            'REMEDIATE_COMPOSER_BINARY' => $phar,
+            'COMPOSER_HOME' => (string) getenv('COMPOSER_HOME'),
+            'COMPOSER_CACHE_DIR' => (string) getenv('COMPOSER_CACHE_DIR'),
+        ], null, 300);
+        $process->run();
+
+        self::assertFileDoesNotExist(
+            $project . '/PROJECT_CODE_RAN',
+            "the analysed project's pre-update-cmd ran during --apply; the standalone binary promises no code from the project runs",
+        );
+        $report = json_decode($process->getOutput(), true);
+        self::assertIsArray($report, 'the apply still produced a report: ' . $process->getErrorOutput());
+        self::assertStringContainsString('--no-scripts', $process->getErrorOutput(), 'the commands it ran are reported with the restrictions it applied');
     }
 }
