@@ -84,6 +84,11 @@ final class FriendsOfPhpSource implements AdvisorySourceInterface
                     // strip the archive's top-level directory (security-advisories-master/)
                     $visit(substr($name, strpos($name, '/') + 1), $contents);
                 },
+                function (string $name) use (&$skipped): void {
+                    // Held by the archive but unreadable: a gap, not an absence.
+                    ++$skipped;
+                    $this->gaps[] = new CoverageGap('FriendsOfPHP', basename($name), null, 'archive entry could not be read');
+                },
             );
         }
         $log(sprintf('FriendsOfPHP: %d files, %d records%s', $count, count($records), $skipped > 0 ? sprintf(', %d skipped (recorded as coverage gaps)', $skipped) : ''));

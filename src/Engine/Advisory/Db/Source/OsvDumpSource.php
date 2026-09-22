@@ -42,6 +42,7 @@ final class OsvDumpSource implements AdvisorySourceInterface
         $this->gaps = [];
         $skipped = ['invalid JSON' => 0, 'no Packagist package' => 0, 'no usable range' => 0];
         $partial = 0;
+        $unreadable = 0;
         $reader = new ZipArchiveReader($this->downloader, $this->tempDir);
         $entries = $reader->each($this->url, static fn (string $name): bool => str_ends_with($name, '.json'), function (string $name, string $contents) use (&$records, &$skipped, &$partial): void {
             $doc = json_decode($contents, true);
@@ -81,6 +82,12 @@ final class OsvDumpSource implements AdvisorySourceInterface
                 ++$partial;
                 $this->gaps[] = new CoverageGap('OSV', $record->sources[0]->remoteId, $package, $why);
             }
+        }, function (string $name) use (&$unreadable): void {
+            // The archive held this document and its bytes could not be read. Whatever advisories it
+            // carried are unknown, so it is a gap attributed to no package: something is missing from
+            // coverage and nothing here can say for which package.
+            ++$unreadable;
+            $this->gaps[] = new CoverageGap('OSV', basename($name, '.json'), null, 'archive entry could not be read');
         });
         $reasons = array_filter($skipped);
         $log(sprintf(
@@ -89,7 +96,7 @@ final class OsvDumpSource implements AdvisorySourceInterface
             count($records),
             $reasons !== [] ? ', skipped: ' . implode(', ', array_map(static fn (string $k, int $v): string => "$v $k", array_keys($reasons), $reasons)) . ' (Packagist records recorded as coverage gaps)' : '',
             $partial > 0 ? sprintf(', %d package entr%s unreadable inside kept records (recorded as coverage gaps)', $partial, $partial === 1 ? 'y' : 'ies') : '',
-        ));
+        ) . ($unreadable > 0 ? sprintf(' — %d archive entr%s could not be read (recorded as coverage gaps)', $unreadable, $unreadable === 1 ? 'y' : 'ies') : ''));
 
         self::refuseEmpty($records, $this->gaps, 'OSV');
 
