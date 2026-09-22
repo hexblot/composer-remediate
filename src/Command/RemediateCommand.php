@@ -421,6 +421,28 @@ HELP);
     }
 
     /**
+     * The restrictions this run was started with, to be repeated on every command `--apply` runs.
+     *
+     * The standalone binary forces `--no-plugins --no-scripts` onto its own input so that no code from
+     * the analysed project runs; the apply subprocess is a second Composer, and without these it would
+     * run that project's scripts and plugins while the documentation says nothing of the project runs.
+     * The rule is the same in plugin mode: an apply inherits whatever the caller restricted.
+     *
+     * @return list<string>
+     */
+    private static function safetyArguments(InputInterface $input): array
+    {
+        $arguments = [];
+        foreach (['--no-plugins', '--no-scripts'] as $flag) {
+            if ($input->hasParameterOption($flag, true)) {
+                $arguments[] = $flag;
+            }
+        }
+
+        return $arguments;
+    }
+
+    /**
      * Runs the recommended command in the project, then plans again so that what the report shows is
      * the state the run actually left behind rather than a prediction of it. Returns the new plan, or
      * an exit code when nothing ran or Composer failed. A project with no findings is left alone.
@@ -434,7 +456,7 @@ HELP);
 
             return $plan;
         }
-        $applier = new Applier(SubprocessSolver::forRunningComposer()->composerCommand());
+        $applier = new Applier(SubprocessSolver::forRunningComposer()->composerCommand(), safetyArguments: self::safetyArguments($input));
         $refusal = $applier->refusal($plan, $context, (bool) $input->getOption('apply-root-constraints'), (bool) $input->getOption('apply-allow-dirty'));
         if ($refusal !== null) {
             $io->writeError('<error>--apply refused: ' . ConsoleText::safe($refusal) . '</error>');
