@@ -99,6 +99,12 @@ final class Planner
     public function plan(ProjectContext $context, ScratchWorkspace $workspace): Plan
     {
         $this->totalSolves = 0;
+        // Hashed before anything is read or solved, because --apply compares against these to decide
+        // whether the files it is about to change are the ones the plan was computed from. Taken at the
+        // end of planning they described whatever the files had become while the search ran, so an
+        // edit made during the search was blessed by the guard meant to catch it.
+        $composerJsonHash = self::fileHash($context->composerJsonPath());
+        $lockHash = self::fileHash($context->lockPath());
         $lock = $context->lockSnapshot();
         $graph = new DependencyGraph($context->rootPackage(), $context->lockedRepository());
         $matcher = (new Matcher($this->advisories))->withIgnorePolicy($this->ignore ?? IgnorePolicy::none());
@@ -185,8 +191,8 @@ final class Planner
             'advisory_source' => $this->advisories->describe(),
             'solver' => $this->solver->describe(),
             'solver_runs' => (string) $this->totalSolves,
-            'composer_json_sha256' => self::fileHash($context->composerJsonPath()),
-            'composer_lock_sha256' => self::fileHash($context->lockPath()),
+            'composer_json_sha256' => $composerJsonHash,
+            'composer_lock_sha256' => $lockHash,
             'analysis_timestamp' => gmdate('c'),
             'locked_packages' => (string) $lock->count(),
         ], $warnings, $combined, null, self::inventory($lock), [], array_values(array_unique([...$coverageGaps, ...self::acceptedGapsOf($plans, $combined)])), false, $combinedAttempts);
