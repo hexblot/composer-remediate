@@ -5,6 +5,10 @@ All notable changes to this project are documented here. The format follows
 
 ## [Unreleased]
 
+[Unreleased]: https://github.com/hexblot/composer-remediate/compare/v0.10.1...HEAD
+
+## [0.10.1] - 2026-09-23
+
 ### Added
 
 The three report additions from 0.9.1 now reach the **JSON report**, so what a person reads and what a
@@ -37,8 +41,6 @@ ready.
   regenerates `docs/case-studies.md` from them but never checked the reports themselves, so the
   capability notes, the conflict entries and the CycloneDX warnings were missing from the committed
   examples. All eighteen are regenerated.
-
-[Unreleased]: https://github.com/hexblot/composer-remediate/compare/v0.10.0...HEAD
 
 ## [0.10.0] - 2026-09-22
 
@@ -572,6 +574,7 @@ Answers to an Aikido scan of the workflows.
   pull request ready for review runs the full PHP and Composer matrices. Iterating in a draft therefore
   costs what a push used to, and the matrix is paid for once, when the work is done.
 
+[0.10.1]: https://github.com/hexblot/composer-remediate/releases/tag/v0.10.1
 [0.10.0]: https://github.com/hexblot/composer-remediate/releases/tag/v0.10.0
 [0.9.1]: https://github.com/hexblot/composer-remediate/releases/tag/v0.9.1
 [0.9.0]: https://github.com/hexblot/composer-remediate/releases/tag/v0.9.0
