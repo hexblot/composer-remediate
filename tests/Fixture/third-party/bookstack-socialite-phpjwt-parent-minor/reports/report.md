@@ -408,6 +408,14 @@ Expected changes
   league/oauth1-client v1.10.1 -> v1.11.0
 Recommended command
   composer update laravel/socialite:v5.24.1 -W -m --with 'firebase/php-jwt:>=7.0.0'
+Keep the fix
+  Add to composer.json, so a later update cannot fall back below it:
+    "conflict": {
+      "firebase/php-jwt": "<7.0.0",
+      "laravel/socialite": "<5.24.1"
+    }
+  Composer has no subcommand for this, so it is an edit rather than part of the command above.
+  With it in place the resolver refuses the affected versions and names this entry as the reason.
 Other candidates
   valid, rank 2: composer update laravel/socialite -W -m --with 'firebase/php-jwt:>=7.0.0'  (3 changes)
   valid, rank 3: composer update socialiteproviders/discord -W -m --with 'firebase/php-jwt:>=7.0.0'  (3 changes)

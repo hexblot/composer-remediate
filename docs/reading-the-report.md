@@ -5,10 +5,8 @@ format (text, HTML, JSON, SARIF, CycloneDX, GitLab).
 
 What every format carries: whether the run completed, the findings, the recommendation and the
 warnings — anything that changes how a result should be read. What they do not all carry is the same
-level of detail. Each machine-readable format is shaped by its own specification, and three notes
-added in 0.9.1 (**No fix on this branch**, **Keep the fix** and **Capability changes**) are so far
-written only for a person, in the text and HTML reports; they reach the JSON report in 0.10.0, when
-its `schema_version` next increases. Where a format omits something, it is said below.
+level of detail, because each machine-readable format is shaped by its own specification. Where a
+format omits something, it is said below.
 
 ## Header and warnings
 
@@ -197,8 +195,11 @@ code.
 - **JSON** (`--format=json`, `--output=x.json`): one object per finding with `remediation.status`
   (`verified` or `none`), `remediation.outcome`, `remediation.command`, `remediation.blocking_risk`,
   `constraint_drag`, the full `candidates` list, `solver_runs` and `search_exhausted`; the `summary`
-  block carries the combined command and the gate counts; `warnings` is the list above. The schema is
-  published at `docs/schema/report.schema.json`.
+  block carries the combined command and the gate counts; `warnings` is the list above. Since 0.10.1
+  (`schema_version` 2) a verified remediation also carries `no_fix_within_locked_major`,
+  `conflict_entries` and `capability_changes`, the three notes described above, and `summary` carries
+  `packages_running_new_code`. The schema is published at `docs/schema/report.schema.json`, with
+  `report-v2.schema.json` as the copy to pin.
 - **HTML** (`--output=x.html`): a self-contained page with the same sections, a summary table and
   collapsible candidate lists; advisory links are anchors only for `http(s)` URLs.
 - **SARIF** (`--output=x.sarif`): one rule per advisory, one result per vulnerable package located

@@ -152,6 +152,13 @@ Expected changes
   twig/twig v3.5.1 -> v3.11.3
 Recommended command
   composer update twig/twig -w -m --with 'twig/twig:>=3.11.2,<3.12.0 || >=3.14.1'
+Keep the fix
+  Add to composer.json, so a later update cannot fall back below it:
+    "conflict": {
+      "twig/twig": "<3.11.2"
+    }
+  Composer has no subcommand for this, so it is an edit rather than part of the command above.
+  With it in place the resolver refuses the affected versions and names this entry as the reason.
 Other candidates
   valid, rank 2: composer update kevinpapst/adminlte-bundle -W -m --with 'twig/twig:>=3.11.2,<3.12.0 || >=3.14.1'  (2 changes)
   valid, rank 3: composer update symfony/twig-bundle -W -m --with 'twig/twig:>=3.11.2,<3.12.0 || >=3.14.1'  (2 changes)

@@ -177,15 +177,56 @@ final class ReportAdditionsTest extends TestCase
         self::assertStringContainsString('<li>acme/lib is fetched from a different dist host: api.github.com -&gt; downloads.acme.test</li>', $html);
     }
 
-    public function testTheJsonDocumentIsUnchangedByAllThree(): void
+    /**
+     * Shipped to the text and HTML reports in 0.9.1 and held back from JSON, because the JSON
+     * document's shape is a covered surface and any addition to it increases `schema_version`. 0.10.1
+     * makes that increase and brings all three across, so what a person reads and what a pipeline
+     * gates on say the same thing again.
+     */
+    public function testTheJsonReportCarriesAllThree(): void
     {
-        foreach ([$this->dragPlan(), $this->withConstraintPlan(), $this->capabilityPlan()] as $plan) {
-            $data = json_decode((new JsonRenderer())->render($plan), true, 512, JSON_THROW_ON_ERROR);
-            self::assertIsArray($data);
-            $encoded = json_encode($data, JSON_THROW_ON_ERROR);
-            self::assertStringNotContainsString('conflict', $encoded);
-            self::assertStringNotContainsString('capability', $encoded);
-            self::assertStringNotContainsString('No fix on this branch', $encoded);
+        $drag = json_decode((new JsonRenderer())->render($this->dragPlan()), true, 512, JSON_THROW_ON_ERROR);
+        self::assertIsArray($drag);
+        self::assertSame(2, $drag['schema_version']);
+        $remediation = $drag['findings'][0]['remediation'];
+        self::assertStringContainsString('No fixed release of acme/lib exists within 1.x.', (string) $remediation['no_fix_within_locked_major']);
+        self::assertSame([], $remediation['conflict_entries'], 'this recommendation rests on no --with constraint');
+
+        $withConstraint = json_decode((new JsonRenderer())->render($this->withConstraintPlan()), true, 512, JSON_THROW_ON_ERROR);
+        self::assertIsArray($withConstraint);
+        $remediation = $withConstraint['findings'][0]['remediation'];
+        self::assertSame([['package' => 'acme/lib', 'constraint' => '<1.5.0']], $remediation['conflict_entries']);
+        self::assertNull($remediation['no_fix_within_locked_major'], 'there is no drag here');
+
+        $capabilities = json_decode((new JsonRenderer())->render($this->capabilityPlan()), true, 512, JSON_THROW_ON_ERROR);
+        self::assertIsArray($capabilities);
+        $changes = $capabilities['findings'][0]['remediation']['capability_changes'];
+        self::assertSame(
+            [
+                ['package' => 'acme/lib', 'kind' => 'type', 'from' => 'library', 'to' => 'composer-plugin', 'runs_new_code' => true, 'description' => 'acme/lib changes type: library -> composer-plugin'],
+                ['package' => 'acme/lib', 'kind' => 'autoload_files', 'from' => null, 'to' => 'src/bootstrap.php', 'runs_new_code' => true, 'description' => 'acme/lib autoloads files on every request: src/bootstrap.php'],
+                ['package' => 'acme/lib', 'kind' => 'binaries', 'from' => null, 'to' => 'bin/acme', 'runs_new_code' => true, 'description' => 'acme/lib installs binaries: bin/acme'],
+                ['package' => 'acme/lib', 'kind' => 'dist_host', 'from' => 'api.github.com', 'to' => 'downloads.acme.test', 'runs_new_code' => false, 'description' => 'acme/lib is fetched from a different dist host: api.github.com -> downloads.acme.test'],
+            ],
+            $changes,
+        );
+        self::assertSame(1, $capabilities['summary']['packages_running_new_code'], 'the count a gate keys on');
+        self::assertSame(0, $drag['summary']['packages_running_new_code']);
+    }
+
+    public function testTheJsonReportStillValidatesAgainstThePublishedSchema(): void
+    {
+        $schema = realpath(__DIR__ . '/../../../docs/schema/report.schema.json');
+        self::assertNotFalse($schema);
+
+        foreach (['drag' => $this->dragPlan(), 'with' => $this->withConstraintPlan(), 'capability' => $this->capabilityPlan()] as $name => $plan) {
+            $validator = new \JsonSchema\Validator();
+            $document = json_decode((new JsonRenderer())->render($plan));
+            $validator->validate($document, (object) ['$ref' => 'file://' . $schema]);
+            self::assertTrue($validator->isValid(), $name . ":\n" . implode("\n", array_map(
+                static fn (array $e): string => sprintf('%s: %s', $e['property'], $e['message']),
+                $validator->getErrors(),
+            )));
         }
     }
 }

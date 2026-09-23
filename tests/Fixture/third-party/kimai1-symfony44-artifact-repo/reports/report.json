@@ -1,5 +1,5 @@
 {
-    "schema_version": 1,
+    "schema_version": 2,
     "analysis_metadata": {
         "project": "kimai1-symfony44-artifact-repo",
         "engine_version": "dev-main",
@@ -23,6 +23,7 @@
         "packages_gated": 6,
         "packages_baselined": 0,
         "packages_with_constraint_drag": 0,
+        "packages_running_new_code": 0,
         "packages_known_exploited": 0,
         "packages_with_abandoned_dependency": 1,
         "coverage_gaps": 0,
@@ -441,6 +442,9 @@
                 "strategy": "lock-refresh",
                 "root_constraint_changes": [],
                 "constraint_drag": null,
+                "no_fix_within_locked_major": null,
+                "conflict_entries": [],
+                "capability_changes": [],
                 "blocking_risk": [],
                 "coverage_gaps": [],
                 "summary": {
@@ -929,6 +933,14 @@
                 "strategy": "with-dependencies",
                 "root_constraint_changes": [],
                 "constraint_drag": null,
+                "no_fix_within_locked_major": null,
+                "conflict_entries": [
+                    {
+                        "package": "twig/twig",
+                        "constraint": "<3.11.2"
+                    }
+                ],
+                "capability_changes": [],
                 "blocking_risk": [],
                 "coverage_gaps": [],
                 "summary": {
@@ -1448,6 +1460,9 @@
                 "strategy": "lock-refresh",
                 "root_constraint_changes": [],
                 "constraint_drag": null,
+                "no_fix_within_locked_major": null,
+                "conflict_entries": [],
+                "capability_changes": [],
                 "blocking_risk": [],
                 "coverage_gaps": [],
                 "summary": {
@@ -1807,6 +1822,9 @@
                 "strategy": "lock-refresh",
                 "root_constraint_changes": [],
                 "constraint_drag": null,
+                "no_fix_within_locked_major": null,
+                "conflict_entries": [],
+                "capability_changes": [],
                 "blocking_risk": [],
                 "coverage_gaps": [],
                 "summary": {

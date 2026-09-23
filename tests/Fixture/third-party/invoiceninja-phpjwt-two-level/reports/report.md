@@ -44,6 +44,14 @@ Expected changes
   google/auth v1.19.0 -> v1.21.0
 Recommended command
   composer update google/apiclient:v2.12.2 -W -m --with 'firebase/php-jwt:>=6.0.0'
+Keep the fix
+  Add to composer.json, so a later update cannot fall back below it:
+    "conflict": {
+      "firebase/php-jwt": "<6.0.0",
+      "google/apiclient": "<2.12.2"
+    }
+  Composer has no subcommand for this, so it is an edit rather than part of the command above.
+  With it in place the resolver refuses the affected versions and names this entry as the reason.
 Other candidates
   valid, rank 2: composer update google/apiclient -W -m --with 'firebase/php-jwt:>=6.0.0'  (3 changes)
   valid, rank 3: composer update turbo124/laravel-gmail -W -m --with 'firebase/php-jwt:>=6.0.0'  (3 changes)

@@ -1,6 +1,6 @@
 {
   "$schema": "http://json-schema.org/draft-07/schema#",
-  "$id": "https://hexblot.github.io/composer-remediate/schema/report.schema.json",
+  "$id": "https://hexblot.github.io/composer-remediate/schema/report-v2.schema.json",
   "title": "Composer Remediate report",
   "description": "Machine-readable output of `composer remediate --format=json` (schema_version 1).",
   "type": "object",

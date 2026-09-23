@@ -32,12 +32,15 @@ That schema rejects unknown properties, so a consumer validating strictly would 
 simply appeared; `schema_version` therefore increases on any change to the document's shape,
 additions included.
 
-Two URLs, and which you use matters. [`report-v1.schema.json`](schema/report-v1.schema.json)
-describes `schema_version` 1 and will not change: pin that one.
+Two URLs, and which you use matters. A `report-v<N>.schema.json` describes `schema_version` N and will
+not change once the tool has moved past it: pin the one matching the version you read. Today that is
+[`report-v2.schema.json`](schema/report-v2.schema.json);
+[`report-v1.schema.json`](schema/report-v1.schema.json) is frozen at what 0.10.0 and earlier emitted.
 [`report.schema.json`](schema/report.schema.json) always describes the version the tool emits today,
 so it moves when `schema_version` does. Every report the test suite renders is validated against the
-schema, and the two files are checked against each other, so neither can drift from the code or from
-the other.
+schema, the current file is checked against the pinnable copy of the version it emits, and every
+earlier one is checked to be still frozen at its own version. So none can drift from the code, and a
+pin cannot quietly start describing something else.
 
 **The other report formats.** SARIF 2.1.0, CycloneDX 1.6 and the GitLab dependency-scanning report
 conform to their own specifications. What is promised here is which specification version is emitted,

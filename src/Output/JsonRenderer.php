@@ -10,6 +10,7 @@ use Remediate\Engine\Plan\CombinedAttempt;
 use Remediate\Engine\Plan\EvaluatedCandidate;
 use Remediate\Engine\Plan\FindingPlan;
 use Remediate\Engine\Plan\Plan;
+use Remediate\Engine\Solver\CapabilityChange;
 use Remediate\Engine\Solver\LockDiff;
 
 /**
@@ -18,7 +19,7 @@ use Remediate\Engine\Solver\LockDiff;
  */
 final class JsonRenderer
 {
-    public const SCHEMA_VERSION = 1;
+    public const SCHEMA_VERSION = 2;
 
     /** Dependency paths listed per finding; the total is always reported in paths_total. */
     public const MAX_PATHS = 10;
@@ -59,6 +60,9 @@ final class JsonRenderer
                 'packages_gated' => count($plan->gated()),
                 'packages_baselined' => count($plan->baselined()),
                 'packages_with_constraint_drag' => count(array_filter($plan->findings, static fn (FindingPlan $p): bool => $p->constraintDrag() !== null)),
+                // A gate can key on this: the recommendation lets code run that could not run before —
+                // a package becoming a composer-plugin, or gaining autoload.files or binaries.
+                'packages_running_new_code' => count(array_filter($plan->findings, static fn (FindingPlan $p): bool => ($p->recommended()?->diff?->newCodeCapabilities() ?? []) !== [])),
                 'packages_known_exploited' => count(array_filter($plan->findings, static fn (FindingPlan $p): bool => $p->isKnownExploited())),
                 'packages_with_abandoned_dependency' => count(array_filter($plan->findings, static fn (FindingPlan $p): bool => $p->finding->abandoned !== [])),
                 'coverage_gaps' => count($plan->coverageGaps),
@@ -144,6 +148,23 @@ final class JsonRenderer
                 'strategy' => $rec->candidate->strategy->value,
                 'root_constraint_changes' => array_values(array_map(static fn ($c): array => ['package' => $c->packageName, 'from' => $c->fromConstraint, 'to' => $c->toConstraint, 'dev' => $c->isDev], $rec->candidate->rootConstraintChanges)),
                 'constraint_drag' => $fp->constraintDrag(),
+                // Why the widening is the only route left, when the locked branch published no fix.
+                'no_fix_within_locked_major' => $fp->noFixWithinLockedMajor(),
+                // The persistent form of this recommendation's --with constraints, for composer.json.
+                'conflict_entries' => array_values(array_map(
+                    static fn (string $package, string $constraint): array => ['package' => $package, 'constraint' => $constraint],
+                    array_keys(ConflictEntry::forCandidate($rec->candidate)),
+                    array_values(ConflictEntry::forCandidate($rec->candidate)),
+                )),
+                // What the update changes about what a package may do, as opposed to how much it changes.
+                'capability_changes' => $rec->diff === null ? [] : array_map(static fn (CapabilityChange $c): array => [
+                    'package' => $c->packageName,
+                    'kind' => $c->kind->value,
+                    'from' => $c->from,
+                    'to' => $c->to,
+                    'runs_new_code' => $c->runsNewCode(),
+                    'description' => $c->describe(),
+                ], $rec->diff->capabilityChanges),
                 'blocking_risk' => $rec->blockingRisk,
                 'coverage_gaps' => $rec->coverageGaps,
                 'summary' => $rec->diff === null ? null : self::summary($rec->diff),

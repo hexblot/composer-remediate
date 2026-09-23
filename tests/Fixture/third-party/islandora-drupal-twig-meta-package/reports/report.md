@@ -215,6 +215,13 @@ Expected changes
   twig/twig v3.10.3 -> v3.14.0
 Recommended command
   composer update drupal/core-recommended:10.3.4 -W -m
+Keep the fix
+  Add to composer.json, so a later update cannot fall back below it:
+    "conflict": {
+      "drupal/core-recommended": "<10.3.4"
+    }
+  Composer has no subcommand for this, so it is an edit rather than part of the command above.
+  With it in place the resolver refuses the affected versions and names this entry as the reason.
 Other candidates
   valid, rank 2: composer update drupal/core-recommended -W -m --with 'twig/twig:>=3.11.0,<3.12.0 || >=3.14.0'  (3 changes)
   valid, rank 3: composer update drupal/twig_tweak:3.4.0 drupal/core-recommended drupal/restui -W -m --with 'twig/twig:>=3.11.0,<3.12.0 || >=3.14.0'  (4 changes)

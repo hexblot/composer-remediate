@@ -277,9 +277,27 @@ jq -r '.summary | if .combined_command then
    remediation-report.json
 ```
 
+```bash
+# stop an unattended apply for review when a fix lets code run that could not run before:
+# a package becoming a composer-plugin, or gaining autoload.files entries or binaries
+jq -e '.summary.packages_running_new_code == 0' remediation-report.json
+```
+
+```bash
+# the conflict entries to add to composer.json, so a later update cannot resolve back below the fix
+jq -r '[.findings[].remediation.conflict_entries // [] | .[]]
+       | unique_by(.package)
+       | map("  \"\(.package)\": \"\(.constraint)\"") | join(",\n")
+       | if . == "" then "no --with constraint to make permanent" else "\"conflict\": {\n" + . + "\n}" end' \
+   remediation-report.json
+```
+
 Fields worth knowing: `exit_code`, `summary.combined_command`, `summary.combined_fixes`,
-`summary.combined_total`, `findings[].remediation.status` (`verified` or `none`),
-`findings[].remediation.command`, `findings[].advisories[].severity`, `unsolved_findings[]`.
+`summary.combined_total`, `summary.packages_running_new_code`,
+`findings[].remediation.status` (`verified` or `none`), `findings[].remediation.command`,
+`findings[].remediation.conflict_entries`, `findings[].remediation.capability_changes`,
+`findings[].remediation.no_fix_within_locked_major`, `findings[].advisories[].severity`,
+`unsolved_findings[]`.
 
 ## Tips
 

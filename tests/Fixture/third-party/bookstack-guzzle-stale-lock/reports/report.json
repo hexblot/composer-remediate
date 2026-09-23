@@ -1,5 +1,5 @@
 {
-    "schema_version": 1,
+    "schema_version": 2,
     "analysis_metadata": {
         "project": "bookstack-guzzle-stale-lock",
         "engine_version": "dev-main",
@@ -23,6 +23,7 @@
         "packages_gated": 2,
         "packages_baselined": 0,
         "packages_with_constraint_drag": 1,
+        "packages_running_new_code": 0,
         "packages_known_exploited": 0,
         "packages_with_abandoned_dependency": 0,
         "coverage_gaps": 0,
@@ -441,6 +442,9 @@
                 "strategy": "with-dependencies",
                 "root_constraint_changes": [],
                 "constraint_drag": null,
+                "no_fix_within_locked_major": null,
+                "conflict_entries": [],
+                "capability_changes": [],
                 "blocking_risk": [],
                 "coverage_gaps": [],
                 "summary": {
@@ -693,6 +697,9 @@
                     }
                 ],
                 "constraint_drag": "composer.json requires barryvdh/laravel-dompdf ^1.0, which blocks every fix within the current constraints; the recommendation widens it to ^2.0.",
+                "no_fix_within_locked_major": "No fixed release of dompdf/dompdf exists within 1.x. Advisory ranges are per branch, so a fix on the locked branch would have been preferred over any major bump; none was published. If a maintained fork or a backport carries the fix under a different package name, switching to it is the alternative to the widening above — the planner cannot find a fix that is published under another name.",
+                "conflict_entries": [],
+                "capability_changes": [],
                 "blocking_risk": [],
                 "coverage_gaps": [],
                 "summary": {

@@ -88,6 +88,7 @@ Recommended remediation
   dompdf/dompdf v1.2.2 -> v2.0.0
   composer.json: barryvdh/laravel-dompdf ^1.0 -> ^2.0
   Constraint drag: composer.json requires barryvdh/laravel-dompdf ^1.0, which blocks every fix within the current constraints; the recommendation widens it to ^2.0.
+  No fix on this branch: No fixed release of dompdf/dompdf exists within 1.x. Advisory ranges are per branch, so a fix on the locked branch would have been preferred over any major bump; none was published. If a maintained fork or a backport carries the fix under a different package name, switching to it is the alternative to the widening above — the planner cannot find a fix that is published under another name.
   Note: installs pre-release versions (barryvdh/laravel-dompdf v2.0.0-beta2); no stable release satisfies the constraints yet.
 Composer validation
   PASS  2 packages changed, 1 added, 0 removed, 1 root constraint changed, includes a major version change

@@ -1042,6 +1042,13 @@ Expected changes
   symfony/validator v5.4.23 -> v5.4.43
 Recommended command
   composer update shopware/core -W -m --with 'symfony/validator:>=5.4.43,<6.0.0 || >=6.4.11,<7.0.0 || >=7.1.4'
+Keep the fix
+  Add to composer.json, so a later update cannot fall back below it:
+    "conflict": {
+      "symfony/validator": "<5.4.43"
+    }
+  Composer has no subcommand for this, so it is an edit rather than part of the command above.
+  With it in place the resolver refuses the affected versions and names this entry as the reason.
 Other candidates
   valid, rank 2: composer update shopware/storefront -W -m --with 'symfony/validator:>=5.4.43,<6.0.0 || >=6.4.11,<7.0.0 || >=7.1.4'  (3 changes)
   valid, rank 3: composer update shopware/administration -W -m --with 'symfony/validator:>=5.4.43,<6.0.0 || >=6.4.11,<7.0.0 || >=7.1.4'  (3 changes)

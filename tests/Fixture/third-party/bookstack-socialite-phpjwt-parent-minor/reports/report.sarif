@@ -316,6 +316,7 @@
                 {
                     "executionSuccessful": true,
                     "exitCode": 1,
+                    "toolExecutionNotifications": [],
                     "properties": {
                         "composer_version": "(fixture)",
                         "advisory_source": "advisory snapshot advisories.json",

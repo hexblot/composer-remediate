@@ -5,6 +5,39 @@ All notable changes to this project are documented here. The format follows
 
 ## [Unreleased]
 
+### Added
+
+The three report additions from 0.9.1 now reach the **JSON report**, so what a person reads and what a
+pipeline gates on say the same thing again. `schema_version` is **2**.
+
+- `findings[].remediation.no_fix_within_locked_major` — why a widening is the only route left when the
+  locked branch published no fix, and the alternative the planner cannot see.
+- `findings[].remediation.conflict_entries` — the `conflict` entries for `composer.json` that keep a
+  later update from resolving back below the fix, as `{package, constraint}` pairs.
+- `findings[].remediation.capability_changes` — what the update changes about what a package may do,
+  each with `kind`, `from`, `to`, a `runs_new_code` flag and a sentence for a person.
+- `summary.packages_running_new_code` — the count a gate can key on: recommendations that let code run
+  which could not run before.
+
+[`report-v2.schema.json`](https://hexblot.github.io/composer-remediate/schema/report-v2.schema.json) is
+published as the copy to pin; `report-v1.schema.json` is frozen at what 0.10.0 and earlier emitted, and
+a test now holds every superseded schema to that. `docs/ci-integration.md` gains recipes for gating on
+the new fields and for turning the conflict entries into a `composer.json` block.
+
+**On the version number.** 0.9.1 kept these out of the JSON report precisely because a `schema_version`
+increase is a minor rather than a patch. Shipping them in a patch is the thing that reasoning avoided;
+it is permitted only because the compatibility promise is not in force before 1.0, and it is recorded
+here rather than glossed. A consumer validating strictly against `report.schema.json` will see the
+shape change in a patch release — pin `report-v1.schema.json` if that matters, and move when you are
+ready.
+
+### Fixed
+
+- The example reports stored under each fixture's `reports/` directory had drifted since 0.9.1: CI
+  regenerates `docs/case-studies.md` from them but never checked the reports themselves, so the
+  capability notes, the conflict entries and the CycloneDX warnings were missing from the committed
+  examples. All eighteen are regenerated.
+
 [Unreleased]: https://github.com/hexblot/composer-remediate/compare/v0.10.0...HEAD
 
 ## [0.10.0] - 2026-09-22
