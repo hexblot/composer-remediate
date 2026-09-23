@@ -30,6 +30,13 @@ Expected changes
   acme/vuln-lib 1.0.1 -> 1.1.1
 Recommended command
   composer update acme/app-framework:1.1.0 -W -m
+Keep the fix
+  Add to composer.json, so a later update cannot fall back below it:
+    "conflict": {
+      "acme/app-framework": "<1.1.0"
+    }
+  Composer has no subcommand for this, so it is an edit rather than part of the command above.
+  With it in place the resolver refuses the affected versions and names this entry as the reason.
 Other candidates
   valid, rank 2: composer update acme/app-framework -W -m --with 'acme/vuln-lib:>=1.1.0'  (3 changes)
   rejected: composer update acme/vuln-lib

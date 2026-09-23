@@ -49,12 +49,11 @@ Boundary: the goal is a version constraint on a locked package. Interpreting rel
 breaking changes or choosing the target version is out of scope; the user names the goal and the
 planner finds the smallest verified command that reaches it.
 
-## Report additions from community feedback *(three delivered in 0.9.1)*
+## Report additions from community feedback *(three delivered in 0.9.1, in JSON since 0.10.1)*
 
-Suggested in reactions to the project; each is a line in the report, not an engine change. The three
-delivered in 0.9.1 are in the **text and HTML reports only**. Surfacing them in the JSON report is
-held for 0.10.0, because the JSON document's shape is a covered surface and any addition to it
-increases `schema_version` (see [compatibility](compatibility.md)).
+Suggested in reactions to the project; each is a line in the report, not an engine change. Three
+were delivered in 0.9.1 for the text and HTML reports, and reached the JSON report in 0.10.1, which
+increased `schema_version` to 2 (see [compatibility](compatibility.md)).
 
 - [x] on a constraint-drag finding, say that no fixed release exists within the current major on the
   branch in use, and that a maintained fork or a backport published under another name, if one
@@ -76,9 +75,9 @@ increases `schema_version` (see [compatibility](compatibility.md)).
   application, so that ordering reflects it. There is a suppressive side already (`--ignore`, the
   baseline) and no escalating one, and a reader's account of triaging four Dompdf findings ahead of
   one high-severity Guzzle advisory is the case for it. Declared, never inferred
-- [ ] the three above in the JSON report, for 0.10.0: `schema_version` 2, `report-v2.schema.json`
-  published alongside the pinned `report-v1.schema.json`, and the CI recipes updated so a gate can
-  read the conflict entry and the capability changes
+- [x] the three above in the JSON report (0.10.1): `schema_version` 2, `report-v2.schema.json`
+  published alongside the now-frozen `report-v1.schema.json`, `summary.packages_running_new_code` for
+  a gate to key on, and CI recipes for the conflict entries and the capability changes
 - deliberately not adopted: a root `replace` to pin a transitive dependency (it tells Composer the
   root provides the package, which then stops being installed), distro backports (they patch PHP
   and system packages, not a project's `vendor` directory), and reachability analysis, which decides
@@ -107,8 +106,14 @@ advisory database this project publishes is watched rather than assumed to be wo
   complete coverage: a lock could be reported clean, with no gaps and no warnings, against data read
   in part. Six more answered with it, including verification that bound a scan to a pathname rather
   than to the bytes it had checked. All seven came with runnable reproductions
-- [ ] an eighth review once the report additions above have landed, taking the contract suite as a
-  claim to attack rather than a reassurance
+- [x] an eighth adversarial review (0.10.0), which took the contract suite as a claim to attack. Ten
+  findings, nine fixed, every one reproduced and none a false positive; three rechecks of the answers
+  each found the previous round's repairs incomplete — four, then three, then one, one of which was a
+  defect introduced by the repair before it. The repairs that held were the ones made structural, so
+  the defect cannot be written again; the ones that came back were the ones that checked a thing at a
+  moment. The advisory database took four attempts and was settled only by removing the need to check
+  at all: a run reads a private copy of the verified bytes. The tenth finding is below
+- [ ] a ninth review, of what 0.10.0 changed and of the contract suite it left behind
 - deliberately not in 1.0: Phase 7 below. It is a new capability, not a hole in this one
 
 ## Assurance *(ongoing, alongside the phases)*
@@ -124,7 +129,18 @@ Still open:
 - [ ] remaining long methods (`InProcessSolver::solve`, `DbBuildCommand::execute`,
   `HtmlRenderer::finding`, the planner's per-finding search) and the `PackageChange` kind constants
   as an enum
-- [ ] the eighth adversarial review, listed under [Before a stable 1.0](#before-a-stable-10) because
-  it is what stands between this work and that release. The sixth and seventh are done: the sixth took
-  the advisory database's own supply chain and the parallel planning code as its subject, the seventh
-  the completeness of advisory coverage. Both are on [what has been delivered](delivered.md)
+- [ ] **the dependency-path search is bounded in its output, not in its work** (the eighth review's
+  tenth finding, the one left open). `MAX_PATHS` and `MAX_DEPTH` are applied after Composer has
+  expanded the entire recursive ancestor tree, so a layered graph costs far more than the result
+  suggests: 35 packages took six seconds and 144 MiB to return the same 200 paths that 17 packages
+  returned in 0.007 and no extra memory. Two attempts were reverted because both changed which command
+  the planner recommends on the islandora fixture — walking a level at a time returns more than the
+  200-path cap, and the truncation drops `drupal/core-recommended` from the front of the nearest root
+  requirements; pruning each package once across the traversal collapses 123 paths to 34, with the
+  first branch explored claiming every shared ancestor. `getDependents()` is not a plain walk: it grows
+  its needle list through `replaces`, which for Drupal produces most of those 123 paths. A fix means
+  reimplementing that faithfully, with the current output as a golden file across the fixture corpus.
+  No safety consequence — it is a cost, and it needs an adversarial graph to bite
+- [ ] the reviews already done are on [what has been delivered](delivered.md): the sixth took the
+  advisory database's supply chain and the parallel planning code, the seventh the completeness of
+  advisory coverage, the eighth the boundaries between components

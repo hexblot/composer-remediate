@@ -6,11 +6,13 @@ body{margin:0;background:var(--bg);color:var(--fg);font:15px/1.5 system-ui,-appl
 header{padding:1.5rem 2rem;border-bottom:1px solid var(--border)}header h1{margin:0;font-size:1.4rem}.sub{margin:.25rem 0 0;color:var(--muted)}
 main{max-width:70rem;margin:0 auto;padding:1rem 2rem 3rem}
 section{margin:1.5rem 0}.finding{border:1px solid var(--border);border-radius:8px;padding:1rem 1.25rem;background:var(--panel)}
-h2{font-size:1.15rem;margin:.25rem 0 .5rem}h3{font-size:.95rem;margin:1rem 0 .35rem;color:var(--muted);text-transform:uppercase;letter-spacing:.04em}
+h2{font-size:1.15rem;margin:.25rem 0 .5rem}h3,h4{font-size:.95rem;margin:1rem 0 .35rem;color:var(--muted);text-transform:uppercase;letter-spacing:.04em}h4{font-size:.9rem}
 .version{font-weight:400;color:var(--muted)}.state{margin:0;color:var(--muted)}
 code{font:.9em ui-monospace,SFMono-Regular,Menlo,monospace;background:rgba(127,127,127,.12);padding:.1em .35em;border-radius:4px;word-break:break-all}
 pre{font:.85rem ui-monospace,SFMono-Regular,Menlo,monospace;background:rgba(127,127,127,.1);padding:.75rem 1rem;border-radius:6px;overflow-x:auto;margin:.25rem 0}
 pre.reason{white-space:pre-wrap;margin:0;background:none;padding:0}
+pre.conflict{border-left:4px solid var(--accent)}
+ul.capabilities{margin:.25rem 0;padding-left:1.2rem}ul.capabilities li.runs-code{color:var(--warn)}
 .command code{display:block;padding:.6rem .8rem;font-size:.95rem;border-left:4px solid var(--accent)}
 table{border-collapse:collapse;width:100%;font-size:.92rem}th,td{text-align:left;padding:.4rem .6rem;border-bottom:1px solid var(--border);vertical-align:top}th{color:var(--muted);font-weight:600}
 .badge{display:inline-block;font-size:.75rem;font-weight:600;padding:.1rem .5rem;border-radius:999px;border:1px solid currentColor;white-space:nowrap}
@@ -142,6 +144,12 @@ root
 <h3>Recommended remediation</h3>
 <p class="command"><code>composer update twig/twig -w -m --with &apos;twig/twig:&gt;=3.11.2,&lt;3.12.0 || &gt;=3.14.1&apos;</code></p>
 <p class="validation"><span class="badge ok">Composer validation: PASS</span> 2 packages changed, 0 added, 0 removed, 0 root constraints changed.</p>
+<h4>Keep the fix</h4>
+<p>Add to <code>composer.json</code>, so a later update cannot fall back below it:</p>
+<pre class="conflict">&quot;conflict&quot;: {
+    &quot;twig/twig&quot;: &quot;&lt;3.11.2&quot;
+}</pre>
+<p><small>Composer has no subcommand for this, so it is an edit rather than part of the command above. With it in place the resolver refuses the affected versions and names this entry as the reason.</small></p>
 <details open><summary>Expected changes (2)</summary><table class="changes"><thead><tr><th>Package</th><th>From</th><th>To</th><th>Kind</th></tr></thead><tbody>
 <tr><td>symfony/polyfill-php81</td><td>v1.27.0</td><td>v1.37.0</td><td>upgraded, minor</td></tr>
 <tr><td>twig/twig</td><td>v3.5.1</td><td>v3.11.3</td><td>upgraded, minor</td></tr>

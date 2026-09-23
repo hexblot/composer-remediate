@@ -1,5 +1,5 @@
 {
-    "schema_version": 1,
+    "schema_version": 2,
     "analysis_metadata": {
         "project": "bookstack-socialite-phpjwt-parent-minor",
         "engine_version": "dev-main",
@@ -23,6 +23,7 @@
         "packages_gated": 9,
         "packages_baselined": 0,
         "packages_with_constraint_drag": 0,
+        "packages_running_new_code": 0,
         "packages_known_exploited": 0,
         "packages_with_abandoned_dependency": 0,
         "coverage_gaps": 0,
@@ -117,6 +118,9 @@
                 "strategy": "with-dependencies",
                 "root_constraint_changes": [],
                 "constraint_drag": null,
+                "no_fix_within_locked_major": null,
+                "conflict_entries": [],
+                "capability_changes": [],
                 "blocking_risk": [],
                 "coverage_gaps": [],
                 "summary": {
@@ -545,6 +549,9 @@
                 "strategy": "lock-refresh",
                 "root_constraint_changes": [],
                 "constraint_drag": null,
+                "no_fix_within_locked_major": null,
+                "conflict_entries": [],
+                "capability_changes": [],
                 "blocking_risk": [],
                 "coverage_gaps": [],
                 "summary": {
@@ -1058,6 +1065,9 @@
                 "strategy": "lock-refresh",
                 "root_constraint_changes": [],
                 "constraint_drag": null,
+                "no_fix_within_locked_major": null,
+                "conflict_entries": [],
+                "capability_changes": [],
                 "blocking_risk": [],
                 "coverage_gaps": [],
                 "summary": {
@@ -1644,6 +1654,9 @@
                 "strategy": "lock-refresh",
                 "root_constraint_changes": [],
                 "constraint_drag": null,
+                "no_fix_within_locked_major": null,
+                "conflict_entries": [],
+                "capability_changes": [],
                 "blocking_risk": [],
                 "coverage_gaps": [],
                 "summary": {
@@ -2138,6 +2151,9 @@
                 "strategy": "lock-refresh",
                 "root_constraint_changes": [],
                 "constraint_drag": null,
+                "no_fix_within_locked_major": null,
+                "conflict_entries": [],
+                "capability_changes": [],
                 "blocking_risk": [],
                 "coverage_gaps": [],
                 "summary": {
@@ -2376,6 +2392,9 @@
                 "strategy": "lock-refresh",
                 "root_constraint_changes": [],
                 "constraint_drag": null,
+                "no_fix_within_locked_major": null,
+                "conflict_entries": [],
+                "capability_changes": [],
                 "blocking_risk": [],
                 "coverage_gaps": [],
                 "summary": {
@@ -2813,6 +2832,9 @@
                 "strategy": "lock-refresh",
                 "root_constraint_changes": [],
                 "constraint_drag": null,
+                "no_fix_within_locked_major": null,
+                "conflict_entries": [],
+                "capability_changes": [],
                 "blocking_risk": [],
                 "coverage_gaps": [],
                 "summary": {
@@ -3037,6 +3059,9 @@
                 "strategy": "lock-refresh",
                 "root_constraint_changes": [],
                 "constraint_drag": null,
+                "no_fix_within_locked_major": null,
+                "conflict_entries": [],
+                "capability_changes": [],
                 "blocking_risk": [],
                 "coverage_gaps": [],
                 "summary": {
@@ -3320,6 +3345,18 @@
                 "strategy": "parent-update",
                 "root_constraint_changes": [],
                 "constraint_drag": null,
+                "no_fix_within_locked_major": null,
+                "conflict_entries": [
+                    {
+                        "package": "firebase/php-jwt",
+                        "constraint": "<7.0.0"
+                    },
+                    {
+                        "package": "laravel/socialite",
+                        "constraint": "<5.24.1"
+                    }
+                ],
+                "capability_changes": [],
                 "blocking_risk": [],
                 "coverage_gaps": [],
                 "summary": {

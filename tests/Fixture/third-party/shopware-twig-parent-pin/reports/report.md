@@ -274,6 +274,13 @@ Expected changes
   twig/twig v3.3.10 -> v3.4.3
 Recommended command
   composer update shopware/storefront:6.4.15.2 shopware/recovery shopware/elasticsearch shopware/administration -W -m
+Keep the fix
+  Add to composer.json, so a later update cannot fall back below it:
+    "conflict": {
+      "shopware/storefront": "<6.4.15.2"
+    }
+  Composer has no subcommand for this, so it is an edit rather than part of the command above.
+  With it in place the resolver refuses the affected versions and names this entry as the reason.
 Other candidates
   valid, rank 2: composer update shopware/storefront shopware/recovery shopware/elasticsearch shopware/administration -W -m --with 'twig/twig:>=3.4.3'  (7 changes)
   valid, rank 3: composer update shopware/core:6.4.15.2 shopware/storefront symfony/web-profiler-bundle shopware/recovery shopware/elasticsearch shopware/administration -W -m --with 'twig/twig:>=3.4.3'  (8 changes)

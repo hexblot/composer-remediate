@@ -16,6 +16,10 @@
         },
         "properties": [
             {
+                "name": "composer-remediate:scan_status",
+                "value": "complete"
+            },
+            {
                 "name": "composer-remediate:composer_version",
                 "value": "(fixture)"
             },
