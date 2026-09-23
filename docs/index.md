@@ -97,6 +97,10 @@ a window between the check and the read. What the rechecks kept showing is that 
 holds and a rule merely tested comes back. One finding is open and documented: the dependency-path
 limits still bound what the search returns rather than the work of finding it, and two attempts at that
 changed which command the planner recommends, which is worth more than the seconds saved.
+0.10.1 brings the three notes 0.9.1 added for a person into the JSON report, so what a reader sees and
+what a pipeline gates on say the same thing again: why a widening is the only route left, the
+`conflict` entries that make a fix permanent, and what an update lets a package do. `schema_version` is
+now 2, with `report-v2.schema.json` published as the copy to pin.
 
 ## Start here
 
