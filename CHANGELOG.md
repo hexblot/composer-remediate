@@ -13,6 +13,14 @@ All notable changes to this project are documented here. The format follows
   against every candidate that added a package: a Drupal core security upgrade was reported as "no
   verified fix" until `--accept-coverage-gaps` was given. Those gaps are still disclosed for the run
   and still keep a lock without findings from exiting `0`.
+- A local build at the database path could stand in for the published database however little it
+  covered. A two-advisory test build, left in a Composer cache that DDEV shares between projects, was
+  kept as "a local build with private advisories" and every project scanned against it, reporting few
+  or no findings. A local build now counts in place of the publication only when it was built from
+  every public feed the publication lists in `latest.json` (Packagist, OSV and FriendsOfPHP by
+  default). A newer partial build is replaced by the download like any stale copy; a partial build
+  carrying private advisories, which can be neither kept nor replaced without dropping something,
+  stops the run with exit `4` and names the missing feeds and the three ways forward.
 
 [Unreleased]: https://github.com/hexblot/composer-remediate/compare/v0.10.2...HEAD
 
