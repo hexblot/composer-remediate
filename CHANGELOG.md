@@ -5,6 +5,15 @@ All notable changes to this project are documented here. The format follows
 
 ## [Unreleased]
 
+### Fixed
+
+- A coverage gap the current lock already carries no longer rejects candidates. A candidate is
+  rejected only for gaps it introduces, on packages it adds. Records the database could not attribute
+  to any package (today, two phpseclib records) apply to every lock alike, but they were counted
+  against every candidate that added a package: a Drupal core security upgrade was reported as "no
+  verified fix" until `--accept-coverage-gaps` was given. Those gaps are still disclosed for the run
+  and still keep a lock without findings from exiting `0`.
+
 [Unreleased]: https://github.com/hexblot/composer-remediate/compare/v0.10.2...HEAD
 
 ## [0.10.2] - 2026-09-25

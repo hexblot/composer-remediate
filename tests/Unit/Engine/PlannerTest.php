@@ -219,12 +219,16 @@ final class PlannerTest extends TestCase
      * A scripted provider that also knows which packages it could not read records about.
      *
      * @param array<string, string> $gapsByPackage package => gap description
+     * @param list<string>          $unattributed  gaps about no particular package, part of every answer (as the database reports them)
      */
-    private static function coverageAware(\Remediate\Engine\Advisory\AdvisoryProvider $inner, array $gapsByPackage): \Remediate\Engine\Advisory\AdvisoryProvider
+    private static function coverageAware(\Remediate\Engine\Advisory\AdvisoryProvider $inner, array $gapsByPackage, array $unattributed = []): \Remediate\Engine\Advisory\AdvisoryProvider
     {
-        return new class($inner, $gapsByPackage) implements \Remediate\Engine\Advisory\AdvisoryProvider, \Remediate\Engine\Advisory\CoverageAware {
-            /** @param array<string, string> $gaps */
-            public function __construct(private readonly \Remediate\Engine\Advisory\AdvisoryProvider $inner, private readonly array $gaps)
+        return new class($inner, $gapsByPackage, $unattributed) implements \Remediate\Engine\Advisory\AdvisoryProvider, \Remediate\Engine\Advisory\CoverageAware {
+            /**
+             * @param array<string, string> $gaps
+             * @param list<string>          $unattributed
+             */
+            public function __construct(private readonly \Remediate\Engine\Advisory\AdvisoryProvider $inner, private readonly array $gaps, private readonly array $unattributed)
             {
             }
 
@@ -245,7 +249,10 @@ final class PlannerTest extends TestCase
 
             public function coverageWarnings(array $packageNames): array
             {
-                return array_values(array_map(static fn (string $g): string => 'Coverage gap: ' . $g, array_intersect_key($this->gaps, array_flip($packageNames))));
+                return [
+                    ...array_values(array_map(static fn (string $g): string => 'Coverage gap: ' . $g, array_intersect_key($this->gaps, array_flip($packageNames)))),
+                    ...array_map(static fn (string $g): string => 'Coverage gap: ' . $g, $this->unattributed),
+                ];
             }
         };
     }
@@ -271,6 +278,25 @@ final class PlannerTest extends TestCase
         self::assertSame($recommended->coverageGaps, $accepting->coverageGaps, 'and at plan level');
         self::assertNotNull($accepting->combined);
         self::assertSame($recommended->coverageGaps, $accepting->combined->coverageGaps);
+    }
+
+    /**
+     * A record the source could not attribute to any package concerns the current lock exactly as much
+     * as any candidate. It is disclosed for the run, but it does not make one candidate less safe than
+     * another, so it must not reject the fix. It did: two unreadable phpseclib records turned a Drupal
+     * core upgrade, which adds a package, into "no verified fix".
+     */
+    public function testAGapThatConcernsEveryLockDoesNotRejectAFix(): void
+    {
+        $project = $this->project(['acme/lib' => '^1.0'], [['acme/lib', '1.0.0']]);
+        $solver = (new FakeSolver())->resolves('composer update acme/lib', ScriptedProject::lock([['acme/lib', '1.1.0'], ['acme/new', '2.0.0']]));
+        $advisories = self::coverageAware(ScriptedProject::advisories([ScriptedProject::advisory('PKSA-1', 'acme/lib', '<1.1.0')]), [], ['OSV record GHSA-q could not be attributed to any package']);
+
+        $plan = (new Planner($advisories, $solver))->plan($project->context(), $project->workspace());
+
+        self::assertTrue($plan->findings[0]->hasRemediation(), $plan->findings[0]->evaluated[0]->rejectionReason ?? '');
+        self::assertSame([], $plan->findings[0]->recommended()?->coverageGaps);
+        self::assertSame(['Coverage gap: OSV record GHSA-q could not be attributed to any package'], $plan->coverageGaps, 'still disclosed for the run');
     }
 
     public function testACombinedCommandThatFixesEverythingCountsForTheExitCode(): void

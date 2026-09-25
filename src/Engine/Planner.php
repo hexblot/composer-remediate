@@ -56,6 +56,9 @@ final class Planner
 
     private int $totalSolves = 0;
 
+    /** @var array<int, array<string, true>> coverage gaps each current lock already carries, by lock object */
+    private array $existingGaps = [];
+
     private int $findingSolves = 0;
 
     private bool $budgetExhausted = false;
@@ -99,6 +102,7 @@ final class Planner
     public function plan(ProjectContext $context, ScratchWorkspace $workspace): Plan
     {
         $this->totalSolves = 0;
+        $this->existingGaps = [];
         // Hashed before anything is read or solved, because --apply compares against these to decide
         // whether the files it is about to change are the ones the plan was computed from. Taken at the
         // end of planning they described whatever the files had become while the search ran, so an
@@ -928,6 +932,12 @@ final class Planner
      * the source read the records about the locked packages, but not about these, so a "verified"
      * result could hide an advisory on a package the fix itself brought in.
      *
+     * Only what the candidate introduces counts. A gap the current lock already carries, above all a
+     * record the build could not attribute to any package, applies to every lock alike: it is reported
+     * for the run and keeps a clean result from exiting 0, but it says nothing about one candidate
+     * against another. Counting it here rejected every candidate that added a package, so two
+     * unreadable phpseclib records reported a Drupal core fix as "no verified fix".
+     *
      * @return list<string>
      */
     private function introducedCoverageGaps(LockSnapshot $before, LockSnapshot $after): array
@@ -939,8 +949,10 @@ final class Planner
         if ($new === []) {
             return [];
         }
+        $id = spl_object_id($before);
+        $this->existingGaps[$id] ??= array_fill_keys($this->advisories->coverageWarnings(Matcher::queriedNames($before)), true);
 
-        return $this->advisories->coverageWarnings($new);
+        return array_values(array_filter($this->advisories->coverageWarnings($new), fn (string $gap): bool => !isset($this->existingGaps[$id][$gap])));
     }
 
     /**
