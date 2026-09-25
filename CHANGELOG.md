@@ -5,6 +5,16 @@ All notable changes to this project are documented here. The format follows
 
 ## [Unreleased]
 
+### Changed
+
+- The example reports under each fixture's `reports/` directory are now checked by the fixture tests:
+  `bin/run-fixture.php --write-reports` and `FixtureTest` render them through one class, and a stored
+  copy that differs from a fresh render fails the test, naming the command that regenerates it. They
+  had drifted unnoticed from 0.9.1 to 0.10.0 because CI checked only the page generated from them. The
+  Composer minor release they were recorded with is stored beside them: an older Composer (the
+  Composer-version matrix) recommends different commands by design and is not compared, and a newer
+  one fails until the reports are regenerated.
+
 [Unreleased]: https://github.com/hexblot/composer-remediate/compare/v0.10.1...HEAD
 
 ## [0.10.1] - 2026-09-23
