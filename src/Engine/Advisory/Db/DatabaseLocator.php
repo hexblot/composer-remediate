@@ -30,7 +30,7 @@ final class DatabaseLocator
     public const ENV = DatabaseSettings::ENV_LOCATION;
 
     /** The public feeds a default build reads, by the names their sources record in a database. */
-    private const DEFAULT_PUBLIC_SOURCES = ['Packagist', 'OSV', 'FriendsOfPHP'];
+    private const DEFAULT_PUBLIC_SOURCES = ['Packagist', 'OSV', 'FriendsOfPHP', 'Drupal.org'];
 
     /** @var list<string> */
     private array $warnings = [];

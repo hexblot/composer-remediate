@@ -5,6 +5,18 @@ All notable changes to this project are documented here. The format follows
 
 ## [Unreleased]
 
+### Added
+
+- The advisory database has a fourth source, **Drupal.org** (`packages.drupal.org/8/security-advisories`),
+  the only feed that carries Drupal contrib advisories (SA-CONTRIB-…). Packagist, OSV and FriendsOfPHP
+  do not, so a Drupal project scanned against the database missed advisories on `drupal/webform` and
+  `drupal/entity` that `composer audit` reports. The feed is accepted for `drupal/*` packages only, as
+  that is all the repository serves; a record about anything else becomes a coverage gap. It adds
+  about 580 advisories. Drupal core advisories merge with their counterparts elsewhere: by CVE where
+  they carry one, and otherwise with OSV's copy, which renames `SA-CORE-…` to `DRUPAL-CORE-…`.
+  `remediate:db-build --source=drupal` selects it, and the published database includes it from its
+  next build.
+
 ### Fixed
 
 - A coverage gap the current lock already carries no longer rejects candidates. A candidate is
@@ -17,8 +29,8 @@ All notable changes to this project are documented here. The format follows
   covered. A two-advisory test build, left in a Composer cache that DDEV shares between projects, was
   kept as "a local build with private advisories" and every project scanned against it, reporting few
   or no findings. A local build now counts in place of the publication only when it was built from
-  every public feed the publication lists in `latest.json` (Packagist, OSV and FriendsOfPHP by
-  default). A newer partial build is replaced by the download like any stale copy; a partial build
+  every public feed the publication lists in `latest.json` (Packagist, OSV, FriendsOfPHP and
+  Drupal.org by default). A newer partial build is replaced by the download like any stale copy; a partial build
   carrying private advisories, which can be neither kept nor replaced without dropping something,
   stops the run with exit `4` and names the missing feeds and the three ways forward.
 
