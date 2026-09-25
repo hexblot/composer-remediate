@@ -183,6 +183,16 @@ options shape which findings count towards it:
   file. This is how a gate is introduced on a project with existing findings: accept today's state,
   fail on anything new, and delete entries as fixes land.
 
+One option works the other way. `--exposed <package>` (repeatable) declares that a package handles
+untrusted input in this application: its production findings are listed first, marked
+`[declared exposed]`, ahead of known-exploited and higher-severity findings on other packages, which
+keep their urgency order among themselves. An advisory's severity describes the package in general;
+whether the vulnerable code sees attacker input here is something only the operator knows, so it is
+declared and never inferred. It is applied to the finished plan, the way the baseline is, so it
+changes the order of the report and nothing else: not a recommendation, not the combined command, not
+the exit code. A finding reached through a replaced package matches either name, and a name that is
+not in the lock is reported, since it is most likely a typo.
+
 `--min-release-age <days>` rejects every candidate whose resulting lock contains a release published
 within the last N days, or a release whose date is unknown (the guard never promises an age it
 cannot prove). It applies to individual candidates and to the combined command alike. It is a

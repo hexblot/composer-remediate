@@ -34,8 +34,9 @@ additions included.
 
 Two URLs, and which you use matters. A `report-v<N>.schema.json` describes `schema_version` N and will
 not change once the tool has moved past it: pin the one matching the version you read. Today that is
-[`report-v2.schema.json`](schema/report-v2.schema.json);
-[`report-v1.schema.json`](schema/report-v1.schema.json) is frozen at what 0.10.0 and earlier emitted.
+[`report-v3.schema.json`](schema/report-v3.schema.json);
+[`report-v2.schema.json`](schema/report-v2.schema.json) is frozen at what 0.10.1 emitted and
+[`report-v1.schema.json`](schema/report-v1.schema.json) at what 0.10.0 and earlier emitted.
 [`report.schema.json`](schema/report.schema.json) always describes the version the tool emits today,
 so it moves when `schema_version` does. Every report the test suite renders is validated against the
 schema, the current file is checked against the pinnable copy of the version it emits, and every

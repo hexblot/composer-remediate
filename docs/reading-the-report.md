@@ -177,7 +177,8 @@ or "… fixes k of N findings" when some have no reachable fix, or lists per-pac
 combination resolves. When more than one combination was tried, a "Combined command search" block
 lists each attempt with its verdict, so the choice is explained rather than asserted. `[baselined]` marks packages
 accepted through `--baseline`; the Gate line shows how `--fail-on` and the baseline shaped the exit
-code.
+code. `[declared exposed]` marks packages named with `--exposed`, and a "Declared exposed" line says
+that they are listed first because of that declaration rather than because of their advisories.
 
 ## Exit codes
 
@@ -198,8 +199,9 @@ code.
   block carries the combined command and the gate counts; `warnings` is the list above. Since 0.10.1
   (`schema_version` 2) a verified remediation also carries `no_fix_within_locked_major`,
   `conflict_entries` and `capability_changes`, the three notes described above, and `summary` carries
-  `packages_running_new_code`. The schema is published at `docs/schema/report.schema.json`, with
-  `report-v2.schema.json` as the copy to pin.
+  `packages_running_new_code`. Since `schema_version` 3 each finding carries `declared_exposed` and
+  `summary` carries `packages_declared_exposed`. The schema is published at
+  `docs/schema/report.schema.json`, with `report-v3.schema.json` as the copy to pin.
 - **HTML** (`--output=x.html`): a self-contained page with the same sections, a summary table and
   collapsible candidate lists; advisory links are anchors only for `http(s)` URLs.
 - **SARIF** (`--output=x.sarif`): one rule per advisory, one result per vulnerable package located
