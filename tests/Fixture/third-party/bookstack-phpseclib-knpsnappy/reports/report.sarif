@@ -6,7 +6,7 @@
             "tool": {
                 "driver": {
                     "name": "composer-remediate",
-                    "version": "dev-main",
+                    "version": "(fixture)",
                     "informationUri": "https://hexblot.github.io/composer-remediate/",
                     "rules": [
                         {

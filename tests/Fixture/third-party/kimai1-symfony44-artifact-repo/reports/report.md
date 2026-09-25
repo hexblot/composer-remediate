@@ -46,18 +46,18 @@ Other candidates
       Composer could not resolve the dependencies: Your requirements could not be resolved to an installable set of packages.
         Problem 1
           - Root composer.json requires phpoffice/phpspreadsheet ^1.16 -> satisfiable by phpoffice/phpspreadsheet[1.29.2, 1.29.4].
-          - phpoffice/phpspreadsheet[1.29.2, ..., 1.29.4] require php ^7.4 || ^8.0 -> your php version (7.3; overridden via config.platform, actual: 8.5.5) does not satisfy that requirement.
+          - phpoffice/phpspreadsheet[1.29.2, ..., 1.29.4] require php ^7.4 || ^8.0 -> your php version (7.3; overridden via config.platform, actual: (fixture)) does not satisfy that requirement.
   rejected: composer update phpoffice/phpspreadsheet -W -m --with 'phpoffice/phpspreadsheet:>=1.29.2,<2.0.0 || >=2.1.1,<2.2.0 || >=2.3.0'
       Composer could not resolve the dependencies: Your requirements could not be resolved to an installable set of packages.
         Problem 1
           - Root composer.json requires phpoffice/phpspreadsheet ^1.16 -> satisfiable by phpoffice/phpspreadsheet[1.29.2, 1.29.4].
-          - phpoffice/phpspreadsheet[1.29.2, ..., 1.29.4] require php ^7.4 || ^8.0 -> your php version (7.3; overridden via config.platform, actual: 8.5.5) does not satisfy that requirement.
+          - phpoffice/phpspreadsheet[1.29.2, ..., 1.29.4] require php ^7.4 || ^8.0 -> your php version (7.3; overridden via config.platform, actual: (fixture)) does not satisfy that requirement.
   rejected: composer require --no-update phpoffice/phpspreadsheet:^2.0 && composer update phpoffice/phpspreadsheet -W -m --with 'phpoffice/phpspreadsheet:>=1.29.2,<2.0.0 || >=2.1.1,<2.2.0 || >=2.3.0'
       Composer could not resolve the dependencies: Your requirements could not be resolved to an installable set of packages.
         Problem 1
           - Root composer.json requires phpoffice/phpspreadsheet ^2.0 -> satisfiable by phpoffice/phpspreadsheet[2.1.1, 2.1.3, 2.3.0, 2.3.2].
-          - phpoffice/phpspreadsheet[2.1.1, ..., 2.1.3] require php ^8.0 -> your php version (7.3; overridden via config.platform, actual: 8.5.5) does not satisfy that requirement.
-          - phpoffice/phpspreadsheet[2.3.0, ..., 2.3.2] require php ^8.1 -> your php version (7.3; overridden via config.platform, actual: 8.5.5) does not satisfy that requirement.
+          - phpoffice/phpspreadsheet[2.1.1, ..., 2.1.3] require php ^8.0 -> your php version (7.3; overridden via config.platform, actual: (fixture)) does not satisfy that requirement.
+          - phpoffice/phpspreadsheet[2.3.0, ..., 2.3.2] require php ^8.1 -> your php version (7.3; overridden via config.platform, actual: (fixture)) does not satisfy that requirement.
 
 CVE-2023-46734
 ────────────────────────────────────────────────────────────

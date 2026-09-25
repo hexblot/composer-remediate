@@ -110,55 +110,55 @@ Other candidates
         Problem 1
           - laravel/framework is locked to version v9.52.16 and an update of this package was not requested.
           - laravel/framework v9.52.16 requires symfony/process ^6.0 -> satisfiable by symfony/process[v6.4.14, v6.4.15].
-          - symfony/process[v6.4.14, ..., v6.4.15] require php >=8.1 -> your php version (8.0.2; overridden via config.platform, actual: 8.5.5) does not satisfy that requirement.
+          - symfony/process[v6.4.14, ..., v6.4.15] require php >=8.1 -> your php version (8.0.2; overridden via config.platform, actual: (fixture)) does not satisfy that requirement.
       Use the option --with-all-dependencies (-W) to allow upgrades, downgrades and removals for packages currently locked to specific versions.
   rejected: composer update laravel/framework -W -m --with 'symfony/process:>=6.4.14,<7.0.0 || >=7.1.7'
       Composer could not resolve the dependencies: Your requirements could not be resolved to an installable set of packages.
         Problem 1
           - Root composer.json requires laravel/framework ^9.0 -> satisfiable by laravel/framework[v9.52.16].
           - laravel/framework v9.52.16 requires symfony/process ^6.0 -> satisfiable by symfony/process[v6.4.14, v6.4.15].
-          - symfony/process[v6.4.14, ..., v6.4.15] require php >=8.1 -> your php version (8.0.2; overridden via config.platform, actual: 8.5.5) does not satisfy that requirement.
+          - symfony/process[v6.4.14, ..., v6.4.15] require php >=8.1 -> your php version (8.0.2; overridden via config.platform, actual: (fixture)) does not satisfy that requirement.
   rejected: composer update barryvdh/laravel-snappy -W -m --with 'symfony/process:>=6.4.14,<7.0.0 || >=7.1.7'
       Composer could not resolve the dependencies: Your requirements could not be resolved to an installable set of packages.
         Problem 1
           - Root composer.json requires laravel/framework ^9.0 -> satisfiable by laravel/framework[v9.52.16].
           - laravel/framework v9.52.16 requires symfony/process ^6.0 -> satisfiable by symfony/process[v6.4.14, v6.4.15].
-          - symfony/process[v6.4.14, ..., v6.4.15] require php >=8.1 -> your php version (8.0.2; overridden via config.platform, actual: 8.5.5) does not satisfy that requirement.
+          - symfony/process[v6.4.14, ..., v6.4.15] require php >=8.1 -> your php version (8.0.2; overridden via config.platform, actual: (fixture)) does not satisfy that requirement.
   rejected: composer update laravel/socialite -W -m --with 'symfony/process:>=6.4.14,<7.0.0 || >=7.1.7'
       Composer could not resolve the dependencies: Your requirements could not be resolved to an installable set of packages.
         Problem 1
           - Root composer.json requires laravel/framework ^9.0 -> satisfiable by laravel/framework[v9.52.16].
           - laravel/framework v9.52.16 requires symfony/process ^6.0 -> satisfiable by symfony/process[v6.4.14, v6.4.15].
-          - symfony/process[v6.4.14, ..., v6.4.15] require php >=8.1 -> your php version (8.0.2; overridden via config.platform, actual: 8.5.5) does not satisfy that requirement.
+          - symfony/process[v6.4.14, ..., v6.4.15] require php >=8.1 -> your php version (8.0.2; overridden via config.platform, actual: (fixture)) does not satisfy that requirement.
   rejected: composer update laravel/tinker -W -m --with 'symfony/process:>=6.4.14,<7.0.0 || >=7.1.7'
       Composer could not resolve the dependencies: Your requirements could not be resolved to an installable set of packages.
         Problem 1
           - Root composer.json requires laravel/framework ^9.0 -> satisfiable by laravel/framework[v9.52.16].
           - laravel/framework v9.52.16 requires symfony/process ^6.0 -> satisfiable by symfony/process[v6.4.14, v6.4.15].
-          - symfony/process[v6.4.14, ..., v6.4.15] require php >=8.1 -> your php version (8.0.2; overridden via config.platform, actual: 8.5.5) does not satisfy that requirement.
+          - symfony/process[v6.4.14, ..., v6.4.15] require php >=8.1 -> your php version (8.0.2; overridden via config.platform, actual: (fixture)) does not satisfy that requirement.
   rejected: composer update larastan/larastan -W -m --with 'symfony/process:>=6.4.14,<7.0.0 || >=7.1.7'
       Composer could not resolve the dependencies: Your requirements could not be resolved to an installable set of packages.
         Problem 1
           - Root composer.json requires laravel/framework ^9.0 -> satisfiable by laravel/framework[v9.52.16].
           - laravel/framework v9.52.16 requires symfony/process ^6.0 -> satisfiable by symfony/process[v6.4.14, v6.4.15].
-          - symfony/process[v6.4.14, ..., v6.4.15] require php >=8.1 -> your php version (8.0.2; overridden via config.platform, actual: 8.5.5) does not satisfy that requirement.
+          - symfony/process[v6.4.14, ..., v6.4.15] require php >=8.1 -> your php version (8.0.2; overridden via config.platform, actual: (fixture)) does not satisfy that requirement.
   rejected: composer update socialiteproviders/discord -W -m --with 'symfony/process:>=6.4.14,<7.0.0 || >=7.1.7'
       Composer could not resolve the dependencies: Your requirements could not be resolved to an installable set of packages.
         Problem 1
           - Root composer.json requires laravel/framework ^9.0 -> satisfiable by laravel/framework[v9.52.16].
           - laravel/framework v9.52.16 requires symfony/process ^6.0 -> satisfiable by symfony/process[v6.4.14, v6.4.15].
-          - symfony/process[v6.4.14, ..., v6.4.15] require php >=8.1 -> your php version (8.0.2; overridden via config.platform, actual: 8.5.5) does not satisfy that requirement.
+          - symfony/process[v6.4.14, ..., v6.4.15] require php >=8.1 -> your php version (8.0.2; overridden via config.platform, actual: (fixture)) does not satisfy that requirement.
   rejected: composer update barryvdh/laravel-snappy laravel/framework -W -m --with 'symfony/process:>=6.4.14,<7.0.0 || >=7.1.7'
       Composer could not resolve the dependencies: Your requirements could not be resolved to an installable set of packages.
         Problem 1
           - Root composer.json requires laravel/framework ^9.0 -> satisfiable by laravel/framework[v9.52.16].
           - laravel/framework v9.52.16 requires symfony/process ^6.0 -> satisfiable by symfony/process[v6.4.14, v6.4.15].
-          - symfony/process[v6.4.14, ..., v6.4.15] require php >=8.1 -> your php version (8.0.2; overridden via config.platform, actual: 8.5.5) does not satisfy that requirement.
+          - symfony/process[v6.4.14, ..., v6.4.15] require php >=8.1 -> your php version (8.0.2; overridden via config.platform, actual: (fixture)) does not satisfy that requirement.
   rejected: composer require --no-update laravel/framework:^10.0 && composer update laravel/framework -W -m --with 'symfony/process:>=6.4.14,<7.0.0 || >=7.1.7'
       Composer could not resolve the dependencies: Your requirements could not be resolved to an installable set of packages.
         Problem 1
           - Root composer.json requires laravel/framework ^10.0 -> satisfiable by laravel/framework[v10.0.0, ..., v10.48.22].
-          - laravel/framework[v10.0.0, ..., v10.48.22] require php ^8.1 -> your php version (8.0.2; overridden via config.platform, actual: 8.5.5) does not satisfy that requirement.
+          - laravel/framework[v10.0.0, ..., v10.48.22] require php ^8.1 -> your php version (8.0.2; overridden via config.platform, actual: (fixture)) does not satisfy that requirement.
 
 CVE-2024-50345
 ────────────────────────────────────────────────────────────
@@ -212,49 +212,49 @@ Other candidates
         Problem 1
           - laravel/framework is locked to version v9.52.16 and an update of this package was not requested.
           - laravel/framework v9.52.16 requires symfony/http-foundation ^6.0 -> satisfiable by symfony/http-foundation[v6.4.14, v6.4.15].
-          - symfony/http-foundation[v6.4.14, ..., v6.4.15] require php >=8.1 -> your php version (8.0.2; overridden via config.platform, actual: 8.5.5) does not satisfy that requirement.
+          - symfony/http-foundation[v6.4.14, ..., v6.4.15] require php >=8.1 -> your php version (8.0.2; overridden via config.platform, actual: (fixture)) does not satisfy that requirement.
       Use the option --with-all-dependencies (-W) to allow upgrades, downgrades and removals for packages currently locked to specific versions.
   rejected: composer update laravel/framework -W -m --with 'symfony/http-foundation:>=6.4.14,<7.0.0 || >=7.1.7'
       Composer could not resolve the dependencies: Your requirements could not be resolved to an installable set of packages.
         Problem 1
           - Root composer.json requires laravel/framework ^9.0 -> satisfiable by laravel/framework[v9.52.16].
           - laravel/framework v9.52.16 requires symfony/http-foundation ^6.0 -> satisfiable by symfony/http-foundation[v6.4.14, v6.4.15].
-          - symfony/http-foundation[v6.4.14, ..., v6.4.15] require php >=8.1 -> your php version (8.0.2; overridden via config.platform, actual: 8.5.5) does not satisfy that requirement.
+          - symfony/http-foundation[v6.4.14, ..., v6.4.15] require php >=8.1 -> your php version (8.0.2; overridden via config.platform, actual: (fixture)) does not satisfy that requirement.
   rejected: composer update laravel/socialite -W -m --with 'symfony/http-foundation:>=6.4.14,<7.0.0 || >=7.1.7'
       Composer could not resolve the dependencies: Your requirements could not be resolved to an installable set of packages.
         Problem 1
           - Root composer.json requires laravel/framework ^9.0 -> satisfiable by laravel/framework[v9.52.16].
           - laravel/framework v9.52.16 requires symfony/http-foundation ^6.0 -> satisfiable by symfony/http-foundation[v6.4.14, v6.4.15].
-          - symfony/http-foundation[v6.4.14, ..., v6.4.15] require php >=8.1 -> your php version (8.0.2; overridden via config.platform, actual: 8.5.5) does not satisfy that requirement.
+          - symfony/http-foundation[v6.4.14, ..., v6.4.15] require php >=8.1 -> your php version (8.0.2; overridden via config.platform, actual: (fixture)) does not satisfy that requirement.
   rejected: composer update laravel/tinker -W -m --with 'symfony/http-foundation:>=6.4.14,<7.0.0 || >=7.1.7'
       Composer could not resolve the dependencies: Your requirements could not be resolved to an installable set of packages.
         Problem 1
           - Root composer.json requires laravel/framework ^9.0 -> satisfiable by laravel/framework[v9.52.16].
           - laravel/framework v9.52.16 requires symfony/http-foundation ^6.0 -> satisfiable by symfony/http-foundation[v6.4.14, v6.4.15].
-          - symfony/http-foundation[v6.4.14, ..., v6.4.15] require php >=8.1 -> your php version (8.0.2; overridden via config.platform, actual: 8.5.5) does not satisfy that requirement.
+          - symfony/http-foundation[v6.4.14, ..., v6.4.15] require php >=8.1 -> your php version (8.0.2; overridden via config.platform, actual: (fixture)) does not satisfy that requirement.
   rejected: composer update larastan/larastan -W -m --with 'symfony/http-foundation:>=6.4.14,<7.0.0 || >=7.1.7'
       Composer could not resolve the dependencies: Your requirements could not be resolved to an installable set of packages.
         Problem 1
           - Root composer.json requires laravel/framework ^9.0 -> satisfiable by laravel/framework[v9.52.16].
           - laravel/framework v9.52.16 requires symfony/http-foundation ^6.0 -> satisfiable by symfony/http-foundation[v6.4.14, v6.4.15].
-          - symfony/http-foundation[v6.4.14, ..., v6.4.15] require php >=8.1 -> your php version (8.0.2; overridden via config.platform, actual: 8.5.5) does not satisfy that requirement.
+          - symfony/http-foundation[v6.4.14, ..., v6.4.15] require php >=8.1 -> your php version (8.0.2; overridden via config.platform, actual: (fixture)) does not satisfy that requirement.
   rejected: composer update socialiteproviders/discord -W -m --with 'symfony/http-foundation:>=6.4.14,<7.0.0 || >=7.1.7'
       Composer could not resolve the dependencies: Your requirements could not be resolved to an installable set of packages.
         Problem 1
           - Root composer.json requires laravel/framework ^9.0 -> satisfiable by laravel/framework[v9.52.16].
           - laravel/framework v9.52.16 requires symfony/http-foundation ^6.0 -> satisfiable by symfony/http-foundation[v6.4.14, v6.4.15].
-          - symfony/http-foundation[v6.4.14, ..., v6.4.15] require php >=8.1 -> your php version (8.0.2; overridden via config.platform, actual: 8.5.5) does not satisfy that requirement.
+          - symfony/http-foundation[v6.4.14, ..., v6.4.15] require php >=8.1 -> your php version (8.0.2; overridden via config.platform, actual: (fixture)) does not satisfy that requirement.
   rejected: composer update socialiteproviders/gitlab -W -m --with 'symfony/http-foundation:>=6.4.14,<7.0.0 || >=7.1.7'
       Composer could not resolve the dependencies: Your requirements could not be resolved to an installable set of packages.
         Problem 1
           - Root composer.json requires laravel/framework ^9.0 -> satisfiable by laravel/framework[v9.52.16].
           - laravel/framework v9.52.16 requires symfony/http-foundation ^6.0 -> satisfiable by symfony/http-foundation[v6.4.14, v6.4.15].
-          - symfony/http-foundation[v6.4.14, ..., v6.4.15] require php >=8.1 -> your php version (8.0.2; overridden via config.platform, actual: 8.5.5) does not satisfy that requirement.
+          - symfony/http-foundation[v6.4.14, ..., v6.4.15] require php >=8.1 -> your php version (8.0.2; overridden via config.platform, actual: (fixture)) does not satisfy that requirement.
   rejected: composer require --no-update laravel/framework:^10.0 && composer update laravel/framework -W -m --with 'symfony/http-foundation:>=6.4.14,<7.0.0 || >=7.1.7'
       Composer could not resolve the dependencies: Your requirements could not be resolved to an installable set of packages.
         Problem 1
           - Root composer.json requires laravel/framework ^10.0 -> satisfiable by laravel/framework[v10.0.0, ..., v10.48.22].
-          - laravel/framework[v10.0.0, ..., v10.48.22] require php ^8.1 -> your php version (8.0.2; overridden via config.platform, actual: 8.5.5) does not satisfy that requirement.
+          - laravel/framework[v10.0.0, ..., v10.48.22] require php ^8.1 -> your php version (8.0.2; overridden via config.platform, actual: (fixture)) does not satisfy that requirement.
   rejected: composer require --no-update laravel/socialite:^6.0 && composer update laravel/socialite -W -m --with 'symfony/http-foundation:>=6.4.14,<7.0.0 || >=7.1.7'
       Composer could not resolve the dependencies: Your requirements could not be resolved to an installable set of packages.
         Problem 1
