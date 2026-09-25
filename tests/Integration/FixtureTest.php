@@ -230,9 +230,10 @@ final class FixtureTest extends TestCase
         foreach (FixtureReports::render($plan, $fixtureDir) as $file => $contents) {
             $path = $fixtureDir . '/reports/' . $file;
             self::assertFileExists($path, $regenerate);
-            // A Windows checkout may have converted the stored copy to CRLF.
-            $stored = str_replace("\r\n", "\n", (string) file_get_contents($path));
-            self::assertSame($stored, $contents, "reports/$file is stale; $regenerate");
+            // A Windows checkout converts text files to CRLF: the stored copy, and the PHP sources whose
+            // multi-line literals (the HTML report's stylesheet) end up in a fresh render.
+            $lf = static fn (string $text): string => str_replace("\r\n", "\n", $text);
+            self::assertSame($lf((string) file_get_contents($path)), $lf($contents), "reports/$file is stale; $regenerate");
         }
     }
 
