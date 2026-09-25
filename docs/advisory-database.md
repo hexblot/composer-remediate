@@ -26,7 +26,11 @@ On every run the file at the path is checked against the source:
    one is asked for its `<url>.sha256` sidecar instead. Both are a few bytes.
 2. A local file with the **same sha256** is the published database itself. One with the **same dataset
    hash** is a local build of the same data. One **built after** the publication is a newer local
-   build (yours, with `--include` perhaps). Each of those is current and used as it is.
+   build (yours, with `--include` perhaps). Each of those is current and used as it is, except that a
+   local build counts only if it was built from every public feed the publication lists in
+   `latest.json` (Packagist, OSV and FriendsOfPHP for this project's database; a mirror that publishes
+   only a checksum is held to those three). A build from one feed would answer "not affected" for
+   every package the others know about.
 3. Anything else is stale, or missing, and is replaced by a verified download written beside the path
    and moved into place. `--rebuild-database` (or `remediate:db-build --if-stale`) builds it from the
    sources instead of downloading.
@@ -100,6 +104,9 @@ precisely because you do not trust it. Its `extra.remediate` settings are honour
   `--include` files refreshes it. `--rebuild-database` on `remediate`, which builds with the defaults,
   keeps such a copy too. Building over a previously downloaded copy at the same path makes it a local
   build (the download's status record is retired), so the protection applies from the first rebuild.
+  If such a build lacks a public feed the publication is built from, it can neither be kept nor
+  replaced without a decision: the run stops with exit `4` and names the missing feeds. Rebuild it with
+  the same `--include` files, move it away, or pass `--database-location=<path>` to read it as it is.
 
 ## Build it
 

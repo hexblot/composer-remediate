@@ -58,7 +58,8 @@ final class TlsPublisher
 
     /**
      * Publishes an advisory database the way the project's release workflow does: the file, its
-     * sha256sum sidecar and a latest.json with sha256, dataset_hash and published_at.
+     * sha256sum sidecar and a latest.json with sha256, dataset_hash, published_at and the sources it was
+     * built from.
      *
      * @return string the database URL
      */
@@ -74,7 +75,8 @@ final class TlsPublisher
             $this->publish($name . '.sha256', hash('sha256', $bytes) . '  ' . $name . "\n");
         }
         if ($withLatestJson) {
-            $this->publish('latest.json', json_encode(['sha256' => hash('sha256', $bytes), 'dataset_hash' => $meta['dataset_hash'] ?? '', 'published_at' => $meta['built_at'] ?? gmdate(DATE_ATOM), 'database' => $name], JSON_THROW_ON_ERROR));
+            $sources = json_decode((string) ($meta['sources'] ?? '[]'), true);
+            $this->publish('latest.json', json_encode(['sha256' => hash('sha256', $bytes), 'dataset_hash' => $meta['dataset_hash'] ?? '', 'published_at' => $meta['built_at'] ?? gmdate(DATE_ATOM), 'sources' => is_array($sources) ? $sources : [], 'database' => $name], JSON_THROW_ON_ERROR));
         }
 
         return $this->url($name);

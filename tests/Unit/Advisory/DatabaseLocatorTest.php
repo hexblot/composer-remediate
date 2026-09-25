@@ -23,6 +23,9 @@ use Remediate\Engine\Advisory\Db\Freshness;
  */
 final class DatabaseLocatorTest extends TestCase
 {
+    /** The public feeds a default build reads: a local build from all of them covers the published database. */
+    private const FULL = ['Packagist', 'OSV', 'FriendsOfPHP'];
+
     private const URL = 'https://example.test/db/advisories.sqlite';
     private const LATEST = 'https://example.test/db/latest.json';
 
@@ -219,7 +222,7 @@ final class DatabaseLocatorTest extends TestCase
 
     public function testANewerLocalBuildIsCurrentEvenWithADifferentDataset(): void
     {
-        $local = self::database('h-private', self::hoursAgo(0));
+        $local = self::database('h-private', self::hoursAgo(0), self::FULL);
         $published = self::database('h1', self::hoursAgo(5));
         mkdir(dirname($this->path()), 0700, true);
         file_put_contents($this->path(), $local);
@@ -506,7 +509,7 @@ final class DatabaseLocatorTest extends TestCase
 
     public function testALocalBuildWithPrivateAdvisoriesIsKeptRatherThanReplaced(): void
     {
-        $private = self::database('mine', self::hoursAgo(30), ['Packagist', 'local:internal.json']);
+        $private = self::database('mine', self::hoursAgo(30), [...self::FULL, 'local:internal.json']);
         $published = self::database('h1', self::hoursAgo(1));
         mkdir(dirname($this->path()), 0700, true);
         file_put_contents($this->path(), $private);
@@ -599,6 +602,60 @@ final class DatabaseLocatorTest extends TestCase
         self::assertStringContainsString('was downloaded from ' . self::URL . ', which is not among the configured sources, and is not used', implode("\n", $outage->warnings()));
     }
 
+    /**
+     * A build from part of what the publisher covers, with private advisories, can neither stand in for
+     * the published database nor be replaced without dropping them. The run stops and names both. A
+     * two-advisory test build at the default path read as a clean scan for every project sharing the
+     * Composer cache until this held.
+     */
+    public function testAPartialLocalBuildWithPrivateAdvisoriesStopsTheRun(): void
+    {
+        $partial = self::database('test', self::hoursAgo(30), ['FriendsOfPHP', 'local:advisories.json']);
+        $published = self::database('h1', self::hoursAgo(1));
+        mkdir(dirname($this->path()), 0700, true);
+        file_put_contents($this->path(), $partial);
+        $locator = new DatabaseLocator($this->composer(), $this->downloader([self::URL => $published] + self::published($published, 'h1', self::hoursAgo(1))));
+
+        try {
+            $locator->locate($this->settings($locator));
+            self::fail('a partial local build must not answer for the published database');
+        } catch (AdvisoryLookupFailed $e) {
+            self::assertStringContainsString('is a local build from FriendsOfPHP, local:advisories.json, without Packagist, OSV', $e->getMessage());
+            self::assertStringContainsString('replacing it would drop its private advisories (advisories.json)', $e->getMessage());
+            self::assertStringContainsString('--database-location=' . $this->path(), $e->getMessage());
+        }
+        self::assertStringEqualsFile($this->path(), $partial, 'neither kept in use nor overwritten');
+    }
+
+    public function testANewerPartialLocalBuildIsNotCurrent(): void
+    {
+        $partial = self::database('mine', self::hoursAgo(0), ['Packagist']);
+        $published = self::database('h1', self::hoursAgo(5));
+        mkdir(dirname($this->path()), 0700, true);
+        file_put_contents($this->path(), $partial);
+        $locator = new DatabaseLocator($this->composer(), $this->downloader([self::URL => $published] + self::published($published, 'h1', self::hoursAgo(5))));
+
+        $located = $locator->locate($this->settings($locator));
+
+        self::assertSame(Freshness::Downloaded, $located?->freshness);
+        self::assertStringEqualsFile($this->path(), $published);
+    }
+
+    public function testThePublishersOwnSourceListIsTheMeasure(): void
+    {
+        // A mirror built from Packagist alone says so in latest.json; a local build from Packagist and
+        // private advisories covers everything it does.
+        $private = self::database('mine', self::hoursAgo(30), ['Packagist', 'local:internal.json']);
+        $published = self::database('h1', self::hoursAgo(1));
+        mkdir(dirname($this->path()), 0700, true);
+        file_put_contents($this->path(), $private);
+        $latest = json_encode(['sha256' => hash('sha256', $published), 'dataset_hash' => 'h1', 'published_at' => self::hoursAgo(1), 'sources' => [['name' => 'Packagist', 'records' => 10]]], JSON_THROW_ON_ERROR);
+        $locator = new DatabaseLocator($this->composer(), $this->downloader([self::URL => $published, self::LATEST => $latest]));
+
+        self::assertSame(Freshness::Unconfirmed, $locator->locate($this->settings($locator))?->freshness);
+        self::assertStringEqualsFile($this->path(), $private);
+    }
+
     public function testABuildOverADownloadedCopyIsALocalBuild(): void
     {
         $downloaded = self::database('h1', self::hoursAgo(2));
@@ -608,7 +665,7 @@ final class DatabaseLocatorTest extends TestCase
 
         // The writer retires the status file; the locator also ignores a status record whose digest is not
         // the file's (a rebuild changed the bytes, whatever the record says about when it was fetched).
-        $rebuilt = self::database('mine', self::hoursAgo(1), ['Packagist', 'local:internal.json']);
+        $rebuilt = self::database('mine', self::hoursAgo(1), [...self::FULL, 'local:internal.json']);
         file_put_contents($this->path(), $rebuilt); // an in-place rebuild that left the status file behind
         $newer = self::database('h2', self::hoursAgo(0));
         $locator = new DatabaseLocator($this->composer(), $this->downloader([self::URL => $newer] + self::published($newer, 'h2', self::hoursAgo(0))));
