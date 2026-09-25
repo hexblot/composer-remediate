@@ -1,7 +1,7 @@
 # Advisory database
 
-The advisory database is a single SQLite file built from three live sources (Packagist, OSV,
-FriendsOfPHP) and enriched with exploit data (EPSS, CISA KEV). By default `composer remediate` keeps
+The advisory database is a single SQLite file built from four live sources (Packagist, OSV,
+FriendsOfPHP, Drupal.org) and enriched with exploit data (EPSS, CISA KEV). By default `composer remediate` keeps
 a copy of the database this project publishes at a fixed path and reads it; you can also build the
 same database yourself, add private advisories, share it inside a team, or point the tool at your own
 mirror. It makes runs fully offline, lets you pin the advisory state for reproducible results, and
@@ -28,8 +28,8 @@ On every run the file at the path is checked against the source:
    hash** is a local build of the same data. One **built after** the publication is a newer local
    build (yours, with `--include` perhaps). Each of those is current and used as it is, except that a
    local build counts only if it was built from every public feed the publication lists in
-   `latest.json` (Packagist, OSV and FriendsOfPHP for this project's database; a mirror that publishes
-   only a checksum is held to those three). A build from one feed would answer "not affected" for
+   `latest.json` (Packagist, OSV, FriendsOfPHP and Drupal.org for this project's database; a mirror
+   that publishes only a checksum is held to those four). A build from one feed would answer "not affected" for
    every package the others know about.
 3. Anything else is stale, or missing, and is replaced by a verified download written beside the path
    and moved into place. `--rebuild-database` (or `remediate:db-build --if-stale`) builds it from the
@@ -115,13 +115,14 @@ composer remediate:db-build
 composer remediate:db-build --output=advisories.sqlite --source=osv --source=friendsofphp
 ```
 
-Sources (all three by default):
+Sources (all four by default):
 
 | Source | What is fetched | Notes |
 |---|---|---|
 | `packagist` | Packagist's full advisory dump (`/api/security-advisories/?updatedSince=1`) | Aggregates FriendsOfPHP and GitHub; already keyed by package |
 | `osv` | OSV's Packagist ecosystem archive (`all.zip`, ~10 MB) | Structured ranges and aliases; includes withdrawals |
 | `friendsofphp` | The FriendsOfPHP/security-advisories repository (zip of the default branch, or `--friendsofphp-path` for a local checkout) | Per-branch version ranges in YAML |
+| `drupal` | Drupal.org's advisory dump from `packages.drupal.org/8/security-advisories` | The only feed carrying Drupal contrib advisories (SA-CONTRIB-…); accepted for `drupal/*` packages only, as that is all the repository serves |
 
 The build normalises every range to a Composer constraint, merges records that share an identifier
 (CVE, GHSA, PKSA, FriendsOfPHP file path), keeps every source's range, and flags packages on which
@@ -414,5 +415,6 @@ guessing.
 
 The database is aggregated data, not code, and the project's MIT licence does not cover it. GitHub
 Security Advisories and OSV data are published under CC-BY 4.0; FriendsOfPHP/security-advisories
-has its own terms in its repository. The `source` table keeps the provenance of every record so
+has its own terms in its repository; Drupal.org security advisories are published by the Drupal
+Security Team under drupal.org's terms. The `source` table keeps the provenance of every record so
 attribution can be reproduced.

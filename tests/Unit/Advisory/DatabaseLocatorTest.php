@@ -24,7 +24,7 @@ use Remediate\Engine\Advisory\Db\Freshness;
 final class DatabaseLocatorTest extends TestCase
 {
     /** The public feeds a default build reads: a local build from all of them covers the published database. */
-    private const FULL = ['Packagist', 'OSV', 'FriendsOfPHP'];
+    private const FULL = ['Packagist', 'OSV', 'FriendsOfPHP', 'Drupal.org'];
 
     private const URL = 'https://example.test/db/advisories.sqlite';
     private const LATEST = 'https://example.test/db/latest.json';

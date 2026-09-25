@@ -30,11 +30,11 @@ final class DbBuildCommand extends BaseCommand
         $this
             ->setName('remediate:db-build')
             ->setAliases(['remediate-db-build'])
-            ->setDescription('Build a local advisory database (SQLite) from live sources: Packagist, OSV and FriendsOfPHP')
+            ->setDescription('Build a local advisory database (SQLite) from live sources: Packagist, OSV, FriendsOfPHP and Drupal.org')
             ->setDefinition([
                 new InputOption('output', 'o', InputOption::VALUE_REQUIRED, 'Where to write the database (default: the configured path, see --database-path of remediate; COMPOSER_CACHE_DIR/remediate/advisories.sqlite unless configured)'),
                 new InputOption('if-stale', null, InputOption::VALUE_NONE, 'Build only when the database at the output path is missing or not current against the published one (REMEDIATE_DATABASE or extra.remediate.database, default: this project\'s release); otherwise report it as current and exit 0'),
-                new InputOption('source', 's', InputOption::VALUE_REQUIRED | InputOption::VALUE_IS_ARRAY, 'Source to include: packagist, osv, friendsofphp (repeatable; default all)'),
+                new InputOption('source', 's', InputOption::VALUE_REQUIRED | InputOption::VALUE_IS_ARRAY, 'Source to include: packagist, osv, friendsofphp, drupal (repeatable; default all)'),
                 new InputOption('friendsofphp-path', null, InputOption::VALUE_REQUIRED, 'Local checkout of FriendsOfPHP/security-advisories to read instead of downloading'),
                 new InputOption('include', null, InputOption::VALUE_REQUIRED | InputOption::VALUE_IS_ARRAY, 'Additional JSON file in the Packagist API shape with private or organisational advisories (repeatable)'),
                 new InputOption('enrich', null, InputOption::VALUE_REQUIRED | InputOption::VALUE_IS_ARRAY, 'Exploit data to attach to the CVEs: epss (FIRST exploit probability), kev (CISA Known Exploited Vulnerabilities), or none (repeatable; default both)'),

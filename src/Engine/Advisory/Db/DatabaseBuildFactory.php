@@ -9,6 +9,7 @@ use Remediate\Engine\Advisory\Db\Enrichment\EnrichmentSourceInterface;
 use Remediate\Engine\Advisory\Db\Enrichment\EpssSource;
 use Remediate\Engine\Advisory\Db\Enrichment\KevSource;
 use Remediate\Engine\Advisory\Db\Source\AdvisorySourceInterface;
+use Remediate\Engine\Advisory\Db\Source\DrupalOrgSource;
 use Remediate\Engine\Advisory\Db\Source\FriendsOfPhpSource;
 use Remediate\Engine\Advisory\Db\Source\JsonFileSource;
 use Remediate\Engine\Advisory\Db\Source\OsvDumpSource;
@@ -21,7 +22,7 @@ use Remediate\Engine\Advisory\Db\Source\PackagistApiSource;
  */
 final class DatabaseBuildFactory
 {
-    public const SOURCES = ['packagist', 'osv', 'friendsofphp'];
+    public const SOURCES = ['packagist', 'osv', 'friendsofphp', 'drupal'];
     public const ENRICHMENTS = ['epss', 'kev'];
 
     /**
@@ -48,6 +49,7 @@ final class DatabaseBuildFactory
                 'packagist' => new PackagistApiSource($downloader),
                 'osv' => new OsvDumpSource($downloader, $tempDir),
                 'friendsofphp' => new FriendsOfPhpSource($downloader, $tempDir, $friendsOfPhpPath),
+                'drupal' => new DrupalOrgSource($downloader),
             };
         }
         foreach ($includes as $file) {
