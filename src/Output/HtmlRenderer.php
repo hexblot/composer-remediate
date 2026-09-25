@@ -45,7 +45,7 @@ final class HtmlRenderer
         } else {
             $h[] = $this->summary($plan);
             foreach ($plan->findings as $index => $findingPlan) {
-                $h[] = $this->finding($findingPlan, $index + 1);
+                $h[] = $this->finding($findingPlan, $index + 1, $plan->isExposed($findingPlan));
             }
         }
 
@@ -72,7 +72,7 @@ final class HtmlRenderer
                 $index + 1,
                 self::e($fp->finding->packageName),
                 self::e($fp->finding->prettyVersion),
-                $fp->finding->isDev ? ' <span class="badge dev">dev</span>' : '',
+                ($plan->isExposed($fp) ? ' <span class="badge exposed">exposed</span>' : '') . ($fp->finding->isDev ? ' <span class="badge dev">dev</span>' : ''),
                 self::e($advisories),
                 $status,
                 $command,
@@ -109,13 +109,13 @@ final class HtmlRenderer
         return '<section><h2>Summary</h2>' . $lead . '<table class="summary"><thead><tr><th>Package</th><th>Advisories</th><th>Status</th><th>Recommended command</th></tr></thead><tbody>' . implode('', $rows) . '</tbody></table></section>';
     }
 
-    private function finding(FindingPlan $plan, int $number): string
+    private function finding(FindingPlan $plan, int $number, bool $exposed): string
     {
         $f = $plan->finding;
         $h = [];
         $h[] = sprintf('<section class="finding" id="finding-%d">', $number);
         $h[] = '<h2>' . self::e($f->packageName) . ' <span class="version">' . self::e($f->prettyVersion) . '</span>' . ($f->viaReplacedName !== null ? ' <small>replaces ' . self::e($f->viaReplacedName) . '</small>' : '') . '</h2>';
-        $h[] = '<p class="state">' . ($f->isRootRequirement ? 'Direct dependency.' : 'Transitive dependency.') . ($f->isDev ? ' Development requirement only.' : '') . '</p>';
+        $h[] = '<p class="state">' . ($f->isRootRequirement ? 'Direct dependency.' : 'Transitive dependency.') . ($f->isDev ? ' Development requirement only.' : '') . ($exposed ? ' Declared exposed with --exposed: it handles untrusted input in this application.' : '') . '</p>';
         if ($f->abandoned !== []) {
             $h[] = '<p class="abandoned"><strong>Abandoned:</strong> ' . self::e(TextRenderer::abandonedLine($f)) . '</p>';
         }
@@ -294,7 +294,7 @@ table{border-collapse:collapse;width:100%;font-size:.92rem}th,td{text-align:left
 .badge{display:inline-block;font-size:.75rem;font-weight:600;padding:.1rem .5rem;border-radius:999px;border:1px solid currentColor;white-space:nowrap}
 .badge.ok{color:var(--ok)}.badge.none,.badge.rejected{color:var(--bad)}.badge.skipped,.badge.dev{color:var(--muted)}
 .badge.sev-critical,.badge.sev-high{color:var(--bad)}.badge.sev-medium{color:var(--warn)}.badge.sev-low{color:var(--muted)}
-.badge.kev{color:#fff;background:var(--bad);border-color:var(--bad)}.badge.epss{color:var(--warn)}.abandoned{color:var(--warn)}
+.badge.exposed{color:var(--warn);border-color:var(--warn)}.badge.kev{color:#fff;background:var(--bad);border-color:var(--bad)}.badge.epss{color:var(--warn)}.abandoned{color:var(--warn)}
 .warning{border-left:4px solid var(--warn);padding:.5rem .8rem;background:rgba(212,167,44,.1)}.clean{color:var(--ok);font-weight:600}
 .none-box{border-left:4px solid var(--bad);padding:.5rem .8rem;background:rgba(180,35,24,.08)}
 .advisories{padding-left:1.2rem}.advisories li{margin:.4rem 0}

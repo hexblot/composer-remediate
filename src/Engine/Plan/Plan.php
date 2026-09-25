@@ -53,6 +53,14 @@ final class Plan
          * showing an empty vulnerability list that reads as clean.
          */
         public readonly ?int $failure = null,
+        /**
+         * Package names the operator declared exposed with --exposed: they handle untrusted input in
+         * this application. Only withExposure() sets it, on a finished plan, so a declaration can
+         * reorder the report and never change what was planned or recommended.
+         *
+         * @var array<string, true>
+         */
+        public readonly array $exposed = [],
     ) {
     }
 
@@ -66,7 +74,7 @@ final class Plan
      */
     public static function failed(int $exitCode, array $metadata = [], array $warnings = []): self
     {
-        return new self([], $metadata, $warnings, null, null, [], [], [], false, [], $exitCode);
+        return new self([], $metadata, $warnings, null, null, [], [], [], false, [], $exitCode, []);
     }
 
     /**
@@ -76,13 +84,13 @@ final class Plan
      */
     public function withFailure(int $exitCode): self
     {
-        return new self($this->findings, $this->metadata, $this->warnings, $this->combined, $this->failOn, $this->inventory, $this->baseline, $this->coverageGaps, $this->coverageGapsAccepted, $this->combinedAttempts, $exitCode);
+        return new self($this->findings, $this->metadata, $this->warnings, $this->combined, $this->failOn, $this->inventory, $this->baseline, $this->coverageGaps, $this->coverageGapsAccepted, $this->combinedAttempts, $exitCode, $this->exposed);
     }
 
     /** The caller has read the coverage gaps and accepts the lock as clean despite them (--accept-coverage-gaps). */
     public function withAcceptedCoverageGaps(): self
     {
-        return new self($this->findings, $this->metadata, $this->warnings, $this->combined, $this->failOn, $this->inventory, $this->baseline, $this->coverageGaps, true, $this->combinedAttempts, $this->failure);
+        return new self($this->findings, $this->metadata, $this->warnings, $this->combined, $this->failOn, $this->inventory, $this->baseline, $this->coverageGaps, true, $this->combinedAttempts, $this->failure, $this->exposed);
     }
 
     public function withFailOn(?string $severity): self
@@ -91,7 +99,7 @@ final class Plan
             throw new \InvalidArgumentException(sprintf('Unknown severity "%s"; use one of %s.', $severity, Severity::labels()));
         }
 
-        return new self($this->findings, $this->metadata, $this->warnings, $this->combined, $severity !== null ? strtolower($severity) : null, $this->inventory, $this->baseline, $this->coverageGaps, $this->coverageGapsAccepted, $this->combinedAttempts, $this->failure);
+        return new self($this->findings, $this->metadata, $this->warnings, $this->combined, $severity !== null ? strtolower($severity) : null, $this->inventory, $this->baseline, $this->coverageGaps, $this->coverageGapsAccepted, $this->combinedAttempts, $this->failure, $this->exposed);
     }
 
     /** @param list<string> $keys finding keys (advisory@package) */
@@ -102,7 +110,63 @@ final class Plan
             $baseline[strtolower($key)] = true;
         }
 
-        return new self($this->findings, $this->metadata, $this->warnings, $this->combined, $this->failOn, $this->inventory, $baseline, $this->coverageGaps, $this->coverageGapsAccepted, $this->combinedAttempts, $this->failure);
+        return new self($this->findings, $this->metadata, $this->warnings, $this->combined, $this->failOn, $this->inventory, $baseline, $this->coverageGaps, $this->coverageGapsAccepted, $this->combinedAttempts, $this->failure, $this->exposed);
+    }
+
+    /**
+     * The same plan with packages declared exposed (--exposed): production findings on them are listed
+     * first, then the other production findings, then development-only ones, each group keeping the
+     * urgency order the planner gave it. A declaration is the operator's knowledge of the application,
+     * which no advisory feed has, so it outranks known exploitation; it is never inferred.
+     *
+     * It is applied to the finished plan, so it cannot change a recommendation, the combined command or
+     * the exit code. A name that is not in the lock is reported, as it is most likely a typo.
+     *
+     * @param list<string> $packages
+     */
+    public function withExposure(array $packages): self
+    {
+        $exposed = [];
+        foreach ($packages as $package) {
+            $exposed[strtolower(trim($package))] = true;
+        }
+        unset($exposed['']);
+        $warnings = $this->warnings;
+        if ($exposed !== [] && $this->inventory !== []) {
+            $locked = array_fill_keys(array_map(static fn (array $p): string => strtolower($p['name']), $this->inventory), true);
+            $unknown = array_keys(array_diff_key($exposed, $locked));
+            if ($unknown !== []) {
+                $warnings[] = sprintf('--exposed names %s, which %s not in this lock.', implode(', ', $unknown), count($unknown) === 1 ? 'is' : 'are');
+            }
+        }
+        $keyed = [];
+        foreach ($this->findings as $index => $plan) {
+            $keyed[] = [$plan->finding->isDev ? 2 : (self::exposedIn($exposed, $plan) ? 0 : 1), $index, $plan];
+        }
+        usort($keyed, static fn (array $a, array $b): int => [$a[0], $a[1]] <=> [$b[0], $b[1]]);
+        $findings = array_column($keyed, 2);
+
+        return new self($findings, $this->metadata, $warnings, $this->combined, $this->failOn, $this->inventory, $this->baseline, $this->coverageGaps, $this->coverageGapsAccepted, $this->combinedAttempts, $this->failure, $exposed);
+    }
+
+    /** Whether the operator declared this finding's package, or the package it stands in for, exposed. */
+    public function isExposed(FindingPlan $plan): bool
+    {
+        return self::exposedIn($this->exposed, $plan);
+    }
+
+    /** @return list<FindingPlan> */
+    public function exposedFindings(): array
+    {
+        return array_values(array_filter($this->findings, fn (FindingPlan $p): bool => $this->isExposed($p)));
+    }
+
+    /** @param array<string, true> $exposed */
+    private static function exposedIn(array $exposed, FindingPlan $plan): bool
+    {
+        $f = $plan->finding;
+
+        return isset($exposed[strtolower($f->packageName)]) || ($f->viaReplacedName !== null && isset($exposed[strtolower($f->viaReplacedName)]));
     }
 
     /** True when every advisory of the finding is in the baseline. */
@@ -176,7 +240,7 @@ final class Plan
     /** @param list<string> $warnings */
     public function withWarnings(array $warnings): self
     {
-        return new self($this->findings, $this->metadata, [...$this->warnings, ...$warnings], $this->combined, $this->failOn, $this->inventory, $this->baseline, $this->coverageGaps, $this->coverageGapsAccepted, $this->combinedAttempts, $this->failure);
+        return new self($this->findings, $this->metadata, [...$this->warnings, ...$warnings], $this->combined, $this->failOn, $this->inventory, $this->baseline, $this->coverageGaps, $this->coverageGapsAccepted, $this->combinedAttempts, $this->failure, $this->exposed);
     }
 
     /** @return list<FindingPlan> findings that count towards the exit code */
@@ -200,7 +264,7 @@ final class Plan
     /** @param array<string, string> $overrides */
     public function withMetadata(array $overrides): self
     {
-        return new self($this->findings, array_replace($this->metadata, $overrides), $this->warnings, $this->combined, $this->failOn, $this->inventory, $this->baseline, $this->coverageGaps, $this->coverageGapsAccepted, $this->combinedAttempts, $this->failure);
+        return new self($this->findings, array_replace($this->metadata, $overrides), $this->warnings, $this->combined, $this->failOn, $this->inventory, $this->baseline, $this->coverageGaps, $this->coverageGapsAccepted, $this->combinedAttempts, $this->failure, $this->exposed);
     }
 
     public function exitCode(): int

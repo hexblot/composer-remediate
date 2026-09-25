@@ -43,6 +43,7 @@ with the package runs the same command with plugins and scripts disabled from th
 | `--format`, `-f` | required, default `text` | Format printed to standard output: text, html, json, sarif, cyclonedx, gitlab or none |
 | `--output`, `-o` | repeatable | Also write a report file; format inferred from the name (.html, .json, .sarif, .cdx.json, gl-dependency-scanning-report.json, .txt) or given as sarif:path. Repeatable. |
 | `--fail-on` | required | Only findings at or above this severity (low, medium, high, critical) affect the exit code; findings of unknown severity always count |
+| `--exposed` | repeatable | Package that handles untrusted input in this application (repeatable): its production findings are listed first. Changes the order of the report only, never a recommendation or the exit code |
 | `--baseline` | required | Baseline file of accepted findings; findings listed there are reported but do not affect the exit code |
 | `--update-baseline` | flag | Write every finding of this run to the --baseline file (accept the current state, then tighten over time) |
 | `--min-release-age` | required | Never recommend a release published fewer than this many days ago, or without a known release date (supply-chain cooldown) |

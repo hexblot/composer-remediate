@@ -71,10 +71,12 @@ increased `schema_version` to 2 (see [compatibility](compatibility.md)).
   recommended version. All of it comes from metadata already diffed, so nothing is downloaded or
   unpacked; it is shown rather than folded into the ranking, because the count of changed packages
   measures review burden and this measures something else
-- [ ] declared consequence hints: a way to say that a package handles untrusted input in this
-  application, so that ordering reflects it. There is a suppressive side already (`--ignore`, the
-  baseline) and no escalating one, and a reader's account of triaging four Dompdf findings ahead of
-  one high-severity Guzzle advisory is the case for it. Declared, never inferred
+- [x] declared consequence hints: `--exposed <package>` says that a package handles untrusted input
+  in this application, and its findings are listed first. There was a suppressive side already
+  (`--ignore`, the baseline) and no escalating one, and a reader's account of triaging four Dompdf
+  findings ahead of one high-severity Guzzle advisory was the case for it. Declared, never inferred;
+  applied to the finished plan, so it reorders the report and cannot change what is recommended or the
+  exit code. In the JSON report as `schema_version` 3
 - [x] the three above in the JSON report (0.10.1): `schema_version` 2, `report-v2.schema.json`
   published alongside the now-frozen `report-v1.schema.json`, `summary.packages_running_new_code` for
   a gate to key on, and CI recipes for the conflict entries and the capability changes

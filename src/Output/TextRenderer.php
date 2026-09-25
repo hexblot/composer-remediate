@@ -134,6 +134,10 @@ final class TextRenderer
         if ($plan->coverageGaps !== []) {
             $out[] = '  ' . $this->tag(sprintf('Coverage gaps: %d advisory record%s about locked packages could not be read (see the warnings above); %s', count($plan->coverageGaps), count($plan->coverageGaps) === 1 ? '' : 's', $plan->coverageGapsAccepted ? 'accepted with --accept-coverage-gaps.' : 'without findings the exit code is 4, not 0, until accepted with --accept-coverage-gaps.'), 'fg=yellow');
         }
+        $exposed = $plan->exposedFindings();
+        if ($exposed !== []) {
+            $out[] = sprintf('  Declared exposed: %d package%s listed first because --exposed says %s untrusted input here (%s).', count($exposed), count($exposed) === 1 ? '' : 's', count($exposed) === 1 ? 'it handles' : 'they handle', implode(', ', array_map(static fn (FindingPlan $p): string => $p->finding->packageName, $exposed)));
+        }
         $exploited = array_filter($plan->findings, static fn (FindingPlan $p): bool => $p->isKnownExploited());
         if ($exploited !== []) {
             $out[] = '  ' . $this->tag(sprintf('Known exploited: %d package%s carr%s an advisory in CISA\'s KEV catalogue (%s); fix these first.', count($exploited), count($exploited) === 1 ? '' : 's', count($exploited) === 1 ? 'ies' : 'y', implode(', ', array_map(static fn (FindingPlan $p): string => $p->finding->packageName, $exploited))), 'fg=red;options=bold');
@@ -177,7 +181,7 @@ final class TextRenderer
     {
         $f = $plan->finding;
         $out = [];
-        $out[] = $this->tag(implode(', ', array_map(static fn ($finding): string => $finding->advisory->displayId(), $plan->allFindings())), 'fg=red;options=bold') . ($this->currentPlan?->isBaselined($plan) === true ? '  ' . $this->tag('[baselined]', 'fg=gray') : '');
+        $out[] = $this->tag(implode(', ', array_map(static fn ($finding): string => $finding->advisory->displayId(), $plan->allFindings())), 'fg=red;options=bold') . ($this->currentPlan?->isExposed($plan) === true ? '  ' . $this->tag('[declared exposed]', 'fg=yellow') : '') . ($this->currentPlan?->isBaselined($plan) === true ? '  ' . $this->tag('[baselined]', 'fg=gray') : '');
         $out[] = str_repeat('─', 60);
         $out[] = $this->heading('Affected');
         $out[] = sprintf('  %s %s%s', $f->packageName, $f->prettyVersion, $f->viaReplacedName !== null ? sprintf(' (replaces %s)', $f->viaReplacedName) : '');

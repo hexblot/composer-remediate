@@ -5,6 +5,22 @@ All notable changes to this project are documented here. The format follows
 
 ## [Unreleased]
 
+### Added
+
+- `--exposed <package>` (repeatable) declares that a package handles untrusted input in this
+  application. Its production findings are listed first, ahead of known-exploited and higher-severity
+  ones elsewhere, because the operator knows something about the application no advisory feed does;
+  the rest keep the planner's urgency order, and development-only findings stay last. It is applied to
+  the finished plan, like the baseline, so it cannot change a recommendation, the combined command or
+  the exit code, only the order. The text report tags such findings `[declared exposed]` and says why
+  they come first, the HTML report shows an `exposed` badge, and a name that is not in the lock is
+  reported as a warning. It is the escalating counterpart of `--ignore` and the baseline, and it is
+  declared, never inferred.
+- The JSON report carries `findings[].declared_exposed` and `summary.packages_declared_exposed`, so
+  `schema_version` is **3**.
+  [`report-v3.schema.json`](https://hexblot.github.io/composer-remediate/schema/report-v3.schema.json)
+  is the copy to pin, and `report-v2.schema.json` is frozen at what 0.10.1 emitted.
+
 ### Changed
 
 - The example reports under each fixture's `reports/` directory are now checked by the fixture tests:

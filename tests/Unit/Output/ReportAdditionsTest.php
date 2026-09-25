@@ -187,7 +187,7 @@ final class ReportAdditionsTest extends TestCase
     {
         $drag = json_decode((new JsonRenderer())->render($this->dragPlan()), true, 512, JSON_THROW_ON_ERROR);
         self::assertIsArray($drag);
-        self::assertSame(2, $drag['schema_version']);
+        self::assertGreaterThanOrEqual(2, $drag['schema_version'], 'the three additions arrived in schema_version 2');
         $remediation = $drag['findings'][0]['remediation'];
         self::assertStringContainsString('No fixed release of acme/lib exists within 1.x.', (string) $remediation['no_fix_within_locked_major']);
         self::assertSame([], $remediation['conflict_entries'], 'this recommendation rests on no --with constraint');

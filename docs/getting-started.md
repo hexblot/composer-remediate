@@ -40,6 +40,7 @@ composer remediate --output=report.html --output=report.json   # also write HTML
 composer remediate --output=results.sarif --output=sbom.cdx.json   # SARIF for GitHub Code Scanning, CycloneDX SBOM with fixes
 composer remediate --fail-on high                               # only high and critical findings affect the exit code
 composer remediate --baseline=baseline.json --update-baseline   # accept today's findings; later runs fail only on new ones
+composer remediate --exposed guzzlehttp/guzzle                  # this package handles untrusted input here: list its findings first
 composer remediate --min-release-age 7                          # never recommend a release younger than a week (or undated)
 composer remediate --ignore-platform-req=php                    # validate as if PHP matched; the flag is repeated in the recommended command
 composer remediate --solve-budget 80                            # allow more solver runs per finding on large graphs

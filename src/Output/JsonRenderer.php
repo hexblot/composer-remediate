@@ -19,7 +19,7 @@ use Remediate\Engine\Solver\LockDiff;
  */
 final class JsonRenderer
 {
-    public const SCHEMA_VERSION = 2;
+    public const SCHEMA_VERSION = 3;
 
     /** Dependency paths listed per finding; the total is always reported in paths_total. */
     public const MAX_PATHS = 10;
@@ -63,6 +63,7 @@ final class JsonRenderer
                 // A gate can key on this: the recommendation lets code run that could not run before —
                 // a package becoming a composer-plugin, or gaining autoload.files or binaries.
                 'packages_running_new_code' => count(array_filter($plan->findings, static fn (FindingPlan $p): bool => ($p->recommended()?->diff?->newCodeCapabilities() ?? []) !== [])),
+                'packages_declared_exposed' => count($plan->exposedFindings()),
                 'packages_known_exploited' => count(array_filter($plan->findings, static fn (FindingPlan $p): bool => $p->isKnownExploited())),
                 'packages_with_abandoned_dependency' => count(array_filter($plan->findings, static fn (FindingPlan $p): bool => $p->finding->abandoned !== [])),
                 'coverage_gaps' => count($plan->coverageGaps),
@@ -118,6 +119,7 @@ final class JsonRenderer
             'direct' => $f->isRootRequirement,
             'dev' => $f->isDev,
             'baselined' => $plan->isBaselined($fp),
+            'declared_exposed' => $plan->isExposed($fp),
             'counts_for_exit' => $plan->countsForExit($fp),
             'via_replaced_package' => $f->viaReplacedName,
             'advisories' => array_map(static fn (Finding $x): array => [

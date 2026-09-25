@@ -1,5 +1,5 @@
 {
-    "schema_version": 2,
+    "schema_version": 3,
     "analysis_metadata": {
         "project": "bookstack-phpseclib-knpsnappy",
         "engine_version": "(fixture)",
@@ -24,6 +24,7 @@
         "packages_baselined": 0,
         "packages_with_constraint_drag": 0,
         "packages_running_new_code": 0,
+        "packages_declared_exposed": 0,
         "packages_known_exploited": 0,
         "packages_with_abandoned_dependency": 0,
         "coverage_gaps": 0,
@@ -61,6 +62,7 @@
             "direct": false,
             "dev": false,
             "baselined": false,
+            "declared_exposed": false,
             "counts_for_exit": true,
             "via_replaced_package": null,
             "advisories": [
@@ -206,6 +208,7 @@
             "direct": true,
             "dev": false,
             "baselined": false,
+            "declared_exposed": false,
             "counts_for_exit": true,
             "via_replaced_package": null,
             "advisories": [

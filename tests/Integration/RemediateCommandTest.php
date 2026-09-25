@@ -197,6 +197,18 @@ final class RemediateCommandTest extends TestCase
         self::assertStringContainsString('Unknown severity "severe"', $result->stderr);
     }
 
+    public function testExposedMarksThePackageAndLeavesTheOutcomeAlone(): void
+    {
+        $plain = $this->remediate(['--format' => 'json']);
+        $result = $this->remediate(['--exposed' => ['acme/vuln-lib', 'acme/vuln-lob'], '--format' => 'json']);
+        self::assertSame($plain->exitCode, $result->exitCode, $result->describe());
+        $json = $result->json();
+        self::assertTrue($json['findings'][0]['declared_exposed']);
+        self::assertSame(1, $json['summary']['packages_declared_exposed']);
+        self::assertSame($plain->json()['summary']['combined_command'], $json['summary']['combined_command']);
+        self::assertContains('--exposed names acme/vuln-lob, which is not in this lock.', $json['warnings']);
+    }
+
     public function testIgnoredAdvisoriesDoNotCount(): void
     {
         $result = $this->remediate(['--ignore' => [self::CVE], '--format' => 'json']);

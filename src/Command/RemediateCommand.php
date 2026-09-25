@@ -65,6 +65,7 @@ final class RemediateCommand extends BaseCommand
                 new InputOption('format', 'f', InputOption::VALUE_REQUIRED, 'Format printed to standard output: text, html, json, sarif, cyclonedx, gitlab or none', 'text'),
                 new InputOption('output', 'o', InputOption::VALUE_REQUIRED | InputOption::VALUE_IS_ARRAY, 'Also write a report file; format inferred from the name (.html, .json, .sarif, .cdx.json, gl-dependency-scanning-report.json, .txt) or given as sarif:path. Repeatable.'),
                 new InputOption('fail-on', null, InputOption::VALUE_REQUIRED, 'Only findings at or above this severity (low, medium, high, critical) affect the exit code; findings of unknown severity always count'),
+                new InputOption('exposed', null, InputOption::VALUE_REQUIRED | InputOption::VALUE_IS_ARRAY, 'Package that handles untrusted input in this application (repeatable): its production findings are listed first. Changes the order of the report only, never a recommendation or the exit code'),
                 new InputOption('baseline', null, InputOption::VALUE_REQUIRED, 'Baseline file of accepted findings; findings listed there are reported but do not affect the exit code'),
                 new InputOption('update-baseline', null, InputOption::VALUE_NONE, 'Write every finding of this run to the --baseline file (accept the current state, then tighten over time)'),
                 new InputOption('min-release-age', null, InputOption::VALUE_REQUIRED, 'Never recommend a release published fewer than this many days ago, or without a known release date (supply-chain cooldown)'),
@@ -581,9 +582,13 @@ HELP);
         return $operator;
     }
 
-    /** Applies --accept-coverage-gaps, --fail-on and the baseline options to the plan; an exit code when they are malformed. */
+    /** Applies --exposed, --accept-coverage-gaps, --fail-on and the baseline options to the plan; an exit code when they are malformed. */
     private function gate(Plan $plan, InputInterface $input, IOInterface $io): Plan|int
     {
+        $exposed = array_values(array_filter(array_map('strval', (array) $input->getOption('exposed')), static fn (string $v): bool => trim($v) !== ''));
+        if ($exposed !== []) {
+            $plan = $plan->withExposure($exposed);
+        }
         if ((bool) $input->getOption('accept-coverage-gaps')) {
             $plan = $plan->withAcceptedCoverageGaps();
         }
