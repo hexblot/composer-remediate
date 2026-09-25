@@ -2,7 +2,7 @@
     "schema_version": 2,
     "analysis_metadata": {
         "project": "opensocial-drupal-distribution-pins",
-        "engine_version": "dev-main",
+        "engine_version": "(fixture)",
         "composer_version": "(fixture)",
         "php_version": "(fixture)",
         "advisory_source": "advisory snapshot advisories.json",

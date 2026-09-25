@@ -10,7 +10,7 @@
                 {
                     "type": "application",
                     "name": "composer-remediate",
-                    "version": "dev-main"
+                    "version": "(fixture)"
                 }
             ]
         },

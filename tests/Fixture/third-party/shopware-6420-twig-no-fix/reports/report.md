@@ -108,9 +108,9 @@ Other candidates
       Composer could not resolve the dependencies: Your requirements could not be resolved to an installable set of packages.
         Problem 1
           - Root composer.json requires shopware/administration ^6.5 -> satisfiable by shopware/administration[6.5.0.0, ..., v6.6.6.0].
-          - shopware/administration[6.5.0.0, ..., v6.5.7.4] require php ~8.1.0 || ~8.2.0 -> your php version (7.4.3; overridden via config.platform, actual: 8.5.5) does not satisfy that requirement.
-          - shopware/administration[v6.5.8.0, ..., v6.5.8.14] require php ~8.1.0 || ~8.2.0 || ~8.3.0 -> your php version (7.4.3; overridden via config.platform, actual: 8.5.5) does not satisfy that requirement.
-          - shopware/administration[v6.6.0.0, ..., v6.6.6.0] require php ~8.2.0 || ~8.3.0 -> your php version (7.4.3; overridden via config.platform, actual: 8.5.5) does not satisfy that requirement.
+          - shopware/administration[6.5.0.0, ..., v6.5.7.4] require php ~8.1.0 || ~8.2.0 -> your php version (7.4.3; overridden via config.platform, actual: (fixture)) does not satisfy that requirement.
+          - shopware/administration[v6.5.8.0, ..., v6.5.8.14] require php ~8.1.0 || ~8.2.0 || ~8.3.0 -> your php version (7.4.3; overridden via config.platform, actual: (fixture)) does not satisfy that requirement.
+          - shopware/administration[v6.6.0.0, ..., v6.6.6.0] require php ~8.2.0 || ~8.3.0 -> your php version (7.4.3; overridden via config.platform, actual: (fixture)) does not satisfy that requirement.
   rejected: composer require --no-update shopware/elasticsearch:^6.5 && composer update shopware/elasticsearch -W -m --with 'phenx/php-svg-lib:>=0.5.2'
       Composer could not resolve the dependencies: Your requirements could not be resolved to an installable set of packages.
         Problem 1

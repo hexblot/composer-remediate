@@ -36,7 +36,11 @@ explicitly. The `third-party` directory name marks the content as vendored for l
 
 The `reports/` files are committed examples, regenerated with
 `php bin/run-fixture.php <name> --write-reports`; they carry fixed metadata so the output is
-reproducible.
+reproducible. The fixture test renders the same files and fails when a stored copy differs, so a
+change to any report format means regenerating every fixture's reports in the same commit.
+`reports-composer-version.txt` records the Composer minor release they were written with: an older
+Composer is not compared, because it legitimately recommends different commands, and a newer one
+fails until the reports are regenerated.
 
 The static repository is stored gzip-compressed to keep the checkout small; the harness inflates it
 into a temporary directory. The harness also copies the fixture to a temporary directory and injects

@@ -1278,7 +1278,7 @@
         "analyzer": {
             "id": "composer-remediate",
             "name": "Composer Remediate",
-            "version": "dev-main",
+            "version": "(fixture)",
             "vendor": {
                 "name": "composer-remediate"
             },
@@ -1287,7 +1287,7 @@
         "scanner": {
             "id": "composer-remediate",
             "name": "Composer Remediate",
-            "version": "dev-main",
+            "version": "(fixture)",
             "vendor": {
                 "name": "composer-remediate"
             },

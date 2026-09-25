@@ -33,7 +33,10 @@ final class SolveResult
         if ($pos !== false) {
             $output = substr($output, $pos);
         }
-        $lines = array_values(array_filter(array_map('rtrim', explode("\n", $output)), static fn (string $l): bool => $l !== ''));
+        // Under GitHub Actions Composer repeats its errors as workflow commands (`::error ::…`), which
+        // are for the runner's log, not for a report: a run in CI and one on a laptop must explain a
+        // conflict in the same words.
+        $lines = array_values(array_filter(array_map('rtrim', explode("\n", $output)), static fn (string $l): bool => $l !== '' && preg_match('{^::[a-z-]+( [^:]*)?::}', $l) !== 1));
 
         return implode("\n", array_slice($lines, 0, 25));
     }

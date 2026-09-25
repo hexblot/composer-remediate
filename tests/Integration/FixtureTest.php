@@ -17,6 +17,7 @@ use Remediate\Engine\Solver\InProcessSolver;
 use Remediate\Output\HtmlRenderer;
 use Remediate\Output\JsonRenderer;
 use Remediate\Output\TextRenderer;
+use Remediate\Tests\Support\FixtureReports;
 use Remediate\Tests\Support\FixtureRunner;
 use Symfony\Component\Process\Process;
 
@@ -116,6 +117,7 @@ final class FixtureTest extends TestCase
         self::assertSame($plan->exitCode(), $json['exit_code']);
         self::assertCount(count($plan->findings), $json['findings']);
         self::assertJsonMatchesSchema($jsonText);
+        self::assertStoredReportsCurrent($plan, $fixtureDir);
 
         // Expected command strings are recorded on a Composer with --minimal-changes (2.9+). Older
         // releases cannot apply -m, so the simplification step legitimately drops it (and often the
@@ -207,6 +209,31 @@ final class FixtureTest extends TestCase
             self::assertSame($findingPlan->recommended()?->result->after?->get($findingPlan->finding->packageName)?->getPrettyVersion(), $target?->getPrettyVersion(), 'the executed command must land on the version the dry-run predicted');
         } finally {
             $project->destroy();
+        }
+    }
+
+    /**
+     * The reports under reports/ are what the case-studies page and the documentation link to as
+     * examples, so they must be what the tool prints now. They are recorded on one Composer minor
+     * release; an older one recommends different commands by design and is not compared, and a newer
+     * one fails so that a Composer upgrade cannot leave them silently stale.
+     */
+    private static function assertStoredReportsCurrent(Plan $plan, string $fixtureDir): void
+    {
+        $recorded = FixtureReports::recordedWith();
+        $running = FixtureReports::minor(\Composer\Composer::getVersion());
+        $regenerate = sprintf('run `php bin/run-fixture.php %s --write-reports` (or every fixture after a Composer upgrade)', basename($fixtureDir));
+        if (version_compare($running, $recorded, '<')) {
+            return;
+        }
+        self::assertSame($recorded, $running, "Stored reports were recorded with Composer $recorded, this is $running; $regenerate");
+        foreach (FixtureReports::render($plan, $fixtureDir) as $file => $contents) {
+            $path = $fixtureDir . '/reports/' . $file;
+            self::assertFileExists($path, $regenerate);
+            // A Windows checkout converts text files to CRLF: the stored copy, and the PHP sources whose
+            // multi-line literals (the HTML report's stylesheet) end up in a fresh render.
+            $lf = static fn (string $text): string => str_replace("\r\n", "\n", $text);
+            self::assertSame($lf((string) file_get_contents($path)), $lf($contents), "reports/$file is stale; $regenerate");
         }
     }
 
