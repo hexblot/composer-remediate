@@ -5,6 +5,10 @@ All notable changes to this project are documented here. The format follows
 
 ## [Unreleased]
 
+[Unreleased]: https://github.com/hexblot/composer-remediate/compare/v0.10.2...HEAD
+
+## [0.10.2] - 2026-09-25
+
 ### Added
 
 - `--exposed <package>` (repeatable) declares that a package handles untrusted input in this
@@ -31,7 +35,14 @@ All notable changes to this project are documented here. The format follows
   Composer-version matrix) recommends different commands by design and is not compared, and a newer
   one fails until the reports are regenerated.
 
-[Unreleased]: https://github.com/hexblot/composer-remediate/compare/v0.10.1...HEAD
+### Fixed
+
+- Under GitHub Actions a conflict explanation in any report repeated Composer's errors as workflow
+  commands (`::error ::…`), lines meant for the runner's log. They are left out, so a run in CI and one
+  on a laptop explain a conflict in the same words.
+- CI's canonical PHP 8.4 job piped PHPUnit into `tee` without `pipefail`, so it took `tee`'s exit
+  status and passed with failing tests. It is the one job that runs on every push to `main`. The step
+  now sets `pipefail`; the full matrix on pull requests was never affected.
 
 ## [0.10.1] - 2026-09-23
 
@@ -600,6 +611,7 @@ Answers to an Aikido scan of the workflows.
   pull request ready for review runs the full PHP and Composer matrices. Iterating in a draft therefore
   costs what a push used to, and the matrix is paid for once, when the work is done.
 
+[0.10.2]: https://github.com/hexblot/composer-remediate/releases/tag/v0.10.2
 [0.10.1]: https://github.com/hexblot/composer-remediate/releases/tag/v0.10.1
 [0.10.0]: https://github.com/hexblot/composer-remediate/releases/tag/v0.10.0
 [0.9.1]: https://github.com/hexblot/composer-remediate/releases/tag/v0.9.1
