@@ -101,6 +101,11 @@ changed which command the planner recommends, which is worth more than the secon
 what a pipeline gates on say the same thing again: why a widening is the only route left, the
 `conflict` entries that make a fix permanent, and what an update lets a package do. `schema_version` is
 now 2, with `report-v2.schema.json` published as the copy to pin.
+0.10.2 adds the escalating side of triage: `--exposed <package>` declares that a package handles
+untrusted input in this application and lists its findings first. It reorders the report and changes
+nothing else, and the JSON report carries it as `schema_version` 3. The example reports stored with each
+fixture are now checked against a fresh render, which on its first run found two bugs: Composer's
+GitHub Actions annotations leaking into reports, and a CI job that could not fail on a failing suite.
 
 ## Start here
 
