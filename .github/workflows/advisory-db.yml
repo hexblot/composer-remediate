@@ -1,6 +1,6 @@
 # Reference shared advisory database.
 #
-# Builds the SQLite advisory database from Packagist, OSV and FriendsOfPHP every six hours and publishes
+# Builds the SQLite advisory database from Packagist, OSV, FriendsOfPHP and Drupal.org every six hours and publishes
 # it as a GitHub release ONLY when the logical dataset changed (the dataset hash differs from the one
 # in the current `latest.json`). Releases are tagged db-YYYY-MM-DD.HH (a .N suffix disambiguates
 # several publications in one hour). Each release carries the database, its sha256, latest.json, and
@@ -228,7 +228,7 @@ jobs:
           v="$VERSION"
           gh release create "$v" out/advisories.sqlite out/advisories.sqlite.sha256 out/latest.json \
             --title "Advisory database $v" --latest=false \
-            --notes "Advisory database built from Packagist, OSV and FriendsOfPHP. Dataset hash $BUILD_HASH. Use with \`composer remediate --database-location=https://github.com/$REPOSITORY/releases/download/$v/advisories.sqlite\`. Aggregated advisory data; see docs/advisory-database.md for source licences."
+            --notes "Advisory database built from Packagist, OSV, FriendsOfPHP and Drupal.org. Dataset hash $BUILD_HASH. Use with \`composer remediate --database-location=https://github.com/$REPOSITORY/releases/download/$v/advisories.sqlite\`. Aggregated advisory data; see docs/advisory-database.md for source licences."
           if gh release view advisory-db-latest >/dev/null 2>&1; then
             gh release upload advisory-db-latest out/advisories.sqlite out/advisories.sqlite.sha256 out/latest.json --clobber
             gh release edit advisory-db-latest --notes "Moving pointer to the newest advisory database ($v). Prefer the dated release URL in pinned CI configurations."

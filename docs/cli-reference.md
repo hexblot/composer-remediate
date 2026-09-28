@@ -61,7 +61,7 @@ with the package runs the same command with plugins and scripts disabled from th
 | `--database-path` | required | The file the advisory database is kept in and read from (default: COMPOSER_CACHE_DIR/remediate/advisories.sqlite); also REMEDIATE_DATABASE_PATH or extra.remediate.database_path. Cache it between CI runs |
 | `--database-max-age` | required | When the database cannot be confirmed current (source unreachable, --offline), fail with exit 4 instead of warning if the copy is older than this many hours (or 2d, 36h); also REMEDIATE_DATABASE_MAX_AGE or extra.remediate.database_max_age |
 | `--no-database` | flag | Ask the configured repositories for advisories, as composer audit does, instead of using an advisory database (same as --database-location=composer) |
-| `--rebuild-database` | flag | When the database at its path is missing or not current, build it from the sources (Packagist, OSV, FriendsOfPHP, with EPSS and KEV data) instead of downloading it |
+| `--rebuild-database` | flag | When the database at its path is missing or not current, build it from the sources (Packagist, OSV, FriendsOfPHP, Drupal.org, with EPSS and KEV data) instead of downloading it |
 | `--database-sha256` | required | Expected sha256 of the advisory database (hex); a downloaded or cached copy that differs is refused. The trust anchor for a URL you do not publish yourself |
 | `--allow-unverified-database` | flag | Accept a database URL without a published &lt;url&gt;.sha256 sidecar and without --database-sha256 (refused otherwise); the report says the download was not verified |
 | `--accept-coverage-gaps` | flag | Exit 0 for a lock without findings even when the advisory source could not read records about locked packages (otherwise exit 4), and allow a fix that adds a package with such records (otherwise rejected); the gaps stay in the report |
@@ -76,7 +76,7 @@ with the package runs the same command with plugins and scripts disabled from th
 
 Aliases: `remediate-db-build`
 
-Build a local advisory database (SQLite) from live sources: Packagist, OSV and FriendsOfPHP
+Build a local advisory database (SQLite) from live sources: Packagist, OSV, FriendsOfPHP and Drupal.org
 
 Pulls every advisory for the Packagist ecosystem from the selected sources (plus any --include files
 with private advisories), normalises the version
@@ -98,7 +98,7 @@ machines at the URL with `--database-location`.
 |---|---|---|
 | `--output`, `-o` | required | Where to write the database (default: the configured path, see --database-path of remediate; COMPOSER_CACHE_DIR/remediate/advisories.sqlite unless configured) |
 | `--if-stale` | flag | Build only when the database at the output path is missing or not current against the published one (REMEDIATE_DATABASE or extra.remediate.database, default: this project's release); otherwise report it as current and exit 0 |
-| `--source`, `-s` | repeatable | Source to include: packagist, osv, friendsofphp (repeatable; default all) |
+| `--source`, `-s` | repeatable | Source to include: packagist, osv, friendsofphp, drupal (repeatable; default all) |
 | `--friendsofphp-path` | required | Local checkout of FriendsOfPHP/security-advisories to read instead of downloading |
 | `--include` | repeatable | Additional JSON file in the Packagist API shape with private or organisational advisories (repeatable) |
 | `--enrich` | repeatable | Exploit data to attach to the CVEs: epss (FIRST exploit probability), kev (CISA Known Exploited Vulnerabilities), or none (repeatable; default both) |

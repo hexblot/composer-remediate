@@ -116,7 +116,7 @@ YAML);
     {
         $result = $this->runner->run(['command' => 'remediate:db-build', '--source' => ['nvd', 'osv']], $this->project);
         self::assertSame(Plan::EXIT_ERROR, $result->exitCode, $result->describe());
-        self::assertStringContainsString('Unknown source(s) nvd; choose from packagist, osv, friendsofphp', $result->stderr);
+        self::assertStringContainsString('Unknown source(s) nvd; choose from packagist, osv, friendsofphp, drupal', $result->stderr);
     }
 
     public function testBuildsFromLocalSourcesThenStatusAndRemediateReadTheResult(): void
