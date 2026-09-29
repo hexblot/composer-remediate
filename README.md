@@ -67,6 +67,18 @@ composer remediate --no-dev --output=remediation-report.html --output=remediatio
 Add `--fail-on high` to let low and medium findings pass, `--output=results.sarif` for GitHub Code
 Scanning annotations, or `--output=sbom.cdx.json` for a CycloneDX SBOM with the fixes attached.
 
+**Pin the version in CI.** Before 1.0 a minor release may change exit codes, report fields or how the
+advisory database is chosen, so a pipeline that installs whatever is newest can change behaviour
+between two runs nobody touched. Install an exact version and move it on purpose:
+
+```bash
+composer global require hexblot/composer-remediate:0.11.0
+```
+
+A `composer require --dev` in a project is already pinned by its `composer.lock`. If you parse the JSON
+report, validate it against the `report-v<N>.schema.json` for the `schema_version` you read; those
+files never change once published.
+
 For a project you do not trust, run the shipped `composer-remediate` binary instead of
 `composer remediate`: it starts Composer with plugins and scripts disabled and never loads the
 project's autoloader, so no code from the analysed project runs.
