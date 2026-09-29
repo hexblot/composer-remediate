@@ -106,6 +106,11 @@ untrusted input in this application and lists its findings first. It reorders th
 nothing else, and the JSON report carries it as `schema_version` 3. The example reports stored with each
 fixture are now checked against a fresh render, which on its first run found two bugs: Composer's
 GitHub Actions annotations leaking into reports, and a CI job that could not fail on a failing suite.
+0.11.0 answers the first reports from live projects. The advisory database gains Drupal.org as a fourth
+source, the only one carrying Drupal contrib advisories; a local build that covers less than the
+published database can no longer stand in for it; and a coverage gap every lock shares no longer makes
+a real fix look impossible. It is a minor release because it changes what a run can report, and the
+README now says to pin the version in CI.
 
 ## Start here
 

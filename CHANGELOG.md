@@ -5,6 +5,25 @@ All notable changes to this project are documented here. The format follows
 
 ## [Unreleased]
 
+[Unreleased]: https://github.com/hexblot/composer-remediate/compare/v0.11.0...HEAD
+
+## [0.11.0] - 2026-09-29
+
+A minor release rather than a patch, because it changes what a run can report: a fourth advisory
+source, and one new case that exits `4`. Anyone on `^0.10` keeps 0.10.x until they choose to move.
+
+### Upgrading
+
+- A Drupal project will see findings it did not see before, on `drupal/*` contrib packages. They were
+  always there; the database did not carry them.
+- A run whose database path holds a local build that lacks one of the published feeds, and carries
+  private advisories, now stops with exit `4` and says why, where it used to scan against that build
+  quietly. The message names the three ways forward. A partial build without private advisories is
+  simply replaced by the download.
+- In CI, pin the version you install (`composer global require hexblot/composer-remediate:0.11.0`) and
+  move it deliberately. Before 1.0, exit codes, report fields and database behaviour can still change
+  in a minor release.
+
 ### Added
 
 - The advisory database has a fourth source, **Drupal.org** (`packages.drupal.org/8/security-advisories`),
@@ -33,8 +52,6 @@ All notable changes to this project are documented here. The format follows
   Drupal.org by default). A newer partial build is replaced by the download like any stale copy; a partial build
   carrying private advisories, which can be neither kept nor replaced without dropping something,
   stops the run with exit `4` and names the missing feeds and the three ways forward.
-
-[Unreleased]: https://github.com/hexblot/composer-remediate/compare/v0.10.2...HEAD
 
 ## [0.10.2] - 2026-09-25
 
@@ -640,6 +657,7 @@ Answers to an Aikido scan of the workflows.
   pull request ready for review runs the full PHP and Composer matrices. Iterating in a draft therefore
   costs what a push used to, and the matrix is paid for once, when the work is done.
 
+[0.11.0]: https://github.com/hexblot/composer-remediate/releases/tag/v0.11.0
 [0.10.2]: https://github.com/hexblot/composer-remediate/releases/tag/v0.10.2
 [0.10.1]: https://github.com/hexblot/composer-remediate/releases/tag/v0.10.1
 [0.10.0]: https://github.com/hexblot/composer-remediate/releases/tag/v0.10.0

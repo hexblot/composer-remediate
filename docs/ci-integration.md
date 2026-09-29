@@ -38,8 +38,12 @@ The plugin is installed globally so it does not touch the project's `composer.js
 
 ```bash
 composer global config --no-plugins allow-plugins.hexblot/composer-remediate true
-composer global require hexblot/composer-remediate
+composer global require hexblot/composer-remediate:0.11.0
 ```
+
+Pin an exact version, as above, and move it deliberately: before 1.0 a minor release may change exit
+codes, report fields or how the advisory database is chosen (see [compatibility](compatibility.md)).
+The examples below leave the version out for brevity.
 
 Requirements: PHP 8.1+ and Composer 2.4+ (2.7+ for `--minimal-changes`). In CI the project under
 analysis is usually your own; when it is not (a fork, a third-party dependency review), run
