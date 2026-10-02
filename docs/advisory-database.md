@@ -255,15 +255,15 @@ read clean. When you meet one, the warning names the record. Read it, decide whe
 your lock, and pass `--accept-coverage-gaps` when it cannot; nothing this tool does can recover what
 a feed did not say.
 
-The reference database carries one such gap today. OSV's `GHSA-q97c-8qh3-fpc6` (CVE-2026-84308,
-private-key recovery in phpseclib) names its package `phpseclib`, with no vendor, so it can never
-match the `phpseclib/phpseclib` a lock file holds. This project found it while testing its own
-readers against the live feed and submitted the correction upstream as
-[github/advisory-database#9639](https://github.com/github/advisory-database/pull/9639). When that is
-merged and the feed rebuilt, the record matches the package it was always about and the gap goes
-away on its own. Until then a scan of any lock exits `4` rather than `0` unless the gaps are
-accepted, and a lock holding `phpseclib/phpseclib` below 3.0.57, or at 4.0.0, should be treated as
-affected on the strength of the advisory itself: those are the ranges the record states.
+The reference database carried one such gap until 2026-09-29. OSV's `GHSA-q97c-8qh3-fpc6`
+(CVE-2026-84308, private-key recovery in phpseclib) named its package `phpseclib`, with no vendor, so
+it could never match the `phpseclib/phpseclib` a lock file holds. This project found it while testing
+its own readers against the live feed and submitted the correction upstream as
+[github/advisory-database#9639](https://github.com/github/advisory-database/pull/9639). Until it was
+merged, every scan exited `4` rather than `0` unless the gaps were accepted: fail-closed costing
+something real. Once the feeds rebuilt, the record matched the package it was always about and the
+gap went away on its own. Today's database has no gap that could concern any package; the remaining
+ones each name the one package they are about.
 
 Private advisories are different: a record in an `--include` file that cannot be interpreted fails
 the build, the same way an unparsable `--advisories-file` fails a run, because that data is yours to
