@@ -105,10 +105,7 @@ final class CycloneDxRenderer
     {
         $recommended = $plan->recommended();
         $command = $recommended?->candidate->commandLine($this->minimalChangesSupported);
-        $source = ['name' => 'Packagist', 'url' => 'https://packagist.org/security-advisories/' . $advisory->id];
-        if (preg_match('{^GHSA-}i', $advisory->id) === 1) {
-            $source = ['name' => 'GitHub', 'url' => 'https://github.com/advisories/' . $advisory->id];
-        }
+        $source = AdvisoryReference::source($advisory);
         $references = [];
         if ($advisory->cve !== null && $advisory->cve !== $advisory->id) {
             $references[] = ['id' => $advisory->cve, 'source' => ['name' => 'NVD', 'url' => 'https://nvd.nist.gov/vuln/detail/' . $advisory->cve]];

@@ -5,6 +5,7 @@ declare(strict_types=1);
 namespace Remediate\Tests\Integration;
 
 use PHPUnit\Framework\TestCase;
+use Remediate\Command\CommandProvider;
 use Remediate\Tests\Support\CommandRunner;
 use Remediate\Tests\Support\ComposerPhar;
 use Symfony\Component\Process\Process;
@@ -64,6 +65,23 @@ final class EntryPointTest extends TestCase
         self::assertSame(0, $process->getExitCode(), $process->getOutput() . $process->getErrorOutput());
         self::assertStringContainsString('least invasive Composer-verified upgrade', $process->getOutput());
         self::assertFileDoesNotExist($this->project . '/PROBE_EXECUTED', 'the analysed project\'s vendor/autoload.php ran');
+    }
+
+    /**
+     * The ninth review's first finding: `remediate:pr-body` was registered with the plugin but not with
+     * the binary, which took the name for an argument to `remediate` and failed. The binary now takes
+     * its commands from the plugin's provider; this checks every name and alias the provider gives
+     * reaches its command, so the next command added there cannot be left out here.
+     */
+    public function testEveryPluginCommandAndAliasIsReachableFromTheStandaloneBinary(): void
+    {
+        foreach ((new CommandProvider())->getCommands() as $command) {
+            foreach ([(string) $command->getName(), ...$command->getAliases()] as $name) {
+                $process = $this->runBinary([$name, '--help']);
+                self::assertSame(0, $process->getExitCode(), $name . ': ' . $process->getOutput() . $process->getErrorOutput());
+                self::assertStringContainsString($command->getDescription(), $process->getOutput(), $name . ' reaches its own command');
+            }
+        }
     }
 
     public function testPlanningACleanProjectOfflineDoesNotExecuteProjectCode(): void

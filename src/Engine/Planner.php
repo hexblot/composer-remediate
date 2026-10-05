@@ -967,7 +967,7 @@ final class Planner
     {
         $stillVulnerable = [];
         foreach (array_keys($afterKeys) as $key) {
-            $stillVulnerable[explode('@', $key, 2)[1] ?? ''] = true;
+            $stillVulnerable[Finding::packageOfKey($key)] = true;
         }
         $risk = [];
         foreach ($diff->changes as $change) {

@@ -44,6 +44,19 @@ final class Finding
     }
 
     /**
+     * The locked package a key names: what a command would move. For a finding reached through a
+     * replaced package that is the replacing package, not the replaced one, which is not in the lock.
+     * Lives next to key() so the two cannot drift apart.
+     */
+    public static function packageOfKey(string $key): string
+    {
+        $at = strrpos($key, '@');
+        $names = explode('/', $at === false ? $key : substr($key, $at + 1));
+
+        return implode('/', array_slice($names, 0, 2)); // a Composer package name is vendor/name
+    }
+
+    /**
      * @param list<DependencyPath> $paths
      */
     public function withPaths(array $paths): self
