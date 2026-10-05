@@ -5,6 +5,39 @@ All notable changes to this project are documented here. The format follows
 
 ## [Unreleased]
 
+The ninth adversarial review, taken at b762d5a against the engine's invariants, the CLI contract,
+the ignore policies, matching through replaced packages and the machine-readable reports. Five
+findings: four defects, all reproduced and fixed below, and one architecture note on the open
+path-search work bound, which stays on the roadmap as an accepted cost.
+
+### Fixed
+
+- The standalone binary now reaches `remediate:pr-body` (and `remediate-pr-body`). It was registered
+  with the plugin but not with the binary, which took the name for an argument to `remediate` and
+  failed with "No arguments expected". The binary now takes its commands from the plugin's own
+  provider and reads the names that select one off the commands themselves, so a command added to the
+  plugin cannot be missing from the binary; a test runs every name and alias the provider gives.
+- An ignore written against a package that is present only through another package's `replace` or
+  `provide` (`acme/component` under `acme/monorepo`, `symfony/http-foundation` under
+  `symfony/symfony`) now applies. The matcher asked the policy about the replacing package only, so
+  `config.audit.ignore: ["acme/component"]` and `config.policy.advisories.ignore` on the same name
+  did nothing, and the hygiene line then said the rule matched nothing and could be removed. A rule on
+  either name applies, a versioned rule is matched against the range the `replace` link declares (the
+  same intersection test by which the advisory applies), and every rule that matched counts as used.
+- The Composer 2.10+ advisory-blocking warning is raised again when the package a command moves is
+  still vulnerable through a package it replaces. The key of such a finding carries the replaced name
+  too, and the check compared the whole key tail with the changed package's name, so a monorepo moved
+  to a version whose component still carried an advisory raised no warning. The key is now read back
+  by the class that writes it.
+- The CycloneDX and GitLab reports no longer attribute every advisory that is not a GHSA to Packagist
+  at a `packagist.org/security-advisories/` URL, which for a Drupal.org advisory (`SA-CONTRIB-…`,
+  `SA-CORE-…`), a CVE-named one or an OSV one is a 404. One place now decides where an advisory is
+  published from its identifier: NVD, GitHub, Packagist, Drupal.org or OSV, each at the page that
+  exists; an identifier with no publisher page is attributed to the feed that carried it and given its
+  link or none. The GitLab identifier type follows (`drupal_advisory`, `osv`), a CVE-named advisory is
+  listed once rather than again as a Packagist advisory, and the SARIF `helpUri` is the advisory's link,
+  the publisher's page, or absent, never a guess.
+
 [Unreleased]: https://github.com/hexblot/composer-remediate/compare/v0.11.0...HEAD
 
 ## [0.11.0] - 2026-09-29

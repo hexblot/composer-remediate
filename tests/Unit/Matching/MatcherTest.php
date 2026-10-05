@@ -12,6 +12,8 @@ use PHPUnit\Framework\TestCase;
 use Remediate\Engine\Advisory\Advisory;
 use Remediate\Engine\Advisory\AdvisoryProvider;
 use Remediate\Engine\Lock\LockSnapshot;
+use Remediate\Engine\Matching\Finding;
+use Remediate\Engine\Matching\IgnorePolicy;
 use Remediate\Engine\Matching\Matcher;
 
 final class MatcherTest extends TestCase
@@ -69,6 +71,60 @@ final class MatcherTest extends TestCase
         self::assertCount(1, $findings);
         self::assertSame(1, $ignoring->ignoredCount());
         self::assertSame(['PKSA-1@acme/lib' => true], $ignoring->findingKeys($lock));
+    }
+
+    /**
+     * The ninth review's second finding: an ignore written against the package the advisory is about
+     * (acme/component) did nothing when that package was present only through another's `replace`,
+     * because the matcher asked the policy about the replacing package. Worse, the hygiene warning then
+     * told the operator the rule matched nothing and could be removed.
+     */
+    public function testAnIgnoreOnTheReplacedPackageSuppressesTheFindingReachedThroughIt(): void
+    {
+        $mono = new Package('acme/monorepo', '2.1.0.0', '2.1.0');
+        $mono->setReplaces(['acme/component' => new Link('acme/monorepo', 'acme/component', new Constraint('==', '2.1.0.0'), Link::TYPE_REPLACE, 'self.version')]);
+        $lock = LockSnapshot::fromPackages([$mono], []);
+
+        $byReplacedName = (new Matcher($this->provider()))->withIgnorePolicy(new IgnorePolicy([], ['acme/component' => [null]]));
+        self::assertSame([], $byReplacedName->match($lock, static fn (): bool => true));
+        self::assertSame(1, $byReplacedName->ignoredCount());
+        self::assertSame([], $byReplacedName->unusedIgnores(), 'the rule that suppressed the finding is not reported as unused');
+
+        $byReplacingName = (new Matcher($this->provider()))->withIgnorePolicy(new IgnorePolicy([], ['acme/monorepo' => [null]]));
+        self::assertSame([], $byReplacingName->match($lock, static fn (): bool => true), 'the replacing package is the one in the lock; a rule on it applies too');
+        self::assertSame([], $byReplacingName->unusedIgnores());
+
+        $both = (new Matcher($this->provider()))->withIgnorePolicy(new IgnorePolicy([], ['acme/component' => [null], 'acme/monorepo' => [null]]));
+        self::assertSame([], $both->match($lock, static fn (): bool => true));
+        self::assertSame(1, $both->ignoredCount(), 'one finding ignored, however many rules agree');
+        self::assertSame([], $both->unusedIgnores(), 'every rule that matched counts as used');
+    }
+
+    public function testAVersionedIgnoreOnTheReplacedPackageIsMatchedAgainstTheReplaceLink(): void
+    {
+        $parser = new VersionParser();
+        $mono = new Package('acme/monorepo', '2.1.0.0', '2.1.0');
+        $mono->setReplaces(['acme/component' => new Link('acme/monorepo', 'acme/component', new Constraint('==', '2.1.0.0'), Link::TYPE_REPLACE, 'self.version')]);
+        $lock = LockSnapshot::fromPackages([$mono], []);
+
+        $covering = (new Matcher($this->provider()))->withIgnorePolicy(new IgnorePolicy([], ['acme/component' => [$parser->parseConstraints('<3.0')]]));
+        self::assertSame([], $covering->match($lock, static fn (): bool => true));
+
+        $elsewhere = (new Matcher($this->provider()))->withIgnorePolicy(new IgnorePolicy([], ['acme/component' => [$parser->parseConstraints('<2.0')]]));
+        self::assertCount(1, $elsewhere->match($lock, static fn (): bool => true), 'a rule for versions the replace does not cover leaves the finding');
+        self::assertSame(['acme/component'], $elsewhere->unusedIgnores());
+    }
+
+    public function testTheKeyNamesTheLockedPackageAndCanBeReadBack(): void
+    {
+        $parser = new VersionParser();
+        $advisory = new Advisory('CVE-2026-77', 'acme/component', $parser->parseConstraints('<3.0.0'));
+        $direct = new Finding($advisory, 'acme/component', '2.1.0.0', '2.1.0', false, false);
+        $viaReplace = new Finding($advisory, 'acme/monorepo', '2.1.0.0', '2.1.0', false, false, 'acme/component');
+
+        self::assertSame('acme/component', Finding::packageOfKey($direct->key()));
+        self::assertSame('acme/monorepo', Finding::packageOfKey($viaReplace->key()), 'the replacing package is what a command moves');
+        self::assertSame('acme/monorepo', Finding::packageOfKey('symfony/symfony/CVE-2026-1.yaml@acme/monorepo/acme/component'), 'an id that is itself a path does not confuse it');
     }
 
     public function testTheSameAdvisoryIdOnTwoReplacedTargetsYieldsTwoFindings(): void

@@ -80,10 +80,11 @@ final class GitLabRenderer
                 $identifiers[] = ['type' => 'ghsa', 'name' => $source['remoteId'], 'value' => $source['remoteId'], 'url' => 'https://github.com/advisories/' . $source['remoteId']];
             }
         }
-        if (preg_match('{^GHSA-}i', $advisory->id) === 1 && !in_array($advisory->id, array_column($identifiers, 'value'), true)) {
-            $identifiers[] = ['type' => 'ghsa', 'name' => $advisory->id, 'value' => $advisory->id, 'url' => 'https://github.com/advisories/' . $advisory->id];
+        // The advisory's own identifier, at the site that publishes it; a CVE or GHSA id is already listed above.
+        $type = AdvisoryReference::identifierType($advisory->id);
+        if ($type !== null && !in_array($advisory->id, array_column($identifiers, 'value'), true)) {
+            $identifiers[] = ['type' => $type, 'name' => $advisory->id, 'value' => $advisory->id] + array_intersect_key(AdvisoryReference::source($advisory), ['url' => true]);
         }
-        $identifiers[] = ['type' => 'packagist_advisory', 'name' => $advisory->id, 'value' => $advisory->id, 'url' => 'https://packagist.org/security-advisories/' . $advisory->id];
 
         $links = [];
         if ($advisory->link !== null) {
