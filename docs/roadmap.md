@@ -129,8 +129,8 @@ Still open:
 - [ ] SonarQube itself in addition, for the complexity and duplication view a per-pull-request reviewer
   does not give (asked for, awaiting an answer)
 - [ ] remaining long methods (`InProcessSolver::solve`, `DbBuildCommand::execute`,
-  `HtmlRenderer::finding`, the planner's per-finding search) and the `PackageChange` kind constants
-  as an enum
+  `HtmlRenderer::finding`, the planner's per-finding search); the `PackageChange` kind constants
+  became the `ChangeKind` enum, the last string-constant set in the engine
 - [ ] **the dependency-path search is bounded in its output, not in its work** (the eighth review's
   tenth finding, the one left open). `MAX_PATHS` and `MAX_DEPTH` are applied after Composer has
   expanded the entire recursive ancestor tree, so a layered graph costs far more than the result

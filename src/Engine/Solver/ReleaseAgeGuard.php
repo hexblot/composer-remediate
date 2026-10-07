@@ -29,7 +29,7 @@ final class ReleaseAgeGuard
         $cutoff = $this->now->modify(sprintf('-%d days', $this->minAgeDays));
         $young = [];
         foreach ($diff->changes as $change) {
-            if ($change->kind === PackageChange::REMOVED) {
+            if ($change->kind === ChangeKind::Removed) {
                 continue;
             }
             $package = $after->get($change->packageName);
