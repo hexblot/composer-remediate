@@ -42,7 +42,7 @@ final class LockDiff
             $oldRef = $package->getSourceReference() ?? $package->getDistReference();
             $newRef = $new->getSourceReference() ?? $new->getDistReference();
             if ($oldRef !== null && $newRef !== null && $oldRef !== $newRef) {
-                $changes[] = new PackageChange($name, PackageChange::CHANGED, $package->getPrettyVersion() . '#' . substr($oldRef, 0, 7), $new->getPrettyVersion() . '#' . substr($newRef, 0, 7), $package->getVersion(), $new->getVersion(), VersionStep::Other);
+                $changes[] = new PackageChange($name, ChangeKind::Changed, $package->getPrettyVersion() . '#' . substr($oldRef, 0, 7), $new->getPrettyVersion() . '#' . substr($newRef, 0, 7), $package->getVersion(), $new->getVersion(), VersionStep::Other);
             }
         }
         foreach ($after->packages as $name => $package) {
@@ -71,14 +71,14 @@ final class LockDiff
     {
         $capabilities = [];
         foreach ($changes as $change) {
-            if ($change->kind === PackageChange::REMOVED) {
+            if ($change->kind === ChangeKind::Removed) {
                 continue;
             }
             $new = $after->get($change->packageName);
             if ($new === null) {
                 continue;
             }
-            $old = $change->kind === PackageChange::ADDED ? null : $before->get($change->packageName);
+            $old = $change->kind === ChangeKind::Added ? null : $before->get($change->packageName);
             array_push($capabilities, ...self::forPackage($change->packageName, $old, $new));
         }
 
@@ -169,13 +169,13 @@ final class LockDiff
     /** @return list<PackageChange> */
     public function added(): array
     {
-        return array_values(array_filter($this->changes, static fn (PackageChange $c): bool => $c->kind === PackageChange::ADDED));
+        return array_values(array_filter($this->changes, static fn (PackageChange $c): bool => $c->kind === ChangeKind::Added));
     }
 
     /** @return list<PackageChange> */
     public function removed(): array
     {
-        return array_values(array_filter($this->changes, static fn (PackageChange $c): bool => $c->kind === PackageChange::REMOVED));
+        return array_values(array_filter($this->changes, static fn (PackageChange $c): bool => $c->kind === ChangeKind::Removed));
     }
 
     /** @return list<PackageChange> */
@@ -204,7 +204,7 @@ final class LockDiff
     public function hasDowngrade(): bool
     {
         foreach ($this->changes as $change) {
-            if ($change->kind === PackageChange::DOWNGRADED) {
+            if ($change->kind === ChangeKind::Downgraded) {
                 return true;
             }
         }

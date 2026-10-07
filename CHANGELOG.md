@@ -5,6 +5,12 @@ All notable changes to this project are documented here. The format follows
 
 ## [Unreleased]
 
+### Changed
+
+- The kind of a package change (`added`, `removed`, `upgraded`, `downgraded`, `changed`) is the
+  `ChangeKind` enum rather than string constants on `PackageChange`, the last such set in the engine.
+  The JSON report prints the same values as before.
+
 [Unreleased]: https://github.com/hexblot/composer-remediate/compare/v0.11.0...HEAD
 
 ## [0.11.0] - 2026-09-29
