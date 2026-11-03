@@ -9,18 +9,9 @@ use Composer\Semver\VersionParser;
 
 final class PackageChange
 {
-    public const ADDED = 'added';
-    public const REMOVED = 'removed';
-    public const UPGRADED = 'upgraded';
-    public const DOWNGRADED = 'downgraded';
-    public const CHANGED = 'changed';
-
-    /**
-     * @param self::* $kind
-     */
     public function __construct(
         public readonly string $packageName,
-        public readonly string $kind,
+        public readonly ChangeKind $kind,
         public readonly ?string $fromPretty,
         public readonly ?string $toPretty,
         public readonly ?string $fromNormalized,
@@ -31,21 +22,21 @@ final class PackageChange
 
     public static function added(string $name, string $pretty, string $normalized): self
     {
-        return new self($name, self::ADDED, null, $pretty, null, $normalized, null);
+        return new self($name, ChangeKind::Added, null, $pretty, null, $normalized, null);
     }
 
     public static function removed(string $name, string $pretty, string $normalized): self
     {
-        return new self($name, self::REMOVED, $pretty, null, $normalized, null, null);
+        return new self($name, ChangeKind::Removed, $pretty, null, $normalized, null, null);
     }
 
     public static function between(string $name, string $fromPretty, string $fromNormalized, string $toPretty, string $toNormalized): self
     {
         $step = self::classify($fromNormalized, $toNormalized);
         if ($step === VersionStep::Other) {
-            $kind = self::CHANGED;
+            $kind = ChangeKind::Changed;
         } else {
-            $kind = Comparator::lessThan($toNormalized, $fromNormalized) ? self::DOWNGRADED : self::UPGRADED;
+            $kind = Comparator::lessThan($toNormalized, $fromNormalized) ? ChangeKind::Downgraded : ChangeKind::Upgraded;
         }
 
         return new self($name, $kind, $fromPretty, $toPretty, $fromNormalized, $toNormalized, $step);
@@ -77,15 +68,15 @@ final class PackageChange
 
     public function isVersionChange(): bool
     {
-        return $this->kind === self::UPGRADED || $this->kind === self::DOWNGRADED || $this->kind === self::CHANGED;
+        return $this->kind->isVersionChange();
     }
 
     public function describe(): string
     {
         return match ($this->kind) {
-            self::ADDED => sprintf('%s added (%s)', $this->packageName, $this->toPretty),
-            self::REMOVED => sprintf('%s removed (was %s)', $this->packageName, $this->fromPretty),
-            default => sprintf('%s %s -> %s', $this->packageName, $this->fromPretty, $this->toPretty),
+            ChangeKind::Added => sprintf('%s added (%s)', $this->packageName, $this->toPretty),
+            ChangeKind::Removed => sprintf('%s removed (was %s)', $this->packageName, $this->fromPretty),
+            ChangeKind::Upgraded, ChangeKind::Downgraded, ChangeKind::Changed => sprintf('%s %s -> %s', $this->packageName, $this->fromPretty, $this->toPretty),
         };
     }
 

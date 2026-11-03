@@ -8,8 +8,8 @@ use Composer\Package\Package;
 use PHPUnit\Framework\TestCase;
 use Remediate\Engine\Lock\LockSnapshot;
 use Remediate\Engine\Solver\CapabilityChange;
+use Remediate\Engine\Solver\ChangeKind;
 use Remediate\Engine\Solver\LockDiff;
-use Remediate\Engine\Solver\PackageChange;
 use Remediate\Engine\Solver\VersionStep;
 
 final class LockDiffTest extends TestCase
@@ -38,14 +38,14 @@ final class LockDiffTest extends TestCase
         self::assertSame(['a/down', 'a/gone', 'a/major', 'a/minor', 'a/new', 'a/patch'], $diff->changedNames());
         $down = $diff->changeFor('a/down');
         self::assertNotNull($down);
-        self::assertSame(PackageChange::DOWNGRADED, $down->kind);
+        self::assertSame(ChangeKind::Downgraded, $down->kind);
         self::assertSame(VersionStep::Minor, $down->step);
-        self::assertSame(PackageChange::REMOVED, $diff->changeFor('a/gone')?->kind);
+        self::assertSame(ChangeKind::Removed, $diff->changeFor('a/gone')?->kind);
         $major = $diff->changeFor('a/major');
         self::assertNotNull($major);
         self::assertSame(VersionStep::Major, $major->step);
         self::assertSame(VersionStep::Patch, $diff->changeFor('a/patch')?->step);
-        self::assertSame(PackageChange::ADDED, $diff->changeFor('a/new')?->kind);
+        self::assertSame(ChangeKind::Added, $diff->changeFor('a/new')?->kind);
         self::assertTrue($diff->hasMajorChange());
         self::assertTrue($diff->hasDowngrade());
         self::assertCount(1, $diff->added());
@@ -65,7 +65,7 @@ final class LockDiffTest extends TestCase
         $diff = LockDiff::between(LockSnapshot::fromPackages([$old], []), LockSnapshot::fromPackages([$new], []));
         $change = $diff->changeFor('a/b');
         self::assertNotNull($change, 'same version, different commit: a re-tagged release is a change');
-        self::assertSame(PackageChange::CHANGED, $change->kind);
+        self::assertSame(ChangeKind::Changed, $change->kind);
         self::assertSame(VersionStep::Other, $change->step);
         self::assertSame('1.2.3#aaaaaaa', $change->fromPretty);
         self::assertSame('1.2.3#bbbbbbb', $change->toPretty);
@@ -84,7 +84,7 @@ final class LockDiffTest extends TestCase
         $change = $diff->changeFor('a/b');
         self::assertNotNull($change);
         self::assertSame(VersionStep::Other, $change->step);
-        self::assertSame(PackageChange::CHANGED, $change->kind);
+        self::assertSame(ChangeKind::Changed, $change->kind);
         self::assertFalse($diff->hasMajorChange());
     }
 

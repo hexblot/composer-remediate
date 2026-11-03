@@ -217,7 +217,7 @@ final class JsonRenderer
     {
         return array_map(static fn ($c): array => [
             'package' => $c->packageName,
-            'kind' => $c->kind,
+            'kind' => $c->kind->value,
             'step' => $c->step?->value,
             'from' => $c->fromPretty,
             'to' => $c->toPretty,

@@ -195,7 +195,7 @@ final class HtmlRenderer
             }
             $h[] = '<details open><summary>Expected changes (' . $diff->count() . ')</summary><table class="changes"><thead><tr><th>Package</th><th>From</th><th>To</th><th>Kind</th></tr></thead><tbody>';
             foreach ($diff->changes as $change) {
-                $h[] = '<tr><td>' . self::e($change->packageName) . '</td><td>' . self::e($change->fromPretty ?? '—') . '</td><td>' . self::e($change->toPretty ?? '—') . '</td><td>' . self::e($change->kind . ($change->step !== null ? ', ' . $change->step->value : '')) . '</td></tr>';
+                $h[] = '<tr><td>' . self::e($change->packageName) . '</td><td>' . self::e($change->fromPretty ?? '—') . '</td><td>' . self::e($change->toPretty ?? '—') . '</td><td>' . self::e($change->kind->value . ($change->step !== null ? ', ' . $change->step->value : '')) . '</td></tr>';
             }
             $h[] = '</tbody></table></details>';
         }

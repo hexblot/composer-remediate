@@ -30,6 +30,7 @@ use Remediate\Engine\Plan\FindingPlan;
 use Remediate\Engine\Plan\Plan;
 use Remediate\Engine\Project\ProjectContext;
 use Remediate\Engine\Ranking\Ranker;
+use Remediate\Engine\Solver\ChangeKind;
 use Remediate\Engine\Solver\LockDiff;
 use Remediate\Engine\Solver\ReleaseAgeGuard;
 use Remediate\Engine\Solver\ScratchWorkspace;
@@ -971,7 +972,7 @@ final class Planner
         }
         $risk = [];
         foreach ($diff->changes as $change) {
-            if ($change->kind !== \Remediate\Engine\Solver\PackageChange::REMOVED && isset($stillVulnerable[$change->packageName])) {
+            if ($change->kind !== ChangeKind::Removed && isset($stillVulnerable[$change->packageName])) {
                 $risk[] = $change->packageName;
             }
         }

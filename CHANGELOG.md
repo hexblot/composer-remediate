@@ -38,6 +38,12 @@ path-search work bound, which stays on the roadmap as an accepted cost.
   listed once rather than again as a Packagist advisory, and the SARIF `helpUri` is the advisory's link,
   the publisher's page, or absent, never a guess.
 
+### Changed
+
+- The kind of a package change (`added`, `removed`, `upgraded`, `downgraded`, `changed`) is the
+  `ChangeKind` enum rather than string constants on `PackageChange`, the last such set in the engine.
+  The JSON report prints the same values as before.
+
 [Unreleased]: https://github.com/hexblot/composer-remediate/compare/v0.11.0...HEAD
 
 ## [0.11.0] - 2026-09-29
