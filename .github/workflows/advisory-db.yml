@@ -1,28 +1,28 @@
-# Reference shared advisory database.
+# The legacy location of the advisory database.
 #
-# Builds the SQLite advisory database from Packagist, OSV, FriendsOfPHP and Drupal.org every six hours and publishes
-# it as a GitHub release ONLY when the logical dataset changed (the dataset hash differs from the one
-# in the current `latest.json`). Releases are tagged db-YYYY-MM-DD.HH (a .N suffix disambiguates
-# several publications in one hour). Each release carries the database, its sha256, latest.json, and
-# a build-provenance attestation. Users point at the stable URL of `latest.json` or the database:
+# The database is built and published by its release channel, https://github.com/hexblot/composer-remediate-db.
+# Clients up to 0.11 were released with this repository's `advisory-db-latest` release as their default
+# source, so this workflow keeps that release current from the channel: it fetches what the channel
+# published, checks the checksum and the build-provenance attestation, and republishes the same bytes
+# here. Nothing is built here, no dated releases are created here, and this workflow is removed when
+# 1.0 is released.
 #
 #   https://github.com/hexblot/composer-remediate/releases/download/advisory-db-latest/advisories.sqlite
-#
-# The `advisory-db-latest` release is a moving pointer updated alongside each dated release.
 name: advisory-db
 
 on:
   schedule:
-    # Every six hours. Publication only happens when the dataset hash moved, and clients confirm their
-    # copy by content and report its age, so a publication a few hours behind the feeds costs nothing
-    # that hourly polling (about 70 job-minutes a day) would buy back.
-    - cron: '17 */6 * * *'
+    # Shortly after the channel's own schedule (17 */6), so a new publication is mirrored within the hour.
+    - cron: '47 */6 * * *'
   workflow_dispatch:
     inputs:
       force:
-        description: Publish even when the dataset hash is unchanged
+        description: Republish even when the mirrored copy already carries the channel's sha256
         type: boolean
         default: false
+
+env:
+  CHANNEL: hexblot/composer-remediate-db
 
 permissions: {}
 
@@ -30,220 +30,79 @@ concurrency:
   group: advisory-db
   cancel-in-progress: false
 
-# The build holds no credentials that can change anything. It resolves Composer dependencies, runs this
-# project's own code and reads three upstream feeds, none of which should ever be a step away from the
-# token that publishes a release. Everything it produces is handed to the publish job as an artifact,
-# and that job runs nothing but the attestation action and `gh`.
 jobs:
-  build:
+  mirror:
     runs-on: ubuntu-latest
-    # A workflow_dispatch from another branch runs that branch's copy of this file, so nothing written
-    # here can stop it on its own. The `advisory-db` environment's deployment-branch policy (main only)
-    # is enforced by GitHub before the publish job starts, whatever the workflow says; the ref check
-    # here is only a clearer error for an accidental dispatch from a branch.
     if: github.ref == 'refs/heads/main'
+    # The environment's deployment-branch policy (main only) is enforced by GitHub before this job
+    # starts; it is the only job, and it writes nothing but the one release.
+    environment: advisory-db
     permissions:
-      contents: read
-    outputs:
-      changed: ${{ steps.compare.outputs.changed }}
-      version: ${{ steps.version.outputs.version }}
-      hash: ${{ steps.build.outputs.hash }}
+      contents: write       # gh release upload / edit on advisory-db-latest
     steps:
-      - uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7.0.1
-        with:
-          persist-credentials: false
-      - uses: shivammathur/setup-php@f3e473d116dcccaddc5834248c87452386958240 # 2.37.2
-        with:
-          php-version: '8.4'
-          extensions: pdo_sqlite, zip
-          tools: composer:v2
-      - name: Install the plugin from this checkout
-        run: |
-          composer global config --no-plugins repositories.remediate path "$GITHUB_WORKSPACE"
-          composer global config --no-plugins allow-plugins.hexblot/composer-remediate true
-          composer global require hexblot/composer-remediate:@dev --no-progress --no-scripts
-      - name: Build
-        run: |
-          mkdir -p out
-          composer remediate:db-build --output=out/advisories.sqlite
-          php -r '$m = (new PDO("sqlite:out/advisories.sqlite"))->query("SELECT key, value FROM meta")->fetchAll(PDO::FETCH_KEY_PAIR); file_put_contents("out/meta.json", json_encode($m, JSON_PRETTY_PRINT));'
-          jq -r .dataset_hash out/meta.json > out/hash
-          (cd out && sha256sum advisories.sqlite > advisories.sqlite.sha256)   # digest + filename, so `sha256sum -c` works
-          echo "hash=$(cat out/hash)" >> "$GITHUB_OUTPUT"
-        id: build
-      - name: Compare with the published dataset
+      - name: Compare the channel's publication with the mirrored copy
         id: compare
         env:
           GH_TOKEN: ${{ github.token }}
           GH_REPO: ${{ github.repository }}
-          # Expressions are passed through the environment, never interpolated into the script.
-          BUILD_HASH: ${{ steps.build.outputs.hash }}
           FORCE_INPUT: ${{ inputs.force }}
         run: |
+          gh release download advisory-db-latest --repo "$CHANNEL" --pattern latest.json --dir channel
           set +e
-          gh release download advisory-db-latest --pattern latest.json --dir prev 2>/dev/null
+          gh release download advisory-db-latest --pattern latest.json --dir mirrored 2>/dev/null
           set -e
-          previous=$(jq -r '.dataset_hash // empty' prev/latest.json 2>/dev/null || true)
-          echo "previous=$previous" >> "$GITHUB_OUTPUT"
-          if [ "$previous" = "$BUILD_HASH" ] && [ "$FORCE_INPUT" != "true" ]; then
-            echo "changed=false" >> "$GITHUB_OUTPUT"; echo "Dataset unchanged ($previous); nothing to publish."
+          published=$(jq -r '.sha256 // empty' channel/latest.json)
+          mirrored=$(jq -r '.sha256 // empty' mirrored/latest.json 2>/dev/null || true)
+          test -n "$published"
+          echo "version=$(jq -r '.version // empty' channel/latest.json)" >> "$GITHUB_OUTPUT"
+          if [ "$published" = "$mirrored" ] && [ "$FORCE_INPUT" != "true" ]; then
+            echo "changed=false" >> "$GITHUB_OUTPUT"; echo "The mirrored copy already carries $published; nothing to do."
           else
-            echo "changed=true" >> "$GITHUB_OUTPUT"
+            echo "changed=true" >> "$GITHUB_OUTPUT"; echo "The channel publishes $published, the mirror carries ${mirrored:-nothing}."
           fi
-      # The per-source guards refuse a feed that answers with nothing at all. This catches the case
-      # they cannot: a feed that answers with *some* of its data. The count that would have been
-      # published is compared against the count that is published now, and a material drop stops the
-      # build rather than shipping a shrunken database, which would be checksum-verified, attested,
-      # fresh by every measure a client has, and quietly report vulnerable locks clean. A drop that is
-      # real (an upstream withdrawing records) is published by dispatching this workflow with `force`.
-      - name: Refuse to publish a shrinking dataset
-        if: steps.compare.outputs.changed == 'true' && inputs.force != true
-        env:
-          MAX_DROP_PERCENT: '5'
-        run: |
-          previous=$(jq -r '.advisory_count // empty' prev/latest.json 2>/dev/null || true)
-          current=$(jq -r '.advisory_count' out/meta.json)
-          if [ -z "$previous" ] || [ "$previous" -le 0 ]; then
-            echo "No published advisory_count to compare against; publishing $current."
-            exit 0
-          fi
-          floor=$(( previous - (previous * MAX_DROP_PERCENT / 100) ))
-          echo "Published $previous advisories, built $current, floor $floor."
-          if [ "$current" -lt "$floor" ]; then
-            echo "::error::The build produced $current advisories against $previous published, a drop of more than ${MAX_DROP_PERCENT}%. A feed has probably answered with part of its data. Nothing is published; the current database stays current. Dispatch with force=true if the drop is real."
-            exit 1
-          fi
-      - name: Choose the release version
+      - name: Fetch the publication
         if: steps.compare.outputs.changed == 'true'
-        id: version
         env:
           GH_TOKEN: ${{ github.token }}
-          GH_REPO: ${{ github.repository }}
         run: |
-          base="db-$(date -u +%Y-%m-%d.%H)"
-          version="$base"; n=1
-          while gh release view "$version" >/dev/null 2>&1; do version="$base.$n"; n=$((n+1)); done
-          echo "version=$version" >> "$GITHUB_OUTPUT"
-      - name: Write latest.json
+          rm -rf out && mkdir out
+          gh release download advisory-db-latest --repo "$CHANNEL" --dir out \
+            --pattern advisories.sqlite --pattern advisories.sqlite.sha256 --pattern latest.json
+      # What is republished here is vouched for by the channel, not by this workflow: the bytes have to
+      # be the ones the channel's latest.json names, and the channel's own build has to have attested
+      # them. A mirror that re-signed whatever it downloaded would add a signature and no assurance.
+      - name: Check the checksum and the channel's attestation
         if: steps.compare.outputs.changed == 'true'
-        env:
-          VERSION: ${{ steps.version.outputs.version }}
-          BUILD_HASH: ${{ steps.build.outputs.hash }}
-          PREVIOUS: ${{ steps.compare.outputs.previous }}
-          REPOSITORY: ${{ github.repository }}
-        run: |
-          jq -n --arg v "$VERSION" --arg h "$BUILD_HASH" \
-                --arg s "$(cut -d" " -f1 out/advisories.sqlite.sha256)" --arg p "$PREVIOUS" --arg r "$REPOSITORY" \
-                --argjson m "$(cat out/meta.json)" \
-                '{version: $v, database: "advisories.sqlite", sha256: $s, dataset_hash: $h, published_at: $m.built_at,
-                  advisory_count: ($m.advisory_count|tonumber), conflict_count: ($m.conflict_count|tonumber),
-                  sources: ($m.sources|fromjson), previous: (if $p == "" then null else $p end),
-                  url: ("https://github.com/" + $r + "/releases/download/" + $v + "/advisories.sqlite")}' > out/latest.json
-          cat out/latest.json
-      - name: Hand the artefacts to the publish job
-        if: steps.compare.outputs.changed == 'true'
-        uses: actions/upload-artifact@043fb46d1a93c77aae656e7c1c64a875d1fc6a0a # v7.0.1
-        with:
-          name: advisory-db
-          path: |
-            out/advisories.sqlite
-            out/advisories.sqlite.sha256
-            out/latest.json
-          retention-days: 1
-          if-no-files-found: error
-      # This step used to read two different facts off one number. "Publication is broken" and "the
-      # feeds have not moved" both end in an ageing published database, and only the second is normal.
-      #
-      # The first of them cannot reach here. Broken publication means the dataset changed, and a
-      # changed dataset sends the publish job, whose failure is already a red run. What reaches this
-      # step is a build that read all three feeds, built a database and compared it against the
-      # published copy it fetched — positive evidence that the pipeline works, arriving at the same
-      # dataset because upstream published nothing new. A weekend without a PHP advisory is ordinary,
-      # and failing on it taught whoever reads these runs to close the issue without looking, which
-      # costs more than the signal was worth.
-      #
-      # What stays worth a red run is a quiet spell long enough to be implausible: three feeds standing
-      # still for a fortnight is likelier to mean this build has stopped seeing them than that the
-      # ecosystem has stopped publishing. Between the two, a warning, which says the data is ageing
-      # without claiming anything is broken.
-      - name: Refuse to go quiet
-        if: steps.compare.outputs.changed != 'true'
-        env:
-          WARN_AGE_HOURS: '48'
-          MAX_AGE_HOURS: '336'
-        run: |
-          published=$(jq -r '.published_at // empty' prev/latest.json 2>/dev/null || true)
-          if [ -z "$published" ]; then
-            echo "::warning::No published latest.json to compare against; nothing has been published yet."
-            exit 0
-          fi
-          age=$(( ( $(date -u +%s) - $(date -u -d "$published" +%s) ) / 3600 ))
-          echo "Published database is ${age}h old (${published}). This run read the feeds and built the same dataset, so there is nothing to publish."
-          if [ "$age" -gt "$MAX_AGE_HOURS" ]; then
-            echo "::error::The published advisory database is ${age}h old and every run since has built the same dataset from the feeds. Three feeds standing still for this long is less likely than this build no longer seeing them."
-            exit 1
-          fi
-          if [ "$age" -gt "$WARN_AGE_HOURS" ]; then
-            echo "::warning::The published advisory database is ${age}h old; the feeds have published nothing new since. The pipeline is working: this run rebuilt the same dataset."
-          fi
-
-  publish:
-    needs: build
-    if: needs.build.outputs.changed == 'true'
-    runs-on: ubuntu-latest
-    # The environment's deployment-branch policy (main only) is enforced by GitHub before this job
-    # starts, and it is the only job that can write to the repository.
-    environment: advisory-db
-    permissions:
-      contents: write       # gh release create / upload
-      id-token: write       # build-provenance attestation
-      attestations: write
-    steps:
-      - uses: actions/download-artifact@3e5f45b2cfb9172054b4087a40e8e0b5a5461e7c # v8.0.1
-        with:
-          name: advisory-db
-          path: out
-      # The build job is the one that runs third-party code, so what it hands over is checked before
-      # anything vouches for it. Attesting first would put a valid provenance signature on whatever
-      # arrived, which makes a bad artefact look more trustworthy than an unsigned one, not less.
-      - name: Check the artefact against its own checksum
         working-directory: out
+        env:
+          GH_TOKEN: ${{ github.token }}
         run: |
           sha256sum -c advisories.sqlite.sha256
           test "$(jq -r .sha256 latest.json)" = "$(cut -d' ' -f1 advisories.sqlite.sha256)"
-      - name: Attest provenance
-        uses: actions/attest-build-provenance@4d101475d8b20a2381f78447822ac1eab6504dd8 # v4.2.2
-        with:
-          subject-path: out/advisories.sqlite
-      - name: Publish dated release and move the latest pointer
+          gh attestation verify advisories.sqlite --repo "$CHANNEL"
+      - name: Republish at the legacy location
+        if: steps.compare.outputs.changed == 'true'
         env:
           GH_TOKEN: ${{ github.token }}
-          # This job never checks the repository out, so gh cannot read the remote to learn which
-          # repository it is acting on. Without this it fails with "not a git repository".
+          # No checkout here, so gh cannot read the remote to learn which repository it acts on.
           GH_REPO: ${{ github.repository }}
-          VERSION: ${{ needs.build.outputs.version }}
-          BUILD_HASH: ${{ needs.build.outputs.hash }}
-          REPOSITORY: ${{ github.repository }}
+          VERSION: ${{ steps.compare.outputs.version }}
         run: |
-          v="$VERSION"
-          gh release create "$v" out/advisories.sqlite out/advisories.sqlite.sha256 out/latest.json \
-            --title "Advisory database $v" --latest=false \
-            --notes "Advisory database built from Packagist, OSV, FriendsOfPHP and Drupal.org. Dataset hash $BUILD_HASH. Use with \`composer remediate --database-location=https://github.com/$REPOSITORY/releases/download/$v/advisories.sqlite\`. Aggregated advisory data; see docs/advisory-database.md for source licences."
+          notes="Moving pointer to the newest advisory database ($VERSION), mirrored from https://github.com/$CHANNEL, which is where the database is built and published. This location is kept current for clients up to composer-remediate 0.11 and stops being updated when composer-remediate 1.0 is released. Newer clients read https://github.com/$CHANNEL/releases/download/advisory-db-latest/advisories.sqlite by default, and a pinned CI configuration should move to that URL now. Dated releases are no longer created here."
           if gh release view advisory-db-latest >/dev/null 2>&1; then
             gh release upload advisory-db-latest out/advisories.sqlite out/advisories.sqlite.sha256 out/latest.json --clobber
-            gh release edit advisory-db-latest --notes "Moving pointer to the newest advisory database ($v). Prefer the dated release URL in pinned CI configurations."
+            gh release edit advisory-db-latest --notes "$notes"
           else
             gh release create advisory-db-latest out/advisories.sqlite out/advisories.sqlite.sha256 out/latest.json \
-              --title "Advisory database (latest)" --prerelease \
-              --notes "Moving pointer to the newest advisory database ($v). Prefer the dated release URL in pinned CI configurations."
+              --title "Advisory database (latest, mirrored)" --prerelease --notes "$notes"
           fi
 
-  # A scheduled workflow fails quietly: nobody is watching the Actions tab at 04:00, and GitHub's own
-  # notification for a failed cron run is easy to miss. This turns any failure above into an issue,
-  # and keeps using the same one rather than filing a fresh issue every six hours.
+  # A scheduled workflow fails quietly. A mirror that stops is a stale default for every client up to
+  # 0.11, which confirm their copy by content and report its age, so nobody is told a stale database is
+  # current, but it does go stale. One issue, commented on rather than refiled.
   alert:
-    needs: [build, publish]
-    if: always() && (needs.build.result == 'failure' || needs.publish.result == 'failure')
+    needs: mirror
+    if: always() && needs.mirror.result == 'failure'
     runs-on: ubuntu-latest
     permissions:
       issues: write
@@ -253,17 +112,13 @@ jobs:
           GH_TOKEN: ${{ github.token }}
           GH_REPO: ${{ github.repository }}
           RUN_URL: ${{ github.server_url }}/${{ github.repository }}/actions/runs/${{ github.run_id }}
-          BUILD_RESULT: ${{ needs.build.result }}
-          PUBLISH_RESULT: ${{ needs.publish.result }}
         run: |
-          title="Advisory database publishing is failing"
-          body="The \`advisory-db\` workflow failed: build \`$BUILD_RESULT\`, publish \`$PUBLISH_RESULT\`.
+          title="The advisory database mirror is failing"
+          body="The \`advisory-db\` workflow, which mirrors the release channel's publication to this repository's \`advisory-db-latest\` release, failed.
 
           $RUN_URL
 
-          Until this is fixed the published database stops being updated. Clients confirm their copy by
-          content and report its age, so nobody is told a stale database is current, but it does go stale.
-          Close this issue once a run has published again."
+          Until this is fixed the legacy location stops being updated; clients up to 0.11 confirm their copy by content and report its age. Close this issue once a run has mirrored again."
           existing=$(gh issue list --state open --label advisory-db --json number --jq '.[0].number')
           if [ -n "$existing" ]; then
             gh issue comment "$existing" --body "$body"

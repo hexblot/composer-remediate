@@ -124,6 +124,12 @@ advisory database this project publishes is watched rather than assumed to be wo
   rather than a correctness or safety flaw, to stay open through the beta. The two repairs that were
   made structural: the binary takes its commands from the plugin's own provider, and the finding key is
   read back by the class that writes it
+- [x] the advisory database's build and publication moved out of this repository into
+  [composer-remediate-db](https://github.com/hexblot/composer-remediate-db), a release channel that
+  depends on this package and that anyone can fork to run their own, with the feeds and the private
+  advisories of their choosing. The plugin keeps the format, the reader and `remediate:db-status`,
+  reads the channel by default, and the old location is mirrored from it until 1.0. Dated `db-*`
+  releases no longer appear among this repository's releases
 - deliberately not in 1.0: Phase 7 below. It is a new capability, not a hole in this one
 
 ## Assurance *(ongoing, alongside the phases)*
@@ -136,7 +142,7 @@ Still open:
 
 - [ ] SonarQube itself in addition, for the complexity and duplication view a per-pull-request reviewer
   does not give (asked for, awaiting an answer)
-- [ ] remaining long methods (`InProcessSolver::solve`, `DbBuildCommand::execute`,
+- [ ] remaining long methods (`InProcessSolver::solve`,
   `HtmlRenderer::finding`, the planner's per-finding search); the `PackageChange` kind constants
   became the `ChangeKind` enum, the last string-constant set in the engine
 - [ ] **the dependency-path search is bounded in its output, not in its work** (the eighth review's

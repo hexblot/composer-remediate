@@ -71,7 +71,7 @@ final class DatabaseLocatorTest extends TestCase
     }
 
     /** The bytes of a minimal advisory database with the given metadata. */
-    /** @param list<string> $sourceNames the build's source names as db-build records them (`local:<file>` for --include files) */
+    /** @param list<string> $sourceNames the build's source names as the builder records them (`local:<file>` for private files) */
     private static function database(string $datasetHash, string $builtAt, array $sourceNames = ['Packagist']): string
     {
         $tmp = tempnam(sys_get_temp_dir(), 'remediate-db-');
@@ -523,22 +523,14 @@ final class DatabaseLocatorTest extends TestCase
         self::assertNotContains(self::URL, $requests);
         self::assertStringContainsString('private advisories (internal.json)', $locator->warnings()[0]);
         self::assertStringContainsString('public advisories published since it was built 30 hours ago are unknown', $locator->warnings()[0]);
-        self::assertStringContainsString('remediate:db-build --if-stale and the same --include files', $locator->warnings()[0]);
+        self::assertStringContainsString('a new build from the same private files', $locator->warnings()[0]);
 
-        // --rebuild-database builds with the defaults, which would drop the private advisories: kept too.
-        $defaults = new DatabaseLocator($this->composer(), $this->downloader($responses));
-        $rebuilt = false;
-        self::assertSame(Freshness::Unconfirmed, $defaults->locate($this->settings($defaults), static function () use (&$rebuilt): void {
-            $rebuilt = true;
-        })?->freshness);
-        self::assertFalse($rebuilt);
-
-        // db-build --if-stale with the same --include files is the refresh that keeps them.
+        // A newer build from every public feed and the same private files, placed at the path, is the
+        // refresh that keeps them: a local build newer than the publication is current on its own.
+        $refreshed = self::database('mine2', self::hoursAgo(0), [...self::FULL, 'local:internal.json']);
+        file_put_contents($this->path(), $refreshed);
         $complete = new DatabaseLocator($this->composer(), $this->downloader($responses));
-        $refreshed = self::database('mine2', self::hoursAgo(0), ['Packagist', 'local:internal.json']);
-        self::assertSame(Freshness::Rebuilt, $complete->locate($this->settings($complete), static function (string $path) use ($refreshed): void {
-            file_put_contents($path, $refreshed);
-        }, true)?->freshness);
+        self::assertSame(Freshness::Confirmed, $complete->locate($this->settings($complete))?->freshness);
         self::assertStringEqualsFile($this->path(), $refreshed);
     }
 
@@ -909,33 +901,6 @@ final class DatabaseLocatorTest extends TestCase
         self::assertSame([], $locator->warnings(), 'a source that is skipped over is not a warning when a later one answers');
     }
 
-    public function testARebuildCallbackReplacesTheDownloadWhenTheCopyIsStale(): void
-    {
-        $stale = self::database('h0', self::hoursAgo(48));
-        $published = self::database('h1', self::hoursAgo(1));
-        mkdir(dirname($this->path()), 0700, true);
-        file_put_contents($this->path(), $stale);
-        $locator = new DatabaseLocator($this->composer(), $this->downloader(self::published($published, 'h1', self::hoursAgo(1)), $requests));
-        $rebuilt = self::database('h1', self::hoursAgo(0));
-
-        $located = $locator->locate($this->settings($locator), static function (string $path) use ($rebuilt): void {
-            file_put_contents($path, $rebuilt);
-        });
-
-        self::assertSame(Freshness::Rebuilt, $located?->freshness);
-        self::assertStringEqualsFile($this->path(), $rebuilt);
-        self::assertNotContains(self::URL, $requests);
-
-        // Unreachable publisher and no copy: build rather than run without a database.
-        @unlink($this->path());
-        $isolated = new DatabaseLocator($this->composer(), $this->downloader([]));
-        $located = $isolated->locate($this->settings($isolated), static function (string $path) use ($rebuilt): void {
-            file_put_contents($path, $rebuilt);
-        });
-        self::assertSame(Freshness::Rebuilt, $located?->freshness);
-        self::assertStringContainsString('unreachable', $located->provenance);
-    }
-
     public function testALocalPathAsTheSourceIsReadAsItIs(): void
     {
         $file = $this->cacheDir . '/own.sqlite';
@@ -963,7 +928,7 @@ final class DatabaseLocatorTest extends TestCase
 
         $sourceOnly = $locator->settings('https://mirror.test/a.sqlite');
         self::assertSame(['https://mirror.test/a.sqlite'], $sourceOnly->sources);
-        self::assertStringStartsWith('https://github.com/hexblot/composer-remediate/releases/download/advisory-db-latest/', DatabaseSettings::DEFAULT_SOURCE);
+        self::assertStringStartsWith('https://github.com/hexblot/composer-remediate-db/releases/download/advisory-db-latest/', DatabaseSettings::DEFAULT_SOURCE);
         self::assertSame($this->path(), $sourceOnly->path, 'a source never moves the path');
         self::assertFalse($sourceOnly->pathConfigured);
         self::assertTrue($sourceOnly->sourcesConfigured);

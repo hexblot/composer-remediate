@@ -1,11 +1,13 @@
 # Advisory database
 
 The advisory database is a single SQLite file built from four live sources (Packagist, OSV,
-FriendsOfPHP, Drupal.org) and enriched with exploit data (EPSS, CISA KEV). By default `composer remediate` keeps
-a copy of the database this project publishes at a fixed path and reads it; you can also build the
-same database yourself, add private advisories, share it inside a team, or point the tool at your own
-mirror. It makes runs fully offline, lets you pin the advisory state for reproducible results, and
-gives every report the same exploit data and coverage-gap bookkeeping.
+FriendsOfPHP, Drupal.org) and enriched with exploit data (EPSS, CISA KEV). It is built and published
+by a release channel of its own, [composer-remediate-db](https://github.com/hexblot/composer-remediate-db),
+and by default `composer remediate` keeps a copy of what that channel publishes at a fixed path and
+reads it. You can also build the same database yourself with the channel's build command, add private
+advisories, share it inside a team, or point the tool at your own mirror or your own channel. It makes
+runs fully offline, lets you pin the advisory state for reproducible results, and gives every report
+the same exploit data and coverage-gap bookkeeping.
 
 ## The default: a copy kept current
 
@@ -17,7 +19,7 @@ keeps the default source.
 | Setting | Option | Environment | `composer.json` | Default |
 |---|---|---|---|---|
 | Path: the file kept current and read | `--database-path` | `REMEDIATE_DATABASE_PATH` | `extra.remediate.database_path` | `<composer cache dir>/remediate/advisories.sqlite` |
-| Source: where it comes from | `--database-location` | `REMEDIATE_DATABASE` | `extra.remediate.database` (string or list) | this project's `advisory-db-latest` release |
+| Source: where it comes from | `--database-location` | `REMEDIATE_DATABASE` | `extra.remediate.database` (string or list) | the release channel's `advisory-db-latest` release |
 | Maximum age of an unconfirmed copy | `--database-max-age` | `REMEDIATE_DATABASE_MAX_AGE` | `extra.remediate.database_max_age` | none |
 
 On every run the file at the path is checked against the source:
@@ -26,14 +28,13 @@ On every run the file at the path is checked against the source:
    one is asked for its `<url>.sha256` sidecar instead. Both are a few bytes.
 2. A local file with the **same sha256** is the published database itself. One with the **same dataset
    hash** is a local build of the same data. One **built after** the publication is a newer local
-   build (yours, with `--include` perhaps). Each of those is current and used as it is, except that a
-   local build counts only if it was built from every public feed the publication lists in
-   `latest.json` (Packagist, OSV, FriendsOfPHP and Drupal.org for this project's database; a mirror
-   that publishes only a checksum is held to those four). A build from one feed would answer "not affected" for
-   every package the others know about.
+   build (yours, with private advisories perhaps). Each of those is current and used as it is, except
+   that a local build counts only if it was built from every public feed the publication lists in
+   `latest.json` (Packagist, OSV, FriendsOfPHP and Drupal.org for the reference channel; a mirror
+   that publishes only a checksum is held to those four). A build from one feed would answer "not
+   affected" for every package the others know about.
 3. Anything else is stale, or missing, and is replaced by a verified download written beside the path
-   and moved into place. `--rebuild-database` (or `remediate:db-build --if-stale`) builds it from the
-   sources instead of downloading.
+   and moved into place.
 4. When no source can be reached, the copy is used and the report says so with the copy's age. With
    `--database-max-age`, a copy older than that fails the run (exit 4) instead: a broken network must
    not silently turn into stale coverage. `--offline` uses the copy without any check.
@@ -98,21 +99,26 @@ precisely because you do not trust it. Its `extra.remediate` settings are honour
   metadata nor as the fallback when the new source cannot be reached: switching sources replaces it.
   The record that marks a copy as downloaded names the bytes it describes, so nothing a publisher
   writes into a database (build time, source names) can make its download pass for a local build.
-- A local build that includes private advisories (`db-build --include=…`) is never replaced by a
-  download, even when the published database is newer: the report says the copy is kept and that
-  public advisories published since are unknown, and `remediate:db-build --if-stale` with the same
-  `--include` files refreshes it. `--rebuild-database` on `remediate`, which builds with the defaults,
-  keeps such a copy too. Building over a previously downloaded copy at the same path makes it a local
-  build (the download's status record is retired), so the protection applies from the first rebuild.
-  If such a build lacks a public feed the publication is built from, it can neither be kept nor
-  replaced without a decision: the run stops with exit `4` and names the missing feeds. Rebuild it with
-  the same `--include` files, move it away, or pass `--database-location=<path>` to read it as it is.
+- A local build that includes private advisories (built with `--include=…`, see below) is never
+  replaced by a download, even when the published database is newer: the report says the copy is kept
+  and that public advisories published since are unknown, and a new build from the same private files,
+  placed at the path, refreshes it. Building over a previously downloaded copy at the same path makes
+  it a local build (the download's status record is retired), so the protection applies from the first
+  build. If such a build lacks a public feed the publication is built from, it can neither be kept nor
+  replaced without a decision: the run stops with exit `4` and names the missing feeds. Build it again
+  with the same private files, move it away, or pass `--database-location=<path>` to read it as it is.
 
 ## Build it
 
+The build lives in the release channel, [composer-remediate-db](https://github.com/hexblot/composer-remediate-db),
+which depends on this plugin for the database format and carries the feed readers, the build command
+and the publishing workflow. Clone it and run the same command the channel runs:
+
 ```bash
-composer remediate:db-build
-composer remediate:db-build --output=advisories.sqlite --source=osv --source=friendsofphp
+git clone https://github.com/hexblot/composer-remediate-db.git && cd composer-remediate-db
+composer install
+bin/build-advisory-db --output=advisories.sqlite
+bin/build-advisory-db --output=advisories.sqlite --source=osv --source=friendsofphp
 ```
 
 Sources (all four by default):
@@ -132,16 +138,15 @@ Where sources disagree, matching uses the union of their ranges: a version any s
 is treated as affected.
 
 A built database is created readable by its owner only (`0600`), and a directory the build has to
-create for it is `0700`: a build with `--include` carries private advisories, and the default path is a
-cache directory other users of the machine can often list. A database meant to be shared is copied or
-published deliberately, with whatever permissions that copy should have.
+create for it is `0700`: a build with `--include` carries private advisories. A database meant to be
+shared is copied or published deliberately, with whatever permissions that copy should have.
 
-The default output path is the database path above, so `composer remediate` reads the build on its
-next run and the freshness check treats it as a local build. A build takes well under a minute and
-the file is a few megabytes. A build with no options reproduces the database this project publishes:
-the release workflow runs the same command with the same defaults, so the dataset hashes agree when
-the feeds have not moved in between. `--if-stale` runs the freshness check first and skips the build
-when the file is current.
+A build with no options reproduces the database the reference channel publishes: its workflow runs
+the same command with the same defaults, so the dataset hashes agree when the feeds have not moved in
+between. A build takes well under a minute and the file is a few megabytes. Point `composer remediate`
+at it with `--database-location=<path>` to read it as it is, or write it to the database path
+(`--output=$(composer config cache-dir)/remediate/advisories.sqlite`) so the next run finds it there
+and the freshness check treats it as a local build.
 
 ### Private advisories
 
@@ -166,12 +171,13 @@ in a JSON file in the Packagist API shape and are merged into the build with `--
 ```
 
 ```bash
-composer remediate:db-build --include=security/private-advisories.json
+bin/build-advisory-db --output=advisories.sqlite --include=security/private-advisories.json
 ```
 
 A private record that carries a public identifier (a `cve` field, or a GHSA id in `sources`) merges
 with the public record for that advisory; otherwise it stays separate. The `source` table records it
-as `local:<file name>`.
+as `local:<file name>`. A channel of your own (a fork, see [sharing a database](#sharing-a-database))
+carries such files in every database it publishes.
 
 ### Exploit data: EPSS and CISA KEV
 
@@ -197,7 +203,7 @@ SARIF tags KEV-listed rules `known-exploited`, and the CycloneDX SBOM attaches t
 properties. A database built without exploit data (or before this feature) still works; findings
 are then ordered by severity alone and the report's advisory source says `no exploit data`.
 
-The dataset hash that decides whether the [reference instance](#the-reference-instance) republishes
+The dataset hash that decides whether the [reference channel](#the-reference-channel) republishes
 includes which CVEs are KEV-listed (a new listing changes what to fix first) but not EPSS scores,
 which drift daily for most CVEs. Build locally when you need today's scores.
 
@@ -245,7 +251,7 @@ the package is treated as unaffected by that record, and the report says so. A l
 and no findings exits `4` (advisory data unavailable) rather than `0`: the source cannot vouch for it.
 `--accept-coverage-gaps` restores exit `0` once the gaps have been read; the JSON report carries
 `coverage_gaps` and `coverage_gaps_accepted`. `remediate:db-status` lists the gaps. Databases built
-before gap tracking existed are flagged as such and count as a gap; rebuild them.
+before gap tracking existed are flagged as such and count as a gap; replace them with a current build.
 
 A gap can also name no package at all. A record whose subject cannot be read, because it names no
 package or names one no lock file could hold, might have been about anything you depend on, so it is
@@ -267,8 +273,8 @@ ones each name the one package they are about.
 
 Private advisories are different: a record in an `--include` file that cannot be interpreted fails
 the build, the same way an unparsable `--advisories-file` fails a run, because that data is yours to
-fix. Every option of both commands is listed
-in the [CLI reference](cli-reference.md).
+fix. Every option of the plugin's commands is listed in the [CLI reference](cli-reference.md); the
+build command documents its own with `bin/build-advisory-db --help`.
 
 ## Sharing a database
 
@@ -277,32 +283,46 @@ server or release page, and every developer and pipeline points at the URL. Publ
 when the **dataset hash** changes: it covers identifiers, aliases, ranges and withdrawals, but not
 fetch timestamps, so an unchanged advisory set produces the same hash across builds.
 
-### The reference instance
+The simplest way to run that job is to fork the release channel. Its README says what to change:
+which feeds to read, which private files to carry, and one environment to create so that only the
+main branch can publish. The fork then publishes releases of the same shape as the reference
+channel, with the same checksums and attestation, and your projects point at its `advisory-db-latest`
+URL.
 
-This project publishes a database built the same way, refreshed every six hours and released **only when the
-dataset hash changes**, as GitHub releases named `db-YYYY-MM-DD.HH` (a `.N` suffix disambiguates
-several publications within one hour). A moving pointer release, `advisory-db-latest`, always holds
-the newest files:
+### The reference channel
+
+[composer-remediate-db](https://github.com/hexblot/composer-remediate-db) publishes a database built
+with the defaults, refreshed every six hours and released **only when the dataset hash changes**, as
+GitHub releases named `db-YYYY-MM-DD.HH` (a `.N` suffix disambiguates several publications within one
+hour). A moving pointer release, `advisory-db-latest`, always holds the newest files:
 
 ```text
-https://github.com/hexblot/composer-remediate/releases/download/advisory-db-latest/advisories.sqlite
-https://github.com/hexblot/composer-remediate/releases/download/advisory-db-latest/latest.json
-https://github.com/hexblot/composer-remediate/releases/download/db-2026-09-09.15/advisories.sqlite
+https://github.com/hexblot/composer-remediate-db/releases/download/advisory-db-latest/advisories.sqlite
+https://github.com/hexblot/composer-remediate-db/releases/download/advisory-db-latest/latest.json
+https://github.com/hexblot/composer-remediate-db/releases/download/db-2026-10-07.20/advisories.sqlite
 ```
 
 Pin the dated URL in CI configurations that must be reproducible; use the moving pointer for
 convenience. `latest.json` carries `version`, `dataset_hash`, `sha256`, `published_at`, `previous`,
-the per-source record counts and fetch times, and the download URL. Because the pipeline runs every
-hour but publishes only on change, `published_at` tells you when the data last changed while the
-workflow's run history tells you whether ingestion is still healthy; a quiet period and a broken
-pipeline look different.
+the per-source record counts and fetch times, the download URL, and which plugin version built it
+(`built_with`). Because the pipeline runs every six hours but publishes only on change,
+`published_at` tells you when the data last changed while the workflow's run history tells you
+whether ingestion is still healthy; a quiet period and a broken pipeline look different.
 
 Every published database carries a GitHub build-provenance attestation. Verify a download with:
 
 ```bash
-gh attestation verify advisories.sqlite --repo hexblot/composer-remediate
+gh attestation verify advisories.sqlite --repo hexblot/composer-remediate-db
 sha256sum -c advisories.sqlite.sha256      # the sidecar is `sha256sum` output: digest and filename
 ```
+
+**The legacy location.** Until November 2026 the database was published from this project's own
+releases, at `https://github.com/hexblot/composer-remediate/releases/download/advisory-db-latest/advisories.sqlite`,
+which is where every client up to 0.11 looks by default. That pointer is kept current from the
+channel by a workflow in this repository, which fetches each publication, checks its checksum and its
+attestation, and republishes the same bytes; it stops when 1.0 is released. A client from 0.11 or
+earlier keeps working until then, and a pinned configuration should move to the channel's URL now.
+Dated releases are no longer created here.
 
 What the client verifies on its own: every download is checked against the publisher's digest, from
 `latest.json` or the `<url>.sha256` sidecar, and refused when it does not match (exit 4); a publisher
@@ -326,27 +346,28 @@ unconditionally and warns in the same way.
 
 ## How the published database is operated
 
-If you use the default source, this project's build pipeline is part of yours, so here is what
+If you use the default source, the channel's build pipeline is part of yours, so here is what
 watches it and what to do when it stops.
 
-**What runs.** A scheduled job rebuilds the database from the feeds every six hours and publishes a
-release only when the dataset hash moved. Publishing is a separate job from building: the job that
-resolves dependencies and reads three upstream feeds holds no credential that can change anything,
-and the job that can write a release runs nothing but the attestation action and `gh`.
+**What runs.** A scheduled job in the channel's repository rebuilds the database from the feeds every
+six hours and publishes a release only when the dataset hash moved. Publishing is a separate job from
+building: the job that resolves dependencies and reads the upstream feeds holds no credential that can
+change anything, and the job that can write a release runs nothing but the attestation action and
+`gh`.
 
-**What is watched.** A job that fails opens an issue on this repository, labelled `advisory-db`, and
-keeps commenting on that same issue rather than filing a new one every six hours. That covers a
-publication that breaks: a changed dataset goes to the publish job, and a publish job that fails is a
-red run.
+**What is watched.** A job that fails opens an issue on the channel's repository, labelled
+`advisory-db`, and keeps commenting on that same issue rather than filing a new one every six hours.
+That covers a publication that breaks: a changed dataset goes to the publish job, and a publish job
+that fails is a red run.
 
 The subtler failure is a pipeline that keeps reporting success and quietly publishes nothing, which is
 what happened for three days in September 2026. A run that finds nothing new therefore checks how old
 the published copy is — but carefully, because two different things end in an ageing database and only
-one of them is wrong. A run that reaches that check has read all three feeds, built a database and
+one of them is wrong. A run that reaches that check has read every feed, built a database and
 compared it against the published copy, so the pipeline has just demonstrated that it works; it found
 the same dataset because upstream published nothing new, and a weekend without a PHP advisory is
 ordinary. So an ageing copy is a warning after two days, and a failure only after a fortnight, where
-three feeds standing still is less likely than this build no longer seeing them.
+the feeds standing still is less likely than this build no longer seeing them.
 
 **What stops a bad build.** Each downloaded feed refuses an answer that carries neither advisories
 nor records it could not read: a public feed always has thousands, so nothing at all means the feed
@@ -363,7 +384,7 @@ is used unconfirmed. Its age is reported when that happens, and `--database-max-
 into a failure at a threshold you choose. That is the setting for an unreachable publisher, and it is
 all it covers.
 
-The *publication* can be old, which is this project's pipeline having stopped while still answering.
+The *publication* can be old, which is the channel's pipeline having stopped while still answering.
 `--database-max-age` does not cover that: a reachable publisher serving a database built years ago
 passes it, because the copy was confirmed current against what the publisher offers. Nothing about a
 successful confirmation says the publisher is still building. To police that, read `built_at`
@@ -374,7 +395,8 @@ composer remediate:db-status | grep built_at
 ```
 
 and fail your pipeline on it, or pin `--database-sha256` to a build you chose so that a change has to
-be a decision. `--rebuild-database` sidesteps the question by building from the feeds yourself.
+be a decision. Building from the feeds yourself, with the channel's build command, sidesteps the
+question.
 
 **Verifying what you downloaded.** Every release carries the database, a `.sha256` sidecar and a
 GitHub build-provenance attestation. The checksum is verified on every download without being asked.
@@ -384,7 +406,7 @@ the part that answers the second question, and checking it is opt in:
 
 ```bash
 composer remediate:db-status --database-path=./advisories.sqlite
-gh attestation verify ./advisories.sqlite --repo hexblot/composer-remediate
+gh attestation verify ./advisories.sqlite --repo hexblot/composer-remediate-db
 digest=$(sha256sum ./advisories.sqlite | cut -d' ' -f1)
 composer remediate --database-location=./advisories.sqlite --database-sha256="$digest"
 ```
@@ -399,16 +421,17 @@ cover the database and is empty by default.
 For a stricter anchor still, `--database-sha256` accepts one digest and refuses anything else, which
 means pinning a dated release rather than the moving pointer and re-pinning when you choose to move.
 
-**On Windows.** A database this tool builds is created readable by its owner alone, which matters for
-a build with `--include`, because that file carries advisories you did not publish. File modes are a
-POSIX concept: on Windows `chmod` does nothing and the file is left at whatever its directory grants.
+**On Windows.** A database the build command creates is readable by its owner alone, which matters
+for a build with `--include`, because that file carries advisories you did not publish. File modes are
+a POSIX concept: on Windows `chmod` does nothing and the file is left at whatever its directory grants.
 If you build a private database there, put it somewhere the filesystem's own permissions protect.
 
-**If this project stops publishing.** Nothing in the tool requires the database to come from here.
-`composer remediate:db-build` builds the same file from the same public feeds, and
-`--database-location` takes any https URL or local path, so an organisation can publish its own and
-point at it. [Sharing a database](#sharing-a-database) is that setup. The format is documented by its
-own `schema_version`, and a reader refuses a file whose version it does not understand rather than
+**If the channel stops publishing.** Nothing in the tool requires the database to come from there.
+The channel's repository is meant to be forked: its build command builds the same file from the same
+public feeds, its workflow publishes it the same way, and `--database-location` takes any https URL
+or local path, so an organisation can publish its own and point at it.
+[Sharing a database](#sharing-a-database) is that setup. The format is documented by its own
+`schema_version`, and a reader refuses a file whose version it does not understand rather than
 guessing.
 
 ## Data licences

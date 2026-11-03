@@ -378,7 +378,7 @@ report says that too. `--no-database` and a local path as the source keep the ol
 - Every report then carries the same exploit data, coverage gaps and three merged sources, rather
   than only the reports of users who knew about the database.
 - Comparing content survives CI caches, which restore files with arbitrary timestamps, and lets a
-  locally built database (with `--include`, say) be recognised as current instead of overwritten.
+  locally built database (one with private advisories, say) be recognised as current instead of overwritten.
 - The freshness request is a few bytes against a release asset, needs no token, and is not subject to
   GitHub's API rate limit.
 - The chain degrades one step at a time with a warning at each step, never silently: current copy,

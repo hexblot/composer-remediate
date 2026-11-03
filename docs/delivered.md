@@ -43,6 +43,7 @@ stands.
 - [x] `--database-location` (path or URL), `REMEDIATE_DATABASE`, `extra.remediate.database`
 - [x] private or organisational advisories as an additional source (`--include=<json>`)
 - [x] a reference shared instance published by this project (`.github/workflows/advisory-db.yml`): build every six hours, release only when the dataset hash changes, sha256 and build-provenance attestation, `advisory-db-latest` moving pointer
+- [x] the build and the publication moved out to [composer-remediate-db](https://github.com/hexblot/composer-remediate-db), a release channel anyone can fork; the plugin keeps the format, the reader and `remediate:db-status`, and reads that channel by default (2026-11)
 
 ## Phase 3 — ecosystem corpus, CI, version matrix *(complete)*
 

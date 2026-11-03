@@ -5,6 +5,35 @@ All notable changes to this project are documented here. The format follows
 
 ## [Unreleased]
 
+### Upgrading
+
+- The advisory database is built and published by a release channel of its own,
+  [composer-remediate-db](https://github.com/hexblot/composer-remediate-db), and this release reads
+  that channel by default (`https://github.com/hexblot/composer-remediate-db/releases/download/advisory-db-latest/advisories.sqlite`).
+  Nothing changes for a run that uses the default: the copy at the database path is confirmed by
+  content against the new source and replaced when it differs. A configuration that pins the old URL
+  (`--database-location`, `REMEDIATE_DATABASE`, `extra.remediate.database`) keeps working: that
+  location is mirrored from the channel until 1.0, and should be moved to the channel's URL before
+  then. A CI step that verifies the attestation names the channel now:
+  `gh attestation verify advisories.sqlite --repo hexblot/composer-remediate-db`. Dated `db-*` releases
+  are no longer created in this repository.
+- `remediate:db-build` and `--rebuild-database` are gone, with the feed readers behind them. A
+  database is built with the channel's `bin/build-advisory-db`, which takes the same options
+  (`--source`, `--include`, `--enrich`, `--friendsofphp-path`, `--epss-file`, `--kev-file`), and read
+  with `--database-location=<path>` or written to the database path. A local build with private
+  advisories is kept and refreshed as before: a newer build from the same files, placed at the path,
+  is current on its own. What goes with the rebuild is the fallback that built from the feeds when the
+  publisher could not be reached: such a run now uses the copy it has and says how old it is, or
+  fails past `--database-max-age`, as it does for every other outage.
+- `symfony/yaml` is no longer a dependency, and the `zip` extension is no longer suggested; both
+  served the feed readers.
+
+### Changed
+
+- The reader, the writer, the merge, the format and `remediate:db-status` stay here; the channel
+  depends on this package for them, and a database it builds is one this release opens. The plugin
+  no longer carries a way to reach the upstream feeds.
+
 The ninth adversarial review, taken at b762d5a against the engine's invariants, the CLI contract,
 the ignore policies, matching through replaced packages and the machine-readable reports. Five
 findings: four defects, all reproduced and fixed below, and one architecture note on the open

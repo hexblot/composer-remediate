@@ -62,7 +62,7 @@ is free software, runs where Composer runs, sends only what `composer update` it
 OSV-Scanner, Trivy, Grype and similar tools read `composer.lock` and report advisories from OSV or
 their own feeds, often across many ecosystems in one run. They are detection tools; none proposes or
 verifies a Composer command. Their output is not an input format this tool reads directly, but the
-advisory database built by `remediate:db-build` merges OSV, Packagist and FriendsOfPHP, so the same
+advisory database this project reads merges OSV, Packagist, FriendsOfPHP and Drupal.org, so the same
 advisory data is available offline (see [Advisory database](advisory-database.md)).
 
 ## CVE Lite CLI
