@@ -68,10 +68,6 @@ deptrac:
       collectors:
         - type: classLike
           value: ^Symfony\\Component\\Process\\.*
-    - name: SymfonyYaml
-      collectors:
-        - type: classLike
-          value: ^Symfony\\Component\\Yaml\\.*
   ruleset:
     Plugin:
       - Command
@@ -100,10 +96,8 @@ deptrac:
       - ComposerApi      # HttpDownloader, ComposerRepository, the advisory API
       - Semver
       - SymfonyProcess   # the composer audit fallback
-      - SymfonyYaml      # the FriendsOfPHP feed
     Semver: ~
     ComposerPlugin: ~
     ComposerApi: ~
     SymfonyConsole: ~
     SymfonyProcess: ~
-    SymfonyYaml: ~

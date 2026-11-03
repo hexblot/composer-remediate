@@ -93,7 +93,7 @@ final class SqliteAdvisoryProvider implements AdvisoryProvider, CoverageAware, F
     public function coverageWarnings(array $packageNames): array
     {
         if (!$this->database->tracksGaps()) {
-            return [sprintf('Advisory database %s was built before coverage gaps were recorded; upstream records the build could not read are unknown. Rebuild it with remediate:db-build.', $this->database->path)];
+            return [sprintf('Advisory database %s was built before coverage gaps were recorded; upstream records the build could not read are unknown. Replace it with a current build.', $this->database->path)];
         }
         $warnings = [];
         foreach ($this->database->gapsFor($packageNames) as $gap) {

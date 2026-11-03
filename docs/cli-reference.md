@@ -29,9 +29,8 @@ not given), 5 package metadata could not be fetched while solving.
 Advisories come from an advisory database kept at `--database-path` (default: Composer's
 cache directory). On every run the file is checked against the published database it comes from
 (`--database-location`, default: this project's release): a copy with the same sha256 or
-dataset hash, or a newer local build, is used; a missing or stale copy is downloaded (or rebuilt with
-`--rebuild-database`); when the source cannot be reached the copy is used and the report says
-how old it is. Without any usable database the configured repositories are asked, as
+dataset hash, or a newer local build, is used; a missing or stale copy is downloaded; when the source
+cannot be reached the copy is used and the report says how old it is. Without any usable database the configured repositories are asked, as
 `composer audit` does, and the report says so. `--no-database` chooses that directly.
 
 Running as `composer remediate` means Composer has already activated the project's
@@ -61,7 +60,6 @@ with the package runs the same command with plugins and scripts disabled from th
 | `--database-path` | required | The file the advisory database is kept in and read from (default: COMPOSER_CACHE_DIR/remediate/advisories.sqlite); also REMEDIATE_DATABASE_PATH or extra.remediate.database_path. Cache it between CI runs |
 | `--database-max-age` | required | When the database cannot be confirmed current (source unreachable, --offline), fail with exit 4 instead of warning if the copy is older than this many hours (or 2d, 36h); also REMEDIATE_DATABASE_MAX_AGE or extra.remediate.database_max_age |
 | `--no-database` | flag | Ask the configured repositories for advisories, as composer audit does, instead of using an advisory database (same as --database-location=composer) |
-| `--rebuild-database` | flag | When the database at its path is missing or not current, build it from the sources (Packagist, OSV, FriendsOfPHP, Drupal.org, with EPSS and KEV data) instead of downloading it |
 | `--database-sha256` | required | Expected sha256 of the advisory database (hex); a downloaded or cached copy that differs is refused. The trust anchor for a URL you do not publish yourself |
 | `--allow-unverified-database` | flag | Accept a database URL without a published &lt;url&gt;.sha256 sidecar and without --database-sha256 (refused otherwise); the report says the download was not verified |
 | `--accept-coverage-gaps` | flag | Exit 0 for a lock without findings even when the advisory source could not read records about locked packages (otherwise exit 4), and allow a fix that adds a package with such records (otherwise rejected); the gaps stay in the report |
@@ -71,39 +69,6 @@ with the package runs the same command with plugins and scripts disabled from th
 | `--solver` | required, default `auto` | How candidates are verified: auto (in-process, falling back to a `composer update` subprocess when the in-process route errors), in-process, or subprocess |
 | `--ignore-platform-req` | repeatable | Ignore a specific platform requirement (php &amp; ext- packages) when validating candidates; the flag is repeated in the recommended command |
 | `--ignore-platform-reqs` | flag | Ignore all platform requirements when validating candidates; the flag is repeated in the recommended command |
-
-## `composer remediate:db-build`
-
-Aliases: `remediate-db-build`
-
-Build a local advisory database (SQLite) from live sources: Packagist, OSV, FriendsOfPHP and Drupal.org
-
-Pulls every advisory for the Packagist ecosystem from the selected sources (plus any --include files
-with private advisories), normalises the version
-ranges to Composer constraints, merges records that share an identifier (CVE, GHSA, PKSA, FriendsOfPHP
-file), keeps every source's range and flags disagreements, and writes a single SQLite file.
-
-Every CVE in the database is enriched with its EPSS exploit probability and its CISA KEV listing when
-present (`--enrich`); reports order findings by that urgency. A feed that cannot be fetched
-is recorded in the database's metadata and the build continues without it.
-
-Written to the path `composer remediate` reads by default, so the next run uses it; a build
-with no options reproduces the database this project publishes. `--if-stale` first checks the
-existing file against the published database (same sha256 or dataset hash, or a newer local build) and
-skips the build when it is current, which suits a CI cache. The file is portable: publish it on a web
-server or as a release asset with a `.sha256` sidecar (or a latest.json) and point other
-machines at the URL with `--database-location`.
-
-| Option | Value | Description |
-|---|---|---|
-| `--output`, `-o` | required | Where to write the database (default: the configured path, see --database-path of remediate; COMPOSER_CACHE_DIR/remediate/advisories.sqlite unless configured) |
-| `--if-stale` | flag | Build only when the database at the output path is missing or not current against the published one (REMEDIATE_DATABASE or extra.remediate.database, default: this project's release); otherwise report it as current and exit 0 |
-| `--source`, `-s` | repeatable | Source to include: packagist, osv, friendsofphp, drupal (repeatable; default all) |
-| `--friendsofphp-path` | required | Local checkout of FriendsOfPHP/security-advisories to read instead of downloading |
-| `--include` | repeatable | Additional JSON file in the Packagist API shape with private or organisational advisories (repeatable) |
-| `--enrich` | repeatable | Exploit data to attach to the CVEs: epss (FIRST exploit probability), kev (CISA Known Exploited Vulnerabilities), or none (repeatable; default both) |
-| `--epss-file` | required | Local copy of the EPSS scores CSV (plain or .gz) to read instead of downloading |
-| `--kev-file` | required | Local copy of the CISA KEV catalogue JSON to read instead of downloading |
 
 ## `composer remediate:db-status`
 
@@ -144,7 +109,7 @@ Advisory text is upstream data and reaches a rendered page, so it is escaped rat
 | `1` | Vulnerabilities found and a verified remediation exists for every one |
 | `2` | At least one vulnerability has no verified remediation |
 | `3` | Tool or configuration error (no lock file, unknown option, unwritable output) |
-| `4` | Advisory data could not be obtained (network, missing or invalid database or snapshot); also used by `remediate:db-build` when a source fails |
+| `4` | Advisory data could not be obtained (network, missing or invalid database or snapshot) |
 | `5` | Package metadata could not be fetched during solving (network), so no candidate could be verified |
 
 ## Environment variables

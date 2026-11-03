@@ -21,7 +21,7 @@ could not be fetched. These are what pipelines gate on, so their meanings do not
 is reassigned. A new code may be added in a minor release only for a condition that previously exited
 `3`.
 
-**Command names.** `remediate`, `remediate:db-build`, `remediate:db-status` and `remediate:pr-body`.
+**Command names.** `remediate`, `remediate:db-status` and `remediate:pr-body`.
 
 **Command-line options.** The name of an option, whether it takes a value, and what it does. Adding
 an option is a minor release. Removing or renaming one, or changing what a value means, is a major

@@ -6,16 +6,22 @@ namespace Remediate\Tests\Integration;
 
 use Composer\Util\Platform;
 use PHPUnit\Framework\TestCase;
+use Remediate\Engine\Advisory\Db\CoverageGap;
+use Remediate\Engine\Advisory\Db\DatabaseBuilder;
 use Remediate\Engine\Advisory\Db\DatabaseLocator;
+use Remediate\Engine\Advisory\Db\Enrichment\EnrichmentSourceInterface;
+use Remediate\Engine\Advisory\Db\Enrichment\ExploitRecord;
+use Remediate\Engine\Advisory\Db\Source\JsonFileSource;
 use Remediate\Engine\Plan\Plan;
 use Remediate\Engine\Solver\InProcessSolver;
 use Remediate\Tests\Support\CommandRunner;
 use Remediate\Tests\Support\FixtureRunner;
+use Remediate\Tests\Support\ScriptedSource;
 
 /**
- * remediate:db-build and remediate:db-status without the network: the FriendsOfPHP source reads a
- * local checkout and --include adds a Packagist-shaped file, so a database can be built, inspected
- * and then handed to `composer remediate` entirely from the fixture.
+ * remediate:db-status and remediate:pr-body without the network, and `composer remediate` reading a
+ * database built the way the release channel builds one: a public feed (scripted, under the name
+ * FriendsOfPHP), a private advisory file, and exploit data.
  */
 final class DbCommandsTest extends TestCase
 {
@@ -25,27 +31,11 @@ final class DbCommandsTest extends TestCase
 
     private CommandRunner $runner;
     private string $project;
-    private string $checkout;
 
     protected function setUp(): void
     {
         $this->runner = new CommandRunner();
         $this->project = $this->runner->project(self::FIXTURE);
-        // A two-file FriendsOfPHP/security-advisories checkout: one readable advisory, one broken file.
-        $this->checkout = $this->project . '/security-advisories';
-        mkdir($this->checkout . '/acme/helper', 0700, true);
-        mkdir($this->checkout . '/acme/broken', 0700, true);
-        file_put_contents($this->checkout . '/acme/helper/CVE-2026-00002.yaml', <<<'YAML'
-title: Synthetic FriendsOfPHP advisory for acme/helper
-link: https://example.invalid/advisories/CVE-2026-00002
-cve: CVE-2026-00002
-branches:
-    1.0.x:
-        time: 2026-02-01 09:00:00
-        versions: ['>=1.0.0', '<1.0.9']
-reference: composer://acme/helper
-YAML);
-        file_put_contents($this->checkout . '/acme/broken/BROKEN.yaml', "branches: [\nreference: composer://acme/broken\n");
     }
 
     protected function tearDown(): void
@@ -59,32 +49,57 @@ YAML);
         return Platform::getEnv('COMPOSER_CACHE_DIR') . '/remediate/advisories.sqlite';
     }
 
-    /** @param array<string, mixed> $options */
-    private function build(array $options): \Remediate\Tests\Support\CommandResult
+    /**
+     * One readable FriendsOfPHP advisory, one file that could not be read (a coverage gap), and the
+     * fixture's private advisory file.
+     *
+     * @param list<EnrichmentSourceInterface> $enrichments
+     */
+    private function build(string $output, array $enrichments = []): void
     {
-        return $this->runner->run($options + ['command' => 'remediate:db-build', '--source' => ['friendsofphp'], '--friendsofphp-path' => $this->checkout, '--include' => [self::FIXTURE . '/advisories.json'], '--enrich' => ['none']], $this->project);
+        $feed = new ScriptedSource(
+            'FriendsOfPHP',
+            [ScriptedSource::advisory('FriendsOfPHP', 'CVE-2026-00002', 'acme/helper', '>=1.0.0,<1.0.9', 'CVE-2026-00002', 'Synthetic FriendsOfPHP advisory for acme/helper', '2026-02-01 09:00:00')],
+            [new CoverageGap('FriendsOfPHP', 'acme/broken/BROKEN.yaml', 'acme/broken', 'YAML could not be parsed')],
+        );
+        @mkdir(dirname($output), 0700, true);
+        (new DatabaseBuilder([$feed, new JsonFileSource(self::FIXTURE . '/advisories.json')], enrichments: $enrichments))->build($output, static function (): void {});
     }
 
-    public function testBuildRejectsAnUnknownEnrichment(): void
+    /**
+     * @param array<string, ExploitRecord> $records
+     * @param array<string, string>        $meta
+     */
+    private static function enrichment(string $name, array $records, array $meta): EnrichmentSourceInterface
     {
-        $result = $this->build(['--enrich' => ['nvd']]);
-        self::assertSame(Plan::EXIT_ERROR, $result->exitCode, $result->describe());
-        self::assertStringContainsString('Unknown enrichment(s) nvd; choose from epss, kev or none', $result->stderr);
+        return new class($name, $records, $meta) implements EnrichmentSourceInterface {
+            /**
+             * @param array<string, ExploitRecord> $records
+             * @param array<string, string>        $meta
+             */
+            public function __construct(private readonly string $name, private readonly array $records, private readonly array $meta)
+            {
+            }
+
+            public function name(): string
+            {
+                return $this->name;
+            }
+
+            public function fetch(callable $log): array
+            {
+                return ['records' => $this->records, 'meta' => $this->meta];
+            }
+        };
     }
 
-    public function testLocalExploitFeedsEnrichTheDatabaseAndTheReport(): void
+    public function testExploitDataInTheDatabaseReachesStatusAndTheReport(): void
     {
-        $epss = $this->project . '/epss.csv';
-        $kev = $this->project . '/kev.json';
-        file_put_contents($epss, "#model_version:v2025.03.14,score_date:2026-09-09T00:00:00+0000\ncve,epss,percentile\nCVE-2026-00001,0.93412,0.99871\nCVE-2026-00002,0.5,0.5\n");
-        file_put_contents($kev, json_encode(['catalogVersion' => '2026.09.09', 'dateReleased' => '2026-09-09T14:00:00Z', 'vulnerabilities' => [['cveID' => 'CVE-2026-00001', 'dateAdded' => '2026-02-01', 'knownRansomwareCampaignUse' => 'Known']]], JSON_THROW_ON_ERROR));
         $db = $this->project . '/enriched.sqlite';
-
-        $result = $this->build(['--output' => $db, '--enrich' => ['epss', 'kev'], '--epss-file' => $epss, '--kev-file' => $kev]);
-        self::assertSame(0, $result->exitCode, $result->describe());
-        self::assertStringContainsString('exploit data (EPSS / CISA KEV) for 2 CVEs', $result->stdout, 'CVE-2026-00001 (include file) and CVE-2026-00002 (FriendsOfPHP) are in this database');
-        self::assertStringContainsString('EPSS: reading ' . $epss, $result->stderr);
-        self::assertStringContainsString('KEV: reading ' . $kev, $result->stderr);
+        $this->build($db, [
+            self::enrichment('EPSS', ['CVE-2026-00001' => new ExploitRecord('CVE-2026-00001', 0.93412, 0.99871), 'CVE-2026-00002' => new ExploitRecord('CVE-2026-00002', 0.5, 0.5)], ['epss_score_date' => '2026-09-09T00:00:00+0000']),
+            self::enrichment('KEV', ['CVE-2026-00001' => new ExploitRecord('CVE-2026-00001', null, null, new \DateTimeImmutable('2026-02-01'), true)], ['kev_date_released' => '2026-09-09T14:00:00Z']),
+        ]);
 
         $status = $this->runner->run(['command' => 'remediate:db-status', '--database-location' => $db], $this->project);
         self::assertSame(0, $status->exitCode, $status->describe());
@@ -105,32 +120,17 @@ YAML);
     public function testADatabaseBuiltWithoutEnrichmentSaysSoInStatus(): void
     {
         $db = $this->project . '/plain.sqlite';
-        self::assertSame(0, $this->build(['--output' => $db])->exitCode);
+        $this->build($db);
         (new \PDO('sqlite:' . $db))->exec('DROP TABLE exploit');
         $status = $this->runner->run(['command' => 'remediate:db-status', '--database-location' => $db], $this->project);
         self::assertSame(0, $status->exitCode, $status->describe());
         self::assertStringContainsString('Built before exploit data (EPSS, CISA KEV) was recorded', $status->stdout);
     }
 
-    public function testBuildRejectsAnUnknownSource(): void
-    {
-        $result = $this->runner->run(['command' => 'remediate:db-build', '--source' => ['nvd', 'osv']], $this->project);
-        self::assertSame(Plan::EXIT_ERROR, $result->exitCode, $result->describe());
-        self::assertStringContainsString('Unknown source(s) nvd; choose from packagist, osv, friendsofphp, drupal', $result->stderr);
-    }
-
-    public function testBuildsFromLocalSourcesThenStatusAndRemediateReadTheResult(): void
+    public function testStatusAndRemediateReadABuildFromAFeedAndAPrivateFile(): void
     {
         $db = $this->project . '/advisories.sqlite';
-        $result = $this->build(['--output' => $db]);
-        self::assertSame(0, $result->exitCode, $result->describe());
-        self::assertFileExists($db);
-        self::assertStringContainsString('Advisory database written: ' . $db, $result->stdout);
-        self::assertStringContainsString('2 advisories from 2 source records, 0 with conflicting ranges, 1 coverage gap,', $result->stdout);
-        self::assertStringContainsString('Coverage gaps are upstream records the build could not interpret', $result->stdout);
-        self::assertStringContainsString('composer remediate --database-path=' . $db, $result->stdout);
-        self::assertStringContainsString('FriendsOfPHP: reading ' . $this->checkout, $result->stderr);
-        self::assertStringContainsString('2 files, 1 records, 1 skipped (recorded as coverage gaps)', $result->stderr);
+        $this->build($db);
 
         $status = $this->runner->run(['command' => 'remediate:db-status', '--database-location' => $db], $this->project);
         self::assertSame(0, $status->exitCode, $status->describe());
@@ -154,11 +154,9 @@ YAML);
         self::assertSame('composer update acme/app-framework:1.1.0 -W' . ((new InProcessSolver())->supportsMinimalChanges() ? ' -m' : ''), $report['findings'][0]['remediation']['command']);
     }
 
-    public function testBuildWritesToTheDefaultPathWhichStatusAlsoUsesByDefault(): void
+    public function testStatusReadsTheDefaultPathByDefault(): void
     {
-        $result = $this->build([]);
-        self::assertSame(0, $result->exitCode, $result->describe());
-        self::assertFileExists($this->defaultBuildPath());
+        $this->build($this->defaultBuildPath());
 
         // With the publisher unreachable, status reports on the copy at the default path as it is.
         $status = $this->runner->run(['command' => 'remediate:db-status', '--database-location' => self::UNREACHABLE], $this->project);
@@ -182,41 +180,10 @@ YAML);
         self::assertStringContainsString('falls back to the configured repositories meanwhile', $status->stdout);
     }
 
-    public function testIfStaleBuildsOnceThenKeepsTheCopyWhenThePublisherIsUnreachable(): void
-    {
-        $previous = Platform::getEnv(DatabaseLocator::ENV);
-        Platform::putEnv(DatabaseLocator::ENV, self::UNREACHABLE);
-        try {
-            $first = $this->build(['--if-stale' => true]);
-            self::assertSame(0, $first->exitCode, $first->describe());
-            self::assertStringContainsString('Advisory database written', $first->stdout);
-            self::assertStringContainsString('reads it from this path by default', $first->stdout);
-            self::assertFileExists($this->defaultBuildPath());
-            $built = (string) file_get_contents($this->defaultBuildPath());
-
-            $second = $this->build(['--if-stale' => true]);
-            self::assertSame(0, $second->exitCode, $second->describe());
-            self::assertStringContainsString('Advisory database kept', $second->stdout);
-            self::assertStringContainsString('could not be confirmed current', $second->stdout);
-            self::assertStringEqualsFile($this->defaultBuildPath(), $built, 'nothing was rebuilt');
-        } finally {
-            is_string($previous) ? Platform::putEnv(DatabaseLocator::ENV, $previous) : Platform::clearEnv(DatabaseLocator::ENV);
-        }
-    }
-
-    public function testIfStaleNeedsAPublishedDatabaseToCompareWith(): void
-    {
-        $result = $this->build(['--if-stale' => true]);
-        self::assertSame(Plan::EXIT_ERROR, $result->exitCode, $result->describe());
-        self::assertStringContainsString('--if-stale needs a published database', $result->stderr);
-    }
-
-    public function testAnExplicitOutputPathIsAdvertisedAsTheDatabasePath(): void
+    public function testStatusReadsAnExplicitDatabasePath(): void
     {
         $db = $this->project . '/team.sqlite';
-        $result = $this->build(['--output' => $db]);
-        self::assertSame(0, $result->exitCode, $result->describe());
-        self::assertStringContainsString('composer remediate --database-path=' . $db, $result->stdout);
+        $this->build($db);
 
         $status = $this->runner->run(['command' => 'remediate:db-status', '--database-path' => $db, '--database-location' => self::UNREACHABLE, '--offline' => true], $this->project);
         self::assertSame(0, $status->exitCode, $status->describe());
@@ -234,7 +201,7 @@ YAML);
     public function testStatusHonoursTheEnvironmentVariable(): void
     {
         $db = $this->project . '/env.sqlite';
-        self::assertSame(0, $this->build(['--output' => $db])->exitCode);
+        $this->build($db);
         $previous = Platform::getEnv(DatabaseLocator::ENV);
         Platform::putEnv(DatabaseLocator::ENV, $db);
         try {
@@ -247,18 +214,18 @@ YAML);
         self::assertStringContainsString('Status: a local file named by --database-location', $status->stdout);
     }
 
-    public function testStatusOfAMissingDatabaseSaysHowToBuildOne(): void
+    public function testStatusOfAMissingDatabaseSaysWhereOneComesFrom(): void
     {
         $status = $this->runner->run(['command' => 'remediate:db-status', '--database-location' => $this->project . '/nowhere.sqlite'], $this->project);
         self::assertSame(Plan::EXIT_ADVISORIES_UNAVAILABLE, $status->exitCode, $status->describe());
         self::assertStringContainsString('does not exist', $status->stdout);
-        self::assertStringContainsString('Build one with composer remediate:db-build', $status->stdout);
+        self::assertStringContainsString('build one with the release channel', $status->stdout);
     }
 
     public function testStatusWarnsAboutADatabaseBuiltBeforeGapsWereRecorded(): void
     {
         $db = $this->project . '/old.sqlite';
-        self::assertSame(0, $this->build(['--output' => $db])->exitCode);
+        $this->build($db);
         (new \PDO('sqlite:' . $db))->exec('DROP TABLE gap');
 
         $status = $this->runner->run(['command' => 'remediate:db-status', '--database-location' => $db], $this->project);

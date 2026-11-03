@@ -5,6 +5,7 @@ declare(strict_types=1);
 namespace Remediate\Engine\Matching;
 
 use Composer\Config;
+use Composer\Semver\Constraint\Constraint;
 use Composer\Semver\Constraint\ConstraintInterface;
 use Composer\Semver\VersionParser;
 
@@ -96,6 +97,17 @@ final class IgnorePolicy
     /** Returns the matching entry (id, CVE or package name) or null when the finding is not ignored. */
     public function matchedEntry(string $advisoryId, ?string $cve, string $packageName, string $normalizedVersion): ?string
     {
+        return $this->matchedEntryAt($advisoryId, $cve, $packageName, new Constraint('==', $normalizedVersion));
+    }
+
+    /**
+     * The same question for a package installed at a range rather than at one version: a package that
+     * is replaced or provided by another is present at whatever the replacing package's `replace` link
+     * says (`self.version` for most, any range for some). A package rule applies when its constraint
+     * admits any version in that range, the same intersection test by which the advisory applies.
+     */
+    public function matchedEntryAt(string $advisoryId, ?string $cve, string $packageName, ConstraintInterface $installed): ?string
+    {
         foreach ([$advisoryId, $cve] as $candidate) {
             if ($candidate !== null && isset($this->ids[strtolower($candidate)])) {
                 return strtolower($candidate);
@@ -103,7 +115,7 @@ final class IgnorePolicy
         }
         $package = strtolower($packageName);
         foreach ($this->packages[$package] ?? [] as $constraint) {
-            if ($constraint === null || $constraint->matches(new \Composer\Semver\Constraint\Constraint('==', $normalizedVersion))) {
+            if ($constraint === null || $constraint->matches($installed)) {
                 return $package;
             }
         }

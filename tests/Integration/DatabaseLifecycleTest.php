@@ -6,10 +6,13 @@ namespace Remediate\Tests\Integration;
 
 use Composer\Util\Platform;
 use PHPUnit\Framework\TestCase;
+use Remediate\Engine\Advisory\Db\DatabaseBuilder;
+use Remediate\Engine\Advisory\Db\Source\JsonFileSource;
 use Remediate\Engine\Plan\Plan;
 use Remediate\Tests\Support\CommandResult;
 use Remediate\Tests\Support\CommandRunner;
 use Remediate\Tests\Support\FixtureRunner;
+use Remediate\Tests\Support\ScriptedSource;
 use Remediate\Tests\Support\TlsPublisher;
 
 /**
@@ -47,21 +50,21 @@ final class DatabaseLifecycleTest extends TestCase
         $this->runner->cleanup();
     }
 
-    /** Builds a database from the fixture's private advisories, optionally with one FriendsOfPHP record too. */
+    /**
+     * Builds a database the way the release channel does, from a public feed (FriendsOfPHP, with one
+     * record or none) and the fixture's private advisories, so the file carries both a public source
+     * name and a `local:` one.
+     */
     private function buildDatabase(string $output, bool $withFriendsOfPhp): void
     {
-        $options = ['command' => 'remediate:db-build', '--output' => $output, '--include' => [self::FIXTURE . '/advisories.json'], '--enrich' => ['none']];
-        if ($withFriendsOfPhp) {
-            $checkout = $this->project . '/security-advisories';
-            @mkdir($checkout . '/acme/helper', 0700, true);
-            file_put_contents($checkout . '/acme/helper/CVE-2026-00002.yaml', "title: Helper\nlink: https://example.invalid/2\ncve: CVE-2026-00002\nbranches:\n    1.0.x:\n        time: 2026-02-01 09:00:00\n        versions: ['>=1.0.0', '<1.0.9']\nreference: composer://acme/helper\n");
-            $options += ['--source' => ['friendsofphp'], '--friendsofphp-path' => $checkout];
-        } else {
-            $options += ['--source' => ['friendsofphp'], '--friendsofphp-path' => $this->project . '/empty-checkout'];
-            @mkdir($this->project . '/empty-checkout', 0700, true);
-        }
-        $result = $this->runner->run($options, $this->project);
-        self::assertSame(0, $result->exitCode, $result->describe());
+        $records = $withFriendsOfPhp ? [ScriptedSource::advisory('FriendsOfPHP', 'CVE-2026-00002', 'acme/helper', '>=1.0.0,<1.0.9', 'CVE-2026-00002', 'Helper', '2026-02-01 09:00:00')] : [];
+        (new DatabaseBuilder([new ScriptedSource('FriendsOfPHP', $records), new JsonFileSource(self::FIXTURE . '/advisories.json')]))->build($output, static function (): void {});
+    }
+
+    /** A database from one public feed with no records: the emptiest thing a publisher could serve. */
+    private function buildEmptyDatabase(string $output): void
+    {
+        (new DatabaseBuilder([new ScriptedSource('FriendsOfPHP', [])]))->build($output, static function (): void {});
     }
 
     /** @param array<string, mixed> $options */
@@ -146,7 +149,7 @@ final class DatabaseLifecycleTest extends TestCase
         self::assertSame(Plan::EXIT_REMEDIATION_AVAILABLE, $first->exitCode, $first->describe());
         self::assertFileExists($this->path . '.status.json');
 
-        // 2. The operator rebuilds into the same path with a private advisory file (db-build --include).
+        // 2. The operator builds into the same path from the same private advisory file.
         sleep(1);
         $this->buildDatabase($this->path, true);
         self::assertFileDoesNotExist($this->path . '.status.json', 'a build retires the download\'s status record');
@@ -163,7 +166,7 @@ final class DatabaseLifecycleTest extends TestCase
         self::assertStringContainsString('a local build with private advisories, kept although', $report['analysis_metadata']['advisory_source']);
         self::assertCount(1, $report['warnings']);
         self::assertStringContainsString('private advisories (advisories.json)', $report['warnings'][0]);
-        self::assertStringContainsString('remediate:db-build --if-stale and the same --include files', $report['warnings'][0]);
+        self::assertStringContainsString('a new build from the same private files', $report['warnings'][0]);
         self::assertNotContains('GET /advisories.sqlite', array_slice($this->publisher->requests(), -1));
     }
 
@@ -174,8 +177,7 @@ final class DatabaseLifecycleTest extends TestCase
         $this->buildDatabase($this->project . '/published.sqlite', true);
         $url = $this->publisher->publishDatabase($this->project . '/published.sqlite');
         mkdir($this->project . '/.cache/remediate', 0700, true);
-        $result = $this->runner->run(['command' => 'remediate:db-build', '--output' => $this->project . '/.cache/remediate/advisories.sqlite', '--source' => ['friendsofphp'], '--friendsofphp-path' => $this->project . '/empty-checkout', '--enrich' => ['none']], $this->project);
-        self::assertSame(0, $result->exitCode, $result->describe());
+        $this->buildEmptyDatabase($this->project . '/.cache/remediate/advisories.sqlite');
         $planted = (string) file_get_contents($this->project . '/.cache/remediate/advisories.sqlite');
         // The project sets `home` as well, so that a comparison against Composer's merged configuration
         // would find both sides agreeing and call the project's cache directory the operator's.
@@ -281,10 +283,8 @@ final class DatabaseLifecycleTest extends TestCase
         // The project points at its own publisher: a second server serving an empty database.
         $other = new TlsPublisher();
         try {
-            $this->buildDatabase($this->project . '/empty.sqlite', false);
-            // no --include this time: rebuild without the private file so the database is genuinely different
-            $result = $this->runner->run(['command' => 'remediate:db-build', '--output' => $this->project . '/empty.sqlite', '--source' => ['friendsofphp'], '--friendsofphp-path' => $this->project . '/empty-checkout', '--enrich' => ['none']], $this->project);
-            self::assertSame(0, $result->exitCode, $result->describe());
+            // without the private file, so the database is genuinely different
+            $this->buildEmptyDatabase($this->project . '/empty.sqlite');
             $projectUrl = $other->publishDatabase($this->project . '/empty.sqlite');
             // curl takes one cafile: bundle both certificates, still through the operator's channel.
             $bundle = $this->project . '/bundle.pem';

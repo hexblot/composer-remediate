@@ -5,6 +5,68 @@ All notable changes to this project are documented here. The format follows
 
 ## [Unreleased]
 
+### Upgrading
+
+- The advisory database is built and published by a release channel of its own,
+  [composer-remediate-db](https://github.com/hexblot/composer-remediate-db), and this release reads
+  that channel by default (`https://github.com/hexblot/composer-remediate-db/releases/download/advisory-db-latest/advisories.sqlite`).
+  Nothing changes for a run that uses the default: the copy at the database path is confirmed by
+  content against the new source and replaced when it differs. A configuration that pins the old URL
+  (`--database-location`, `REMEDIATE_DATABASE`, `extra.remediate.database`) keeps working: that
+  location is mirrored from the channel until 1.0, and should be moved to the channel's URL before
+  then. A CI step that verifies the attestation names the channel now:
+  `gh attestation verify advisories.sqlite --repo hexblot/composer-remediate-db`. Dated `db-*` releases
+  are no longer created in this repository.
+- `remediate:db-build` and `--rebuild-database` are gone, with the feed readers behind them. A
+  database is built with the channel's `bin/build-advisory-db`, which takes the same options
+  (`--source`, `--include`, `--enrich`, `--friendsofphp-path`, `--epss-file`, `--kev-file`), and read
+  with `--database-location=<path>` or written to the database path. A local build with private
+  advisories is kept and refreshed as before: a newer build from the same files, placed at the path,
+  is current on its own. What goes with the rebuild is the fallback that built from the feeds when the
+  publisher could not be reached: such a run now uses the copy it has and says how old it is, or
+  fails past `--database-max-age`, as it does for every other outage.
+- `symfony/yaml` is no longer a dependency, and the `zip` extension is no longer suggested; both
+  served the feed readers.
+
+### Changed
+
+- The reader, the writer, the merge, the format and `remediate:db-status` stay here; the channel
+  depends on this package for them, and a database it builds is one this release opens. The plugin
+  no longer carries a way to reach the upstream feeds.
+
+The ninth adversarial review, taken at b762d5a against the engine's invariants, the CLI contract,
+the ignore policies, matching through replaced packages and the machine-readable reports. Five
+findings: four defects, all reproduced and fixed below, and one architecture note on the open
+path-search work bound, which stays on the roadmap as an accepted cost.
+
+### Fixed
+
+- The standalone binary now reaches `remediate:pr-body` (and `remediate-pr-body`). It was registered
+  with the plugin but not with the binary, which took the name for an argument to `remediate` and
+  failed with "No arguments expected". The binary now takes its commands from the plugin's own
+  provider and reads the names that select one off the commands themselves, so a command added to the
+  plugin cannot be missing from the binary; a test runs every name and alias the provider gives.
+- An ignore written against a package that is present only through another package's `replace` or
+  `provide` (`acme/component` under `acme/monorepo`, `symfony/http-foundation` under
+  `symfony/symfony`) now applies. The matcher asked the policy about the replacing package only, so
+  `config.audit.ignore: ["acme/component"]` and `config.policy.advisories.ignore` on the same name
+  did nothing, and the hygiene line then said the rule matched nothing and could be removed. A rule on
+  either name applies, a versioned rule is matched against the range the `replace` link declares (the
+  same intersection test by which the advisory applies), and every rule that matched counts as used.
+- The Composer 2.10+ advisory-blocking warning is raised again when the package a command moves is
+  still vulnerable through a package it replaces. The key of such a finding carries the replaced name
+  too, and the check compared the whole key tail with the changed package's name, so a monorepo moved
+  to a version whose component still carried an advisory raised no warning. The key is now read back
+  by the class that writes it.
+- The CycloneDX and GitLab reports no longer attribute every advisory that is not a GHSA to Packagist
+  at a `packagist.org/security-advisories/` URL, which for a Drupal.org advisory (`SA-CONTRIB-…`,
+  `SA-CORE-…`), a CVE-named one or an OSV one is a 404. One place now decides where an advisory is
+  published from its identifier: NVD, GitHub, Packagist, Drupal.org or OSV, each at the page that
+  exists; an identifier with no publisher page is attributed to the feed that carried it and given its
+  link or none. The GitLab identifier type follows (`drupal_advisory`, `osv`), a CVE-named advisory is
+  listed once rather than again as a Packagist advisory, and the SARIF `helpUri` is the advisory's link,
+  the publisher's page, or absent, never a guess.
+
 ### Changed
 
 - The kind of a package change (`added`, `removed`, `upgraded`, `downgraded`, `changed`) is the

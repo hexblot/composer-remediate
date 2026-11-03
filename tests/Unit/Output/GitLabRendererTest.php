@@ -59,6 +59,25 @@ final class GitLabRendererTest extends TestCase
         self::assertMatchesRegularExpression('{^[0-9a-f]{8}-[0-9a-f]{4}-5[0-9a-f]{3}-[89ab][0-9a-f]{3}-[0-9a-f]{12}$}', $v['id']);
     }
 
+    /** The ninth review's fourth finding: a Drupal.org advisory is not a `packagist_advisory` at a packagist.org URL. */
+    public function testADrupalAdvisoryIsIdentifiedAsOneAndLinkedToDrupalOrg(): void
+    {
+        $parser = new VersionParser();
+        $advisory = new Advisory('SA-CONTRIB-2026-012', 'drupal/webform', $parser->parseConstraints('<6.2.0'), 'Access bypass', null, 'https://www.drupal.org/sa-contrib-2026-012', 'high', null, [['name' => 'Drupal.org', 'remoteId' => 'SA-CONTRIB-2026-012']]);
+        $finding = new Finding($advisory, 'drupal/webform', '6.1.0.0', '6.1.0', false, true);
+        $plan = new Plan([new FindingPlan($finding, [], [], 'nothing newer')], ['engine_version' => '0.4.0-test'], [], null, null, [['name' => 'drupal/webform', 'version' => '6.1.0', 'dev' => false]]);
+
+        $report = json_decode((new GitLabRenderer(true, '2026-01-01T00:00:00', '2026-01-01T00:00:00'))->render($plan), true, 512, JSON_THROW_ON_ERROR);
+        self::assertIsArray($report);
+        self::assertSame([['type' => 'drupal_advisory', 'name' => 'SA-CONTRIB-2026-012', 'value' => 'SA-CONTRIB-2026-012', 'url' => 'https://www.drupal.org/sa-contrib-2026-012']], $report['vulnerabilities'][0]['identifiers']);
+
+        $cveNamed = new Advisory('CVE-2026-5', 'acme/lib', $parser->parseConstraints('<1.5.0'), 'Bad thing', 'CVE-2026-5');
+        $plan = new Plan([new FindingPlan(new Finding($cveNamed, 'acme/lib', '1.4.0.0', '1.4.0', false, true), [], [], 'nothing newer')], ['engine_version' => '0.4.0-test'], [], null, null, [['name' => 'acme/lib', 'version' => '1.4.0', 'dev' => false]]);
+        $report = json_decode((new GitLabRenderer(true, '2026-01-01T00:00:00', '2026-01-01T00:00:00'))->render($plan), true, 512, JSON_THROW_ON_ERROR);
+        self::assertIsArray($report);
+        self::assertSame(['cve'], array_column($report['vulnerabilities'][0]['identifiers'], 'type'), 'an advisory named by its CVE is listed once, not again as a Packagist advisory');
+    }
+
     public function testAScanThatCouldNotEstablishCoverageIsAFailedScanNotAnEmptyOne(): void
     {
         $gap = 'Coverage gap: Upstream record GHSA-bad for acme/lib could not be interpreted at database build (unparsable); acme/lib is treated as unaffected by that record.';

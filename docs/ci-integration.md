@@ -315,8 +315,7 @@ Fields worth knowing: `exit_code`, `summary.combined_command`, `summary.combined
   jobs, pass `--database-path=<file>` and cache that file. Each run confirms the copy against the
   published database with one small request and downloads only when it moved; when the network is
   down the copy is used and the report says how old it is. Add `--database-max-age=48` to fail
-  instead once a copy that cannot be confirmed is older than two days, or run
-  `composer remediate:db-build --if-stale` first to build from the sources when the published
-  database cannot be reached. See [Advisory database](advisory-database.md#the-default-a-copy-kept-current).
+  instead once a copy that cannot be confirmed is older than two days. See
+  [Advisory database](advisory-database.md#the-default-a-copy-kept-current).
 - For air-gapped runners, `--offline` with the database already at its path (or
   `--offline --advisories-file=<snapshot>`) works with a warm Composer cache.

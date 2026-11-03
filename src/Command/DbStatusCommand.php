@@ -74,7 +74,7 @@ final class DbStatusCommand extends BaseCommand
                 foreach ($locator->warnings() as $warning) {
                     $output->writeln('<error>' . ConsoleText::safe($warning) . '</error>');
                 }
-                $output->writeln('Build one with <comment>composer remediate:db-build</comment>, or check the source; composer remediate falls back to the configured repositories meanwhile.');
+                $output->writeln('Check the source, or build one with the release channel (https://github.com/hexblot/composer-remediate-db); composer remediate falls back to the configured repositories meanwhile.');
 
                 return Plan::EXIT_ADVISORIES_UNAVAILABLE;
             }
@@ -82,7 +82,7 @@ final class DbStatusCommand extends BaseCommand
             $db = Database::open($path);
         } catch (AdvisoryLookupFailed $e) {
             $output->writeln('<error>' . ConsoleText::safe($e->getMessage()) . '</error>');
-            $output->writeln('Build one with <comment>composer remediate:db-build</comment>.');
+            $output->writeln('Check the source, or build one with the release channel (https://github.com/hexblot/composer-remediate-db).');
 
             return Plan::EXIT_ADVISORIES_UNAVAILABLE;
         }

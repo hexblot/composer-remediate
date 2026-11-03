@@ -9,7 +9,6 @@ use Composer\IO\NullIO;
 use Composer\Plugin\Capability\CommandProvider as CommandProviderCapability;
 use PHPUnit\Framework\TestCase;
 use Remediate\Command\CommandProvider;
-use Remediate\Command\DbBuildCommand;
 use Remediate\Command\DbStatusCommand;
 use Remediate\Command\PullRequestBodyCommand;
 use Remediate\Command\RemediateCommand;
@@ -37,16 +36,14 @@ final class PluginTest extends TestCase
         $commands = (new CommandProvider())->getCommands();
 
         self::assertSame(
-            ['remediate', 'remediate:db-build', 'remediate:db-status', 'remediate:pr-body'],
+            ['remediate', 'remediate:db-status', 'remediate:pr-body'],
             array_map(static fn ($c): string => (string) $c->getName(), $commands),
             'the names the documentation and the shipped action use',
         );
         self::assertInstanceOf(RemediateCommand::class, $commands[0]);
-        self::assertInstanceOf(DbBuildCommand::class, $commands[1]);
-        self::assertInstanceOf(DbStatusCommand::class, $commands[2]);
-        self::assertInstanceOf(PullRequestBodyCommand::class, $commands[3]);
-        self::assertSame(['remediate-db-build'], $commands[1]->getAliases());
-        self::assertSame(['remediate-db-status'], $commands[2]->getAliases());
-        self::assertSame(['remediate-pr-body'], $commands[3]->getAliases());
+        self::assertInstanceOf(DbStatusCommand::class, $commands[1]);
+        self::assertInstanceOf(PullRequestBodyCommand::class, $commands[2]);
+        self::assertSame(['remediate-db-status'], $commands[1]->getAliases());
+        self::assertSame(['remediate-pr-body'], $commands[2]->getAliases());
     }
 }

@@ -11,8 +11,6 @@ enum Freshness: string
     case Confirmed = 'confirmed';
     /** The local copy was missing or stale and was replaced by a download. */
     case Downloaded = 'downloaded';
-    /** The local copy was missing or stale and was rebuilt from the sources. */
-    case Rebuilt = 'rebuilt';
     /** No source could be reached; the local copy is used and its age is reported. */
     case Unconfirmed = 'unconfirmed';
     /** Offline mode: the local copy is used without any check. */

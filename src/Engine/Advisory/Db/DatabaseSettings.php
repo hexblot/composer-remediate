@@ -22,7 +22,7 @@ use Composer\Composer;
  */
 final class DatabaseSettings
 {
-    public const DEFAULT_SOURCE = 'https://github.com/hexblot/composer-remediate/releases/download/advisory-db-latest/advisories.sqlite';
+    public const DEFAULT_SOURCE = 'https://github.com/hexblot/composer-remediate-db/releases/download/advisory-db-latest/advisories.sqlite';
     public const ENV_LOCATION = 'REMEDIATE_DATABASE';
     public const ENV_PATH = 'REMEDIATE_DATABASE_PATH';
     public const ENV_MAX_AGE = 'REMEDIATE_DATABASE_MAX_AGE';

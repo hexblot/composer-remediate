@@ -5,6 +5,8 @@ declare(strict_types=1);
 namespace Remediate\Engine\Matching;
 
 use Composer\Package\PackageInterface;
+use Composer\Semver\Constraint\Constraint;
+use Composer\Semver\Constraint\ConstraintInterface;
 use Remediate\Engine\Advisory\Advisory;
 use Remediate\Engine\Advisory\AdvisoryProvider;
 use Remediate\Engine\Lock\LockSnapshot;
@@ -60,16 +62,29 @@ final class Matcher
         return array_values(array_diff($this->ignore->entries(), array_keys($this->usedIgnores)));
     }
 
-    private function isIgnored(Advisory $advisory, string $packageName, string $normalizedVersion): bool
+    /**
+     * Whether a finding is ignored, given every name it can be addressed by: the locked package at its
+     * version and, for a finding reached through `replace` or `provide`, the replaced package at the
+     * range the link declares. An ignore written against either name applies, and every rule that
+     * matches is recorded as used, so the hygiene report cannot call a rule that worked unused.
+     *
+     * @param list<array{string, ConstraintInterface}> $installed [package name, the versions it is present at]
+     */
+    private function isIgnored(Advisory $advisory, array $installed): bool
     {
-        $entry = $this->ignore->matchedEntry($advisory->id, $advisory->cve, $packageName, $normalizedVersion);
-        if ($entry === null) {
-            return false;
+        $ignored = false;
+        foreach ($installed as [$packageName, $at]) {
+            $entry = $this->ignore->matchedEntryAt($advisory->id, $advisory->cve, $packageName, $at);
+            if ($entry !== null) {
+                $this->usedIgnores[$entry] = true;
+                $ignored = true;
+            }
         }
-        ++$this->ignoredCount;
-        $this->usedIgnores[$entry] = true;
+        if ($ignored) {
+            ++$this->ignoredCount;
+        }
 
-        return true;
+        return $ignored;
     }
 
     /**
@@ -86,19 +101,21 @@ final class Matcher
 
         foreach ($lock->packages as $package) {
             $name = $package->getName();
+            $installedAt = new Constraint('==', $package->getVersion());
             foreach ($advisories[$name] ?? [] as $advisory) {
-                if ($advisory->affectsVersion($package->getVersion()) && !$this->isIgnored($advisory, $name, $package->getVersion())) {
+                if ($advisory->affectsVersion($package->getVersion()) && !$this->isIgnored($advisory, [[$name, $installedAt]])) {
                     $findings[] = new Finding($advisory, $name, $package->getVersion(), $package->getPrettyVersion(), $lock->isDev($name), $isRootRequirement($name));
                 }
             }
-            // A package that replaces or provides another one is answerable for that package's advisories.
+            // A package that replaces or provides another one is answerable for that package's advisories,
+            // and an ignore written against the replaced name (the one the advisory is about) applies.
             foreach ($package->getReplaces() + $package->getProvides() as $target => $link) {
                 $target = strtolower((string) $target);
                 if ($lock->has($target)) {
                     continue; // the replaced package is also installed on its own; it is matched directly
                 }
                 foreach ($advisories[$target] ?? [] as $advisory) {
-                    if ($advisory->affectsConstraint($link->getConstraint()) && !$this->isIgnored($advisory, $name, $package->getVersion())) {
+                    if ($advisory->affectsConstraint($link->getConstraint()) && !$this->isIgnored($advisory, [[$target, $link->getConstraint()], [$name, $installedAt]])) {
                         $findings[] = new Finding($advisory, $name, $package->getVersion(), $package->getPrettyVersion(), $lock->isDev($name), $isRootRequirement($name), $target);
                     }
                 }

@@ -437,6 +437,36 @@ final class PlannerTest extends TestCase
         self::assertNotEmpty(array_filter($plan->warnings, static fn (string $w): bool => str_contains($w, 'advisory blocking')));
     }
 
+    /**
+     * The ninth review's third finding: the key of a finding reached through `replace` carries the
+     * replaced name too, and the blocking check compared that whole key tail with the changed package's
+     * name, so a monorepo moved to a version that still carries an advisory on one of its components
+     * raised no warning.
+     */
+    public function testBlockingRiskIsReportedWhenTheChangedPackageStaysVulnerableThroughAReplacedOne(): void
+    {
+        // Fixing acme/lib drags acme/monorepo from 1.0 to 1.1, and acme/monorepo replaces acme/component, which
+        // PKSA-C affects at every version below 2.0: a pre-existing finding, so the candidate stands, but
+        // Composer 2.10+ would refuse the move.
+        $project = $this->projects[] = new ScriptedProject(['acme/lib' => '^1.0', 'acme/monorepo' => '^1.0'], [['acme/lib', '1.0.0'], ['acme/monorepo', '1.0.0']], [], [], ['acme/monorepo' => ['acme/component']]);
+        $solver = (new FakeSolver())->resolves('composer update acme/lib', ScriptedProject::lock([['acme/lib', '1.1.0'], ['acme/monorepo', '1.1.0']], ['acme/monorepo' => ['acme/component']]));
+        $advisories = ScriptedProject::advisories([ScriptedProject::advisory('PKSA-1', 'acme/lib', '<1.1.0'), ScriptedProject::advisory('PKSA-C', 'acme/component', '<2.0.0')]);
+        $plan = (new Planner($advisories, $solver))->plan($project->context(), $project->workspace());
+
+        $lib = null;
+        foreach ($plan->findings as $findingPlan) {
+            if ($findingPlan->finding->advisory->id === 'PKSA-1') {
+                $lib = $findingPlan;
+            }
+        }
+        self::assertNotNull($lib);
+        $recommended = $lib->recommended();
+        self::assertNotNull($recommended);
+        self::assertSame('composer update acme/lib', $recommended->candidate->commandLine(true));
+        self::assertSame(['acme/monorepo'], $recommended->blockingRisk);
+        self::assertNotEmpty(array_filter($plan->warnings, static fn (string $w): bool => str_contains($w, 'advisory blocking')));
+    }
+
     public function testSolveBudgetBoundsEveryPhaseAndIsReported(): void
     {
         $project = $this->project(['acme/lib' => '^1.0'], [['acme/lib', '1.0.0']]);

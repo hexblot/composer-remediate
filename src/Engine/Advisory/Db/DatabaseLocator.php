@@ -17,8 +17,8 @@ use Remediate\Engine\Advisory\AdvisoryLookupFailed;
  * publisher's `latest.json` (sha256, dataset hash, publication time) or, failing that, its `<url>.sha256`
  * sidecar. A local file with the same sha256 is the published database itself; one with the same
  * dataset hash is a local build of the same data; one built after the publication is a newer local
- * build. Each of those is current and used. Anything else is replaced by a download (or, on request,
- * by a rebuild from the sources). When no source can be reached, the local copy is used and the report
+ * build. Each of those is current and used. Anything else is replaced by a download. When no source
+ * can be reached, the local copy is used and the report
  * says so with the copy's age, unless it is older than the configured maximum age, in which case the
  * run fails rather than gate on data of unknown staleness.
  *
@@ -139,18 +139,11 @@ final class DatabaseLocator
      * mismatch, an unverifiable download, a symbolic link, a non-https source, a copy older than the
      * maximum age) throw.
      *
-     * @param callable(string): void|null $rebuild         builds the database at the given path from the sources instead
-     *                                                     of downloading, when the local copy is missing or stale
-     * @param bool                        $rebuildComplete the rebuild carries every source the current copy was built
-     *                                                     from (db-build with the same --include files); false for a
-     *                                                     rebuild with the defaults, which must not replace a copy that
-     *                                                     holds private advisories
-     *
      * @throws AdvisoryLookupFailed
      */
-    public function locate(DatabaseSettings $settings, ?callable $rebuild = null, bool $rebuildComplete = false): ?LocatedDatabase
+    public function locate(DatabaseSettings $settings): ?LocatedDatabase
     {
-        return $this->choose($settings, $rebuild, $rebuildComplete);
+        return $this->choose($settings);
     }
 
     /**
@@ -158,7 +151,7 @@ final class DatabaseLocator
      * from disk, or the one verified after a download. Never a fresh hash taken afterwards — that asks
      * the file who it is a second time, and believes the second answer.
      */
-    private function choose(DatabaseSettings $settings, ?callable $rebuild = null, bool $rebuildComplete = false): ?LocatedDatabase
+    private function choose(DatabaseSettings $settings): ?LocatedDatabase
     {
         array_push($this->warnings, ...$settings->notes);
         if (!$settings->usesDatabase()) {
@@ -206,24 +199,7 @@ final class DatabaseLocator
             }
             $remote = $this->remoteMeta($source, $reason);
             if ($remote === null) {
-                if ($local === null && $rebuild !== null) {
-                    // The publisher cannot be asked, but the sources can: build rather than run without a database.
-                    try {
-                        $rebuild($path);
-                        $fresh = $this->inspect($path);
-                        if ($fresh !== null) {
-                            $this->requireExpectedDigest($path, $fresh['sha256']);
-                            $this->warnings[] = sprintf('Could not reach %s (%s); the advisory database was built from the sources instead.', $shown, (string) $reason);
-
-                            return new LocatedDatabase($path, Freshness::Rebuilt, sprintf('rebuilt from the sources (%s unreachable: %s)', $shown, (string) $reason), $fresh['sha256']);
-                        }
-                    } catch (\RuntimeException $e) {
-                        if ($e instanceof AdvisoryLookupFailed) {
-                            throw $e;
-                        }
-                        $failures[] = sprintf('rebuild: %s', self::redact(trim(explode("\n", $e->getMessage())[0])));
-                    }
-                } elseif ($local === null && ($this->expectedSha256 !== null || !$this->requireChecksum) && str_starts_with((string) $reason, 'HTTP 4')) {
+                if ($local === null && ($this->expectedSha256 !== null || !$this->requireChecksum) && str_starts_with((string) $reason, 'HTTP 4')) {
                     // Nothing published to verify against, but the operator's pinned digest verifies the download
                     // on its own; or the operator accepts an unverified download, which is then disclosed.
                     try {
@@ -248,48 +224,33 @@ final class DatabaseLocator
 
                     return new LocatedDatabase($path, Freshness::Confirmed, sprintf('confirmed current against %s (%s), built %s', $shown, $why, self::age($local)), $local['sha256']);
                 }
-                if ($local['privateSources'] !== [] && $local['downloadedFrom'] === null && !$settings->pathFromProject && ($rebuild === null || !$rebuildComplete)) {
+                if ($local['privateSources'] !== [] && $local['downloadedFrom'] === null && !$settings->pathFromProject) {
                     // A local build (not a download: no status file) that carries private advisories is the
                     // operator's security policy; the published database does not contain them, so replacing
-                    // the file would silently drop them. Keep it, say so, and leave the refresh to a rebuild
-                    // with the same --include files. A downloaded copy whose publisher used --include is the
-                    // publisher's business and is replaced like any other.
+                    // the file would silently drop them. Keep it, say so, and leave the refresh to a build
+                    // with the same private files. A downloaded copy whose publisher included private
+                    // advisories is the publisher's business and is replaced like any other.
                     $missing = self::missingSources($local, $remote);
                     if ($missing !== []) {
                         // Keeping it would answer for the published database with a fraction of its
                         // coverage; replacing it would drop the private advisories. Neither is the
                         // operator's decision to have made silently, so the run stops and says which.
-                        throw new AdvisoryLookupFailed(sprintf('The advisory database at %s is a local build from %s, without %s, which the published database at %s is built from. It cannot stand in for the published database, and replacing it would drop its private advisories (%s). Rebuild it with remediate:db-build and the same --include files, move it away to use the published database, or pass --database-location=%s to read it as it is.', $path, implode(', ', [...$local['publicSources'], ...array_map(static fn (string $f): string => 'local:' . $f, $local['privateSources'])]), implode(', ', $missing), $shown, implode(', ', $local['privateSources']), $path));
+                        throw new AdvisoryLookupFailed(sprintf('The advisory database at %s is a local build from %s, without %s, which the published database at %s is built from. It cannot stand in for the published database, and replacing it would drop its private advisories (%s). Build it again with the same private files (bin/build-advisory-db of the release channel), move it away to use the published database, or pass --database-location=%s to read it as it is.', $path, implode(', ', [...$local['publicSources'], ...array_map(static fn (string $f): string => 'local:' . $f, $local['privateSources'])]), implode(', ', $missing), $shown, implode(', ', $local['privateSources']), $path));
                     }
                     $this->requireExpectedDigest($path, $local['sha256']);
                     $this->enforceMaxAge($local, $settings, 'a local build with private advisories is never replaced by a download');
-                    $this->warnings[] = sprintf('The advisory database at %s is a local build with private advisories (%s) and is older than the published database; it is kept so the private advisories stay in force, but public advisories published since it was built %s are unknown to this run. Refresh it with remediate:db-build --if-stale and the same --include files.', $path, implode(', ', $local['privateSources']), self::age($local));
+                    $this->warnings[] = sprintf('The advisory database at %s is a local build with private advisories (%s) and is older than the published database; it is kept so the private advisories stay in force, but public advisories published since it was built %s are unknown to this run. Refresh it with a new build from the same private files (bin/build-advisory-db of the release channel).', $path, implode(', ', $local['privateSources']), self::age($local));
 
                     return new LocatedDatabase($path, Freshness::Unconfirmed, sprintf('a local build with private advisories, kept although %s has published a newer database; built %s', $shown, self::age($local)), $local['sha256']);
                 }
             }
             $reasonToRefresh = $local === null ? 'no local copy' : sprintf('the copy built %s is not the published one', self::age($local));
             try {
-                if ($rebuild !== null) {
-                    $rebuild($path);
-                    $fresh = $this->inspect($path);
-                    if ($fresh === null) {
-                        throw new AdvisoryLookupFailed(sprintf('The rebuild left no readable advisory database at %s.', $path));
-                    }
-                    $this->requireExpectedDigest($path, $fresh['sha256']);
-
-                    return new LocatedDatabase($path, Freshness::Rebuilt, sprintf('rebuilt from the sources (%s)', $reasonToRefresh), $fresh['sha256']);
-                }
                 $downloaded = $this->download($source, $path, $remote);
 
                 return new LocatedDatabase($path, Freshness::Downloaded, sprintf('downloaded from %s (%s)', $shown, $reasonToRefresh), $downloaded);
             } catch (TransportException $e) {
                 $failures[] = sprintf('%s: %s', $shown, self::shortError($e));
-            } catch (\RuntimeException $e) {
-                if ($e instanceof AdvisoryLookupFailed) {
-                    throw $e;
-                }
-                $failures[] = sprintf('rebuild: %s', self::redact(trim(explode("\n", $e->getMessage())[0])));
             }
         }
 
@@ -430,7 +391,7 @@ final class DatabaseLocator
         $status = @file_get_contents(self::statusFile($path));
         $decoded = is_string($status) ? json_decode($status, true) : null;
         // The status record names the bytes it describes. A file whose digest differs was rebuilt or
-        // replaced in place since the download (db-build removes the record too; this covers the rest).
+        // replaced in place since the download (a build removes the record too; this covers the rest).
         // Nothing the publisher writes into the database (build time, sources) can retire the record:
         // only a change to the bytes on disk can, and the publisher has no hand on those.
         if (is_array($decoded) && is_string($decoded['sha256'] ?? null) && $sha !== false && !hash_equals($decoded['sha256'], $sha)) {

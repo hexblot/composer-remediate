@@ -98,12 +98,12 @@ final class SarifRenderer
     {
         $title = $advisory->title ?? $advisory->displayId();
 
-        return [
+        return array_filter([
             'id' => $advisory->id,
             'name' => preg_replace('{[^A-Za-z0-9]}', '', $advisory->displayId()) ?? $advisory->id,
             'shortDescription' => ['text' => self::truncate($title, 200)],
             'fullDescription' => ['text' => sprintf('%s. Affected versions of %s: %s.', $title, $advisory->packageName, $advisory->affectedVersions->getPrettyString())],
-            'helpUri' => $advisory->link ?? 'https://packagist.org/security-advisories/' . $advisory->id,
+            'helpUri' => $advisory->link ?? AdvisoryReference::url($advisory),
             'help' => ['text' => sprintf('Advisory %s%s affects %s %s. Run composer remediate for the smallest verified upgrade.', $advisory->id, $advisory->cve !== null && $advisory->cve !== $advisory->id ? ' (' . $advisory->cve . ')' : '', $advisory->packageName, $advisory->affectedVersions->getPrettyString())],
             'defaultConfiguration' => ['level' => self::level($advisory->severity)],
             'properties' => array_filter([
@@ -113,7 +113,7 @@ final class SarifRenderer
                 'epss_percentile' => $advisory->epssPercentile,
                 'kev_added' => $advisory->kevAdded?->format('Y-m-d'),
             ], static fn ($v): bool => $v !== null),
-        ];
+        ], static fn ($v): bool => $v !== null); // helpUri is a URI or absent, never null
     }
 
     /** @return array<string, mixed> */

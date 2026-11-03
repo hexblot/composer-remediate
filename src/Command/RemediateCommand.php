@@ -13,7 +13,6 @@ use Remediate\Engine\Advisory\AdvisoryProvider;
 use Remediate\Engine\Advisory\AuditSubprocessAdvisoryProvider;
 use Remediate\Engine\Advisory\ComposerRepositoryAdvisoryProvider;
 use Remediate\Engine\Advisory\Db\Database;
-use Remediate\Engine\Advisory\Db\DatabaseBuildFactory;
 use Remediate\Engine\Advisory\Db\DatabaseLocator;
 use Remediate\Engine\Advisory\Db\OperatorConfiguration;
 use Remediate\Engine\Apply\Applier;
@@ -83,7 +82,6 @@ final class RemediateCommand extends BaseCommand
                 new InputOption('database-path', null, InputOption::VALUE_REQUIRED, 'The file the advisory database is kept in and read from (default: COMPOSER_CACHE_DIR/remediate/advisories.sqlite); also REMEDIATE_DATABASE_PATH or extra.remediate.database_path. Cache it between CI runs'),
                 new InputOption('database-max-age', null, InputOption::VALUE_REQUIRED, 'When the database cannot be confirmed current (source unreachable, --offline), fail with exit 4 instead of warning if the copy is older than this many hours (or 2d, 36h); also REMEDIATE_DATABASE_MAX_AGE or extra.remediate.database_max_age'),
                 new InputOption('no-database', null, InputOption::VALUE_NONE, 'Ask the configured repositories for advisories, as composer audit does, instead of using an advisory database (same as --database-location=composer)'),
-                new InputOption('rebuild-database', null, InputOption::VALUE_NONE, 'When the database at its path is missing or not current, build it from the sources (Packagist, OSV, FriendsOfPHP, Drupal.org, with EPSS and KEV data) instead of downloading it'),
                 new InputOption('database-sha256', null, InputOption::VALUE_REQUIRED, 'Expected sha256 of the advisory database (hex); a downloaded or cached copy that differs is refused. The trust anchor for a URL you do not publish yourself'),
                 new InputOption('allow-unverified-database', null, InputOption::VALUE_NONE, 'Accept a database URL without a published <url>.sha256 sidecar and without --database-sha256 (refused otherwise); the report says the download was not verified'),
                 new InputOption('accept-coverage-gaps', null, InputOption::VALUE_NONE, 'Exit 0 for a lock without findings even when the advisory source could not read records about locked packages (otherwise exit 4), and allow a fix that adds a package with such records (otherwise rejected); the gaps stay in the report'),
@@ -117,9 +115,8 @@ not given), 5 package metadata could not be fetched while solving.
 Advisories come from an advisory database kept at <info>--database-path</info> (default: Composer's
 cache directory). On every run the file is checked against the published database it comes from
 (<info>--database-location</info>, default: this project's release): a copy with the same sha256 or
-dataset hash, or a newer local build, is used; a missing or stale copy is downloaded (or rebuilt with
-<info>--rebuild-database</info>); when the source cannot be reached the copy is used and the report says
-how old it is. Without any usable database the configured repositories are asked, as
+dataset hash, or a newer local build, is used; a missing or stale copy is downloaded; when the source
+cannot be reached the copy is used and the report says how old it is. Without any usable database the configured repositories are asked, as
 <info>composer audit</info> does, and the report says so. <info>--no-database</info> chooses that directly.
 
 Running as <info>composer remediate</info> means Composer has already activated the project's
@@ -318,8 +315,7 @@ HELP);
 
     /**
      * Where advisories come from, in order of preference: --advisories-file; the advisory database at its
-     * path, kept current from the configured sources (or rebuilt with --rebuild-database); else Composer's
-     * own repositories, with a warning when a database was expected but none could be had. Exit 4 for a
+     * path, kept current from the configured sources; else Composer's own repositories, with a warning when a database was expected but none could be had. Exit 4 for a
      * database that is refused (digest mismatch, unverifiable download, too old) or a pinned digest that
      * nothing satisfies.
      */
@@ -366,24 +362,13 @@ HELP);
 
             return self::composerAdvisoryProvider($composer, $context);
         }
-        $rebuild = null;
-        if ((bool) $input->getOption('rebuild-database')) {
-            $downloader = $this->operator->httpDownloader();
-            $tempDir = $locator->cacheDirectory() . '/tmp';
-            $rebuild = static function (string $path) use ($downloader, $tempDir, $io): void {
-                $io->writeError('<comment>Building the advisory database from the sources…</comment>');
-                DatabaseBuildFactory::defaultBuilder($downloader, $tempDir)->build($path, static function (string $message) use ($io): void {
-                    $io->writeError('<comment>' . ConsoleText::safe($message) . '</comment>', true, IOInterface::VERBOSE);
-                }, ['engine_version' => Planner::engineVersion()]);
-            };
-        }
         if (!is_file($settings->path) && $settings->localSource() === null) {
             // The first run fetches several megabytes; later ones confirm the copy with one small
             // request. Without a word, a slow first run looks like a hang before planning even starts.
             $io->writeError(sprintf('<comment>Fetching the advisory database into %s; later runs check it with one small request.</comment>', ConsoleText::safe($settings->path)));
         }
         try {
-            $located = $locator->locate($settings, $rebuild);
+            $located = $locator->locate($settings);
             if ($located !== null) {
                 return new SqliteAdvisoryProvider(Database::open($located->path, $located->digest), $located->provenance);
             }

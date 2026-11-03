@@ -72,7 +72,7 @@ foreach ([
     Plan::EXIT_REMEDIATION_AVAILABLE => 'Vulnerabilities found and a verified remediation exists for every one',
     Plan::EXIT_NO_REMEDIATION => 'At least one vulnerability has no verified remediation',
     Plan::EXIT_ERROR => 'Tool or configuration error (no lock file, unknown option, unwritable output)',
-    Plan::EXIT_ADVISORIES_UNAVAILABLE => 'Advisory data could not be obtained (network, missing or invalid database or snapshot); also used by `remediate:db-build` when a source fails',
+    Plan::EXIT_ADVISORIES_UNAVAILABLE => 'Advisory data could not be obtained (network, missing or invalid database or snapshot)',
     Plan::EXIT_SOLVER_FAILURE => 'Package metadata could not be fetched during solving (network), so no candidate could be verified',
 ] as $code => $meaning) {
     $out[] = sprintf('| `%d` | %s |', $code, $meaning);

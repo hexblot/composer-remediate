@@ -115,7 +115,21 @@ advisory database this project publishes is watched rather than assumed to be wo
   the defect cannot be written again; the ones that came back were the ones that checked a thing at a
   moment. The advisory database took four attempts and was settled only by removing the need to check
   at all: a run reads a private copy of the verified bytes. The tenth finding is below
-- [ ] a ninth review, of what 0.10.0 changed and of the contract suite it left behind
+- [x] a ninth adversarial review, of the engine's invariants, the CLI contract, the ignore policies,
+  matching through replaced packages and the machine-readable reports. Five findings: four defects,
+  each reproduced and fixed with a regression test (a plugin command the standalone binary could not
+  reach, ignores that did not apply to a package present only through `replace`, the advisory-blocking
+  warning missing for a replaced package, and Packagist URLs invented for advisories Packagist never
+  published), and one architecture note confirming that the open path-search work bound below is a cost
+  rather than a correctness or safety flaw, to stay open through the beta. The two repairs that were
+  made structural: the binary takes its commands from the plugin's own provider, and the finding key is
+  read back by the class that writes it
+- [x] the advisory database's build and publication moved out of this repository into
+  [composer-remediate-db](https://github.com/hexblot/composer-remediate-db), a release channel that
+  depends on this package and that anyone can fork to run their own, with the feeds and the private
+  advisories of their choosing. The plugin keeps the format, the reader and `remediate:db-status`,
+  reads the channel by default, and the old location is mirrored from it until 1.0. Dated `db-*`
+  releases no longer appear among this repository's releases
 - deliberately not in 1.0: Phase 7 below. It is a new capability, not a hole in this one
 
 ## Assurance *(ongoing, alongside the phases)*
@@ -128,7 +142,7 @@ Still open:
 
 - [ ] SonarQube itself in addition, for the complexity and duplication view a per-pull-request reviewer
   does not give (asked for, awaiting an answer)
-- [ ] remaining long methods (`InProcessSolver::solve`, `DbBuildCommand::execute`,
+- [ ] remaining long methods (`InProcessSolver::solve`,
   `HtmlRenderer::finding`, the planner's per-finding search); the `PackageChange` kind constants
   became the `ChangeKind` enum, the last string-constant set in the engine
 - [ ] **the dependency-path search is bounded in its output, not in its work** (the eighth review's
