@@ -30,6 +30,38 @@ final class CycloneDxRendererTest extends TestCase
         self::assertSame('pkg:composer/acme/lib@1.0.0-beta1', CycloneDxRenderer::purl('acme/lib', '1.0.0-beta1'));
     }
 
+    /**
+     * The ninth review's fourth finding: every advisory that was not a GHSA was attributed to Packagist
+     * with a packagist.org URL, which for a Drupal.org advisory (or a CVE-named one) is a 404.
+     */
+    public function testTheSourceOfAnAdvisoryFollowsItsIdentifier(): void
+    {
+        $parser = new VersionParser();
+        $drupal = new Advisory('SA-CONTRIB-2026-012', 'drupal/webform', $parser->parseConstraints('<6.2.0'), 'Access bypass', null, 'https://www.drupal.org/sa-contrib-2026-012', 'high', null, [['name' => 'Drupal.org', 'remoteId' => 'SA-CONTRIB-2026-012']]);
+        $cve = new Advisory('CVE-2026-5', 'acme/lib', $parser->parseConstraints('<1.5.0'), 'Bad thing', 'CVE-2026-5', 'https://example.test/cve');
+        $unknown = new Advisory('acme/lib/2026-01-01.yaml', 'acme/lib', $parser->parseConstraints('<1.5.0'), 'From a file', null, null, 'low', null, [['name' => 'FriendsOfPHP/security-advisories', 'remoteId' => 'acme/lib/2026-01-01.yaml']]);
+        $plan = new Plan(
+            [
+                new FindingPlan(new Finding($drupal, 'drupal/webform', '6.1.0.0', '6.1.0', false, true), [], [], 'nothing newer'),
+                new FindingPlan(new Finding($cve, 'acme/lib', '1.4.0.0', '1.4.0', false, true), [], [], 'nothing newer'),
+                new FindingPlan(new Finding($unknown, 'acme/lib', '1.4.0.0', '1.4.0', false, true), [], [], 'nothing newer'),
+            ],
+            ['engine_version' => '0.3.0-test', 'composer_version' => '2.10.3'],
+            [],
+            null,
+            null,
+            [['name' => 'drupal/webform', 'version' => '6.1.0', 'dev' => false], ['name' => 'acme/lib', 'version' => '1.4.0', 'dev' => false]],
+        );
+
+        $bom = json_decode((new CycloneDxRenderer(true))->render($plan), true, 512, JSON_THROW_ON_ERROR);
+        self::assertIsArray($bom);
+        $sources = array_column(array_column($bom['vulnerabilities'], 'source'), null, 'name');
+        self::assertSame('https://www.drupal.org/sa-contrib-2026-012', $sources['Drupal.org']['url'] ?? null);
+        self::assertSame('https://nvd.nist.gov/vuln/detail/CVE-2026-5', $sources['NVD']['url'] ?? null);
+        self::assertSame(['name' => 'FriendsOfPHP/security-advisories'], $sources['FriendsOfPHP/security-advisories'] ?? null, 'an identifier with no publisher page is attributed to its feed and given no URL to 404 on');
+        self::assertStringNotContainsString('packagist.org/security-advisories', json_encode($bom, JSON_THROW_ON_ERROR));
+    }
+
     public function testBomStructure(): void
     {
         $parser = new VersionParser();

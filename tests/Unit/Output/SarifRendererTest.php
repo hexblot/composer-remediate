@@ -74,6 +74,27 @@ final class SarifRendererTest extends TestCase
         self::assertSame(2, $run['invocations'][0]['exitCode']);
     }
 
+    /** The ninth review's fourth finding: an advisory with no link got a packagist.org helpUri whatever its identifier. */
+    public function testHelpUriIsThePublishersPageOrAbsentNeverAGuess(): void
+    {
+        $parser = new VersionParser();
+        $drupal = new Advisory('SA-CORE-2026-001', 'drupal/core', $parser->parseConstraints('<11.1.0'));
+        $unknown = new Advisory('acme/lib/2026-01-01.yaml', 'acme/lib', $parser->parseConstraints('<1.5.0'));
+        $plan = new Plan(
+            [
+                new FindingPlan(new Finding($drupal, 'drupal/core', '11.0.0.0', '11.0.0', false, true), [], [], 'nothing newer'),
+                new FindingPlan(new Finding($unknown, 'acme/lib', '1.4.0.0', '1.4.0', false, true), [], [], 'nothing newer'),
+            ],
+            ['project' => '/p', 'engine_version' => '0.3.0-test'],
+        );
+
+        $sarif = json_decode((new SarifRenderer(true))->render($plan), true, 512, JSON_THROW_ON_ERROR);
+        self::assertIsArray($sarif);
+        $rules = array_column($sarif['runs'][0]['tool']['driver']['rules'], null, 'id');
+        self::assertSame('https://www.drupal.org/sa-core-2026-001', $rules['SA-CORE-2026-001']['helpUri']);
+        self::assertArrayNotHasKey('helpUri', $rules['acme/lib/2026-01-01.yaml']);
+    }
+
     public function testFailOnThresholdGatesTheExitCode(): void
     {
         $plan = $this->plan();

@@ -5,7 +5,9 @@ declare(strict_types=1);
 namespace Remediate\Tests\Support;
 
 use Composer\IO\NullIO;
+use Composer\Package\Link;
 use Composer\Package\Package;
+use Composer\Semver\Constraint\Constraint;
 use Remediate\Engine\Advisory\Advisory;
 use Remediate\Engine\Advisory\AdvisoryProvider;
 use Remediate\Engine\Lock\LockSnapshot;
@@ -25,8 +27,9 @@ final class ScriptedProject
      * @param list<array{string, string, 2?: bool, 3?: string|null, 4?: bool|string|null}> $packages   [name, version, dev?, releaseDate?, abandoned? (true or the replacement name)]
      * @param array<string, string>                                                        $requireDev
      * @param array<string, array<string, string>>                                         $requires   package => its own requirements, to give the lock a dependency graph
+     * @param array<string, list<string>>                                                  $replaces   package => the packages it replaces at self.version
      */
-    public function __construct(array $require, array $packages, array $requireDev = [], array $requires = [])
+    public function __construct(array $require, array $packages, array $requireDev = [], array $requires = [], array $replaces = [])
     {
         $this->directory = sys_get_temp_dir() . '/composer-remediate-scripted-' . bin2hex(random_bytes(5));
         mkdir($this->directory, 0700, true);
@@ -39,6 +42,9 @@ final class ScriptedProject
         $dev = [];
         foreach ($packages as $spec) {
             $entry = ['name' => $spec[0], 'version' => $spec[1], 'type' => 'library', 'require' => $requires[$spec[0]] ?? []];
+            if (isset($replaces[$spec[0]])) {
+                $entry['replace'] = array_fill_keys($replaces[$spec[0]], 'self.version');
+            }
             if (isset($spec[4]) && $spec[4] !== false) {
                 $entry['abandoned'] = $spec[4];
             }
@@ -84,14 +90,20 @@ final class ScriptedProject
 
     /**
      * @param list<array{string, string, 2?: bool, 3?: string|null}> $packages [name, prettyVersion, dev?, releaseDate?]
+     * @param array<string, list<string>>                            $replaces package => the packages it replaces at self.version
      */
-    public static function lock(array $packages): LockSnapshot
+    public static function lock(array $packages, array $replaces = []): LockSnapshot
     {
         $prod = [];
         $dev = [];
         foreach ($packages as $spec) {
             [$name, $pretty] = $spec;
             $package = new Package($name, self::normalize($pretty), $pretty);
+            $links = [];
+            foreach ($replaces[$name] ?? [] as $replaced) {
+                $links[$replaced] = new Link($name, $replaced, new Constraint('==', $package->getVersion()), Link::TYPE_REPLACE, $pretty);
+            }
+            $package->setReplaces($links);
             if (array_key_exists(3, $spec) && $spec[3] !== null) {
                 $package->setReleaseDate(new \DateTime($spec[3], new \DateTimeZone('UTC')));
             }

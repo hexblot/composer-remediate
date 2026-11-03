@@ -107,9 +107,7 @@ $loader->register(true);
 
 use Composer\Console\Application;
 use Composer\Util\Platform;
-use Remediate\Command\DbBuildCommand;
-use Remediate\Command\DbStatusCommand;
-use Remediate\Command\RemediateCommand;
+use Remediate\Command\CommandProvider;
 use Symfony\Component\Console\Input\ArgvInput;
 
 error_reporting(-1);
@@ -121,7 +119,14 @@ $args = array_slice($argv, 1);
 if (in_array('--offline', $args, true)) {
     Platform::putEnv('COMPOSER_DISABLE_NETWORK', '1');
 }
-$commandNames = ['remediate', 'remediate:db-build', 'remediate-db-build', 'remediate:db-status', 'remediate-db-status', 'list', 'help'];
+// The same commands the plugin registers, from the same provider, so a command added there is
+// reachable here too; the names that select one are read off the commands themselves.
+$commands = (new CommandProvider())->getCommands();
+$commandNames = ['list', 'help'];
+foreach ($commands as $command) {
+    $commandNames[] = (string) $command->getName();
+    array_push($commandNames, ...$command->getAliases());
+}
 $first = $args[0] ?? null;
 if ($first === null || str_starts_with($first, '-') || !in_array($first, $commandNames, true)) {
     array_unshift($args, 'remediate');
@@ -130,9 +135,7 @@ $input = new ArgvInput([$argv[0], '--no-plugins', '--no-scripts', ...$args]);
 
 $application = new Application();
 $application->setName('Composer Remediate');
-$application->add(new RemediateCommand());
-$application->add(new DbBuildCommand());
-$application->add(new DbStatusCommand());
+$application->addCommands($commands);
 $application->setAutoExit(false);
 
 exit($application->run($input));
